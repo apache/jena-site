@@ -52,7 +52,7 @@ sub single_narrative {
 #		print STDOUT "$ke \n";
 #	}
 
-    return Dotiac::DTL::Template($template)->render(\%args), html => \%args;
+    return Template($template)->render(\%args), html => \%args;
 }
 
 # Has the same behavior as the above for foo.page/bar.txt
@@ -78,7 +78,7 @@ sub news_page {
         push @{$args{projects}}, parse_doap($_);
     }
 
-    return Dotiac::DTL::Template($template)->render(\%args), html => \%args;
+    return Template($template)->render(\%args), html => \%args;
 }
 
 sub sitemap {
@@ -119,7 +119,7 @@ sub sitemap {
         }
     }
     $args{content} = $content;
-    return Dotiac::DTL::Template($template)->render(\%args), html => \%args;
+    return Template($template)->render(\%args), html => \%args;
 }
 
 sub exports {
@@ -139,7 +139,7 @@ sub exports {
 
     }
 
-    return Dotiac::DTL::Template($template)->render(\%args), html => \%args;
+    return Template($template)->render(\%args), html => \%args;
 }
 
 sub parse_doap {
