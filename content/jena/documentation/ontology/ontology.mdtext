@@ -1,36 +1,32 @@
 # Jena Ontology API
 
-In this section I will give a general introduction to the the Jena2
-ontology API. I'll also describe a range of common user tasks. I
+This section is a general introduction to the the Jena2
+ontology API, including some of the common tasks you may need
+to perform. We
 won't go into all of the many details of the API here: you should
-expect to refer to the [Jena2 Javadoc](../javadoc/index.html) to
-get full details of the capabilities of the API. Feedback, (via the
-[jena-dev](http://tech.groups.yahoo.com/group/jena-dev) support
-list) is welcomed.
+expect to refer to the [Javadoc](/java/documentation/javadoc/) to
+get full details of the capabilities of the API.
 
 ## Prerequisites
 
-I will assume that you have a basic familiarity with RDF and with
-Jena. There are many other Jena
-[help documents](../documentation.html) you can read for background
-on these topics. There is also a
-[Jena programming tutorial](../tutorial/index.html) you can follow
-through.
+We'll assume that you have a basic familiarity with RDF and with
+Jena. If not, there are other
+[Jena help documents](/jena/getting_started) you can read for background
+on these topics, and a [collection of tutorials](/jena/tutorials).
 
 Jena is a programming toolkit, using the Java programming language.
 While there are a few command-line tools to help you perform some
 key tasks using Jena, mostly you use Jena by writing Java programs.
 The examples in this document will be primarily code samples.
 
-I also won't be explaining the OWL or RDFS ontology languages in
+We also won't be explaining the OWL or RDFS ontology languages in
 much detail in this document. You should expect to refer to
 supporting documentation for details on those languages, for
 example the [W3C OWL document index](http://www.w3.org/2004/OWL/).
 
-**Note:** At the time of writing, work on OWL version 1.1 is still
-underway. No decision has yet been made about when Jena will
-support the new OWL 1.1 features. I will only use OWL 1.0 features
-in this document.
+**Note:** Although OWL version 1.1 is now a W3C recommendation,
+Jena's support for OWL 1.1 features is limited. We will be addressing
+this in future versions Jena.
 
 ## Overview
 
@@ -58,23 +54,22 @@ The sections are:
 
 ### Further assistance
 
-I hope that this document will be sufficient to help most readers
+Hopefully, this document will be sufficient to help most readers
 to get started using the Jena ontology API. For further support,
-please post questions to the Jena support list:
-[jena-dev@yahoogroups](http://tech.groups.yahoo.com/group/jena-dev).
-You can also report bugs directly into the
-[Jena bug tracker](https://sourceforge.net/tracker/?atid=430288&group_id=40417&func=browse)
-on [SourceForge](http://sourceforge.net/projects/jena).
+please post questions to the [Jena support list](/jena/help_and_support),
+or [file a bug report](/jena/help_and_support/bugs_and_suggestions.html).
 
-*Please note that we ask that you use the support list or the bug-tracker to communicate with the Jena team, rather than send email to the team members directly. This helps us manage Jena support more effectively, and facilitates contributions from other Jena community members.*
+*Please note that we ask that you use the support list or the bug-tracker
+to communicate with the Jena team, rather than send email to the team
+members directly. This helps us manage Jena support more effectively,
+and facilitates contributions from other Jena community members.*
 
 ## General concepts
 
 In a widely-quoted definition, an ontology is
 
-> " a specification of a conceptualization"
-> [[Gruber, T.](http://www-ksl.stanford.edu/kst/what-is-an-ontology.html)
-> 1993]
+> "a specification of a conceptualization"
+> [[Gruber, T.](http://www-ksl.stanford.edu/kst/what-is-an-ontology.html) 1993]
 
 Let's unpack that brief characterisation a bit. It means that an
 ontology allows a programmer to specify, in an open, meaningful,
@@ -1015,19 +1010,19 @@ example:
     String NS = SOURCE + "#";
     OntModel base = ModelFactory.createOntologyModel( OWL_MEM );
     base.read( SOURCE, "RDF/XML" );
-    
+
     // create the reasoning model using the base
     OntModel inf = ModelFactory.createOntologyModel( OWL_MEM_MICRO_RULE_INF, base );
-    
+
     // create a dummy paper for this example
     OntClass paper = base.getOntClass( NS + "Paper" );
     Individual p1 = base.createIndividual( NS + "paper1", paper );
-    
+
     // list the asserted types
     for (Iterator i = p1.listRDFTypes(); i.hasNext(); ) {
         System.out.println( p1.getURI() + " is asserted in class " + i.next() );
     }
-    
+
     // list the inferred types
     p1 = inf.getIndividual( NS + "paper1" );
     for (Iterator i = p1.listRDFTypes(); i.hasNext(); ) {
@@ -1148,7 +1143,7 @@ using the following methods:
 
 Method
 Meaning
-listInstances()  
+listInstances()
 listInstances( boolean direct )
 Returns an iterator over those instances that include this class
 among their `rdf:type` values. The `direct` flag can be used to
@@ -1157,7 +1152,7 @@ than indirectly through the class hierarchy. Thus if `p1` has
 `rdf:type :Paper`, it will appear in the iterator returned by
 `listInstances` on `:Artefact`, but not in the iterator returned by
 `listInstances(false)` on `:Artefact`.
-createIndividual()  
+createIndividual()
 createIndividual( String uri )
 Adds a resource to the model, whose asserted `rdf:type` is this
 ontology class. If no URI is given, the individual is an anonymous
@@ -1244,9 +1239,9 @@ empty ontology model as follows:
     OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
     OntClass programme = m.createClass( NS + "Programme" );
     OntClass orgEvent = m.createClass( NS + "OrganizedEvent" );
-    
+
     ObjectProperty hasProgramme = m.createObjectProperty( NS + "hasProgramme" );
-    
+
     hasProgramme.addDomain( orgEvent );
     body.addRange( programme );
     body.addLabel( "has programme", "en" );
@@ -1258,15 +1253,15 @@ deadline, notification deadline and camera-ready deadline:
 
     OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
     m.read( "http://www.eswc2006.org/technologies/ontology" );
-    
+
     DatatypeProperty subDeadline = m.getDatatypeProperty( NS + "hasSubmissionDeadline" );
     DatatypeProperty notifyDeadline = m.getDatatypeProperty( NS + "hasNotificationDeadline" );
     DatatypeProperty cameraDeadline = m.getDatatypeProperty( NS + "hasCameraReadyDeadline" );
-    
+
     DatatypeProperty deadline = m.createDatatypeProperty( NS + "deadline" );
     deadline.addDomain( m.getOntClass( NS + "Call" ) );
     deadline.addRange( XSD.dateTime );
-    
+
     deadline.addSubProperty( subDeadline );
     deadline.addSubProperty( notifyDeadline );
     deadline.addSubProperty( cameraDeadline );
@@ -1481,7 +1476,7 @@ creation methods defined on `OntModel`. For example:
 
     OntClass c = m.createClass( NS + "SomeClass" );
     ObjectProperty p = m.createObjectProperty( NS + "p" );
-    
+
     // null denotes the URI in an anonymous restriction
     AllValuesFromRestriction avf = m.createAllValuesFromRestriction( null, p, c );
 
@@ -1517,10 +1512,10 @@ restriction. Assume m contains a suitable camera ontology:
     OntClass largeFormat = m.getOntClass( camNS + "Large-Format" );
     for (Iterator i = LargeFormat.listSuperClasses( true ); i.hasNext(); ) {
       OntClass c = (OntClass) i.next();
-    
+
       if (c.isRestriction()) {
         Restriction r = c.asRestriction();
-    
+
         if (r.isAllValuesFromRestriction()) {
           AllValuesFromRestriction av = r.asAllValuesFromRestriction();
           System.out.println( "AllValuesFrom class " +
@@ -1609,7 +1604,7 @@ three classes as follows:
     OntClass c0 = m.createClass( NS + "c0" );
     OntClass c1 = m.createClass( NS + "c1" );
     OntClass c2 = m.createClass( NS + "c2" );
-    
+
     RDFList cs = m.createList( new RDFNode[] {c0, c1, c2} );
 
 Alternatively, you can build a list one element at at time:
@@ -1682,20 +1677,20 @@ that `m` is a model into which the ESWC ontology has been read:
     // get the class references
     OntClass place = m.getOntClass( NS + "Place" );
     OntClass indTrack = m.getOntClass( NS + "IndustryTrack" );
-    
+
     // get the property references
     ObjectProperty hasPart = m.getObjectProperty( NS + "hasPart" );
     ObjectProperty hasLoc = m.getObjectProperty( NS + "hasLocation" );
-    
+
     // create the UK instance
     Individual uk = place.createIndividual( NS + "united_kingdom" );
-    
+
     // now the anonymous restrictions
     HasValueRestriction ukLocation =
         m.createHasValueRestriction( null, hasLoc, uk );
     SomeValuesFromRestriction hasIndTrack =
         m.createHasValueRestriction( null, hasPart, indTrack );
-    
+
     // finally create the intersection class
     IntersectionClass ukIndustrialConf =
         m.createIntersectionClass( NS + "UKIndustrialConference",
@@ -1745,14 +1740,14 @@ To list the contents of this enumeration, we could do the
 following:
 
     OntClass place = m.getOntClass( NS + "Place" );
-    
+
     EnumeratedClass ukCountries =
         m.createEnumeratedClass( NS + "UKCountries", null );
     ukCountries.addOneOf( place.createIndividual( NS + "england" ) );
     ukCountries.addOneOf( place.createIndividual( NS + "scotland" ) );
     ukCountries.addOneOf( place.createIndividual( NS + "wales" ) );
     ukCountries.addOneOf( place.createIndividual( NS + "northern_ireland" ) );
-    
+
     for (Iterator i = UKCountries.listOneOf(); i.hasNext(); ) {
       Resource r = (Resource) i.next();
       System.out.println( r.getURI() );
@@ -1826,10 +1821,10 @@ There are two ways to create individuals. Both requires the class
 to which the individual will initially belong:
 
     OntClass c = m.createClass( NS + "SomeClass" );
-    
+
     // first way: use a call on OntModel
     Individual ind0 = m.createIndividual( NS + "ind0", c );
-    
+
     // second way: use a call on OntClass
     Individual ind1 = c.createIndividual( NS + "ind1" );
 
@@ -1903,7 +1898,7 @@ ontology itself:
     String base = ; // the base URI of the ontology
     OntModel m = ;  // the model containing the ontology statements
     Ontology ont = m.getOntology( base );
-    
+
     // now list the ontology imports
     for (Iterator i = ont.listImports(); i.hasNext(); ) {
         System.out.println( "Ontology " + base + " imports " + i.next() );
@@ -1922,7 +1917,7 @@ useful to list the ontology resources in just the base model:
     OntModel m =  // the model, including imports
     OntModel mBase = ModelFactory.createOntologyModel(
                           OntModelSpec.OWL_MEM, m.getBaseModel() );
-    
+
     for (Iterator i = mBase.listOntologies(); i.hasNext(); ) {
         Ontology ont = (Ontology) i.next();
         // m's base model has ont as an import ...
@@ -1942,7 +1937,7 @@ meta-data to a model, for example:
 
     String base = ; // the base URI of the ontology
     OntModel m = ;
-    
+
     Ontology ont = m.createOntology( base );
     ont.addImport( m.createResource( "http://example.com/import1" ) );
     ont.addImport( m.createResource( "http://example.com/import2" ) );
@@ -2049,7 +2044,7 @@ constructing a temporary plain model and adding to it: the contents
 of the ontology model:
 
     OntModel m = 
-    
+
     // snapshot the contents of ont model om
     Model snapshot = ModelFactory.createDefaultModel();
     snapshot.add( om );
@@ -2203,19 +2198,19 @@ regard it as an experimental facility for the time being. We
 welcome feedback. The capabilities in `OntTools` are implemented as
 static methods. Currently available tools are:
 
--   `OntClass getLCA( OntModel m, OntClass u, OntClass v )`  
+-   `OntClass getLCA( OntModel m, OntClass u, OntClass v )`
     Determine the *lowest common ancestor* for classes u and v. This is
     the class that is lowest in the class hierarchy, and which includes
     both u and v among its sub-classes.
--   `Path findShortestPath( Model m, Resource start, RDFNode end, Filter onPath )`  
+-   `Path findShortestPath( Model m, Resource start, RDFNode end, Filter onPath )`
     Breadth-first search, including a cycle check, to locate the
     shortest path from `start` to `end`, in which every triple on the
     path returns `true` to the `onPath` predicate.
--   `List namedHierarchyRoots( OntModel m )`  
+-   `List namedHierarchyRoots( OntModel m )`
     Compute a list containing the uppermost fringe of the class
     hierarchy in the given model which consists only of named classes.
 
-Author: Ian Dickinson  
+Author: Ian Dickinson
 Last modified: $Id: index.html,v 1.32 2009-02-24 15:15:20
 ian\_dickinson Exp $
 
