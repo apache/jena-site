@@ -236,9 +236,10 @@ been added to the capabilities of DAML+OIL, and one or two have
 been removed. For the purposes of this brief overview, however, the
 expressiveness of DAML+OIL is comparable to that of OWL.
 
-**Note:** DAML+OIL is effectively now obsolete. While you can still
-find some DAML ontologies on the web, you should work with OWL or
-RDFS to maximise the longevity of your models.
+**Note:** DAML+OIL is effectively now obsolete. While it is still
+possible to
+find some DAML ontologies on the web, our recommendation is that
+Jena developers stick to OWL and RDFS as ontology languages.
 
 ### Ontology languages and the Jena Ontology API
 
@@ -250,8 +251,8 @@ consistent programming interface for ontology application
 development, independent of which ontology language you are using
 in your programs.
 
-The Jena Ontology API is language-neutral: the Java class names do
-not mention the underlying language. For example, the `OntClass`
+The Jena Ontology API is language-neutral: the Java class names are not
+specific to the underlying language. For example, the `OntClass`
 Java class can represent an OWL class, RDFS class, or DAML class.
 To represent the differences between the various representations,
 each of the ontology languages has a *profile*, which lists the
@@ -269,7 +270,7 @@ version of Jena's
 The base `Model` allows access to the statements in a collection of
 RDF data.
 [`OntModel`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntModel.html)
-extends this by adding support for the kinds of objects expected to
+extends this by adding support for the kinds of constructs expected to
 be in an ontology: classes (in a class hierarchy), properties (in a
 property hierarchy) and individuals.
 
@@ -290,8 +291,9 @@ corresponds to the values of the `subClassOf` property in the RDF
 representation. This point is worth re-emphasising: no information
 is stored in the `OntClass` object itself. When you call the
 OntClass `listSuperClasses()` method, Jena will retrieve the
-information from the underlying RDF statements. Similarly adding a
-subclass to an `OntClass` asserts an additional RDF statement into
+information from the underlying RDF triples. Similarly, adding a
+subclass to an `OntClass` asserts an additional RDF triple, typically
+with predicate `rdfs:subClassOf` into
 the model.
 
 ### Ontologies and reasoning
@@ -306,14 +308,14 @@ a variety of reasoners through the
 [inference API](../inference).
 
 A common feature of Jena
-reasoners is that they create a new RDF model, which appears to
-contain the triples that are derived from reasoning, as well as the
+reasoners is that they create a new RDF model which appears to
+contain the triples that are derived from reasoning as well as the
 triples that were asserted in the base model. This extended model
 nevertheless still conforms to the contract for Jena models.
 It can be used wherever a non-inference model can be used. The ontology
-API exploits this feature: the convenience methods the ontology API
-provides can query an extended inference model in just the same way
-as a plain RDF model. In fact, this is such a common pattern that
+API exploits this feature: the convenience methods provide by the ontology API
+can query an extended inference model in just the same way
+that they can a plain RDF model. In fact, this is such a common pattern that
 we provide simple recipes for constructing ontology models whose
 language, storage model and reasoning engine can all be simply
 specified when an `OntModel` is created. We'll show examples shortly.
@@ -327,13 +329,14 @@ of sets of RDF triples. The asserted statements, which may have
 been read in from an ontology document, are held in the base graph.
 The reasoner, or inference engine, can use the contents of the base
 graph and the semantic rules of the language to show a more
-complete set of statements. This is also presented via a `Graph`
-interface, so the model works only with the outermost interface.
+complete set of base and entailed triples. This is also presented via a `Graph`
+interface, so the `OntModel` works only with the outermost interface.
 This regularity allows us to very easily build ontology models with
 or without a reasoner. It also means that the base graph can be an
 in-memory store, a database-backed persistent store, or some other
-storage structure altogether (e.g. an LDAP directory) again without
-affecting the operation of the ontology model.
+storage structure altogether &ndash; e.g. an LDAP directory &ndash; again without
+affecting the operation of the ontology model (but noting that these
+different approaches may have very different efficiency profiles).
 
 ### RDF-level polymorphism and Java
 
@@ -360,7 +363,7 @@ consistent operation. The problem we then have is that Java does not
 allow us to dynamically change the Java class of the object
 representing this resource. The resource has not changed: it still
 has URI `#DigitalCamera`. But the appropriate Java class Jena might
-choose to model it has changed from `OntClass` to `Restriction`.
+choose to encapsulate it has changed from `OntClass` to `Restriction`.
 Conversely, if we subsequently remove the `rdf:type owl:Restriction`
 from the model, using the `Restriction` Java class is no longer
 appropriate.
@@ -373,7 +376,7 @@ counter-intuitive) construction:
     </owl:Class>
 
 That is, `#DigitalCamera` is both a class *and* a property. While
-this may not be a very useful operation, it illustrates a basic
+this may not be a very useful claim, it illustrates a basic
 point: we cannot rely on a consistent or unique mapping between an
 RDF resource and the appropriate Java abstraction.
 
@@ -393,9 +396,9 @@ identified by the Java class object of the desired facet. For
 example, to get the `OntClass` facet of a resource, we can write:
 
     Resource r = myModel.getResource( myNS + "DigitalCamera" );
-    OntClass cls = (OntClass) r.as( OntClass.class );
+    OntClass cls = r.as( OntClass.class );
 
-This pattern allows us to defer decisions about the correct Java
+This pattern allows our code to defer decisions about the correct Java
 abstraction to use until run-time. The choice can depend on the
 properties of the resource itself. If a given `RDFNode` will not
 support the conversion to a given facet, it will raise a
@@ -446,12 +449,12 @@ of Jena. These defaults are:
     sub-class and sub-property hierarchies.
 
 **Important note**: this means that the *default ontology model* **does**
-include some inferencing, with both consequences for the peformance of the
+include some inferencing, with consequences both for the performance of the
 model, and for the triples which appear in the model.
 
 In many applications, such as driving a GUI, RDFS inference is too
-strong (for example, every class is inferred to be an immediate sub-class of
-`owl:Thing`). In other applications, stronger reasoning is needed.
+strong. For example, every class is inferred to be an immediate sub-class of
+`owl:Thing`. In other applications, stronger reasoning is needed.
 In general, to create an `OntModel` with a particular reasoner or
 language profile, you should pass a model specification to the
 `createOntologyModel` call. For example, an OWL model that performs
@@ -474,7 +477,7 @@ OWL Lite | `http://www.w3.org/TR/owl-features/#term_OWLLite`
 
 These URI's are used to look-up the language profile from the
 [`ProfileRegistry`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/ProfileRegistry.html).
-The profile registry contains public constant declarationss so
+The profile registry contains public constant declarations so
 that you do not have to remember these URI's. Please note that the
 URI's denoting OWL Lite and OWL DL are not officially sanctioned by
 the OWL standard.
@@ -487,7 +490,7 @@ either of:
 
 Beyond these basic choices, the complexities of configuring an
 ontology model are wrapped up in a recipe object called
-`<a href="/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntModelSpec.html">OntModelSpec</a>`.
+[`OntModelSpec`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntModelSpec.html).
 This specification allows complete control over the configuration
 choices for the ontology model, including the language profile in
 use, the reasoner, and the means of handling compound documents. A
@@ -517,17 +520,14 @@ RDFS\_MEM | RDFS | in-memory | none
 RDFS\_MEM\_TRANS\_INF | RDFS | in-memory | transitive class-hierarchy inference
 RDFS\_MEM\_RDFS\_INF | RDFS | in-memory | rule reasoner with RDFS-level entailment-rules
 
-*** >>>>>>>>>>> TODO watermark ***
-
-
 For details of reasoner capabilities, please see the
-[inference documentation](../inference/index.html) and the Javadoc
+[inference documentation](../inference) and the Javadoc
 for
 [OntModelSpec](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntModelSpec.html).
 See also further discussion [below](#inferenceIntro).
 
 **Note:** it is primarily the choice of reasoner, rather than the
-choice of language profile, that determines which entailments are
+choice of language profile, which determines which entailments are
 seen by the ontology model. However, using an OWL reasoner with
 DAML source data will result in few additional entailments being
 seen by the ontology model.
@@ -543,7 +543,7 @@ for example:
 
 To create a custom model specification, you can create a new one
 from its constructor, and call the various setter methods to set
-the appropriate values. More often, you want a variation on an
+the appropriate values. More often, we want a variation on an
 existing recipe. In this case, you copy an existing specification
 and then update the copy as necessary:
 
@@ -561,20 +561,21 @@ ontologies by automatically handling the imports statements in
 ontology models.
 
 The key idea is that the base model of an ontology model is
-actually a collection of models, one per imported model. That means
+actually a collection of models, one per imported model. This means
 we have to modify figure 2 a bit. Figure 4 shows how the ontology
 model builds a collection of import models:
 
-![Diagram of compound document for imports](../images/Ont-model-layers-import.png)
-
+![Diagram of compound document for imports](./Ont-model-layers-import.png "ontology model compound document structure for imports")
+<br />
 Figure 4: ontology model compound document structure for imports
 
-I will use the term *document* to describe an ontology serialized
+We will use the term *document* to describe an ontology serialized
 in some transport syntax, such as RDF/XML or N3. This terminology
 isn't used by the OWL or RDFS standards, but it is a convenient way
 to refer to the written artifacts. However, from a broad view of
 the interlinked semantic web, a document view imposes artificial
-boundaries between regions of the global web of data.
+boundaries between regions of the global web of data and isn't necessarily
+a useful way of thinking about ontologies.
 
 We will load an ontology document into an ontology model in the
 same way as a normal Jena model, using the `read` method. There are
@@ -604,38 +605,41 @@ contains meta-data about that document itself. For example:
 
     <owl:Ontology rdf:about="">
       <dc:creator rdf:value="Ian Dickinson" />
-      <owl:imports rdf:resource="http://jena.hpl.hp.com/example-ont" />
+      <owl:imports rdf:resource="http://openjena.org/examples/example-ont" />
     </owl:Ontology>
 
-The construct `rdf:about=""` is a relative URI that will resolve to
+The construct `rdf:about=""` is a *relative URI*. It will resolve to
 the document's base URI: in other words it's a shorthand way of
 referring to the document itself. The `owl:imports` line states
 that this ontology is constructed using classes, properties and
-individuals from the referenced ontology. When `OntModel` reads
+individuals from the referenced ontology. When an `OntModel` reads
 this document, it will notice the `owl:imports` line and attempt to
 load the imported ontology into a sub-model of the ontology model
-being built. The definitions from both the base ontology and all of
+being constructed. The definitions from both the base ontology and all of
 the imports will be visible to the reasoner.
 
 Each imported ontology document is held in a separate graph
-structure. This is important: I want to keep the original source
-ontology separate from the imports. When I write the model out
+structure. This is important: we want to keep the original source
+ontology separate from the imports. When we write the model out
 again, normally only the base model is written (the alternative is
-that all you see is a confusing union of everything). And when I
-update the model, only the base model changes.
+that all you see is a confusing union of everything). And when we
+update the model, only the base model changes. To get the base
+model or base graph from an `OntModel`, use:
 
-Imports are processed recursively, so if my base document imports
-ontology A, and A imports B, I will end up with the structure shown
+    Model base = myOntModel.getBaseModel();
+
+Imports are processed recursively, so if our base document imports
+ontology A, and A imports B, we will end up with the structure shown
 in Figure 4. Note that the imports have been flattened out. A cycle
 check is used to prevent the document handler getting stuck if, for
 example, A imports B which imports A!
 
 ### The ontology document manager
 
-Each ontology model has an associated *document manager* that
-assists with the processing and handling of documents-related
+Each ontology model has an associated *document manager* which
+assists with the processing and handling of ontology documents and related
 concerns. For convenience, there is one global document manager
-that is used by default by ontology models. You can get a reference
+which is used by default by ontology models. You can get a reference
 to this shared instance through `OntDocumentManager.getInstance()`.
 In many cases, it will be sufficient to simply change the settings
 on the global document manager to suit your application's needs.
@@ -646,8 +650,8 @@ specification object (see above), and set the document manager. For
 example:
 
     OntDocumentManager mgr = new OntDocumentManager();
-    // set the mgr's properties now
-      some code 
+    // set mgr's properties now
+    ... some code ...
     // now use it
     OntModelSpec s = new OntModelSpec( OntModelSpec.RDFS_MEM );
     s.setDocumentManager( mgr );
@@ -665,7 +669,7 @@ options, there are two ways in which you can customise it to your
 application requirements. Firstly, you can set the individual
 parameters of the document manager by Java code. Alternatively,
 when a given document manager is created it can load values for the
-various parameters from a policy file, expressed in RDF. The
+various parameters from a *policy file*, expressed in RDF. The
 document manager has a list of URL's which it will search for a
 policy document. It will stop at the first entry on the list that
 resolves to a retrievable document. The default search path for the
@@ -674,7 +678,7 @@ find the default policy, which can serve as a template for defining
 your own policies, in the `etc/` directory under the Jena download
 directory.
 
-You can set the general properties of the document manager in the
+We can set the general properties of the document manager in the
 policy as follows:
 
     <DocumentManagerPolicy>
@@ -685,7 +689,7 @@ policy as follows:
 
 You can find the simple schema that declares the various properties
 that you can use in such an ontology document policy in the
-vocabularies directory of the Jena download. It's called
+`vocabularies` directory of the Jena download. It's called
 `ont-manager.rdf`. To change the search path that the document
 manager will use to initialise itself, you can either pass the new
 search path as a string when creating a new document manager
@@ -694,42 +698,42 @@ object, or call the method `setMetadataSearchPath()`.
 ### The ModelMaker: creating storage on demand
 
 In order for the document manager to build the union of the
-imported documents (which we may refer to as the
+imported documents (which we sometimes refer to as the
 *imports closure*), there must be some means of creating new graphs
 to store the imported ontologies. Loading a new import means that
-there needs to be a new graph added Jena defines a *model maker* as
-a simple interface that allows different kinds of model storage (in
-memory, file-backed, in a persistent database, etc.) to be created
+a new graph needs to be added. Jena defines a *model maker* as
+a simple interface that allows different kinds of model storage
+(in-memory, file-backed, in a persistent database, etc.) to be created
 on demand. For the database case, this may include passing the
 database user-name and password and other connection parameters.
 New model makers can be created with the
-`<a href="../javadoc/com/hp/hpl/jena/rdf/model/ModelFactory.html">ModelFactory</a>`.
+[`ModelFactory`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/ModelFactory.html).
 
 There are two cases in which we may want to create storage for
 models on-demand. The first is when creating the `OntModel` for the
-first time, some variants of `createOntologyModel` will allocate
+first time. Some variants of `createOntologyModel` will allocate
 space for the *base model* (instead of, for example, being handed a
 base model to use as one of the method arguments). The second case
 when storage must be allocated is when adding an imported document
 to the union of imports. These cases often require different
-policies, so the `OntModelSpec` contains two model maker
+policies, so the `OntModelSpec` contains *two* model maker
 parameters: the *base model maker* and *imports model maker*,
 available via `getBaseModelMaker()` and `getImportsModelMaker()`
 methods respectively.
 
-The default specifications in OntModelSpec that begin MEM\_ use an
+The default specifications in OntModelSpec which begin MEM\_ use an
 in-memory model maker for the both the base model and the imported
 documents.
 
 **Implementation note**: internally to Jena, we use `Graph` as a
-primary data structure. However, your code will almost always refer
+primary data structure. However, application code will almost always refer
 to models, not graphs. What's happening is that a `Model` is a
 wrapper around the `Graph`, which balances a rich, convenient
 programming interface (`Model`) with a simple, manageable internal
 data structure (`Graph`). Hence some potential confusion in that
 Figure 4, above, refers to a structure containing graphs, but we
 use a
-`<a       href="../javadoc/com/hp/hpl/jena/rdf/model/ModelMaker.html"     >ModelMaker</a>`
+[`ModelMaker`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/ModelMaker.html)
 to generate new stores. The document manager extracts the
 appropriate graph from the containing model. Except in cases where
 you are extending Jena's internal structures, you should think of
@@ -737,7 +741,7 @@ you are extending Jena's internal structures, you should think of
 
 ### Controlling imports processing
 
-Normally, loading imports during the `read()` call automatic. To
+By default, loading imports during the `read()` call is automatic. To
 `read()` an ontology without building the imports closure, call the
 method `setProcessImports( false )` on the document manager object
 before calling `read()`. Alternatively, you can set the
@@ -746,6 +750,8 @@ selective, and ignore only certain URI's when loading the imported
 documents. To selectively skip certain named imports, call the
 method `addIgnoreImport( String uri )` on the document manager
 object, or set the `ignoreImport` property in the policy.
+
+>>>> TODO watermark >>>>>>>>>>>
 
 ### Managing file references
 
@@ -849,14 +855,14 @@ by calling `clearCache()`.
 
 All of the classes in the ontology API that represent ontology
 values have
-`<a href="../javadoc/com/hp/hpl/jena/ontology/OntResource.html">OntResource</a>`
+[`OntResource`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntResource.html)
 as a common super-class. This makes `OntResource` a good place to
 put shared functionality for all such classes, and makes a handy
 common return value for general methods. The Java interface
 `OntResource` extends Jena's RDF
-`<a href="../javadoc/com/hp/hpl/jena/rdf/model/Resource.html">Resource</a>`
+[`Resource`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/Resource.html)
 interface, so any general method that accepts a resource or an
-`<a href="../javadoc/com/hp/hpl/jena/rdf/model/RDFNode.html">RDFNode</a>`
+[`RDFNode`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/RDFNode.html)
 will also accept an `OntResource`, and consequently, any other
 ontology value.
 
@@ -1142,11 +1148,11 @@ properties represented in an ontology model.
 
 A property in an ontology model is an extension of the core Jena
 API class
-`<a href="../javadoc/com/hp/hpl/jena/rdf/model/Property.html">Property</a>`,
+[`Property`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/Property.html)
 and allows access to the additional information that can be
 asserted about properties in an ontology language. The common API
 super-class for representing ontology properties in Java is
-`<a href="../javadoc/com/hp/hpl/jena/ontology/OntProperty.html">OntProperty</a>`.
+[`OntProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntProperty.html).
 Again, using the pattern of add, set, get, list, has, and remove
 methods, we can access the following attributes of an
 `OntProperty`:
@@ -1233,10 +1239,10 @@ entailments, and so is useful when annotating ontology documents,
 for example.
 
 In Jena, the Java interfaces
-`<a href="../javadoc/com/hp/hpl/jena/ontology/ObjectProperty.html">ObjectProperty</a>`,
-`<a href="../javadoc/com/hp/hpl/jena/ontology/DatatypeProperty.html">DatatypeProperty</a>`
+[`ObjectProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/ObjectProperty.html),
+[`DatatypeProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/DatatypeProperty.html)
 and
-`<a href="../javadoc/com/hp/hpl/jena/ontology/AnnotationProperty.html">AnnotationProperty</a>`
+[`AnnotationProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/AnnotationProperty.html)
 are sub-types of `OntProperty`. However, they do not have any
 behaviours (methods) particular to themselves. Their existence
 allows the more complex sub-types of ObjectProperty &ndash; transitive
@@ -1257,7 +1263,7 @@ equivalent to stating that the property has a maximum cardinality
 of one.
 
 Being a functional property is represented through the
-`<a href="../javadoc/com/hp/hpl/jena/ontology/FunctionalProperty.html">FunctionalProperty</a>`
+[`FunctionalProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/FunctionalProperty.html)
 facet of an ontology property object. If a property is declared
 functional (test using the `isFunctional()` method), then the
 method `asFunctionalProperty()` conveniently returns the functional
@@ -1270,13 +1276,13 @@ parameter to the `createObjectProperty()` method on `OntModel`.
 
 There are several additional sub-types of ObjectProperty that
 represent additional capabilities of ontology properties. A
-`<a href="../javadoc/com/hp/hpl/jena/ontology/TransitiveProperty.html">TransitiveProperty</a>`
+[`TransitiveProperty`[(/jena/documentation/javadoc/com/hp/hpl/jena/ontology/TransitiveProperty.html)
 means that if p is transitive, and we know `:a p :b` and also
 `b p :c`, we can infer that `:a p :c`. A
-`<a href="../javadoc/com/hp/hpl/jena/ontology/SymmetricProperty.html">SymmetricProperty</a>`
+[`SymmetricProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/SymmetricProperty.html)
 means that if p is symmetric, and we know `:a p :b`, we can infer
 `:b p :a`. An
-`<a href="../javadoc/com/hp/hpl/jena/ontology/InverseFunctionalProperty.html">InverseFunctionalProperty</a>`
+[`InverseFunctionalProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/InverseFunctionalProperty.html)
 means that for any given range element, the domain value is unique.
 (Note that in DAML+OIL, the terminology for inverse functional
 property is *unambiguous property*).
@@ -1643,7 +1649,7 @@ that `m` is a model into which the ESWC ontology has been read:
 Given the similarity between union and intersection class
 expressions, rather than separate methods to set the components of
 the expression, Jena defines a common super-class
-`<a href="../javadoc/com/hp/hpl/jena/ontology/BooleanClassDescription.html">BooleanClassDescription</a>`.
+[`BooleanClassDescription`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/BooleanClassDescription.html).
 This class provides access to the *operands* to the expression. In
 the above example, the operands are the two restrictions. The
 `BooleanClassDescription` class allows you to set the operands
