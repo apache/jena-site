@@ -751,34 +751,33 @@ documents. To selectively skip certain named imports, call the
 method `addIgnoreImport( String uri )` on the document manager
 object, or set the `ignoreImport` property in the policy.
 
->>>> TODO watermark >>>>>>>>>>>
-
 ### Managing file references
 
 An advantage of working with ontologies is that we can reuse work
 done by other ontologists, by importing their published ontologies
-into our own. Sometimes, however, this means that there is an
-Internet firewall between the ontology-based application and the
-source of an imported ontology. Even if it's possible to traverse
-the firewall through an HTTP proxy, retrieving files from an HTTP
-connection may impose unacceptable delays when starting an
-application. In the worst case, we may find that ontology on which
-our application depends is temporarily or permanently unavailable
-from the original published URL. To alleviate these commonly
-experienced problems, you can use the ontology document manager to
-set up a a local indirection, so that an attempt to import a
+into our own. The `OntModel` can load such referenced ontologies
+automatically from their published URL's. This can mean that an
+application suffers a delay on startup. Worse, it may require extra
+work to cope with intervening firewalls or web proxies. Worse still,
+connectivity may be intermittent: we do not want our application to
+fail just because it temporarily does not have Internet access, or
+because a previously published ontology has been moved.
+To alleviate these commonly
+experienced problems, we can use Jena's
+[`FileManager`](/jena/documentation/javadoc/com/hp/hpl/jena/util/FileManager.html) to
+manage local indirections, so that an attempt to import a
 document from a given published URL means that a local copy of the
-document is retrieved instead. This may be a file copy, or simply a
+document is loaded instead. This may be a file on the local disk, or simply a
 pointer to a local mirror web site.
 
-To specify this local redirection in the policy file, use the
-following declarations:
+While the `FileManager` can be configure directly, we can also specify redirections
+declaratively in the document manager policy file:
 
     <OntologySpec>
-      <publicURI rdf:resource=" the public URI to map from"    />
-      <altURL rdf:resource=" the local URL to map to " />
+      <publicURI rdf:resource="... the public URI to map from..."    />
+      <altURL rdf:resource="... the local URL to map to ..." />
       <!-- optional ontology language term -->
-      <language rdf:resource=" encoding used " />
+      <language rdf:resource="... encoding used ..." />
       <!-- optional prefix to associate with the public URL -->
       <prefix rdf:datatype="&xsd;string">a prefix</prefix>
     </OntologySpec>
@@ -788,52 +787,48 @@ For example:
     <OntologySpec>
       <!-- local version of the RDFS vocabulary -->
       <publicURI rdf:resource="http://www.w3.org/2000/01/rdf-schema"    />
-      <altURL rdf:resource="file:vocabularies/rdf-schema.rdf" />
+      <altURL rdf:resource="file:src/main/resources/rdf-schema.rdf" />
     </OntologySpec>
 
 This specifies that an attempt to load the RDFS vocabulary from
 `http://www.w3.org/2000/01/rdf-schema` will transparently cause
-`file:vocabularies/rdf-schema.rdf` to be fetched instead. You can
+`file:src/main/resources/rdf-schema.rdf` to be fetched instead. You can
 specify any number of such re-directions in the policy file, or you
 can add them to the document manager object directly by calling the
 various setter methods (see the Javadoc for details). As a
 side-effect, this mechanism also means that ontologies may be named
-with any legal URI (not necessarily resolvable) - so long as the
+with any legal URI (not necessarily resolvable) &ndash; so long as the
 `altURL` is itself resolvable.
 
-Note that the `OntDocumentManager` is an application of Jena's
-[File Manager](../how-to/filemanager.html). See the notes on
-FileManager for details of additional options.
+See the notes on
+[`FileManager`](/jena/tools/filemanager.html) for details of additional options.
 
-In the following example, I programmatically declare that the ESWC
-ontology is replicated locally on disk, and then I load it using
-the public URL. Assume that the constant `JENA` has been
+In the following example, we use the `DocumentManager` API to declare that the ESWC
+ontology is replicated locally on disk. We then load it using
+the normal URL. Assume that the constant `JENA` has been
 initialised to the directory in which Jena was installed.
 
     OntModel m = ModelFactory.createOntologyModel();
-      OntDocumentManager dm = m.getDocumentManager();
-      dm.addAltEntry( "http://www.eswc2006.org/technologies/ontology",
-                      "file:" + JENA + "src-examples/data/eswc-2006-09-21.rdf"    );
-      m.read( "http://www.eswc2006.org/technologies/ontology" );
+    OntDocumentManager dm = m.getDocumentManager();
+    dm.addAltEntry( "http://www.eswc2006.org/technologies/ontology",
+                    "file:" + JENA + "src/examples/resources/eswc-2006-09-21.rdf"    );
+    m.read( "http://www.eswc2006.org/technologies/ontology" );
 
 ### Specifying prefixes
 
-A model keeps a table of URI prefixes that can be used to render
-URI's in the shortened prefix:name form, which is useful in
+A model keeps a table of URI prefixes which can be used to present
+URI's in the shortened `prefix:name` form. This is useful in
 displaying URI's in a readable way in user interfaces, and is
 essential in producing legal XML names that denote arbitrary URI's.
 The ontology model's table of prefixes can be initialized from a
 table kept by the document manager, which contains the standard
 prefixes plus any that are declared by in the policy file (or added
-to subsequently by method calls). To prevent the model's prefix
-table from being initialized in this way, use the property
-`useDeclaredNsPrefixes` in the policy file (with value `false`), or
-call the method `setUseDeclaredPrefixes` on the ontology object.
+to subsequently by method calls).
 
 ### Caching of imported models
 
 You can use the document manager to assist with loading ontology
-documents through its cache. Suppose two ontologies, A and B both
+documents through its cache. Suppose two ontologies, A and B, both
 import ontology C. We would like not to have to read C twice when
 loading A and then B. The document manager supports this use case
 by optionally caching C's model, indexed by URI. When A tries to
@@ -869,48 +864,28 @@ ontology value.
 Some of the common attributes of ontology resources that are
 expressed through methods on OntResource are shown below:
 
-Attribute
-Meaning
-versionInfo
-A string documenting the version or history of this resource
-comment
-A general comment associated with this value
-label
-A human-readable label
-seeAlso
-Another web location to consult for more information about this
-resource
-isDefinedBy
-A specialisation of seeAlso that is intended to supply a definition
-of this resource
-sameAs
-Denotes another resource that this resource is equivalent to
-differentFrom
-Denotes another resource that is distinct from this resource (by
-definition)
+Attribute | Meaning
+--------- | -------
+versionInfo | A string documenting the version or history of this resource
+comment | A general comment associated with this value
+label | A human-readable label
+seeAlso | Another web location to consult for more information about this resource
+isDefinedBy | A specialisation of seeAlso that is intended to supply a definition of this resource
+sameAs | Denotes another resource that this resource is equivalent to
+differentFrom | Denotes another resource that is distinct from this resource (by definition)
+
 For each of these properties, there is a standard pattern of
 available methods:
 
-Method
-Effect
-add<property\>
-Add an additional value for the given property
-set<property\>
-Remove any existing values for the property, then add the given
-value
-list<property\>
-Return an iterator ranging over the values of the property
-get<property\>
-Return the value for the given property, if the resource has one.
-If not, return null. If it has more than one value, an arbitrary
-selection is made.
-has<property\>
-Return true if there is at least one value for the given property.
-Depending on the name of the property, this is sometimes
-is<property\>
-remove<property\>
-Removes a given value from the values of the property on this
-resource. Has no effect if the resource does not have that value.
+Method | Effect
+------ | ------
+add<property\> | Add an additional value for the given property
+set<property\> | Remove any existing values for the property, then add the given value
+list<property\> | Return an iterator ranging over the values of the property
+get<property\> | Return the value for the given property, if the resource has one. If not, return null. If it has more than one value, an arbitrary selection is made.
+has<property\> | Return true if there is at least one value for the given property. Depending on the name of the property, this is sometimes is<property\>
+remove<property\> | Removes a given value from the values of the property on this resource. Has no effect if the resource does not have that value.
+
 For example: `addSameAs( Resource r )`, or
 `isSameAs( Resource r )`. For full details of the individual
 methods, please consult the Javadoc.
@@ -922,8 +897,8 @@ the resource from the ontology altogether, you can call `remove()`.
 The effect of this is to remove every statement that mentions this
 resource as a subject or object of a statement.
 
-To get or set the value of a given property, use
-`getPropertyValue( Property p )` or
+To get the value of a given property, use
+`getPropertyValue( Property p )`. To set it,
 `setPropertyValue( Property p, RDFNode value )`. Continuing the
 naming pattern, the values of a named property can be listed (with
 `listPropertyValues`), removed (with `removeProperty`) or added
@@ -931,18 +906,18 @@ naming pattern, the values of a named property can be listed (with
 
 Finally, `OntResource` provides methods for listing, getting and
 setting the `rdf:type` of a resource, which denotes a class to
-which the resource belongs (remember that in RDF and OWL, a
+which the resource belongs (noting that, in RDF and OWL, a
 resource can belong to many classes at once). The `rdf:type`
 property is one for which many entailment rules are defined in the
 semantic models of the various ontology languages. Therefore, the
 values that `listRDFTypes()` returns is more than usually dependent
-on the actual reasoner bound to the ontology model. For example,
-suppose I have class A, class B which is a subclass of A, and
-resource x whose asserted `rdf:type` is B. With no reasoner,
-listing x's RDF types will return only B. If the reasoner is able
+on the reasoner bound to the ontology model. For example,
+suppose we have class `A`, class `B` which is a subclass of `A`, and
+resource `x` whose asserted `rdf:type` is `B`. With no reasoner,
+listing `x`'s RDF types will return only `B`. If the reasoner is able
 to calculate the closure of the subclass hierarchy (and most can),
-X's RDF types would also include A. A complete OWL reasoner would
-also infer that x has `rdf:type` `owl:Thing` and `rdf:Resource`.
+`x`'s RDF types would also include `A`. A complete OWL reasoner would
+also infer that `x` has `rdf:type` `owl:Thing` and `rdf:Resource`.
 
 For some tasks, getting a complete list of the RDF types of a
 resource is exactly what is needed. For other tasks, this is not
@@ -969,13 +944,13 @@ example:
     Individual p1 = base.createIndividual( NS + "paper1", paper );
 
     // list the asserted types
-    for (Iterator i = p1.listRDFTypes(); i.hasNext(); ) {
+    for (Iterator<Resource> i = p1.listRDFTypes(); i.hasNext(); ) {
         System.out.println( p1.getURI() + " is asserted in class " + i.next() );
     }
 
     // list the inferred types
     p1 = inf.getIndividual( NS + "paper1" );
-    for (Iterator i = p1.listRDFTypes(); i.hasNext(); ) {
+    for (Iterator<Resource> i = p1.listRDFTypes(); i.hasNext(); ) {
         System.out.println( p1.getURI() + " is inferred to be in class " + i.next() );
     }
 
@@ -984,20 +959,19 @@ something between the complete list of types and the base list of
 only the asserted values. Consider the class hierarchy in figure 5
 (i):
 
-![Diagram showing direct relationships](../images/Direct-hierarchy.png)
-
+![Diagram showing direct relationships](./direct-hierarchy.png "asserted and direct relationships")
 Figure 5: asserted and inferred relationships
 
 Figure 5 (i) shows a base model, containing a class hierarchy and
-an instance x. Figure 5 (ii) shows the full set of relationships
+an instance `x`. Figure 5 (ii) shows the full set of relationships
 that might be inferred from this base model. In Figure 5 (iii), we
 see only the *direct* or maximally specific relationships. For
-example, in 5 (iii) x does not have `rdf:type A`, since this is an
-relationship that is covered by the facts that x has `rdf:type D`,
-and D is a subclass of A. Notice also that the `rdf:type B` link is
+example, in 5 (iii) `x` does not have `rdf:type A`, since this is an
+relationship that is covered by the fact that `x` has `rdf:type D`,
+and `D` is a subclass of `A`. Notice also that the `rdf:type B` link is
 also removed from the direct graph, for a similar reason. Thus the
 direct graph hides relationships from both the inferred and
-asserted graphs. When displaying instance x in a GUI, particularly
+asserted graphs. When displaying instance `x` in a user interface, particularly
 in a tree view of some kind, the direct graph is often the most
 useful as it contains the useful information in the most compact
 form.
@@ -1015,15 +989,16 @@ returned.
 Classes are the basic building blocks of an ontology. A simple
 class is represented in Jena by an
 [OntClass](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntClass.html)
-object. As I [mentioned above](#rdfPolymorphism), an ontology class
+object. As [mentioned above](#rdfPolymorphism), an ontology class
 is a facet of an RDF resource. One way, therefore, to get an
-ontology class is to convert an RDF resource. Assume that `m` is a
-suitable defined `OntModel`, into which the ESWC ontology has
+ontology class is to convert a plain RDF resource into
+its class facet. Assume that `m` is a
+suitably defined `OntModel`, into which the ESWC ontology has
 already been read, and that `NS` is a variable denoting the
 ontology namespace:
 
     Resource r = m.getResource( NS + "Paper" );
-    OntClass paper = (OntClass) r.as( OntClass.class );
+    OntClass paper = r.as( OntClass.class );
 
 This can be shortened by calling `getOntClass()` on the ontology
 model:
@@ -1049,72 +1024,46 @@ They are less useful in RDFS.
 Once you have the ontology class object, you can begin processing
 it through the methods defined on `OntClass`. The attributes of a
 class are handled in a similar way to the attributes of
-OntResource, above, with a collection of methods to set, add, get,
+`OntResource`, above, with a collection of methods to set, add, get,
 test, list and remove values. Properties of classes that are
 handled in this way are:
 
-Attribute
-Meaning
-subClass
-A subclass of this class, i.e. those classes that are declared
-`subClassOf` this class.
-superClass
-A super-class of this class, i.e. a class that this class is a
-`subClassOf`.
-equivalentClass
-A class that represents the same concept as this class. This is not
-just having the same class extension: the class 'British Prime
-Minister in 2003' contains the same individual as the class 'the
-husband of Cherie Blair', but they represent different concepts.
-disjointWith
-Denotes a class with which this class has no instances in common.
+Attribute | Meaning
+--------- | -------
+subClass | A subclass of this class, i.e. those classes that are declared `subClassOf` this class.
+superClass | A super-class of this class, i.e. a class that this class is a `subClassOf`.
+equivalentClass | A class that represents the same concept as this class. This is not just having the same class extension: the class 'British Prime Minister in 2003' contains the same individual as the class 'the husband of Cherie Blair', but they represent different concepts.
+disjointWith | Denotes a class with which this class has no instances in common.
+
 Thus, in our example ontology, we can print a list the subclasses
-of an Artefact as follows:
+of an `Artefact` as follows:
 
     OntClass artefact = m.getOntClass( NS + "Artefact" );
-    for (Iterator i = artefact.listSubClasses(); i.hasNext(); ) {
-      OntClass c = (OntClass) i.next();
+    for (Iterator<OntClass> i = artefact.listSubClasses(); i.hasNext(); ) {
+      OntClass c = i.next();
       System.out.println( c.getURI() );
     }
 
 Note that, under RDFS and OWL semantics, each class is a sub-class
 of itself (in other words, `rdfs:subClassOf` is reflexive). While
-this is true, under the semantics, Jena users have reported finding
-it unhelpful. Therefore, the `listSubClasses` and
-`listSuperClasses` methods remove the reflexive from the list of
+this is true in the semantics, Jena users have reported finding
+it inconvenient. Therefore, the `listSubClasses` and
+`listSuperClasses` convenience methods remove the reflexive from the list of
 results returned by the iterator. However, if you use the plain
 `Model` API to query for `rdfs:subClassOf` triples, assuming that a
-reasoner is in use, the reflexive triple will appear in the
-deductions model.
+reasoner is in use, the reflexive triple will appear among the deduced
+triples.
 
 Given an `OntClass` object, you can create or remove members of the
 class extension &ndash; individuals that are instances of the class &ndash;
 using the following methods:
 
-Method
-Meaning
-listInstances()
-listInstances( boolean direct )
-Returns an iterator over those instances that include this class
-among their `rdf:type` values. The `direct` flag can be used to
-select individuals that are direct members of the class, rather
-than indirectly through the class hierarchy. Thus if `p1` has
-`rdf:type :Paper`, it will appear in the iterator returned by
-`listInstances` on `:Artefact`, but not in the iterator returned by
-`listInstances(false)` on `:Artefact`.
-createIndividual()
-createIndividual( String uri )
-Adds a resource to the model, whose asserted `rdf:type` is this
-ontology class. If no URI is given, the individual is an anonymous
-resource.
-dropIndividual( Resource individual )
-Removes the association between the given individual and this
-ontology class. Effectively, this removes the `rdf:type` link
-between this class and the resource. Note that this is not the same
-as removing the individual altogether, unless the only thing that
-is known about the resource is that it is a member of the class. To
-delete an `OntResource`, including classes and individuals, use the
-`remove()` method.
+Method | Meaning
+------ | -------
+listInstances()<br />listInstances(boolean&nbsp;direct) | Returns an iterator over those instances that include this class among their `rdf:type` values. The `direct` flag can be used to select individuals that are direct members of the class, rather than indirectly through the class hierarchy. Thus if `p1` has `rdf:type :Paper`, it will appear in the iterator returned by `listInstances` on `:Artefact`, but not in the iterator returned by `listInstances(false)` on `:Artefact`.
+createIndividual()<br />createIndividual(String&nbsp;uri) | Adds a resource to the model, whose asserted `rdf:type` is this ontology class. If no URI is given, the individual is an anonymous resource.
+dropIndividual(Resource&nbsp;individual) | Removes the association between the given individual and this ontology class. Effectively, this removes the `rdf:type` link between this class and the resource. Note that this is not the same as removing the individual altogether, unless the only thing that is known about the resource is that it is a member of the class. To delete an `OntResource`, including classes and individuals, use the `remove()` method.
+
 To test whether a class is a root of the class hierarchy in this
 model (i.e. it has no known super-classes), call
 `isHierarchyRoot()`.
@@ -1131,14 +1080,14 @@ this class among their domain classes. The method
 `listDeclaredProperties()` attempts to identify the properties that
 are intended to apply to instances of this class. Using
 `listDeclaredProperties` is explained in detail in the
-[RDF frames how-to](../how-to/rdf-frames.html).
+[RDF frames how-to](../how-to/rdf-frames.html TODO).
 
 ## Ontology properties
 
 In an ontology, a *property* denotes the name of a relationship
 between resources, or between a resource and a data value. It
 corresponds to a predicate in logic representations. One
-interesting aspect of languages like RDFS and OWL is that
+interesting aspect of RDFS and OWL is that
 properties are not defined as aspects of some enclosing class, but
 are first-class objects in their own right. This means that
 ontologies and ontology-applications can store, retrieve and make
@@ -1157,33 +1106,17 @@ Again, using the pattern of add, set, get, list, has, and remove
 methods, we can access the following attributes of an
 `OntProperty`:
 
-Attribute
-Meaning
-subProperty
-A sub property of this property; i.e. a property which is declared
-to be a `subPropertyOf` this property. If p is a sub property of q,
-and we know that `A p B` is true, we can infer that `A q B` is also
-true.
-superProperty
-A super property of this property, i.e. a property that this
-property is a `subPropertyOf`
-domain
-Denotes the class or classes that form the domain of this property.
-Multiple domain values are interpreted as a conjunction. The domain
-denotes the class of value the property maps from.
-range
-Denotes the class or classes that form the range of this property.
-Multiple range values are interpreted as a conjunction. The range
-denotes the class of values the property maps to.
-equivalentProperty
-Denotes a property that is the same as this property.
-inverse
-Denotes a property that is the inverse of this property. Thus if q
-is the inverse of p, and we know that `A q B`, then we can infer
-that `B p A`.
+Attribute | Meaning
+subProperty | A sub property of this property; i.e. a property which is declared to be a `subPropertyOf` this property. If p is a sub property of q, and we know that `A p B` is true, we can infer that `A q B` is also true.
+superProperty | A super property of this property, i.e. a property that this property is a `subPropertyOf`
+domain | Denotes the class or classes that form the domain of this property. Multiple domain values are interpreted as a conjunction. The domain denotes the class of value the property maps from.
+range | Denotes the class or classes that form the range of this property. Multiple range values are interpreted as a conjunction. The range denotes the class of values the property maps to.
+equivalentProperty | Denotes a property that is the same as this property.
+inverse | Denotes a property that is the inverse of this property. Thus if q is the inverse of p, and we know that `A q B`, then we can infer that `B p A`.
+
 In the example ontology, the property `hasProgramme` has a domain
-of `OrganizedEvent`, a range of `Programme` and the human-readable
-label "has programme". I can reconstruct this definition in an
+of `OrganizedEvent`, a range of `Programme` and the human-readable label "has programme".
+We can reconstruct this definition in an
 empty ontology model as follows:
 
     OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
@@ -1196,10 +1129,10 @@ empty ontology model as follows:
     body.addRange( programme );
     body.addLabel( "has programme", "en" );
 
-As a further example, I can alternatively add information to an
-existing ontology. Let's add a super-property `hasDeadline` to
+As a further example, we can alternatively add information to an
+existing ontology. To add a super-property `hasDeadline`, to
 generalise the separate properties denoting the submission
-deadline, notification deadline and camera-ready deadline:
+deadline, notification deadline and camera-ready deadline, do:
 
     OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
     m.read( "http://www.eswc2006.org/technologies/ontology" );
@@ -1216,7 +1149,7 @@ deadline, notification deadline and camera-ready deadline:
     deadline.addSubProperty( notifyDeadline );
     deadline.addSubProperty( cameraDeadline );
 
-Note that, although I called the `addSubProperty` method on the
+Note that, although we called the `addSubProperty` method on the
 object representing the new super-property, the serialized form of
 the ontology will contain `rdfs:subPropertyOf` axioms on each of
 the sub-property resources, since this is what the language
@@ -1225,7 +1158,7 @@ sub-properties and sub-classes from either direction.
 
 ### Object and Datatype properties
 
-OWL and DAML+OIL refine the basic property type from RDF into two
+OWL refines the basic property type from RDF into two
 sub-types: *object properties* and *datatype properties* (for more
 details see
 [[OWL Reference](http://www.w3.org/TR/owl-ref/#Property)]). The
@@ -1256,9 +1189,9 @@ property in a model, it will have the effect of asserting different
 OWL permits object and datatype properties to be *functional* &ndash;
 that is, for a given individual in the domain, the range value will
 always be the same. In particular, if `father` is a functional
-property, and individual `:bryn` has `father :ijd` and
-`father :ian`, a reasoner is entitled to conclude that `:ijd` and
-`:ian` denote the same individual. A functional property is
+property, and individual `:jane` has `father :jim` and
+`father :james`, a reasoner is entitled to conclude that `:jim` and
+`:james` denote the same individual. A functional property is
 equivalent to stating that the property has a maximum cardinality
 of one.
 
@@ -1266,7 +1199,7 @@ Being a functional property is represented through the
 [`FunctionalProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/FunctionalProperty.html)
 facet of an ontology property object. If a property is declared
 functional (test using the `isFunctional()` method), then the
-method `asFunctionalProperty()` conveniently returns the functional
+method `asFunctionalProperty()` conveniently returns the functional property
 facet. A non-functional property can be made functional through the
 `convertToFunctionalProperty()` method. When you are creating a
 property object, you also have the option of passing a Boolean
@@ -1276,7 +1209,7 @@ parameter to the `createObjectProperty()` method on `OntModel`.
 
 There are several additional sub-types of ObjectProperty that
 represent additional capabilities of ontology properties. A
-[`TransitiveProperty`[(/jena/documentation/javadoc/com/hp/hpl/jena/ontology/TransitiveProperty.html)
+[`TransitiveProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/TransitiveProperty.html)
 means that if p is transitive, and we know `:a p :b` and also
 `b p :c`, we can infer that `:a p :c`. A
 [`SymmetricProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/SymmetricProperty.html)
@@ -1284,8 +1217,6 @@ means that if p is symmetric, and we know `:a p :b`, we can infer
 `:b p :a`. An
 [`InverseFunctionalProperty`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/InverseFunctionalProperty.html)
 means that for any given range element, the domain value is unique.
-(Note that in DAML+OIL, the terminology for inverse functional
-property is *unambiguous property*).
 
 Given that all properties are `RDFNode` objects, and therefore
 support the `as()` method, you can use `as()` to change from an
@@ -1302,7 +1233,7 @@ view:
 These methods all assume that the underlying model will support
 this change in perspective. If not, the operation will fail with a
 `ConversionException`. For example, if a given property `p` is not
-already a transitive property, then invoking
+asserted to be a transitive property in the underlying RDF model, then invoking
 `p.asTransitiveProperty()` will throw a conversion exception. The
 following methods will, if necessary, add additional information
 (i.e. the additional `rdf:type` statement) to allow the conversion
@@ -1313,9 +1244,18 @@ to an alternative facet to succeed.
     public SymmetricProperty convertToSymmetricPropery();
     public InverseFunctionalProperty convertToInverseFunctionalProperty();
 
-Finally, methods beginning `is` (e.g. `isTransitiveProperty`)
+Sometimes it is convenient not to check whether the `.as()` conversion
+is warranted by the underlying data. This may be the case, for example,
+if the developer knows that the conversions are correct given the information from
+an external ontology which is not currently loaded. To allow `.as()` to always
+succeed, set the attribute `strictMode` to `false` on the `OntModel`
+object: `myOntModel.setStrictMode( false )`.
+
+Finally, methods beginning `is...` (e.g. `isTransitiveProperty`)
 allow you to test whether a given property would support a given
 sub-type facet.
+
+>>>>>>>>>>>>>>>>> TODO watermark
 
 ## More complex class expressions
 
@@ -1408,13 +1348,13 @@ restrictions that mention that property:
     Iterator i = p.listReferringRestrictions();
     while (i.hasNext()) {
         Restriction r = (Restriction) i.next();
-        // now handle the restriction 
+        // now handle the restriction ...
     }
 
 A general restriction can be converted to a specific type of
-restriction via `as` methods (if the information is already in the
+restriction via `as...` methods (if the information is already in the
 model), or, if the information is not in the model, via
-`convertTo` methods. For example, to convert the example
+`convertTo...` methods. For example, to convert the example
 restriction `r` from the example above to an all values from
 restriction, you can do the following:
 
@@ -1589,7 +1529,7 @@ Given Jena's ability to construct lists, building intersection and
 union class expressions is straightforward. The `create` methods on
 OntModel allow you to construct an intersection or union directly.
 Alternatively, given an existing OntClass, you can use the
-`convertTo` methods to construct facet representing the more
+`convertTo...` methods to construct facet representing the more
 specialised expressions. For example, we can define the class of UK
 industry-related conferences as the intersection of conferences
 with a UK location and conferences with an industrial track. Here's
@@ -1706,7 +1646,7 @@ following:
 ### Listing classes
 
 In many applications, you will need to inspect the set of classes
-in an ontology. The `list` methods on `OntModel` provide a variety
+in an ontology. The `list...` methods on `OntModel` provide a variety
 of means of listing types of class. The methods available include:
 
     public ExtendedIterator listClasses();
@@ -1736,7 +1676,7 @@ classes), use the
 method `namedHierarchyRoots()`.
 
 You should also note that it is important to close the iterators
-returned from the `list` methods, particularly when the underlying
+returned from the `list...` methods, particularly when the underlying
 store is a database. This is necessary so that any state (e.g. the
 database connection resources) can be released. Closing happens
 automatically when the `hasNext()` method on the iterator returns
@@ -1845,8 +1785,8 @@ interface. Suppose I wish to know the list of URI's that the
 ontology imports. First I must obtain the resource representing the
 ontology itself:
 
-    String base = ; // the base URI of the ontology
-    OntModel m = ;  // the model containing the ontology statements
+    String base = ...; // the base URI of the ontology
+    OntModel m = ...;  // the model containing the ontology statements
     Ontology ont = m.getOntology( base );
 
     // now list the ontology imports
@@ -1864,7 +1804,7 @@ the imports of a document), there may well be more than one
 `Ontology` resource in the model. In this case, you may find it
 useful to list the ontology resources in just the base model:
 
-    OntModel m =  // the model, including imports
+    OntModel m = ... // the model, including imports
     OntModel mBase = ModelFactory.createOntologyModel(
                           OntModelSpec.OWL_MEM, m.getBaseModel() );
 
@@ -1885,8 +1825,8 @@ Smith, we can say:
 It is also possible to programatically add imports and other
 meta-data to a model, for example:
 
-    String base = ; // the base URI of the ontology
-    OntModel m = ;
+    String base = ...; // the base URI of the ontology
+    OntModel m = ...;
 
     Ontology ont = m.createOntology( base );
     ont.addImport( m.createResource( "http://example.com/import1" ) );
@@ -1993,7 +1933,7 @@ use-cases, including debugging, is to snapshot the model by
 constructing a temporary plain model and adding to it: the contents
 of the ontology model:
 
-    OntModel m = 
+    OntModel m = ...
 
     // snapshot the contents of ont model om
     Model snapshot = ModelFactory.createDefaultModel();
