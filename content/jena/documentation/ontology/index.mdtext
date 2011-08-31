@@ -154,7 +154,7 @@ classes, we cannot construct expressions to describe interesting
 classes. However, for many applications it is sufficient to state
 the basic vocabulary, and RDFS is perfectly well suited to this.
 
-Note also that we can both describe classes, in general terms, and I
+Note also that we can both describe classes, in general terms, and we
 can describe particular *instances* of those classes. So there may
 be a particular individual Fred who is a Fish (i.e. has
 `rdf:type Fish`), and who has two eyes. His companion Freda, a
@@ -1255,16 +1255,14 @@ Finally, methods beginning `is...` (e.g. `isTransitiveProperty`)
 allow you to test whether a given property would support a given
 sub-type facet.
 
->>>>>>>>>>>>>>>>> TODO watermark
-
 ## More complex class expressions
 
-I introduced the handling of basic, named classes above. These are
+We introduced the handling of basic, named classes above. These are
 the only kind of class descriptions available in RDFS. In OWL,
 however, there are a number of additional types of class
 expression, which allow richer and more expressive descriptions of
 concepts. There are two main categories of additional class
-expression: *restrictions* and *Boolean expressions*. Let's examine
+expression: *restrictions* and *Boolean expressions*. We'll examine
 each in turn.
 
 ### Restriction class expressions
@@ -1280,26 +1278,16 @@ one case restricted to have the value `fur`, in the other to have
 the value `feathers`. This is a *has value restriction*. Six
 restriction types are currently defined by OWL:
 
-Restriction type
-Meaning
-has value
-The restricted property has exactly the given value.
-all values from
-All values of the restricted property, if it has any, are members
-of the given class.
-some values from
-The property has at least one value which is a member of the given
-class.
-cardinality
-The property has exactly *n* values, for some positive integer n.
-min cardinality
-The property has at least *n* values, for some positive integer n.
-max cardinality
-The property has at most *n* values, for some positive integer n.
-Note that in DAML+OIL terminology, an all-values-from restriction
-is a *toClass* restriction, while a some-values-from restriction is
-a *hasClass* restriction. Note also that, at present, the Jena
-ontology API has only limited support for DAML's qualified
+Restriction type | Meaning
+has value | The restricted property has exactly the given value.
+all values from | All values of the restricted property, if it has any, are members of the given class.
+some values from | The property has at least one value which is a member of the given class.
+cardinality | The property has exactly *n* values, for some positive integer n.
+min cardinality | The property has at least *n* values, for some positive integer n.
+max cardinality | The property has at most *n* values, for some positive integer n.
+
+Note that, at present, the Jena
+ontology API has only limited support for OWL2 and DAML's qualified
 cardinality restrictions (i.e. `cardinalityQ`, `minCardinalityQ`
 and `maxCardinalityQ`). Qualified cardinality restrictions are
 encapsulated in the interfaces `CardinalityQRestriction`,
@@ -1308,10 +1296,8 @@ encapsulated in the interfaces `CardinalityQRestriction`,
 qualified cardinality restrictions. Since they are not part of the
 OWL 1.0 language definition, qualified cardinality restrictions are
 not supported in OWL ontologies. Qualified cardinality restrictions
-may be added to the forthcoming OWL 1.1 update, at which point it
-is likely that the Jena ontology API will be updated. Note however,
-that we are not currently making any commitment on the timescale
-for such an update.
+were added to the  OWL 2 update. OWL2 support in Jena will be
+added in due course.
 
 Jena provides a number of ways of creating restrictions, or
 retrieving them from a model. Firstly, you can retrieve a general
@@ -1332,22 +1318,22 @@ retrieving an existing restriction by name may not be possible.
 However, you can list all of the restrictions in a model and search
 for the one you want:
 
-    Iterator i = m.listRestrictions();
+    Iterator<Restriction> i = m.listRestrictions();
     while (i.hasNext()) {
-        Restriction r = (Restriction) i.next();
+        Restriction r = i.next();
         if (isTheOne( r )) {
             // handle the restriction
         }
     }
 
-A common case is that you want the restrictions on some property
-`p`. In this case, from an object denoting `p` you can list the
+A common case is that we want the restrictions on some property
+`p`. In this case, from an object denoting `p` we can list the
 restrictions that mention that property:
 
     OntProperty p = m.getProperty( NS + "p" );
-    Iterator i = p.listReferringRestrictions();
+    Iterator<Restriction> i = p.listReferringRestrictions();
     while (i.hasNext()) {
-        Restriction r = (Restriction) i.next();
+        Restriction r = i.next();
         // now handle the restriction ...
     }
 
@@ -1356,12 +1342,12 @@ restriction via `as...` methods (if the information is already in the
 model), or, if the information is not in the model, via
 `convertTo...` methods. For example, to convert the example
 restriction `r` from the example above to an all values from
-restriction, you can do the following:
+restriction, we can do the following:
 
     OntClass c = m.createClass( NS + "SomeClass" );
     AllValuesFromRestriction avf = r.convertToAllValuesFromRestriction( c );
 
-To create a particular restriction *ab initio*, you can use the
+To create a particular restriction *ab initio*, we can use the
 creation methods defined on `OntModel`. For example:
 
     OntClass c = m.createClass( NS + "SomeClass" );
@@ -1370,7 +1356,7 @@ creation methods defined on `OntModel`. For example:
     // null denotes the URI in an anonymous restriction
     AllValuesFromRestriction avf = m.createAllValuesFromRestriction( null, p, c );
 
-Assuming that the above code fragment was using a model `m` that
+Assuming that the above code fragment was using a model `m` which
 was created with the OWL language profile, it creates a instance of
 an OWL restriction that would have the following definition in
 RDF/XML:
@@ -1380,7 +1366,7 @@ RDF/XML:
       <owl:allValuesFrom rdf:resource="#SomeClass"/>
     </owl:Restriction>
 
-Once you have a particular restriction object, there are methods
+Once we have a particular restriction object, there are methods
 following the standard add, get, set and test naming pattern to
 access the aspects of the restriction. For example, in a camera
 ontology, we might find this definition of a class describing
@@ -1397,11 +1383,11 @@ Large-Format cameras:
     </owl:Class>
 
 Here's one way to access the components of the all values from
-restriction. Assume m contains a suitable camera ontology:
+restriction. Assume `m` contains a suitable camera ontology:
 
     OntClass largeFormat = m.getOntClass( camNS + "Large-Format" );
-    for (Iterator i = LargeFormat.listSuperClasses( true ); i.hasNext(); ) {
-      OntClass c = (OntClass) i.next();
+    for (Iterator<OntClass> i = LargeFormat.listSuperClasses( true ); i.hasNext(); ) {
+      OntClass c = i.next();
 
       if (c.isRestriction()) {
         Restriction r = c.asRestriction();
@@ -1417,25 +1403,25 @@ restriction. Assume m contains a suitable camera ontology:
 
 ### Boolean class expressions
 
-Most programmers are familiar with the use of Boolean operators to
+Most developers are familiar with the use of Boolean operators to
 construct propositional expressions: conjunction (and), disjunction
-(or) and negation (not). OWL provides a means for construction
+(or) and negation (not). OWL provides a means for constructing
 expressions describing classes with analogous operators, by
 considering class descriptions in terms of the set of individuals
 that comprise the members of the class.
 
-Suppose we wish to say that an instance x has `rdf:type` A **and**
-`rdf:type` B. This means that x is both a member of the set of
-individuals in A, and in the set of individuals in B. Thus, x lies
-in the *intersection* of classes A and B. If, on the other hand, A
-is either has `rdf:type` A **or** B, then x must lie in the *union*
-of A and B. Finally, to say that x does **not** have `rdf:type` A,
-it must lie in the *complement* of A. These operations, union,
+Suppose we wish to say that an instance `x` has `rdf:type` `A` **and**
+`rdf:type` `B`. This means that `x` is both a member of the set of
+individuals in `A`, and in the set of individuals in `B`. Thus, `x` lies
+in the *intersection* of classes `A` and `B`. If, on the other hand, `A`
+is either has `rdf:type` `A` **or** `B`, then `x` must lie in the *union*
+of `A` and `B`. Finally, to say that x does **not** have `rdf:type` `A`,
+it must lie in the *complement* of `A`. These operations, union,
 intersection and complement are the Boolean operators for
 constructing class expressions. While complement takes only a
 single argument, union and intersection must necessarily take more
 than one argument. Before continuing with constructing and using
-Boolean class expressions, I digress briefly to discuss lists.
+Boolean class expressions, let's briefly to discuss lists.
 
 ### List expressions
 
@@ -1473,21 +1459,20 @@ the following expansion as RDF triples:
 
 Given this construction, a well formed list (one with exactly one
 `rdf:first` and `rdf:rest` per cons cell) has a precisely
-determined set of members. Incidentally, the same list in N3/Turtle
+determined set of members. Incidentally, the same list in Turtle
 is even more compact:
 
     :example
         :p ( :A :B ).
 
 Although lists are defined in the generic RDF model in Jena, they
-are extensively used by the ontology API so I mention them here.
-Full details of the methods defined on the
-[`RDFList`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/RDFList.html)
-class are available in the Jena Javadoc.
+are extensively used by the ontology API so we mention them here.
+Full details of the methods defined are in the
+[`RDFList javadoc`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/RDFList.html).
 
-A number of means of constructing lists is defined in
+Various means of constructing lists are defined in
 [`Model`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/Model.html), as
-variants on `createList`. For example, you can construct a list of
+variants on `createList`. For example, we can construct a list of
 three classes as follows:
 
     OntModel m = ModelFactory.createOntModel();
@@ -1497,7 +1482,7 @@ three classes as follows:
 
     RDFList cs = m.createList( new RDFNode[] {c0, c1, c2} );
 
-Alternatively, you can build a list one element at at time:
+Alternatively, we can build a list one element at at time:
 
     OntModel m = ModelFactory.createOntModel();
     RDFList cs = m.createList(); // Cs is empty
@@ -1507,19 +1492,20 @@ Alternatively, you can build a list one element at at time:
 
 Note that these two approaches end with the classes in the lists in
 opposite orders, since the `cons` operation adds a new list cell to
-the front of the list. Thus the second list will run c2 to c0. In
+the front of the list. Thus the second list will run `c2` to `c0`. In
 the ontology operations we are discussing here, the order of values
 in the list is not considered significant.
 
-Once the list has been constructed or obtained from the model (a
-resource which is a cell in a list sequence will accept
-`.as( RDFList.class )`),
+Finally, a resource which is a cell in a list sequence will accept
+`.as( RDFList.class )`
+
+Once the list has been created or obtained from the model,
 [`RDFList`](/jena/documentation/javadoc/com/hp/hpl/jena/rdf/model/RDFList.html)
 methods may be used to access members of the list, iterate over the
 list, and so forth. For example:
 
     System.out.println( "List has " + myRDFList.size() + " members:" );
-    for (Iterator i = myRDFList.iterator(); i.hasNext(); ) {
+    for (Iterator<RDFNode> i = myRDFList.iterator(); i.hasNext(); ) {
       System.out.println( i.next() );
     }
 
@@ -1527,8 +1513,8 @@ list, and so forth. For example:
 
 Given Jena's ability to construct lists, building intersection and
 union class expressions is straightforward. The `create` methods on
-OntModel allow you to construct an intersection or union directly.
-Alternatively, given an existing OntClass, you can use the
+OntModel allow us to construct an intersection or union directly.
+Alternatively, given an existing OntClass, we can use the
 `convertTo...` methods to construct facet representing the more
 specialised expressions. For example, we can define the class of UK
 industry-related conferences as the intersection of conferences
@@ -1551,14 +1537,14 @@ the XML declaration:
 
 Or, more compactly in N3/Turtle:
 
-    :UKIndustrialConference a owl:Class
-        ; owl:intersectionOf (
-           [a owl:Restriction
-            ; owl:onProperty :hasLocation
-            ; owl:hasValue :united_kingdom]
-           [a owl:Restriction
-            ; owl:onProperty :hasPart
-            ; owl:someValuesFrom :IndustryTrack]
+    :UKIndustrialConference a owl:Class ;
+        owl:intersectionOf (
+           [a owl:Restriction ;
+              owl:onProperty :hasLocation ;
+              owl:hasValue :united_kingdom]
+           [a owl:Restriction ;
+              owl:onProperty :hasPart ;
+              owl:someValuesFrom :IndustryTrack]
           )
 
 Here is code to create this class declaration using Jena, assuming
@@ -1586,13 +1572,12 @@ that `m` is a model into which the ESWC ontology has been read:
         m.createIntersectionClass( NS + "UKIndustrialConference",
                                    m.createList( new RDFNode[] {ukLocation, hasIndTrack} ) );
 
-Given the similarity between union and intersection class
-expressions, rather than separate methods to set the components of
-the expression, Jena defines a common super-class
+Union and intersection class expressions are very similar, so
+Jena defines a common super-class
 [`BooleanClassDescription`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/BooleanClassDescription.html).
 This class provides access to the *operands* to the expression. In
-the above example, the operands are the two restrictions. The
-`BooleanClassDescription` class allows you to set the operands
+the intersection example above, the operands are the two restrictions. The
+`BooleanClassDescription` class allows us to set the operands
 *en masse* by supplying a list, or to be added or deleted one at a
 time.
 
@@ -1607,7 +1592,7 @@ class. Recall that a class is a set of individuals. Often, we want
 to define the members of the *implicitly*: for example, "the class
 of UK conferences". Sometimes it is convenient to define a class
 *explicitly*, by stating the individuals the class contains. An
-*[enumerated class](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/EnumeratedClass.html)*
+[enumerated class](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/EnumeratedClass.html)
 is exactly the class whose members are the given individuals. For
 example, we know that the class of PrimaryColours contains exactly
 red, green and blue, and no others.
@@ -1643,20 +1628,25 @@ following:
       System.out.println( r.getURI() );
     }
 
+An OWL `DataRange` is similar to an enumerated class, except that the members
+of the `DataRange` are literal values, such as integers, dates or strings. See the
+[`DataRange` javadoc](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/DataRange.html)
+for more details.
+
 ### Listing classes
 
-In many applications, you will need to inspect the set of classes
+In many applications, we need to inspect the set of classes
 in an ontology. The `list...` methods on `OntModel` provide a variety
 of means of listing types of class. The methods available include:
 
-    public ExtendedIterator listClasses();
-    public ExtendedIterator listEnumeratedClasses();
-    public ExtendedIterator listUnionClasses();
-    public ExtendedIterator listComplementClasses();
-    public ExtendedIterator listIntersectionClasses();
-    public ExtendedIterator listRestrictions();
-    public ExtendedIterator listNamedClasses();
-    public ExtendedIterator listHierarchyRootClasses();
+    public ExtendedIterator<OntClass> listClasses();
+    public ExtendedIterator<EnumeratedClass> listEnumeratedClasses();
+    public ExtendedIterator<UnionClass> listUnionClasses();
+    public ExtendedIterator<ComplementClass> listComplementClasses();
+    public ExtendedIterator<IntersectionClass> listIntersectionClasses();
+    public ExtendedIterator<Restriction> listRestrictions();
+    public ExtendedIterator<OntClass> listNamedClasses();
+    public ExtendedIterator<OntClass> listHierarchyRootClasses();
 
 The last two methods deserve special mention. In OWL, class
 expressions are typically not named, but are denoted by anonymous
@@ -1680,7 +1670,7 @@ returned from the `list...` methods, particularly when the underlying
 store is a database. This is necessary so that any state (e.g. the
 database connection resources) can be released. Closing happens
 automatically when the `hasNext()` method on the iterator returns
-false. If your code does not iterate all the way to the end of the
+`false`. If your code does not iterate all the way to the end of the
 iterator, you should call the `close()` method explicitly. Note
 also that the values returned by these iterators will depend on the
 asserted data and the reasoner being used. For example, if the
@@ -1695,7 +1685,7 @@ attached.
 
 ## Instances or individuals
 
-In OWL Full (and in DAML+OIL) any value can be an individual &ndash; and
+In OWL Full any value can be an individual &ndash; and
 thus the subject of triples in the RDF graph other than ontology
 declarations. In OWL Lite and DL, the language terms and the
 instance data that the application is working with are kept
@@ -1738,10 +1728,10 @@ approach interchangeably.
 
 ## Ontology meta-data
 
-In OWL and DAML+OIL, but not RDFS, meta-data about the ontology
+In OWL, but not RDFS, meta-data about the ontology
 itself is encoded as properties on an individual of class
-`owl:Ontology` or `daml:Ontology` as appropriate. By convention,
-the URI of this individual is the URI of the ontology document
+`owl:Ontology`. By convention,
+the URI of this individual is the URL, or web address, of the ontology document
 itself. In the XML serialisation, this is typically shown as:
 
     <owl:Ontology rdf:about="">
@@ -1756,24 +1746,19 @@ reading the document via Jena's Model API (see the `read()` methods
 on [`OntModel`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/OntModel.html)
 for reference).
 
-You can attach various meta-data statements to this object to
+We can attach various meta-data statements to this object to
 indicate attributes of the ontology as a whole. The Java object
 `Ontology` represents this special instance, and uses the standard
 add, set, get, list, test and delete pattern to provide access to
 the following attributes:
 
-Attribute
-Meaning
-backwardCompatibleWith
-Names a prior version of this ontology that this version is
-compatible with.
-incompatibleWith
-Names a prior version of this ontology that this version is not
-compatible with
-priorVersion
-Names a prior version of this ontology.
-imports
-Names an ontology whose definitions this ontology includes
+Attribute | Meaning
+--------- | -------
+backwardCompatibleWith | Names a prior version of this ontology that this version is compatible with.
+incompatibleWith | Names a prior version of this ontology that this version is not compatible with
+priorVersion | Names a prior version of this ontology.
+imports | Names an ontology whose definitions this ontology includes
+
 In addition to these attributes, the Ontology element typically
 contains common meta-data properties, such as comment, label and
 version information.
@@ -1781,8 +1766,8 @@ version information.
 In the Jena API, the ontology's metadata properties can be accessed
 through the
 [`Ontology`](/jena/documentation/javadoc/com/hp/hpl/jena/ontology/Ontology.html)
-interface. Suppose I wish to know the list of URI's that the
-ontology imports. First I must obtain the resource representing the
+interface. Suppose we wish to know the list of URI's that the
+ontology imports. First we must obtain the resource representing the
 ontology itself:
 
     String base = ...; // the base URI of the ontology
@@ -1790,8 +1775,8 @@ ontology itself:
     Ontology ont = m.getOntology( base );
 
     // now list the ontology imports
-    for (Iterator i = ont.listImports(); i.hasNext(); ) {
-        System.out.println( "Ontology " + base + " imports " + i.next() );
+    for (String imp : ont.listImportedOntologyURIs()) {
+        System.out.println( "Ontology " + base + " imports " + imp );
     }
 
 If the base URI of the ontology is not known, you can list all
@@ -1814,13 +1799,14 @@ useful to list the ontology resources in just the base model:
     }
 
 A common practice is also to use the Ontology element to attach
-Dublin Core metadata to the ontology document. Jena provides a copy
-of the Dublin Core vocabulary, in `com.hp.hpl.jena.vocabulary.DC`.
+[Dublin Core metadata](http://dublincore.org/)
+to the ontology document. Jena provides a copy
+of the Dublin Core vocabulary, in `com.hp.hpl.jena.vocabulary.DCTerms`.
 To attach a statement saying that the ontology was authored by John
 Smith, we can say:
 
     Ontology ont = m.getOntology( baseURI );
-    ont.addProperty( DC.creator, "John Smith" );
+    ont.addProperty( DCTerms.creator, "John Smith" );
 
 It is also possible to programatically add imports and other
 meta-data to a model, for example:
@@ -1865,17 +1851,17 @@ and used.
 
 For a complete and thorough description of Jena's inference
 capabilities, please see the
-[reasoner documentation](../inference/index.html). This section of
+[reasoner documentation TODO](../inference/index.html). This section of
 of the ontology API documentation is intended to serve as only a
 brief guide and overview.
 
 Recall from the introduction that the reasoners in Jena operate by
-making it appear that triples *entailed* by the inference algorithm
+making it appear that triples *entailed* by the inference engine
 are part of the model in just the same way as the asserted triples
 (see Figure 2). The underlying architecture allows the reasoner to
 be part of the same Java virtual machine (as is the case with the
 built-in rule-based reasoners), or in a separate process on the
-local computer, or even a remote machine. Of course, each of these
+local computer, or even a remote computer. Of course, each of these
 choices will have different characteristics of what reasoning
 capabilities are supported, and what the implications for
 performance are.
@@ -1919,7 +1905,7 @@ not contain a reasoner will have unpredictable results. Typically
 these methods will have no effect or return null, but you should
 not rely on this behaviour.
 
-In general, inference models will add a lot of additional
+In general, inference models will add many additional
 statements to a given model, including the axioms appropriate to
 the ontology language. This is typically not something you will
 want in the output when the model is serialized, so
@@ -1943,33 +1929,6 @@ See also the note on
 [combining a-box and t-box data](common-problems.html#aBox-tBox)
 using the OntModel.
 
-## Working with DAML+OIL ontologies
-
-**Jena 2.5 update** With effect from release 2.5 of Jena, the
-legacy DAML+OIL API was deprecated, and has been removed from the
-2.6 release. The effect of this is that users of DAML+OIL using the
-legacy API (i.e. the classes in `com.hp.hpl.jena.ontology.daml`)
-should move their projects either to work with OWL, or at least to
-work with the DAML+OIL profile of the standard `OntModel`. The
-DAML+OIL `OntModel` profile will continue to be supported.
-
-Generally speaking, we recommend that developers who want to work
-on Semantic Web applications should use RDFS or
-[OWL](http://www.w3.org/2004/OWL/), as their ontology language. OWL
-has had the benefit of a more rigorous design and significant input
-to its design from researchers with insights into the design of
-efficient reasoning algorithms. Nevertheless, there remains some
-legacy ontology data on the Semantic Web today encoded in
-[DAML+OIL](http://www.daml.org), the precursor to OWL. Jena 2
-currently supports ontology processing in DAML+OIL as well as OWL
-and RDFS. However, DAML reasoning using the built-in Jena reasoners
-is more restricted than is the case with OWL.
-
-Since Jena 2.6, the ontology API (as described in this document) is
-the only available route for processing DAML data. Using the
-language profile, the ontology API can handle RDFS, OWL and DAML
-sources with equal ease. Thus, OntClass can be used to represent a
-DAML class, an OWL class or an RDFS class.
 
 ## Working with persistent ontologies
 
@@ -1984,12 +1943,12 @@ This saves the overhead of loading the model each time, and means
 that you can store RDF models significantly larger than the
 computer's main memory, but at the expense of a higher overhead (a
 database interaction) to retrieve and update RDF data from the
-model. In this section I show how to use the ontology API with
+model. In this section we briefly discuss using the ontology API with
 Jena's persistent database models.
 
 For information on setting-up and accessing the database models
-themselves, see the [DB documentation](../DB/index.html). I do not
-cover this aspect in this section. For a method of using a
+themselves, see the [DB documentation](../DB/index.html).
+For one method of using a
 persistent database to manage ontology imports, see
 [this article](http://www.iandickinson.me.uk/articles/jena-tip-db-import/).
 
@@ -2021,7 +1980,7 @@ it as the base model when constructing an ontology model:
     OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM_RULE_INF, base );
 
 Here we assume that the `getMaker()` method returns a suitably
-initialized`ModelMaker` that will open the connection to the
+initialized `ModelMaker` that will open the connection to the
 database. This step only creates a persistent model named with the
 ontology URI. To initialise the content, we must either add
 statements to the model using the OntModel API, or do a one-time
@@ -2033,7 +1992,7 @@ Once this step is completed, the model contents may be accessed in
 future without needing to read again.
 
 If the Customers ontology imports other ontologies, using
-`owl:imports` or `daml:imports`, the Jena Ontology API will build a
+`owl:imports`, the Jena Ontology API will build a
 union model containing the closure of the imports. Even if the base
 model is persistent, the predefined `OntModelSpec` objects only
 specify memory models to contain the imported ontologies, since
@@ -2075,7 +2034,7 @@ by the run-time application. Such an off-line processing
 architecture will clearly not be applicable to every application
 problem.
 
-A [sample program](../examples/persistent-ont-model/index.html)
+A [sample program TODO](../examples/persistent-ont-model/index.html)
 shows the above steps combined, to create an ontology in which both
 base model and imports are stored in a persistent database.
 
