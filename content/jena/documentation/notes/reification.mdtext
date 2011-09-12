@@ -1,0 +1,191 @@
+Title: Reification howto
+
+## Introduction
+
+This document describes the Jena 2 reification API and how to use
+it. New users of Jena should read this to understand Jena's special
+support for reification. Since there have been significant changes
+to this support since Jena 1, users of Jena 1's reification should
+also read this document to see how to translate their existing code
+to the new form. As always, consult the Javadoc for interface
+details.
+
+Reification in RDF and Jena is the ability to treat a `Statement`
+as a `Resource`, and hence to make assertions *about* that
+statement. A statement may be reified as many different resources,
+allowing different manifestations ("statings") of that statement to
+be treated differently if required.
+
+RDF represents a reified statement as four statements with
+particular RDF properties and objects: the statement `(S, P, O)`,
+reified by resource `R`, is represented by:
+
+-   `R rdf:type rdf:Statement`
+-   `R rdf:subject S`
+-   `R rdf:predicate P`
+-   `R rdf:object O`
+
+We shall call these four such statements a *reification quad* and
+the components *quadlets*. Users of reification in Jena may, by
+default, simply manipulate reified statements as these quads.
+However, just as for `Bag`, `Seq`, `Alt` and `RDF lists` in
+ordinary models, or ontology classes and individuals in
+`OntModel`s, Jena has additional support for manipulating reified
+statements. It also optimises the storage for complete reification
+quads, avoiding having to store the extra four statements merely to
+represent one reification.
+
+The interface `ReifiedStatement` is used to represent a reified
+statement as a Jena `Resource` that has direct access to the
+statement it reifies. The method
+
+-   `ReifiedStatement::getStatement()`
+
+returns the `Statement` that the resource is reifying. All the
+other `Resource` methods, of course, may be applied to a
+`ReifiedStatement`.
+
+## Converting resources to reified statements
+
+If a resource `R` is associated with a reified statement, but might
+not itself be a `ReifiedStatement` object, the conversion method
+`RDFNode::as(Class)` can be used to find (or create) a
+`ReifiedStatement`:
+-   `(ReifiedStatement) R.as(ReifiedStatement.class)`
+
+For example, a model that has been read in from an RDF/XML file may
+have reified statements: knowing the name of the resource allows a
+ReifiedStatement object to be constructed without knowing the
+statement itself.
+
+If there is no such associated reified statement, a
+`CannotReifyException` is thrown. To find out in advance if the
+conversion is possible, use the predicate
+`RDFNode::canAs(ReifiedStatement.class)`. (Jena only counts as "an
+associated reified statement" a resource with exactly one
+`rdf:subject`, `rdf:predicate`, and `rdf:object` which has
+`rdf:type rdf:Statement`. It can of course have *other*
+properties.)
+
+Once the `ReifiedStatement` has been constructed, it retains its
+`Statement` even if some (or all) of the original quadlets are
+removed from the model. This is a feature of the current
+implementation that might go away; do not rely on it.
+
+## Testing statements for reification
+
+You may wish to know if some `Statement` is reified. The methods
+`Statement::isReified()` and `Model::isreified(Statement)` return
+true if (and only if) the statement has been reified in the model.
+Note that the `Statement` method tests to see if the statement is
+reified in its own model, and the model method tests to see if the
+`Statement` is reified in *that* model; there is no test to see if
+a `Statement` is reified in any other models.
+
+## Listing reified statements
+
+Just as `listStatements` is used to find the statements present in
+some model, there are methods for finding the reified statements of
+a model. Each of them returns a `RSIterator` object, which is an
+iterator each of who's elements are `ReifiedStatement`s and for
+which the convenience method `nextRS()` will deliver a
+suitably-cast reified statement.
+-   `Statement::listReifiedStatements()` - all the reifications of
+    this statement in its model.
+-   `Model::listReifiedStatements()` - all the reified statements
+    in this model.
+-   `Model::listReifiedStatements(Statement s)` - all the reified
+    statements reifiying `s` in this model.
+
+## Creating reified statements directly
+
+You do not have to create reified statements by asserting their
+quads into a `Model`; they can be created directly from their
+`Statement`s using one of the methods:
+-   `Statement::createReifiedStatement()`
+-   `Statement::createReifiedStatement(String)`
+-   `Model::createReifiedStatement(Statement)`
+-   `Model::createReifiedStatement(String,Statement)`
+
+Each of these returns a `ReifiedStatement` who's `getStatement()`
+method delivers the original statement (actually, a `.equals()`
+statement; it may not be the identical statement). If the creation
+method passed in a (non-null) `String`, the `ReifiedStatement` is a
+named resource and that string is its URI. Otherwise it is a
+newly-minted bnode. The methods on `Statement` create a reified
+statement in that statements model; those on `Model` create a
+reified statement in that model.
+It is not permitted for two different (non-equals) statements to be
+reified onto the same resource. An attempt to do so will generate
+an `AlreadyReifiedException`.
+
+The additional method `Model::getAnyReifiedStatement(Statement)`
+returns some reification of the supplied `Statement`; an existing
+one if possible, otherwise a fresh one (reified by a fresh bnode).
+
+## Reification and Model::add(Model)
+
+When one model is added to another, as well as the ordinary
+statements of the model being added, the reified statements are
+copied across. If this is not desired, there is a two-argument
+form:
+-   Model::add(Model m, boolean suppress)
+
+If `suppress` is `true`, then the reified statements are not
+copied. (This choice arose from comments on earlier versions of the
+Jena 2 API; users expected the reified statements to be copied.)
+
+## Removing reified statements
+
+There are two methods which remove all the reifications of a
+`Statement` in some `Model`:
+-   `Statement::removeReification()`
+-   `Model::removeAllReifications(Statement)`
+
+All the reified statements in the model that reify the given
+statement are removed, whatever their reifying resource. To remove
+a particular reified statement only, use
+-   `Model::removeReification(ReifiedStatement)`
+
+Similarly to `Model::add(Model)`, the method
+`model.remove(Model m)` will remove all the reified statements of
+`m` from `model`, and the two-argument form `model.remove(m,true)`
+will not.
+
+## Reification styles
+
+By default and as you might expect, Jena models allow reification
+quads to be manifested as `ReifiedStatement`s. Similarly,
+explicitly created `ReifiedStatement`s are visible as statement
+quads.
+
+Sometimes this is not desirable. For example, in an application
+that reifies large numbers of statements in the same model as those
+statements, most of the results from `listStatements()` will be
+quadlets; this is inefficient and confusing. One choice is to reify
+the statements in a *different* model. Another is to take advantage
+of *reification styles*.
+
+Each model has a reification style, described by constants in
+`ModelFactory`. The default style is called `Standard` because it
+behaves mostly closely to the RDF standard. There are two other
+reification styles to choose from:
+
+-   `Convenient`: reification quadlets are not visible in the
+    results of `listStatements)()`. Otherwise everything is normal;
+    quadlets that are added to the model contribute to
+    `ReifiedStatement` construction.
+-   `Minimal`: reification quadlets play no role at all in the
+    construction of `ReifiedStatement`s, which can only be created by
+    the methods discussed earlier. This style is most similar to that
+    of Jena 1.
+
+The method `ModelFactory.createDefaultModel()` takes an optional
+`Style` argument, which defaults to `Standard`. Similarly,
+`createFileModelMaker()` and `createMemModelMaker()` can take
+`Style` arguments which are applied to every model they create.
+To take a model with hidden reification quads and expose them as
+statements, the method `ModelFactory.withHiddenStatements(Model m)`
+produces a new model which does just that.
+
+
