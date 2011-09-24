@@ -133,7 +133,7 @@ var JenaNavigation = function() {
 
   // Return the public variables/functions for this module
   return {
-    init : init,
+    init : init
   };
 
 }();  // "revealing module" pattern
