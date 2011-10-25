@@ -1,0 +1,63 @@
+Title: SDB Joseki Integration
+
+[Joseki](http://www.joseki.org "http://www.joseki.org") is a server
+that implements the SPARQL protocol for HTTP. It can be used to
+give a SPARQL interface to an SDB installation.
+
+The Joseki server needs the SDB jar files on its classpath. The
+Joseki configuration file needs to contain two triples to integrate
+SDB:
+
+    ## Initialize SDB.
+    [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
+
+    ## Declare that sdb:DatasetStore is an implementation of ja:RDFDataset .
+    sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
+
+then a Joseki service can use an SBD-implemented dataset:
+
+    <#books> rdf:type sdb:DatasetStore ;
+       sdb:store <#store> .
+
+     <#store> rdf:type sdb:Store  ;
+       rdfs:label "SDB" ;
+       sdb:layout         "layout2" ;
+       sdb:connection
+        [  rdf:type sdb:SDBConnection ;
+           sdb:sdbType        "postgresql" ;
+           sdb:sdbHost        "localhost" ;
+           sdb:sdbName        "SDB" ;
+        ]
+        .
+
+To enable pooling of connections to the SDB store, use the
+joseki:poolSize property. This causes Joseki to create a pool of
+SDB datasets, each with it's own JDBC connection. This requires
+Joseki 3.2.
+
+    <#sdb> rdf:type sdb:DatasetStore ;
+        joseki:poolSize     5 ;         # Number of concurrent connections allowed to this dataset.
+        sdb:store <#store> .
+
+SDB 1.0:
+
+    ## Dataset in SDB.
+    <#books> rdf:type sdb:DatasetStore , ja:RDFDataset ;
+        rdfs:label       "Books" ;
+        sdb:layout       "layout2" ;
+        sdb:connection
+        [  rdf:type sdb:SDBConnection ;
+           sdb:sdbType        "postgresql" ;
+           sdb:sdbHost        "localhost" ;
+           sdb:sdbName        "SDB" ;
+        ]
+        .
+
+The database installation does not need to accept public requests,
+it needs only to be accessible to the Joseki server itself.
+
+There is an example configuration file for a Joseki server using
+SDB in the Joseki distribution.
+
+
+
