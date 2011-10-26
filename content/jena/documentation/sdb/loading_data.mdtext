@@ -111,6 +111,6 @@ filtering `WHERE (existing item feature) IS NULL`. Specifically,
 for the triple hash case (where no id lookups are needed):
 
     INSERT INTO Triples
-    SELECT DISTINCT NTrip.s, NTrip.p, NTrip.o -- DISTINCT because new nodes may contain duplicates (not so for nodes)
+    SELECT DISTINCT NTrip.s, NTrip.p, NTrip.o -- DISTINCT because new triples may contain duplicates (not so for nodes)
     NTrip LEFT JOIN Triples ON (NTrip.s=Triples.s AND NTrip.p=Triples.p AND NTrip.o=Triples.o)
     WHERE Triples.s IS NULL OR Triples.p IS NULL OR Triples.o IS NULL
