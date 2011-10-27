@@ -1,0 +1,65 @@
+Title: ARQ - Basic Federated SPARQL Query
+
+There are already ways to access remote RDF data. The simplest is
+to read a document which is an RDF graph and query it. Another way
+is with the
+[SPARQL protocol](http://www.w3.org/TR/rdf-sparql-protocol/) which
+allows a query to be sent to a remote service endpoint and the
+results sent back (in RDF, or an
+[XML-based results format](http://www.w3.org/TR/rdf-sparql-XMLres/)
+or even a [JSON one](http://www.w3.org/TR/rdf-sparql-json-res/)).
+
+The SERVICE extension adds the ability to make SPARQL protocol
+calls within a query, not just send the whole query to the remote
+service.
+
+This involves is a syntactic extension and is available if the
+query is parsed with language `Syntax.syntaxARQ`.
+
+## Syntax
+
+A new keyword `SERVICE` is added to the extended SPARQL query
+language in ARQ. This keyword causes the sub-pattern to be sent to
+a named SPARQL service endpoint, and not matched against a local
+graph.
+
+    PREFIX : <http://example/>
+    PREFIX  dc:     <http://purl.org/dc/elements/1.1/>
+
+    SELECT ?a
+    FROM <mybooks.rdf>
+    {
+      ?b dc:title ?title .
+      SERVICE <http://sparql.org/books>
+         { ?s dc:title ?title . ?s dc:creator ?a }
+    }
+
+## Algebra
+
+There is a new operator in the algebra.
+
+    (prefix ((dc: <http://purl.org/dc/elements/1.1/>))
+      (project (?a)
+        (join
+          (BGP [triple ?b dc:title ?title])
+          (service <http://sparql.org/books>
+              (BGP
+                [triple ?s dc:title ?title]
+                [triple ?s dc:creator ?a]
+              ))
+          )))
+
+## Performance Considerations
+
+This feature is a basic building block to allow remote access in
+the middle of a query, not a general solution to the issues in
+distributed query evaluation. The algebra operation is executed
+without regard to how selective the pattern is. So the order of the
+query will affect the speed of execution. Because it involves HTTP
+operations, asking the query in the right order matters a lot.
+Don't ask for the whole of a bookstore just to find book whose
+title comes from a local RDF file - ask the bookshop a query with
+the title already bound from earlier in the query.
+
+
+[ARQ documentation index](index.html)

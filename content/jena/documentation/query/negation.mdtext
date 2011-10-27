@@ -1,0 +1,80 @@
+Title: ARQ - Negation
+
+Standard SPARQL can perform negation using the idiom of
+`OPTIONAL`/`!BOUND`. It is inconvenient and can be hard to use as
+complexity increases. ARQ supports additional operators for
+negation.
+
+This is syntactic extension and is available if the query is parsed
+with language `Syntax.syntaxARQ`.
+
+    # Names of people who have not stated that they know anyone
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName  ?name .
+        OPTIONAL { ?x foaf:knows ?who } .
+        FILTER (!BOUND(?who))
+    }
+
+In ARQ, there is the `NOT EXISTS` operator (`UNSAID` is an alias
+for `NOT EXISTS`) which acts at the point in the query where it is
+written. It does not bind any variables but variables aready boudn
+in the query will have their bound value.
+
+    # Names of people who have not stated that they know anyone
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName ?name .
+        NOT EXISTS { ?x foaf:knows ?who }
+          }
+
+There is also an `EXISTS` operator.
+
+    # Names of people where it is stated that they know at least one other person.
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName ?name .
+        EXISTS { ?x foaf:knows ?who . FILTER(?who != ?x) }
+          }
+
+
+In this example, the pattern is a little more complex. Any graph
+pattern is allowed although use of `OPTIONAL` is pointless (which
+will always match, possible with no additional results).
+
+`NOT EXISTS` and `EXISTS` can also be used in `FILTER` expressions.
+In SPARQL, `FILTER` expressions act over the whole of the basic
+graph pattern in which they occur.
+
+    # Names of people who have not stated that they know anyone
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName ?name .
+        FILTER (NOT EXISTS { ?x foaf:knows ?who })
+          }
+
+A note of caution:
+
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName ?name .
+        FILTER (NOT EXISTS { ?x foaf:knows ?y })
+            ?x foaf:knows ?who
+          }
+
+is the same as (it's a single basic graph pattern - the filter does
+not break it in two):
+
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?name
+    WHERE { ?x foaf:givenName ?name .
+            ?x foaf:knows ?y .
+        FILTER (NOT EXISTS { ?x foaf:knows ?who })
+          }
+
+and the `FILTER` will always be false (`{ ?x foaf:knows ?y }` must
+have matched to get to this point in the query and useing ?who
+instead makes no difference).
+
+
+[ARQ documentation index](index.html)

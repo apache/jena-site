@@ -1,0 +1,47 @@
+Title: ARQ - Internal Design
+
+@@ Incomplete / misnamed?
+
+ARQ consists of the following parts:
+
+-   The SPARQL abstract syntax tree (AST) and the SPARQL parser
+-   The algebra generator that turns SPARQL AST into algebra
+    expressions
+    -   Implementation of the translation in the SPARQL specification.
+    -   Quad version compiling SPARQL to quad expressions, not basic
+        graph patterns.
+
+-   Query engines to execute queries
+    -   SPARQL protocol client - remote HTTP requests
+    -   Reference engine - direct implementation of the algebra
+    -   Quad engine - direct implementation of the algebra except
+    -   The main engine
+    -   SDB, a SPARQL database for large-sale persistent data (external
+        system)
+
+-   Result set handling for the SPARQL XML results format, the
+    [JSON](http://json.org) and text versions.
+
+## Main packages
+
+Package | Use
+------- | ---
+`com.hp.hpl.jena.query` | The application API
+`com.hp.hpl.jena.sparql.syntax` | Abstract syntax tree
+`com.hp.hpl.jena.sparql.algebra`| SPARQL algebra
+`com.hp.hpl.jena.sparql.lang` | The parsers: SPARQL, ARQ, RDQL
+`com.hp.hpl.jena.sparql.expr` | Expression code.
+`com.hp.hpl.jena.sparql.serializer` | Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.
+`com.hp.hpl.jena.sparql.engine` | The abstraction of a query engine.
+`com.hp.hpl.jena.sparql.engine.main` | The usual query engine.
+`com.hp.hpl.jena.sparql.engine.ref` | The reference query engine (and quad version)
+
+## Key Execution Classes
+
+### Bindings
+
+### Query Iterators
+
+### Context
+
+[ARQ documentation index](index.html)

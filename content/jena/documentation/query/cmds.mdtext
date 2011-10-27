@@ -1,0 +1,171 @@
+Title: ARQ - Command Line Applications
+
+The `arq` package contains some command line applications to run
+queries, parse queries, process result sets and run test sets.
+
+You will need to set the classpath, or use the helper scripts, to
+run these applications from the command line. The helper scripts
+are in `bin/` (Linux, Unix, Cygwin) and `bat/` (Windows)
+directories. There are ancillary scripts in the directories that
+the main commands need - you should put the relevant directory on
+your command path and set the `ARQROOT` environment variable after
+checking these scripts are suitable.
+
+-   [`arq.query`](#arqquery) is the main query driver.
+    It can be called for SPARQL, ARQ or RDQL queries and there are
+    wrapper commands for each language: `arq.sparql`, `arq.arq` and
+    `arq.rdql`.
+
+-   [`arq.qparse`](#arqqparse) : parse and print a
+    query.
+
+-   [`arq.update`](#arqupdate) : execute SPARQL/Update
+    requests.
+
+-   [`arq.remote`](#arqremote) : execute a query by
+    HTTP on a remote SPARQL endpoint.
+
+-   [`arq.rset`](#arqrset) : transform result sets.
+
+-   [`arq.qtest`](#arqqtest) : run a test set.
+
+-   [`arq.qexpr`](#arqqexpr) : evaluate and print an
+    expression.
+
+-   [`arq.larqbuilder`](#arqlarqbuilder) : Update a
+    LARQ/Lucene index
+
+-   [`arq.larq`](#arqlarq) : Query a LARQ/Lucene
+    index
+
+
+All commands have a `--help` command for a summary of the
+arguments.
+
+When using a query in a file, if the query file ends .rq, it is
+assumed to be a SPARQL query. If it ends .arq, it is assumed to be
+an ARQ query (extensions to SPARQL) and if it ends .rdql, it is
+assumed to be an RDQL query. You can specify the syntax
+explicitly.
+
+The commands `jena.query`, `jena.sparql`, `jena.qtest` and
+`jena.rset` are equivalent and just call to these commands.
+
+### `arq.query`
+
+This is the main command for executing queries on data. The
+wrappers just set the query language.
+
+-   `arq.sparql` : wrapper for SPARQL queries
+-   `arq.arq` : wrapper for ARQ queries
+
+Running `arq.query --help`prints the usage message. The main
+arguments are:
+
+-   `--query FILE` : The file with the query to execute
+-   `--data FILE` : The data to query. It will be included in the
+    default graph.
+-   `--namedgraph FILE` : The data to query. It will be included as
+    a named graph.
+-   `--desc/--dataset`:
+    [Jena Assembler description](http://openjena.org/assembler/) of the
+    dataset to be queried, augmented with vocabulary for datasets, not
+    just graphs. See `etc/` for examples.
+
+The file extension is used to guess the file serialization format.
+If a data file ends `.n3`, it is assumed to be N3; if it ends
+`.ttl` is Turtle; if it is `.nt` is N-Triples; otherwise it is
+assumed to be RDF/XML. The data serialization can be explicitly
+specified on the command line.
+
+### `arq.qparse`
+
+Parse a query and print it out. Can be used to translate between
+syntaxes (but not perfectly - specifically, RDQL value constraints
+need further conversion as complete mechanical translation is not
+possible).
+
+`arq.qparse` will parse the query, print it out again (with line
+numbers by default) and then parse the serialized query again. If
+your query has a syntax error, a message is printed but no query is
+printed. If a query is printed then you get a syntax error message,
+then your query was syntactically correct but the ARQ serialization
+is broken.
+
+The command `arq.qparse --print=op --file <i>queryFile</i>`will
+print the SPARQL algebra for the query in
+[SSE format](http://openjena.org/wiki/SSE).
+
+### `arq.update`
+
+Execute one or more
+[SPARQL/Update](http://openjena.org/~afs/SPARQL-Update.html)
+requests.
+
+SPARQL/Update is an update language based on SPARQL syntax.
+
+-   `--desc`:
+    [Jena Assembler description](http://openjena.org/assembler/) of the
+    dataset or graph store to be updated. See `etc/` for examples.
+
+### `arq.qtest`
+
+Execute a test set. In the ARQ directory, `qtest --all` runs the
+whole ARQ test suite.
+
+To run a specific test suite, use `qtest <em>manifest</em>`. See
+the working group page
+[DAWG Testcases](http://www.w3.org/2001/sw/DataAccess/tests/) for
+details.
+
+### `arq.rset`
+
+Read and write result sets.
+
+In particular,
+
+    java -cp ... arq.rset --in xml --out text
+
+will translate a SPARQL XML Result Set into a tabular text form.
+
+### `arq.qexpr`
+
+Read and print an expression (something that can go in a `FILTER`
+clause). Indicates whether an evaluation exception occured.
+
+The `-v` argument prints the parsed expression.
+
+### `arq.remote`
+
+Execute a request on a remote SPARQL endpoint using HTTP.
+
+-   `--service URL` : The endpoint.
+-   `--data FILE` : Dataset description (default graph) added to
+    the request.
+-   `--namedgraph FILE` : Dataset description (named graph) added
+    to the request.
+-   `--results FORMAT` : Write results in specified format. Does
+    not change the request to the server which is always for an XML
+    form.
+
+### `arq.larqbuilder`
+
+Build or update a [LARQ index](lucene-arq.html). If a dataset is
+given to the command, all graphs are indexed. if a single graph is
+given to the command, that graph is indexed.
+
+-   `--larq` : Name of the directory for the Lucene index files.
+-   `--subjects` : By default literals are indexed against the
+    literal RDF node ([pattern 1](cmds.htm#lPattern_1)). Using this
+    argument cause the subject RDF terms to be indexed
+    ([pattern 2](cmds.htm#lPattern_2)).
+-   Dataset description using `--data FILE` or `--desc.`
+
+### `arq.larq`
+
+Issue a Lucene query and print the nodes found (objects or subjects
+as appropriate).
+
+-   `--larq` : Name of the directory for the Lucene index files.
+
+[ARQ documentation index](index.html)
