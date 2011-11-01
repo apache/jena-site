@@ -1,0 +1,206 @@
+Title: TDB Assembler
+
+[Assemblers](TODO)
+are a general mechanism in Jena to describe objects to be built,
+often these objects are models and datasets. Assemblers are used
+heavily in
+[Joseki](http://www.joseki.org/ "http://www.joseki.org/") for
+datset and model descriptions, for example.
+
+SPARQL queries operate over an
+[RDF dataset](http://www.w3.org/TR/rdf-sparql-query/#rdfDataset "http://www.w3.org/TR/rdf-sparql-query/#rdfDataset"),
+which is a unnamed, default graph and zero or more named graphs.
+
+Having the description in a file means that the data that the
+application is going to work on can be changed without changing the
+program code.
+
+## Contents
+
+-   [Dataset](#Dataset)
+    -   [Union Default Graph](#Union_Default_Graph)
+-   [Graph](#Graph)
+-   [Mixed Datasets](#Mixed_Datasets)
+-   [RDFS](#RDFS)
+
+## Dataset
+
+This is needed for use in [Fuseki](fuseki.html "Fuseki") or
+[Joseki](http://www.joseki.org "http://www.joseki.org").
+
+A dataset can be constructed in an assembler file:
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model      .
+
+    <#dataset> rdf:type         tdb:DatasetTDB ;
+        tdb:location "DB" ;
+        .
+
+Only one dataset can be stored in a location (filing system
+directory).
+
+The first section declares the prefixes used later:
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+then there is a statement that causes TDB to be loaded. TDB
+initialization occurs automatically when loaded. The TDB jar must
+be on the Java classpath.
+
+While order in this file does not matter to the machine, because in
+this case the jena assembler system checks for any `ja:loadClass`
+statements before any attempt to assemble an object is made, having
+it early in the file is helpful to any person looking at the file.
+
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+
+And finally there is the description of the TDB dataset itself:
+
+    <#graph> rdf:type tdb:DatasetTDB ;
+        tdb:location "DB" ;
+
+The property `tdb:location` gives the file name as a string. It is
+relative to the applications current working directory, not where
+the assembler file is read from.
+
+The dataset description is usually found by looking for the one
+subject with type `tdb:GraphDataset`. If more than one graph is
+given in a single file, the application will have to specify which
+description it wishes to use.
+
+### Union Default Graph
+
+An assembler can specify that the default graph for query is the
+union of the named graphs. This is done by adding
+*tdb:unionDefaultGraph*.
+
+    <#dataset> rdf:type         tdb:DatasetTDB ;
+        tdb:location "DB" ;
+        tdb:unionDefaultGraph true ;
+        .
+
+## Graph
+
+A single graph can be described as well:
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+
+     <#graph> rdf:type tdb:GraphTDB ;
+         tdb:location "DB" .
+
+but note that this graph is a single graph at that location; it is
+the default graph of a dataset.
+
+A particular named graph in the dataset at a location can be
+assembled with:
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+
+    <#graph> rdf:type tdb:GraphTDB ;
+         tdb:location "DB" ;
+         tdb:graphName <http://example/graph1> ;
+         .
+
+It is also possible to describe a graph, or named graph, in a
+dataset where the dataset description can now be shared:
+
+    <#graph2> rdf:type tdb:GraphTDB ;
+         tdb:dataset <#dataset> ;
+         .
+
+    <#dataset> rdf:type tdb:DatasetTDB ;
+       tdb:location "DB" ;
+       .
+
+## Mixed Datasets
+
+It is possible to create a dataset with graphs backed by different
+storage subsystems, although query is not necessarily as
+efficient.
+
+To include as a named graph in a dataset use vocabulary as shown
+below:
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+
+    # A dataset of one TDB-backed graph as the default graph and an in-memory graph as a named graph.
+    <#dataset> rdf:type      ja:RDFDataset ;
+         ja:defaultGraph <#graph> ;
+         ja:namedGraph
+            [ ja:graphName      <http://example.org/name1> ;
+              ja:graph          <#graph2> ] ;
+         .
+
+    <#graph> rdf:type tdb:GraphTDB ;
+        tdb:location "DB" ;
+        .
+
+    <#graph2> rdf:type ja:MemoryModel ;
+         ja:content [ja:externalContent <file:Data/books.n3> ] ;
+         .
+
+Note here we added:
+
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+
+which provides for integration with complex model setups, such as
+reasoners.
+
+## RDFS
+
+(to be finished)
+
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+    tdb:Dataset a rdfs:Class .
+    tdb:GraphTDB a rdfs:Class .
+
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+
+    tdb:location a rdf:Property ;
+       # domain is tdb:Dataset or tdb:GraphTDB
+       # The range is simple literal
+       .
+
+    tdb:unionDefaultGraph a rdf:Property ;
+       rdfs:domain tdb:Dataset ;
+       # The range is xsd:boolean
+       .
+
+    tdb:graphName a rdf:Property ;
+       rdfs:domain tdb:GraphTDB ;
+       # range is a URI
+       .
+
+
+

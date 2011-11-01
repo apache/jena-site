@@ -1,0 +1,119 @@
+Title: TDB Command-line Utilities
+
+## Contents
+
+-   [Scripts](#Scripts)
+    -   [Script set up](#Script_set_up)
+    -   [Argument Structure](#Argument_Structure)
+    -   [Setting options from the command line](#Setting_options_from_the_command_line)
+-   [TDB Commands](#TDB_Commands)
+    -   [Store description](#Store_description)
+    -   [tdbloader](#tdbloader)
+    -   [tdbloader2](#tdbloader2)
+    -   [tdbquery](#tdbquery)
+    -   [tdbdump](#tdbdump)
+    -   [tdbstats](#tdbstats)
+
+
+## Scripts
+
+The directory `bin/` contains shell scripts to run the commands
+from the command line. The scripts are bash scripts which also run
+over [Cygwin](http://www.cygwin.com/ "http://www.cygwin.com/").
+
+### Script set up
+
+Set the environment variable `TDBROOT` to the root of the the TDB
+installation.
+
+They are bash scripts, and work on Linux and Cygwin for MS
+Windows.
+
+     $ PATH=$TDBROOT/bin:$PATH
+
+Alternatively, there are wrapper scripts in `$TDBROOT/bin2` which
+can be placed in a convenient directory that is already on the
+shell command path.
+
+### Argument Structure
+
+Each command then has command-specific arguments described below.
+
+All commands support `--help` to give details of named and
+positional arguments.
+
+There are two equivalent forms of named argument syntax:
+
+    --arg=val
+
+    --arg val
+
+### Setting options from the command line
+
+TDB has a number of
+[configuration options](configuration.html "TDB/Configuration")
+which can be set from the command line using:
+
+     --set tdb:symbol=value
+
+Using tdb: is really a short hand for the URI prefix
+http://jena.hpl.hp.com/TDB\# so the full URI form is
+
+     --set http://jena.hpl.hp.com/TDB#symbol=value
+
+## TDB Commands
+
+### Store description
+
+TDB commands use an assembler description for the persistent store
+
+    --desc=assembler.ttl
+    --tdb=assembler.ttl
+
+or a direct reference to the directory with the index and node
+files:
+
+    --loc=DIRECTORY
+    --location=DIRECTORY
+
+The assembler description follow the form for a dataset given in
+[TDB assembler description](assembler.html "TDB/Assembler") page.
+
+If neither assembler file nor location is given, `--desc=tdb.ttl`
+is assumed.
+
+### `tdbloader`
+
+Bulk loader and index builder. Performans bulk load operations more
+efficiently than simply reading RDF into a TDB-back model.
+
+### `tdbloader2`
+
+Bulk loader and index builder. Faster than tdbloader but only works
+on Linux and Mac OS/X.
+
+This bulk loader can only be used to create a database. It may
+overwrite existing data. It only accepts the --loc argument and a
+list of files to load.
+
+### `tdbquery`
+
+Invoke a SPARQL query on a store. Use `--time` for timing
+information. The store is attached on each run of this command so
+timing includes some overhead not present in a running system.
+
+Details about query execution can be obtained -- see notes on the
+[TDB Optimizer](optimizer.html#Investigating_what_is_going_on "TDB/Optimizer").
+
+### `tdbdump`
+
+(Version 0.8.5)
+
+Dump the store in
+[N-Quads](http://sw.deri.org/2008/07/n-quads/ "http://sw.deri.org/2008/07/n-quads/")
+format.
+
+### tdbstats
+
+Produce a statistics for the dataset. See the
+[TDB Optimizer description.](optimizer.html#Statistics_Rule_File "TDB/Optimizer").
