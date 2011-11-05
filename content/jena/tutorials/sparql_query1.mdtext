@@ -1,0 +1,113 @@
+Title: SPARQL Tutorial - A First SPARQL Query
+
+In this section, we look at a simple first query and show how to
+execute it with Jena.
+
+## A "hello world" of queries
+
+The file "[q1.rq](sparql_data/q1.rq)" contains the following query:
+
+    SELECT ?x
+    WHERE { ?x  <http://www.w3.org/2001/vcard-rdf/3.0#FN>  "John Smith" }
+
+executing that query with the command line query application;
+
+    ---------------------------------
+    | x                             |
+    =================================
+    | <http://somewhere/JohnSmith/> |
+    ---------------------------------
+
+This works by matching the triple pattern in the `WHERE` clause
+against the triples in the RDF graph. The predicate and object of
+the triple are fixed values so the pattern is going to match only
+triples with those values. The subject is a variable, and there are
+no other restrictions on the variable. The pattern matches any
+triples with these predicate and object values, and it matches with
+solutions for `x`.
+
+The item enclosed in <\> is a URI (actually, it's an IRI) and the
+item enclosed in "" is a plain literal. Just like Turtle, N3 or
+N-triples, typed literals are written with \^\^ and language tags
+can be added with @.
+
+?x is a variable called x. The ? does not form part of the name
+which is why it does not appear in the table output.
+
+There is one match. The query returns the match in the `x` query
+variable. The output shown was obtained by using one of ARQ's
+command line applications.
+
+## Executing the query
+
+There are [helper scripts](/jena/documentation/query/cmds.html) in the ARQ `bat/` and
+`bin/` directories of the ARQ distribution. They may not be in a
+Jena distribution. You should check these scripts before use.
+
+### Windows setup
+
+Set the `ARQROOT` environment variable to the file location of the
+ARQ distribution.
+
+    set ARQROOT=c:\MyProjects\ARQ
+
+The distribution usually has the version number in the directory
+name.
+
+In the ARQ directory, execute:
+
+    bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+
+(TODO we will need to update these once the release structure is clear)
+
+You can just put the `bat/` directory on your classpath or copy the
+programs out of it. They all depend on ARQROOT.
+
+### bash scripts for Linux/Cygwin/Unix
+
+Set the `ARQROOT` environment variable to the file location of the
+ARQ distribution.
+
+    export ARQROOT=$HOME/MyProjects/ARQ
+
+The distribution usually has the version number in the directory
+name.
+
+In the ARQ directory, execute:
+
+    bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
+
+You can just put the `bin/` directory on your classpath or copy the
+programs out of it. They all depend on ARQROOT.
+
+[Cygwin](http://www.cygwin.com/) is a Linux-like environment for
+Windows.
+
+### Using the Java command line applications directly
+
+You will need to set the classpath to include *all* the jar files
+in the ARQ `lib/` directory.
+
+For example, on Windows:
+
+    ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
+    ARQdir\lib\commons-logging-1.1.jar;ARQdir\lib\concurrent.jar;ARQdir\lib\icu4j_3_4.jar;
+    ARQdir\lib\iri.jar;ARQdir\lib\jena.jar;ARQdir\lib\jenatest.jar;
+    ARQdir\lib\json.jar;ARQdir\lib\junit.jar;ARQdir\lib\log4j-1.2.12.jar;
+    ARQdir\lib\lucene-core-2.2.0.jar;ARQdir\lib\stax-api-1.0.jar;
+    ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
+
+(TODO needs updating)
+
+where `<i>ARQdir</i>` is where you unpacked ARQ. This must be all
+one line.
+
+The names of jar files sometimes changes and new jar files do get
+added - do check this list with your version of ARQ.
+
+The commands themselves are in the `arq` package.
+
+[Next: basic patterns](sparql_basic_patterns.html)
+
+
+
