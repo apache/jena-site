@@ -75,7 +75,7 @@ the next sections.
 ## Specifications common to all models
 
 Assembler specifications can describe many kinds of models: memory,
-inference, database, ontology, and file-backed. All of these model
+inference, ontology, and file-backed. All of these model
 specifications share a set of base properties for attaching
 content, prefix mappings, and reification modes.
 
@@ -196,120 +196,6 @@ resources. The subgraphs rooted at those resources (using the
 algorithm from `ResourceUtils.reachableClosure()`) are added to the
 content.
 
-### RDB models and Connections
-
-The description of an RDB model requires its name and a description
-of the JDBC connection for the database the model is in. For
-example:
-
-    eg:database-example
-        ja:connection eg:connection ;
-          ja:modelName "Thunderbird3"
-        .
-    eg:connection
-        ja:dbType "MySQL" ;
-          ja:dbURL <jdbc:mysql://localhost/test> ;
-          ja:dbUser "cjd"
-        .
-
-    ja:RDBModel a rdfs:Class ;
-      rdfs:subClassOf ja:Connectable ;
-      rdfs:subClassOf [owl:onProperty ja:connection; owl:cardinality 1] ;
-      rdfs:subClassOf ja:NamedModel
-    .
-
-    ja:Connectable a rdfs:Class ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:connection a rdf:Property ;
-      rdfs:domain ja:Connectable ;
-      rdfs:range ja:Connection
-    .
-
-    ja:NamedModel a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:modelName; owl:cardinality 1] ;
-      rdfs:subClassOf ja:Model
-    .
-    ja:modelName a rdf:Property ;
-      rdfs:domain ja:NamedModel
-    .
-
-`ja:RDBModel` is a subclass of `ja:NamedModel` and shares the
-`ja:ModelName` property value naming the model within the
-database.
-
-The mandatory unique property value of `ja:connection` specifies
-the connection to the database to be used.
-
-The description of a connection requires the database name and type
-and the user name and password. If the username and password are
-not specified, `Assembler.general` will default them, normally to
-the values of the system properties `jena.dbUser` and
-`jena.dbPassword`.
-
-    ja:Connection a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:dbType; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbClass; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbTypeProperty; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbURL; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbClassProperty; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbUser; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbPassword; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbUserProperty; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbPasswordProperty; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:dbURLProperty; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:dbTypeProperty a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbPasswordProperty a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbType a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbURL a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbPassword a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbURLProperty a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbUserProperty a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbClass a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbClassProperty a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-    ja:dbUser a rdf:Property ;
-      rdfs:domain ja:Connection
-    .
-
-The `ja:dbURL` property value specifies the URL of the database to
-be connected to. If it is omitted, the `ja:dbURLProperty` value is
-the name of a Java system property whose value is the URL of the
-database.
-
-The `ja:dbType` property value specifies the type of the database
-as a string. If it is omitted, the `ja:dbTypeProperty` value is the
-name of a Java system property whose value is the database type.
-
-The unique `ja:dbUser` property value is a string literal whose
-value is the name of the user connecting to the database. If it is
-omitted, the value of the `ja:dbUserProperty` is the name of a Java
-system property containing the user name.
-
-The unique `ja:dbPassword` property value is the password of the
-user connecting to the database. If it is omitted, the value of the
-`ja:dbPasswordProperty` is the name of a Java system property whose
-value is the password.
-
 ### File models
 
 A FileModel specification builds a memory model that is backed by a
@@ -389,25 +275,15 @@ describes an inference model that uses RDFS reasoning. The
 *reasonerURL* property value is the URI used to identify the
 reasoner (it is the value of the Jena constant
 `RDFSRuleReasonerFactory.URI`). The base model is specified as a
-memory model; if it is left out, an empty memory model is used. Of
-course, you can specify a database model as a base model:
+memory model; if it is left out, an empty memory model is used.
 
-    eg:database-example
-        ja:connection eg:connection ;
-        ja:modelName "Thunderbird3"
-        .
-    eg:connection
-        ja:dbType "MySQL" ;
-        ja:dbURL <jdbc:mysql://localhost/test> ;
-        ja:dbUser "cjd"
-        .
     eg:db-inference-example
-        ja:baseModel eg:database-example ;
+        ja:baseModel eg:model-example ;
         ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>]
         .
 
 The same reasoner as used as in the previous example, but now the
-base model is a database specified in the same way as our earlier
+base model is a specific model description in the same way as our earlier
 example.
 
 Because Jena's access to external reasoners goes through the same
@@ -619,10 +495,7 @@ appropriate properties:
     `ja:likeBuiltinSpec ja:OWL_MEM`.
 -   `ja:importSource`: The value of this optional unique property
     is a `ModelSource` description which describes where imports are
-    obtained from. A `ModelSource` my be of class `ja:ModelSource`, for
-    which memory models are constructed, or a `ja:RDBModelSource` with
-    a `ja:connection` property, for which models are constructed in the
-    specified database.
+    obtained from. A `ModelSource` is usually of of class `ja:ModelSource`.
 -   `ja:documentManager`: This value of this optional unique
     property is a DocumentManager specification. If absent, the default
     document manager is used.
@@ -643,7 +516,6 @@ appropriate properties:
     -   OWL Lite: http://www.w3.org/TR/owl-features/\#term\_OWLLite
     -   RDFS: http://www.w3.org/2000/01/rdf-schema\#
     -   DAML: http://www.daml.org/2001/03/daml+oil\#
-
 
 Any unspecified properties have default values, normally taken from
 those of `OntModelSpec.OWL_MEM_RDFS_INF`. However, if the
