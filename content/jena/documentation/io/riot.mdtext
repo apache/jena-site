@@ -1,0 +1,137 @@
+Title: RDF I/O with RIOT
+
+RIOT - *RDF I/O Technology* - is a code library to support parsing
+and writing of RDF in non-XML formats. At the moment, the module
+focused on input.
+
+Currently supported input syntaxes are:
+
+-   [Turtle](http://www.w3.org/TeamSubmission/turtle/)
+-   [N-Triples](http://www.w3.org/TR/rdf-testcases/#ntriples)
+-   [TriG](http://www4.wiwiss.fu-berlin.de/bizer/TriG/)
+-   [N-Quads](http://sw.deri.org/2008/07/n-quads/)
+
+## Contents
+
+-   [Status](#status)
+-   [Commands](#commands)
+-   [Inference](#inference)
+-   [API](#api)
+-   [Output and Logging](#output_and_logging)
+-   [Wiring into Jena](#wiring_into_jena)
+-   [Notes](#notes)
+-   [See Also](#see_also)
+-   [Contributions](#contributions)
+-   [Support](#support)
+
+## Status
+
+RIOT is currently distributed as part of
+[ARQ](arq1.html "http://openjena.org/ARQ").
+
+## Commands
+
+There are Linux bash scripts in /ARQ/bin to run these commands, and
+indirection scripts that can be drop into any directory on the
+PATH.
+
+-   `riot` -- parse, guessing the syntax from the file extension.
+    Assumed N-Quads/N-Triples from stdin.
+-   `turtle`, `ntriples`, `nquads`, `trig` -- parse a particular language
+
+The file extensions are:
+
+-   .nt -- N-triples
+-   .ttl -- Turtle
+-   .nq -- N-Quads
+-   .trig -- TriG
+
+In addition, if the extension is .gz the file is assumed to be gzip
+compressed. The file name is examined for an inner extension. For
+example, `.nt.gz` is gzip compressed N-Triples.
+
+Each script calls a Java program.
+
+The scripts all accept the same arguments (type "riot --help" to
+get command line reminders):
+
+-   `--validate`: Checking mode: same as --strict --sink --check=true
+-   `--check=true/false`: Run with checking of literals and IRIs
+    either on or off.
+-   `--sink`: No output of triples or quads.
+-   `--time`: Output timing information.
+
+To aid in checking for errors in UTF8-encoded files, there is a
+utility which reads a file of bytes as UTF8 and checks the
+codepoints are defined.
+
+-   `utf8` -- read bytes as UTF8
+
+## Inference
+
+RIOT support creation of inferred triples during the parsing
+process:
+
+    riotcmd.infer --rdfs VOCAB FILE FILE ...
+
+Output will contain the base data and triples inferred based on
+subclass, subproperty, domain and range.
+
+## API
+
+The formal, stable API to RIOT does not yet exist. Future code
+reorganized will occur but there are there are certain key classes
+that provide access to the facilities:
+
+-   RiotReader -- create parsers
+-   RiotLoader -- parse into datasets and graphs
+-   WebReader -- read data fro the web (content negotiation etc)
+    [Not implemented]
+-   SysRIOT -- constants and setup
+
+## Output and Logging
+
+Messages from RIOT are output using
+[SLF4J](http://slf4j.org/). Any logging system
+that provides an implementation or adapter for
+[SLF4J](http://slf4j.org/) can be used to
+direct the output. This includes
+[Apache log4j](http://logging.apache.org/log4j/index.html)
+and `java.util.logging`.
+
+The logger name is "org.openjena.riot" (the constant
+`SysRIOT.riotLoggerName`), and the logger can be obtained using the
+call `SysRIOT.getLogger()`.
+
+## Wiring into Jena
+
+The call SysRIOT.wireIntoJena() will replace the usual Jena readers
+with the RIOT ones. Then calls to model.read for the appropriate
+syntax will use the RIOT parsers.
+
+The usual Jena readers can be reinstalled with
+SysRIOT.resetJenaReaders()
+
+## Notes
+
+N-Quads: only IRIs for the fourth field are supported.
+
+For TriG and N-Quads, bNode labels are assumed to be file-scoped.
+(See
+[here](http://seaborne.blogspot.com/2010/06/standardising-rdf-syntaxes.html)
+for a discussion.)
+
+## See Also
+
+[Notes on RDF syntaxes (June 2010)](http://seaborne.blogspot.com/2010/06/standardising-rdf-syntaxes.html)
+
+## Contributions
+
+Please send patches to
+[Apache Jena JIRA](https://issues.apache.org/jira/browse/JENA).
+
+## Support
+
+Please email jena-users@incubator.apache.org.
+
+
