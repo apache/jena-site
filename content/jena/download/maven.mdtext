@@ -10,131 +10,142 @@ please read and follow [these instructions](http://maven.apache.org/download.htm
 
 ### Repositories
 
-The Jena repositories are:
+Released maven artifacts are mirrored to the central maven repositories.  
+This can take a few days.
 
- * [http://openjena.org/repo](http://openjena.org/repo) (mirrored to the central Maven repository).
- * [http://openjena.org/repo-dev](http://openjena.org/repo-dev) for development builds.
+The Jena repositories at Apache are:
+
+http://repository.apache.org/content/repositories/releases/
+
+ * [http://repository.apache.org/content/repositories/releases/](http://repository.apache.org/content/repositories/releases/)
+ * [http://repository.apache.org/content/repositories/snapshots/](http://repository.apache.org/content/repositories/snapshots/) for development builds.
 
 Stable Jena releases are automatically indexed by Maven central, so there will
-normally be no need to add any extra repositories to your <code>pom.xml</code>.
-If you want to depend on Jena snapshot or unstable versions, e.g. to get access
+normally be no need to add any extra repositories to your
+<code>pom.xml</code> or <code>settings.xml</code>.
+
+If you want to depend on Jena development snapshots, e.g. to get access
 to recent bug fixes, you should add the following to your <code>pom.xml</code>:
 
     <repositories>
       <repository>
-        <id>jena-repo</id>
-        <url>http://openjena.org/repo</url>
+        <id>apache-repo-releases</id>
+        <url>http://repository.apache.org/content/repositories/releases/</url>
+        <releases>
+         <enabled>true</enabled>
+        </releases>
       </repository>
       <repository>
-        <id>jena-repo-dev</id>
-        <url>http://openjena.org/repo-dev</url>
+        <id>apache-repo-snapshots</id>
+        <url>http://repository.apache.org/content/repositories/snapshots/</url>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
       </repository>
     </repositories>
 
-We are currently in the process to migrate SNAPSHOTs and releases to the Apache Maven repositories, if you want to help with the testing check here:
-
- * https://repository.apache.org/content/repositories/releases/org/apache/jena
- * [https://repository.apache.org/content/repositories/snapshots/org/apache/jena/](https://repository.apache.org/content/repositories/snapshots/org/apache/jena/)
-
 ### Specifying Jena or ARQ as a dependency
 
-This is how to specify in your pom.xml file the dependency on the latest Jena and ARQ stable releases:
+This is how to specify in your pom.xml file the dependency 
+on a version of Jena and ARQ stable releases:
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq</artifactId>
-      <version>2.8.8</version>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-arq</artifactId>
+      <version>2.9.0-incubating</version>
     </dependency>
 
 You do not need to specify a dependency on Jena, since ARQ depends on Jena and Maven
 will transitively resolve all the dependencies for you (including Jena).
 
-You can run <code>mvn dependency:tree</code> to print the dependency tree. You will see something
-similar to this (although your versions will be different):
+Please check for the latest version.
 
-    [INFO] +- com.hp.hpl.jena:arq:jar:2.8.5:compile
-    [INFO] |  +- com.hp.hpl.jena:jena:jar:2.6.3:compile
-    [INFO] |  |  +- com.hp.hpl.jena:iri:jar:sources:0.8:runtime
-    [INFO] |  |  +- com.ibm.icu:icu4j:jar:3.4.4:compile
-    [INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.5.8:runtime
-    [INFO] |  |  \- log4j:log4j:jar:1.2.13:runtime
-    [INFO] |  +- com.hp.hpl.jena:jena:jar:sources:2.6.3:runtime
-    [INFO] |  +- com.hp.hpl.jena:jena:test-jar:test-sources:2.6.3:runtime
-    [INFO] |  +- com.hp.hpl.jena:iri:jar:0.8:compile
-    [INFO] |  +- org.codehaus.woodstox:wstx-asl:jar:3.2.9:compile
-    [INFO] |  |  \- stax:stax-api:jar:1.0.1:compile
-    [INFO] |  +- org.apache.lucene:lucene-core:jar:2.3.1:compile
-    [INFO] |  +- org.slf4j:slf4j-api:jar:1.5.8:compile
-    [INFO] |  \- xerces:xercesImpl:jar:2.7.1:compile
-    [INFO] \- junit:junit:jar:4.7:test
+The artifacts are:
 
+ * jena-core
+ * jena-arq
+ * jena-iri
+ * jena-tdb
+ * jena-sdb
+
+You can run <code>mvn dependency:tree</code> to print the dependency
+tree. You will see something similar to this (although your versions will
+be different):
+
+    [INFO] +- org.apache.jena:jena-arq:jar:2.9.0-incubating:compile
+    [INFO] |  +- commons-codec:commons-codec:jar:1.5:compile
+    [INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.1.2:compile
+    [INFO] |  \- org.apache.httpcomponents:httpcore:jar:4.1.3:compile
+    [INFO] +- org.apache.jena:jena-core:jar:2.7.0-incubating:compile
+    [INFO] |  \- org.apache.jena:jena-iri:jar:0.9.0-incubating:compile
+    [INFO] +- com.ibm.icu:icu4j:jar:3.4.4:compile
+    [INFO] +- xerces:xercesImpl:jar:2.10.0:compile
+    [INFO] |  \- xml-apis:xml-apis:jar:1.4.01:compile
+    [INFO] +- junit:junit:jar:4.9:test
+    [INFO] +- org.slf4j:slf4j-api:jar:1.6.4:compile
+    [INFO] +- org.slf4j:slf4j-log4j12:jar:1.6.4:compile
+    [INFO] \- log4j:log4j:jar:1.2.16:compile
 
 ### Specifying SDB or TDB as dependencies
-
-Similarly for SDB, this is what you should use to point to the latest SDB release:
-
-    <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>sdb</artifactId>
-      <version>1.3.4</version>
-    </dependency>
 
 For TDB, this is what you should use to point to the latest TDB release:
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>tdb</artifactId>
-      <version>0.8.10</version>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-tdb</artifactId>
+      <version>0.9.0-incubating</version>
     </dependency>
 
-Once again, since SDB and TDB depend on Jena and ARQ this is all you need in your <code>pom.xml</code> file.
+The artifact id for SDB is <code>jena-sdb</code>.
+
+Once again, since SDB and TDB depend on Jena and ARQ 
+this is all you need in your <code>pom.xml</code> file.
+
+(Apache releases of TDB and SDB have not yet been done.)
 
 ### Specifying dependencies on SNAPSHOTs
 
-Don't forget to include <code>http://openjena.org/repo-dev</code> in your repositories!
+Don't forget to include 
+<code>http://repository.apache.org/content/repositories/snapshots/</code>
+in your repositories!
 
-    <repositories>
       <repository>
-        <id>jena-repo-dev</id>
-        <url>http://openjena.org/repo-dev</url>
+        <id>apache-repo-snapshots</id>
+        <url>http://repository.apache.org/content/repositories/snapshots/</url>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
       </repository>
-    </repositories>
 
 For the current Jena SNAPSHOT use:
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>jena</artifactId>
-      <version>2.6.5-SNAPSHOT</version>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
+      <version>2.7.1-incubating-SNAPSHOT</version>
     </dependency>
 
 For the current ARQ SNAPSHOT use:
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq</artifactId>
-      <version>2.8.9-SNAPSHOT</version>
-    </dependency>
-
-For the current SDB SNAPSHOT use:
-
-    <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>sdb</artifactId>
-      <version>1.3.5-SNAPSHOT</version>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-arq</artifactId>
+      <version>2.9.1-incubating-SNAPSHOT</version>
     </dependency>
 
 For the current TDB SNAPSHOT use:
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>tdb</artifactId>
-      <version>0.8.11-SNAPSHOT</version>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-tdb</artifactId>
+      <version>0.9.0-incubating-SNAPSHOT</version>
     </dependency>
-
-Remember, snapshots are temporary and you should use them only as dependencies
-for your SNAPSHOTs (to spot possible problems early on). Do not use SNAPSHOTs or
-release candidates (RC's) as dependencies for your releases.
 
 ### Build and install artifacts in your local Maven repository
 
@@ -142,12 +153,12 @@ If you want you can checkout the Jena (or ARQ, or TDB) sources, build the artifa
 install them in your local Maven repository. Simply checkout the sources and type
 <code>mvn install</code>. This assumes you have Maven and Subversion installed:
 
-    svn co https://svn.apache.org/repos/asf/incubator/jena/Jena2/jena/trunk Jena
-    cd Jena
+    svn co https://svn.apache.org/repos/asf/incubator/jena/Jena2/jena/trunk jena-core
+    cd jena-core
     mvn clean install
 
-    svn co https://svn.apache.org/repos/asf/incubator/jena/Jena2/ARQ/trunk ARQ
-    cd ARQ
+    svn co https://svn.apache.org/repos/asf/incubator/jena/Jena2/ARQ/trunk jena-arq
+    cd jena-arq
     mvn clean install
 
-Subversion projects also exist for SDB, TDB, Fuseki and others modules, you can browse the subversion repository [here](https://svn.apache.org/repos/asf/incubator/jena/Jena2/).
+Subversion projects also exist for TDB, Fuseki and others modules, you can browse the subversion repository [here](http://svn.apache.org/repos/asf/incubator/jena/Jena2/).
