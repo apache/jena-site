@@ -20,32 +20,9 @@ http://repository.apache.org/content/repositories/releases/
  * [http://repository.apache.org/content/repositories/releases/](http://repository.apache.org/content/repositories/releases/)
  * [http://repository.apache.org/content/repositories/snapshots/](http://repository.apache.org/content/repositories/snapshots/) for development builds.
 
-Stable Jena releases are automatically indexed by Maven central, so there will
-normally be no need to add any extra repositories to your
-<code>pom.xml</code> or <code>settings.xml</code>.
-
-If you want to depend on Jena development snapshots, e.g. to get access
-to recent bug fixes, you should add the following to your <code>pom.xml</code>:
-
-    <repositories>
-      <repository>
-        <id>apache-repo-releases</id>
-        <url>http://repository.apache.org/content/repositories/releases/</url>
-        <releases>
-         <enabled>true</enabled>
-        </releases>
-      </repository>
-      <repository>
-        <id>apache-repo-snapshots</id>
-        <url>http://repository.apache.org/content/repositories/snapshots/</url>
-        <releases>
-          <enabled>false</enabled>
-        </releases>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
-      </repository>
-    </repositories>
+Stable Jena releases are automatically mirrored by the central Maven
+repositories, so there will normally be no need to add any extra 
+repositories to your <code>pom.xml</code> or <code>settings.xml</code>.
 
 ### Specifying Jena or ARQ as a dependency
 
@@ -60,6 +37,16 @@ on a version of Jena and ARQ stable releases:
 
 You do not need to specify a dependency on Jena, since ARQ depends on Jena and Maven
 will transitively resolve all the dependencies for you (including Jena).
+if you do need to use the Apache release repository, add the follwoong to
+the <code>&lt;repositories</code> section of your <ocde.pom.xml</code>.
+
+   <repository>
+     <id>apache-repo-releases</id>
+     <url>http://repository.apache.org/content/repositories/releases/</url>
+     <releases>
+      <enabled>true</enabled>
+     </releases>
+   </repository>
 
 Please check for the latest version.
 
@@ -108,9 +95,8 @@ this is all you need in your <code>pom.xml</code> file.
 
 ### Specifying dependencies on SNAPSHOTs
 
-Don't forget to include 
-<code>http://repository.apache.org/content/repositories/snapshots/</code>
-in your repositories!
+If you want to depend on Jena development snapshots, e.g. to get access
+to recent bug fixes, you should add the following to your <code>pom.xml</code>:
 
       <repository>
         <id>apache-repo-snapshots</id>
@@ -161,4 +147,10 @@ install them in your local Maven repository. Simply checkout the sources and typ
     cd jena-arq
     mvn clean install
 
-Subversion projects also exist for TDB, Fuseki and others modules, you can browse the subversion repository [here](http://svn.apache.org/repos/asf/incubator/jena/Jena2/).
+    svn co https://svn.apache.org/repos/asf/incubator/jena/Jena2/TDB/trunk jena-tdb
+    cd jena-tdb
+    mvn clean install
+
+
+Subversion projects also exist for Fuseki and others modules, you can browse the
+subversion repository [here](http://svn.apache.org/repos/asf/incubator/jena/Jena2/).
