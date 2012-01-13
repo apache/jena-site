@@ -25,10 +25,6 @@ for reverting a database to 0.8.X.
 -   [Multi JVM](#multi_jvm)
 -   [Bulk loading](#bulk_loading)
 
-## Status
-
-Transactions are part of the 0.9.0 release.
-
 ## Overview
 
 The transaction mechanism in TDB is based on
@@ -88,10 +84,10 @@ it should be used transactionally after that.
 These are used for SPARQL queries and code using the Jena API
 actions that do not change the data.  The general pattern is:
 
-    dataset.begin(ReadWrite.READ) ;
-    try {
-      ...
-    } finally { dataset.end() ; }
+     dataset.begin(ReadWrite.READ) ;
+     try {
+       ...
+     } finally { dataset.end() ; }
 
 The `dataset.end()` declares the end of the read transaction.  Applications may also call
 `dataset.commit()` or `dataset.abort()` which all have the same effect for a read transaction.
@@ -123,13 +119,13 @@ operations consume large amounts of temporary space.
 
 The general pattern is:
 
-    dataset.begin(ReadWrite.WRITE) ;
-    try {
-      ...
-      dataset.commit() ;
-    } finally { 
+     dataset.begin(ReadWrite.WRITE) ;
+     try {
+       ...
+       dataset.commit() ;
+     } finally { 
        dataset.end() ; 
-    }
+     }
 
 The  `dataset.end()` will abort the transaction is there was no call to
 `dataset.commit()` or `dataset.abort()` inside the write transaction.
