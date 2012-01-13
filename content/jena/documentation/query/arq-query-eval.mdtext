@@ -4,9 +4,8 @@ This page describes the mechanisms that can be used to extend and
 modify query execution within ARQ. Through these mechanisms, ARQ
 can be used to query different graph implementations and to provide
 different query evaluation and optimization strategies for
-particular circumstances.  These mechanisms are used by
-[SDB](../sdb/) and
-[TDB](../tdb).
+particular circumstances. These mechanisms are used by
+[TDB](../tdb) and [SDB](../sdb/).
 
 ARQ can be [extended in various ways](extension.html) to
 incorporate custom code into a query.
@@ -74,7 +73,7 @@ created, and in particular it is not modified by query execution.
 ### Algebra generation
 
 ARQ generates the
-[SPARQL algebra](http://www.w3.org/TR/rdf-sparql-query/#sparqlQuery)
+[SPARQL algebra](http://www.w3.org/TR/sparql11-query/#sparqlQuery)
 expression for the query. After this a number of transformations
 can be applied (for example, identification of property functions)
 but the first step is the application of the algorithm in the
@@ -105,12 +104,13 @@ becomes
           )
         )))
 
-using the [SSE syntax](http://openjena.org/wiki/SSE) to write out
+using the [SSE syntax](../notes/sse.html) to write out
 the internal data-structure for the algebra.
 
 The [online SPARQL validator](http://www.sparql.org/validator.html)
 at [sparql.org](http://sparql.org/) can be used to see the algebra
-expression for a SPARQL query.
+expression for a SPARQL query. This validator is also include in 
+[Fuseki](../serving_data/).
 
 ### High-Level Optimization and Transformations
 
@@ -147,7 +147,7 @@ identify operation (returns the node supplied) for each transform
 operation.
 
 Operations can be printed out in
-[SSE](http://openjena.org/wiki/SSE) syntax.  The Java `toString`
+[SSE](../notes/sse.html) syntax. The Java `toString`
 method is overridden to provide pretty printing and the static
 methods in `WriterOp` provide output to various output objects like
 `java.io.OutputStream`.
@@ -281,7 +281,7 @@ the `StageGenerator` mechanism, as compared to the more general
 requires less detail about the internal evaluation of the other
 SPARQL algebra operators.  This extension point corresponds to
 section 12.6
-"[Extending SPARQL Basic Graph Matching](http://www.w3.org/TR/rdf-sparql-query/#sparqlBGPExtend)".
+"[Extending SPARQL Basic Graph Matching](http://www.w3.org/TR/sparql11-query/#sparqlBGPExtend)".
 
 Below is the default code to match a BGP from
 `OpExecutor.execute(OpBGP, QueryIterator)`. It merely calls fixed
@@ -455,8 +455,7 @@ custom query engine and overriding `QueryEngineMain.modifyOp`:
 
 The extension may need to provide its own dataset implementation so
 that it can detect when queries are directed to its named graph
-storage. [SDB](http://openjena.org/SDB) and
-[TDB](http://openjena.org/TDB) are examples of this.
+storage. [TDB](../tdb/) and [SDB](../sdb/) are examples of this.
 
 ## Mixed Graph Implementation Datasets
 

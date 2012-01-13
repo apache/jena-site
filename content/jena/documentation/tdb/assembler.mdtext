@@ -3,12 +3,11 @@ Title: TDB Assembler
 [Assemblers](/jena/documentation/assembler/)
 are a general mechanism in Jena to describe objects to be built,
 often these objects are models and datasets. Assemblers are used
-heavily in
-[Joseki](http://www.joseki.org/ "http://www.joseki.org/") for
-datset and model descriptions, for example.
+heavily in [Fuseki](../serving_data/) for
+dataset and model descriptions, for example.
 
 SPARQL queries operate over an
-[RDF dataset](http://www.w3.org/TR/rdf-sparql-query/#rdfDataset "http://www.w3.org/TR/rdf-sparql-query/#rdfDataset"),
+[RDF dataset](http://www.w3.org/TR/sparql11-query/#rdfDataset "http://www.w3.org/TR/rdf-sparql-query/#rdfDataset"),
 which is a unnamed, default graph and zero or more named graphs.
 
 Having the description in a file means that the data that the
@@ -25,8 +24,7 @@ program code.
 
 ## Dataset
 
-This is needed for use in [Fuseki](fuseki.html "Fuseki") or
-[Joseki](http://www.joseki.org "http://www.joseki.org").
+This is needed for use in [Fuseki](../serving_data/ "Fuseki").
 
 A dataset can be constructed in an assembler file:
 
@@ -99,8 +97,8 @@ A single graph can be described as well:
 
     [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 
-     <#graph> rdf:type tdb:GraphTDB ;
-         tdb:location "DB" .
+    <#graph> rdf:type tdb:GraphTDB ;
+        tdb:location "DB" .
 
 but note that this graph is a single graph at that location; it is
 the default graph of a dataset.
@@ -115,20 +113,20 @@ assembled with:
     [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 
     <#graph> rdf:type tdb:GraphTDB ;
-         tdb:location "DB" ;
-         tdb:graphName <http://example/graph1> ;
-         .
+        tdb:location "DB" ;
+        tdb:graphName <http://example/graph1> ;
+        .
 
 It is also possible to describe a graph, or named graph, in a
 dataset where the dataset description can now be shared:
 
     <#graph2> rdf:type tdb:GraphTDB ;
-         tdb:dataset <#dataset> ;
-         .
+        tdb:dataset <#dataset> ;
+        .
 
     <#dataset> rdf:type tdb:DatasetTDB ;
-       tdb:location "DB" ;
-       .
+        tdb:location "DB" ;
+        .
 
 ## Mixed Datasets
 
@@ -148,7 +146,8 @@ below:
     tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
     tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
-    # A dataset of one TDB-backed graph as the default graph and an in-memory graph as a named graph.
+    # A dataset of one TDB-backed graph as the default graph and 
+    # an in-memory graph as a named graph.
     <#dataset> rdf:type      ja:RDFDataset ;
          ja:defaultGraph <#graph> ;
          ja:namedGraph
@@ -173,8 +172,6 @@ which provides for integration with complex model setups, such as
 reasoners.
 
 ## RDFS
-
-(to be finished)
 
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
     @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .

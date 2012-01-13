@@ -27,11 +27,7 @@ for reverting a database to 0.8.X.
 
 ## Status
 
-Currently *in development*.
-
-[Development snapshot builds](http://www.openjena.org/repo-dev/com/hp/hpl/jena/tx-tdb/)
-
-[Source code repository](https://svn.apache.org/repos/asf/incubator/jena/Experimental/TxTDB/trunk/)
+Transactions are part of the 0.9.0 release.
 
 ## Overview
 
@@ -61,15 +57,12 @@ TDB provides
 transactions, the highest
 [isolation level](http://en.wikipedia.org/wiki/Isolation_(database_systems)).
 
-The transaction action mechanism is not designed for large-scale
-database changes.
-
 ## Limitations
 
 (some of these limitations may be removed in later versions)
 
 -   Bulk loads: the TDB bulk loader is not transactional
--   No nested update transactions.
+-   [Nested write transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
 -   Single active writer: no multiple concurrent update
     transactions.
 -   Some active transaction state is held exclusively in-memory,
@@ -83,75 +76,127 @@ resources.
 
 ## API for Transactions
 
-[Development]
+TDB supports the general Jena API for transactions on RDF datasets 
+(introduced in Jena 2.7.0, ARQ 2.9.0).  Not all storage systems support 
+transactions.
 
-*The API currently relies on a mix of TDB-specific low-level operations and general high-level operations. This will be sorted out to be uniform.*
+A TDB-backed dataset can be used non-transactionally but once used in a transaction, 
+it should be used transactionally after that.
 
 ### Read transactions
 
 These are used for SPARQL queries and code using the Jena API
-actions that do not change the data.
+actions that do not change the data.  The general pattern is:
+
+    dataset.begin(ReadWrite.READ) ;
+    try {
+      ...
+    } finally { dataset.end() ; }
+
+The `dataset.end()` declares the end of the read transaction.  Applications may also call
+`dataset.commit()` or `dataset.abort()` which all have the same effect for a read transaction.
+
+     Dataset dataset =  ... ;
+     dataset.begin(ReadWrite.READ) ;
+        
+     try {
+         QueryExecution qExec = QueryExecutionFactory.create("SELECT * {?s ?p ?o} LIMIT 10", dataset) ;
+         ResultSet rs = qExec.execSelect() ;
+         try {
+             ResultSetFormatter.out(rs) ;
+         } finally { qExec.close() ; }
+
+         // Another query - same view of the data.
+         qExec = QueryExecutionFactory.create("SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10", dataset) ;
+         rs = qExec.execSelect() ;
+         try {
+             ResultSetFormatter.out(rs) ;
+         } finally { qExec.close() ; }
+     } finally { dataset.end() ; }
 
 ### Write transactions
 
 These are used for SPARQL queries, SPARQL updates and any Jena API
-actions.
+actions that modify the data.  Beware that large `model.read` 
+operations consume large amounts of temporary space.
+
+
+The general pattern is:
+
+    dataset.begin(ReadWrite.WRITE) ;
+    try {
+      ...
+      dataset.commit() ;
+    } finally { 
+       dataset.end() ; 
+    }
+
+The  `dataset.end()` will abort the transaction is there was no call to
+`dataset.commit()` or `dataset.abort()` inside the write transaction.
+
+Once `dataset.commit()` or `dataset.abort()` is called, the application
+needs to start a new transaction to perform further operations on the 
+dataset.
+
+     Dataset dataset = ... ;
+     dataset.begin(ReadWrite.WRITE) ;
+        
+     try {
+         Model model = dataset.getDefaultModel() ;
+         // API calls to a model in the dataset
+
+         model.add( ... )
+
+         // A SPARQL query will see the new statement added.
+         QueryExecution qExec = QueryExecutionFactory.create(
+               "SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10", 
+               dataset) ;
+         ResultSet rs = qExec.execSelect() ;
+         try {
+             ResultSetFormatter.out(rs) ;
+         } finally { qExec.close() ; }
+
+         // ... perform a SPARQL Update
+         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
+         String sparqlUpdateString = StrUtils.strjoinNL(
+              "PREFIX . <http://example/>",
+              "INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }"
+              ) ;
+
+         UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
+         UpdateProcessor proc = UpdateExecutionFactory.create(request, graphStore) ;
+         proc.execute() ;
+            
+         // Finally, commit the transaction. 
+         dataset.commit() ;
+         // Or call .abort()
+        } finally { 
+            dataset.end() ; 
+        }
+
+### Multi-threaded use
 
 While it is possible to shared a write transaction between multiple
 threads, this is not encouraged. Applications needing to do so must
-ensure that within the transactions, all threads are acting
-"multiple reader OR single writer". Changes the data within the
+ensure that within the transaction, all threads are acting
+"multiple reader OR single writer". Change to the data within the
 transaction must be executed one at a time.
 
-## Examples
+## Multi JVM
 
-### Read Transaction
+Multiple applications, running in multiple JVMs, using the same
+file databases is not supported. There must be a single JVM
+controlling the database directory and files.
 
-     DatasetGraphTxn dsg = sConn.begin(ReadWrite.READ) ;
-     try {
-         Dataset ds = DatasetFactory.create(dsg) ;
-         QueryExecution qExec = QueryExecutionFactory.create("SELECT * { ?s ?p ?o} LIMIT 10", ds) ;
-         ResultSet rs = qExec.execSelect() ;
-         try {
-             ResultSetFormatter.out(rs) ;
-         } finally { qExec.close() ; }
+Use [Fuseki](../serving_data/) to provide a
+database server for multiple applications. Fuseki supports 
+[SPARQL Query](http://www.w3.org/TR/sparql11-query/),
+[SPARQL Update](http://www.w3.org/TR/sparql11-update/) and the
+[SPARQL Graph Store protocol](http://www.w3.org/TR/sparql11-http-rdf-update/).
 
-         // Another query - same view of the data.
-         qExec = QueryExecutionFactory.create("SELECT * { ?s ?p ?o} OFFSET 10 LIMIT 10", ds) ;
-         rs = qExec.execSelect() ;
-         try {
-             ResultSetFormatter.out(rs) ;
-         } finally { qExec.close() ; }
-     } finally { dsg.close() ; }
+## Bulk loading
 
-### Write Transaction
-
-     DatasetGraphTxn dsg = sConn.begin(ReadWrite.WRITE) ;
-     try {
-         Dataset ds = DatasetFactory.create(dsg) ;
-         // Query
-         QueryExecution qExec = QueryExecutionFactory.create("SELECT * { ?s ?p ?o} LIMIT 10", ds) ;
-         ResultSet rs = qExec.execSelect() ;
-         try {
-             ResultSetFormatter.out(rs) ;
-         } finally { qExec.close() ; }
-
-         // Update
-         UpdateRequest request = UpdateFactory.create("PREFIX : <http://example/> INSERT DATA { :s :p :o}") ;
-         UpdateProcessor proc = UpdateExecutionFactory.create(request, dsg) ;
-         proc.execute() ;
-         // A query here will see the inserted data.
-         dsg.commit() ;
-     } finally { dsg.close() ; } // WARNING if no commit or abort.
-
-### Nesting Transactions
-
-[Nested write transactions](http://en.wikipedia.org/wiki/Nested_transaction)
-are not supported.
-
-A read transaction may be started inside a write transaction - this
-behaves like a top-level read transaction over the state of the
-database before the write transaction started.
+The bulk loader is not transactional.
 
 ## Migration from TDB 0.8.X
 
@@ -172,18 +217,3 @@ Applications can start using transaction by coding to the new API.
 A database can be reverted to TDB 0.8.X by running `tdb.tdbrecover`
 - this program recovers any committed transaction with pending
 actions. The database can then be used with TDB 0.8.X.
-
-## Multi JVM
-
-Multiple applications, running in multiple JVMs, using the same
-file databases is not supported. There must be a single JVM
-controlling the database directory and files.
-
-Use [Fuseki](http://openjena.org/wiki/Fuseki) to provide a
-database server for multiple applications. Fuseki supports SPARQL
-Query, SPARQL Update, SPARQL Graph Store Update.
-
-## Bulk loading
-
-The bulk loader is not transactional.
-
