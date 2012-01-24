@@ -7,19 +7,11 @@ values defined - plain literals (which are basically strings with
 an optional language tag) and XML literals (which are more or less
 plain literals plus a "well-formed-xml" flag).
 
-Part of the remit for the current
+Part of the remit for the 2001
 [RDF Core](http://www.w3.org/2001/sw/RDFCore/) working group was to
-add to RDF support for typed values, i.e. things like numbers. At
-the time of writing the core specification for these has been
-published in the last call documents though some modifications to
-the way xml:Lang tags are treated have been proposed in response to
-last call comments.
-
-These notes describe the support for typed literals built into
-Jena2 at present. Some of the details have been changed recently in
-response to the recent working group decisions. We will now attempt
-to keep the API as stable as we can, unless some major shifting in
-the specifications occurs.
+add to RDF support for typed values, i.e. things like numbers.
+These notes describe the support for typed literals in
+Jena2.
 
 Before going into the Jena details here are some informal reminders
 of how typed literals work in RDF. We refer readers to the RDF core
@@ -33,8 +25,8 @@ the literal) and a datatype (identified by a URI). The datatype is
 supposed to denote a mapping from lexical forms to some space of
 values. The pair comprising the literal then denotes an element of
 the value space of the datatype. For example, a typed literal
-comprising ("true", xsd:boolean) would denote the abstract true
-value T.
+comprising `("true", xsd:boolean)` would denote the abstract true
+value `T`.
 
 In the RDF/XML syntax typed literals are notated with syntax such
 as:
@@ -45,7 +37,11 @@ In NTriple syntax the notation is:
 
     "13"^^<http://www.w3.org/2001/XMLSchema#int>
 
-and this `^^` notation will appear in literals printed by Jena.
+In Turtle, it can be abbreviated:
+
+    "13"^^xsd:int
+
+This `^^` notation will appear in literals printed by Jena.
 
 Note that a literal is either typed or plain (an old style literal)
 and which it is can be determined statically. There is no way to
@@ -55,31 +51,32 @@ ontology definition.
 
 In the new scheme of things well-formed XML literals are treated as
 typed literals whose datatype is the special type
-"rdf:XMLLiteral".
+`rdf:XMLLiteral`.
 
 ## Basic API operations
 
-Jena2 will correctly parse typed literals within RDF/XML, NTriple
-and N3 source files. The same Java object,
-`<a href="../javadoc/com/hp/hpl/jena/rdf/model/Literal.html">Literal</a>`,
+Jena will correctly parse typed literals within RDF/XML, NTriple
+and Turtle source files. The same Java object,
+[`Literal`](/jena/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Literal.html)
 will represent "plain" and "typed" literals. Literal now supports
 some new methods:
 
-`getDatatype()`
+- `getDatatype()`
 Returns null for a plain literal or a Java object which represents
 the datatype of a typed Literal.
-`getDatatypeURI()`
+
+- `getDatatypeURI()`
 Returns null for a plain literal or the URI of the datatype of a
 typed Literal.
-`getValue()`
+
+- `getValue()`
 Returns a Java object representing the value of the literal, for
 example for an xsd:int this will be a java.lang.Integer, for plain
 literals it will be a String.
 The converse operation of creating a Java object to represent a
 typed literal in a model can be achieved using:
 
-> `model.createTypedLiteral`(value, datatype)
-
+- `model.createTypedLiteral(value, datatype)`
 This allows the `value` to be specified by a lexical form (i.e. a
 String) or by a Java object representing the typed value; the
 `datatype` can be specified by a URI string or a Java object
@@ -88,7 +85,7 @@ representing the datatype.
 In addition there is a built in mapping from standard Java wrapper
 objects to XSD datatypes (see later) so that the simpler call:
 
-> `model.createTypedLiteral(Object)`
+    model.createTypedLiteral(Object)
 
 will create a typed literal with the datatype appropriate for
 representing that java object. For example,
@@ -96,7 +93,7 @@ representing that java object. For example,
     Literal l = model.createTypedLiteral(new Integer(25));
 
 will create a typed literal with the lexical value "25", of type
-xsd:int.
+`xsd:int`.
 
 Note that there are also functions which look similar but do not
 use typed literals. For example::
@@ -107,7 +104,7 @@ use typed literals. For example::
 These worked by converting the primitive to a string and storing
 the resulting string as a plain literal. The inverse operation then
 attempts to parse the string of the plain literal (as an int in
-this example). These are for backward compability with earlier
+this example). These are for backward compatibility with earlier
 versions of Jena and older datasets. In normal circumstances
 `createTypedLiteral` is preferable.
 
@@ -131,7 +128,7 @@ made it impossible to cache literals in a hash table.
 
 Datatypes for typed literals are represented by instances of the
 interface
-[`com.hp.hpl.jena.datatypes.RDFDatatype`](../javadoc/com/hp/hpl/jena/datatypes/RDFDatatype.html).
+[`com.hp.hpl.jena.datatypes.RDFDatatype`](/jena/documentation/javadoc/com/hp/hpl/jena/datatypes/RDFDatatype.html).
 Instances of this interface can be used to parse and serialized
 typed data, test for equality and test if a typed or lexical value
 is a legal value for this datatype.
@@ -190,33 +187,24 @@ Jena includes prebuilt, and pre-registered, instances of
 > gYearMonth gMonthDay
 
 These are all available as static member variables from
-[`com.hp.hpl.jena.datatypes.xsd.XSDDatatype`](../javadoc/com/hp/hpl/jena/datatypes/xsd/XSDDatatype.html).
+[`com.hp.hpl.jena.datatypes.xsd.XSDDatatype`](/jena/documentation/javadoc/com/hp/hpl/jena/datatypes/xsd/XSDDatatype.html).
 
 Of these types, the following are registered as the default type to
 use to represent certain Java classes:
 
-Java class
-xsd type
-Float
-float
-Double
-double
-Integer
-int
-Long
-long
-Short
-short
-Byte
-byte
-BigInteger
-integer
-BigDecimal
-decimal
-Boolean
-Boolean
-String
-string
+Java class | xsd type
+----------- | ---------
+Float | float
+Double | double
+Integer | int
+Long | long
+Short | short
+Byte | byte
+BigInteger | integer
+BigDecimal | decimal
+Boolean | Boolean
+String | string
+
 Thus when creating a typed literal from a Java `BigInteger` then
 `xsd:integer` will be used. The converse mapping is more adaptive.
 When parsing an xsd:integer the Java value object used will be an
@@ -299,7 +287,7 @@ standard for how to map the datatype URI to a datatype definition.
 
 Within Jena2 we allow new datatypes to be created and registered by
 using the
-[`TypeMapper`](../javadoc/com/hp/hpl/jena/datatypes/TypeMapper.html)
+[`TypeMapper`](/jena/documentation/javadoc/com/hp/hpl/jena/datatypes/TypeMapper.html)
 class.
 
 The easiest way to define a new RDFDatatype is to subclass
