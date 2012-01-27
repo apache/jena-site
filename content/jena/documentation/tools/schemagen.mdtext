@@ -62,6 +62,7 @@ Command line option | RDF config file property | Meaning
 --rdfs | sgen:rdfs | Specify that the language of the source ontology is RDFS.
 --strictIndividuals | sgen:strictIndividuals | When selecting the individuals to include in the output class, schemagen will normally include those individuals whose `rdf:type` is in the included namespaces for the vocabulary. However, if `strictIndividuals` is turned on, then all individuals in theoutput class must themselves have a URI in the included namespaces.
 --uppercase  | sgen:uppercase Option for mapping constant names to uppercase (like Java constants). Default is to leave the case of names unchanged.
+`--includeSource` | `sgen:includeSource` | Serializes the source code of the vocabulary, and includes this into the generated class file. At class load time, creates a `Model` containing the definitions from the source
 
 ## What does schemagen do?
 
@@ -620,6 +621,31 @@ arbitrary Java code, though typically this will be a comment block,
 at the head of the sections of class constant declarations,
 property constant declarations, and individual constant
 declarations.
+
+### Include vocabulary source code
+
+ |
+--- | ---
+**Command line** | `--includeSource`
+**Config file** | `\<sgen:includeSource rdf:datatype="&xsd;boolean"\>true\</sgen:includeSource\>
+
+Schemagen's primary role is to provide Java constants corresponding to the names in
+a vocabulary. Sometimes, however, we may need more information from the vocabulary
+source file to available. For example, to know the domain and range of the properties
+in the vocabulary. If you set the configuration parameter `--includeSource`, schemagen
+will:
+
+- convert the input vocabulary into string form and include that string form in the
+  generated Java class
+- create a Jena model when the Java vocabulary class is first loaded, and load the string-ified
+  vocabulary into that model
+- attach the generated constants to that model, so that, for example, you can look up the
+  declared domain and range of a property or the declared super-classes of a class.
+
+Note that Java compilers typically impose some limit on the size of a Java source file (or, more
+specifically, on the size of `.class` file they will generate. Loading a particularly large
+vocabulary with `--includeSource` may risk breaching that limit.
+
 
 ## Using schemagen with Ant
 
