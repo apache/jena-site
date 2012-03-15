@@ -64,7 +64,7 @@ download.
 3.  (Linux) `chmod +x fuseki-server s-\*`
 4.  Run a server
 
-     fuseki-server --update --mem /dataset
+     fuseki-server --update --mem /ds
 
 The server logging goes to the console:
 
@@ -101,19 +101,19 @@ In a new window:
 
 Load some RDF data into the default graph of the server:
 
-    s-put http://localhost:3030/dataset/data default books.ttl
+    s-put http://localhost:3030/ds/data default books.ttl
 
 Get it back:
 
-    s-get http://localhost:3030/dataset/data default
+    s-get http://localhost:3030/ds/data default
 
 Query it with SPARQL using the .../query endpoint.
 
-    s-query --service http://localhost:3030/dataset/query 'SELECT * {?s ?p ?o}'
+    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
 
 Update it with SPARQL using the .../update endpoint.
 
-    s-update --service http://localhost:3030/dataset/update 'CLEAR DEFAULT'
+    s-update --service http://localhost:3030/ds/update 'CLEAR DEFAULT'
 
 ## Security
 
@@ -147,18 +147,20 @@ file):
 
 This details the service URIs for Fuseki:
 
--   `http://host/`* dataset *`/query` -- the SPARQL query endpoint.
--   `http://host/`* dataset *`/update` -- the SPARQL Update language
+-   `http://*host*/`*dataset*`/query` -- the SPARQL query endpoint.
+-   `http://*host*/`*dataset*`/update` -- the SPARQL Update language
     endpoint.
--   `http://host/`* dataset *`/data` -- the SPARQL Graph Store Protocol
+-   `http://*host*/`*dataset*`/data` -- the SPARQL Graph Store Protocol
     endpoint.
--   `http://host/`* dataset *`/upload` -- the file upload endpoint.
+-   `http://*host*/`*dataset*`/upload` -- the file upload endpoint.
 
-where *dataset* is a URI path. Note that Fuseki defaults to using
+Where *dataset* is a URI path. Note that Fuseki defaults to using
 port 3030 so *host* is often *localhost:3030*.
 
+**Important** - While you may set *dataset* to be the text `dataset` this should be avoided since it may interfere with the function of the control panel and web pages.
+
 The URI
-[`http://host/dataset/sparql`](http://host/dataset/sparql)
+`http://host/`*dataset*`/sparql`
 is currently mapped to `/query` but this may change to being a
 general purpose SPARQL query endpoint.
 
@@ -190,7 +192,7 @@ There is an option `--port=PORT` to set the port number. It
 defaults to 3030.
 
 `/DatasetPathName` is the name under which the dataset will be
-accessible over HTTP.
+accessible over HTTP.  Please see the above section on Server URI scheme for notes regarding available URIs and choice of this name
 
 The server will service read requests only unless the `--update`
 argument is used.
@@ -231,26 +233,26 @@ PUR/POST/DELETE enabled).
 
 ## Fuseki Server starting with an empty dataset
 
-    fuseki-server --update --mem /dataset
+    fuseki-server --update --mem /ds
 
 runs the server on port 3030 with an in-memory dataset. It can be
 accessed via the appropriate protocol at the following URLs:
 
--   SPARQL query: `http://localhost:3030/dataset/query`
--   SPARQL update: `http://localhost:3030/dataset/update`
--   SPARQL HTTP update: `http://localhost:3030/dataset/data`
+-   SPARQL query: `http://localhost:3030/ds/query`
+-   SPARQL update: `http://localhost:3030/ds/update`
+-   SPARQL HTTP update: `http://localhost:3030/ds/data`
 
 The [SPARQL Over HTTP](soh.html) scripts take care of naming
 and protocol details. For example, to load in a file `data.rdf`:
 
-     s-put http://localhost:3030/dataset/data default data.rdf
+     s-put http://localhost:3030/ds/data default data.rdf
 
 ## Fuseki Server and TDB
 
 Fuseki include a built-in version of TDB. Run the server with the
 `--desc` argument
 
-    fuseki-server --desc tdb.ttl /dataset
+    fuseki-server --desc tdb.ttl /ds
 
 and a database in the directory DB, an assembler description of:
 
@@ -269,7 +271,7 @@ and a database in the directory DB, an assembler description of:
 
 The form:
 
-    fuseki-server --loc=DB /dataset
+    fuseki-server --loc=DB /ds
 
 is a shorthand for such an assembler with location `DB`.
 
@@ -287,7 +289,7 @@ The Fuseki server can be given an
 [assembler description](assembler.html)
 to build a variety of model and datasets types.
 
-    fuseki-server --desc assembler.ttl /dataset
+    fuseki-server --desc assembler.ttl /ds
 
 Full details of setting up models assembler is given in the
 [assembler documentation](assembler.html).
@@ -457,19 +459,19 @@ See the [SPARQL Over HTTP](soh.html) page.
 ### Examples
 
     # PUT a file
-    s-put http://localhost:3030/dataset/data default D.nt
+    s-put http://localhost:3030/ds/data default D.nt
 
     # GET a file
-    s-get http://localhost:3030/dataset/data default
+    s-get http://localhost:3030/ds/data default
 
     # PUT a file to a named graph
-    s-put http://localhost:3030/dataset/data http://example/graph D.nt
+    s-put http://localhost:3030/ds/data http://example/graph D.nt
 
     # Query
-    s-query --service http://localhost:3030/dataset/query 'SELECT * {?s ?p ?o}'
+    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
 
     # Update
-    s-update --service http://localhost:3030/dataset/update --file=update.ru
+    s-update --service http://localhost:3030/ds/update --file=update.ru
 
 ## Use from Java
 
