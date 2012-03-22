@@ -92,7 +92,7 @@ var JenaNavigation = function() {
     showMenu( "#quick-links" );
     showMenu( "#asf-links" );
 
-    var currentTopicMenu = "#" + currentSection.fileName;
+    var currentTopicMenu = "#" + currentSection.fileName.replace( /\_/g, "-" );
     showMenu( currentTopicMenu );
 
     // make the current topic link styled as 'current'
