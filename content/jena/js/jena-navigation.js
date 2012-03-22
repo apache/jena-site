@@ -50,7 +50,7 @@ var JenaNavigation = function() {
   var getLocation = function() {
     var url = checkForDefaultPage();
     if (url.match( /\/jena\/index.html$/ )) {
-        currentSection.fileName = "about_jena";
+        currentSection.fileName = "about-jena";
         currentPage.fileName = "index.html";
     }
     else {
