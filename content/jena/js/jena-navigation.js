@@ -89,8 +89,8 @@ var JenaNavigation = function() {
   var setSideNavigationVisibility = function() {
     $("#navigation>h1").hide();
     $("#navigation>ul").hide();
-    showMenu( "#quick_links" );
-    showMenu( "#asf_links" );
+    showMenu( "#quick-links" );
+    showMenu( "#asf-links" );
 
     var currentTopicMenu = "#" + currentSection.fileName;
     showMenu( currentTopicMenu );
