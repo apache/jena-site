@@ -38,7 +38,7 @@ var JenaNavigation = function() {
    * @param {Object} fn
    */
   var findTopMenu = function( fileName, fn ) {
-    var expr = (fileName == 'about_jena') ? "#home_menu" : "#topmenu a[href*='" + fileName + "']";
+    var expr = (fileName == 'about_jena') ? "#home-menu" : "#topmenu a[href*='" + fileName + "']";
     $(expr).first().each( function( n ) {
         fn( this );
     } );
