@@ -181,6 +181,12 @@ ensure that within the transaction, all threads are acting
 "multiple reader OR single writer". Change to the data within the
 transaction must be executed one at a time.
 
+It is better not to share the same Dataset reference between different 
+threads. Dataset objects are quite cheap to create via 
+TDBFactory.create(location) and this ensure correct transaction
+handling. If, for some reason, in-memory TDB databases are needed, 
+then the use of "named memory locations" is recommended: Location.mem("X").  
+
 ## Multi JVM
 
 Multiple applications, running in multiple JVMs, using the same
