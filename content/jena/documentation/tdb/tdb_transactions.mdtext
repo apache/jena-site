@@ -60,8 +60,6 @@ transactions, the highest
 
 -   Bulk loads: the TDB bulk loader is not transactional
 -   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
--   There is a single active writer: concurrent write requests
-    are serialized internally.
 -   Some active transaction state is held exclusively in-memory,
     limiting scalability.
 -   Long-running transactions. Read-transactions cause a build-up
@@ -175,8 +173,9 @@ dataset.
 
 ## Multi-threaded use
 
-The usual idiom for working with multi-threaded applications is to have 
-one dataset per thread.  There is one transaction per datset object.
+Each dataset object can have one transaction active at a time. 
+The usual idiom within multi-threaded applications is to have 
+one dataset per thread, and so there is one transaction per thread.
 
 Thread 1:
 
@@ -195,7 +194,7 @@ Thread 2:
        ...
      } finally { dataset.end() ; }
 
-Each thread has a separate `dataset` object; these share internally the 
+Each thread has a separate `dataset` object; these safely share the 
 same storage but each can have it's own transaction.
 
 While it is possible to shared a transaction between multiple
