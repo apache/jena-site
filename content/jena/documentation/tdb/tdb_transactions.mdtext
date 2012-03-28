@@ -18,6 +18,8 @@ for reverting a database to 0.8.X.
 -   [Overview](#overview)
 -   [Limitations](#limitations)
 -   [API for Transactions](#api-for-transactions)
+    - [Read transactions](#read-transactions)
+    - [Write transactions](#write-transactions)
 -   [Multi-threaded use](#multi-threaded-use)
 -   [Bulk loading](#bulk-loading)
 -   [Multi JVM](#multi-jvm)
@@ -57,9 +59,9 @@ transactions, the highest
 (some of these limitations may be removed in later versions)
 
 -   Bulk loads: the TDB bulk loader is not transactional
--   [Nested write transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
--   Single active writer: no multiple concurrent update
-    transactions.
+-   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
+-   There is a single active writer: concurrent write requests
+    are serialized internally.
 -   Some active transaction state is held exclusively in-memory,
     limiting scalability.
 -   Long-running transactions. Read-transactions cause a build-up
@@ -73,7 +75,7 @@ resources.
 
 TDB supports the general Jena API for transactions on RDF datasets 
 (introduced in Jena 2.7.0, ARQ 2.9.0).  Not all storage systems support 
-transactions.
+this style of transactions.
 
 A TDB-backed dataset can be used non-transactionally but once used in a transaction, 
 it should be used transactionally after that.
