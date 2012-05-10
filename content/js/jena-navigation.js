@@ -49,17 +49,14 @@ var JenaNavigation = function() {
    */
   var getLocation = function() {
     var url = checkForDefaultPage();
-    if (url.match( /\/jena\/index.html$/ )) {
+    if (url.match( /\/index.html$/ )) {
         currentSection.fileName = "about-jena";
         currentPage.fileName = "index.html";
     }
     else {
-        var current = url.split( "/" );
-        while (current.shift() != "jena") {}
-
-        // next is the section ID, rest is the page ID
-        currentSection.fileName = current.shift();
-        currentPage.fileName = current.join( "/" );
+        var matches = url.match( /^.*jena.apache.org\/([^\/]*)\/(.*)$/ );
+        currentSection.fileName = matches[1];
+        currentPage.fileName = matches[2];
     }
 
     currentPage.title = asTitle( currentPage.fileName.replace( /.html$/, '' ) );
@@ -136,7 +133,7 @@ var JenaNavigation = function() {
     init : init
   };
 
-}();  // "revealing module" pattern
+}();
 
 // Initialize on load
 $(function(){  JenaNavigation.init(); });
