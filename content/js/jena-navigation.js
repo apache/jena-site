@@ -49,18 +49,19 @@ var JenaNavigation = function() {
    */
   var getLocation = function() {
     var url = checkForDefaultPage();
-    if (url.match( /\/index.html$/ )) {
-        currentSection.fileName = "about-jena";
-        currentPage.fileName = "index.html";
-    }
-    else {
-        var matches = url.match( /^.*jena.apache.org\/([^\/]*)\/(.*)$/ );
+    var matches = url.match( /^.*jena.*apache\.org\/([^\/]*)\/(.*)$/ );
+
+    if (matches) {
         currentSection.fileName = matches[1];
         currentPage.fileName = matches[2];
     }
+    else {
+        currentSection.fileName = "about-jena";
+        currentPage.fileName = "index.html";
+    }
 
-    currentPage.title = asTitle( currentPage.fileName.replace( /.html$/, '' ) );
     currentSection.title = asTitle( currentSection.fileName );
+    currentPage.title = asTitle( currentPage.fileName.replace( /.html$/, '' ) );
   };
 
   /**
