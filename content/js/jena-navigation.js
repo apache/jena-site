@@ -48,7 +48,7 @@ var JenaNavigation = function() {
    * Identify current page and section.
    */
   var getLocation = function() {
-    var url = checkForDefaultPage();
+    var url = document.URL;
     var matches = url.match( /^.*jena.*apache\.org\/([^\/]*)\/(.*)$/ );
 
     if (matches) {
@@ -56,25 +56,12 @@ var JenaNavigation = function() {
         currentPage.fileName = matches[2];
     }
     else {
-        currentSection.fileName = "about-jena";
+        currentSection.fileName = "about_jena";
         currentPage.fileName = "index.html";
     }
 
     currentSection.title = asTitle( currentSection.fileName );
     currentPage.title = asTitle( currentPage.fileName.replace( /.html$/, '' ) );
-  };
-
-  /**
-   * Return the current page url, supplying the default
-   * page name if this is the default page
-   */
-  var checkForDefaultPage = function() {
-    var url = document.URL;
-    if (!url.match( /.*\.html/ )) {
-      // default document
-      url = url + (!url.match( /\/$/ ) ? "/" : "") + "index.html";
-    }
-    return url;
   };
 
   /**
