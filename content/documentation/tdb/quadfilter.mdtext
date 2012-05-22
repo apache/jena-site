@@ -37,7 +37,9 @@ a immutable tuples of values of the same type.
       /** Create a filter to exclude the graph http://example/g2 */
       private static Filter<Tuple<NodeId>> createFilter(Dataset ds)
       {
-          DatasetGraphTDB dsg = (DatasetGraphTDB)(ds.asDatasetGraph()) ;
+          DatasetGraphTransaction dst = (DatasetGraphTransaction)(ds.asDatasetGraph()) ;
+          DatasetGraphTDB dsg = dst.getBaseDatasetGraph();
+
           NodeTable nodeTable = dsg.getQuadTable().getNodeTupleTable().getNodeTable() ;
           // Filtering operates at a very low level:
           // need to know the internal identifier for the graph name.
