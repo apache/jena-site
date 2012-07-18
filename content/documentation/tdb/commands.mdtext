@@ -2,40 +2,70 @@ Title: TDB Command-line Utilities
 
 ## Contents
 
+-   [Installation](#installation)
 -   [Scripts](#scripts)
-    -   [Script set up](#script-set-up)
-    -   [Argument Structure](#argument-structure)
+    -   [Script set up - bash scripts](#script-set-up-bash-scripts)
+    -   [Script set up - Windows batch files](#script-set-up-windows-bash-files)
+-   [Command line script arguments](#command-line-script-arguments)
     -   [Setting options from the command line](#setting-options-from-the-command-line)
 -   [TDB Commands](#tdb-commands)
     -   [Store description](#store-description)
     -   [tdbloader](#tdbloader)
     -   [tdbloader2](#tdbloader2)
+    -   [tdbloader3](#tdbloader3)
     -   [tdbquery](#tdbquery)
     -   [tdbdump](#tdbdump)
     -   [tdbstats](#tdbstats)
 
 
+## Installation
+
+From Apache Jena version `2.7.x` onwards, TDB is now installed as part of a single integrated Jena
+package. There is no longer a need to install a separate TDB package to run the TDB command line
+tools, or to use TDB in your Java programs. See the [downloads](/download/) page for details on getting the latest Jena
+release.
+
 ## Scripts
 
-The directory `bin/` contains shell scripts to run the commands
-from the command line. The scripts are bash scripts which also run
-over [Cygwin](http://www.cygwin.com/ "http://www.cygwin.com/").
+From the location The directory `bin/` contains shell scripts to run the commands
+from the command line. The scripts are bash scripts which should work
+on Linux systems, Windows systems using [Cygwin](http://www.cygwin.com/) and
+Mac/OS systems. The directory `bat/` contains Windows batch files which
+provide the same functionality for Windows systems that are not using
+Cygwin.
 
-### Script set up
+### Script set up - bash scripts
 
-Set the environment variable `TDBROOT` to the root of the the TDB
-installation.
+Set the environment variable `JENAROOT` to the root of the the Jena
+installation. E.g:
 
-They are bash scripts, and work on Linux and Cygwin for MS
-Windows.
+    export JENAROOT=/home/somebody/dev/apache-jena
 
-     $ PATH=$TDBROOT/bin:$PATH
+or
 
-Alternatively, there are wrapper scripts in `$TDBROOT/bin2` which
-can be placed in a convenient directory that is already on the
-shell command path.
+    export JENAROOT=/usr/local/apache-jena
 
-### Argument Structure
+
+Then set the `PATH` to include the `bin` directory:
+
+    PATH=$TDBROOT/bin:$PATH
+
+This can be done in `.bashrc`, or its equivalent on Mac OS/X, to ensure that the environment
+variables are always available.
+
+### Script set up - Windows batch files
+
+Setting environment variables in Windows is slightly involved. You can set them
+each time you start a command prompt:
+
+    SET JENAROOT=\Users\somebody\dev\apache-jena
+    SET PATH=%PATH%;%JENAROOT\bin
+
+or you can follow [this guide](http://searchsystemschannel.techtarget.com/feature/Setting-Windows-7-environment-variables)
+or one like it to set the environment variables so that they are available every
+time you launch the command prompt.
+
+## Command line script arguments
 
 Each command then has command-specific arguments described below.
 
@@ -51,7 +81,7 @@ There are two equivalent forms of named argument syntax:
 ### Setting options from the command line
 
 TDB has a number of
-[configuration options](configuration.html "TDB/Configuration")
+[configuration options](configuration.html)
 which can be set from the command line using:
 
      --set tdb:symbol=value
@@ -89,8 +119,18 @@ efficiently than simply reading RDF into a TDB-back model.
 
 ### `tdbloader2`
 
-Bulk loader and index builder. Faster than tdbloader but only works
-on Linux and Mac OS/X.
+Bulk loader and index builder. Faster than `tdbloader` but only works
+on Linux and Mac OS/X since it relies on some Unix system utilities.
+
+This bulk loader can only be used to create a database. It may
+overwrite existing data. It only accepts the --loc argument and a
+list of files to load.
+
+### `tdbloader3`
+
+Bulk loader and index builder. Faster than tdbloader3 but not as
+fast as `tdbloader2`, however it only requires Java so will work
+anywhere that Jena can be used.
 
 This bulk loader can only be used to create a database. It may
 overwrite existing data. It only accepts the --loc argument and a
@@ -103,17 +143,15 @@ information. The store is attached on each run of this command so
 timing includes some overhead not present in a running system.
 
 Details about query execution can be obtained -- see notes on the
-[TDB Optimizer](optimizer.html#Investigating_what_is_going_on "TDB/Optimizer").
+[TDB Optimizer](optimizer.html#Investigating_what_is_going_on).
 
 ### `tdbdump`
 
-(Version 0.8.5)
-
 Dump the store in
-[N-Quads](http://sw.deri.org/2008/07/n-quads/ "http://sw.deri.org/2008/07/n-quads/")
+[N-Quads](http://sw.deri.org/2008/07/n-quads/)
 format.
 
 ### tdbstats
 
 Produce a statistics for the dataset. See the
-[TDB Optimizer description.](optimizer.html#Statistics_Rule_File "TDB/Optimizer").
+[TDB Optimizer description.](optimizer.html#Statistics_Rule_File).
