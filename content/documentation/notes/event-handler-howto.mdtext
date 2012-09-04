@@ -12,12 +12,14 @@ it.
 
 To monitor a Model, you must *register* a *ModelChangedListener*
 with that Model:
+
         Model m = ModelFactory.createDefaultModel();
         ModelChangedListener L = new MyListener();
         m.register( L );
 
 *MyListener* must be an implementation of *ModelChangedListener*,
 for example:
+
         class MyListener implements ModelChangedListener
             {
             public void addedStatement( Statement s )
@@ -36,12 +38,13 @@ for example:
 This listener ignores everything except the addition of single
 statements to *m*; those it prints out. The listener has a method
 for each of the ways that statements can be added to a Model:
--   as a single statement, Model::add(Statement)
+
+-   as a single statement, `Model::add(Statement)`
 -   as an element of an array of statements,
-    Model::add(Statement[])
--   as an element of a list of statements, Model::add(List)
--   as an iterator over statements, Model::add(StmtIterator)
--   as part of another Model, Model::add(Model)
+    `Model::add(Statement[])`
+-   as an element of a list of statements, `Model::add(List)`
+-   as an iterator over statements, `Model::add(StmtIterator)`
+-   as part of another Model, `Model::add(Model)`
 
 (Similarly for *delete*.)
 
@@ -82,6 +85,7 @@ listener as statements.
 The full Listener API is rather chunky and it can be inconvenient
 to use, especially for the creation of inline classes. There are
 four utility classes in *com.hp.hpl.jena.rdf.listeners:*
+
 -   *NullListener*. This class's methods do nothing. This is useful
     when you want to subclass and intercept only specific ways of
     updating a Model.
@@ -130,6 +134,3 @@ registrations.
 In the current design, listeners are not informed of transaction
 boundaries, and all events are fed to listeners as soon as they
 happen.
-In the current implementation, if an RDB model *M* is modified by
-some other client of the database, those changes are not seen and
-thus are not reported to listeners.
