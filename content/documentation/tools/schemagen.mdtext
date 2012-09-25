@@ -646,6 +646,57 @@ Note that Java compilers typically impose some limit on the size of a Java sourc
 specifically, on the size of `.class` file they will generate. Loading a particularly large
 vocabulary with `--includeSource` may risk breaching that limit.
 
+## Using schemagen with Maven
+
+[Apache Maven](http://maven.apache.org/) is a build automation tool typically used for Java.  You can use `exec-maven-plugin` and `build-helper-maven-plugin` to run `schemagen` as part of the `generate-sources` goal of your project.  The following example shows one way of performing this task.  The developer should customize command-line options or use a configuration file instead as needed.
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <mainClass>jena.schemagen</mainClass>
+                  <commandlineArgs>
+                    --inference \
+                    -i ${basedir}/src/main/resources/example.ttl \
+                    -e TTL \
+                    --package org.example.ont \
+                    -o ${project.build.directory}/generated-sources/java \
+                    -n ExampleOnt
+                  </commandlineArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-source</id>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-sources/java</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        <plugins>
+      <build>
+
+At this point you can run `mvn generate-sources` in your project to cause `schemagen` to run and create your Java source (note that this goal is run automatically from `mvn compile` or `mvn install`, so there really isn't any reason to to run it manually unless you wish to just generate the source).  The source file is placed in the maven standard `target/generated-sources/java` directory, which is added to the project classpath by `build-helper-maven-plugin`.
+
 
 ## Using schemagen with Ant
 
