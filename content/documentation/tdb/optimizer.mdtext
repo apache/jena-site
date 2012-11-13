@@ -30,6 +30,7 @@ properties.
     -   [Abbreviated Rule Form](#abbreviated-rule-form)
     -   [Defaults](#defaults)
 -   [Generating a statistics file](#generating-a-statistics-file)
+    -   [Generating statistics for Union Graphs](#generating-statistics-for-union-graphs)
 -   [Writing Rules](#writing-rules)
 
 ## Quickstart
@@ -289,6 +290,23 @@ location.
 Practical tip: Don't feed the output of this command directly to
 *location*/stats.opt because when the command starts it will find
 an empty statistics file at that location.
+
+### Generating statistics for Union Graphs
+
+By default `tdbstats` only processes the default graph of a dataset. However 
+in some circumstances it is desirable to have the statistics generated 
+over Named Graphs in the dataset.
+
+The `tdb:unionDefaultGraph` option will cause TDB to synthesize a default 
+graph for SPARQL queries, from the union of all Named Graphs in the 
+dataset. 
+
+Ideally the statistics file should be generated against this 
+union graph. This can be achieved using the `--graph` option as follows:
+
+     tdbstats --graph urn:x-arq:UnionGraph --loc /path/to/indexes
+
+The `graph` parameter uses a built-in TDB [special graph name](/documentation/tdb/datasets.html#special-graph-names)
 
 ## Writing Rules
 
