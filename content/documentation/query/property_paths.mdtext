@@ -19,32 +19,36 @@ pattern, then this duplication is preserved.
 
 Path example | Meaning
 ------------ | -------
-<tt>dc:title &#x7C rdfs:label</tt> | Dublin Core title or an RDFS label.
+<tt>dc:title &#x7C; rdfs:label</tt> | Dublin Core title or an RDFS label.
 `foaf:knows/foaf:name` | Name of people one "knows" steps away.
 `foaf:knows/foaf:knows/foaf:name` | Name of people two "knows" steps away.
 
 In the description below, *`uri`* is either a URI or a prefixed
 name.
 
+Syntax Form                   | Matches
+-----------                   | -------
+<i><tt>uri</tt></i>           | A URI or a prefixed name. A path of length one.
+<tt>^<i>elt</i></tt>          | Reverse path (object to subject)
+<tt>(<i>elt</i>)</tt>                | A group path *`elt`*, brackets control precedence.
+<tt><i>elt1</i> / <i>elt2</i></tt>   | A sequence path of *`elt1`*, followed by *`elt2`*
+<tt><i>elt1</i> ^ <i>elt2</i></tt>          | Shorthand for `<i>elt1 / ^elt2</i>`, that is *`elt1`* followed by reverse *`elt2`*.
+<tt><i>elt1</i> | <i>elt2</i></tt>   | A alternative path of *`elt1`*, or `<i>elt2</i>` (all possibilities are tried)
+<tt><i>elt</i>*</tt>                 | A path of zero or more occurrences of *`elt`*.
+<tt><i>elt</i>+</tt>                 | A path of one or more occurrences of *`elt`*.
+<tt><i>elt</i>?</tt>                 | A path of zero or one *`elt`*.
+<tt>!<i>uri</i></tt>                 | A path matching a property which isn't `<i>uri</i>` (negated property set)
+<tt>!(<i>uri1</i>|...|<i>uriN</i>)</tt>*   | A path matching a property which isn't any of `uri1 ... uri` (negated property set)
+
+ARQ extensions: to use these you must use `Syntax.syntaxARQ`
+
 Syntax Form | Matches
 ----------- | -------
-*`uri`* | A URI or a prefixed name. A path of length one.
-*`^elt`* | Reverse path (object to subject).
-*`(elt)`* | A group path *`elt`*, brackets control precedence.
-*`elt1 / elt2`* | A sequence path of *`elt1`*, followed by *`elt2`*
-*`elt1 ^ elt2`* | Shorthand for `<i>elt1 / ^elt2</i>`, that is *`elt1`* followed by reverse *`elt2`*.
-*<tt>elt1 &#x7C; elt2</tt>* | A alternative path of *`elt1`*, or `<i>elt2</i>` (all possibilities are tried)
-*`elt*`* | A path of zero or more occurrences of *`elt`*.
-*`elt+`* | A path of one or more occurrences of *`elt`*.
-*`elt?`* | A path of zero or one *`elt`*.
-*`elt{n,m}`* | A path between n and m occurrences of *`elt`*.
-*`elt{n}`* | Exactly *`n`* occurrences of *`elt`*. A fixed length path.
-*`elt{n,}`* | *`n`* or more occurrences of *`elt`*.
-*`elt{,n}`* | Between 0 and *`n`* occurrences of *`elt`*.
-*`!uri</i>`* | A path matching a property which isn't `<i>uri</i>` (negated property set)
-*<tt>!(uri1&#x7C;...&#x7C;uriN)</tt>* | A path matching a property which isn't any of `uri1 ... uri` (negated property set)
 
-Most of these forms are legal SPARQL 1.1, the only exceptions are the `elt{}` forms. To use these you must use `Syntax.syntaxARQ`
+<i><tt>elt</tt></i>`{n,m}`  | A path between n and m occurrences of *`elt`*.
+<i><tt>elt</tt></i>`{n}`    | Exactly `n` occurrences of `elt`. A fixed length path.
+<i><tt>elt</tt></i>`{n,}`   | `n` or more occurrences of *`elt`*.
+<i><tt>elt</tt></i>`{,n}`   | Between 0 and `n` occurrences of *`elt`*.
 
 Precedence:
 
