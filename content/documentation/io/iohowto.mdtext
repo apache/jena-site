@@ -403,23 +403,21 @@ of "rdf:about", then the following code is appropriate:
     in.close();
 
 As a second example, suppose you wish to work in strict mode, but
-allow `"daml:collection"`, the following works:
+ingore some specific warning or error, the following works:
 
      …
      arp.setProperty("error-mode", "strict" );
-     arp.setProperty("IGN_DAML_COLLECTION","EM_IGNORE");
+     arp.setProperty("WARN_UNQUALIFIED_ATTRIBUTE", "EM_IGNORE");
      …
 
 The other way round does not work.
 
      …
-     arp.setProperty("IGN_DAML_COLLECTION","EM_IGNORE");
+     arp.setProperty("WARN_UNQUALIFIED_ATTRIBUTE", "EM_IGNORE");
      arp.setProperty("error-mode", "strict" );
      …
 
-This is because in strict mode
-[`IGN_DAML_COLLECTION`](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/arp/ARPErrorNumbers.html#IGN_DAML_COLLECTION)
-is treated as an error, and so the second call to `setProperty`
+This is because in strict mode it is treated as an error, and so the second call to `setProperty`
 overwrites the effect of the first.
 
 The IRI rules and resolver can be set on a per-reader basis:
@@ -594,18 +592,6 @@ indicating grammar rules that will not be used. Rules that can be blocked are:
 - [propertyAttr](http://www.w3.org/TR/rdf-syntax-grammar#propertyAttr)
  ([`RDFSyntax.propertyAttr`](/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/RDFSyntax.html#propertyAttr))
 
-In addition `"daml:collection"`
-([`DAML_OIL.collection`](/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/DAML_OIL.html#collection))
-can be blocked. Blocking
-[idAttr](http://www.w3.org/TR/rdf-syntax-grammar#idAttr) also
-blocks
-[section-Reification](http://www.w3.org/TR/rdf-syntax-grammar#section-Reification).
-By default, rule
-[propertyAttr](http://www.w3.org/TR/rdf-syntax-grammar#propertyAttr)
-is blocked. For the basic writer (RDF/XML) only
-[parseTypeLiteralPropertyElt](http://www.w3.org/TR/rdf-syntax-grammar#parseTypeLiteralPropertyElt)
-has any effect, since none of the other rules are implemented by
-that writer.
 </td>
 <td>`Resource[]` or `String`</td>
 <td></td>
@@ -617,19 +603,22 @@ Only for the RDF/XML-ABBREV writer. This is a list of the types of
 the principal objects in the model. The writer will tend to create
 RDF/XML with resources of these types at the top level.
 
-Example usage showing the a value suitable for DAML+OIL output:
+Example usage showing the default settings:
 
     w.setProperty("prettyTypes",
              new Resource[]{
-                  DAML_OIL.Ontology,
-                  DAML_OIL.Class,
-                  DAML_OIL.Datatype,
-                  DAML_OIL.Property,
-                  DAML_OIL.ObjectProperty,
-                  DAML_OIL.DatatypeProperty,
-                  DAML_OIL.TransitiveProperty,
-                  DAML_OIL.UnambigousProperty,
-                  DAML_OIL.UniqueProperty,
+			OWL.Ontology,
+			OWL.Datatype,
+			RDFS.Datatype,
+			RDFS.Class,
+			OWL.Class,
+			OWL.ObjectProperty,
+			RDF.Property,
+			OWL.DatatypeProperty,
+			OWL.TransitiveProperty,
+			OWL.SymmetricProperty,
+			OWL.FunctionalProperty,
+			OWL.InverseFunctionalProperty
                   });
 </td>
 <td>
@@ -646,8 +635,7 @@ As an example,
     w.setProperty("showXMLDeclaration","true");
     w.setProperty("tab","1");
     w.setProperty("blockRules",
-      "daml:collection,parseTypeLiteralPropertyElt,"
-      +"parseTypeResourcePropertyElt,parseTypeCollectionPropertyElt");
+      "parseTypeResourcePropertyElt,parseTypeCollectionPropertyElt");
 
 creates a writer that does not use rdf:parseType (preferring
 rdf:datatype for rdf:XMLLiteral), indents only a little, and
@@ -693,17 +681,11 @@ Notes:
 The RDF/XML I/O endeavours to conform with the
 [RDF Syntax Recommendation](http://www.w3.org/TR/rdf-syntax-grammar/).
 
-The parser must be set to strict mode. (Note that, the conformant
-behaviour for `rdf:parseType="daml:collection"` is to silently turn
-`"daml:collection"` into `"Literal"`).
+The parser must be set to strict mode.
 
 The RDF/XML writer is conformant, but does not exercise much of the
-grammar.
-
-The RDF/XML-ABBREV writer exercises all of the grammar and is
-conformant except that it uses the `daml:collection` construct for
-DAML ontologies. This non-conformant behaviour can be switched off
-using the `blockRules` property.
+grammar.  The RDF/XML-ABBREV writer exercises all of the grammar and is
+conformant.
 
 
 ## Faster RDF/XML I/O

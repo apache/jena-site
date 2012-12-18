@@ -229,34 +229,9 @@ serialize, test instances of that datatype.
 
 There is one difficult issue in here, what URI to give to the user
 defined datatype? This is not defined by XML Schema, nor RDF nor
-OWL. Jena2 adopts the position taken by DAML that the defined
+OWL. Jena2 adopts the position that the defined
 datatype should have the base URI of the schema file with a
 fragment identifier given by the datatype name.
-
-Thus the DAML example
-file`http://www.daml.org/2001/03/daml+oil-ex-dt` (a corrected copy
-of which is stored in `$JENA/testing/xsd/daml+oil-ex-dt.xsd`, where
-`$JENA` is your Jena install directory) defines several types such
-as "over12". The following code fragment will load this file and
-register the newly defined types:
-
-    String uri = "http://www.daml.org/2001/03/daml+oil-ex-DT";
-    String filename = "../jena2/testing/xsd/daml+oil-ex-dt.xsd";
-    TypeMapper tm = TypeMapper.getInstance();
-    List typenames = XSDDatatype.loadUserDefined(uri, new FileReader(filename), null, TM);
-    System.out.println("Defined types are:");
-    for (Iterator i = typenames.iterator(); i.hasNext(); ) {
-        System.out.println(" - " + i.next());
-    }
-
-it produces the following output:
-
-    Defined types are:
-     - http://www.daml.org/2001/03/daml+oil-ex-DT#XSDEnumerationHeight
-     - http://www.daml.org/2001/03/daml+oil-ex-DT#over12
-     - http://www.daml.org/2001/03/daml+oil-ex-DT#over17
-     - http://www.daml.org/2001/03/daml+oil-ex-DT#over59
-     - http://www.daml.org/2001/03/daml+oil-ex-DT#clothingsize
 
 To illustrate working with the defined types, the following code
 then tries to create and use two instances of the over 12 type:

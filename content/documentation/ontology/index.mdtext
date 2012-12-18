@@ -101,9 +101,8 @@ Since Jena is fundamentally an RDF platform, Jena's ontology
 support is limited to ontology formalisms built on top of RDF.
 Specifically this means [RDFS](http://en.wikipedia.org/wiki/RDFS),
 the varieties of
-[OWL](http://en.wikipedia.org/wiki/Web_Ontology_Language), and the
-now-obsolete [DAML+OIL](http://en.wikipedia.org/wiki/DAML+OIL). We
-will provide a very brief introduction to these languages here,
+[OWL](http://en.wikipedia.org/wiki/Web_Ontology_Language).
+We will provide a very brief introduction to these languages here,
 but please refer to the extensive on-line documentation for these
 formalisms for complete and authoritative details.
 
@@ -225,20 +224,6 @@ the RDF-centric view treats RDF triples as the core of the OWL
 formalism. While both views are valid, in Jena we take the
 RDF-centric view.
 
-### DAML+OIL
-
-DAML+OIL is very similar to OWL Full. This is not surprising, since
-the W3C's Web Ontology Working Group, who designed OWL, took
-DAML+OIL as their starting point. Some constructions in OWL have
-been added to the capabilities of DAML+OIL, and one or two have
-been removed. For the purposes of this brief overview, however, the
-expressiveness of DAML+OIL is comparable to that of OWL.
-
-**Note:** DAML+OIL is effectively now obsolete. While it is still
-possible to
-find some DAML ontologies on the web, our recommendation is that
-Jena developers stick to OWL and RDFS as ontology languages.
-
 ### Ontology languages and the Jena Ontology API
 
 As we outlined above, there are various different ontology languages
@@ -251,14 +236,12 @@ in your programs.
 
 The Jena Ontology API is language-neutral: the Java class names are not
 specific to the underlying language. For example, the `OntClass`
-Java class can represent an OWL class, RDFS class, or DAML class.
+Java class can represent an OWL class or RDFS class.
 To represent the differences between the various representations,
 each of the ontology languages has a *profile*, which lists the
 permitted constructs and the names of the classes and properties.
-Thus in the DAML profile, the URI for object property is
-`daml:ObjectProperty` (short for
-`http://www.daml.org/2001/03/daml+oil#ObjectProperty`), in the OWL
-profile is it `owl:ObjectProperty` (short for
+
+Thus in the OWL profile is it `owl:ObjectProperty` (short for
 `http://www.w3.org/2002/07/owl#ObjectProperty`) and in the RDFS
 profile it is `null` since RDFS does not define object properties.
 
@@ -468,7 +451,6 @@ various language profiles are:
 Ontology language | URI
 ----------------- | ---
 RDFS | `http://www.w3.org/2000/01/rdf-schema#`
-DAML+OIL | `http://www.daml.org/2001/03/daml+oil#`
 OWL Full | `http://www.w3.org/2002/07/owl#`
 OWL DL | `http://www.w3.org/TR/owl-features/#term_OWLDL`
 OWL Lite | `http://www.w3.org/TR/owl-features/#term_OWLLite`
@@ -479,12 +461,6 @@ The profile registry contains public constant declarations so
 that you do not have to remember these URI's. Please note that the
 URI's denoting OWL Lite and OWL DL are not officially sanctioned by
 the OWL standard.
-
-To create an ontology model for handling DAML ontologies, use
-either of:
-
-    OntModel m = ModelFactory.createOntologyModel( OntModelSpec.DAML_MEM );
-    OntModel m = ModelFactory.createOntologyModel( ProfileRegistry.DAML_LANG );
 
 Beyond these basic choices, the complexities of configuring an
 ontology model are wrapped up in a recipe object called
@@ -510,10 +486,6 @@ OWL\_LITE\_MEM | OWL Lite | in-memory | none
 OWL\_LITE\_MEM\_TRANS\_INF | OWL Lite | in-memory | transitive class-hierarchy inference
 OWL\_LITE\_MEM\_RDFS\_INF | OWL Lite | in-memory | rule reasoner with RDFS-level entailment-rules
 OWL\_LITE\_MEM\_RULES\_INF | OWL Lite | in-memory | rule-based reasoner with OWL rules
-DAML\_MEM | DAML+OIL | in-memory | none
-DAML\_MEM\_TRANS\_INF | DAML+OIL | in-memory | transitive class-hierarchy inference
-DAML\_MEM\_RDFS\_INF | DAML+OIL | in-memory | rule reasoner with RDFS-level entailment-rules
-DAML\_MEM\_RULE\_INF | DAML+OIL | in-memory | rule-based reasoner with DAML rules
 RDFS\_MEM | RDFS | in-memory | none
 RDFS\_MEM\_TRANS\_INF | RDFS | in-memory | transitive class-hierarchy inference
 RDFS\_MEM\_RDFS\_INF | RDFS | in-memory | rule reasoner with RDFS-level entailment-rules
@@ -526,9 +498,7 @@ See also further discussion [below](#inference-intro).
 
 **Note:** it is primarily the choice of reasoner, rather than the
 choice of language profile, which determines which entailments are
-seen by the ontology model. However, using an OWL reasoner with
-DAML source data will result in few additional entailments being
-seen by the ontology model.
+seen by the ontology model. 
 
 To create a model with a given specification, you should invoke the
 `ModelFactory` as follows:
@@ -551,7 +521,7 @@ and then update the copy as necessary:
 
 ## Compound ontology documents and imports processing
 
-The OWL and DAML ontology languages include some facilities for
+The OWL ontology language includes some facilities for
 creating modular ontologies that can be re-used in a similar manner
 to software modules. In particular, one ontology can *import*
 another. Jena helps ontology developers to work with modular
@@ -597,7 +567,7 @@ internationalised character sets, since the handling of character
 encoding by the Reader and by XML parsers is not compatible.
 
 By default, when an ontology model reads an ontology document, it
-will also locate and load the document's imports. An OWL or DAML
+will also locate and load the document's imports. An OWL
 document may contain an individual of class `Ontology`, which
 contains meta-data about that document itself. For example:
 
@@ -1014,7 +984,7 @@ resource if possible, or create a new class resource if not:
 
 You can use the create class method to create an anonymous class &ndash;
 a class description with no associated URI. Anonymous classes are
-often used when building more complex ontologies in OWL or DAML.
+often used when building more complex ontologies in OWL.
 They are less useful in RDFS.
 
     OntClass anonClass = m.createClass();
@@ -1285,7 +1255,7 @@ min cardinality | The property has at least *n* values, for some positive intege
 max cardinality | The property has at most *n* values, for some positive integer n.
 
 Note that, at present, the Jena
-ontology API has only limited support for OWL2 and DAML's qualified
+ontology API has only limited support for OWL2's qualified
 cardinality restrictions (i.e. `cardinalityQ`, `minCardinalityQ`
 and `maxCardinalityQ`). Qualified cardinality restrictions are
 encapsulated in the interfaces `CardinalityQRestriction`,
@@ -1425,9 +1395,8 @@ Boolean class expressions, let's briefly to discuss lists.
 
 RDF originally had three container types: `Seq`, `Alt` and `Bag`.
 While useful, these are all open forms: it is not possible to say
-that a given container has a fixed number of values. The DAML+OIL
-standard introduced a fourth container type - lists - in order to
-have a closed collection. Lists have subsequently been added to the
+that a given container has a fixed number of values. 
+Lists have subsequently been added to the
 core RDF specification, and are used extensively in OWL. A list
 follows the well-known *cons cell* pattern from Lisp, Prolog and
 other list-handling languages. Each cell of a list is either the

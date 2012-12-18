@@ -19,7 +19,6 @@ Title: Reasoners and rule engines: Jena inference support
   <li><a href="#api">The inference API</a></li>
   <li><a href="#rdfs">The RDFS reasoner</a></li>
   <li><a href="#owl">The OWL reasoner</a></li>
-  <li><a href="#daml">DAML support</a></li>
   <li><a href="#transitive">The transitive reasoner</a></li>
   <li><a href="#rules">The general purpose rule engine</a></li>
   <li><a href="#extensions">Extending the inference support</a></li>
@@ -73,22 +72,20 @@ Title: Reasoners and rule engines: Jena inference support
 
 ###Available reasoners
 <p>Included in the Jena distribution are a number of predefined reasoners:</p>
-<dl>
-  <dt>Transitive reasoner</dt>
-  <dd>Provides support for storing and traversing class and property lattices.
+<ol>
+  <li>Transitive reasoner: Provides support for storing and traversing class and property lattices.
     This implements just the <i>transitive</i> and <i>reflexive</i> properties
-    of <code>rdfs:subPropertyOf</code> and <code>rdfs:subClassOf</code>.</dd>
-  <dt>RDFS rule reasoner</dt>
-  <dd>Implements a configurable subset of the RDFS entailments.</dd>
-  <dt>OWL, OWL Mini, OWL Micro Reasoners</dt>
-  <dd>A set of useful but incomplete implementation of the OWL/Lite subset of the OWL/Full
-    language. </dd>
-  <dt>DAML micro reasoner</dt>
-  <dd>Used internally to enable the legacy DAML API to provide minimal (RDFS scale) inferencing.</dd>
-  <dt>Generic rule reasoner</dt>
-  <dd>A rule based reasoner that supports user defined rules. Forward chaining,
-    tabled backward chaining and hybrid execution strategies are supported.</dd>
-</dl>
+    of <code>rdfs:subPropertyOf</code> and <code>rdfs:subClassOf</code>.</li>
+
+  <li>RDFS rule reasoner: Implements a configurable subset of the RDFS entailments.</li>
+
+  <li>OWL, OWL Mini, OWL Micro Reasoners: 
+  A set of useful but incomplete implementation of the OWL/Lite subset of the OWL/Full
+    language. </li>
+
+  <li>Generic rule reasoner: A rule based reasoner that supports user defined rules. Forward chaining,
+    tabled backward chaining and hybrid execution strategies are supported.</li>
+</ol>
 
 <p>[<a href="#index">index</a>]</p>
 
@@ -1185,16 +1182,6 @@ class B = cardinality(P,1)</pre>
 
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
-##<a name="daml"></a>DAML support
-<p>This is minimal legacy support. The DAMLMicroReasoner is
-  essentially the RDFS reasoner augmented by axioms declaring the equivalence
-  between the DAML constructs and their RDFS aliases. It is invoked using the
-  prebuilt <a href="/documentation/javadoc/jena/com/hp/hpl/jena/ontology/OntModelSpec.html"><code>OntModelSpec</code></a>
-  <code>DAML_MEM_RULE_INF.</code></p>
-<p>There are <u><b>no</b></u> plans to go beyond this and offer more complete
-  DAML inference support.</p>
-<p>[<a href="#index">index</a>]</p>
-
 ##<a name="transitive"></a>The transitive reasoner
 <p>The TransitiveReasoner provides support for storing and traversing class and
   property lattices. This implements just the <i>transitive</i> and <i>symmetric</i>
@@ -1295,7 +1282,7 @@ term</i>      :=   (<i>node</i>, <i>node</i>, <i>node</i>)           // triple p
   place.</p>
 <p>To keep rules readable qname syntax is supported for URI refs. The set of known
   prefixes is those registered with the <code><a href="/documentation/javadoc/jena/com/hp/hpl/jena/util/PrintUtil.html">PrintUtil</a></code>
-  object. This initially knows about rdf, rdfs, owl, daml, xsd and a test namespace
+  object. This initially knows about rdf, rdfs, owl, xsd and a test namespace
   eg, but more mappings can be registered in java code. In addition it is possible to
   define additional prefix mappings in the rule file, see below. </p>
 <p>Here are some example rules which illustrate most of these constructs:</p>
