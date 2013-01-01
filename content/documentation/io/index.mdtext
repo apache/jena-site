@@ -1,4 +1,4 @@
-Title: Reading RDF in Jena
+Title: Reading and Writing RDF in Jena
 
 This page details the setup of RDF I/O technology (RIOT) introduced in Jena 2.10.
 
@@ -49,18 +49,20 @@ There are scripts in Jena download to run these commands.
 
 These can be called directly as Java programs:
 
-The file extensions are:
+The file extensions understood are:
 
-| Extension  | Language |
+| &nbsp;Extension&nbsp; |&nbsp; Language&nbsp; |
 |-----------|-----------|
-| `.nt`     | N-triples |
 | `.ttl`    | Turtle    |
+| `.nt`     | N-Triples |
 | `.nq`     | N-Quads   |
 | `.trig`   | TriG      |
 | `.rdf`    | RDF/XML   |
-\ `.owl`    | RDF/XML   |
+| `.owl`    | RDF/XML   |
 
-In addition, if the extension is .gz the file is assumed to be gzip
+`.n3` is supported but only as a synonym for Turtle.
+
+In addition, if the extension is `.gz` the file is assumed to be gzip
 compressed. The file name is examined for an inner extension. For
 example, `.nt.gz` is gzip compressed N-Triples.
 
@@ -68,10 +70,10 @@ These scripts call java programs in the `riotcmd` package. For example:
 
     java -cp ... riotcmd.riot file.ttl
 
-The scripts all accept the same arguments (type "riot --help" to
+The scripts all accept the same arguments (type `"riot --help"` to
 get command line reminders):
 
--   `--validate`: Checking mode: same as --strict --sink --check=true
+-   `--validate`: Checking mode: same as `--strict --sink --check=true`
 -   `--check=true/false`: Run with checking of literals and IRIs either on or off.
 -   `--sink`: No output of triples or quads.
 -   `--time`: Output timing information.
@@ -89,7 +91,7 @@ process:
     riotcmd.infer --rdfs VOCAB FILE FILE ...
 
 Output will contain the base data and triples inferred based on
-subclass, subproperty, domain and range.
+RDF subclass, subproperty, domain and range declarations.
 
 ## API
 
@@ -104,7 +106,7 @@ The major classes in the RIOT API are:
 | Class | Comment |
 |-------|---------|
 | RDFDataMgr        | Main set of functions to read and load models and datasets |
-| StreamManager     | Handles the opening of types input streams |
+| StreamManager     | Handles the opening of typed input streams |
 | StreamRDF         | Interface for the output of all parsers |
 | RDFLanguages      | Registered languages |
 | RDFParserRegistry | Registered parser factories |
@@ -270,5 +272,3 @@ See [RIOT example 4](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src-ex
 
 The set of languages is fixed - a new languages can be added to RIOT as shown in
 [RIOT example 5](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src-examples/arq/examples/riot/ExRIOT_5.java)
-
-
