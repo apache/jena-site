@@ -7,13 +7,6 @@ different kinds of `Model` and ways of constructing them. This note
 describes the Jena `ModelFactory`, a one-stop shop for
 creating Jena models. `ModelFactory` lives in Java package
 `com.hp.hpl.jena.rdf.model`.
-Most of `ModelFactory` methods have been around for a while now,
-but Jena 2.5's ModelFactory contains methods that use the
-`Assembler` API which appeared in Jena.4, which allows models to
-be created according to RDF descriptions that can be
-programmatically constructed or read in from external resources
-such as configuration files. (This API replaces the old `ModelSpec`
-API, which had proved unsatisfactory.)
 
 This note is an introduction, not an exhaustive description. As
 usual consult the Javadoc for details of the methods and classes to
@@ -25,82 +18,6 @@ The simplest way to create a model (if not the shortest) is to call
 `ModelFactory.createDefaultModel()`. This [by default] delivers a
 plain RDF model, stored in-memory, that does no inference and has
 no special ontology interface.
-
-## ModelMakers
-
-Plain models can be given names which allows them to be "saved" and
-looked up by name later. This is handled by implementations of the
-interface `ModelMaker`; each `ModelMaker` produces Models of the
-same kind. The simplest kind of `ModelMaker` is a memory model
-maker, which you get by calling
-`ModelFactory.createMemModelMaker()`. The methods you'd want to use
-to start with on a ModelMaker are:
-
-- `createModel(String)`: create a model with the given name in the
-ModelMaker. If a model with that name already exists, then that
-model is used instead.
-
-- `openModel(String)`: open an existing model with the given name. If
-no such model exists, create a new empty one and give it that name.
-[createModel(String) and openModel(String) behave in the same way,
-but each has a two-argument form for which the behaviour is
-different. Use whichever one best fits your intention.]
-
-- `createModel()`: create a fresh anonymous model.
-
-- `getModel()`: each `ModelMaker` has a *default model*; this method
-returns that model.
-
-There are other methods, for removing models, additional control
-over create *vs* open, closing the maker, and looking names up; for
-those consult the
-[ModelMaker JavaDoc](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/ModelMaker.html).
-
-### File-based models
-
-The method `ModelFactory.createFileModelMaker(String)` returns a
-`ModelMaker` which attaches models to filing-system files. The
-`String` argument is the *fileBase*. When a file-ModelMaker opens a
-file, it reads it from a file in the directory named by the
-fileBase; when the model is closed (and *only* then, in the current
-implementation), the contents of the model are written back to the
-file.
-
-Because the names of models in a modelMaker can be arbitrary
-character strings, in particular URIs, they are translated slightly
-to avoid confusion with significant characters of common filing
-systems. In the current implementation,
-
-- colon : is converted to \\_C
-- slash \/ is converted to \\_S
-- underbar \_ is converted to \\_U
-
-## Reification styles
-
-Jena models have different *reification styles*, which are
-described in more detail in the
-[reification howto](reification.html). `ModelFactory` provides
-constants for those styles:
-
-- `ModelFactory.Standard`
-- `ModelFactory.Convenient`
-- `ModelFactory.Minimal`
-
-And methods corresponding to those already discussed:
-
-- `ModelFactory.createDefaultModel(style)` creates a default model
-with the specified reification style.
-
-- `ModelFactory.createMemModelMaker(style)` creates a ModelMaker that
-creates memory models with the specified reification style.
-
-- `ModelFactory.createFileModelMaker(root,style)`
-creates a ModelMaker that creates file-associated models with the
-specified reification style.
-
-Reification styles also appear in other Modelfactory methods,
-although they are not required. We shall not discuss them further
-in this document; consult the Javadoc for appropriate details.
 
 ## Database model creation
 
@@ -191,9 +108,10 @@ the full OWL Lite inference
 
 ## Creating models from Assembler descriptions
 
-A new feature of Jena since Jena 2.4 is the use of
-*assembler descriptions*, documented in the
-[assembler howto](../assembler/assembler-howto.html). Access to the
+A model can be built from a description of the required model.
+This is documented in the
+[assembler howto](../assembler/assembler-howto.html). 
+Access to the
 assembler system for model creation is provided by three
 ModelFactory methods:
 
@@ -213,22 +131,64 @@ according to the description hanging from `root`.
 Assemblers can construct other things as well as models, and the
 Assembler system is user-extensible: see the howto for details.
 
+### File-based models
+
+The method `ModelFactory.createFileModelMaker(String)` returns a
+`ModelMaker` which attaches models to filing-system files. The
+`String` argument is the *fileBase*. When a file-ModelMaker opens a
+file, it reads it from a file in the directory named by the
+fileBase; when the model is closed (and *only* then, in the current
+implementation), the contents of the model are written back to the
+file.
+
+Because the names of models in a modelMaker can be arbitrary
+character strings, in particular URIs, they are translated slightly
+to avoid confusion with significant characters of common filing
+systems. In the current implementation,
+
+- colon : is converted to \\_C
+- slash \/ is converted to \\_S
+- underbar \_ is converted to \\_U
+
+## ModelMakers
+
+Plain models can be given names which allows them to be "saved" and
+looked up by name later. This is handled by implementations of the
+interface `ModelMaker`; each `ModelMaker` produces Models of the
+same kind. The simplest kind of `ModelMaker` is a memory model
+maker, which you get by calling
+`ModelFactory.createMemModelMaker()`. The methods you'd want to use
+to start with on a ModelMaker are:
+
+- `createModel(String)`: create a model with the given name in the
+ModelMaker. If a model with that name already exists, then that
+model is used instead.
+
+- `openModel(String)`: open an existing model with the given name. If
+no such model exists, create a new empty one and give it that name.
+[createModel(String) and openModel(String) behave in the same way,
+but each has a two-argument form for which the behaviour is
+different. Use whichever one best fits your intention.]
+
+- `createModel()`: create a fresh anonymous model.
+
+- `getModel()`: each `ModelMaker` has a *default model*; this method
+returns that model.
+
+There are other methods, for removing models, additional control
+over create *vs* open, closing the maker, and looking names up; for
+those consult the
+[ModelMaker JavaDoc](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/ModelMaker.html).
+
 ## Miscellany
 
 Finally, `ModelFactory` contains a collection of methods for some
 special cases not conveniently dealt with elsewhere.
 
-- `createModelForGraph(Graph g)` is used when an advanced user with
+`createModelForGraph(Graph g)` is used when an advanced user with
 access to the Jena SPI has constructed or obtained a `Graph` and
 wishes to present it as a model. This method wraps the graph up as
 a plain model. Alterations to the graph are visible in the model,
 and *vice versa*.
-
-- `withHiddenStatements(Model)` returns a new Model in which any
-reification quadlets (see the reification howto) that may be hidden
-in the base model are exposed in the result. It may return the base
-model, if it does not hide quadlets. This is useful if you want to
-see all the statements of the model as they will appear in a
-serialisation.
 
 

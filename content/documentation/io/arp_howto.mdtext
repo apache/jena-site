@@ -1,21 +1,15 @@
-Title: Jena RDF I/O How-To
+Title: Jena RDF/XML How-To
 
-This is a guide to the I/O subsystem of Jena. All Jena users need
-to know to use InputStreams and OutputStreams rather than Readers
-and Writers. The first section gives a quick introduction to the
+This is a guide to the RDF/XML I/O subsystem of Jena, ARP.
+The first section gives a quick introduction to the
 I/O subsystem. The other sections are aimed at users wishing to use
-advanced features within the I/O subsystem.
+advanced features within the RDF/XML I/O subsystem.
 
-Note that a new IO subsystem for Jena, named RIOT, is currently in development.
-See [the RIOT documentation](riot.html) for further details.
 
 ## Contents
 
 -   [Quick Introduction](#quick-introduction)
-    -   [RDF/XML, RDF/XML-ABBREV](#rdfxml-rdfxml-abbrev)
-    -   [TURTLE](#turtle)
-    -   [N-TRIPLE](#n-triple)
-    -   [N3](#n3)
+-   [RDF/XML, RDF/XML-ABBREV](#rdfxml-rdfxml-abbrev)
 -   [Character Encoding Issues](#character-encoding-issues)
     -   [Encodings Supported in Jena 2.2 and later](#encodings-supported-in-jena-22-and-later)
 -   [When to Use Reader and Writer?](#when-to-use-reader-and-writer)
@@ -24,13 +18,14 @@ See [the RIOT documentation](riot.html) for further details.
     -   [ARP properties](#arp-properties)
     -   [Interrupting ARP](#interrupting-arp)
 -   [Advanced RDF/XML Output](#advanced-rdfxml-output)
--   [Advanced Turtle/N3 Output](#advanced-turtlen3-output)
 -   [Conformance](#conformance)
 -   [Faster RDF/XML I/O](#faster-rdfxml-io)
 
 ## Quick Introduction
 
 The main I/O methods in Jena use `InputStream`s and `OutputStream`s.
+This is import to correctly handle character sets.
+
 These methods are found on the
 [`Model`](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Model.html) interface.
 These are:
@@ -48,10 +43,8 @@ These are:
 - [`Model`](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Model.html#write(java.io.OutputStream, java.lang.String, java.lang.String))`(java.io.OutputStream out, java.lang.String lang, java.lang.String base)`
   <br />Write a serialized representation of a model in a specified language.
 
-The built-in languages are `"RDF/XML"`, `"RDF/XML-ABBREV"`,
-`"N-TRIPLE"`, `"N3"` and `"TURTLE"`. In addition, for Turtle output
-the language can be specified as: `"N3-PP"`, `"N3-PLAIN"` or
-`"N3-TRIPLE"`, which controls the style of N3 produced.
+The built-in languages are `"RDF/XML"`, `"RDF/XML-ABBREV"` as well as 
+`"N-TRIPLE"`, and `"TURTLE"`.
 
 There are also methods which use `Reader`s and `Writer`s. Do not use
 them, unless you are sure it is correct to. In advanced
@@ -73,7 +66,7 @@ However, such XML is less portable than XML in UTF-8. Using the
 `Model.write(OutputStream …)` methods allows the Jena system
 code to choose UTF-8 encoding, which is the best choice.
 
-### RDF/XML, RDF/XML-ABBREV
+## RDF/XML, RDF/XML-ABBREV
 
 For input, both of these are the same, and fully implement the
 [RDF Syntax Recommendation](http://www.w3.org/TR/rdf-syntax-grammar/),
@@ -86,46 +79,6 @@ efficiency.
 
 All the readers and writers for RDF/XML are configurable, see
 below, [input](#input) and [output](#output).
-
-### TURTLE
-
-The N3 reader accepts any valid
-[Turtle](http://www.w3.org/TR/turtle/).
-Note that the N3 and Turtle writers produce internationalized
-qnames, with the character set from XML Namespaces (except for
-':'), not restricted to ASCII as is the definition of N3 and
-Turtle.
-
-The Turtle writer is the N3 writer [configured](#n3-output) with:
-usePropertySymbols=false, useTripleQuotedStrings=false,
-useDoubles=false.
-
-### N-TRIPLE
-
-The N-TRIPLE readers and writers implement
-[RDF Core's N-Triples](http://www.w3.org/TR/rdf-testcases/#ntriples)
-language. They are not configurable.
-
-### N3
-
-The N3 readers and writers implement
-[Tim Berners-Lee's N3](http://www.w3.org/2000/10/swap/Primer.html)
-language.
-
-There are actually 4 writers:
-
--   N3: The standard writer that choose one of the other 3.
--   N3-PP: The full N3 pretty writer
--   N3-PLAIN: An N3 writer that does not nest bNode strutures but
-    does write record-like groups of all properties for a subject
--   N3-TRIPLE: Writer one statement per line, like N-TRIPLES, but
-    also does qname conversion of URIrefs.
-
-The standard Jena writer `"N3"` chooses which writer to use based on
-the system property `com.hp.hpl.jena.n3.N3JenaWriter.writer`.
-
-If none of these produce N3 to your liking, it is possible to
-further [customize](#n3-output) the output.
 
 ## Character Encoding Issues
 
@@ -403,21 +356,23 @@ of "rdf:about", then the following code is appropriate:
     in.close();
 
 As a second example, suppose you wish to work in strict mode, but
-ingore some specific warning or error, the following works:
+allow `"daml:collection"`, the following works:
 
      …
      arp.setProperty("error-mode", "strict" );
-     arp.setProperty("WARN_UNQUALIFIED_ATTRIBUTE", "EM_IGNORE");
+     arp.setProperty("IGN_DAML_COLLECTION","EM_IGNORE");
      …
 
 The other way round does not work.
 
      …
-     arp.setProperty("WARN_UNQUALIFIED_ATTRIBUTE", "EM_IGNORE");
+     arp.setProperty("IGN_DAML_COLLECTION","EM_IGNORE");
      arp.setProperty("error-mode", "strict" );
      …
 
-This is because in strict mode it is treated as an error, and so the second call to `setProperty`
+This is because in strict mode
+[`IGN_DAML_COLLECTION`](/documentation/javadoc/jena/com/hp/hpl/jena/rdf/arp/ARPErrorNumbers.html#IGN_DAML_COLLECTION)
+is treated as an error, and so the second call to `setProperty`
 overwrites the effect of the first.
 
 The IRI rules and resolver can be set on a per-reader basis:
@@ -592,6 +547,18 @@ indicating grammar rules that will not be used. Rules that can be blocked are:
 - [propertyAttr](http://www.w3.org/TR/rdf-syntax-grammar#propertyAttr)
  ([`RDFSyntax.propertyAttr`](/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/RDFSyntax.html#propertyAttr))
 
+In addition `"daml:collection"`
+([`DAML_OIL.collection`](/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/DAML_OIL.html#collection))
+can be blocked. Blocking
+[idAttr](http://www.w3.org/TR/rdf-syntax-grammar#idAttr) also
+blocks
+[section-Reification](http://www.w3.org/TR/rdf-syntax-grammar#section-Reification).
+By default, rule
+[propertyAttr](http://www.w3.org/TR/rdf-syntax-grammar#propertyAttr)
+is blocked. For the basic writer (RDF/XML) only
+[parseTypeLiteralPropertyElt](http://www.w3.org/TR/rdf-syntax-grammar#parseTypeLiteralPropertyElt)
+has any effect, since none of the other rules are implemented by
+that writer.
 </td>
 <td>`Resource[]` or `String`</td>
 <td></td>
@@ -602,24 +569,6 @@ indicating grammar rules that will not be used. Rules that can be blocked are:
 Only for the RDF/XML-ABBREV writer. This is a list of the types of
 the principal objects in the model. The writer will tend to create
 RDF/XML with resources of these types at the top level.
-
-Example usage showing the default settings:
-
-    w.setProperty("prettyTypes",
-             new Resource[]{
-			OWL.Ontology,
-			OWL.Datatype,
-			RDFS.Datatype,
-			RDFS.Class,
-			OWL.Class,
-			OWL.ObjectProperty,
-			RDF.Property,
-			OWL.DatatypeProperty,
-			OWL.TransitiveProperty,
-			OWL.SymmetricProperty,
-			OWL.FunctionalProperty,
-			OWL.InverseFunctionalProperty
-                  });
 </td>
 <td>
 `Resource[]`
@@ -635,7 +584,8 @@ As an example,
     w.setProperty("showXMLDeclaration","true");
     w.setProperty("tab","1");
     w.setProperty("blockRules",
-      "parseTypeResourcePropertyElt,parseTypeCollectionPropertyElt");
+      "daml:collection,parseTypeLiteralPropertyElt,"
+      +"parseTypeResourcePropertyElt,parseTypeCollectionPropertyElt");
 
 creates a writer that does not use rdf:parseType (preferring
 rdf:datatype for rdf:XMLLiteral), indents only a little, and
@@ -648,45 +598,22 @@ property attributes when the value does not contain any spaces.
 This rule is normally switched off. This rule can be turned on
 selectively by using the blockRules property as detailed above.
 
-## Advanced N3 Output
-
-The N3 pretty printer (which is used by default)  and the N3 plain
-writer provide a number of properties to control their output.  The
-properties all start: `http://jena.hpl.hp.com/n3/properties/`. The
-name used can be the full name, starting with this string, or the
-short form of just the name below.  All values are strings; they
-may be interpreted as integer, boolean or string as defined below.
-
-### Properties to Control N3 Output
-
-Property Name | Description | Default | Legal Values of String
-------------- | ----------- | ------- | ----------------------
-`minGap` | Minimum gap between items on a line | 1 | positive integer
-`objectLists` | Print object lists as comma separated lists | `true` | boolean `"true"` or `"false"`
-`subjectColumn` | If the subject is shorter than this value, the first property may go on the same line. | `indentProperty` | positive integer
-`propertyColumn` | Width of the property column | 8 | positive integer
-`indentProperty` | Width to indent properties | 6 | positive integer
-`widePropertyLen` | Width of the property column | 20 | integer, greater than `propertyColumn`
-`abbrevBaseURI` | Control whether to use abbreviations `<>` or `<#>` | true | boolean `"true"` or `"false"`
-`usePropertySymbols` | Control whether to use `"a"`, `"="` and `"=\>"` in output | true | boolean `"true"` or `"false"`
-`useTripleQuotedStrings` | Allow the use of `"""` to delimit long strings | true | boolean `"true"` or `"false"`
-`useDoubles` | Allow the use doubles as 123.456 | true | boolean `"true"` or `"false"`
-
-Notes:
-
-1.  Only the N3 pretty printer print object lists as comma-separated lists.
-
 ## Conformance
 
 The RDF/XML I/O endeavours to conform with the
 [RDF Syntax Recommendation](http://www.w3.org/TR/rdf-syntax-grammar/).
 
-The parser must be set to strict mode.
+The parser must be set to strict mode. (Note that, the conformant
+behaviour for `rdf:parseType="daml:collection"` is to silently turn
+`"daml:collection"` into `"Literal"`).
 
 The RDF/XML writer is conformant, but does not exercise much of the
-grammar.  The RDF/XML-ABBREV writer exercises all of the grammar and is
-conformant.
+grammar.
 
+The RDF/XML-ABBREV writer exercises all of the grammar and is
+conformant except that it uses the `daml:collection` construct for
+DAML ontologies. This non-conformant behaviour can be switched off
+using the `blockRules` property.
 
 ## Faster RDF/XML I/O
 
@@ -716,6 +643,3 @@ error.
     RDFReader bigFileReader = m.getReader("RDF/XML");
     bigFileReader.setProperty("WARN_REDEFINITION_OF_ID","EM_IGNORE");
     …
-
-
-
