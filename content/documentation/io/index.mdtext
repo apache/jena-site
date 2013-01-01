@@ -2,25 +2,25 @@ Title: Reading RDF in Jena
 
 This page details the setup of RDF I/O technology (RIOT) introduced in Jena 2.10.
 
-The output capabilities are described [elsewhere](#rdf-output.html).
+The output capabilities are described [elsewhere](rdf-output.html).
 
 - [Formats](#formats)
-- [Commands](#command_line_tools)
+- [Commands](#command-line-tools)
 - [Inference](#inference)
 - [API](#api)
-  - [Determining the RDF syntax](#determining_the_rdf_syntax)
-  - [Common usage](#example_1___common_usage)
-  - [Using the RDFDataMgr](##example_2___using_the_rdfdatamgr)
+  - [Determining the RDF syntax](#determining-the-rdf-syntax)
+  - [Common usage](#example-1-common-usage)
+  - [Using the RDFDataMgr](##example-2-using-the-rdfdatamgr)
 - [Logging](#logging)
-- [The StreamManager and LocationMapper](#)
-  - [Configuring the `StreamManager`](#configuring_the_streammanager)
-  - [Configuring a `LocationMapper`](#configuring_a_locationmapper)
-- [Add a new language](#add_a_new_language)
-- [Advanced examples](#advanced_examples)
+- [The StreamManager and LocationMapper](#streammanager-and-locationmapper)
+  - [Configuring the `StreamManager`](#configuring-a-streammanager)
+  - [Configuring a `LocationMapper`](#configuring-a-locationmapper)
+- [Add a new language](#add-a-new-language)
+- [Advanced examples](#advanced-examples)
 
 Full details of operations are given in the javadoc.
 
-# Formats
+## Formats
 
 The following RDF formats are supported by Jena. In addition, other syntaxes
 can be integrated into the parser framework.
@@ -38,7 +38,7 @@ See the [description of RDF/JSON](rdf-json.html).
 See also the [RDF/XML specific documentation](arp.html) for configuration
 of the RDF/XML parser.
 
-# Command line tools
+## Command line tools
 
 There are scripts in Jena download to run these commands.
 
@@ -50,14 +50,14 @@ These can be called directly as Java programs:
 
 The file extensions are:
 
-| Extension | Language |
-|===========|==========|
+| Extension  | Language |
+|-----------|-----------|
 | `.nt`     | N-triples |
 | `.ttl`    | Turtle    |
 | `.nq`     | N-Quads   |
 | `.trig`   | TriG      |
 | `.rdf`    | RDF/XML   |
-| `.owl`    | RDF/XML   |
+\ `.owl`    | RDF/XML   |
 
 In addition, if the extension is .gz the file is assumed to be gzip
 compressed. The file name is examined for an inner extension. For
@@ -80,7 +80,7 @@ utility which reads a file of bytes as UTF8 and checks the encoding.
 
 -   `utf8` -- read bytes as UTF8
 
-# Inference
+## Inference
 
 RIOT support creation of inferred triples during the parsing
 process:
@@ -90,7 +90,7 @@ process:
 Output will contain the base data and triples inferred based on
 subclass, subproperty, domain and range.
 
-# API
+## API
 
 Much of the functionality is accessed via the Jena Model API; direct
 calling of the RIOT subsystem isn't needed.  A resource name
@@ -108,7 +108,7 @@ The major classes in the RIOT API are:
 | RDFLanguages      | Registered languages |
 | RDFParserRegistry | Registered parser factories |
 
-## Determining the RDF syntax
+### Determining the RDF syntax
 
 The syntax of the RDF file is determined by the content type (if an HTTP
 request), then the file extension if there is no content type (or it's
@@ -127,7 +127,7 @@ The following is a suggested Apache httpd .htaccess file:
     AddType  text/trig               .trig
     AddType  application/n-quads     .nq
 
-## Example 1 : Common usage
+### Example 1 : Common usage
 
 In this example, a file in the current directory is read as Turtle.
 
@@ -138,7 +138,7 @@ If the syntax is not as the file extension, a language can be declared:
 
     model.read("data.foo", "TURTLE") ;
 
-## Example 2 : Using the RDFDataMgr
+### Example 2 : Using the RDFDataMgr
 
 In versions of Jena priot to 2.10.0, the `FileManager` provided some of
 this functionality. It was more basic, and not properly web enabled.  The
@@ -157,12 +157,12 @@ add data into an existing model or dataset.
     // Read into an existing Model
     RDFDataMgr.read(model, "data2.ttl") ;
 
-# Logging
+## Logging
 
 The parsers log to a logger called `org.aapche.jena.riot`.  To avoid `WARN`
 messages, set this in log4j.properties to `ERROR`.
 
-# The StreamManager and LocationMapper
+## StreamManager and LocationMapper
     
 By default, the `RDFDataMgr` uses the global `StreamManager` to open typed
 InputStreams.  This is available to applications via `RDFDataMgr.open` as well as directly
@@ -181,7 +181,7 @@ data:
 -   Class loader locator
 -   Zip file locator
 
-## Configuring the `StreamManager`
+### Configuring a `StreamManager`
 
 The `StreamManager` can be reconfigured with different places to look for
 files.  The default configuration used for the global `StreamManager` is
@@ -194,7 +194,7 @@ There is also a `LocationMapper` for rewiting file names and URLs before
 use to allow placing known names in different places (e.g. having local
 copies of import http resources).
 
-## Configuring a `LocationMapper`
+### Configuring a `LocationMapper`
 
 Location mapping files are RDF, usually written in Turtle although
 an RDF syntax can be used.
@@ -256,16 +256,16 @@ Using log4j, set the logging level of the classes:
 * org.apache.jena.riot.stream.StreamManager
 * org.apache.jena.riot.stream.LocationMapper
 
-# Advanced examples
+## Advanced examples
 
-## Filter the output of parsing.
+### Filter the output of parsing.
 
 When working with very large files, it can be useful to process the stream of triples or quads produced
 by the parser so as to work in a streaming fashion.
 
 See [RIOT example 4](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src-examples/arq/examples/riot/ExRIOT_4.java)
 
-## Add a new language
+### Add a new language
 
 The set of languages is fixed - a new languages can be added to RIOT as shown in
 [RIOT example 5](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src-examples/arq/examples/riot/ExRIOT_5.java)
