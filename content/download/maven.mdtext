@@ -29,26 +29,25 @@ on a version of Jena and ARQ stable releases:
 
     <dependency>
       <groupId>org.apache.jena</groupId>
-      <artifactId>jena-arq</artifactId>
-      <version>2.9.3</version>
+      <artifactId>apache-jena</artifactId>
+      <type>pom</type>
+      <version>X.Y.Z</version>
     </dependency>
 
-You do not need to specify a dependency on Jena, since ARQ depends on Jena and Maven
-will transitively resolve all the dependencies for you (including Jena).
-If you do need to use the Apache release repository, add the following to
-the <code>&lt;repositories&gt;</code> section of your <code>pom.xml</code>.
+This will transitively resolve all the dependencies for you: `jena-core`,
+`jena-arq`, `jena-tdb` and `jena-iri` and their dependencies.
 
-    <repository>
-      <id>apache-repo-releases</id>
-      <url>https://repository.apache.org/content/repositories/releases/</url>
-      <releases>
-       <enabled>true</enabled>
-      </releases>
-    </repository>
+Other modules need to added separately, for example:
+
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-sdb</artifactId>
+      <version>x.y.z</version>
+    </dependency>
 
 Please check for the latest versions.
 
-The artifacts are:
+The full list of artifacts is:
 
  * jena-core
  * jena-arq
@@ -57,26 +56,10 @@ The artifacts are:
  * jena-fuseki
  * jena-larq
  * jena-sdb
+ * jena-parent
 
 You can run <code>mvn dependency:tree</code> to print the dependency
 tree. 
-
-### Specifying TDB or SDB as dependencies
-
-For TDB, this is what you should use to point to the latest release:
-
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-tdb</artifactId>
-      <version>0.9.3</version>
-    </dependency>
-
-The artifact id for SDB is <code>jena-sdb</code>.
-
-Once again, since SDB and TDB depend on Jena and ARQ
-this is all you need in your <code>pom.xml</code> file.
-
-Please note that Apache releases of SDB have not yet been done.
 
 ### Specifying dependencies on SNAPSHOTs
 
@@ -93,29 +76,6 @@ to recent bug fixes, you should add the following to your <code>pom.xml</code>:
           <enabled>true</enabled>
         </snapshots>
       </repository>
-
-For the current Jena SNAPSHOT use:
-
-      <dependency>
-        <groupId>org.apache.jena</groupId>
-        <artifactId>jena-core</artifactId>
-        <version>2.7.4-SNAPSHOT</version>
-      </dependency>
-
-For the current ARQ SNAPSHOT use:
-
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-arq</artifactId>
-      <version>2.9.4-SNAPSHOT</version>
-    </dependency>
-
-For the current TDB SNAPSHOT use:
-
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-tdb</artifactId>
-      <version>0.9.4-SNAPSHOT</version>
     </dependency>
 
 ### Build and install artifacts in your local Maven repository
@@ -129,4 +89,5 @@ tree and build with maven
     cd Jena
     mvn clean install
 
-Each of the modules can be built on it's own but they require the current snapshots and Jena parent POM to be installed.
+Each of the modules can be built on it's own but they
+require the current snapshots and Jena parent POM to be installed.
