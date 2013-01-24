@@ -1,0 +1,309 @@
+Title:     Usando Jena com o Eclipse
+Notice:    Licensed to the Apache Software Foundation (ASF) under one
+           or more contributor license agreements.  See the NOTICE file
+           distributed with this work for additional information
+           regarding copyright ownership.  The ASF licenses this file
+           to you under the Apache License, Version 2.0 (the
+           "License"); you may not use this file except in compliance
+           with the License.  You may obtain a copy of the License at
+           .
+             http://www.apache.org/licenses/LICENSE-2.0
+           .
+           Unless required by applicable law or agreed to in writing,
+           software distributed under the License is distributed on an
+           "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+           KIND, either express or implied.  See the License for the
+           specific language governing permissions and limitations
+           under the License.
+
+**Original credits to: [Ian dickinson][1]**
+
+
+Eu com certa frequência recebo emails da seguinte forma:
+
+>     Prezado Sr/Dr/Prof Dickinson
+>     Eu sou novo em Jena. Eu não consigo configurar o Jena no eclipse. Seria possível, por favor, me ajudar a resolver este problema?
+
+A propósito, eu não sou um professor, mas seria bom ser promovido. Então, este artigo é para todos aqueles que são novos em Jena no Eclipese. Este artigo não é:
+
+•	Um  [tutorial](http://java.sun.com/docs/books/tutorial/) de programação em Java
+
+•	Instruções sobre [instalação do Eclipse](http://www.cs.umd.edu/class/spring2006/cmsc132/EclipseTutorial/install.html)
+
+•	Um [tutorial de Jena](http://jena.sourceforge.net/tutorial/RDF_API/)
+
+
+Em vez disto, meus objetivos para este artigo são mostrar a você como fazer um programa Jena bem básico no Eclipse. Em outras palavras, o equivalente em Jena do [hello world](http://en.wikipedia.org/wiki/Hello_world_program).
+
+##Preâmbulo
+
+Jena é uma API (application programming interface) de programação para aplicações
+ de web semântica em Java. Ele não é um programa ou ferramenta que você “roda” –
+ se é isto que você está procurando, eu sugiro [TopBraid Composer](http://www.topbraidcomposer.com/) como uma boa 
+opção. Desta forma, o principal uso de Jena é ajudar você a escrever código em
+ Java que dá suporte à documentação e descrição de RDF e OWL. Eu uso Eclipse
+ como meu ambiente de programação Java, existem outros ambientes disponíveis,
+ mas eu não os uso e, portanto, 
+a experiência que eu posso passar é baseada no Eclipse.
+
+
+##Pré-requesitos
+
+Você precisará:
+
+1.	Baixar em instalar o [eclipse](http://www.eclipse.org/). Este artigo foi escrito com o Eclipse 3.3.1, mas o número exato da versão não deveria importar já que a interface principal do Eclipse tem sido estável já há algum tempo.
+2.	Baixar e descompactar o [Jena](http://jena.sf.net). No momento em que estou escrevendo, a versão atual do Jena é 2.5.5, mas novamente, não importa se você usar uma versão diferente.
+
+Para este tutorial eu irei usar Windows, mas os mesmos passos se aplicam ao 
+Linux e, eu presumo, ao MacOS. De fato, na minha máquina Windows eu uso uma 
+estrutura de diretório similar ao do Linux: ao invés de: `c:\Documents and 
+Settings\ijd` como diretório padrão, eu `uso c:\home\ijd`. Esta é uma escolha
+ pessoal que torna mais fácil escrever scripts que rodam no Linux e no Cygwin,
+ mas não há nenhuma razão especial para você fazer o mesmo. Entretanto, 
+geralmente é uma boa ideia evitar caminhos de diretórios com espaços entre 
+eles, se você puder. Então, a instalação do meu Jena está em: `c:\home\ijd\projects\jena2`.
+ Em qualquer lugar que você vê este caminho de diretório neste tutorial, substitua-o pelo lugar onde você instalou o seu Jena.
+
+##Guia passo a passo
+
+Este tutorial é realmente para os novatos no Eclipse, então vou fazer um 
+passo por vez. Se você já tem alguma experiência com Eclipse, sinta-se à 
+vontade para pular alguns passos.  
+
+##Passo 1 – Cria um Java Project
+
+Eclipse organiza arquivos em projetos (*projects*), então nós vamos precisar de um projeto neste tutorial. Dependendo dos plugins instalados, o Eclipse pode mostrar um grande número de diferentes tipos de projetos. Um projeto simples em Java é o suficiente para uma aplicação simples em Jena.  Se ao invés disso, você quisesse desenvolver um servlet Java que usa Jena, então use um tipo de projeto adequado. 
+Por clareza, eu vou começar com um workspace vazio no Eclipse:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig1.png"></p>
+
+Eu preciso criar um novo *Java project*:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig2.png"></p>
+
+<p align="center">
+<img border="0" src="figures/jhw_fig3.png"></p>
+
+Então eu preciso configurar a estrutura interna do projeto.
+ Existe muitas formas de se fazer isso. Eu normalmente uso a 
+estrutura básica que vem do  [Maven](http://maven.apache.org/guides/getting-started/index.html). O código fonte está em src/main,
+ com o código Java em `src/main/java`, ontologias em `src/main/owl`, etc.
+ Arquivos Java .class compilados ficam em `target/classes`.Então quando
+ eu crio um novo projeto, eu edito as configurações padrões para refletir
+ essas preferências. Entretanto, se o padrão é bom para você ou você não 
+conhece o suficiente para se importar com esses detalhes ainda, apenas 
+aceite as configurações padrões. Alternativamente, se o projeto que você 
+faz parte ou sua instituição educacional têm padrões já estabelecidos para
+ isto, use-os.  
+
+<p align="center">
+<img border="0" src="figures/jhw_fig4.png"></p>
+
+<p align="center">
+<img border="0" src="figures/jhw_fig5.png"></p>
+
+##Passo 2: crie uma classe “hello world”
+
+O código de Java fica em arquivos que correspondem à declaração de
+ uma classe Java, então eu preciso criar uma classe para o meu exemplo
+ de “hello world”. No *project explorer* (que fica no lado esquerdo por padrão,
+ mas você pode movê-lo por quase todo o Eclipse), eu seleciono a pasta source
+ (src) do projeto que estamos trabalhando e clico com o botão direito para
+ abrir o menu de contexto (context menu):   
+
+
+<p align="center">
+<img border="0" src="figures/jhw_fig6.png"></p>
+
+
+<p align="center">
+<img border="0" src="figures/jhw_fig7.png"></p>
+
+
+##Passo 3: adicionando as bibliotecas de Jena
+OK, agora vamos escrever algum código em Jena. 
+A primeira coisa que eu precisarei para trabalhar é um `Model` (modelo):
+ um container para comandos RDF. A classe `Model` está no pacote (*package*)
+ `com.hp.hpl.jena.rdf.model`, então primeiro eu irei importar (*import*) a 
+classe e só então criar uma instância dela. 
+
+<p align="center">
+<img border="0" src="figures/jhw_fig8.png"></p>
+
+Certo, então por que o código está sublinhando em vermelho? Este é o jeito do
+ Eclipse de indicar que existe um problema no código. Se eu tentasse compilar
+ este código usando `javac` na linha de comando, eu receberia uma mensagem de
+ erro dizendo que o pacote `com.hp.hpl.jena.rdf.model`  não pôde ser encontrado,
+ e que a classe `Model` não foi definida. Na linha de comando, eu consertaria
+ isto configurando o `Java classpath`. Essencialmente, isso é o que eu faço no
+ Eclipse também, mas o Eclipse torna isto muito mais fácil. Note que eu não 
+disse em lugar nenhum neste texto que este é um projeto Jena. Tudo que eu
+ disse é que é um projeto Java. Qual a diferença? Simples: o Eclipse precisa 
+saber onde encontrar o projeto Jena que eu gostaria de referenciar no meu
+ programa. O Eclipse chama os locais onde ele pode achar o código que eu quero
+ referenciar como build path.
+
+Existem algumas formas diferentes de configurar o build path no Eclipse. 
+Uma forma é criar um diretório `lib` na pasta de mais alta ordem do meu projeto,
+ copiar o arquivo Jena `.jar`  lá e então linkar aquele diretório com o *build
+ path* do meu projeto. Isto funciona, mas existe uma forma melhor: definir
+ uma biblioteca de usuário (*user library*). Uma biblioteca de usuário é uma
+ declaração de biblioteca (coleção de códigos de suporte) que eu posso 
+referenciar a partir de qualquer projeto. Feito isso uma vez, eu posso 
+usar esta mesma biblioteca em vários projetos diferentes. Além do mais,
+ se eu em seguida atualizar Jena para uma nova versão, uma vez que a
+ biblioteca for atualizada, todo projeto no meu wordspace do Eclipse irá 
+enxergar a nova versão.  Com o método de “copiar os arquivos para a pasta lib”,
+ eu tenho que recopiar para todo projeto que use Jena. Aqui está como eu crio
+ uma biblioteca Jena de usuário, começando com o menu *Preferences*: 
+
+<p align="center">
+<img border="0" src="figures/jhw_fig9.png"></p>
+
+<p align="center">
+<img border="0" src="figures/jhw_fig10.png"></p>
+
+Clique *new* para criar uma nova biblioteca de usuário (*user library*):
+
+<p align="center">
+<img border="0" src="figures/jhw_fig11.png"></p>
+
+Agora eu clico em *add jars* (adicionar jars) para adicionar os arquivos `.jar` 
+do Jena. Arquivos `.jar` contêm bibliotecas Java compiladas que Jena usa, junto
+ com o próprio código Jena em  `jena.jar`. A janela de *selection* (seleção) 
+que abre me permite selecionar quais arquivos `.jar` estarão na minha biblioteca
+ de usuário. Eu selecionei todos (*ALL*) os arquivos `.jar` no diretório `/lib` 
+do diretório de instalação do meu Jena.  
+
+
+<p align="center">
+<img border="0" src="figures/jhw_fig12.png"></p>
+
+Resultado:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig13.png"></p>
+
+Isso é na verdade suficiente para me permitir usar Jena no Eclipse, mas há 
+um par de passos adicionais que tornam a programação um pouquinho mais fácil.
+ Eu posso dizer ao Eclipse onde encontrar o código fonte e o javadoc para
+ as classes Jena (Eu vou mostrar como isso é útil mais na frente). Ao lado
+ do arquivo `jena.jar` na biblioteca do usuário existe um pequeno ícone 
+de “+”. Clicar lá expande os detalhes daquele `.jar` :
+
+
+<p align="center">
+<img border="0" src="figures/jhw_fig14.png"></p>
+
+Eu posso informar ao Eclipse que o código fonte está na pasta `src/` do
+ diretório de instalação do Jena. Eu clico na linha de *Souce attachment*
+ (anexo de código), então clico no botão *Edit* (editar). Na caixa de diálogo
+ de configurações de *souce attachment*, eu clico no botão de *External folder*
+ (pasta externa) e navego até a locação certa:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig15.png"></p>
+
+Similarmente, eu posso notificar o Eclipse da locação do Javadoc selecionando
+ a linha Javadoc *location* (locação) da opção, então seguir um processo 
+similar. Vale notar que o caminho da locação é a URL (ela começa com *file:*).
+ Isto se dá porque a locação também pode ser um site Javadoc, embora eu não 
+use este recurso aqui. 
+
+<p align="center">
+<img border="0" src="figures/jhw_fig16.png"></p>
+
+Com a biblioteca de usuário Jena configurada, eu clico em Ok para fechar a 
+caixa de diálogo de configurações de biblioteca.  
+
+##Passo 4: Finalizando o programa “hello world”
+
+Agora eu posso voltar ao meu projeto e configurar o *build path* de Java para 
+a biblioteca que eu acabei de criar. Para começar, clico com o botão direito 
+no nó do projeto no *Explorer window* para abrir o menu de propriedades do
+ projeto (*properties menu*), navego até a opção *build path* do menu e adiciono 
+a biblioteca (*add libraries*). 
+
+<p align="center">
+<img border="0" src="figures/jhw_fig17.png"></p>
+
+<p align="center">
+<img border="0" src="figures/jhw_fig18.png"></p>
+
+<p align="center">
+<img border="0" src="figures/jhw_fig19.png"></p>
+
+
+Tendo atualizado o *build path*, o Eclipse irá automaticamente reconstruir
+ o projeto (i.e. recompilar o código Java). Com isto, alguns erros irão 
+desaparecer, dado que a declaração de `import` pode agora achar a classe 
+para ser importada, e então a classe `Model` agora faz sentido para o compilador.
+
+<p align="center">
+<img border="0" src="figures/jhw_fig20.png"></p>
+
+Entretanto, ainda existe um erro porque `ModelFactory` não está definido. 
+O que é preciso é uma declaração de `import` adequada. Isto é facilmente 
+corrigido no Eclipse, seja clicando no símbolo (o ‘x’ vermelho na margem 
+esquerda), ou posicionando o cursor logo depois do nome da classe `ModelFactory` 
+ e pressionando `ctrl-space`, o que faz com que o Eclipse mostre os complementos
+ possíveis para o nome:
+
+
+<p align="center">
+<img border="0" src="figures/jhw_fig21.png"></p>
+
+Quando eu seleciono a primeira das opções apresentadas (i.e. `ModelFactory` ao
+ invés de `ModelFactoryBase`), o Eclipse irá completar a declaração de `import`
+ automaticamente.  
+
+<p align="center">
+<img border="0" src="figures/jhw_fig22.png"></p>
+
+Olhe, não tem mais erros!
+
+A opção de auto-complemento do Eclipse é também útil quando adicionando código.
+ Por exemplo, se eu digitar `Resou` seguido por ctrl-space eu recebo do Eclipse 
+os possíveis complementos que casam com aquele nome:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig23.png"></p>
+
+Note o comentário Javadoc em amarelo ao lado do candidato a complemento 
+(No caso, `Resource`). Esta informação extra vem de ter adicionado as locações
+ do código fonte e o do javadoc quando eu especifiquei as bibliotecas no passo
+ 2 acima. Se você esquecer de especificar estas locações, o Eclipse não pode
+ ser tão prestativo em descrever os possíveis auto-complementos. Isto irá
+ também afetar a visão (*view*) de debug, embora eu não discuta isto neste 
+artigo. 
+Aqui está o programa *hello world* completo:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig24.png"></p>
+
+##Passo 5: rodando o programa “hello world”
+
+Para rodar este programa a partir do Eclipse, eu uso o menu *run*, acessado a
+ partir do botão mostrando um triângulo branco dentro de um círculo verde. 
+Dado que eu ainda não tinha rodado nenhum código, eu tenho que dizer ao 
+Eclipse qual programa rodar. Clique na setinha preta ao lado direito do 
+botão e informe ao Eclipse para rodar `HelloREDFWorld` como uma aplicação Java:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig25.png"></p>
+
+O que resulta na seguinte saída no console do Eclipse:
+
+<p align="center">
+<img border="0" src="figures/jhw_fig26.png"></p>
+
+E é isto: partindo de um Eclipse vazio até trabalhar numa aplicação
+ RDF de hello world. É claro que existe muito mais para aprender 
+(veja os links para tutoriais no início para obter acesso rápido a eles), 
+mas espero que você agora possa ter alguma diversão desenvolvendo aplicações
+ de web semântica. 
+
+
+  [1]: http://www.iandickinson.me.uk/articles/jena-eclipse-helloworld/
