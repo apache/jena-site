@@ -268,14 +268,15 @@ One of the capabilities of the RIOT API is the ability to treat parser output as
 this is useful when you don't want to go to the trouble of writing a full sink implementation and can easily express your
 logic in normal iterator style.
 
-To do this you use one of the subclasses of [StreamedRDFIterator](http://svn.apache.org/viewvc/jena/trunk/jena-arq/src/main/java/org/apache/jena/riot/lang/StreamedRDFIterator.java?view=markup)
-which is an abstract class that implements the [RDFParserOutputIterator](http://svn.apache.org/viewvc/jena/trunk/jena-arq/src/main/java/org/apache/jena/riot/lang/RDFParserOutputIterator.java?view=markup) interface.
-This interface provides an implementation of StreamRDF which allows it to consume parser output and an implementation
-of a standard Java iterator allowing it to provide output in the normal iterator paradigm.  This has some advantages
-over a direct StreamRDF implementation since it allows the parser production of data to run
-ahead of your consumption of data which may result in better overall throughput.
+To do this you use one of the subclasses of 
+[PipedRDFIterator](http://svn.apache.org/viewvc/jena/trunk/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFIterator.java?view=markup)
+in conjunction with a [PipedRDFStream](http://svn.apache.org/viewvc/jena/trunk/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFStream.java?view=markup).
 
-The only complication is that you need to ensure that the parser and the consumer of the iterator are on different threads
+This `PipedRDFStream` provides an implementation of `StreamRDF` which allows it to consume parser output and this is consumed by
+the `PipedRDFIterator` implementation.  This has some advantages over a direct `StreamRDF` implementation since it allows the parser 
+production of data to run ahead of your consumption of data which may result in better overall throughput.
+
+The only complication is that you need to ensure that the thread feeding the `PipedRDFStream` and the consumer of the iterator are on different threads
 as otherwise you can run into a deadlock situation where one is waiting on data from the other which is never started.
 
 See [RIOT example 6](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src-examples/arq/examples/riot/ExRIOT_6.java) 
