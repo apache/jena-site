@@ -89,7 +89,11 @@ union of the named graphs. This is done by adding
 
 ## Graph
 
-A single graph can be described as well:
+TDB always stores data in an RDF dataset.  It is possible to use
+just one of the graphs from the dataset.  A common way of working
+with one graph is to use the default graph of the dataset.
+
+A single graph from a TDB dataset can be described by:
 
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
     @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -97,35 +101,18 @@ A single graph can be described as well:
 
     [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 
-    <#graph> rdf:type tdb:GraphTDB ;
-        tdb:location "DB" .
+    <#dataset> rdf:type tdb:DatasetTDB ;
+        tdb:location "DB" ;
 
-but note that this graph is a single graph at that location; it is
-the default graph of a dataset.
+    <#graph> rdf:type tdb:GraphTDB ;
+        tdb:dataset <#dataset> .
 
 A particular named graph in the dataset at a location can be
 assembled with:
 
-    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
-    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-
-    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
-
-    <#graph> rdf:type tdb:GraphTDB ;
-        tdb:location "DB" ;
+    <#graphNamed> rdf:type tdb:GraphTDB ;
+        tdb:dataset <#dataset> .
         tdb:graphName <http://example/graph1> ;
-        .
-
-It is also possible to describe a graph, or named graph, in a
-dataset where the dataset description can now be shared:
-
-    <#graph2> rdf:type tdb:GraphTDB ;
-        tdb:dataset <#dataset> ;
-        .
-
-    <#dataset> rdf:type tdb:DatasetTDB ;
-        tdb:location "DB" ;
         .
 
 ## Mixed Datasets
@@ -198,6 +185,3 @@ reasoners.
        rdfs:domain tdb:GraphTDB ;
        # range is a URI
        .
-
-
-
