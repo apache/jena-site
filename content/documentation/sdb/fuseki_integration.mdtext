@@ -1,0 +1,36 @@
+Title: SDB Fuseki Integration
+
+[Fuseki](../serving_data/index.html "Apache Jena Fuseki") is a server
+that implements the SPARQL protocol for HTTP. It can be used to
+give a SPARQL interface to an SDB installation.
+
+The Fuseki server needs the SDB jar files on its classpath. The
+Fuseki configuration file needs to contain two triples to integrate
+SDB:
+
+    ## Initialize SDB.
+    [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
+
+    ## Declare that sdb:DatasetStore is an implementation of ja:RDFDataset .
+    sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
+
+then a Fuseki service can use an SBD-implemented dataset:
+
+    <#books> rdf:type sdb:DatasetStore ;
+       sdb:store <#store> .
+
+     <#store> rdf:type sdb:Store  ;
+       rdfs:label "SDB" ;
+       sdb:layout         "layout2" ;
+       sdb:connection
+        [  rdf:type sdb:SDBConnection ;
+           sdb:sdbType        "postgresql" ;
+           sdb:sdbHost        "localhost" ;
+           sdb:sdbName        "SDB" ;
+        ]
+        .
+
+The database installation does not need to accept public requests,
+it needs only to be accessible to the Fuseki server itself.
+
+
