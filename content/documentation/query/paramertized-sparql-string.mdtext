@@ -1,0 +1,99 @@
+Title: Parameterized SPARQL String
+
+A Parameterized SPARQL String is a SPARQL query/update into which values
+may be injected.
+
+### Injecting Values
+
+Values may be injected in several ways:
+
+-   By treating a variable in the SPARQL string as a parameter
+-   Using JDBC style positional parameters
+-   Appending values directly to the command text being built
+
+Variable Parameters
+
+Any variable in the command may have a value injected to it, injecting a
+value replaces all usages of that variable in the command i.e.
+substitutes the variable for a constant, injection is done by textual
+substitution.
+
+#### Positional Parameters
+
+You can use JDBC style positional parameters if you prefer, a JDBC style
+parameter is a single <tt>?</tt> followed by whitespace or certain
+punctuation characters (currently <tt>; , .</tt>). Positional parameters
+have a unique index which reflects the order in which they appear in the
+string. Positional parameters use a zero based index.
+
+Buffer Usage
+
+Additionally you may use this purely as a <code>StringBuffer</code>
+replacement for creating queries since it provides a large variety of
+convenience methods for appending things either as-is or as nodes (which
+causes appropriate formatting to be applied).
+
+### Intended Usage
+
+The intended usage of this is where using a <code>QuerySolutionMap</code> as
+initial bindings is either inappropriate or not possible e.g.
+
+-   Generating query/update strings in code without lots of error prone
+    and messy string concatenation
+-   Preparing a query/update for remote execution
+-   Where you do not want to simply say some variable should have a
+    certain value but rather wish to insert constants into the
+    query/update in place of variables
+-   Defending against SPARQL injection when creating a query/update
+    using some external input, see SPARQL Injection notes for
+    limitations.
+-   Provide a more convenient way to prepend common prefixes to your
+    query
+
+This class is useful for preparing both queries and updates hence the
+generic name as it provides programmatic ways to replace variables in
+the query with constants and to add prefix and base declarations. A
+<code>Query</code> or <code>UpdateRequest</code> can be created using 
+the <code>asQuery()</code> and <code>asUpdate()</code> methods assuming the command an
+instance represents is actually valid as a query/update.
+
+### Warnings
+
+1.  Note that this class does not in any way check that your command is
+    syntactically correct until such time as you try and parse it as a
+    <code>Query</code> or <code>UpdateRequest</code>.
+2.  Also note that injection is done purely based on textual
+    replacement, it does not understand or respect variable scope in any
+    way. For example if your command text contains sub queries you
+    should ensure that variables within the sub query which you don't
+    want replaced have distinct names from those in the outer query you
+    do want replaced (or vice versa)
+
+### SPARQL Injection Notes
+
+While this class was in part designed to prevent SPARQL injection it is
+by no means foolproof because it works purely at the textual level. The
+current version of the code addresses some possible attack vectors that
+the developers have identified but we recognize that there are some
+cases that we cannot prevent. In particular you should never surround a
+variable which you intend to replace with double quotes e.g.
+
+    String str = "PREFIX : <http://example/>\nINSERT DATA { <s> <p> \"?\" }";
+    ParameterizedSparqlString pss = new ParameterizedSparqlString(str);
+
+While the class will recognize and prevent this as an error this
+protection is trivially defeated by placing some white space around the
+variable definition e.g
+
+    String str = "PREFIX : <http://example/>\nINSERT DATA { <s> <p> \" r \" }";
+    ParameterizedSparqlString pss = new ParameterizedSparqlString(str);
+
+This latter case cannot be easily detected and prevented because we
+can't easily distinguish between a possible injection vulnerability and
+a variable that merely occurs between two literals.
+
+Therefore, we <b>strongly</b> recommend that users concerned about SPARQL
+Injection attacks perform their own validation on provided parameters
+and test their use of this class to avoid known attack vectors. We also
+recommend that users do not use easily guessable variable names for
+their parameters as these can allow a chained injection attack.
