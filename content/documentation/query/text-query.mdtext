@@ -30,7 +30,7 @@ the actual label.  More details are given below.
 ## Table of Contents
 
 - [Architecture](#architecture)
-- [Query with SPARQL](#with-with-sparql)
+- [Query with SPARQL](#query-with-sparql)
 - [Configuration](#configuration)
 - [Working with Fuseki](#fuseki)
 
@@ -50,14 +50,14 @@ properties work with.  When data is added, any properties matching the
 description caus an entry to be added from analysed text from the triple
 object and mapping to the subject.
 
-### Pattern A: RDF data
+### Pattern A -- RDF data
 
 In this pattern, the data in the text index is indexing literals in the RDF data.  
 Additions to the RDF data are reflected in additions to the index.
 
 (Deletes do not remove text index netries - [see below](#deletion))
 
-### Pattern B: External content
+### Pattern B -- External content
 
 There is no requirement that the text data indexed is present in the RDF
 data.  As long as the index contains the index text documents to match the
@@ -108,7 +108,7 @@ The property URI is only necessary if multiple properties have been indexed.
 | query string      | The native query string        |
 | limit             | The limit on the results       |
 
-## Good practice
+### Good practice
 
 The query execution does not know the selectivity of the text index.  It is
 better to use one of two styles.
@@ -139,32 +139,6 @@ used to restrict the items found stil further.
       ?s text:query   (dc:title 'word') ; 
     }
 
-## Deletion
-
-If the text index is being maintain by changed to the RDF, then deletion of
-RDF triple or quads does not cause entries in the index to be removed.  The
-index does not store the literal indexed, nor does it store a reference
-count of how many triples refer to the index so the information to delete
-entries is not available. 
-
-In situations where this matters, the SPARQL query should look up in the
-text index, then check in the RDF data.  Indeed, this may be necessary
-anyway because a text search does not necessarily give only exact matches.
-
-In the initial example:
-
-    SELECT ?s ?label
-    { ?s text:query (rdfs:label 'word' 10) ; 
-         rdfs:label ?label 
-    }
-
-the SPARQL query is checking that the `rdfs:label` triple exists, and if it
-does, returning the whole label.
-
-Bu only indexing, and not storing, literals, the index is kept smaller.  It
-may be necessary to periodically rebuild the index if a large proportion
-of the RDF data changes.
-
 ## Configuration
 
 The important structure is an "entity map" which defines the properties to
@@ -194,7 +168,7 @@ The usual way to describe an index is with a
     tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
     tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
-    ## Initialize LARQ
+    ## Initialize text query
     [] ja:loadClass       "org.apache.jena.query.text.TextQuery" .
     # A TextDataset is a regular dataset with a text index.
     text:TextDataset      rdfs:subClassOf   ja:RDFDataset .
@@ -260,7 +234,7 @@ needs to identify the text dataset by it's URI
         // Join together into a dataset
         Dataset ds = TextDatasetFactory.createLucene(ds1, dir, entDef) ;
 
-### Fuseki
+## Fuseki
 
 The Fuseki configuration simply points to the text dataset as the
 `fuseki:dataset` of the service.
@@ -277,3 +251,29 @@ The Fuseki configuration simply points to the text dataset as the
         fuseki:dataset                  :text_dataset ;
         .
 
+
+## Deletion
+
+If the text index is being maintain by changed to the RDF, then deletion of
+RDF triple or quads does not cause entries in the index to be removed.  The
+index does not store the literal indexed, nor does it store a reference
+count of how many triples refer to the index so the information to delete
+entries is not available. 
+
+In situations where this matters, the SPARQL query should look up in the
+text index, then check in the RDF data.  Indeed, this may be necessary
+anyway because a text search does not necessarily give only exact matches.
+
+In the initial example:
+
+    SELECT ?s ?label
+    { ?s text:query (rdfs:label 'word' 10) ; 
+         rdfs:label ?label 
+    }
+
+the SPARQL query is checking that the `rdfs:label` triple exists, and if it
+does, returning the whole label.
+
+By only indexing, and not storing, literals, the index is kept smaller.  It
+may be necessary to periodically rebuild the index if a large proportion
+of the RDF data changes.
