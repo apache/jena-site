@@ -1,6 +1,6 @@
-Title: LARQ - free text searches with SPARQL
+Title: Text searches with SPARQL
 
-LARQ is a combination of SPARQL and text search.
+This extension to ARQ combines SPARQL and text search.
 
 It gives applications the ability to perform free text searches within
 SPARQL queries. Text indexes are additional information for
@@ -10,9 +10,11 @@ The text index can be either [Apache Lucene](http://lucene.apache.org/core) for 
 same-machine text index, or [Apache Solr](http://lucene.apache.org/solr/)
 for a large scale enterprise search application.
 
-Some example code is available here: @@ [examples]().
+Some example code is [available here](https://svn.apache.org/repos/asf/jena/Experimental/jena-text/src/main/java/examples/). @temporary location@
 
-LARQ2 uses Lucene4 or Solr4.
+The desig is modular. The current text indexes supported are 
+[Apache Lucene, v4](http://lucene.apache.org/core/)
+and [ApacheSolr, v4](http://lucene.apache.org/solr/).
 
 *Illustration*
 
@@ -29,21 +31,19 @@ the actual label.  More details are given below.
          rdfs:label ?label 
     }
 
-@@TOC
+
 - [Architecture](#architecture)
-- [Configuration](#configuration)
-- [Loading Data](#loading-data)
 - [Query with SPARQL](#with-with-sparql)
-- [Examples](#examples)
-- [Working with Fuseki](#working-with-fuseki)
+- [Configuration](#configuration)
+- [Working with Fuseki](#fuseki)
 
 ## Architecture
 
-The text index is used provide a reverse index mapping query strings to URIs.  
+The text index is used provide a reverse index mapping query strings to URIs.
 The text indexed can be part of the RDF data or the text index can be used to index
 external content with only additional RDF in the RDF store.
 
-The LARQ index uses the native text index text query language:
+The text index uses the native query language of the index:
 [Lucene query format](http://lucene.apache.org/core/4_1_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
 or
 [Solr query format](http://wiki.apache.org/solr/SolrQuerySyntax).
@@ -79,9 +79,68 @@ By using Solr, in either pattern A (RDF data indexed) or pattern B
 (external content indexed), other applications can share the
 text index with SPARQL search.
 
-## Query
+## Query with SPARQL
 
-@@
+The property function is `http://jena.apache.org/text#query` more
+conveniently writtern:
+
+    PREFIX text: <http://jena.apache.org/text#>
+
+    ...   text:query ...
+
+This is different to LARQ v1.
+
+The following forms are all legal:
+
+    ?s text:query 'word'              # query
+    ?s text:query (rdfs:label 'word') # query specific property if multiple
+    ?s text:query ('word' 10)         # with limit on results
+
+The most general form is:
+   
+    ?s text:query (<i>property</i> '<i>query string</i>' 'limit')
+
+Only the query string is required, and if it is the only argument the
+surrounding `( )` can be omitted.
+
+The property URI is only necessary if multiple properties have been indexed.
+
+| &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
+|-------------------|--------------------------------|
+| property          | The URI (inc prefix name form) |
+| query string      | The native query string        |
+| limit             | The limit on the results       |
+
+## Good practice
+
+The query execution does not know the selectivity of the text index.  It is
+better to use one of two styles.
+
+### Query pattern 1 : Find in the text index and enhance results
+
+Access to the index is first in the query and used to find a number of
+items of interest; further information is obtained about these items from
+the RDF data.
+
+    SELECT ?s
+    { ?s text:query (rdfs:label 'word' 10) ; 
+         rdfs:label ?label ;
+         rdf:type   ?type 
+    }
+
+Limit is useful here when working with large indexes to limit results to the
+more higher scoring results.
+
+### Query pattern 2 : Filter 
+
+By finding items of interest first in the RDF data, the text search can be
+used to restrict the items found stil further.
+
+    SELECT ?s
+    { ?s rdf:type     :book ;
+         dc:createor  "John" .
+      ?s text:query   (dc:title 'word') ; 
+    }
 
 ## Deletion
 
@@ -221,67 +280,3 @@ The Fuseki configuration simply points to the text dataset as the
         fuseki:dataset                  :text_dataset ;
         .
 
-## Query with SPARQL
-
-The property function is `http://jena.apache.org/text#query` more
-conveniently writtern:
-
-    PREFIX text: <http://jena.apache.org/text#>
-
-    ...   text:query ...
-
-This is different to LARQ v1.
-
-The following forms are all legal:
-
-    ?s text:query 'word'              # query
-    ?s text:query (rdfs:label 'word') # query specific property if multiple
-    ?s text:query ('word' 10)         # with limit on results
-
-The most general form is:
-   
-    ?s text:query (<i>property</i> '<i>query string</i>' 'limit')
-
-Only the query string is required, and if it is the only argument the
-surrounding `( )` can be omitted.
-
-The property URI is only necessary if multiple properties have been indexed.
-
-| &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
-|-------------------|--------------------------------|
-| property          | The URI (inc prefix name form) |
-| query string      | The native query string        |
-| limit             | The limit on the results       |
-
-@@Example
-
-## Good practice
-
-The query execution does not know the selectivity of the text index.  It is
-better to use one of two styles.
-
-### Query pattern 1 : 
-
-Access to the index is first in the query and used to find a number of
-items of interest; further information is obtained about these items from
-the RDF data.
-
-    SELECT ?s
-    { ?s text:query (rdfs:label 'word' 10) ; 
-         rdfs:label ?label ;
-         rdf:type   ?type 
-    }
-
-Limit is useful here when working with large indexes to limit results to the
-more higher scoring results.
-
-### Query pattern 2 : Filter 
-
-By finding items of interest first in the RDF data, the text search can be
-used to restrict the items found stil further.
-
-    SELECT ?s
-    { ?s rdf:type     :book ;
-         dc:createor  "John" .
-      ?s text:query   (dc:title 'word') ; 
-    }
