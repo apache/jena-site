@@ -1,0 +1,287 @@
+Title: LARQ - free text searches with SPARQL
+
+LARQ is a combination of SPARQL and text search.
+
+It gives applications the ability to perform free text searches within
+SPARQL queries. Text indexes are additional information for
+accessing the RDF graph.
+
+The text index can be either [Apache Lucene](http://lucene.apache.org/core) for a
+same-machine text index, or [Apache Solr](http://lucene.apache.org/solr/)
+for a large scale enterprise search application.
+
+Some example code is available here: @@ [examples]().
+
+LARQ2 uses Lucene4 or Solr4.
+
+*Illustration*
+
+This query makes a text query for 'word' on a specific property
+(the index needs to correctly configured) and limits the output
+to 10 matches; it then looks in the RDF data for
+the actual label.  More details are given below.
+
+    PREFIX text: <http://jena.apache.org/text#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+    SELECT ?s
+    { ?s text:query (rdfs:label 'word' 10) ; 
+         rdfs:label ?label 
+    }
+
+@@TOC
+- [Architecture](#architecture)
+- [Configuration](#configuration)
+- [Loading Data](#loading-data)
+- [Query with SPARQL](#with-with-sparql)
+- [Examples](#examples)
+- [Working with Fuseki](#working-with-fuseki)
+
+## Architecture
+
+The text index is used provide a reverse index mapping query strings to URIs.  
+The text indexed can be part of the RDF data or the text index can be used to index
+external content with only additional RDF in the RDF store.
+
+The LARQ index uses the native text index text query language:
+[Lucene query format](http://lucene.apache.org/core/4_1_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
+or
+[Solr query format](http://wiki.apache.org/solr/SolrQuerySyntax).
+
+A text-supporting dataset is configured with a description of which
+properties work with.  When data is added, any properties matching the
+description caus an entry to be added from analysed text from the triple
+object and mapping to the subject.
+
+### Pattern A: RDF data
+
+In this pattern, the data in the text index is indexing literals in the RDF data.  
+Additions to the RDF data are reflected in additions to the index.
+
+(Deletes do not remove text index netries - [see below](#deletion))
+
+### Pattern B: External content
+
+There is no requirement that the text data indexed is present in the RDF
+data.  As long as the index contains the index text documents to match the
+index description, then text search can be performed.
+
+For example, if the content of a collection of documents is indexed and the
+URI naming the document is the result of the text search, then an RDF
+dataset with the document metadata can be combined with accessing the
+content by URI.
+
+The maintence of the index is external to the RDF data store.
+
+### External applications
+
+By using Solr, in either pattern A (RDF data indexed) or pattern B
+(external content indexed), other applications can share the
+text index with SPARQL search.
+
+## Query
+
+@@
+
+## Deletion
+
+If the text index is being maintain by changed to the RDF, then deletion of
+RDF triple or quads does not cause entries in the index to be removed.  The
+index does not store the literal indexed, nor does it store a reference
+count of how many triples refer to the index so the information to delete
+entries is not available. 
+
+In situations where this matters, the SPARQL query should look up in the
+text index, then check in the RDF data.  Indeed, this may be necessary
+anyway because a text search does not necessarily give only exact matches.
+
+In the initial example:
+
+    SELECT ?s ?label
+    { ?s text:query (rdfs:label 'word' 10) ; 
+         rdfs:label ?label 
+    }
+
+the SPARQL query is checking that the `rdfs:label` triple exists, and if it
+does, returning the whole label.
+
+Bu only indexing, and not storing, literals, the index is kept smaller.  It
+may be necessary to periodically rebuild the index if a large proportion
+of the RDF data changes.
+
+## Configuration
+
+The important structure is an "entity map" which defines the properties to
+index, the name of the lucene/solr field and filed used for storing the URI
+itself.
+
+For common RDF use, you'd have one field, mapping a property to a text
+index field.
+
+More complex setups, with multiple properties per enitity (URI) are possible.
+
+The usual way to describe an index is with a
+[Jena assembler description](../assembler/index.html).
+
+### Assemblers
+
+    @prefix :        <http://localhost/jena_example/#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+    @prefix text:    <http://jena.apache.org/text#> .
+
+    ## Example of a TDB dataset and text index
+    ## Initialize TDB
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+
+    ## Initialize LARQ
+    [] ja:loadClass       "org.apache.jena.query.text.TextQuery" .
+    # A TextDataset is a regular dataset with a text index.
+    text:TextDataset      rdfs:subClassOf   ja:RDFDataset .
+    # Lucene index
+    text:TextIndexLucene  rdfs:subClassOf   text:TextIndex .
+    # Solr index
+    text:TextIndexSolrne  rdfs:subClassOf   text:TextIndex .
+
+    ## ---------------------------------------------------------------
+    ## This URI must be fixed - it's used to assemble the text dataset.
+
+    :text_dataset rdf:type     text:TextDataset ;
+        text:dataset   <#dataset> ;
+        text:index     <#indexLucene> ;
+        .
+
+    # A TDB datset used for RDF storage
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+        tdb:location "DB" ;
+        tdb:unionDefaultGraph true ; # Optional
+        .
+    
+    # Text index description
+    <#indexLucene> a text:TextIndexLucene ;
+        text:directory <file:Lucene> ;
+        ##text:directory "mem" ;
+        text:entityMap <#entMap> ;
+        .
+
+    # Mapping in the index
+    # URI stored in filed "uri"
+    # rdfs:label is mapped to field "text"
+    <#entMap> a text:EntityMap ;
+        text:entityField      "uri" ;
+        text:defaultField     "text" ;
+        text:map (
+             [ text:field "text" ; text:predicate rdfs:label ]
+             ) .
+
+then use code such as:
+
+    Dataset ds = DatasetFactory.assemble(
+        "text-config.ttl", 
+        "http://localhost/jena_example/#text_dataset") ;
+
+Key here is that the assembler contains two dataset definitions, one for
+the text dataset, one for the base data.  Therefore, the application
+needs to identify the text dataset by it's URI
+`http://localhost/jena_example/#text_dataset`.
+
+### Build with code
+
+        // Example of building a text dadaset with code.
+        // Example is in-memory.
+        // Base data
+        Dataset ds1 = DatasetFactory.createMem() ; 
+
+        EntityDefinition entDef = new EntityDefinition("uri", "text", RDFS.label.asNode()) ;
+
+        // Lucene, in memory.
+        Directory dir =  new RAMDirectory();
+        
+        // Join together into a dataset
+        Dataset ds = TextDatasetFactory.createLucene(ds1, dir, entDef) ;
+
+### Fuseki
+
+The Fuseki configuration simply points to the text dataset as the
+`fuseki:dataset` of the service.
+
+    <#service_text_tdb> rdf:type fuseki:Service ;
+        rdfs:label                      "TDB/text service" ;
+        fuseki:name                     "ds" ;
+        fuseki:serviceQuery             "query" ;
+        fuseki:serviceQuery             "sparql" ;
+        fuseki:serviceUpdate            "update" ;
+        fuseki:serviceUpload            "upload" ;
+        fuseki:serviceReadGraphStore    "get" ;
+        fuseki:serviceReadWriteGraphStore    "data" ;
+        fuseki:dataset                  :text_dataset ;
+        .
+
+## Query with SPARQL
+
+The property function is `http://jena.apache.org/text#query` more
+conveniently writtern:
+
+    PREFIX text: <http://jena.apache.org/text#>
+
+    ...   text:query ...
+
+This is different to LARQ v1.
+
+The following forms are all legal:
+
+    ?s text:query 'word'              # query
+    ?s text:query (rdfs:label 'word') # query specific property if multiple
+    ?s text:query ('word' 10)         # with limit on results
+
+The most general form is:
+   
+    ?s text:query (<i>property</i> '<i>query string</i>' 'limit')
+
+Only the query string is required, and if it is the only argument the
+surrounding `( )` can be omitted.
+
+The property URI is only necessary if multiple properties have been indexed.
+
+| &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
+|-------------------|--------------------------------|
+| property          | The URI (inc prefix name form) |
+| query string      | The native query string        |
+| limit             | The limit on the results       |
+
+@@Example
+
+## Good practice
+
+The query execution does not know the selectivity of the text index.  It is
+better to use one of two styles.
+
+### Query pattern 1 : 
+
+Access to the index is first in the query and used to find a number of
+items of interest; further information is obtained about these items from
+the RDF data.
+
+    SELECT ?s
+    { ?s text:query (rdfs:label 'word' 10) ; 
+         rdfs:label ?label ;
+         rdf:type   ?type 
+    }
+
+Limit is useful here when working with large indexes to limit results to the
+more higher scoring results.
+
+### Query pattern 2 : Filter 
+
+By finding items of interest first in the RDF data, the text search can be
+used to restrict the items found stil further.
+
+    SELECT ?s
+    { ?s rdf:type     :book ;
+         dc:createor  "John" .
+      ?s text:query   (dc:title 'word') ; 
+    }
