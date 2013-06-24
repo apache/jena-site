@@ -36,8 +36,12 @@ the actual label.  More details are given below.
 - [Architecture](#architecture)
 - [Query with SPARQL](#query-with-sparql)
 - [Configuration](#configuration)
-- [Working with Fuseki](#fuseki)
-- [Download for Application Use](#maven-dependency)
+  - [Text Dataset Assembler](#[text-dataset-assember)
+  - [Configuration by Code](#configuration-by-code)
+- [Working with Fuseki](#working-with-fuseki)
+- [Building a Text Index](#building-a-text-index)
+- [Deletion of Indexed Entities](#deletion-of-indexed-entities)
+- [Maven Dependency](#maven-dependency)
 
 ## Architecture
 
@@ -60,7 +64,7 @@ object and mapping to the subject.
 In this pattern, the data in the text index is indexing literals in the RDF data.  
 Additions to the RDF data are reflected in additions to the index.
 
-(Deletes do not remove text index netries - [see below](#deletion))
+(Deletes do not remove text index entries - [see below](#deletion))
 
 ### Pattern B &ndash; External content
 
@@ -100,7 +104,7 @@ The following forms are all legal:
 
 The most general form is:
    
-    ?s text:query (<i>property</i> '<i>query string</i>' 'limit')
+    ?s text:query (property 'query string' 'limit')
 
 Only the query string is required, and if it is the only argument the
 surrounding `( )` can be omitted.
@@ -136,7 +140,7 @@ more higher scoring results.
 #### Query pattern 2 &ndash; Filter 
 
 By finding items of interest first in the RDF data, the text search can be
-used to restrict the items found stil further.
+used to restrict the items found still further.
 
     SELECT ?s
     { ?s rdf:type     :book ;
@@ -146,19 +150,27 @@ used to restrict the items found stil further.
 
 ## Configuration
 
-The important structure is an "entity map" which defines the properties to
-index, the name of the lucene/solr field and filed used for storing the URI
+The usual way to describe an index is with a 
+[Jena assembler description](../assembler/index.html).  Configurations can
+also be built with code. The assembler describes a 'text
+dataset' which has an underlying RDF dataset and a text index. The text
+index describes the text index technology (Lucene or Solr) and the details
+needed for for each.
+
+A text index has an "entity map" which defines the properties to
+index, the name of the lucene/solr field and field used for storing the URI
 itself.
 
-For common RDF use, you'd have one field, mapping a property to a text
-index field.
+For common RDF use, there will be one field, mapping a property to a text
+index field. More complex setups, with multiple properties per enitity
+(URI) are possible.
 
-More complex setups, with multiple properties per enitity (URI) are possible.
+Once setup this way, any data added to the text dataset is automatically
+indexed as well.
 
-The usual way to describe an index is with a
-[Jena assembler description](../assembler/index.html).
+### Text Dataset Assembler
 
-### Assemblers
+The following is an example of a TDB dataset with a text index.
 
     @prefix :        <http://localhost/jena_example/#> .
     @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -204,7 +216,7 @@ The usual way to describe an index is with a
         .
 
     # Mapping in the index
-    # URI stored in filed "uri"
+    # URI stored in field "uri"
     # rdfs:label is mapped to field "text"
     <#entMap> a text:EntityMap ;
         text:entityField      "uri" ;
@@ -224,11 +236,14 @@ the text dataset, one for the base data.  Therefore, the application
 needs to identify the text dataset by it's URI
 `http://localhost/jena_example/#text_dataset`.
 
-### Build with code
+### Configuration by Code
 
-        // Example of building a text dadaset with code.
+A text dataset can also be constructed in code as might be done for a
+purely in-memory setup:
+
+        // Example of building a text dataset with code.
         // Example is in-memory.
-        // Base data
+        // Base dataset
         Dataset ds1 = DatasetFactory.createMem() ; 
 
         EntityDefinition entDef = new EntityDefinition("uri", "text", RDFS.label.asNode()) ;
@@ -239,7 +254,7 @@ needs to identify the text dataset by it's URI
         // Join together into a dataset
         Dataset ds = TextDatasetFactory.createLucene(ds1, dir, entDef) ;
 
-## Fuseki
+## Working with Fuseki
 
 The Fuseki configuration simply points to the text dataset as the
 `fuseki:dataset` of the service.
@@ -256,7 +271,34 @@ The Fuseki configuration simply points to the text dataset as the
         fuseki:dataset                  :text_dataset ;
         .
 
-## Deletion
+
+## Building a Text Index
+
+When working at scale, or when preparing a published, read-only, SPARQL
+service, creating the index by loading the text dataset is impractical.  
+The index and the dataset can be built using command line tools in two
+steps: first load the RDF data, second create an index from the existing
+RDF dataset.
+
+
+Build the TDB dataset:
+
+    java -cp $FUSEKI_HOME/fuseki-server.jar tdb.tdbloader --tdb=*assembler_file* *data_file*
+
+using the copy of TDB included with Fuseki.  Alternatively, use one of the
+[TDB utilities](../tdb/commands.html) `tdbloader` or `tdbloader2`:
+
+    $JENA_HOME/bin/tdbloader --loc=*directory* *data_file*
+
+then build the text index with the `jena.textindexer`:
+
+    java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=*assembler_file*
+
+Because a Fuseki assembler description can have several datasets descriptions, 
+and several text indexes, it may be necessary to extract a single dataset and index description
+into a depoarate assembler file for use in loading.
+
+## Deletion  of Indexed Entities
 
 If the text index is being maintain by changed to the RDF, then deletion of
 RDF triple or quads does not cause entries in the index to be removed.  The
