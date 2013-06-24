@@ -287,15 +287,15 @@ Build the TDB dataset:
 using the copy of TDB included with Fuseki.  Alternatively, use one of the
 [TDB utilities](../tdb/commands.html) `tdbloader` or `tdbloader2`:
 
-    $JENA_HOME/bin/tdbloader --loc=*directory* *data_file*
+    $JENA_HOME/bin/tdbloader --loc=directory  data_file
 
 then build the text index with the `jena.textindexer`:
 
-    java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=*assembler_file*
+    java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=assembler_file
 
 Because a Fuseki assembler description can have several datasets descriptions, 
 and several text indexes, it may be necessary to extract a single dataset and index description
-into a depoarate assembler file for use in loading.
+into a separate assembler file for use in loading.
 
 ## Deletion  of Indexed Entities
 
@@ -319,8 +319,8 @@ In the initial example:
 the SPARQL query is checking that the `rdfs:label` triple exists, and if it
 does, returning the whole label.
 
-By only indexing, and not storing, literals, the index is kept smaller.  It
-may be necessary to periodically rebuild the index if a large proportion
+By only indexing but not storing the literals themselves, the index is kept smaller.
+It may be necessary to periodically rebuild the index if a large proportion
 of the RDF data changes.
 
 ## Maven Dependency
