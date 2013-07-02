@@ -1,0 +1,49 @@
+Title: HTTP Authentication in ARQ
+Notice:    Licensed to the Apache Software Foundation (ASF) under one
+           or more contributor license agreements.  See the NOTICE file
+           distributed with this work for additional information
+           regarding copyright ownership.  The ASF licenses this file
+           to you under the Apache License, Version 2.0 (the
+           "License"); you may not use this file except in compliance
+           with the License.  You may obtain a copy of the License at
+           .
+             http://www.apache.org/licenses/LICENSE-2.0
+           .
+           Unless required by applicable law or agreed to in writing,
+           software distributed under the License is distributed on an
+           "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+           KIND, either express or implied.  See the License for the
+           specific language governing permissions and limitations
+           under the License.
+
+As of ARQ 2.10.2 there is a new unified HTTP operation framework that provides a uniform mechanism for 
+HTTP authentication that also allows ARQ to support a broader range of authentication mechanisms than were previously possible.
+
+### Authenticators
+
+Authentication mechanisms are provided by [HttpAuthenticator][1] implementations of which a number are provided built into ARQ.
+
+This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried out.  This allows for authenticators
+to add credentials to requests on a pre-request basis and to use different mechanisms and credentials for different services.
+
+The following details the available implementations:
+
+#### SimpleAuthenticator
+
+The [simple authenticator][2] is as the name suggests the simplest implementation.  It takes a single set of credentials which is applied to
+any service.
+
+Authentication however is not preemptive so unless the remote service sends a HTTP challenge (401 Unauthorized or 407 Proxy Authorization Required) then
+credentials will not actually be submitted.
+
+#### ScopedAuthenticator
+
+The [scoped authenticator][3] is an authenticator which maps credentials to different service URIs.  This allows you to specify different credentials for different services 
+as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are not set unless the service requests them.
+
+Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example if you define credentials
+for `http://example.org` then these are used for any request that requires authentication under that URI e.g. `http://example.org/some/path`
+
+
+  [1]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html
+  [2]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html
