@@ -24,7 +24,7 @@ HTTP authentication that also allows ARQ to support a broader range of authentic
 Authentication mechanisms are provided by [HttpAuthenticator][1] implementations of which a number are provided built into ARQ.
 
 This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried out.  This allows for authenticators
-to add credentials to requests on a pre-request basis and to use different mechanisms and credentials for different services.
+to add credentials to requests on a per-request basis and/or to use different mechanisms and credentials for different services.
 
 #### SimpleAuthenticator
 
@@ -77,7 +77,7 @@ Authenticators applied this way will only be used for requests by that specific 
 From 2.10.2 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
 avoids the needs to cast and manually set the authenticator afterwards.
 
-## The Default Authenticator
+### The Default Authenticator
 
 Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default authenticator
 that is used when no authenticator is explicitly specified.  This may be configured via the `setDefaultAuthenticator(HttpAuthenticator authenticator)`
