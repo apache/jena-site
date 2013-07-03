@@ -26,8 +26,6 @@ Authentication mechanisms are provided by [HttpAuthenticator][1] implementations
 This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried out.  This allows for authenticators
 to add credentials to requests on a pre-request basis and to use different mechanisms and credentials for different services.
 
-The following details the available implementations:
-
 #### SimpleAuthenticator
 
 The [simple authenticator][2] is as the name suggests the simplest implementation.  It takes a single set of credentials which is applied to
@@ -42,8 +40,44 @@ The [scoped authenticator][3] is an authenticator which maps credentials to diff
 as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are not set unless the service requests them.
 
 Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example if you define credentials
-for `http://example.org` then these are used for any request that requires authentication under that URI e.g. `http://example.org/some/path`
+for `http://example.org` then these are used for any request that requires authentication under that URI e.g. `http://example.org/some/path`.  However if you
+had defined credentials for `http://example.org/some/path` then these would be used in favor of those for `http://example.org`
 
+#### ServiceAuthenticator
+
+The [service authenticator][4] is an authenticator which uses information encoded in the ARQ context and basically provides access to the existing credential provision
+mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on this.
+
+#### FormsAuthenticator
+
+The [forms authenticator][6] is an authenticator usable with services that require form based logins and use cookies to verify login state.  This is intended for use with
+services that don't support HTTP's built-in authentication mechanisms for whatever reason.  One example of this are servers secured using Apache HTTP Server [mod_auth_form][7].
+
+#### PreemptiveBasicAuthenticator
+
+This [authenticator][8] is a decorator over another authenticator that enables preemptive basic authentication.  This is not enabled by default because it reduces security as it can
+ result in sending credentials to servers that don't actually require them.
+
+## Applying Authentication
+
+APIs that support authentication typically provide two methods for providing authenticators, a `setAuthentication(String username, char[] password)` method
+which merely configures a `SimpleAuthenticator`.  There will also be a `setAuthenticator(HttpAuthenticator authenticator)` method
+that allows you to configure an arbitrary authenticator.
+
+Authenticators applied this way will only be used for requests by that specific API.  APIs that currently support this are as follows:
+
+  - [QueryEngineHTTP][9] - This is the `QueryExecution` implementation returned by `QueryExecutionFactory.sparqlService()` calls
+  - [UpdateProcessRemoteBase][10] - This is the base class of `UpdateProcessor` implementations returned by `UpdateExecutionFactory.createRemote()` and `UpdateExecutionFactory.createRemoteForm()` calls
+  - [DatasetGraphAccessorHTTP][11] - This is the `DatasetGraphAccessor` implementation underlying remote dataset accessors.
+
+From 2.10.2 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
+avoids the needs to cast and manually set the authenticator afterwards.
 
   [1]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html
   [2]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html
+  [3]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ScopedAuthenticator.html
+  [4]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ServiceAuthenticator.html
+  [5]: service.html
+  [6]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/FormsAuthenticator.html
+  [7]: https://httpd.apache.org/docs/2.4/mod/mod_auth_form.html
+  [8]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/PreemptiveBasicAuthenticator.html
