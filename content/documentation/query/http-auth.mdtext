@@ -37,7 +37,7 @@ credentials will not actually be submitted.
 #### ScopedAuthenticator
 
 The [scoped authenticator][3] is an authenticator which maps credentials to different service URIs.  This allows you to specify different credentials for different services 
-as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are not set unless the service requests them.
+as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are not sent unless the service requests them.
 
 Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example if you define credentials
 for `http://example.org` then these are used for any request that requires authentication under that URI e.g. `http://example.org/some/path`.  However if you
@@ -46,7 +46,7 @@ had defined credentials for `http://example.org/some/path` then these would be u
 #### ServiceAuthenticator
 
 The [service authenticator][4] is an authenticator which uses information encoded in the ARQ context and basically provides access to the existing credential provision
-mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on this.
+mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on configuration for this.
 
 #### FormsAuthenticator
 
@@ -57,6 +57,10 @@ services that don't support HTTP's built-in authentication mechanisms for whatev
 
 This [authenticator][8] is a decorator over another authenticator that enables preemptive basic authentication.  This is not enabled by default because it reduces security as it can
  result in sending credentials to servers that don't actually require them.
+
+#### DelegatingAuthenticator
+
+The [delegating authenticator][12] allows for mapping different authenticators to different services, this is useful when you need to mix and match the types of authentication needed.
 
 ## Applying Authentication
 
@@ -73,6 +77,21 @@ Authenticators applied this way will only be used for requests by that specific 
 From 2.10.2 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
 avoids the needs to cast and manually set the authenticator afterwards.
 
+## The Default Authenticator
+
+Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default authenticator
+that is used when no authenticator is explicitly specified.  This may be configured via the `setDefaultAuthenticator(HttpAuthenticator authenticator)`
+method of the [HttpOp][13] class.
+
+By default there is already a default authenticator configured which is the `ServiceAuthenticator` since this preserves behavioural 
+backwards compatibility with prior versions of ARQ.
+
+You can configure the default authenticator to whatever you need so even if you don't directly control the code
+that is making HTTP requests provided that it is using ARQs APIs to make these then authentication will
+still be applied.
+
+Note that the default authenticator may be disabled by setting it to `null`.
+
   [1]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html
   [2]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html
   [3]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ScopedAuthenticator.html
@@ -81,3 +100,8 @@ avoids the needs to cast and manually set the authenticator afterwards.
   [6]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/FormsAuthenticator.html
   [7]: https://httpd.apache.org/docs/2.4/mod/mod_auth_form.html
   [8]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/PreemptiveBasicAuthenticator.html
+  [9]: http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/sparql/engine/http/QueryEngineHTTP.html
+  [10]: http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/sparql/modify/UpdateProcessRemoteBase.html
+  [11]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/web/DatasetGraphAccessorHTTP.html
+  [12]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/DelegatingAuthenticator.html
+  [13]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html
