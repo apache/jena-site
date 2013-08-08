@@ -280,16 +280,24 @@ The index and the dataset can be built using command line tools in two
 steps: first load the RDF data, second create an index from the existing
 RDF dataset.
 
+### Step 1 - Building a TDB dataset
+
+**Note:** If you have an existing TDB dataset then you can skip this step
+
 Build the TDB dataset:
 
     java -cp $FUSEKI_HOME/fuseki-server.jar tdb.tdbloader --tdb=assembler_file data_file
 
-using the copy of TDB included with Fuseki.  Alternatively, use one of the
-[TDB utilities](../tdb/commands.html) `tdbloader` or `tdbloader2`:
+using the copy of TDB included with Fuseki.
+
+Alternatively, use one of the
+[TDB utilities](../tdb/commands.html) `tdbloader` or `tdbloader2` which are better for bulk loading:
 
     $JENA_HOME/bin/tdbloader --loc=directory  data_file
 
-then build the text index with the `jena.textindexer`:
+### Step 2 - Build the Text Index
+
+You can then build the text index with the `jena.textindexer` tool:
 
     java -cp $FUSEKI_HOME/fuseki-server.jar jena.textindexer --desc=assembler_file
 
