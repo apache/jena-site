@@ -84,12 +84,45 @@ after the connection has been established.
 
 ### In-Memory
 
-The in-memory driver provides access to a non-persistent memory dataset.  This dataset
+The in-memory driver provides access to a non-persistent in-memory dataset.  This dataset
 may either be initially empty or may be initialized from an input file.  Remember that
 this is non-persistent so even if the latter option is chosen changes are not persisted
 to the input file.  This driver is primarily intended for testing and demonstration
 purposes.
 
+Beyond the common parameters it has two possible connection parameters.  The first of these
+is the `dataset` parameter and is used to indicate an input file that the driver will
+initialize the in-memory dataset with e.g.
+
+    jdbc:jena:mem:dataset=file.nq
+
+If you prefer to start with an empty dataset you should use the `empty` parameter instead e.g.
+
+    jdbc:jena:men:empty=true
+
+If both are specified then the `dataset` parameter has precedence.
+
 ### TDB
+
+The TDB driver provides access to a persistent [Jena TDB](/documentation/tdb/) dataset.  This
+means that the dataset is both persistent and can be used transactionally.  For correct
+transactional behavior it is typically necessary to set the holdability for connections and 
+statements to `ResultSet.HOLD_CURSORS_OVER_COMMIT` as otherwise closing a result set or making
+an update will cause all other results to be closed.
+
+Beyond the common parameters the driver requires a single `location` parameter that provides
+the path to a location for a TDB dataset e.g.
+
+   jdbc:jena:tdb:location=/path/to/data
+
+By default a TDB dataset will be created in that location if one does not exist, if you would
+prefer not to do this i.e. ensure you only access existing TDB datasets then you can add the
+`must-exist` parameter e.g.
+
+   jdbc:jena:tab:location=/path/to/data&must-exist=true
+
+With this parameter set the connection will fail if the location does not exist as a directory,
+note that this does not validate that the location is a TDB dataset so it is still possible
+to pass in invalid paths even with this set.
 
 ### Remote Endpoint
