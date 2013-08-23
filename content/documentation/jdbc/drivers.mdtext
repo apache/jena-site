@@ -154,7 +154,31 @@ type you'd prefer to have the driver retrieve SPARQL results from the remote end
 you must set them to formats that ARQ supports, the ARQ [WebContent](http://jena.staging.apache.org/documentation/javadoc/arq/org/apache/jena/riot/WebContent.html)
 class has constants for the various supported formats.
 
+#### Authentication
+
 There is also comprehensive support for authentication using this driver, the standard JDBC `user`
 and `password` parameters are used for credentials and then a selection of driver specific
 parameters are used to configure how you wish the driver to authenticate.
+
+Under the hood authentication uses the new `HttpAuthenticator` framework introduced in the same
+release as Jena JDBC, see [HTTP Authentication in ARQ](/documentation/query/http-auth.html).  This means
+that it can support standard HTTP auth methods (Basic, Digest etc) or can use more complex schemes
+such as forms based auth with session cookies.
+
+To set up standard HTTP authentication it is sufficient to specify the `user` and `password` fields.  As
+with any JDBC application we **strongly** recommend that you do not place these in the connection URL
+directly but rather use the `Properties` object to pass these in.  One option you may wish to include
+if your endpoints use HTTP Basic authentication is the `preemptive-auth` parameter which when set to
+true will enable preemptive authentication.  While this is less secure it can be more performant if
+you are making lots of queries.
+
+Setting up form based authentication is somewhat more complex, at a minimum you need to provide the 
+`form-url` parameter with a value for the URL that user credentials should be POSTed to in order to
+login.  You may need to specify the `form-user-field` and `form-password-field` parameters to provide
+the name of the fields for the login request, by default these assume you are using an Apache `mod_auth_form`
+protected server and use the appropriate default values.
+
+The final option for authenticator is to use the `authenticator` parameter via the `Properties` object
+to pass in an actual instance of a `HttpAuthenticator` that you wish to use.  This method is the most
+powerful in that it allows you to use any authentication method that you need.
 
