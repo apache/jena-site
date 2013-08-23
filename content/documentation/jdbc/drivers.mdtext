@@ -84,7 +84,7 @@ after the connection has been established.
 
 ### In-Memory
 
-The in-memory driver provides access to a non-persistent in-memory dataset.  This dataset
+The in-memory driver provides access to a non-persistent non-transactional in-memory dataset.  This dataset
 may either be initially empty or may be initialized from an input file.  Remember that
 this is non-persistent so even if the latter option is chosen changes are not persisted
 to the input file.  This driver is primarily intended for testing and demonstration
@@ -113,16 +113,48 @@ an update will cause all other results to be closed.
 Beyond the common parameters the driver requires a single `location` parameter that provides
 the path to a location for a TDB dataset e.g.
 
-   jdbc:jena:tdb:location=/path/to/data
+    jdbc:jena:tdb:location=/path/to/data
 
 By default a TDB dataset will be created in that location if one does not exist, if you would
 prefer not to do this i.e. ensure you only access existing TDB datasets then you can add the
 `must-exist` parameter e.g.
 
-   jdbc:jena:tab:location=/path/to/data&must-exist=true
+    jdbc:jena:tab:location=/path/to/data&must-exist=true
 
 With this parameter set the connection will fail if the location does not exist as a directory,
 note that this does not validate that the location is a TDB dataset so it is still possible
 to pass in invalid paths even with this set.
 
 ### Remote Endpoint
+
+The Remote Endpoint driver provides access to any SPARQL Protocol compliant store that exposes
+SPARQL query and/or SPARQL update endpoints.  This driver can be explicitly configured to be
+in read-only or write-only mode by providing only one of the required endpoints.
+
+The `query` parameter sets the query endpoint whilst the `update` parameter sets the update endpoint e.g.
+
+    jdbc:jena:remote:query=http://localhost:3030/ds/query&update=http://localhost:3030/ds/update
+
+At least one of these parameters is required, if only one is provided you will get a read-only or 
+write-only connection as appropriate.
+
+This driver also provides a whole variety of parameters that may be used to customize its behavior
+further.  Firstly there are a set of parameters which control the dataset description provided
+via the SPARQL protocol:
+
+- `default-graph-uri` - Sets a default graph for queries
+- `named-graph-uri` - Sets a named graph for queries
+- `using-graph-uri` - Sets a default graph for updates
+- `using-named-graph-uri` - Sets a named graph for updates
+
+All of these may be specified multiple times to specify multiple graph URIs for each.
+
+Then you have the `select-results-type` and `model-results-type` which are used to set the MIME
+type you'd prefer to have the driver retrieve SPARQL results from the remote endpoints in.  If used
+you must set them to formats that ARQ supports, the ARQ [WebContent](http://jena.staging.apache.org/documentation/javadoc/arq/org/apache/jena/riot/WebContent.html)
+class has constants for the various supported formats.
+
+There is also comprehensive support for authentication using this driver, the standard JDBC `user`
+and `password` parameters are used for credentials and then a selection of driver specific
+parameters are used to configure how you wish the driver to authenticate.
+
