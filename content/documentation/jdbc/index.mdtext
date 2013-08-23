@@ -10,7 +10,7 @@ are supported.  Otherwise it is a fully fledge type 4 JDBC driver.
 
 - [Overview](#overview)
 - [Basic Usage](#basic-usage)
- - [Making Queries](#making-queries)
+  - [Making Queries](#making-queries)
 - [Alternatives](#alternatives)
 - [Jena JDBC Drivers](drivers.html)
 - [Implementing a custom Jena JDBC Driver](custom_driver.html)
@@ -75,11 +75,64 @@ memory which can use lots of memory when querying large datasets.
 
 ## Basic Usage
 
+The following takes you through the basic usage of the in-memory JDBC driver.  The code should be familiar
+to anyone who has used JDBC before and is easily used with our other [drivers](drivers.html) simply by
+changing the connection URL appropriately.
+
 ### Making a Connection
+
+Firstly we should ensure that the driver we wish to use is registered with the JDBC driver manager, a static
+method is provided for this:
+
+   MemDriver.register();
+
+Once this is done we can then make a JDBC connection just be providing an appropriate connection URL:
+
+   // Make a connection using the In-Memory driver starting from an empty dataset
+   Connection conn = DriverManager.getConnection("jdbc:jena:men:empty=true");
+
+Now we can go ahead and use the connection as you would normally.
 
 ### Making Queries
 
-You make queries as you would
+You make queries as you would with any JDBC driver, the only difference being that the queries must be SPARQL:
+
+    // Need a statement
+    Statement stmt = conn.createStatement();
+    
+    // Make a query
+    ResultSet rset = stmt.executeQuery("SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 100");
+    
+    // Iterate over results
+    while (rest.next()) {
+      // Print out type as a string
+      System.out.println(rset.getString("type"));
+    }
+    
+    // Clean up
+    rset.close();
+    stmt.close();
+
+### Making Updates
+
+You make updates as you would with any JDBC driver.  Again the main difference is that updates must be SPARQL,
+one downside of this is that SPARQL provides no way to indicate the number of triples/quads affected by an update
+so the JDBC driver will either return `0` for successful updates or throw a `SQLException` for failed updates:
+
+    // Need a statement
+    Statement stmt = conn.createStatement();
+    
+    // Make an update
+    try {
+      stmt.executeUpdate("INSERT DATA { <http://x> <http://y> <http://z> }");
+      System.out.println("Update succeeded");
+    } catch (SQLException e) {
+      System.out.println("Update Failed " - + e.getMessage());
+    }
+    
+    // Clean up
+    rset.close();
+    stmt.close();
 
 ## Alternatives
 
