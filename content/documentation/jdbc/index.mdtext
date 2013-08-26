@@ -4,13 +4,15 @@ Jena JDBC is a set of libraries which provide SPARQL over JDBC driver implementa
 
 This is a pure SPARQL over JDBC implementation, there is no attempt to present the underlying
 RDF data model as a relational model through the driver and only SPARQL queries and updates
-are supported.  Otherwise it is a fully fledge type 4 JDBC driver.
+are supported.
+
+It provides type 4 drivers in that they are pure Java based but the drivers are not JDBC compliant since
+by definition they **do not** support SQL.
 
 ## Documentation
 
 - [Overview](#overview)
 - [Basic Usage](#basic-usage)
-  - [Making Queries](#making-queries)
 - [Alternatives](#alternatives)
 - [Jena JDBC Drivers](drivers.html)
 - [Maven Artifacts for Jena JDBC](artifacts.html)
@@ -83,7 +85,7 @@ The following takes you through the basic usage of the in-memory JDBC driver.  T
 to anyone who has used JDBC before and is easily used with our other [drivers](drivers.html) simply by
 changing the connection URL appropriately.
 
-### Making a Connection
+### Establishing a Connection
 
 Firstly we should ensure that the driver we wish to use is registered with the JDBC driver manager, a static
 method is provided for this:
@@ -93,31 +95,36 @@ method is provided for this:
 Once this is done we can then make a JDBC connection just be providing an appropriate connection URL:
 
     // Make a connection using the In-Memory driver starting from an empty dataset
-    Connection conn = DriverManager.getConnection("jdbc:jena:men:empty=true");
+    Connection conn = DriverManager.getConnection("jdbc:jena:mem:empty=true");
 
 Now we can go ahead and use the connection as you would normally.
 
-### Making Queries
+### Performing Queries
 
 You make queries as you would with any JDBC driver, the only difference being that the queries must be SPARQL:
 
     // Need a statement
     Statement stmt = conn.createStatement();
     
-    // Make a query
-    ResultSet rset = stmt.executeQuery("SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 100");
+    try {
+      // Make a query
+      ResultSet rset = stmt.executeQuery("SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 100");
     
-    // Iterate over results
-    while (rest.next()) {
-      // Print out type as a string
-      System.out.println(rset.getString("type"));
+      // Iterate over results
+      while (rest.next()) {
+        // Print out type as a string
+        System.out.println(rset.getString("type"));
+      }
+    
+      // Clean up
+      rset.close();
+    } catch (SQLException e) {
+      System.err.println("SQL Error - " + e.getMessage());
+    } finally {
+      stmt.close();
     }
-    
-    // Clean up
-    rset.close();
-    stmt.close();
 
-### Making Updates
+### Performing Updates
 
 You make updates as you would with any JDBC driver.  Again the main difference is that updates must be SPARQL,
 one downside of this is that SPARQL provides no way to indicate the number of triples/quads affected by an update
@@ -132,11 +139,10 @@ so the JDBC driver will either return `0` for successful updates or throw a `SQL
       System.out.println("Update succeeded");
     } catch (SQLException e) {
       System.out.println("Update Failed " - + e.getMessage());
+    } finally {    
+      // Clean up
+      stmt.close();
     }
-    
-    // Clean up
-    rset.close();
-    stmt.close();
 
 ## Alternatives
 
