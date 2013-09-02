@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var url = $(location).attr('href');
-	var prefix = 'http://localhost/';
+	var prefix = '';
 
 	if(url != prefix && url != prefix + 'index.html'){
 
