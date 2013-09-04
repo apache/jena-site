@@ -1,0 +1,21 @@
+Title: Jena Security - Assembler For a Secured Model
+
+Jena Security provides a standard Jena assembler making it easy to use the SecuredModel in an Assembler based 
+environment.  To use the security assembler the assembler file must contain the lines:
+
+    <>; ja:loadClass "org.apache.jena.security.SecuredAssembler" .
+    sec:Model rdfs:subClassOf ja:NamedModel .
+    
+and a model definition something like:
+
+    [] a ja:Model ;
+       sec:baseModel jena:model ;
+       ja:modelName "modelName";
+       sec:evaluatorFactory "javaclass";
+       .
+where:
+- `jena:model` is a model defined in the assembler file.  In this example there would be a like in the file
+something like `jena:model a ja:Model`.  
+- `modelName` is the name of the model as identified in the security manager.
+- `javaclass` is the java class name that implements an Evaluator Factory.  The Factory must have static method 
+`getInstance()` that returns a SecurityEvaluator instance.
