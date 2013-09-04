@@ -1,0 +1,253 @@
+Title: Spatial searches with SPARQL
+
+It's an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query.
+It gives applications the ability to perform simple spatial searches within SPARQL queries.
+Spatial indexes are additional information for accessing the RDF graph.
+
+The spatial index can be either [Apache Lucene](http://lucene.apache.org/core) for a
+same-machine spatial index, or [Apache Solr](http://lucene.apache.org/solr/)
+for a large scale enterprise search application.
+
+Some example code is [available here](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/examples/).
+
+*Illustration*
+
+This query makes a spatial query for the places within 10 kilometers of Bristol UK (which as latitude/longitude of 51.46, 2.6).
+
+    PREFIX spatial: <http://jena.apache.org/spatial#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT ?placeName
+    {
+        ?place spatial:query (51.46 2.6 10 'km') .
+        ?place rdfs:label ?placeName
+    }
+
+## Table of Contents
+
+-   [Architecture](#architecture)
+-   [Query with SPARQL](#query-with-sparql)
+-   [Configuration](#configuration)
+    -   [Text Dataset Assembler](#text-dataset-assembler)
+    -   [Configuration by Code](#configuration-by-code)
+- [Working with Fuseki](#working-with-fuseki)
+- [Building a Text Index](#building-a-text-index)
+- [Deletion of Indexed Entities](#deletion-of-indexed-entities)
+- [Maven Dependency](#maven-dependency)
+
+## How to Use it by Code
+
+### Create Spatial Dataset
+
+    import org.apache.jena.query.spatial.EntityDefinition
+    ...
+    // In lucene, "entityField" stores the uri of the subject (e.g. a place), 
+    // while "geoField" holds the indexed geo data (e.g. latitude/longitude).
+    EntityDefinition entDef = new EntityDefinition("entityField", "geoField"); 
+
+    // index in File system (or use an in-memory one)
+    Directory dir = FSDirectory.open(indexDir); 
+
+    // The baseDataset can be an in-memory or TDB/SDB file based one which contains the geo data. Join together into a dataset.
+    Dataset spatialDataset = SpatialDatasetFactory.createLucene(baseDataset, dir, entDef); 
+    ...
+
+### Supported Geo Data for Indexing/Querying
+
+#### Builtin Geo Prodicates
+
+There're mainly 2 types of RDF representation of geo data, which are both supported by jena-spatial:
+
+**1) Latitude/Longitude Format (in gonames, DBPedia and Linked Geo Data)**
+
+    @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+    :EGBB rdf:type :LargeAirport ;
+        geo:lat "52.4539"^^xsd:float ;
+        geo:long "-1.74803"^^xsd:float .
+    :EGBB_String rdf:type :LargeAirport ;
+        geo:lat "52.4539" ;
+        geo:long "-1.74803" .
+
+**2) Well Known Text (WKT) Literal (in DBPedia and Linked Geo Data)**
+
+    @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+    :node1000032677 a :Geometry ;
+        ogc:asWKT "POINT(7.338818000000001 51.4433324)"^^ogc:wktLiteral .
+    airports:EGBB_Fake_In_Box rdf:type airports_sc:LargeAirport ;
+        ogc:asWKT "Polygon ((-2.0 51.2, 1.0 51.2, 1.0 51.8, -2.0 51.8, -2.0 51.2))"^^wkt:wktLiteral.
+
+**The builtin predicates that can be automatically processed by jena-spatial include: 1) `geo:lat`, `geo:long`; 2) `geo:geometry`, `ogc:asWKT`.**
+For 2) WKT, DBPedia uses `geo:geometry`, while Linked Geo Data adopts `ogc:asWKT` and `geo:geometry`.
+
+**Important note** In order to read geo data in 2) WKT literal format, jena-spatial uses [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html),
+which is under LGPL licence. jena-spatial **does not** make a hard dependency on JTS. In other words,
+if an end user just uses the feature of 1), there's no need to depend on JTS (i.e. nothing needs to be done). If he wants 2),
+he can make it by setting the `SpatialContextFactory` of [EntityDefinition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) to `JtsSpatialContextFactory`,
+which is an optional choice): 
+
+    import org.apache.jena.query.spatial.EntityDefinition
+    ...
+    EntityDefinition entDef = new EntityDefinition("entityField", "geoField");
+    
+    // use JtsSpatialContextFactory to support 2) WKT literals (optional)
+    entDef.setSpatialContextFactory("com.spatial4j.core.context.jts.JtsSpatialContextFactory");
+    ...
+    
+#### Custom Geo Prodicates
+
+However, there may be more predicates for other data sources for both 1) and 2).
+jena-spatial provides an interface for consuming all kinds of custom geo predicates.
+You can simply add predicates to let jena-spatial recognize them using [EntityDefinition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java):
+
+    import org.apache.jena.query.spatial.EntityDefinition
+    ...
+
+    EntityDefinition entDef = new EntityDefinition("entityField", "geoField");
+
+    // custom geo predicates for 1) Latitude/Longitude Format
+    Resource lat_1 = ResourceFactory.createResource("http://localhost/jena_example/#latitude_1") ;
+    Resource long_1 ResourceFactory.createResource("http://localhost/jena_example/#longitude_1") ;
+    entDef.addSpatialPredicatePair(lat_1, long_1) ;
+
+    // custom geo predicates for Well Known Text (WKT) Literal
+    Resource wkt_1 = ResourceFactory.createResource("http://localhost/jena_example/#wkt_1");
+    entDef.addWKTPredicate( wkt_1 );
+
+See more supported [geo data examples](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/test/resources/geoarq-data-1.ttl)
+
+### Load Geo Data into Spatial Dataset
+
+    spatialDataset.begin(ReadWrite.WRITE);
+    try {
+        Model m = spatialDataset.getDefaultModel();
+        RDFDataMgr.read(m, file);
+        spatialDataset.commit();
+    } finally {
+        spatialDataset.end();
+    }
+
+Now the spatial dataset is ready for spatial query.
+
+## Property Function Library
+
+The prefix spatial is `<http://jena.apache.org/spatial#>`.
+
+|  &nbsp;Property name&nbsp;  |  &nbsp;Description&nbsp; |
+|-------------------|--------------------------------|
+|*?place* **spatial:nearby** *(latitude, longitude, radius [, units, limit])*<br>*?place* **spatial:withinCircle** *(latitude, longitude, radius [, units, limit])*|Query for the *?place* within the *radius* distance of the location of *(latitude, longitude)*. The distance *units* can be: "kilometers"/"km", "miles"/"mi", "meters"/"m", "centimeters"/"cm", "milimeters"/"mm" or "degrees"/"de", which are delivered as the optional strings (the default value is "kilometers"). *limit* is an optional integer parameter for the limit of the query results (if *limilt*<0, return all query results).|
+|*?place* **spatial:withinBox** *(latitude*min, longitude*min, latitude*max, longitude*max [, limit])*|Query for the *?place* within the box area of *(latitude*min, longitude*min, latitude*max, longitude*max)*.|
+|*?place* **spatial:intersectBox** *(latitude*min, longitude*min, latitude*max, longitude*max [, limit])*|Query for the *?place* intersecting the box area of *(latitude*min, longitude*min, latitude*max, longitude*max)*.|
+|*?place* **spatial:north** *(latitude, longitude [, limit])*|Query for the *?place* northing the location of *(latitude, longitude)*.|
+|*?place* **spatial:south** *(latitude, longitude [, limit])*|Query for the *?place* southing the location of *(latitude, longitude)*.|
+|*?place* **spatial:west** *(latitude, longitude [, limit])*|Query for the *?place* westing the location of *(latitude, longitude)*.|
+|*?place* **spatial:east** *(latitude, longitude [, limit])*|Query for the *?place* easting the location of *(latitude, longitude)*.|
+
+See [ESRIs docs on spatial relations](http://edndoc.esri.com/arcsde/9.1/general_topics/understand_spatial_relations.htm)
+
+## Spatial Dataset Assembler
+
+The usual way to describe an index is with a [Jena assembler description](http://jena.apache.org/documentation/assembler/index.html). Configurations can also be built with [code](#how-to-use-it-by-code). The assembler describes a "spaital dataset" which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for for each.
+
+A spatial index has an "[entity definition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)" which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. "entityField") and its geo information (e.g. latitude/longitude as "geoField"), and the custom geo predicates.
+
+For common RDF spatial query, only "entityField" and "geoField" are required with the [builtin geo predicates](#builtin-geo-predicates) working well. More complex setups, with multiple [custom geo predicates](#custom-geo-predicates) besides the two fields are possible.
+You also optionally use JtsSpatialContextFactory to support indexing WKT literals. 
+
+Once setup this way, any data added to the spatial dataset is automatically indexed as well.
+
+The following is an example of a TDB dataset with a spatial index.
+
+    ## Example of a TDB dataset and spatial index
+    
+    @prefix :        <http://localhost/jena_example/#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+    @prefix spatial: <http://jena.apache.org/spatial#> .
+    
+    # TDB
+    [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+    
+    # Spatial
+    [] ja:loadClass "org.apache.jena.query.spatial.SpatialQuery" .
+    spatial:SpatialtDataset  rdfs:subClassOf  ja:RDFDataset .
+    #spatial:SpatialIndexSolr  rdfs:subClassOf  spatial:SpatialIndex .
+    spatial:SpatialIndexLucene  rdfs:subClassOf   spatial:SpatialIndex .
+    
+    ## ---------------------------------------------------------------
+    ## This URI must be fixed - it's used to assemble the spatial dataset.
+    
+    :spatial_dataset rdf:type     spatial:SpatialDataset ;
+        spatial:dataset   <#dataset> ;
+        ##spaital:index   <#indexSolr> ;
+        spatial:index     <#indexLucene> ;
+        .
+    
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+        tdb:location "--mem--" ;
+        tdb:unionDefaultGraph true ;
+        .
+    
+    <#indexLucene> a spatial:SpatialIndexLucene ;
+        #spatial:directory <file:Lucene> ;
+        spatial:directory "mem" ;
+        spatial:definition <#definition> ;
+        .
+    
+    <#definition> a spatial:EntityDefinition ;
+        spatial:entityField      "uri" ;
+        spatial:geoField     "geo" ;
+        # custom geo predicates for 1) Latitude/Longitude Format
+        spatial:hasSpatialPredicatePairs (
+             [ spatial:latitude :latitude_1 ; spatial:longitude :longitude_1 ]
+             [ spatial:latitude :latitude_2 ; spatial:longitude :longitude_2 ]
+             ) ;
+        # custom geo predicates for 2) Well Known Text (WKT) Literal
+        spatial:hasWKTPredicates (:wkt_1 :wkt_2) ;
+        # custom SpatialContextFactory for 2) Well Known Text (WKT) Literal
+        spatial:spatialContextFactory
+             "com.spatial4j.core.context.jts.JtsSpatialContextFactory"
+        .
+        
+then use code such as:
+
+    Dataset spatialDataset = DatasetFactory.assemble( "spatial-config.ttl", 
+        "http://localhost/jena_example/#spatial_dataset") ;
+
+Key here is that the assembler contains two dataset definitions, one for the spatial dataset, one for the base data. Therefore, the application needs to identify the text dataset by it's URI 'http://localhost/jena_example/#spatial_dataset'.
+
+## Working with Fuseki
+
+The Fuseki configuration simply points to the spatial dataset as the fuseki:dataset of the service.
+
+    <#service_spatial_tdb> rdf:type fuseki:Service ;
+        rdfs:label                      "TDB/spatial service" ;
+        fuseki:name                     "ds" ;
+        fuseki:serviceQuery             "query" ;
+        fuseki:serviceQuery             "sparql" ;
+        fuseki:serviceUpdate            "update" ;
+        fuseki:serviceUpload            "upload" ;
+        fuseki:serviceReadGraphStore    "get" ;
+        fuseki:serviceReadWriteGraphStore    "data" ;
+        fuseki:dataset                  :spatial_dataset ;
+
+## Building a Spatial Index
+
+When working at scale, or when preparing a published, read-only, SPARQL service, creating the index by loading the spatial dataset is impractical. The index and the dataset can be built using command line tools in two steps: first load the RDF data, second create an index from the existing RDF dataset.
+
+Build the TDB dataset:
+
+    java -cp $FUSEKI_HOME/fuseki-server.jar tdb.tdbloader --tdb=assembler_file data_file
+    
+using the copy of TDB included with Fuseki. Alternatively, use one of the TDB utilities tdbloader or tdbloader2:
+
+    $JENA_HOME/bin/tdbloader --loc=directory  data_file
+    
+then build the spatial index with the jena.spatialindexer:
+
+    java -cp jena-spatial.jar jena.spatialindexer --desc=assembler_file
+    
+
