@@ -80,13 +80,13 @@ There're mainly 2 types of RDF representation of geo data, which are both suppor
 
 For 2) WKT, DBPedia uses `geo:geometry`, while Linked Geo Data adopts `ogc:asWKT` and `geo:geometry`.
 
-*The builtin predicates that can be automatically processed by jena-spatial include: 1) `geo:lat`, `geo:long`; 2) `geo:geometry`, `ogc:asWKT`.*
+**The builtin predicates that can be automatically processed by jena-spatial include: 1) `geo:lat`, `geo:long`; 2) `geo:geometry`, `ogc:asWKT`.**
 
 **Important note** In order to read geo data in 2) WKT literal format, jena-spatial uses [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html),
 which is under LGPL licence. jena-spatial **does not** make a hard dependency on JTS. In other words,
 if an end user just uses the feature of 1), there's no need to depend on JTS (i.e. nothing needs to be done). If he wants 2),
 he can make it by setting the `SpatialContextFactory` of [EntityDefinition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) to `JtsSpatialContextFactory`,
-which is an optional choice): 
+which is an optional choice. In this way, the JTS libs should be in the classpath. Here's the sample code: 
 
     import org.apache.jena.query.spatial.EntityDefinition
     ...
