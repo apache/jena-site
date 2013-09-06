@@ -25,15 +25,17 @@ This query makes a spatial query for the places within 10 kilometers of Bristol 
 
 ## Table of Contents
 
--   [Architecture](#architecture)
--   [Query with SPARQL](#query-with-sparql)
--   [Configuration](#configuration)
-    -   [Text Dataset Assembler](#text-dataset-assembler)
-    -   [Configuration by Code](#configuration-by-code)
+- [How to Use it by Code](#how-to-use-it-by-code)
+    - [Create Spatial Dataset](#create-spatial-dataset)
+    - [Supported Geo Data for Indexing and Querying](#supported-geo-data-for-indexing-and-querying)
+        - [Builtin Geo Prodicates](#builtin-geo-predicates)
+        - [Custom Geo Prodicates](#custom-geo-predicates)
+    - [Load Geo Data into Spatial Dataset](#load-geo-data-into-spatial-dataset)
+- [Property Function Library](#property-function-library)
+- [Spatial Dataset Assembler](#spatial-dataset-assembler)
 - [Working with Fuseki](#working-with-fuseki)
-- [Building a Text Index](#building-a-text-index)
-- [Deletion of Indexed Entities](#deletion-of-indexed-entities)
-- [Maven Dependency](#maven-dependency)
+- [Building a Spatial Index](#building-a-spatial-index)
+
 
 ## How to Use it by Code
 
@@ -52,7 +54,7 @@ This query makes a spatial query for the places within 10 kilometers of Bristol 
     Dataset spatialDataset = SpatialDatasetFactory.createLucene(baseDataset, dir, entDef); 
     ...
 
-### Supported Geo Data for Indexing/Querying
+### Supported Geo Data for Indexing and Querying
 
 #### Builtin Geo Prodicates
 
@@ -76,8 +78,9 @@ There're mainly 2 types of RDF representation of geo data, which are both suppor
     airports:EGBB_Fake_In_Box rdf:type airports_sc:LargeAirport ;
         ogc:asWKT "Polygon ((-2.0 51.2, 1.0 51.2, 1.0 51.8, -2.0 51.8, -2.0 51.2))"^^wkt:wktLiteral.
 
-**The builtin predicates that can be automatically processed by jena-spatial include: 1) `geo:lat`, `geo:long`; 2) `geo:geometry`, `ogc:asWKT`.**
 For 2) WKT, DBPedia uses `geo:geometry`, while Linked Geo Data adopts `ogc:asWKT` and `geo:geometry`.
+
+The builtin predicates that can be automatically processed by jena-spatial include: 1) `geo:lat`, `geo:long`; 2) `geo:geometry`, `ogc:asWKT`.
 
 **Important note** In order to read geo data in 2) WKT literal format, jena-spatial uses [JTS Topology Suite](http://tsusiatsoftware.net/jts/main.html),
 which is under LGPL licence. jena-spatial **does not** make a hard dependency on JTS. In other words,
@@ -135,8 +138,8 @@ The prefix spatial is `<http://jena.apache.org/spatial#>`.
 |  &nbsp;Property name&nbsp;  |  &nbsp;Description&nbsp; |
 |-------------------|--------------------------------|
 |*?place* **spatial:nearby** *(latitude, longitude, radius [, units, limit])*<br>*?place* **spatial:withinCircle** *(latitude, longitude, radius [, units, limit])*|Query for the *?place* within the *radius* distance of the location of *(latitude, longitude)*. The distance *units* can be: "kilometers"/"km", "miles"/"mi", "meters"/"m", "centimeters"/"cm", "milimeters"/"mm" or "degrees"/"de", which are delivered as the optional strings (the default value is "kilometers"). *limit* is an optional integer parameter for the limit of the query results (if *limilt*<0, return all query results).|
-|*?place* **spatial:withinBox** *(latitude*min, longitude*min, latitude*max, longitude*max [, limit])*|Query for the *?place* within the box area of *(latitude*min, longitude*min, latitude*max, longitude*max)*.|
-|*?place* **spatial:intersectBox** *(latitude*min, longitude*min, latitude*max, longitude*max [, limit])*|Query for the *?place* intersecting the box area of *(latitude*min, longitude*min, latitude*max, longitude*max)*.|
+|*?place* **spatial:withinBox** *(latitude_min, longitude_min, latitude_max, longitude_max [, limit])*|Query for the *?place* within the box area of *(latitude_min, longitude_min, latitude_max, longitude_max)*.|
+|*?place* **spatial:intersectBox** *(latitude_min, longitude_min, latitude_max, longitude_max [, limit])*|Query for the *?place* intersecting the box area of *(latitude_min, longitude_min, latitude_max, longitude_max)*.|
 |*?place* **spatial:north** *(latitude, longitude [, limit])*|Query for the *?place* northing the location of *(latitude, longitude)*.|
 |*?place* **spatial:south** *(latitude, longitude [, limit])*|Query for the *?place* southing the location of *(latitude, longitude)*.|
 |*?place* **spatial:west** *(latitude, longitude [, limit])*|Query for the *?place* westing the location of *(latitude, longitude)*.|
@@ -148,7 +151,7 @@ See [ESRIs docs on spatial relations](http://edndoc.esri.com/arcsde/9.1/general_
 
 The usual way to describe an index is with a [Jena assembler description](http://jena.apache.org/documentation/assembler/index.html). Configurations can also be built with [code](#how-to-use-it-by-code). The assembler describes a "spaital dataset" which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for for each.
 
-A spatial index has an "[entity definition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)" which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. "entityField") and its geo information (e.g. latitude/longitude as "geoField"), and the custom geo predicates.
+A spatial index has an [EntityDefinition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. "entityField") and its geo information (e.g. latitude/longitude as "geoField"), and the custom geo predicates.
 
 For common RDF spatial query, only "entityField" and "geoField" are required with the [builtin geo predicates](#builtin-geo-predicates) working well. More complex setups, with multiple [custom geo predicates](#custom-geo-predicates) besides the two fields are possible.
 You also optionally use JtsSpatialContextFactory to support indexing WKT literals. 
