@@ -67,17 +67,23 @@ this is done correctly.  The required permissions are specified in the javadoc f
 Conceptually the framework implements 2 levels of security: graph and triple.
 
 The graph restrictions are applied before triple restrictions.  So the system will call 
+
     evaluate( Action action, SecNode graphIRI );
+    
 to ask can the current user "Read" (Action)  graph X (graphIRI)  as `evaluate( Action.READ, X )`.
 
 if the answer is yes then the system will call
+
     evaluate( Action action, SecNode graphIRI, SecTriple triple );
+    
 to ask if the current user can "Read" (Action) from graph X (graphIRI) all triples (SecTriple) as 
 `evaluate( Action.READ, X, SecTriple.ALL )`.
 
 if the answer is yes then the system will execute the call, if the answer is no then for each 
 potential triple the user might read the system will call
+
     evaluate( Action action, SecNode graphIRI, SecTriple triple );
+    
 to ask if the current user can "Read" (Action) from graph X (graphIRI) the triple in question 
 (<triple>) as `evaluate( Action.READ, X, <triple> )`.
 
@@ -94,9 +100,13 @@ Jena-security provides three special nodes to facilitate evaluation of security 
 
 This is similar to the Jena `Node.ANY` node.  It matches any node.  In general the system will ask if 
 the user can access a graph by executing 
+
     evaluate( Action, GraphIRI )
+    
 if the user can access the graph then the system will execute
+
     evaluate( Action, GraphIRI, <SecNode.ANY, SecNode.ANY, SecNode.ANY )
+    
 to determine if the user can perform the action on all triples.  If not then the system will attempt to 
 determine if the user perform the action on each specific triple.  In some cases the system can determine that
 the range of nodes involved in the action a sub set of all nodes and will call `evaluate` with some constant 
@@ -156,11 +166,15 @@ Insertions pose a different set of problems in that in some cases the system doe
 inserted.  For example when concatenating one RDFList with another (`rdfList.concatenate( rdfList2 )`) the system
 will create a series of anonymous nodes.  To check for these the `SecNode.FUTURE` is used. Initially the system will
 call 
+
     evaluate( Action.CREATE, X, <SecNode.FUTURE, RDF.first, SecNode.ANY ) 
+    
 to ascertain if the user can create a triple in graph X that has an anonymous node (SecNode.FUTURE) as the subject,
 RDF.first as the predicate and any node as the object.  If this is not allowed then for every node in `rdfList2` 
 the system will call
+
     evaluate( Action.CREATE, X, <SecNode.FUTURE, RDF.first, node ) 
+    
 where `node` is the node from `rdfList2` to be added.
    
 
