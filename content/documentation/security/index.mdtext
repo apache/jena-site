@@ -1,12 +1,14 @@
 Title: Jena Security - A Security (Permissions) wrapper around Jena RDF implementation.
 
 JenaSecurity is a SecurityEvaluator interface and a set of dynamic proxies that apply that interface to Jena Graphs, 
-Models, and associated methods and classes.
+Models, and associated methods and classes.  It does not implement any specific security policy but provides a 
+framework for developers or integrators to implement any desired policy.
 
 ## Documentation
 
 - [Overview](#overview)
 - [Usage Notes](#usage-notes)
+- [How it Works](#how-it-works)
 - [Security Evaluator](evaluator.html)
 - [Assembler](assembler.html)
 
@@ -48,4 +50,120 @@ There are several other cases where the difference in the layer can trip up the 
 the result is a tighter security definition than was requested. For simplicity sake we recommend that the wrapped 
 secured graph only be used in cases where access to the graph as a whole is granted/denied. In these cases the user 
 either has all CRUD capabilities or none.
+
+## How it Works
+
+Jena-security does not specify how to determine who the user is, just that a Principal identifying the user is 
+available. It does not specify how to determine what the user has access to.
+
+It does require that a developer or integrator implement the SecurityEvaluator so that when the 
+system asks if the current user can perform an action (say read graph X) there is a yes or no answer.
+
+The framework does all the work of intercepting the calls to the graph (or model) and making appropriate calls 
+to the Evaluator before allowing the call to go ahead.  There are numerous unit tests to ensure that
+this is done correctly.  The required permissions are specified in the javadoc for object classes 
+(e.g. SecuredGraph, SecuredModel).
+
+Conceptually the framework implements 2 levels of security: graph and triple.
+
+The graph restrictions are applied before triple restrictions.  So the system will call 
+    evaluate( Action action, SecNode graphIRI );
+to ask can the current user "Read" (Action)  graph X (graphIRI)  as `evaluate( Action.READ, X )`.
+
+if the answer is yes then the system will call
+    evaluate( Action action, SecNode graphIRI, SecTriple triple );
+to ask if the current user can "Read" (Action) from graph X (graphIRI) all triples (SecTriple) as 
+`evaluate( Action.READ, X, SecTriple.ALL )`.
+
+if the answer is yes then the system will execute the call, if the answer is no then for each 
+potential triple the user might read the system will call
+    evaluate( Action action, SecNode graphIRI, SecTriple triple );
+to ask if the current user can "Read" (Action) from graph X (graphIRI) the triple in question 
+(<triple>) as `evaluate( Action.READ, X, <triple> )`.
+
+Jena-security performs similar checks for all creates, reads, updates and deletes. (CRUD).  It also does this 
+for all classes that can be returned from the secured classes.  For example an RDFList returned 
+from a SecuredModel is secured so that the filtering above is performed against the items in the 
+list.
+
+### Use of special nodes
+
+Jena-security provides three special nodes to facilitate evaluation of security policy constraints.
+
+#### SecNode.ANY
+
+This is similar to the Jena `Node.ANY` node.  It matches any node.  In general the system will ask if 
+the user can access a graph by executing 
+    evaluate( Action, GraphIRI )
+if the user can access the graph then the system will execute
+    evaluate( Action, GraphIRI, <SecNode.ANY, SecNode.ANY, SecNode.ANY )
+to determine if the user can perform the action on all triples.  If not then the system will attempt to 
+determine if the user perform the action on each specific triple.  In some cases the system can determine that
+the range of nodes involved in the action a sub set of all nodes and will call `evaluate` with some constant 
+nodes.
+
+- <SecNode.ANY, SecNode.ANY, SecNode.ANY) - Asks if the user may perform the action on any triple. 
+
+- <X, SecNode.ANY, SecNode.ANY> - Asks if the user may perform the action against
+any triple where X is the subject.
+
+- <SecNode.ANY, X, SecNode.ANY) - Asks if the user may perform the action against
+any triple where X is the predicate.
+
+- <(SecNode.ANY, SecNode.ANY, SecNode.X> - Asks if if the user may perform the action against
+any triple where X is the object.
+
+The `SecNode.ANY` node may occur multiple times and may occur with the `SecNode.VARIABLE` and/or 
+ `SecNode.FUTURE` nodes.
+
+#### SecNode.VARIABLE
+
+This differs from `SecNode.ANY` in that the system is asking "if there are any prohibitions" not "if the user 
+may perform". Thus queries with the `SecNode.VARIABLE` nodes should return `true` where `SecNode.ANY`> returns
+`false`.  In general this type is used in the query to determine if triple level filtering of results must be 
+performed.
+
+- <SecNode.VARIABLE, X, Y> - Asks if there are any prohibitions against the user seeing all subjects
+that have property X and object Y.
+
+- <X, SecNode.VARIABLE, Y> - Asks if there are any prohibitions against the user seeing all predicates
+hat have subject X and object Y.
+
+- <X, Y, SecNode.VARIABLE> - Asks if there are any prohibitions against the user seeing all objects
+that have subject X and predicate Y.
+
+The `SecNode.VARIABLE` may occur multiple times and may occur with the `SecNode.ANY` node.
+
+#### SecNode.FUTURE
+
+This node indicates a variable in the triple.  This differs from `SecNode.ANY` in that the system is asking 
+"if there are any prohibitions" not "if the user may perform". Thus queries with the `SecNode.VARIABLE` type 
+node should return `true` where `SecNode.ANY` returns `false`.  In general this type is used in the query to 
+determine if triple level filtering of results must be performed.
+
+- <SecNode.VARIABLE, X, Y> - Asks if there are any prohibitions against the user seeing all subjects
+that have property X and object Y.
+
+- <X, SecNode.VARIABLE, Y> - Asks if there are any prohibitions against the user seeing all predicates
+that have subject X and object Y.
+
+- <X, Y, SecNode.VARIABLE> - Asks if there are any prohibitions against the user seeing all objects
+that have subject X and predicate Y.
+
+The `SecNode.VARIABLE` may occur multiple times and may occur with the `SecNode.ANY` node.
+        
+Insertions pose a different set of problems in that in some cases the system does not know what value will be 
+inserted.  For example when concatenating one RDFList with another (`rdfList.concatenate( rdfList2 )`) the system
+will create a series of anonymous nodes.  To check for these the `SecNode.FUTURE` is used. Initially the system will
+call 
+    evaluate( Action.CREATE, X, <SecNode.FUTURE, RDF.first, SecNode.ANY ) 
+to ascertain if the user can create a triple in graph X that has an anonymous node (SecNode.FUTURE) as the subject,
+RDF.first as the predicate and any node as the object.  If this is not allowed then for every node in `rdfList2` 
+the system will call
+    evaluate( Action.CREATE, X, <SecNode.FUTURE, RDF.first, node ) 
+where `node` is the node from `rdfList2` to be added.
+   
+
+
+
 
