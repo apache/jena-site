@@ -33,6 +33,7 @@ This query makes a spatial query for the places within 10 kilometers of Bristol 
     - [Load Geo Data into Spatial Dataset](#load-geo-data-into-spatial-dataset)
 - [Property Function Library](#property-function-library)
 - [Spatial Dataset Assembler](#spatial-dataset-assembler)
+- [Working with Solr](#working-with-solr)
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Spatial Index](#building-a-spatial-index)
 
@@ -222,6 +223,33 @@ then use code such as:
 
 Key here is that the assembler contains two dataset definitions, one for the spatial dataset, one for the base data. Therefore, the application needs to identify the text dataset by it's URI 'http://localhost/jena_example/#spatial_dataset'.
 
+## Working with Solr
+
+Besides Lucene, jena-spatial can work with Solr for spatial query, powered by [Lucene / Solr 4 Spatial](http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4) and [Solrj](http://wiki.apache.org/solr/Solrj).
+
+It's required to add the field definitions for "entityField" and "geoField" respectively in `schema.xml` of Solr.
+The names of the fields in [EntityDefinition](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) should be in accordance with those in `schema.xml`.
+Here is an example defining the names of "entityField" as "uri" and "geoField" as "geo":
+
+    <field name="uri" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+    <field name="geo"  type="location_rpt"  indexed="true" stored="true"  multiValued="true" /> 
+
+The fieldType of "entityField" is `string`, while that of "geoField" is `location_rpt`:
+   
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType" geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
+
+Addtionally, in `solrconfig.xml`, there should be 2 `requestHandlers` defined for querying and updating the spatial data and the index.
+    
+    <requestHandler name="/select" class="solr.SearchHandler"></requestHandler>
+    <requestHandler name="/update" class="solr.UpdateRequestHandler"></requestHandler>
+
+The above is the least required configuration to run jena-spatial in Solr.
+For more information about the configuration, please check the [Lucene / Solr 4 Spatial](http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4) documentation.
+ 
+There're also some demostrations of the usage of Solr in the [unit tests](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr) of jena-spatial.
+They use a `EmbeddedSolrServer`with a `SOLR_HOME` sample [here](https://svn.apache.org/repos/asf/jena/trunk/jena-spatial/src/test/resources/SolrHome).
+
 ## Working with Fuseki
 
 The Fuseki configuration simply points to the spatial dataset as the fuseki:dataset of the service.
@@ -236,6 +264,8 @@ The Fuseki configuration simply points to the spatial dataset as the fuseki:data
         fuseki:serviceReadGraphStore    "get" ;
         fuseki:serviceReadWriteGraphStore    "data" ;
         fuseki:dataset                  :spatial_dataset ;
+
+
 
 ## Building a Spatial Index
 
