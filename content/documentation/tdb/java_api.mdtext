@@ -37,17 +37,19 @@ forced to disk if they have not been written already.
 
 ### Using a directory name
 
-      // Direct way: Make a TDB-backed Jena model in the named directory.
-      String directory = "MyDatabases/DB1" ;
-      Model model = TDBFactory.createModel(directory) ;
-      ...
-      model.close() ;
-
-      // Direct way: Make a TDB-backed dataset
+      // Make a TDB-backed dataset
       String directory = "MyDatabases/Dataset1" ;
       Dataset dataset = TDBFactory.createDataset(directory) ;
       ...
-      dataset.close() ;
+      dataset.begin(ReadeWrite.READ) ;
+      // Get model inside the transaction
+      Model model = dataset.getDefaultModel() ;
+      dataset.end() ;
+      ... 
+      dataset.begin(ReadeWrite.WRITE) ;
+      model = dataset.getDefaultModel() ;
+      dataset.end() ;
+      ... 
 
 ### Using an assembler file
 
@@ -56,14 +58,13 @@ forced to disk if they have not been written already.
       // The assembler file is a configuration file.
       // The same assembler description will work in Fuseki.
       String assemblerFile = "Store/tdb-assembler.ttl" ;
-      Model model = TDBFactory.assembleModel(assemblerFile) ;
-      ...
-      model.close() ;
-
-      String assemblerFile = "Store/tdb-assembler.ttl" ;
       Dataset dataset = TDBFactory.assembleDataset(assemblerFile) ;
       ...
-      dataset.close() ;
+      dataset.begin(ReadeWrite.READ) ;
+      // Get model inside the transaction
+      Model model = dataset.getDefaultModel() ;
+      dataset.end() ;
+      ...
 
 See
 [the TDB assembler documentation](assembler.html)
@@ -71,7 +72,7 @@ for details.
 
 ## Bulkloader
 
-The bulkloader is a faster way to load data into an empty graph
+The bulkloader is a faster way to load data into an empty dataset
 than just using the Jena update operations.
 
 It is accessed through the command line utility `tdbloader`.
@@ -97,11 +98,8 @@ blocks. It is important to flush all caches to make the file state
 consistent with the cached states because some caches are
 write-behind so unwritten changes may be held in-memory.
 
-TDB provides an explicit call for model and dataset objects for
+TDB provides an explicit call dataset objects for
 synchronization with disk:
-
-      Model model = ... ;
-      TDB.sync(model) ;
 
       Dataset dataset = ...  ;
       TDB.sync(dataset ) ;
@@ -109,4 +107,3 @@ synchronization with disk:
 Any dataset or model can be passed to these functions - if they are
 not backed by TDB then no action is taken and the call merely
 returns without error.
-
