@@ -1,8 +1,8 @@
 Title: ARQ - Negation
 
-Standard SPARQL can perform negation using the idiom of
+Standard SPARQL 1.0 can perform negation using the idiom of
 `OPTIONAL`/`!BOUND`. It is inconvenient and can be hard to use as
-complexity increases. ARQ supports additional operators for
+complexity increases. SPARQL 1.1 supports additional operators for
 negation.
 
 The `EXISTS` and `NOT EXISTS` are now legal SPARQL 1.1 when used inside a `FILTER`, 
@@ -16,8 +16,7 @@ they may be used as bare graph patterns only when `Syntax.syntaxARQ` is used
         FILTER (!BOUND(?who))
     }
 
-In ARQ, there is the `NOT EXISTS` operator (`UNSAID` is an alias
-for `NOT EXISTS`) which acts at the point in the query where it is
+There is the `NOT EXISTS` operator which acts at the point in the query where it is
 written. It does not bind any variables but variables aready boudn
 in the query will have their bound value.
 
@@ -25,7 +24,7 @@ in the query will have their bound value.
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     SELECT ?name
     WHERE { ?x foaf:givenName ?name .
-        NOT EXISTS { ?x foaf:knows ?who }
+            FILTER NOT EXISTS { ?x foaf:knows ?who }
           }
 
 There is also an `EXISTS` operator.
@@ -34,7 +33,7 @@ There is also an `EXISTS` operator.
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     SELECT ?name
     WHERE { ?x foaf:givenName ?name .
-        EXISTS { ?x foaf:knows ?who . FILTER(?who != ?x) }
+            FILTER EXISTS { ?x foaf:knows ?who . FILTER(?who != ?x) }
           }
 
 
