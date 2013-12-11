@@ -1,5 +1,4 @@
 Title: Text searches with SPARQL
-
 This module was first released with Jena 2.11.0.
 
 This extension to ARQ combines SPARQL and text search.
@@ -38,6 +37,7 @@ the actual label.  More details are given below.
 -   [Configuration](#configuration)
     -   [Text Dataset Assembler](#text-dataset-assembler)
     -   [Configuration by Code](#configuration-by-code)
+    -   [Graph-specific Indexing](#graph-specific-indexing)
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Text Index](#building-a-text-index)
 - [Deletion of Indexed Entities](#deletion-of-indexed-entities)
@@ -253,6 +253,40 @@ purely in-memory setup:
         
         // Join together into a dataset
         Dataset ds = TextDatasetFactory.createLucene(ds1, dir, entDef) ;
+
+### Graph-specific Indexing
+
+Starting with version 1.0.1-SNAPSHOT from 2013-12-10, jena-text supports
+storing information about the source graph into the text index. This allows
+for more efficient text queries when the query targets only a single named
+graph. Without graph-specific indexing, text queries do not distinguish named
+graphs and will always return results from all graphs.
+
+Support for graph-specific indexing is enabled by defining the name of the
+index field to use for storing the graph identifier.
+
+If you use an assembler configuration, set the graph field using the
+text:graphField property on the EntityMap, e.g.
+
+    # Mapping in the index
+    # URI stored in field "uri"
+    # Graph stored in field "graph"
+    # rdfs:label is mapped to field "text"
+    <#entMap> a text:EntityMap ;
+        text:entityField      "uri" ;
+        text:graphField       "graph" ;
+        text:defaultField     "text" ;
+        text:map (
+             [ text:field "text" ; text:predicate rdfs:label ]
+             ) .
+
+If you configure the index in Java code, you need to use one of the
+EntityDefinition constructors that support the graphField parameter, e.g.
+
+        EntityDefinition entDef = new EntityDefinition("uri", "text", "graph", RDFS.label.asNode()) ;
+
+**Note:** If you migrate from a global (non-graph-aware) index to a graph-aware index,
+you need to rebuild the index to ensure that the graph information is stored.
 
 ## Working with Fuseki
 
