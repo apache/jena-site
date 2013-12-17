@@ -21,6 +21,7 @@ $(document).ready(function() {
 	
 		for (var index = 0; index < crumbs.length; ++index) {
 			var crumb = crumbs[index];
+                       if (crumb.indexOf('?') > -1) crumb = crumb.substring(0, crumb.indexOf('?'));
 			link += crumb + '/';
 
 			//Check if it is the last element of the array
