@@ -40,72 +40,35 @@ command line applications.
 
 ## Executing the query
 
-There are [helper scripts](/documentation/query/cmds.html) in the ARQ `bat/` and
-`bin/` directories of the ARQ distribution. They may not be in a
-Jena distribution. You should check these scripts before use.
+There are [helper scripts](/documentation/query/cmds.html) in the Jena distribution `bat/` and
+`bin/` directories.  You should check these scripts before use.  They can be placed on on the shell
+command path.
 
 ### Windows setup
 
-Set the `ARQROOT` environment variable to the file location of the
-ARQ distribution.
-
-    set ARQROOT=c:\MyProjects\ARQ
-
-The distribution usually has the version number in the directory
-name.
-
-In the ARQ directory, execute:
+Execute:
 
     bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
 
-(TODO we will need to update these once the release structure is clear)
-
 You can just put the `bat/` directory on your classpath or copy the
-programs out of it. They all depend on ARQROOT.
+programs out of it.
 
 ### bash scripts for Linux/Cygwin/Unix
 
-Set the `ARQROOT` environment variable to the file location of the
-ARQ distribution.
-
-    export ARQROOT=$HOME/MyProjects/ARQ
-
-The distribution usually has the version number in the directory
-name.
-
-In the ARQ directory, execute:
+Execute:
 
     bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
 
-You can just put the `bin/` directory on your classpath or copy the
-programs out of it. They all depend on ARQROOT.
-
-[Cygwin](http://www.cygwin.com/) is a Linux-like environment for
-Windows.
-
 ### Using the Java command line applications directly
 
+(This is not necessary.)
+
 You will need to set the classpath to include *all* the jar files
-in the ARQ `lib/` directory.
+in the Jena distribution `lib/` directory.
 
-For example, on Windows:
+    java -cp 'DIST/lib/*' arq.sparql ...
 
-    ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
-    ARQdir\lib\commons-logging-1.1.jar;ARQdir\lib\concurrent.jar;ARQdir\lib\icu4j_3_4.jar;
-    ARQdir\lib\iri.jar;ARQdir\lib\jena.jar;ARQdir\lib\jenatest.jar;
-    ARQdir\lib\json.jar;ARQdir\lib\junit.jar;ARQdir\lib\log4j-1.2.12.jar;
-    ARQdir\lib\lucene-core-2.2.0.jar;ARQdir\lib\stax-api-1.0.jar;
-    ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
-
-(TODO needs updating)
-
-where `<i>ARQdir</i>` is where you unpacked ARQ. This must be all
-one line.
-
-The names of jar files sometimes changes and new jar files do get
-added - do check this list with your version of ARQ.
-
-The commands themselves are in the `arq` package.
+where `DIST` is the `apache-jena-VERSION` directory.
 
 [Next: basic patterns](sparql_basic_patterns.html)
 
