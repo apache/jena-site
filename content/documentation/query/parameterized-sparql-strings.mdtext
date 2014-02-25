@@ -3,38 +3,6 @@ Title: Parameterized SPARQL String
 A Parameterized SPARQL String is a SPARQL query/update into which values
 may be injected.
 
-### Injecting Values
-
-Values may be injected in several ways:
-
--   By treating a variable in the SPARQL string as a parameter
--   Using JDBC style positional parameters
--   Appending values directly to the command text being built
-
-#### Variable Parameters
-
-Any variable in the command may have a value injected to it, injecting a
-value replaces all usages of that variable in the command i.e.
-substitutes the variable for a constant, injection is done by textual
-substitution.
-
-#### Positional Parameters
-
-You can use JDBC style positional parameters if you prefer, a JDBC style
-parameter is a single <tt>?</tt> followed by whitespace or certain
-punctuation characters (currently <tt>; , .</tt>). Positional parameters
-have a unique index which reflects the order in which they appear in the
-string. Positional parameters use a zero based index.
-
-#### Buffer Usage
-
-Additionally you may use this purely as a <code>StringBuffer</code>
-replacement for creating queries since it provides a large variety of
-convenience methods for appending things either as-is or as nodes (which
-causes appropriate formatting to be applied).
-
-### Intended Usage
-
 The intended usage of this is where using a <code>QuerySolutionMap</code> as
 initial bindings is either inappropriate or not possible e.g.
 
@@ -53,9 +21,101 @@ initial bindings is either inappropriate or not possible e.g.
 This class is useful for preparing both queries and updates hence the
 generic name as it provides programmatic ways to replace variables in
 the query with constants and to add prefix and base declarations. A
-<code>Query</code> or <code>UpdateRequest</code> can be created using 
-the <code>asQuery()</code> and <code>asUpdate()</code> methods assuming the command an
+`Query` or `UpdateRequest` can be created using 
+the `asQuery()` and `asUpdate()` methods assuming the command an
 instance represents is actually valid as a query/update.
+
+## Building parameterised commands
+
+A [ParameterizedSparqlString][1] is created as follows:
+
+    ParameterizedSparqlString pss = new ParameterizedSparqlString();
+
+There are also constructor overloads that take in an initial command text, parameter values, namespace prefixes etc.
+which may allow you to simplify some code.
+
+Once you have an instance you first set your template command with the `setCommandText()` method like so:
+
+    pss.setCommandText("SELECT * WHERE {\n" +
+         "  ?s a ?type .\n" +
+         "  OPTIONAL { ?s rdfs:label ?label . }\n" +
+         "}");
+
+Note that in the above example we did not define the `rdfs:` prefix so as it stands the query is invalid.  However 
+you can automatically populate `BASE` and `PREFIX` declarations for your command without having to explicitly 
+declare them in your command text by using the `setBaseUri()` and `setNsPrefix()` method e.g.
+
+    // Add a Base URI and define the rdfs prefix
+    pss.setBaseUri("http://example.org/base#");
+    pss.setNsPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
+
+You can always call `toString()` to see the current state of your instance e.g.
+
+    // Print current state to stdout
+    System.out.println(pss.toString());
+
+Which based on the calls so far would print the following:
+
+    BASE <http://example.org/base#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT * WHERE {
+      ?s a ?type .
+      OPTIONAL { ?s rdfs:label ?label . }
+    }
+
+[1]: http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/query/ParameterizedSparqlString.html
+
+### Injecting Values
+
+Once you have a command text prepared then you want to actually inject values into it, values may be injected in several ways:
+
+-   By treating a variable in the SPARQL string as a parameter
+-   Using JDBC style positional parameters
+-   Appending values directly to the command text being built
+
+See the [ParameterizedSparqlString][1] javadocs for a comprehensive reference of available methods for setting values,
+the following sections shows some basic examples of this.
+
+#### Variable Parameters
+
+Any SPARQL variable in the command text may have a value injected to it, injecting a value replaces all usages of 
+that variable in the command i.e. substitutes the variable for a constant.  Importantly injection is done by textual 
+substitution so in some cases may cause unexpected side effects.
+
+Variables parameters are set via the various `setX()` methods which take a `String` as their first argument e.g.
+
+    // Set an IRI
+    pss.setIri("x", "http://example.org");
+    
+    // Set a Literal
+    pss.setLiteral("x", 1234);
+    pss.setLiteral("x", true);
+    pss.setLiteral("x", "value");
+
+Where you set a value for a variable you have already set the existing value is overwritten.  Setting any value
+to `null` has the same effect as calling `clearParam("varname")`
+
+If you have the value already as a `RDFNode` or `Node` instance you can call the `setParam()` method instead e.g.
+
+    // Set a Node
+    Node n = NodeFactory.createIRI("http://example.org");
+    pas.setParam("x", n);
+
+#### Positional Parameters
+
+You can use JDBC style positional parameters if you prefer, a JDBC style
+parameter is a single `?` followed by whitespace or certain
+punctuation characters (currently `; , .`). Positional parameters
+have a unique index which reflects the order in which they appear in the
+string. Positional parameters use a zero based index.
+
+#### Buffer Usage
+
+Additionally you may use this purely as a <code>StringBuffer</code>
+replacement for creating queries since it provides a large variety of
+convenience methods for appending things either as-is or as nodes (which
+causes appropriate formatting to be applied).
 
 ### Warnings
 
