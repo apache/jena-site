@@ -55,12 +55,20 @@ services that don't support HTTP's built-in authentication mechanisms for whatev
 
 #### PreemptiveBasicAuthenticator
 
-This [authenticator][8] is a decorator over another authenticator that enables preemptive basic authentication.
+This [authenticator][8] is a decorator over another authenticator that enables preemptive basic authentication, this **only** works for servers 
+that support basic authentication and so will cause authentication failures when any other authentication scheme is required.  You should **only**
+use this when you know the remote server uses basic authentication.
 
-This is not enabled by default for two reasons:
+Preemptive authentication is not enabled by default for two reasons:
 
  1. It reduces security as it can result in sending credentials to servers that don't actually require them.
- 2. It only works for basic authentication and not for other HTTP authentication mechanisms e.g. digest authentication
+ 2. It **only** works for basic authentication and not for other HTTP authentication mechanisms e.g. digest authentication
+
+The 2nd point is important to emphasise, this **only** works for servers using Basic authentication.
+
+Also be aware that basic authentication is very insecure since it sends credentials over the wire with only obfuscation for protection.  Therefore
+many servers will use more secure schemes like Digest authentication which **cannot** be done preemptively as they require more complex
+challenge response sequences.
 
 #### DelegatingAuthenticator
 
@@ -80,6 +88,14 @@ Authenticators applied this way will only be used for requests by that specific 
 
 From 2.11.0 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
 avoids the needs to cast and manually set the authenticator afterwards.
+
+### Debugging Authentication
+
+ARQ uses [Apache Http Client][14] for all its HTTP operations and this provides detailed logging information that can be used for debugging.  To
+see this information you need to configure your logging framework to set the `org.apache.http` package to either `DEBUG` or `TRACE` level.
+
+The `DEBUG` level will give you general diagnostic information about requests and responses while the `TRACE` level will give you detailed HTTP
+traces i.e. allow you to see the exact HTTP requests and responses which can be extremely useful for debugging authentication problems.
 
 ### The Default Authenticator
 
@@ -109,3 +125,4 @@ Note that the default authenticator may be disabled by setting it to `null`.
   [11]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/web/DatasetGraphAccessorHTTP.html
   [12]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/DelegatingAuthenticator.html
   [13]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html
+  [14]: http://hc.apache.org
