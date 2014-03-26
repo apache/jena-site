@@ -37,6 +37,7 @@ the actual label.  More details are given below.
 -   [Query with SPARQL](#query-with-sparql)
 -   [Configuration](#configuration)
     -   [Text Dataset Assembler](#text-dataset-assembler)
+    -   [Configuring an analyzer (#text-configuring-an-analyzer)
     -   [Configuration by Code](#configuration-by-code)
     -   [Graph-specific Indexing](#graph-specific-indexing)
 - [Working with Fuseki](#working-with-fuseki)
@@ -236,6 +237,36 @@ Key here is that the assembler contains two dataset definitions, one for
 the text dataset, one for the base data.  Therefore, the application
 needs to identify the text dataset by it's URI
 `http://localhost/jena_example/#text_dataset`.
+
+### Configuring an Analyzer
+
+Text to be indexed is passed through a text analyzer that divides it into tokens 
+and may perform other transformations such as eliminating stop words.  If a Lucene
+text index is used then, by default a `StandardAnalyzer` is used.  If a Solr text
+index is used, the analyzer used is determined by the Solr configuration.
+
+It is possible to configure an alternative analyzer for each field indexed in a
+Lucene index.  For example:
+
+    <#entMap> a text:EntityMap ;
+        text:entityField      "uri" ;
+        text:defaultField     "text" ;
+        text:map (
+             [ text:field "text" ; 
+               text:predicate rdfs:label ;
+               text:analyzer [
+                   a text:StandardAnalyzer ;
+                   text:stopWords ("a" "an" "and" "but")
+               ]
+             ]
+             ) .
+             
+will configure the index to analyze values of the 'text' field
+using a `StandardAnalyzer` with the given list of stop words.
+
+Other analyzer types that may be specified are `SimpleAnalyzer` and `KeywordAnalyzer`, 
+neither of which has any configuration parameters.  See the Lucene documentation
+for details of what these analyzers do.
 
 ### Configuration by Code
 
