@@ -4,10 +4,11 @@ $(document).ready(function() {
 	
 	//Get the name of the domain dynamically
 	var prefix = 'http://' + location.host + '/';
+	var sslPrefix = 'https://' + location.host + '/';
 
 	if(url != prefix && url != prefix + 'index.html'){
 
-		var shortForm = url.replace(prefix, '').replace(/(index)?\.html/g, '').replace(/#.*/g, '');
+		var shortForm = url.replace(prefix, '').replace(sslPrefix, '').replace(/(index)?\.html/g, '').replace(/#.*/g, '');
 	
 		var crumbs = shortForm.split('/');
 
