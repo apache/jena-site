@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var prefix = 'http://' + location.host + '/';
 	var sslPrefix = 'https://' + location.host + '/';
 
-	if(url != prefix && url != prefix + 'index.html'){
+	if(url != prefix && url != prefix + 'index.html' && url != sslPrefix && url != sslPrefix + 'index.html'){
 
 		var shortForm = url.replace(prefix, '').replace(sslPrefix, '').replace(/(index)?\.html/g, '').replace(/#.*/g, '');
 	
