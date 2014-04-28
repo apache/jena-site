@@ -16,7 +16,7 @@ $(document).ready(function() {
 			crumbs.pop();
 		}
 
-		var link = prefix;
+		var link = "/";
 	
 		var breadcrumbs = '<ol class="breadcrumb">';
 	
