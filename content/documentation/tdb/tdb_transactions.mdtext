@@ -116,7 +116,6 @@ These are used for SPARQL queries, SPARQL updates and any Jena API
 actions that modify the data.  Beware that large `model.read` 
 operations consume large amounts of temporary space.
 
-
 The general pattern is:
 
      dataset.begin(ReadWrite.WRITE) ;
@@ -173,9 +172,33 @@ dataset.
 
 ## Multi-threaded use
 
-Each dataset object has one transaction active at a time. 
+Each dataset object has one transaction active at a time per thread. 
+A dataset object can be used by different threads, with independent transactions.
+
 The usual idiom within multi-threaded applications is to have 
 one dataset per thread, and so there is one transaction per thread.
+
+Either:
+
+     // Create a dataset and keep it globally.
+     Dataset dataset = TDBFactory.createDataset(location) ;
+
+Thread 1:
+
+     dataset.begin(ReadWrite.WRITE) ;
+     try {
+       ...
+       dataset.commit() ;
+     } finally { dataset.end() ; }
+
+Thread 2:
+
+     dataset.begin(ReadWrite.READ) ;
+     try {
+       ...
+     } finally { dataset.end() ; }
+
+or create a dataset object on the thread (the case above is preferred):
 
 Thread 1:
 
@@ -196,11 +219,6 @@ Thread 2:
 
 Each thread has a separate `dataset` object; these safely share the 
 same storage but have independent transactions.
-
-While it is possible to share a transaction between multiple
-threads, this is not encouraged.  Applications needing to do so must
-ensure that only one thread starts the transaction, via a `Dataset` object,
-and that all threads are acting "multiple reader OR single writer". 
 
 ## Multi JVM
 
