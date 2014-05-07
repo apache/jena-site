@@ -32,6 +32,8 @@ Command line option | RDF config file property | Meaning
 `--classnamesuffix <string\>` | `sgen:classnamesuffix` | Option for adding a suffix to the generated class name, e.g. "Vocab".
 `--classSection <string\>` |  `sgen:classSection` | Section declaration comment for class section.
 `--classTemplate <string\>`  | `sgen:classTemplate` | Template for writing out declarations of class resources.
+`--datatypesSection <string\>` | `sgen:datatypesSection` | Section declaration comment for datatypes section.
+`--datatypeTemplate <string\>` | `sgen:datatypeTemplate` | Template for writing out declarations of datatypes.
 `--declarations <string\>` | `sgen:declarations` | Additional declarations to add at the top of the class.
 `--dos` | `sgen:dos` | Use MSDOS-style line endings (i.e. \\r\\n). Default is Unix-style line endings.
 `-e <string\>` | `sgen:encoding` | The surface syntax of the input file (e.g. RDF/XML, N3). Defaults to RDF/XML.
@@ -46,6 +48,7 @@ Command line option | RDF config file property | Meaning
 `-n <string\>` | `sgen:classname` | The name of the generated class. The default is to synthesise a name based on input document name.
 `--noclasses` | `sgen:noclasses`|  Option to suppress classes in the generated vocabulary file
 `--nocomments` | `sgen:noComments` | Turn off all comment output in the generated vocabulary
+`--nodatatypes` | `sgen:nodatatypes` | Option to suppress datatypes in the generated vocabulary file.
 `--noheader` | `sgen:noHeader` | Prevent the output of a file header, with class comment etc.
 `--noindividuals` | `sgen:noindividuals` | Option to suppress individuals in the generated vocabulary file.
 `--noproperties` | `sgen:noproperties` | Option to suppress properties in the generated vocabulary file.
@@ -587,11 +590,11 @@ configuration options file.
 
  |
 --- | ---
-**Command line** | `--noclasses`<br />`--noproperties`<br />`--noindividuals`
-**Config file** | `<sgen:noclassses rdf:datatype="&xsd;boolean"\>true</sgen:noclassses\>`<br />`<sgen:noproperties rdf:datatype="&xsd;boolean"\>true</sgen:noproperties\>`<br />`<sgen:noindividuals rdf:datatype="&xsd;boolean"\>true</sgen:noindividuals\>`
+**Command line** | `--noclasses`<br />`--nodatatypes`<br />`--noproperties`<br />`--noindividuals`
+**Config file** | `<sgen:noclassses rdf:datatype="&xsd;boolean"\>true</sgen:noclassses\>`<br />`<sgen:nodatatypes rdf:datatype="&xsd;boolean"\>true</sgen:nodatatypes\>`<br />`<sgen:noproperties rdf:datatype="&xsd;boolean"\>true</sgen:noproperties\>`<br />`<sgen:noindividuals rdf:datatype="&xsd;boolean"\>true</sgen:noindividuals\>`
 
 By default, the vocabulary class generated from a given ontology
-will include constants for each of the included classes, properties
+will include constants for each of the included classes, datatypes, properties
 and individuals in the ontology. To omit any of these groups, use
 the corresponding *noXYZ* configuration option. For example,
 specifying `--noproperties` means that the generated class will not
@@ -602,15 +605,15 @@ ontology, irrespective of what is in the input document.
 
  |
 --- | ---
-**Command line** | `--classSection *<section heading\>*`<br />`--propSection*<section heading\>*`<br />`--individualSection *<section heading*\>`<br />`--header *<file header section\>*`<br />`--footer *<file footer section\>*`
-**Config file** | `<sgen:classSection rdf:datatype="&xsd;string"\>*section heading*</sgen:classSection\>`<br />`<sgen:propSection rdf:datatype="&xsd;string"\>*section heading*</sgen:propSection\>`<br />`<sgen:individualSection rdf:datatype="&xsd;string"\>*section heading*</sgen:individualSection\>`<br />`<sgen:header rdf:datatype="&xsd;string"\>*file header*</sgen:header\>`<br />`<sgen:footer rdf:datatype="&xsd;string"\>*file footer*</sgen:footer\>`
+**Command line** | `--classSection *<section heading\>*`<br />`--datatypeSection *<section heading\>*`<br />`--propSection *<section heading\>*`<br />`--individualSection *<section heading*\>`<br />`--header *<file header section\>*`<br />`--footer *<file footer section\>*`
+**Config file** | `<sgen:classSection rdf:datatype="&xsd;string"\>*section heading*</sgen:classSection\>`<br />`<sgen:datatypeSection rdf:datatype="&xsd;string"\>*section heading*</sgen:datatypeSection\>`<br />`<sgen:propSection rdf:datatype="&xsd;string"\>*section heading*</sgen:propSection\>`<br />`<sgen:individualSection rdf:datatype="&xsd;string"\>*section heading*</sgen:individualSection\>`<br />`<sgen:header rdf:datatype="&xsd;string"\>*file header*</sgen:header\>`<br />`<sgen:footer rdf:datatype="&xsd;string"\>*file footer*</sgen:footer\>`
 
 Some coding styles use block comments to delineate different
 sections of a class. These options allow the introduction of
 arbitrary Java code, though typically this will be a comment block,
 at the head of the sections of class constant declarations,
-property constant declarations, and individual constant
-declarations.
+datatype constant declarations, property constant declarations,
+and individual constant declarations.
 
 ### Include vocabulary source code
 
@@ -858,6 +861,12 @@ blue.
         // Vocabulary classes
         ///////////////////////////
     </sgen:classSection>
+
+    <!-- template for introducing the datatypes in the vocabulary -->
+    <sgen:datatypeSection rdf:datatype="&xsd;string">
+        // Vocabulary datatypes
+        ///////////////////////////
+    </sgen:datatypeSection>
 
     <!-- template for introducing the individuals in the vocabulary -->
     <sgen:individualsSection rdf:datatype="&xsd;string">
