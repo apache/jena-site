@@ -19,39 +19,80 @@ Notice:    Licensed to the Apache Software Foundation (ASF) under one
 As of ARQ 2.11.0 there is a new unified HTTP operation framework that provides a uniform mechanism for 
 HTTP authentication that also allows ARQ to support a broader range of authentication mechanisms than were previously possible.
 
+## Applying Authentication
+
+APIs that support authentication typically provide two methods for providing authenticators, a `setAuthentication(String username, char[] password)` method
+which merely configures a `SimpleAuthenticator`.  There will also be a `setAuthenticator(HttpAuthenticator authenticator)` method
+that allows you to configure an arbitrary authenticator.
+
+Authenticators applied this way will only be used for requests by that specific API.  APIs that currently support this are as follows:
+
+  - [QueryEngineHTTP][9] - This is the `QueryExecution` implementation returned by `QueryExecutionFactory.sparqlService()` calls
+  - [UpdateProcessRemoteBase][10] - This is the base class of `UpdateProcessor` implementations returned by `UpdateExecutionFactory.createRemote()` and `UpdateExecutionFactory.createRemoteForm()` calls
+  - [DatasetGraphAccessorHTTP][11] - This is the `DatasetGraphAccessor` implementation underlying remote dataset accessors.
+
+From 2.11.0 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
+avoids the needs to cast and manually set the authenticator afterwards e.g.
+
+    HttpAuthenticator authenticator = new SimpleAuthenticator("user", "password".toCharArray());
+    QueryExecution qe = QueryExecutionFactory.sparqlService("http://example.org/sparql", "SELECT * WHERE { ?s a ?type }", authenticator);
+
 ### Authenticators
 
 Authentication mechanisms are provided by [HttpAuthenticator][1] implementations of which a number are provided built into ARQ.
 
-This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried out.  This allows for authenticators
-to add credentials to requests on a per-request basis and/or to use different mechanisms and credentials for different services.
+This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried 
+out.  This allows for authenticators to add credentials to requests on a per-request basis and/or to use different mechanisms and credentials for different services.
 
 #### SimpleAuthenticator
 
 The [simple authenticator][2] is as the name suggests the simplest implementation.  It takes a single set of credentials which is applied to
 any service.
 
-Authentication however is not preemptive so unless the remote service sends a HTTP challenge (401 Unauthorized or 407 Proxy Authorization Required) then
-credentials will not actually be submitted.
+Authentication however is not preemptive so unless the remote service sends a HTTP challenge (401 Unauthorized or 407 Proxy Authorization
+ Required) then credentials will not actually be submitted.
 
 #### ScopedAuthenticator
 
-The [scoped authenticator][3] is an authenticator which maps credentials to different service URIs.  This allows you to specify different credentials for different services 
-as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are not sent unless the service requests them.
+The [scoped authenticator][3] is an authenticator which maps credentials to different service URIs.  This allows you to specify different 
+credentials for different services as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are 
+not sent unless the service requests them.
 
-Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example if you define credentials
-for `http://example.org` then these are used for any request that requires authentication under that URI e.g. `http://example.org/some/path`.  However if you
-had also defined credentials for `http://example.org/some/path` then these would be used in favor of those for `http://example.org`
+Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example
+if you define credentialsfor `http://example.org` then these are used for any request that requires authentication under that URI 
+e.g. `http://example.org/some/path`.  However if you had also defined credentials for `http://example.org/some/path` then these would be 
+used in favor of those for `http://example.org`
 
 #### ServiceAuthenticator
 
-The [service authenticator][4] is an authenticator which uses information encoded in the ARQ context and basically provides access to the existing credential provision
-mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on configuration for this.
+The [service authenticator][4] is an authenticator which uses information encoded in the ARQ context and basically provides access to the 
+existing credential provision mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on 
+configuration for this.
 
 #### FormsAuthenticator
 
-The [forms authenticator][6] is an authenticator usable with services that require form based logins and use cookies to verify login state.  This is intended for use with
-services that don't support HTTP's built-in authentication mechanisms for whatever reason.  One example of this are servers secured using Apache HTTP Server [mod_auth_form][7].
+The [forms authenticator][6] is an authenticator usable with services that require form based logins and use cookies to verify login state.  This is 
+intended for use with services that don't support HTTP's built-in authentication mechanisms for whatever reason.  One example of this are 
+servers secured using Apache HTTP Server [mod_auth_form][7].
+
+This is one of the more complex authenticators to configure because it requires you to know certain details of the form login mechanism of 
+the service you are authenticating against.  In the simplest case where a site is using Apache [mod_auth_form][7] in its default configuration you
+can do the following to configure an authenticator:
+
+    URI targetService = new URI("http://example.org/sparql");
+    FormLogin formLogin = new ApacheModAuthFormLogin("http://example.org/login", "user", "password".toCharArray());
+    FormsAuthenticator authenticator = new FormsAuthenticator(targetService, formLogin);
+
+However if the service is using a more complicated forms login setup you will need to know what the names of the form fields used to submit
+the username and password.  For example say we were authenticating to a service where the form fields were called **id** and **pwd** we'd
+need to configure our authenticator as follows:
+
+    URI targetService = new URI("http://example.org/sparql");
+    FormLogin formLogin = new ApacheModAuthFormLogin("http://example.org/login", "id", "pwd", "user", "password".toCharArray());
+    FormsAuthenticator authenticator = new FormsAuthenticator(targetService, formLogin);
+
+Note that you can also create a forms authenticator that uses different login forms for different services by creating a `Map<URI, FormLogin>`
+that maps each service to an associated form login and passing that to the `FormsAuthenticator` constructor
 
 #### PreemptiveBasicAuthenticator
 
@@ -72,43 +113,28 @@ challenge response sequences.
 
 #### DelegatingAuthenticator
 
-The [delegating authenticator][12] allows for mapping different authenticators to different services, this is useful when you need to mix and match the types of authentication needed.
-
-## Applying Authentication
-
-APIs that support authentication typically provide two methods for providing authenticators, a `setAuthentication(String username, char[] password)` method
-which merely configures a `SimpleAuthenticator`.  There will also be a `setAuthenticator(HttpAuthenticator authenticator)` method
-that allows you to configure an arbitrary authenticator.
-
-Authenticators applied this way will only be used for requests by that specific API.  APIs that currently support this are as follows:
-
-  - [QueryEngineHTTP][9] - This is the `QueryExecution` implementation returned by `QueryExecutionFactory.sparqlService()` calls
-  - [UpdateProcessRemoteBase][10] - This is the base class of `UpdateProcessor` implementations returned by `UpdateExecutionFactory.createRemote()` and `UpdateExecutionFactory.createRemoteForm()` calls
-  - [DatasetGraphAccessorHTTP][11] - This is the `DatasetGraphAccessor` implementation underlying remote dataset accessors.
-
-From 2.11.0 onwards the relevant factory methods include overloads that allow providing a `HttpAuthenticator` at creation time which
-avoids the needs to cast and manually set the authenticator afterwards.
+The [delegating authenticator][12] allows for mapping different authenticators to different services, this is useful when you need to mix and 
+match the types of authentication needed.
 
 ### Debugging Authentication
 
 ARQ uses [Apache Http Client][14] for all its HTTP operations and this provides detailed logging information that can be used for debugging.  To
 see this information you need to configure your logging framework to set the `org.apache.http` package to either `DEBUG` or `TRACE` level.
 
-The `DEBUG` level will give you general diagnostic information about requests and responses while the `TRACE` level will give you detailed HTTP
-traces i.e. allow you to see the exact HTTP requests and responses which can be extremely useful for debugging authentication problems.
+The `DEBUG` level will give you general diagnostic information about requests and responses while the `TRACE` level will give you detailed 
+HTTP traces i.e. allow you to see the exact HTTP requests and responses which can be extremely useful for debugging authentication problems.
 
 ### The Default Authenticator
 
-Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default authenticator
-that is used when no authenticator is explicitly specified.  This may be configured via the `setDefaultAuthenticator(HttpAuthenticator authenticator)`
-method of the [HttpOp][13] class.
+Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default 
+authenticator that is used when no authenticator is explicitly specified.  This may be configured via the 
+`setDefaultAuthenticator(HttpAuthenticator authenticator)` method of the [HttpOp][13] class.
 
 By default there is already a default authenticator configured which is the `ServiceAuthenticator` since this preserves behavioural 
 backwards compatibility with prior versions of ARQ.
 
-You can configure the default authenticator to whatever you need so even if you don't directly control the code
-that is making HTTP requests provided that it is using ARQs APIs to make these then authentication will
-still be applied.
+You can configure the default authenticator to whatever you need so even if you don't directly control the code that is making HTTP requests 
+provided that it is using ARQs APIs to make these then authentication will still be applied.
 
 Note that the default authenticator may be disabled by setting it to `null`.
 
