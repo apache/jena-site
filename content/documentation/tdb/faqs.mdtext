@@ -5,6 +5,7 @@ Title: TDB FAQs
 -   [Does TDB support Transactions?](#transactions)
 -   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
 -   [What is the "Impossibly Large Object" exception?](#impossibly-large-object)
+-   [Does Fuseki/TDB have a memory leak?](#fusek-tdb-memory-leak)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -40,11 +41,30 @@ applications portable to another SPARQL backend should you ever need to.
 
 The "Impossibly Large Object" exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
 only affect a small section of your dataset so may only occur intermittently depending on your queries.  A query that touches
-the entirety of the dataset e.g.
+the entirety of the dataset will always experience this exception e.g.
 
     SELECT * WHERE { { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } } }
 
-Will always experience this exception.  The corruption may have happened at any time in the past and once it has happened there
+The corruption may have happened at any time in the past and once it has happened there
 is no way to repair it.  Corrupted datasets will need to be rebuilt from the original source data, this is why we **strongly**
 recommend you use [transactions](tdb_transactions.html) since this protects your dataset against corruption.
 
+<a name="fuseki-tdb-memory-leak"></a>
+## Does Fuseki/TDB have a memory leak?
+
+A number of users have reported a suspected memory leak when using Fuseki/TDB when it used to serve a database that has continuous high
+load with a mixture of queries and updates.  Having investigate the problem this is not a memory leak per-se rather a limitation of how
+[transactions](tdb_transactions.html) are implemented for TDB.
+
+TDB uses write-ahead logging so new data is written both to an on-disk journal and kept in-memory.  This is necessary because TDB permits
+a single writer and multiple readers at any one time and readers are guaranteed to always see the state of the database at the time they
+started reading.  Therefore until there are no active readers it is not possible to update the database directly since readers are actively
+accessing it hence why a journal is used.  The in-memory journal holds some memory that cannot be freed up until such time as the database
+has no active readers/writers and the changes it holds can be safely flushed to disk.
+
+This means that in scenarios where there is continuous high load on the system TDB never reaches a state where it is able to flush the journal
+eventually causing out of memory errors in Fuseki.  You can see if you are experiencing this issue by examining your database directory, if it
+contains a `.jrnl` file that is non-empty then Fuseki/TDB is having to hold the journal in-memory.
+
+**However** because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting 
+Fuseki the journal will be flushed to disk.
