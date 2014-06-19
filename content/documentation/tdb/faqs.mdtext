@@ -4,14 +4,17 @@ Title: TDB FAQs
 
 -   [Does TDB support Transactions?](#transactions)
 -   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
--   [What is the "Impossibly Large Object" exception?](#impossibly-large-object)
+-   [What is the *Impossibly Large Object* exception?](#impossibly-large-object)
+-   [What is the difference between `tdbloader` and `tdbloader2`?](#tdbloader-vs-tdbloader2)
+-   [How large a Java heap size should I use for TDB?](#java-heap)
 -   [Does Fuseki/TDB have a memory leak?](#fuseki-tdb-memory-leak)
+-   [Should I use a SSD?](#ssd)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
 
 Yes, TDB provides
-[Serializable](http://en.wikipedia.org/wiki/Isolation_(database_systems)#SERIALIZABLE)
+[Serializable](http://en.wikipedia.org/wiki/Isolation_\(database_systems\)#SERIALIZABLE)
 transactions, the highest
 [isolation level](http://en.wikipedia.org/wiki/Isolation_(database_systems)).
 
@@ -37,9 +40,9 @@ Applications should be written in terms of these protocols using the relevant Je
 applications portable to another SPARQL backend should you ever need to.
 
 <a name="impossibly-large-object"></a>
-## What is the "Impossibly Large Object" exception?
+## What is the *Impossibly Large Object* exception?
 
-The "Impossibly Large Object" exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
+The *Impossibly Large Object* exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
 only affect a small section of your dataset so may only occur intermittently depending on your queries.  A query that touches
 the entirety of the dataset will always experience this exception e.g.
 
@@ -48,6 +51,35 @@ the entirety of the dataset will always experience this exception e.g.
 The corruption may have happened at any time in the past and once it has happened there
 is no way to repair it.  Corrupted datasets will need to be rebuilt from the original source data, this is why we **strongly**
 recommend you use [transactions](tdb_transactions.html) since this protects your dataset against corruption.
+
+<a name="tdbloader-vs-tdbloader2"></a>
+## What is the different between `tdbloader` and `tdbloader2`?
+
+`tdbloader` and `tdbloader2` differ in how they build databases.
+
+`tdbloader` is Java based and uses the same TDB APIs that you would use in your own Java code to perform the data load.  The advantage of this is that
+it supports incremental loading of data into a TDB database.  The downside is that the loader will be slower for initial database builds.
+
+`tdbloader2` is POSIX compliant script based which limits it to running on POSIX systems only.  The advantage this gives it is that it is capable of building 
+the database files and indices directly without going through the Java API which makes it much faster.  **However** this does mean that it can only be used
+for an initial database load since it does not know how to apply incremental updates.  Using `tdbloader2` on a pre-existing database will cause the existing
+database to be overwritten.
+
+Often a good strategy is to use `tdbloader2` for your initial database creation and then use `tdbloader` for smaller incremental updates in the future.
+
+<a name="java-heap"></a>
+## How large a Java heap should I use for TDB?
+
+TDB uses memory mapped files heavily for providing fast access to data and indices.  Memory mapped files live outside of the JVM heap and are managed by
+the OS therefore it is important to not allocate all available memory to the JVM heap.
+
+However JVM heap is needed for TDB related things like query & update processing, storing the in-memory journal etc and also for any other activities that your code carries
+out.  What you should see the JVM heap to will depend on the kinds of queries that you are running, very specific queries will not need a large heap whereas queries that touch
+large amounts of data or use operators that may require lots of data to be buffered in-memory e.g. `DISTINCT`, `GROUP BY`, `ORDER BY` may need a much larger heap depending
+on the overall size of your database.
+
+There is no hard and fast guidance we can give you on the exact number since it depends heavily on your data and your workload.  Please ask on our mailing lists 
+(see our [Ask](../help_and_support/) page) and provide as much detail as possible about your data and workload if you would like us to attempt to provide more specific guidance.
 
 <a name="fuseki-tdb-memory-leak"></a>
 ## Does Fuseki/TDB have a memory leak?
@@ -68,3 +100,16 @@ contains a `.jrnl` file that is non-empty then Fuseki/TDB is having to hold the 
 
 **However** because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting 
 Fuseki the journal will be flushed to disk.
+
+<a name="ssd"></a>
+## Should I use a SSD?
+
+Yes if you are able to
+
+Using a SSD boost performance in a number of ways.  Firstly bulk loads, inserts and deletions will be faster i.e. operations that modify the 
+database and have to be flushed to disk at some point due to faster IO.  Secondly TDB will start faster because the files can be mapped into
+memory faster.
+
+SSDs will make the most difference when performing bulk loads since the on-disk database format for TDB is entirely portable and may be
+safely copied between systems (provided there is no process accessing the database at the time).  Therefore even if you can't run your production
+system with a SSD you can always perform your bulk load on a SSD equipped system first and then move the database to your production system.
