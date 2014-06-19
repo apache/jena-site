@@ -5,9 +5,10 @@ TDB provides
 transaction support through the use of
 [write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).
 
-This feature is part of version TDB 0.9.0 and later.
+Use of transactions protects a TDB dataset
+against data corruption, unexpected process termination and system crashes and therefore use of transactions is **strongly** recommended.
 
-Databases created with version of TDB 0.8.X can be used with 0.9.X
+This feature is part of version TDB 0.9.0 and later.  Databases created with version of TDB 0.8.X can be used with 0.9.X
 to add transactional capability.
 
 The file format of 1.0.X and 0.9.X is compatible with TDB 0.8.X.
@@ -223,10 +224,11 @@ same storage but have independent transactions.
 ## Multi JVM
 
 Multiple applications, running in multiple JVMs, using the same
-file databases is not supported. There must be a single JVM
+file databases is not supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
+and must be rebuilt from the original source data. Therefore there **must** be a single JVM
 controlling the database directory and files.
 
-Use [Fuseki](../serving_data/) to provide a
+Use our [Fuseki](../serving_data/) component to provide a
 database server for multiple applications. Fuseki supports 
 [SPARQL Query](http://www.w3.org/TR/sparql11-query/),
 [SPARQL Update](http://www.w3.org/TR/sparql11-update/) and the
