@@ -1,0 +1,50 @@
+Title: TDB FAQs
+
+## FAQs
+
+-   [Does TDB support Transactions?](#transactions)
+-   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
+-   [What is the "Impossibly Large Object" exception?](#impossibly-large-object)
+
+<a name="transactions"></a>
+## Does TDB support transactions?
+
+Yes, TDB provides
+[Serializable](http://en.wikipedia.org/wiki/Isolation_(database_systems)#SERIALIZABLE)
+transactions, the highest
+[isolation level](http://en.wikipedia.org/wiki/Isolation_(database_systems)).
+
+Using transactions is **strongly** recommended as they help prevent data corruption 
+from unexpected process termination and system crashes as well as data corruption that
+can otherwise occur from non-transactional use of TDB.
+
+Please see the [transactions](tdb_transactions.html) documentation for how to use TDB
+transactionally.
+
+<a name="multi-jvm"></a>
+## Can I share a TDB dataset between multiple applications?
+
+Multiple applications, running in multiple JVMs, using the same
+file databases is **not** supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
+and must be rebuilt from the original source data. Therefore there **must** be a single JVM
+controlling the database directory and files.
+
+If you wish to share a TDB dataset between applications use our [Fuseki](../serving_data/) component which provides a 
+database server. Fuseki supports [SPARQL Query](http://www.w3.org/TR/sparql11-query/),
+[SPARQL Update](http://www.w3.org/TR/sparql11-update/) and the [SPARQL Graph Store protocol](http://www.w3.org/TR/sparql11-http-rdf-update/).
+Applications should be written in terms of these protocols using the relevant Jena APIs, this has the added benefit of making your
+applications portable to another SPARQL backend should you ever need to.
+
+<a name="impossibly-large-object"></a>
+## What is the "Impossibly Large Object" exception?
+
+The "Impossibly Large Object" exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
+only affect a small section of your dataset so may only occur intermittently depending on your queries.  A query that touches
+the entirety of the dataset e.g.
+
+    SELECT * WHERE { { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } } }
+
+Will always experience this exception.  The corruption may have happened at any time in the past and once it has happened there
+is no way to repair it.  Corrupted datasets will need to be rebuilt from the original source data, this is why we **strongly**
+recommend you use [transactions](tdb_transactions.html) since this protects your dataset against corruption.
+
