@@ -7,7 +7,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
 
 - [API](#API)
 - [`RDFFormat`](#rdfformat)
-- [`RDFFormat`s and Jena syntax names](#rdfformats-and-jena-syntax-names)
+- [`RDFFormat`s and Jena syntax names](#jena_model_write_formats)
 - [Formats](#formats)
   - [Normal Printing](#normal-printing)
   - [Pretty Printed Languages](#pretty-printed-languages)
@@ -26,15 +26,16 @@ for details of the Jena RDF/XML writer.
 There are two ways to write RDF data using Apache Jena RIOT, 
 either via the `RDFDataMgr` 
 
+    RDFDataMgr.write(OutputStream, Model, Lang) ;
+    RDFDataMgr.write(OutputStream, Dataset, Lang) ;
     RDFDataMgr.write(OutputStream, Model, RDFFormat) ;
     RDFDataMgr.write(OutputStream, Dataset, RDFFormat) ;
 
-or using the `model` API, where there is a limited set of format names
-(only for the formats which have Jena writer name):
+or the legacy way using the `model` API, where there is a limited set of `"format"` names
 
     model.write(output, "format") ;
 
-The *`format`* names are [described below](#jena_formats); they are a superset of the
+The *`format`* names are [described below](#jena_model_write_formats); they include the
 names Jena has supported before RIOT.
 
 Many variations of these methods exist.  See the full javadoc for details.
@@ -66,7 +67,7 @@ Note:
 * RDF/JSON is not JSON-LD. See the [description of RDF/JSON](rdf-json.html).
 * N3 is treated as Turtle for output.
 
-## `RDFFormat`s and Jena syntax names {#jena_formats}
+## `RDFFormat`s and Jena syntax names {#jena_model_write_formats}
 
 The string name traditionally used in `model.write` is mapped to RIOT `RDFFormat`
 as follows:
