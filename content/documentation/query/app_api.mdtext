@@ -18,11 +18,10 @@ package.
     Query are normally created by calling one of the methods of
     `QueryFactory` methods which provide access to the various parsers.
 -   `QueryExecution` - represents one execution of a query.
--   `QueryExecutionFactory` - a place to get `QueryExecution`
-    instances
--   `DatasetFactory` - a place to make datasets
+-   `QueryExecutionFactory` - a place to get `QueryExecution` instances.
+-   `DatasetFactory` - a place to make datasets.
 -   For SELECT queries:
-    -   `QuerySolution` - A single solution to the query
+    -   `QuerySolution` - A single solution to the query.
     -   `ResultSet` - All the QuerySolutions. An iterator.
     -   `ResultSetFormatter` - turn a ResultSet into various forms;
         into text, into an RDF graph (Model, in Jena terminology) or as
@@ -35,15 +34,15 @@ The basic steps in making a SELECT query are outlined in the
 example below. A query is created from a string using the
 `QueryFactory`. The query and model or RDF dataset to be queried
 are then passed to `QueryExecutionFactory` to produce an instance
-of a query execution. Result are handled in a loop and finally the
+of a query execution. `QueryExecution` objects are `java.lang.AutoCloseable`
+and can be used in try-resource. Result are handled in a loop and finally the
 query execution is closed.
 
       import com.hp.hpl.jena.query.* ;
       Model model = ... ;
       String queryString = " .... " ;
       Query query = QueryFactory.create(queryString) ;
-      QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
-      try {
+      try (QueryExecution qexec = QueryExecutionFactory.create(query, model) )
         ResultSet results = qexec.execSelect() ;
         for ( ; results.hasNext() ; )
         {
@@ -52,13 +51,13 @@ query execution is closed.
           Resource r = soln.getResource("VarR") ; // Get a result variable - must be a resource
           Literal l = soln.getLiteral("VarL") ;   // Get a result variable - must be a literal
         }
-      } finally { qexec.close() ; }
+      }
 
 It is important to cleanly close the query execution when finished.
 System resources connected to persistent storage may need to be
 released.
 
-A ResultSetARQ supports the Java iterator interface so the
+A `ResultSet` supports the Java iterator interface so the
 following is also a way to process the results if preferred:
 
         Iterator<QuerySolution> results = qexec.execSelect() ;
@@ -74,16 +73,36 @@ reduced to one step in some common cases:
       import com.hp.hpl.jena.query.* ;
       Model model = ... ;
       String queryString = " .... " ;
-      QueryExecution qexec = QueryExecutionFactory.create(queryString, model) ;
-      try {
-       ResultSet results = qexec.execSelect() ;
+      try (QueryExecution qexec = QueryExecutionFactory.create(queryString, model)) {
+        ResultSet results = qexec.execSelect() ;
         . . .
-      } finally { qexec.close() ; }
+      }
+
+### Passing a result set out of the processing loop.
+
+A `ResultSet` is an iterator and can be traversed only once.  What is more, much of query execution
+and result set processing is handled internally in a streaming fashion. The `ResultSet` returned
+by `execSelect` is not valid after the `QueryExecution` is closed, 
+whether explicitly or by
+try-resources as the `QueryExecution` implements `AutoCloseable`.
+
+A result set may be materialized - this is then usable outside 
+
+      try (QueryExecution qexec = QueryExecutionFactory.create(queryString, model)) {
+          ResultSet results = qexec.execSelect() ;
+          results = ResultSetFactory.copyResults(results) ;
+          return results ;    // Passes the result set out of the try-resources
+      }
+The result set from `ResultSetFactory.copyResults` is a `ResultSetRewindable` which has a 
+`reset()` operation that positions the iterator at the start of the result again.
+
+The models returned by `execConstruct` and `execDescribe` are valid
+after the `QueryExecution` is closed.
 
 ### Example: formatting a result set
 
 Instead of a loop to deal with each row in the result set, the
-application can call an operation of the ResultSetFormatter. This
+application can call an operation of the `ResultSetFormatter`. This
 is what the command line applications do.
 
 Example: processing results to produce a simple text presentation:
