@@ -81,15 +81,14 @@ Outline:
       Query query = QueryFactory.create(queryString) ;
       model.enterCriticalSection(Lock.READ) ;
       try {
-        QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
-        ResultSet results = qexec.execSelect() ;
-       try {
-          for ( ; results.hasNext() ; )
-          {
-              QuerySolution soln = results.nextSolution() ;
-              RDFNode x = soln.get("..var name..") ;
-          }
-        } finally { qexec.close() ; }
+        try(QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
+            ResultSet results = qexec.execSelect() ;
+            for ( ; results.hasNext() ; )
+            {
+                QuerySolution soln = results.nextSolution() ;
+                RDFNode x = soln.get("..var name..") ;
+            }
+        }
       } finally { model.leaveCriticalSection() ; }
 
 Updates to the model should not be performed inside the read-only

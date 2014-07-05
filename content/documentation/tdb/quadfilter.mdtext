@@ -60,12 +60,13 @@ a immutable tuples of values of the same type.
       }
 
 To install a filter, put it in the context of a query execution
-under the symbol `SystemTDB.symTupleFilter`
+under the symbol `SystemTDB.symTupleFilter` then execute the query as normal.
 
         Dataset ds = ... ;
         Filter<Tuple<NodeId>> filter = createFilter(ds) ;
         Query query = ... ;
-        QueryExecution qExec = QueryExecutionFactory.create(query, ds) ;
-        qExec.getContext().set(SystemTDB.symTupleFilter, filter) ;
-
-then execute the query as normal.
+        try (QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+            qExec.getContext().set(SystemTDB.symTupleFilter, filter) ;
+            ResultSet rs = qExec.execSelect() ;
+            ...
+        }

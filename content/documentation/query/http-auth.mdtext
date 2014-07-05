@@ -35,7 +35,11 @@ From 2.11.0 onwards the relevant factory methods include overloads that allow pr
 avoids the needs to cast and manually set the authenticator afterwards e.g.
 
     HttpAuthenticator authenticator = new SimpleAuthenticator("user", "password".toCharArray());
-    QueryExecution qe = QueryExecutionFactory.sparqlService("http://example.org/sparql", "SELECT * WHERE { ?s a ?type }", authenticator);
+    try(QueryExecution qe = QueryExecutionFactory.sparqlService("http://example.org/sparql",
+                                                                "SELECT * WHERE { ?s a ?type }", 
+                                                                authenticator)) {
+        ...
+    }
 
 ### Authenticators
 

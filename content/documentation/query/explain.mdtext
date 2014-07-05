@@ -76,8 +76,11 @@ globally:
 and it may also be set on an individual query execution using it's local
 context.
 
-     QueryExecutiuon qExec = QueryExecutionFactory.create(...) ;
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
+     try(QueryExecutiuon qExec = QueryExecutionFactory.create(...)) {
+         qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
+         ResultSet rs = qExec.execSelect() ;
+         ...
+     }
 
 On the command line:
 

@@ -37,8 +37,10 @@ Setting globally:
 
 Per query execution:
 
-     QueryExecution qExec = QueryExecutionFactory.create(...) ;
-     qExec.getContext().set(symbol, value) ;
+     try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
+         qExec.getContext().set(symbol, value) ;
+         ...
+     }
 
 Setting for a query execution happens before any query compilation
 or setup happens. Creation of a query execution object does not

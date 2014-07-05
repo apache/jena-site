@@ -42,7 +42,7 @@ query execution is closed.
       Model model = ... ;
       String queryString = " .... " ;
       Query query = QueryFactory.create(queryString) ;
-      try (QueryExecution qexec = QueryExecutionFactory.create(query, model) )
+      try (QueryExecution qexec = QueryExecutionFactory.create(query, model))
         ResultSet results = qexec.execSelect() ;
         for ( ; results.hasNext() ; )
         {
@@ -194,9 +194,9 @@ more named graphs. Datasets can be constructed using the
     Query query = QueryFactory.create(queryString) ;
 
     Dataset dataset = DatasetFactory.create(dftGraphURI, namedGraphURIs) ;
-    QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ;
-    try { ... }
-    finally { qExec.close() ; }
+    try(QueryExecution qExec = QueryExecutionFactory.create(query, dataset)) {
+        ...
+    }
 
 Already existing models can also be used:
 
@@ -204,6 +204,8 @@ Already existing models can also be used:
     dataset.setDefaultModel(model) ;
     dataset.addNamedModel("http://example/named-1", modelX) ;
     dataset.addNamedModel("http://example/named-2", modelY) ;
-    QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ;
+     try(QueryExecution qExec = QueryExecutionFactory.create(query, dataset)) {
+        ...
+    }
 
 [ARQ documentation index](index.html)

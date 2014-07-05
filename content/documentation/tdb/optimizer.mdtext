@@ -108,8 +108,10 @@ set globally:
 and it may also be set on an individual query execution using it's
 local context.
 
-     QueryExecutiuon qExec = QueryExecutionFactory.create(...) ;
-     qExec.getContext().set(ARQ.symLogExec,true) ;
+     try(QueryExecutiuon qExec = QueryExecutionFactory.create(...)) {
+        qExec.getContext().set(ARQ.symLogExec,true) ;
+        ResultSet rs = qExec.execSelect() ;
+     }
 
 Use `TDB.symLogExec` for versions prior to 0.8.8.
 
