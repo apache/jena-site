@@ -20,8 +20,7 @@ package.
 -   `QueryExecution` - represents one execution of a query.
 -   `QueryExecutionFactory` - a place to get `QueryExecution`
     instances
--   `DatasetFactory` - a place to make datasets, including making a
-    `DataSource` (an updatable `Dataset`)
+-   `DatasetFactory` - a place to make datasets
 -   For SELECT queries:
     -   `QuerySolution` - A single solution to the query
     -   `ResultSet` - All the QuerySolutions. An iterator.
@@ -180,13 +179,12 @@ more named graphs. Datasets can be constructed using the
     try { ... }
     finally { qExec.close() ; }
 
-Already existing models can also be used: A `DataSource` is an
-updatable dataset:
+Already existing models can also be used:
 
-    DataSource dataSource = DatsetFactory.create() ;
-    dataSource.setDefaultModel(model) ;
-    dataSource.addNamedModel("http://example/named-1", modelX) ;
-    dataSource.addNamedModel("http://example/named-2", modelY) ;
-    QueryExecution qExec = QueryExecutionFactory.create(query, dataSource) ;
+    Dataset dataset = DatasetFactory.create() ;
+    dataset.setDefaultModel(model) ;
+    dataset.addNamedModel("http://example/named-1", modelX) ;
+    dataset.addNamedModel("http://example/named-2", modelY) ;
+    QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ;
 
 [ARQ documentation index](index.html)
