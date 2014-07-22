@@ -127,11 +127,13 @@ This exception is a result of TDBs automatic multi-JVM usage prevention, as note
 data corruption may occur.  From 1.1.0 onwards TDB automatically enforces this restriction wherever possible and you will get this exception if you
 attempt to access a database which is being accessed from another JVM.
 
-To investigate this error look use the process management tools for your OS to see what the process ID referenced in the error is.  If it is another JVM
-then the error is entirely valid and you should follow the advice about sharing a TDB dataset between applications.  In rare circumstances you may find 
-that the process is entirely unrelated (this can happen due to stale lock files since they are not always automatically cleared up) in which case you can
-try and manually remove the `tdb.lock` file from the database directory.  Please only do this if you are certain that the other process is not accessing
-the TDB database.
+To investigate this error use the process management tools for your OS to see what the process ID referenced in the error is.  If it is another JVM
+then the error is entirely valid and you should follow the advice about sharing a TDB dataset between applications.  You may need to coordinate with
+the owner of the other process (if it is not yourself) in order to do this.
+
+In rare circumstances you may find that the process is entirely unrelated (this can happen due to stale lock files since they are not always automatically 
+cleared up) in which case you can try and manually remove the `tdb.lock` file from the database directory.  Please only do this if you are **certain** that 
+the other process is not accessing the TDB database otherwise data corruption may occur.
 
 <a name="no-lock-warning"></a>
 ## I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?
