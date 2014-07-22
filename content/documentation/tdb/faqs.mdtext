@@ -9,6 +9,8 @@ Title: TDB FAQs
 -   [How large a Java heap size should I use for TDB?](#java-heap)
 -   [Does Fuseki/TDB have a memory leak?](#fuseki-tdb-memory-leak)
 -   [Should I use a SSD?](#ssd)
+-   [Why do I get the exception *Can't open database at location /path/to/db as it is already locked by the process with PID 1234* when trying to open a TDB database?](#lock-exception)
+-   [I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?](#no-lock-warning)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -32,6 +34,9 @@ Multiple applications, running in multiple JVMs, using the same
 file databases is **not** supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
 and must be rebuilt from the original source data. Therefore there **must** be a single JVM
 controlling the database directory and files.
+
+From 1.1.0 onwards TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
+protect your data from corruption.
 
 If you wish to share a TDB dataset between applications use our [Fuseki](../serving_data/) component which provides a 
 database server. Fuseki supports [SPARQL Query](http://www.w3.org/TR/sparql11-query/),
@@ -113,3 +118,26 @@ memory faster.
 SSDs will make the most difference when performing bulk loads since the on-disk database format for TDB is entirely portable and may be
 safely copied between systems (provided there is no process accessing the database at the time).  Therefore even if you can't run your production
 system with a SSD you can always perform your bulk load on a SSD equipped system first and then move the database to your production system.
+
+<a name="lock-exception"></a>
+## Why do I get the exception *Can't open database at location /path/to/db as it is already locked by the process with PID 1234* when trying to open a TDB database?
+
+This exception is a result of TDBs automatic multi-JVM usage prevention, as noted in the earlier 
+[Can I share a TDB dataset between multiple applications?](#multi-jvm) question a TDB database can only be safely used by a single JVM otherwise
+data corruption may occur.  From 1.1.0 onwards TDB automatically enforces this restriction wherever possible and you will get this exception if you
+attempt to access a database which is being accessed from another JVM.
+
+To investigate this error look use the process management tools for your OS to see what the process ID referenced in the error is.  If it is another JVM
+then the error is entirely valid and you should follow the advice about sharing a TDB dataset between applications.  In rare circumstances you may find 
+that the process is entirely unrelated (this can happen due to stale lock files since they are not always automatically cleared up) in which case you can
+try and manually remove the `tdb.lock` file from the database directory.  Please only do this if you are certain that the other process is not accessing
+the TDB database.
+
+<a name="no-lock-warning"></a>
+## I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?
+
+This warning can occur in rare circumstances when TDB detects that you are releasing a database location via `StoreConnection.release()` and that the
+database was eligible to be locked but wasn't.  This can usually only occur if you circumvented the normal TDB database opening procedures somehow.
+
+As the warning states data corruption may occur if another JVM accesses the location while your process is accessing it.  Ideally you should follow the
+advice on [multi-JVM usage](#multi-jvm) if this might happen, otherwise the warning can likely be safely ignored.
