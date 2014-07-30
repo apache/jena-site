@@ -104,7 +104,7 @@ Title: Reasoners and rule engines: Jena inference support
   </li>
 </ol>
 
-###<a name="reasonerAPI"></a>Generic reasoner API
+### Generic reasoner API {#reasonerAPI}
 
 ####Finding a reasoner
 <p>For each type of reasoner there is a factory class (which conforms to the interface
@@ -178,7 +178,7 @@ Title: Reasoners and rule engines: Jena inference support
   metadata.</p>
 <p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="generalExamples"></a>Some small examples
+### Some small examples {#generalExamples}
 <p>These initial examples are not designed to illustrate the power of the reasoners
   but to illustrate the code required to set one up.</p>
 <p>Let us first create a Jena model containing the statements that some property
@@ -186,7 +186,8 @@ Title: Reasoners and rule engines: Jena inference support
   have a resource &quot;a&quot; with value &quot;foo&quot; for &quot;p&quot;.
   This could be done by writing an RDF/XML or N3 file and reading that in but
   we have chosen to use the RDF API:</p>
-<pre>    String NS = "urn:x-hp-jena:eg/";
+
+    String NS = "urn:x-hp-jena:eg/";
 
     // Build a trivial example data set
     Model rdfsExample = ModelFactory.createDefaultModel();
@@ -194,16 +195,18 @@ Title: Reasoners and rule engines: Jena inference support
     Property q = rdfsExample.createProperty(NS, "q");
     rdfsExample.add(p, RDFS.subPropertyOf, q);
     rdfsExample.createResource(NS+"a").addProperty(p, "foo");
-</pre>
+
 <p>Now we can create an inference model which performs RDFS inference over this
   data by using:</p>
-<pre>    InfModel inf = ModelFactory.createRDFSModel(rdfsExample);  // \[1\]
-</pre>
+
+    InfModel inf = ModelFactory.createRDFSModel(rdfsExample);  // \[1\]
+
 <p>We can then check that resulting model shows that &quot;a&quot; also has property
   &quot;q&quot; of value &quot;foo&quot; by virtue of the subPropertyOf entailment:</p>
-<pre>    Resource a = inf.getResource(NS+"a");
+
+    Resource a = inf.getResource(NS+"a");
     System.out.println("Statement: " + a.getProperty(q));
-</pre>
+
 <p>Which prints the output:</p>
 <pre>   <i> Statement: [urn:x-hp-jena:eg/a, urn:x-hp-jena:eg/q, Literal&lt;foo&gt;]</i>
 </pre>
@@ -213,9 +216,10 @@ Title: Reasoners and rule engines: Jena inference support
 <p>If we wanted to use a different reasoner which is not available as a convenience
   method or wanted to configure one we would change line \[1\]. For example, to
   create the same set up manually we could replace \[1\] by:</p>
-<pre>    Reasoner reasoner = ReasonerRegistry.getRDFSReasoner();
 
-    InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);</pre>
+    Reasoner reasoner = ReasonerRegistry.getRDFSReasoner();
+    InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
+
 <p>or even more manually by<br>
 </p>
 <pre>    Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(null);
@@ -1343,11 +1347,13 @@ URL for a rule file use one of the keywords
 <p>
 So an example complete rule file which includes the RDFS rules and defines
 a single extra rule is:
+
     # Example rule file
     @prefix pre: &lt;http://jena.hpl.hp.com/prefix#&gt;.
     @include &lt;RDFS&gt;.
 
     [rule1: (?f pre:father ?a) (?u pre:brother ?f) -&gt; (?u pre:uncle ?a)]
+</p>
 
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
