@@ -109,8 +109,8 @@ Title: Reasoners and rule engines: Jena inference support
 ####Finding a reasoner
 <p>For each type of reasoner there is a factory class (which conforms to the interface
   <code><a href="/documentation/javadoc/jena/com/hp/hpl/jena/reasoner/ReasonerFactory.html">ReasonerFactory</a></code>)
-  an instance of which can be used to create instances of the <code>associated
-  <a href="/documentation/javadoc/jena/com/hp/hpl/jena/reasoner/Reasoner.html">Reasoner</a></code>.
+  an instance of which can be used to create instances of the associated
+  <code><a href="/documentation/javadoc/jena/com/hp/hpl/jena/reasoner/Reasoner.html">Reasoner</a></code>.
   The factory instances can be located by going directly to a known factory class
   and using the static <code>theInstance</code>() method or by retrieval from
   a global <code><a href="/documentation/javadoc/jena/com/hp/hpl/jena/reasoner/ReasonerRegistry.html">ReasonerRegistry</a></code>
@@ -199,7 +199,7 @@ Title: Reasoners and rule engines: Jena inference support
 <p>Now we can create an inference model which performs RDFS inference over this
   data by using:</p>
 
-    InfModel inf = ModelFactory.createRDFSModel(rdfsExample);  // \[1\]
+    InfModel inf = ModelFactory.createRDFSModel(rdfsExample);  // [1]
 
 <p>We can then check that resulting model shows that &quot;a&quot; also has property
   &quot;q&quot; of value &quot;foo&quot; by virtue of the subPropertyOf entailment:</p>
@@ -214,17 +214,17 @@ Title: Reasoners and rule engines: Jena inference support
 <p>Alternatively we could have created an empty inference model and then added
   in the statements directly to that model.</p>
 <p>If we wanted to use a different reasoner which is not available as a convenience
-  method or wanted to configure one we would change line \[1\]. For example, to
+  method or wanted to configure one we would change line [1]. For example, to
   create the same set up manually we could replace \[1\] by:</p>
 
     Reasoner reasoner = ReasonerRegistry.getRDFSReasoner();
     InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
 
-<p>or even more manually by<br>
-</p>
-<pre>    Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(null);
+<p>or even more manually by</p>
+
+    Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(null);
     InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</pre>
+
 <p>The purpose of creating a new reasoner instance like this variant would be
   to enable configuration parameters to be set. For example, if we were to listStatements
   on inf Model we would see that it also &quot;includes&quot; all the RDFS axioms,
@@ -232,29 +232,31 @@ Title: Reasoners and rule engines: Jena inference support
   only see the &quot;interesting&quot; entailments. This can be done by setting
   the processing level parameter by creating a description of a new reasoner configuration
   and passing that to the factory method:</p>
-<pre>    Resource config = ModelFactory.createDefaultModel()
-                      .createResource()
-                      .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, "simple");
+
+    Resource config = ModelFactory.createDefaultModel()
+                                  .createResource()
+                                  .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, "simple");
     Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(config);
     InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</pre>
+
 <p>This is a rather long winded way of setting a single parameter, though it can
   be useful in the cases where you want to store this sort of configuration information
   in a separate (RDF) configuration file. For hardwired cases the following alternative
   is often simpler:</p>
-<pre>    Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(null);
+
+    Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(null);
     reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
                           ReasonerVocabulary.RDFS_SIMPLE);
     InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</pre>
 
 <p>Finally, supposing you have a more complex set of schema information, defined
   in a Model called <i>schema,</i> and you want to apply this schema to several
   sets of instance data without redoing too many of the same intermediate deductions.
   This can be done by using the SPI level methods: </p>
-<pre>    Reasoner boundReasoner = reasoner.bindSchema(schema);
+
+    Reasoner boundReasoner = reasoner.bindSchema(schema);
     InfModel inf = ModelFactory.createInfModel(boundReasoner, data);
-</pre>
+
 <p>This creates a new reasoner, independent from the original, which contains
   the schema data. Any queries to an InfModel created using the boundReasoner
   will see the schema statements, the data statements and any statements entailed
@@ -262,14 +264,14 @@ Title: Reasoners and rule engines: Jena inference support
   in updates to the underlying data model - the schema model will not be affected.</p>
 <p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="operationsOnInferenceModels"></a>Operations on inference models
+###Operations on inference models {#operationsOnInferenceModels}
 <p>For many applications one simply creates a model incorporating some inference
   step, using the <code>ModelFactory</code> methods, and then just works within
   the standard Jena Model API to access the entailed statements. However, sometimes
   it is necessary to gain more control over the processing or to access additional
   reasoner features not available as <i>virtual</i> triples.</p>
 
-####<a name="validation"></a>Validation
+#### Validation {#validation}
 <p>The most common reasoner operation which can't be exposed through additional
   triples in the inference model is that of validation. Typically the ontology
   languages used with the semantic web allow constraints to be expressed, the
@@ -290,7 +292,8 @@ Title: Reasoners and rule engines: Jena inference support
   which can be used for programmatic handling of the violations.</p>
 <p>For example, to check a data set and list any problems one could do something
   like:</p>
-<pre>    Model data = FileManager.get().loadModel(fname);
+
+    Model data = FileManager.get().loadModel(fname);
     InfModel infmodel = ModelFactory.createRDFSModel(data);
     ValidityReport validity = infmodel.validate();
     if (validity.isValid()) {
@@ -301,7 +304,7 @@ Title: Reasoners and rule engines: Jena inference support
             System.out.println(" - " + i.next());
         }
     }
-</pre>
+
 <p>The file <code>testing/reasoners/rdfs/dttest2.nt</code> declares a property
   <code>bar</code> with range <code>xsd:integer</code> and attaches a <code>bar</code>
   value to some resource with the value <code>&quot;25.5&quot;^^xsd:decimal</code>.
@@ -394,18 +397,23 @@ Title: Reasoners and rule engines: Jena inference support
   any queries are made to the inference model.</p>
 <p>As an illustration suppose that we have a raw data model which asserts three
   triples:</p>
-<pre>eg:A eg:p eg:B .
-eg:B eg:p eg:C .
-eg:C eg:p eg:D .</pre>
+
+    eg:A eg:p eg:B .
+    eg:B eg:p eg:C .
+    eg:C eg:p eg:D .
+
 <p>and suppose that we have a trivial rule set which computes the transitive closure
   over relation eg:p</p>
-<pre>    String rules = "[rule1: (?a eg:p ?b) (?b eg:p ?c) -&gt; (?a eg:p ?c)]";
+
+    String rules = "[rule1: (?a eg:p ?b) (?b eg:p ?c) -&gt; (?a eg:p ?c)]";
     Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
     reasoner.setDerivationLogging(true);
-    InfModel inf = ModelFactory.createInfModel(reasoner, rawData);</pre>
+    InfModel inf = ModelFactory.createInfModel(reasoner, rawData);
+
 <p>Then we can query whether eg:A is related through eg:p to eg:D and list the
   derivation route using the following code fragment: </p>
-<pre>    PrintWriter out = new PrintWriter(System.out);
+
+    PrintWriter out = new PrintWriter(System.out);
     for (StmtIterator i = inf.listStatements(A, p, D); i.hasNext(); ) {
         Statement s = i.nextStatement();
         System.out.println("Statement is " + s);
@@ -415,14 +423,15 @@ eg:C eg:p eg:D .</pre>
         }
     }
     out.flush();
-</pre>
+
 <p>Which generates the output:</p>
-<pre><i>Statement is [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/D]
-Rule rule1 concluded (eg:A eg:p eg:D) &lt;-
-    Fact (eg:A eg:p eg:B)
-    Rule rule1 concluded (eg:B eg:p eg:D) &lt;-
-        Fact (eg:B eg:p eg:C)
-        Fact (eg:C eg:p eg:D)</i></pre>
+
+    <i>Statement is [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/D]
+    Rule rule1 concluded (eg:A eg:p eg:D) &lt;-
+        Fact (eg:A eg:p eg:B)
+        Rule rule1 concluded (eg:B eg:p eg:D) &lt;-
+            Fact (eg:B eg:p eg:C)
+            Fact (eg:C eg:p eg:D)</i>
 
 ####<a name="rawAccess"></a>Accessing raw data and deductions
 <p>From an <code>InfModel</code> it is easy to retrieve the original, unchanged,
@@ -470,8 +479,9 @@ Rule rule1 concluded (eg:A eg:p eg:D) &lt;-
   effective. </p>
 <p>Tracing is not supported by a convenience API call but, for those reasoners
   that support it, it can be enabled using:</p>
-<pre>   reasoner.setParameter(ReasonerVocabulary.PROPtraceOn, Boolean.TRUE);
-</pre>
+
+   reasoner.setParameter(ReasonerVocabulary.PROPtraceOn, Boolean.TRUE);
+
 <p>Dynamic tracing control is sometimes possible on the InfModel itself by retrieving
   its underlying InfGraph and calling <code>setTraceOn()</code> call. If you need
   to make use of this see the full javadoc for the relevant InfGraph implementation.</p>
@@ -498,10 +508,14 @@ Rule rule1 concluded (eg:A eg:p eg:D) &lt;-
   then the RDFS reasoner implements all RDFS entailments except for the bNode
   closure rules. These closure rules imply, for example, that for all triples
   of the form:</p>
-<pre>eg:a eg:p nnn^^datatype .</pre>
+
+    eg:a eg:p nnn^^datatype .
+
 <p>we should introduce the corresponding blank nodes:</p>
-<pre>eg:a eg:p _:anon1 .
-_:anon1 rdf:type datatype .</pre>
+
+    eg:a eg:p _:anon1 .
+    _:anon1 rdf:type datatype .
+
 <p>Whilst such rules are both correct and necessary to reduce RDF datatype entailment
   down to simple entailment they are not useful in implementation terms. In Jena
   simple entailment can be implemented by translating a graph containing bNodes
@@ -540,16 +554,17 @@ _:anon1 rdf:type datatype .</pre>
     the standard. </dd>
 </dl>
 <p>The level can be set using the <code>setParameter</code> call, e.g.</p>
-<pre>    reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
+
+    reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
                           ReasonerVocabulary.RDFS_SIMPLE);
-</pre>
+
 <p>or by constructing an RDF configuration description and passing that to the
   RDFSRuleReasonerFactory e.g.</p>
-<pre>    Resource config = ModelFactory.createDefaultModel()
+
+    Resource config = ModelFactory.createDefaultModel()
                       .createResource()
                       .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, "simple");
     Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(config);
-</pre>
 
 ####Summary of parameters
 <table width="90%" border="1" cellspacing="0" cellpadding="0">
@@ -606,47 +621,51 @@ _:anon1 rdf:type datatype .</pre>
 <p>As a complete worked example let us create a simple RDFS schema, some instance
   data and use an instance of the RDFS reasoner to query the two.</p>
 <p>We shall use a trivial schema:</p>
-<pre>
- &nbsp;&lt;rdf:Description rdf:about="&amp;eg;mum"&gt;
- &nbsp;&nbsp;&nbsp;&lt;rdfs:subPropertyOf rdf:resource="&amp;eg;parent"/&gt;
- &nbsp;&lt;/rdf:Description&gt;
 
- &nbsp;&lt;rdf:Description rdf:about="&amp;eg;parent"&gt;
- &nbsp;&nbsp;&nbsp;&lt;rdfs:range &nbsp;rdf:resource="&amp;eg;Person"/&gt;
- &nbsp;&nbsp;&nbsp;&lt;rdfs:domain rdf:resource="&amp;eg;Person"/&gt;
- &nbsp;&lt;/rdf:Description&gt;
+     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;mum"&gt;
+     &nbsp;&nbsp;&nbsp;&lt;rdfs:subPropertyOf rdf:resource="&amp;eg;parent"/&gt;
+     &nbsp;&lt;/rdf:Description&gt;
+     
+     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;parent"&gt;
+     &nbsp;&nbsp;&nbsp;&lt;rdfs:range &nbsp;rdf:resource="&amp;eg;Person"/&gt;
+     &nbsp;&nbsp;&nbsp;&lt;rdfs:domain rdf:resource="&amp;eg;Person"/&gt;
+     &nbsp;&lt;/rdf:Description&gt;
+    
+     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;age"&gt;
+     &nbsp;&nbsp;&nbsp;&lt;rdfs:range rdf:resource="&amp;xsd;integer" /&gt;
+     &nbsp;&lt;/rdf:Description&gt;
 
- &nbsp;&lt;rdf:Description rdf:about="&amp;eg;age"&gt;
- &nbsp;&nbsp;&nbsp;&lt;rdfs:range rdf:resource="&amp;xsd;integer" /&gt;
- &nbsp;&lt;/rdf:Description&gt;
-</pre>
 <p>This defines a property <code>parent</code> from <code>Person</code> to <code>Person</code>,
   a sub-property <code>mum</code> of <code>parent</code> and an integer-valued
   property <code>age</code>.</p>
 <p>We shall also use the even simpler instance file:</p>
-<pre>
- &nbsp;&lt;Teenager rdf:about="&amp;eg;colin"&gt;
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;mum rdf:resource="&amp;eg;rosy" /&gt;
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;age&gt;13&lt;/age&gt;
- &nbsp;&lt;/Teenager&gt;
-</pre>
+
+     &nbsp;&lt;Teenager rdf:about="&amp;eg;colin"&gt;
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;mum rdf:resource="&amp;eg;rosy" /&gt;
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;age&gt;13&lt;/age&gt;
+     &nbsp;&lt;/Teenager&gt;
+
 <p>
   Which defines a <code>Teenager</code> called <code>colin</code> who has a <code>mum</code>
   <code>rosy</code> and an <code>age</code> of 13.</p>
 <p>Then the following code fragment can be used to read files containing these
   definitions, create an inference model and query it for information on the <code>rdf:type</code>
   of <code>colin</code> and the <code>rdf:type</code> of <code>Person</code>:</p>
-<pre>Model schema = FileManager.get().loadModel("file:data/rdfsDemoSchema.rdf");
-Model data = FileManager.get().loadModel("file:data/rdfsDemoData.rdf");
-InfModel infmodel = ModelFactory.createRDFSModel(schema, data);
 
-Resource colin = infmodel.getResource("urn:x-hp:eg/colin");
-System.out.println("colin has types:");
-printStatements(infmodel, colin, RDF.type, null);
+```
+    Model schema = FileManager.get().loadModel("file:data/rdfsDemoSchema.rdf");
+    Model data = FileManager.get().loadModel("file:data/rdfsDemoData.rdf");
+    InfModel infmodel = ModelFactory.createRDFSModel(schema, data);
+    
+    Resource colin = infmodel.getResource("urn:x-hp:eg/colin");
+    System.out.println("colin has types:");
+    printStatements(infmodel, colin, RDF.type, null);
 
-Resource Person = infmodel.getResource("urn:x-hp:eg/Person");
-System.out.println("\nPerson has types:");
-printStatements(infmodel, Person, RDF.type, null);</pre>
+    Resource Person = infmodel.getResource("urn:x-hp:eg/Person");
+    System.out.println("\nPerson has types:");
+    printStatements(infmodel, Person, RDF.type, null);
+```
+
 <p>This produces the output:</p>
 <pre><i>colin has types:
  - (eg:colin rdf:type eg:Teenager)
