@@ -426,12 +426,13 @@ Title: Reasoners and rule engines: Jena inference support
 
 <p>Which generates the output:</p>
 
-    <i>Statement is [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/D]
-    Rule rule1 concluded (eg:A eg:p eg:D) &lt;-
+<pre><i>Statement is [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/D]
+    Rule rule1 concluded (eg:A eg:p eg:D) &lt-
         Fact (eg:A eg:p eg:B)
-        Rule rule1 concluded (eg:B eg:p eg:D) &lt;-
-            Fact (eg:B eg:p eg:C)
-            Fact (eg:C eg:p eg:D)</i>
+    Rule rule1 concluded (eg:B eg:p eg:D) &lt;-
+        Fact (eg:B eg:p eg:C)
+        Fact (eg:C eg:p eg:D)</i>
+</pre>
 
 ####<a name="rawAccess"></a>Accessing raw data and deductions
 <p>From an <code>InfModel</code> it is easy to retrieve the original, unchanged,
@@ -622,28 +623,28 @@ Title: Reasoners and rule engines: Jena inference support
   data and use an instance of the RDFS reasoner to query the two.</p>
 <p>We shall use a trivial schema:</p>
 
-     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;mum"&gt;
-     &nbsp;&nbsp;&nbsp;&lt;rdfs:subPropertyOf rdf:resource="&amp;eg;parent"/&gt;
-     &nbsp;&lt;/rdf:Description&gt;
+      <rdf:Description rdf:about="&amp;eg;mum">
+        <rdfs:subPropertyOf rdf:resource="&amp;eg;parent"/>
+      </rdf:Description>
      
-     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;parent"&gt;
-     &nbsp;&nbsp;&nbsp;&lt;rdfs:range &nbsp;rdf:resource="&amp;eg;Person"/&gt;
-     &nbsp;&nbsp;&nbsp;&lt;rdfs:domain rdf:resource="&amp;eg;Person"/&gt;
-     &nbsp;&lt;/rdf:Description&gt;
+      <rdf:Description rdf:about="&amp;eg;parent">
+        <rdfs:range  rdf:resource="&amp;eg;Person"/>
+        <rdfs:domain rdf:resource="&amp;eg;Person"/>
+      </rdf:Description>
     
-     &nbsp;&lt;rdf:Description rdf:about="&amp;eg;age"&gt;
-     &nbsp;&nbsp;&nbsp;&lt;rdfs:range rdf:resource="&amp;xsd;integer" /&gt;
-     &nbsp;&lt;/rdf:Description&gt;
+      <rdf:Description rdf:about="&amp;eg;age">
+        <rdfs:range rdf:resource="&amp;xsd;integer" />
+      </rdf:Description>
 
 <p>This defines a property <code>parent</code> from <code>Person</code> to <code>Person</code>,
   a sub-property <code>mum</code> of <code>parent</code> and an integer-valued
   property <code>age</code>.</p>
 <p>We shall also use the even simpler instance file:</p>
 
-     &nbsp;&lt;Teenager rdf:about="&amp;eg;colin"&gt;
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;mum rdf:resource="&amp;eg;rosy" /&gt;
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;age&gt;13&lt;/age&gt;
-     &nbsp;&lt;/Teenager&gt;
+      &lt;Teenager rdf:about="&amp;eg;colin">
+          &lt;mum rdf:resource="&amp;eg;rosy" />
+          &lt;age>13&lt;/age>
+      &lt;/Teenager>
 
 <p>
   Which defines a <code>Teenager</code> called <code>colin</code> who has a <code>mum</code>
@@ -652,7 +653,6 @@ Title: Reasoners and rule engines: Jena inference support
   definitions, create an inference model and query it for information on the <code>rdf:type</code>
   of <code>colin</code> and the <code>rdf:type</code> of <code>Person</code>:</p>
 
-```
     Model schema = FileManager.get().loadModel("file:data/rdfsDemoSchema.rdf");
     Model data = FileManager.get().loadModel("file:data/rdfsDemoData.rdf");
     InfModel infmodel = ModelFactory.createRDFSModel(schema, data);
@@ -664,7 +664,6 @@ Title: Reasoners and rule engines: Jena inference support
     Resource Person = infmodel.getResource("urn:x-hp:eg/Person");
     System.out.println("\nPerson has types:");
     printStatements(infmodel, Person, RDF.type, null);
-```
 
 <p>This produces the output:</p>
 <pre><i>colin has types:
@@ -675,6 +674,7 @@ Title: Reasoners and rule engines: Jena inference support
 Person has types:
  - (eg:Person rdf:type rdfs:Class)
  - (eg:Person rdf:type rdfs:Resource)</i></pre>
+
 <p>This says that <code>colin</code> is both a <code>Teenager</code> (by direct
   definition), a <code>Person</code> (because he has a <code>mum</code> which
   means he has a <code>parent</code> and the domain of <code>parent</code> is
@@ -1049,24 +1049,29 @@ configuration still leaves something to be desired and will the subject of futur
   and &quot;<code>bigName42</code>&quot;.</p>
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
   and then apply that to the demo data to obtain an inference model, as follows:</p>
-<pre>    Model schema = FileManager.get().loadModel("file:data/owlDemoSchema.owl");
+
+    Model schema = FileManager.get().loadModel("file:data/owlDemoSchema.owl");
     Model data = FileManager.get().loadModel("file:data/owlDemoData.rdf");
     Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
     reasoner = reasoner.bindSchema(schema);
-    InfModel infmodel = ModelFactory.createInfModel(reasoner, data);</pre>
+    InfModel infmodel = ModelFactory.createInfModel(reasoner, data);
+
 <p>A typical example operation on such a model would be to find out all we know
   about a specific instance, for example the <code>nForce</code> mother board.
   This can be done using:</p>
-<pre>    Resource nForce = infmodel.getResource("urn:x-hp:eg/nForce");
+
+    Resource nForce = infmodel.getResource("urn:x-hp:eg/nForce");
     System.out.println("nForce *:");
-    printStatements(infmodel, nForce, null, null);<br></pre>
+    printStatements(infmodel, nForce, null, null);
+
 <p> where <code>printStatements</code> is defined by: </p>
-<pre>    public void printStatements(Model m, Resource s, Property p, Resource o) {
+    public void printStatements(Model m, Resource s, Property p, Resource o) {
         for (StmtIterator i = m.listStatements(s,p,o); i.hasNext(); ) {
             Statement stmt = i.nextStatement();
             System.out.println(" - " + PrintUtil.print(stmt));
         }
-    }</pre>
+    }
+
 <p>This produces the output:</p>
 <pre><i>nForce *:
  - (eg:nForce rdf:type owl:Thing)
@@ -1093,18 +1098,21 @@ configuration still leaves something to be desired and will the subject of futur
   have a <code>gamingGraphics</code> component from the combination of the <code>nForce</code>
   inferences we've already seen and the transitivity of <code>hasComponent</code>.
   We can test this using:</p>
-<pre>    Resource gamingComputer = infmodel.getResource("urn:x-hp:eg/GamingComputer");
+
+    Resource gamingComputer = infmodel.getResource("urn:x-hp:eg/GamingComputer");
     Resource whiteBox = infmodel.getResource("urn:x-hp:eg/whiteBoxZX");
     if (infmodel.contains(whiteBox, RDF.type, gamingComputer)) {
         System.out.println("White box recognized as gaming computer");
     } else {
         System.out.println("Failed to recognize white box correctly");
-    }</pre>
+    }
+
 <p> Which gnerates the output:</p>
-<pre><i>White box recognized as gaming computer</i></pre>
+<pre>  <i>White box recognized as gaming computer</i></pre>
 <p>Finally, we can check for inconsistencies within the data by using the validation
   interface:</p>
-<pre>    ValidityReport validity = infmodel.validate();
+
+    ValidityReport validity = infmodel.validate();
     if (validity.isValid()) {
         System.out.println("OK");
     } else {
@@ -1113,7 +1121,8 @@ configuration still leaves something to be desired and will the subject of futur
             ValidityReport.Report report = (ValidityReport.Report)i.next();
             System.out.println(" - " + report);
         }
-    }</pre>
+    }
+
 <p>Which generates the output:</p>
 <pre><i>Conflicts
  - Error (conflict): Two individuals both same and different, may be
@@ -1977,17 +1986,16 @@ while (i.hasNext()) {
  should be forward, all the inferences which need all of the results of the RDFS/OWL rules
  should be backward. Note that the RDFS and OWL rulesets assume certain settings
  for the GenericRuleReasoner so a typical configuration is:</p>
-<pre>
-  Model data = FileManager.get().loadModel("file:data.n3");
 
-  List rules = Rule.rulesFromURL("myrules.rules");
+    Model data = FileManager.get().loadModel("file:data.n3");
+    List rules = Rule.rulesFromURL("myrules.rules");
 
-  GenericRuleReasoner reasoner = new GenericRuleReasoner(rules);
-  reasoner.setOWLTranslation(true);               // not needed in RDFS case
-  reasoner.setTransitiveClosureCaching(true);
+    GenericRuleReasoner reasoner = new GenericRuleReasoner(rules);
+    reasoner.setOWLTranslation(true);               // not needed in RDFS case
+    reasoner.setTransitiveClosureCaching(true);
 
-  InfModel inf = ModelFactory.createInfModel(reasoner, data);
-</pre>
+    InfModel inf = ModelFactory.createInfModel(reasoner, data);
+
 <p>Where the <code>myrules.rules</code> file will use <code>@include</code> to include
  one of the RDFS or OWL rule sets.</p>
 <p>One  useful variant on this option, at least in simple cases, is
