@@ -1,0 +1,44 @@
+Title: CSV PropertyTable - Get Started
+
+## Using CSV PropertyTable from Java through the API
+
+For the users, [GraphCSV](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphCSV.java) is the only class required to run CSV PropertyTable.
+GraphCSV wrappers a CSV file as a Graph, which makes a Model for SPARQL query:
+
+    Model model = ModelFactory.createModelForGraph(new GraphCSV("data.csv")) ;
+    QueryExecution qExec = QueryExecutionFactory.create(query, model) ;
+
+or for multiple CSV files and/or other RDF data:
+    
+    Model csv1 = ModelFactory.createModelForGraph(new GraphCSV("data1.csv")) ;
+    Model csv2 = ModelFactory.createModelForGraph(new GraphCSV("data2.csv")) ;
+    Model other = ModelFactory.createModelForGraph(otherGraph) ;
+    Dataset dataset = ... ;
+    dataset.addNamedModel("http://example/table1", csv1) ;
+    dataset.addNamedModel("http://example/table2", csv2) ;
+    dataset.addNamedModel("http://example/other", other) ;
+    ... normal SPARQL execution ...
+
+You can also find the full examples from [GraphCSVTest](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/test/java/org/apache/jena/propertytable/impl/GraphCSVTest.java).
+
+In short, for Jena ARP, a CSV table is actually a Graph (i.e. GraphCSV), without any differences from other types of Graphs when using it from the Jena ARQ API.
+
+## Command Line Tool
+
+`[csv2rdf](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/main/java/riotcmd/csv2rdf.java)` is a tool for direct transforming from CSV to the formatted RDF syntax of N-Triples.
+The script calls the `csv2rdf` java program in the `riotcmd` package in this way:
+
+    java -cp ... riotcmd.csv2rdf -dest=outputFile inputFile ...
+
+It transforms the `inputFile`(i.e. CSV file(s)) into `outputFile`(i.e. N-Triples file). For example,
+
+    java -cp ... riotcmd.csv2rdf --dest=test.ntriples src/test/resources/test.csv
+
+The script reuses [Common framework for running RIOT parsers](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src/main/java/riotcmd/CmdLangParse.java), so that it also accepts the same arguments (type `"riot. --help"` to get command line reminders) from [RIOT Command line tools](https://jena.apache.org/documentation/io/#command-line-tools):
+
+-   `--validate`: Checking mode: same as `--strict --sink --check=true`
+-   `--check=true/false`: Run with checking of literals and IRIs either on or off.
+-   `--sink`: No output of triples or quads in the standard output (i.e. `System.out`).
+-   `--time`: Output timing information.
+
+
