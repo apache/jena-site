@@ -50,7 +50,7 @@ Its constructor takes a CSV file path as the parameter, parse the file using a C
 
 For CSV to RDF mapping, we establish some basic principles:
 
-### Single-Value and Regular-Shaped CSV only
+### Single-Value and Regular-Shaped CSV Only
 
 In the [CSV-WG](https://www.w3.org/2013/csvw/wiki/Main_Page), it looks like duplicate column names are not going to be supported. Therefore, we just consider parsing single-valued CSV tables. 
 There is the current editor working [draft](http://w3c.github.io/csvw/syntax/) from the CSV on the Web Working Group, which is defining a more regular data out of CSV.
@@ -67,10 +67,19 @@ It's not necessary to have a defined primary column, similar to the primary key 
 ### Data Type for Typed Literal
 
 All the values in CSV are parsed as strings line by line. As a better option for the user to turn on, a dynamic choice which is a posh way of saying attempt to parse it as an integer (or decimal, double, date) and if it passes, it's an integer (or decimal, double, date).
+Note that for the current release, all of the numbers are parsed as `double`, and `date` is not supported yet.
 
 ### File Path as Namespace
 
 RDF requires that the subjects and the predicates are URIs. We need to pass in the namespaces (or just the default namespaces) to make URIs by combining the namespaces with the values in CSV.
 We don’t have metadata of the namespaces for the columns, But subjects can be blank nodes which is useful because each row is then a new blank node. For predicates, suppose the URL of the CSV file is `file:///c:/town.csv`, then the columns can be `<file:///c:/town.csv#Town>` and `<file:///c:/town.csv#Population>`, as is showed in the illustration.
+
+### First Line of Table Header Needed as Predicates
+
+The first line of the CSV file must be the table header. The columns of the first line are parsed as the predicates of the RDF triples. The RDF triple data are parsed starting from the second line.
+
+### UTF-8 Encoded Only
+
+The CSV files must be UTF-8 encoded. If your CSV files are using Western European encodings, please change the encoding before using CSV PropertyTable.
 
 
