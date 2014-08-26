@@ -150,16 +150,21 @@ Pretty printed formats:
 
 ### Streamed Block Formats
 
-The streamed formats write triples or quads as given.  
-They group together data by adjacent subject or graph/subject
+Fully pretty printed formats can't not be streamed.  They require analysis
+of all of the data to be written in order to choose the short forms.  This limits
+their use in fully scalable applications.
+
+
+Some formats can be written streaming style, where the triples or quads
+are partially grouped together by adjacent subject or graph/subject
 in the output stream.
 
-The written data is like the pretty printed forms but without
-RDF lists being written in the '(...)' form, and it does not
-use the blank node form `[...]`.
+The written data is like the pretty printed forms of Turtle or TriG, 
+but without RDF lists being written in the '(...)' form, without
+using `[...]` for blank nodes.
 
 This gives some degree of readability while not requiring
-excessive temporary datastructure. Data larger than the size of RAM 
+excessive temporary datastructure.  Arbitrary amounts of data 
 can be written but blank node labels need to be tracked in order
 to use the short label form.
 
@@ -199,7 +204,7 @@ There are writers for Turtle and Trig that use the abbreviated formats for
 prefix names and short forms for literals. They write each triple or quad
 on a single line.
 
-The regularity of the output can be useful for test processing data.  
+The regularity of the output can be useful for text processing of data.  
 These formats do not offer more scalabilty than the stream forms.
 
 Example:
@@ -233,7 +238,9 @@ but always writes one complete triple on one line (no use of `;`).
 
 These provide the formats that are fastest to write, 
 and data of any size can be output.  They do not use any
-internal state. They maximise the 
+internal state and formats always stream without limitation.
+
+They maximise the 
 interoperability with other systems and are useful
 for database dumps. They are not human readable, 
 even at moderate scale.
