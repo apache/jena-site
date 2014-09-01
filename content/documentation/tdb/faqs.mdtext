@@ -48,14 +48,20 @@ applications portable to another SPARQL backend should you ever need to.
 ## What is the *Impossibly Large Object* exception?
 
 The *Impossibly Large Object* exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
-only affect a small section of your dataset so may only occur intermittently depending on your queries.  A query that touches
-the entirety of the dataset will always experience this exception e.g.
+only affect a small section of your dataset so may only occur intermittently depending on your queries.  For example some queries 
+may continue to function normally while other queries or queries with/without particular features may fail.  A particular query that 
+fails with this error should continue to always fail unless the database is modified.
+
+A query that touches the entirety of the dataset will always encounter this exception and can be used to verify whether your
+database has this problem e.g.
 
     SELECT * WHERE { { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } } }
 
-The corruption may have happened at any time in the past and once it has happened there
-is no way to repair it.  Corrupted datasets will need to be rebuilt from the original source data, this is why we **strongly**
-recommend you use [transactions](tdb_transactions.html) since this protects your dataset against corruption.
+The corruption may have happened at any time in the past and once it has happened there is no way to repair it.  Corrupted datasets 
+will need to be rebuilt from the original source data, this is why we **strongly** recommend you use 
+[transactions](tdb_transactions.html) since this protects your dataset against corruption.
+
+To resolve this problem you **must** rebuild your database from the original source data, a corrupted database **cannot** be repaired.
 
 <a name="tdbloader-vs-tdbloader2"></a>
 ## What is the different between `tdbloader` and `tdbloader2`?
@@ -83,7 +89,7 @@ out.  What you should set the JVM heap to will depend on the kinds of queries th
 large amounts of data or use operators that may require lots of data to be buffered in-memory e.g. `DISTINCT`, `GROUP BY`, `ORDER BY` may need a much larger heap depending
 on the overall size of your database.
 
-There is no hard and fast guidance we can give you on the exact number since it depends heavily on your data and your workload.  Please ask on our mailing lists 
+There is no hard and fast guidance we can give you on the exact numbers since it depends heavily on your data and your workload.  Please ask on our mailing lists 
 (see our [Ask](../help_and_support/) page) and provide as much detail as possible about your data and workload if you would like us to attempt to provide more specific guidance.
 
 <a name="fuseki-tdb-memory-leak"></a>
