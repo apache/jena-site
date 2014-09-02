@@ -20,16 +20,21 @@ can be integrated into both the parser and writer registries.
 - RDF/JSON
 - TriG
 - N-Quads
+- RDF Thrift
 
-RDF/JSON is not JSON-LD - it is a direct encoding of RDF triples in JSON.
+RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.
 See the [description of RDF/JSON](rdf-json.html).
+
+RDF Thrift is a binary encoding of RDF (graphs and datasets) that can be useful
+for fast parsing.  See the 
+[description of RDF Thrift](http://afs.github.io/rdf-thrift).
 
 ## Command line tools
 
 There are scripts in Jena download to run these commands.
 
 - `riot` - parse, guessing the syntax from the file extension.
-    Assumed N-Quads/N-Triples from stdin.
+    Assumes N-Quads/N-Triples from stdin.
 - `turtle`, `ntriples`, `nquads`, `trig`, `rdfxml` - parse a particular language
 
 These can be called directly as Java programs:
@@ -37,15 +42,17 @@ These can be called directly as Java programs:
 The file extensions understood are:
 
 | &nbsp;Extension&nbsp; |&nbsp; Language&nbsp; |
-|-----------|-----------|
-| `.ttl`    | Turtle    |
-| `.nt`     | N-Triples |
-| `.nq`     | N-Quads   |
-| `.trig`   | TriG      |
-| `.rdf`    | RDF/XML   |
-| `.owl`    | RDF/XML   |
-| `.jsonld` | JSON-LD   |
-| `.rj`     | RDF/JSON  |
+|-----------|------------|
+| `.ttl`    | Turtle     |
+| `.nt`     | N-Triples  |
+| `.nq`     | N-Quads    |
+| `.trig`   | TriG       |
+| `.rdf`    | RDF/XML    |
+| `.owl`    | RDF/XML    |
+| `.jsonld` | JSON-LD    |
+| `.trdf`   | RDF Thrift |
+| `.rt`     | RDF Thrift |
+| `.rj`     | RDF/JSON   |
 
 `.n3` is supported but only as a synonym for Turtle.
 
@@ -57,13 +64,18 @@ These scripts call java programs in the `riotcmd` package. For example:
 
     java -cp ... riotcmd.riot file.ttl
 
+This can be a mixture of files in difefrent syntaxes when file extensiosn
+are used to determine the file syntax type.
+
 The scripts all accept the same arguments (type `"riot --help"` to
 get command line reminders):
 
--   `--validate`: Checking mode: same as `--strict --sink --check=true`
+-   `--syntax=NAME`; Explicitly set the input syntax for all files.
+-   `--validate`: Checking mode: same as `--strict --sink --check=true`.
 -   `--check=true/false`: Run with checking of literals and IRIs either on or off.
--   `--sink`: No output of triples or quads.
+-   `--sink`: No output.
 -   `--time`: Output timing information.
+-   `--out=FORMAT`: Output in a given syntax (this is streaming, not pretty printing).
 
 To aid in checking for errors in UTF8-encoded files, there is a
 utility which reads a file of bytes as UTF8 and checks the encoding.

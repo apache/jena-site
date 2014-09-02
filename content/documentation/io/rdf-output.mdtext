@@ -14,6 +14,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
   - [Streamed Block Formats](#streamed-block-formats)
   - [Line printed formats](#line-printed-formats)
   - [N-Triples and N-Quads](#n-triples-and-n-quads)
+  - [RDF Thrift](#rdf-thrift)
   - [RDF/XML](#rdfxml)
 - [Examples](#examples)
 - [Notes](#Notes)
@@ -55,6 +56,7 @@ are available as part of the standard setup.
 * RDF/JSON
 * TriG
 * NQuads
+* RDF Thrift
 
 In addition, there are variants of Trutle, TriG for pretty printing, 
 streamed output and flat output.  RDF/XML has variants for pretty printing 
@@ -85,6 +87,7 @@ as follows:
 | `"N3"`               | `N3`             |
 | `"JSON-LD"`          | `JSONLD`         |
 | `"RDF/JSON"`         | `RDFJSON`        |
+| `"RDF/JSON"`         | `RDFJSON`        |
 
 ## Formats
 
@@ -103,6 +106,7 @@ an `RDFFormat` internally.  The normal writers are:
 | RDFXML            | RDF/XML, pretty printed |
 | JSONLD            | JSON-LD                 |
 | RDFJSON           |                         |
+| RDFTHRFT          | RDF Thrift              |
 
 Pretty printed RDF/XML is also known as RDF/XML-ABBREV
 
@@ -153,7 +157,6 @@ Pretty printed formats:
 Fully pretty printed formats can't not be streamed.  They require analysis
 of all of the data to be written in order to choose the short forms.  This limits
 their use in fully scalable applications.
-
 
 Some formats can be written streaming style, where the triples or quads
 are partially grouped together by adjacent subject or graph/subject
@@ -284,6 +287,22 @@ in ASCII (using `\u` escape sequences for non-ASCI characters where necessary).
 |-----------------|
 | NTRIPLES_ASCII  |
 | NQUADS_ASCII    |
+
+### RDF Thrift
+
+The [RDF Thrift](http://afs.github.io/rdf-thrift) format is a binary encoding of RDF Graphs
+and RDF Datasets, as well as SPARQL Result Sets, that can provide efficient parsing
+compared to the text-based standardised syntax such as N-triples, Turtle or RDF/XML.
+
+| RDFFormat        |
+|------------------|
+| RDFTHRIFT        |
+| RDFTHRIFT_VALUES |
+
+`RDFTHRIFT_VALUES` is a variant where numeric values are written as values,
+not as lexcial format and datatype.  See the 
+[description of RDF Thrift](http://afs.github.io/rdf-thrift)
+for details.
 
 ### RDF/XML
 

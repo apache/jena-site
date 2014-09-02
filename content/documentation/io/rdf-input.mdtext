@@ -33,7 +33,7 @@ The major classes in the RIOT API are:
 | Class | Comment |
 |-------|---------|
 | RDFDataMgr        | Main set of functions to read and load models and datasets |
-| StreamManager | Handles the opening of typed input streams |
+| StreamManager     | Handles the opening of typed input streams |
 | StreamRDF         | Interface for the output of all parsers |
 | RDFLanguages      | Registered languages |
 | RDFParserRegistry | Registered parser factories |
@@ -41,9 +41,26 @@ The major classes in the RIOT API are:
 ### Determining the RDF syntax
 
 The syntax of the RDF file is determined by the content type (if an HTTP
-request), then the file extension if there is no content type (or it's
-`text/plain`), which is assumed to be type returned for an unconfigured
+request), then the file extension if there is no content type. Content type 
+`text/plain` is ignored; it is assumed to be type returned for an unconfigured
 http server. The application can also pass in a declared language hint.
+
+The string name traditionally used in `model.read` is mapped to RIOT `Lang`
+as:
+
+| Jena reader          | RIOT Lang        |
+|----------------------|------------------|
+| `"TURTLE"`           | `TURTLE`         |
+| `"TTL"`              | `TURTLE`         |
+| `"Turtle"`           | `TURTLE`         |
+| `"N-TRIPLES"`        | `NTRIPLES`       |
+| `"N-TRIPLE"`         | `NTRIPLES`       |
+| `"NT"`               | `NTRIPLES`       |
+| `"RDF/XML"`          | `RDFXML`         |
+| `"N3"`               | `N3`             |
+| `"JSON-LD"`          | `JSONLD`         |
+| `"RDF/JSON"`         | `RDFJSON`        |
+| `"RDF/JSON"`         | `RDFJSON`        |
 
 The following is a suggested Apache httpd .htaccess file:
 
@@ -56,6 +73,7 @@ The following is a suggested Apache httpd .htaccess file:
 
     AddType  text/trig               .trig
     AddType  application/n-quads     .nq
+    AddType  application/rdf+thrift  .trdf
 
 ### Example 1 : Common usage
 
@@ -117,7 +135,7 @@ The `StreamManager` can be reconfigured with different places to look for
 files.  The default configuration used for the global `StreamManager` is
 a file access class, wihere the current directory is that of the java
 process, a URL accessor for reading from the web, and a
-class laoder-based accessor.  Different setups can be built and used
+class loader-based accessor.  Different setups can be built and used
 either as the global set up, 
 
 There is also a `LocationMapper` for rewiting file names and URLs before
