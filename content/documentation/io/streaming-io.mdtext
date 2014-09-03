@@ -1,0 +1,103 @@
+Title: Working with RDF Streams in Apache Jena
+
+Jena has operations useful in processing RDF in a streaming
+fashion. Streaming can be used for manipulating RDF at scale.  Jena
+provides high performance readers and writers for all standard RDF formats,
+and it can be extended with custom formats.
+
+The [RDF Thrift](http://afs.github.io/rdf-thrift) provides the highest
+input parsing performance.  N-Triples/N-Quads provide the highest
+input parsing performance using W3C Standards.
+
+Files ending in `.gz` are assumed to be gzip-compressed. Input and output
+to such files takes this into account, including looking for the other file
+extension.  `data.nt.gz` is a parsed as a gzip-compressed N-Triples file.
+
+== `StreamRDF`
+
+The central abstraction is `StreamRDF` which is an interface for streamed
+RDF data.  It covers triples and quads, and also parser events such as
+prefix settings and base URI declarations.
+
+```
+public interface StreamRDF {}
+{
+    /** Start parsing */
+    public void start() ;
+   
+    /** Triple emitted */
+    public void triple(Triple triple) ;
+
+    /** Quad emitted */
+    public void quad(Quad quad) ;
+
+    /** base declaration seen */
+    public void base(String base) ;
+
+    /** prefix declaration seen */
+    public void prefix(String prefix, String iri) ;
+
+    /** Finish parsing */
+    public void finish() ;
+}
+```
+
+There are utilities to help:
+
+* `StreamRDFLib` -- create `StreamRDF` objects
+* `StreamOps` -- helpers for sending RDF data to `StreamRDF` objects
+
+== Reading data
+
+All parses of RDF syntaxes provided by RIOT are streaming with the
+exception of JSON-LD.  A JSON object can have members in any order so the
+parser may need the whole top-level object in order to have the information
+needed for parsing.
+
+The `parse` functions of `RDFDataMgr` direct the output of the parser to a
+`StreamRDF`.  For example:
+
+    StreamRDF destinination = ... 
+    RDFDataMgr.parse(destination, "http://example/data.ttl") ;
+
+reads the remote URL, with content negotiation, and send the triples to the
+`destination`.
+
+== Writing data
+
+Not all RDF formats are suitable for writing as a stream.  Formats that
+provide pretty printing (for example the default `RDFFormat` for each of
+Turtle, TriG and RDF/XML) require analysis of the whole of a model in order
+to determine nestable structures of blank nodes and for using specific
+syntax for RDF lists.
+
+These languages can be used for streaming output but with an appearance
+that is necessarily "less pretty".
+See ["Streamed Block Formats"](rdf-output.html#streamed-block-formats) 
+for details.
+
+The `StreamRDFWriter` class has functions that write graphs and datasets
+using a streaming writer and also provides for the creation of
+an`StreamRDF` backed by a stream-based writer
+
+    StreamWriter.write(output, model.getGraph(), lang) ;
+
+which can be done as:
+
+    StreamRDF writer = StreamWriter.getWriterStream(output, lang) ;
+    StreamOps.graphToStream(writer, model.getGraph()) ;
+
+
+N-Triples and N-Quads are always written as a stream.
+
+| Lang             | RDFFormat                  |
+|------------------|----------------------------|
+| `Lang.TURTLE`    | `RDFFormat.TURTLE_BLOCKS`  |
+|                  | `RDFFormat.TURTLE_FLAT`    |
+| `Lang.TRIG`      | `RDFFormat.TRIG_BLOCKS`    |
+|                  | `RDFFormat.TRIG_FLAT`      |
+| `Lang.NTRIPLES`  | `RDFFormat.NTRIPLES_UTF8`  |
+|                  | `RDFFormat.NTRIPLES_ASCII` |
+| `Lang.NQUADS`    | `RDFFormat.NQUADS_UTF8`    |
+|                  | `RDFFormat.NQUADS_ASCII`   |
+| `Lang.RDFTHRIFT` | `RDFFormat.RDF_THRIFT`     |
