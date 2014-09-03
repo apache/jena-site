@@ -13,41 +13,38 @@ Files ending in `.gz` are assumed to be gzip-compressed. Input and output
 to such files takes this into account, including looking for the other file
 extension.  `data.nt.gz` is a parsed as a gzip-compressed N-Triples file.
 
-== `StreamRDF`
+## `StreamRDF`
 
 The central abstraction is `StreamRDF` which is an interface for streamed
 RDF data.  It covers triples and quads, and also parser events such as
 prefix settings and base URI declarations.
 
-```
-public interface StreamRDF {}
-{
-    /** Start parsing */
-    public void start() ;
+    public interface StreamRDF {
+        /** Start parsing */
+        public void start() ;
    
-    /** Triple emitted */
-    public void triple(Triple triple) ;
+        /** Triple emitted */
+        public void triple(Triple triple) ;
 
-    /** Quad emitted */
-    public void quad(Quad quad) ;
+        /** Quad emitted */
+        public void quad(Quad quad) ;
 
-    /** base declaration seen */
-    public void base(String base) ;
+        /** base declaration seen */
+        public void base(String base) ;
 
-    /** prefix declaration seen */
-    public void prefix(String prefix, String iri) ;
+        /** prefix declaration seen */
+        public void prefix(String prefix, String iri) ;
 
-    /** Finish parsing */
-    public void finish() ;
-}
-```
+        /** Finish parsing */
+        public void finish() ;
+    }
 
 There are utilities to help:
 
 * `StreamRDFLib` -- create `StreamRDF` objects
 * `StreamOps` -- helpers for sending RDF data to `StreamRDF` objects
 
-== Reading data
+## Reading data
 
 All parses of RDF syntaxes provided by RIOT are streaming with the
 exception of JSON-LD.  A JSON object can have members in any order so the
@@ -63,7 +60,7 @@ The `parse` functions of `RDFDataMgr` direct the output of the parser to a
 reads the remote URL, with content negotiation, and send the triples to the
 `destination`.
 
-== Writing data
+## Writing data
 
 Not all RDF formats are suitable for writing as a stream.  Formats that
 provide pretty printing (for example the default `RDFFormat` for each of
@@ -87,17 +84,16 @@ which can be done as:
     StreamRDF writer = StreamWriter.getWriterStream(output, lang) ;
     StreamOps.graphToStream(writer, model.getGraph()) ;
 
-
 N-Triples and N-Quads are always written as a stream.
 
-| Lang             | RDFFormat                  |
-|------------------|----------------------------|
-| `Lang.TURTLE`    | `RDFFormat.TURTLE_BLOCKS`  |
-|                  | `RDFFormat.TURTLE_FLAT`    |
-| `Lang.TRIG`      | `RDFFormat.TRIG_BLOCKS`    |
-|                  | `RDFFormat.TRIG_FLAT`      |
-| `Lang.NTRIPLES`  | `RDFFormat.NTRIPLES_UTF8`  |
-|                  | `RDFFormat.NTRIPLES_ASCII` |
-| `Lang.NQUADS`    | `RDFFormat.NQUADS_UTF8`    |
-|                  | `RDFFormat.NQUADS_ASCII`   |
-| `Lang.RDFTHRIFT` | `RDFFormat.RDF_THRIFT`     |
+| RDFFormat                  | Lang shortcut    |
+|----------------------------|------------------|
+| `RDFFormat.TURTLE_BLOCKS`  | `Lang.TURTLE`    |
+| `RDFFormat.TURTLE_FLAT`    |                  |
+| `RDFFormat.TRIG_BLOCKS`    | `Lang.TRIG`      |
+| `RDFFormat.TRIG_FLAT`      |                  |
+| `RDFFormat.NTRIPLES_UTF8`  | `Lang.NTRIPLES`  |
+| `RDFFormat.NTRIPLES_ASCII` |                  |
+| `RDFFormat.NQUADS_UTF8`    | `Lang.NQUADS`    |
+| `RDFFormat.NQUADS_ASCII`   |                  |
+| `RDFFormat.RDF_THRIFT`     | `Lang.RDFTHRIFT` |
