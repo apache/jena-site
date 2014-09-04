@@ -11,6 +11,7 @@ Title: TDB FAQs
 -   [Should I use a SSD?](#ssd)
 -   [Why do I get the exception *Can't open database at location /path/to/db as it is already locked by the process with PID 1234* when trying to open a TDB database?](#lock-exception)
 -   [I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?](#no-lock-warning)
+-   [Why can't I delete a dataset (MS Windows/64 bit)?](#windows-dataset-delete)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -149,3 +150,21 @@ database was eligible to be locked but wasn't.  This can usually only occur if y
 
 As the warning states data corruption may occur if another JVM accesses the location while your process is accessing it.  Ideally you should follow the
 advice on [multi-JVM usage](#multi-jvm) if this might happen, otherwise the warning can likely be safely ignored.
+
+## Deleting Datasets on MS Windows {#windows-dataset-delete}
+
+Java on MS Windows does not provide the ability to delete a memory mapped
+file while the JVM is still running.  The file is properly deleted when the
+JVM exits.  This is a known issue with Java.  
+See the Java bug database e.g. 
+[Bug id: 4724038](http://bugs.java.com/view_bug.do?bug_id=4724038) and several
+others. While there are some workarounds mentioned on the web, 
+none is known to always work on all JVMs.
+
+On 64 bit systems, TDB uses memory mapped to manage datasets on disk.  This
+means that the operating system dynamically controls how much of a file is held in
+RAM, trading off against requests by other applications.  But it also means
+the database files are not properly deleted until the JVM exits.  A new
+dataset can not be created in the same location (directory on disk).
+
+The workaround is to use a different location.
