@@ -14,9 +14,9 @@ See ["Using Jena with Apache Maven"](http://jena.apache.org/download/maven.html)
 
 In order to switch on CSV PropertyTable, it's required to register `LangCSV` into [Jena RIOT](http://jena.apache.org/documentation/io/), through a simple method call:
 
-	import org.apache.jena.propertytable.lang.LangCSV;
+	import org.apache.jena.propertytable.lang.CSV2RDF;
 	... 
-    LangCSV.register(); 
+        CSV2RDF.init() ;
 
 It's a static method call of registration, which needs to be run just one time for an application before using CSV PropertyTable (e.g. during the initialization phase).
 
@@ -24,7 +24,7 @@ Once registered, CSV PropertyTable provides 2 ways for the users to play with (i
 
 ### GraphCSV
 
-[GraphCSV](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/main/java/org/apache/jena/propertytable/graph/GraphCSV.java) wrappers a CSV file as a Graph, which makes a Model for SPARQL query:
+[GraphCSV](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/graph/GraphCSV.java) wrappers a CSV file as a Graph, which makes a Model for SPARQL query:
 
     Model model = ModelFactory.createModelForGraph(new GraphCSV("data.csv")) ;
     QueryExecution qExec = QueryExecutionFactory.create(query, model) ;
@@ -40,7 +40,7 @@ or for multiple CSV files and/or other RDF data:
     dataset.addNamedModel("http://example/other", other) ;
     ... normal SPARQL execution ...
 
-You can also find the full examples from [GraphCSVTest](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/test/java/org/apache/jena/propertytable/graph/GraphCSVTest.java).
+You can also find the full examples from [GraphCSVTest](https://github.com/apache/jena/tree/master/jena-csv/src/test/java/org/apache/jena/propertytable/graph/GraphCSVTest.java).
 
 In short, for Jena ARQ, a CSV table is actually a Graph (i.e. GraphCSV), without any differences from other types of Graphs when using it from the Jena ARQ API.
 
@@ -62,16 +62,19 @@ Note that, the requirements for the CSV files are listed in the documentation of
 
 ## Command Line Tool
 
-[csv2rdf](https://svn.apache.org/repos/asf/jena/Experimental/jena-csv/src/main/java/riotcmd/csv2rdf.java) is a tool for direct transforming from CSV to the formatted RDF syntax of N-Triples.
+[csv2rdf](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/riotcmd/csv2rdf.java) is a tool for direct transforming from CSV to the formatted RDF syntax of N-Triples.
 The script calls the `csv2rdf` java program in the `riotcmd` package in this way:
 
-    java -cp ... riotcmd.csv2rdf -dest=outputFile inputFile ...
+    java -cp ... riotcmdx.csv2rdf inputFile ...
 
-It transforms the CSV `inputFile` into N-Triples `outputFile`. For example,
+It transforms the CSV `inputFile` into N-Triples. For example,
 
-    java -cp ... riotcmd.csv2rdf --dest=test.ntriples src/test/resources/test.csv
+    java -cp ... riotcmdx.csv2rdf src/test/resources/test.csv
 
-The script reuses [Common framework for running RIOT parsers](https://svn.apache.org/repos/asf/jena/trunk/jena-arq/src/main/java/riotcmd/CmdLangParse.java), so that it also accepts the same arguments (type `"riot --help"` to get command line reminders) from [RIOT Command line tools](https://jena.apache.org/documentation/io/#command-line-tools):
+The script reuses [Common framework for running RIOT parsers](../io/index.html),
+so that it also accepts the same arguments
+(type `"riot --help"` to get command line reminders) from 
+[RIOT Command line tools](https://jena.apache.org/documentation/io/#command-line-tools):
 
 -   `--validate`: Checking mode: same as `--strict --sink --check=true`
 -   `--check=true/false`: Run with checking of literals and IRIs either on or off.
