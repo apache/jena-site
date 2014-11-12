@@ -1,0 +1,62 @@
+Title: RDF Tools for Hadoop
+
+RDF Tools for Hadoop is a set of libraries which provide various basic building blocks which enable
+you to start writing Hadoop based applications which work with RDF data.
+
+
+
+## Documentation
+
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+- APIs
+    - [Common](common.html)
+    - [IO](io.html)
+    - [Map/Reduce](mapred.html)
+- Examples
+    - [RDF Stats Demo](demo.html)
+- [Maven Artifacts for Jena JDBC](artifacts.html)
+
+## Overview
+
+Jena JDBC aims to be a pure SPARQL over JDBC driver, it assumes that all commands that come in are
+either SPARQL queries or updates and processes them as such.
+
+As detailed on the [drivers](drivers.html) page there are actually three drivers provided currently:
+
+- [In-Memory](drivers.html#in-memory) - uses an in-memory dataset to provide non-persistent storage
+- [TDB](drivers.html#tdb) - uses a [TDB](/documentation/tdb/) dataset to provide persistent and transactional storage
+- [Remote Endpoint](drivers.html#remote-endpoint) - uses HTTP based remote endpoints to access any SPARQL protocol compliant storage
+
+These are all built on a core library which can be used to build [custom drivers](custom_driver.html)
+if desired.  This means that all drivers share common infrastructure and thus exhibit broadly speaking
+the same behavior around handling queries, updates and results.
+
+Jena JDBC is published as a Maven module via its [maven artifacts](artifacts.html).  The source for Jena JDBC may be [downloaded](/download/index.cgi) as part of the source distribution.
+
+## Getting Started
+
+To get started you will need to add the relevant dependencies to your project, the exact dependencies necessary will depend 
+on what you are trying to do.  Typically you will likely need at least the IO library and possibly the Map/Reduce library:
+
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-hadoop-rdf-io</artifactId>
+      <version>x.y.z</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-hadoop-rdf-mapreduce</artifactId>
+      <version>x.y.z</version>
+    </dependency>
+
+## APIs
+
+There are three main libraries each with their own API:
+
+- [Common](common.html) - this provides the basic data model for representing RDF data within Hadoop
+- [IO](io.html) - this provides support for reading and writing RDF
+- [Map/Reduce](mapred.html) - this provides support for writing Map/Reduce jobs that work with RDF
+
+
+
