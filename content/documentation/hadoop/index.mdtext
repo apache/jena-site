@@ -1,9 +1,12 @@
-Title: RDF Tools for Hadoop
+Title: RDF Tools for Apache Hadoop
 
-RDF Tools for Hadoop is a set of libraries which provide various basic building blocks which enable
+RDF Tools for Apache Hadoop is a set of libraries which provide various basic building blocks which enable
 you to start writing Hadoop based applications which work with RDF data.
 
-
+Historically there has been no serious support for RDF within the Hadoop ecosystem and what support has existed has
+often been limited and task specific.  These libraries aim to be as generic as possible and provide the necessary
+infrastructure that enables developers to create their application specific logic without worrying about the
+underlying plumbing.
 
 ## Documentation
 
@@ -19,20 +22,27 @@ you to start writing Hadoop based applications which work with RDF data.
 
 ## Overview
 
-Jena JDBC aims to be a pure SPARQL over JDBC driver, it assumes that all commands that come in are
-either SPARQL queries or updates and processes them as such.
+RDF Tools for Apache Hadoop is published as a set of Maven module via its [maven artifacts](artifacts.html).  The source for this libraries
+may be [downloaded](/download/index.cgi) as part of the source distribution.  These modules are built against the Hadoop 2.x. APIs and no
+backwards compatibility for 1.x is provided.
 
-As detailed on the [drivers](drivers.html) page there are actually three drivers provided currently:
+The core aim of these libraries it to provide the basic building blocks that allow users to start writing Hadoop applications that
+work with RDF.  They are mostly fairly low level components but they are designed to be used as building blocks to help users and developers
+focus on actual application logic rather than on the low level plumbing.
 
-- [In-Memory](drivers.html#in-memory) - uses an in-memory dataset to provide non-persistent storage
-- [TDB](drivers.html#tdb) - uses a [TDB](/documentation/tdb/) dataset to provide persistent and transactional storage
-- [Remote Endpoint](drivers.html#remote-endpoint) - uses HTTP based remote endpoints to access any SPARQL protocol compliant storage
+Firstly at the lowest level they provide `Writable` implementations that allow the basic RDF primitives - nodes, triples and quads -
+to be represented and exchanged within Hadoop applications, this support is provided by the [Common](common.html) library.
 
-These are all built on a core library which can be used to build [custom drivers](custom_driver.html)
-if desired.  This means that all drivers share common infrastructure and thus exhibit broadly speaking
-the same behavior around handling queries, updates and results.
+Secondly they provide support for all the RDF serialisations which Jena supports as both input and output formats subject to the specific 
+limitations of those serialisations.  This support is provided by the [IO](io.html) library in the form of standard `InputFormat` and
+`OutputFormat` implementations.
 
-Jena JDBC is published as a Maven module via its [maven artifacts](artifacts.html).  The source for Jena JDBC may be [downloaded](/download/index.cgi) as part of the source distribution.
+There are also a set of basic `Mapper` and `Reducer` implementations provided by the [Map/Reduce](mapred.html) library which contains code
+that enables various common Hadoop tasks such as counting, filtering, splitting and grouping to be carried out on RDF data.  Typically these
+will be used as a starting point to build more complex RDF processing applications.
+
+Finally there is a [RDF Stats Demo](demo.html) which is a runnable Hadoop job JAR file that demonstrates using these libraries to calculate
+a number of basic statistics over arbitrary RDF data.
 
 ## Getting Started
 
