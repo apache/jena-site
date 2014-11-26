@@ -18,7 +18,7 @@ underlying plumbing.
     - [Map/Reduce](mapred.html)
 - Examples
     - [RDF Stats Demo](demo.html)
-- [Maven Artifacts for Jena JDBC](artifacts.html)
+- [Maven Artifacts](artifacts.html)
 
 ## Overview
 
@@ -60,11 +60,13 @@ on what you are trying to do.  Typically you will likely need at least the IO li
       <version>x.y.z</version>
     </dependency>
 
-Our libraries depend on the relevant Hadoop libraries but since these libraries are provided by the cluster those dependencies are marked as `provided` and thus are not transitive.  This means that you will typically also need to add the following additional dependencies:
+Our libraries depend on the relevant Hadoop libraries but since these libraries are typically provided by the Hadoop cluster those dependencies are marked as `provided` and thus are not transitive.  This means that you will typically also need to add the following additional dependencies:
 
     <!-- Hadoop Dependencies -->
-    <!-- Note these will be provided on the Hadoop cluster hence the provided 
-            scope -->
+    <!-- 
+        Note these will be provided on the Hadoop cluster hence the provided 
+        scope 
+    -->
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-common</artifactId>
@@ -91,17 +93,15 @@ We will start with our `Mapper` implementation, as you can see this simply takes
 then outputs each node with an initial count of 1:
 
     package org.apache.jena.hadoop.rdf.mapreduce.count;
-
+    
     import org.apache.jena.hadoop.rdf.types.NodeWritable;
     import org.apache.jena.hadoop.rdf.types.TripleWritable;
     import com.hp.hpl.jena.graph.Triple;
-
+    
     /**
      * A mapper for counting node usages within triples designed primarily for use
      * in conjunction with {@link NodeCountReducer}
-     * 
-     * 
-     * 
+     *
      * @param <TKey> Key type
      */
     public class TripleNodeCountMapper<TKey> extends AbstractNodeTupleNodeCountMapper<TKey, Triple, TripleWritable> {
@@ -149,57 +149,60 @@ us with support for our desired RDF input format:
 
     package org.apache.jena.hadoop.rdf.stats;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.jena.hadoop.rdf.io.input.TriplesInputFormat;
-import org.apache.jena.hadoop.rdf.io.output.ntriples.NTriplesNodeOutputFormat;
-import org.apache.jena.hadoop.rdf.mapreduce.count.NodeCountReducer;
-import org.apache.jena.hadoop.rdf.mapreduce.count.TripleNodeCountMapper;
-import org.apache.jena.hadoop.rdf.types.NodeWritable;
+    import org.apache.hadoop.conf.Configuration;
+    import org.apache.hadoop.fs.Path;
+    import org.apache.hadoop.io.LongWritable;
+    import org.apache.hadoop.mapreduce.Job;
+    import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+    import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+    import org.apache.jena.hadoop.rdf.io.input.TriplesInputFormat;
+    import org.apache.jena.hadoop.rdf.io.output.ntriples.NTriplesNodeOutputFormat;
+    import org.apache.jena.hadoop.rdf.mapreduce.count.NodeCountReducer;
+    import org.apache.jena.hadoop.rdf.mapreduce.count.TripleNodeCountMapper;
+    import org.apache.jena.hadoop.rdf.types.NodeWritable;
+    
+    public class RdfMapReduceExample {
 
-public class RdfMapReduceExample {
+        public static void main(String[] args) {
+            try {
+                // Get Hadoop configuration
+                Configuration config = new Configuration(true);
 
-    public static void main(String[] args) {
-        try {
-            // Get Hadoop configuration
-            Configuration config = new Configuration(true);
+                // Create job
+                Job job = Job.getInstance(config);
+                job.setJarByClass(RdfMapReduceExample.class);
+                job.setJobName("RDF Triples Node Usage Count");
+ 
+                // Map/Reduce classes
+                job.setMapperClass(TripleNodeCountMapper.class);
+                job.setMapOutputKeyClass(NodeWritable.class);
+                job.setMapOutputValueClass(LongWritable.class);
+                job.setReducerClass(NodeCountReducer.class);
 
-            // Create job
-            Job job = Job.getInstance(config);
-            job.setJarByClass(RdfMapReduceExample.class);
-            job.setJobName("RDF Triples Node Usage Count");
+                // Input and Output
+                job.setInputFormatClass(TriplesInputFormat.class);
+                job.setOutputFormatClass(NTriplesNodeOutputFormat.class);
+                FileInputFormat.setInputPaths(job, new Path("/example/input/"));
+                FileOutputFormat.setOutputPath(job, new Path("/example/output/"));
 
-            // Map/Reduce classes
-            job.setMapperClass(TripleNodeCountMapper.class);
-            job.setMapOutputKeyClass(NodeWritable.class);
-            job.setMapOutputValueClass(LongWritable.class);
-            job.setReducerClass(NodeCountReducer.class);
-
-            // Input and Output
-            job.setInputFormatClass(TriplesInputFormat.class);
-            job.setOutputFormatClass(NTriplesNodeOutputFormat.class);
-            FileInputFormat.setInputPaths(job, new Path("/example/input/"));
-            FileOutputFormat.setOutputPath(job, new Path("/example/output/"));
-
-            // Launch the job and await completion
-            job.submit();
-            if (job.monitorAndPrintJob()) {
-                // OK
-                System.out.println("Completed");
-            } else {
-                // Failed
-                System.err.println("Failed");
+                // Launch the job and await completion
+                job.submit();
+                if (job.monitorAndPrintJob()) {
+                    // OK
+                    System.out.println("Completed");
+                } else {
+                    // Failed
+                    System.err.println("Failed");
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
     }
-}
 
+So this really is no different from configuring any other Hadoop job, we simply have to point to the relevant input and output formats and provide our mapper and reducer.  Note that here we use the `TriplesInputFormat` which can handle RDF in any Jena supported format, if you know your RDF is in a specific format it is usually more efficient to use a more specific input format.  Please see the [IO](io.html) page for more detail on the available input formats and the differences between them.
+
+We recommend that you next take a look at our [RDF Stats Demo](demo.html) which shows how to do some more complex computations by chaining multiple jobs together.
 
 ## APIs
 
