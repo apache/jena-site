@@ -2,6 +2,8 @@ Title: RDF Tools for Apache Hadoop - IO API
 
 The IO API provides support for reading and writing RDF within Hadoop applications.  This is done by providing `InputFormat` and `OutputFormat` implementations that cover all the RDF serialisations that Jena supports.
 
+[TOC]
+
 # Background on Hadoop IO
 
 If you are already familiar with the Hadoop IO paradigm then please skip this section, if not please read as otherwise some of the later information will not make much sense.
@@ -18,4 +20,80 @@ Hadoop natively provides support for compressed input and output providing your 
 
 # RDF IO in Hadoop
 
-There are a wide range of RDF serialisations supported by ARQ, please see the [RDF IO](../io/) for an overview of the formats that Jena supports.  One of the difficulties posed when wrapping these for Hadoop IO is that the formats have very different properties in terms of our ability to *split* them into distinct chunks for Hadoop to
+There are a wide range of RDF serialisations supported by ARQ, please see the [RDF IO](../io/) for an overview of the formats that Jena supports.
+
+## Input
+
+One of the difficulties posed when wrapping these for Hadoop IO is that the formats have very different properties in terms of our ability to *split* them into distinct chunks for Hadoop to process.  So we categorise the possible ways to process RDF inputs as follows:
+
+1. Line Based - Each line of the input is processed as a single line
+2. Batch Based - The input is processed in batches of N lines (where N is configurable)
+3. Whole File - The input is processed as a whole
+
+There is then also the question of whether a serialisation encodes triples, quads or can encode both.  Where a serialisation encodes both we provide two variants of it so you can choose whether you want to process it as triples/quads.
+
+### Blank Nodes in Input
+
+Note that readers familiar with RDF may be wondering how we cope with blank nodes when splitting input and that is an important concern.
+
+Essentially Jena contains functionality that allows it to predictably generate identifiers from the original identifier present in the file e.g. `_:blank`.  This means that wherever `_:blank` appears  in the original file we are guaranteed to assign it the same internal identifier.  Note that this functionality uses a seed value to ensure that blank nodes coming from different input files are not assigned the same identifier.  When used with Hadoop this seed is chosen based on a combination of the Job ID and the input file path.  This means that the same file processed by different jobs will produce different blank node identifiers each time.
+
+Additionally the binary serialisation we use for our RDF primitives (described on the [Common API](common.html)) page guarantees that internal identifiers are preserved as-is when communicating values across the cluster.
+
+### Mixed Inputs
+
+In many cases your input data may be in a variety of different
+
+## Output
+
+As with input we also need to be careful about how we output RDF data.  Similar to input some serialisations can be output in a streaming fashion while other serialisations require us to store up all the data and then write it out in one go at the end.  We use the same categorisations for output though the meanings are slightly different:
+
+1. Line Based - Each record is written as soon as it is received
+2. Batch Based - Records are cached until N records are seen or the end of output and then the current batch is output (where N is configurable)
+3. Whole File - Records are cached until the end of output and then the entire output is written in one go
+
+However both the batch based and whole file approaches have the downside that it is possible to exhaust memory if you have large amounts of output to process (or set the batch size too high for batch based output).
+
+### Blank Nodes in Output
+
+As with input blank nodes provide a complicating factor in producing RDF output.  For whole file output formats this is not an issue but it does need to be considered for line and batch based formats.
+
+However what we have found in practise is that the Jena writers will predictably map internal identifiers to the blank node identifiers in the output serialisations.  What this means is that even when processing output in batches we've found that using the line/batch based formats correctly preserve blank node identity.
+
+If you are concerned about potential data corruption as a result of this then you should make sure to always choose a whole file output format but be aware that this can exhaust memory if your output is large.
+
+## RDF Serialisation Support
+
+### Input
+
+The following table categorised how each supported RDF serialisation is processed for input.  Note that in some cases we offer multiple ways to process a serialisation.
+
+<table>
+  <tr>
+    <th>RDF Serialisation</th>
+    <th>Line Based</th>
+    <th>Batch Based</th>
+    <th>Whole File</th>
+  </tr>
+  <tr>
+    <th colspan="4">Triple Formats</th>
+  </tr>
+  <tr><td>NTriples</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+  <tr><td>Turtle</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/XML</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/JSON</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Quad Formats</th>
+  </tr>
+  <tr><td>NQuads</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+  <tr><td>TriG</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>TriX</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Triple/Quad Formats</th>
+  </tr>
+  <tr><td>JSON-LD</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF Thrift</td><td>No</td><td>No</td><td>Yes</td></tr>
+</table>
+
+### Output
+  
