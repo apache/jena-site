@@ -42,7 +42,9 @@ Additionally the binary serialisation we use for our RDF primitives (described o
 
 ### Mixed Inputs
 
-In many cases your input data may be in a variety of different
+In many cases your input data may be in a variety of different RDF formats in which case we have you covered.  The `TriplesInputFormat`, `QuadsInputFormat` and `TriplesOrQuadsInputFormat` can handle mixture of triples/quads/both triples & quads as desired.  Note that in the case of `TriplesOrQuadsInputFormat` any triples are up-cast into quads in the default graph.
+
+With mixed inputs the specific input format to use for each is determined based on the file extensions of each input file, unrecognised extensions will result in an `IOException`.  Compression is handled automatically you simply need to name your files appropriately to indicate the type of compression used e.g. `example.ttl.gz` would be treated as GZipped Turtle, if you've used a decent compression tool it should have done this for you.  The downside of mixed inputs is that it decides quite late what the input format is which means that it always processes inputs as whole files because it doesn't decide on the format until after it has been asked to split the inputs.
 
 ## Output
 
@@ -62,11 +64,17 @@ However what we have found in practise is that the Jena writers will predictably
 
 If you are concerned about potential data corruption as a result of this then you should make sure to always choose a whole file output format but be aware that this can exhaust memory if your output is large.
 
+### Node Output Format
+
+We also include a special `NTriplesNodeOutputFormat` which is capable of outputting pairs composed of a `NodeWritable` key and any value type.  Think of this as being similar to the standard Hadoop `TextOutputFormat` except it understands how to format nodes as valid NTriples serialisation.  This format is useful when performing simple statistical analysis such as node usage counts or other calculations over nodes.
+
+In the case where the value of the key value pair is also a RDF primitive proper NTriples formatting is also applied to each of the nodes in the value
+
 ## RDF Serialisation Support
 
 ### Input
 
-The following table categorised how each supported RDF serialisation is processed for input.  Note that in some cases we offer multiple ways to process a serialisation.
+The following table categorises how each supported RDF serialisation is processed for input.  Note that in some cases we offer multiple ways to process a serialisation.
 
 <table>
   <tr>
@@ -97,3 +105,65 @@ The following table categorised how each supported RDF serialisation is processe
 
 ### Output
   
+The following table categorises how each supported RDF serialisation can be processed for output.  As with input some serialisations may be processed in multiple ways.
+
+<table>
+  <tr>
+    <th>RDF Serialisation</th>
+    <th>Line Based</th>
+    <th>Batch Based</th>
+    <th>Whole File</th>
+  </tr>
+  <tr>
+    <th colspan="4">Triple Formats</th>
+  </tr>
+  <tr><td>NTriples</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr><td>Turtle</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+  <tr><td>RDF/XML</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/JSON</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Quad Formats</th>
+  </tr>
+  <tr><td>NQuads</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr><td>TriG</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+  <tr><td>TriX</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr>
+    <th colspan="4">Triple/Quad Formats</th>
+  </tr>
+  <tr><td>JSON-LD</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF Thrift</td><td>Yes</td><td>No</td><td>No</td></tr>
+</table>
+
+## Configuration Options
+
+There are a several useful configuration options that can be used to tweak the behaviour of the RDF IO functionality if desired.
+
+### Input Lines per Batch
+
+Since our line based input formats use the standard Hadoop `NLineInputFormat` to decide how to split up inputs we support the standard `mapreduce.input.lineinputformat.linespermap` configuration setting for changing the number of lines processed per map.
+
+You can set this directly in your configuration:
+
+    job.getConfiguration().setInt(NLineInputFormat.LINES_PER_MAP, 100);
+    
+Or you can use the convenience method of `NLineInputFormat` like so:
+
+    NLineInputFormat.setNumLinesPerMap(job, 100);
+    
+### Max Line Length
+
+When using line based inputs it may be desirable to ignore lines that exceed a certain length (for example if you are not interested in really long literals).  Again we use the standard Hadoop configuration setting `mapreduce.input.linerecordreader.line.maxlength` to control this behaviour:
+
+    job.getConfiguration().setInt(HadoopIOConstants.MAX_LINE_LENGTH, 8192);
+    
+### Ignoring Bad Tuples
+
+In many cases you may have data that you know contains invalid tuples, in such cases it can be useful to just ignore the bad tuples and continue.  By default we enable this behaviour and will skip over bad tuples though they will be logged as an error.  If you want you can disable this behaviour by setting the `rdf.io.input.ignore-bad-tuples` configuration setting:
+
+    job.getConfiguration().setBoolean(RdfIOConstants.INPUT_IGNORE_BAD_TUPLES, false);
+    
+### Output Batch Size
+
+The batch size for batched output formats can be controlled by setting the `rdf.io.output.batch-size` property as desired.  The default value for this if not explicitly configured is 10,000:
+
+    job.getConfiguration.setInt(RdfIOConstants.OUTPUT_BATCH_SIZE, 25000);
