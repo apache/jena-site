@@ -1,0 +1,21 @@
+Title: RDF Tools for Apache Hadoop - IO API
+
+The IO API provides support for reading and writing RDF within Hadoop applications.  This is done by providing `InputFormat` and `OutputFormat` implementations that cover all the RDF serialisations that Jena supports.
+
+# Background on Hadoop IO
+
+If you are already familiar with the Hadoop IO paradigm then please skip this section, if not please read as otherwise some of the later information will not make much sense.
+
+Hadoop applications and particularly Map/Reduce exploit horizontally scalability by dividing input data up into *splits* where each *split* represents a portion of the input data that can be read in *isolation* from the other pieces.  This *isolation* property is very important to understand, if a file format requires that the entire file be read sequentially in order to properly interpret it then it cannot be split and must be read as a whole.
+
+Therefore depending on the file formats used for your input data you may not get as much parallel performance because Hadoop's ability to *split* the input data may be limited.
+
+In some cases there are file formats that may be processed in multiple ways i.e. you can *split* them into pieces or you can process them as a whole.  Which approach you wish to use will depend on whether you have a single file to process or many files to process.  In the case of many files processing files as a whole may provide better overall throughput than processing them as chunks.  However your mileage may vary especially if your input data has many files of uneven size.
+
+## Compressed IO
+
+Hadoop natively provides support for compressed input and output providing your Hadoop cluster is appropriately configured.  The advantage of compressing the input/output data is that it means there is less IO workload on the cluster however this comes with the disadvantage that most compression formats block Hadoop's ability to *split* up the input.
+
+# RDF IO in Hadoop
+
+There are a wide range of RDF serialisations supported by ARQ, please see the [RDF IO](../io/) for an overview of the formats that Jena supports.  One of the difficulties posed when wrapping these for Hadoop IO is that the formats have very different properties in terms of our ability to *split* them into distinct chunks for Hadoop to
