@@ -18,9 +18,11 @@ In some cases there are file formats that may be processed in multiple ways i.e.
 
 Hadoop natively provides support for compressed input and output providing your Hadoop cluster is appropriately configured.  The advantage of compressing the input/output data is that it means there is less IO workload on the cluster however this comes with the disadvantage that most compression formats block Hadoop's ability to *split* up the input.
 
+Hadoop generally handles compression automatically and all our input and output formats are capable of handling compressed input and output as necessary.
+
 # RDF IO in Hadoop
 
-There are a wide range of RDF serialisations supported by ARQ, please see the [RDF IO](../io/) for an overview of the formats that Jena supports.
+There are a wide range of RDF serialisations supported by ARQ, please see the [RDF IO](../io/) for an overview of the formats that Jena supports.  In this section we go into a lot more depth of how exactly we support RDF IO in Hadoop.
 
 ## Input
 
@@ -63,6 +65,14 @@ As with input blank nodes provide a complicating factor in producing RDF output.
 However what we have found in practise is that the Jena writers will predictably map internal identifiers to the blank node identifiers in the output serialisations.  What this means is that even when processing output in batches we've found that using the line/batch based formats correctly preserve blank node identity.
 
 If you are concerned about potential data corruption as a result of this then you should make sure to always choose a whole file output format but be aware that this can exhaust memory if your output is large.
+
+#### Blank Node Divergence in multi-stage pipelines
+
+The other thing to consider with regards to blank nodes in output is that Hadoop will by default create multiple output files (one for each reducer) so even if consistent and valid blank nodes are output they may be spread over multiple files.
+
+In multi-stage pipelines you will need to manually concatenate these files back together (assuming they are in a format that allows this e.g. NTriples) as otherwise when you pass them as input to the next job the blank node identifiers will diverge from each other.  [JENA-820](https://issues.apache.org/jira/browse/JENA-820) discusses this problem and introduces a special configuration setting that can be used to resolve this.  Note that even with this setting enabled some formats are not capable of respecting it, see the later section on [Job Configuration Options](#job-configuration-options) for more details.
+
+An alternative workaround is to always use RDF Thrift as the intermediate output format since it preserves blank node identifiers precisely as they are seen.  This also has the advantage that RDF Thrift is extremely fast to read and write which can speed up multi-stage pipelines considerably.
 
 ### Node Output Format
 
@@ -134,11 +144,32 @@ The following table categorises how each supported RDF serialisation can be proc
   <tr><td>RDF Thrift</td><td>Yes</td><td>No</td><td>No</td></tr>
 </table>
 
-## Configuration Options
+## Job Setup
+
+To use RDF as an input and/or output format you will need to configure your Job appropriately, this requires setting the input/output format and setting the data paths:
+
+    // Create a job using default configuration
+    Job job = Job.createInstance(new Configuration(true));
+    
+    // Use Turtle as the input format
+    job.setInputFormatClass(TurtleInputFormat.class);
+    FileInputFormat.setInputPath(job, "/users/example/input");
+    
+    // Use NTriples as the output format
+    job.setOutputFormatClass(NTriplesOutputFormat.class);
+    FileOutputFormat.setOutputPath(job, "/users/example/output");
+    
+    // Other job configuration...
+
+This example takes in input in Turtle format from the directory `/users/example/input` and outputs the end results in NTriples in the directory `/users/example/output`.
+    
+Take a look at the [Javadocs](../javadoc/hadoop/io/) to find the actual available input and output format implementations.
+
+### Job Configuration Options
 
 There are a several useful configuration options that can be used to tweak the behaviour of the RDF IO functionality if desired.
 
-### Input Lines per Batch
+#### Input Lines per Batch
 
 Since our line based input formats use the standard Hadoop `NLineInputFormat` to decide how to split up inputs we support the standard `mapreduce.input.lineinputformat.linespermap` configuration setting for changing the number of lines processed per map.
 
@@ -150,19 +181,31 @@ Or you can use the convenience method of `NLineInputFormat` like so:
 
     NLineInputFormat.setNumLinesPerMap(job, 100);
     
-### Max Line Length
+#### Max Line Length
 
 When using line based inputs it may be desirable to ignore lines that exceed a certain length (for example if you are not interested in really long literals).  Again we use the standard Hadoop configuration setting `mapreduce.input.linerecordreader.line.maxlength` to control this behaviour:
 
     job.getConfiguration().setInt(HadoopIOConstants.MAX_LINE_LENGTH, 8192);
     
-### Ignoring Bad Tuples
+#### Ignoring Bad Tuples
 
 In many cases you may have data that you know contains invalid tuples, in such cases it can be useful to just ignore the bad tuples and continue.  By default we enable this behaviour and will skip over bad tuples though they will be logged as an error.  If you want you can disable this behaviour by setting the `rdf.io.input.ignore-bad-tuples` configuration setting:
 
     job.getConfiguration().setBoolean(RdfIOConstants.INPUT_IGNORE_BAD_TUPLES, false);
     
-### Output Batch Size
+#### Global Blank Node Identity
+
+The default behaviour of these libraries is to allocate file scoped blank node identifiers in such a way that the same syntactic identifier read from the same file (even if by different nodes/processes) is allocated the same blank node ID.  However the same syntactic identifier in different files should result in different blank nodes.  However as discussed earlier in the case of multi-stage jobs the intermediate outputs may be split over several files which can cause the blank node identifiers to diverge from each other when they are read back in.
+
+For multi-stage jobs this is often (but not always) incorrect and undesirable behaviour in which case you can set the `rdf.io.input.bnodes.global-identity` property to true:
+
+    job.getConfiguration.setBoolean(RdfIOConstants.GLOBAL_BNODE_IDENTITY, true);
+    
+Note however that not all formats are capable of honouring this option, notably RDF/XML and JSON-LD.
+
+As noted earlier an alternative workaround is to use RDF Thrift as the intermediate format since it guarantees to preserve blank node identifiers precisely.
+
+#### Output Batch Size
 
 The batch size for batched output formats can be controlled by setting the `rdf.io.output.batch-size` property as desired.  The default value for this if not explicitly configured is 10,000:
 
