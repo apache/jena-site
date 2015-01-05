@@ -1,6 +1,6 @@
-Title: RDF Tools for Apache Hadoop - IO API
+Title: Apache Jena Elephas - IO API
 
-The IO API provides support for reading and writing RDF within Hadoop applications.  This is done by providing `InputFormat` and `OutputFormat` implementations that cover all the RDF serialisations that Jena supports.
+The IO API provides support for reading and writing RDF within Apache Hadoop applications.  This is done by providing `InputFormat` and `OutputFormat` implementations that cover all the RDF serialisations that Jena supports.
 
 [TOC]
 
@@ -36,9 +36,11 @@ There is then also the question of whether a serialisation encodes triples, quad
 
 ### Blank Nodes in Input
 
-Note that readers familiar with RDF may be wondering how we cope with blank nodes when splitting input and that is an important concern.
+Note that readers familiar with RDF may be wondering how we cope with blank nodes when splitting input and this is an important issue to address.
 
-Essentially Jena contains functionality that allows it to predictably generate identifiers from the original identifier present in the file e.g. `_:blank`.  This means that wherever `_:blank` appears  in the original file we are guaranteed to assign it the same internal identifier.  Note that this functionality uses a seed value to ensure that blank nodes coming from different input files are not assigned the same identifier.  When used with Hadoop this seed is chosen based on a combination of the Job ID and the input file path.  This means that the same file processed by different jobs will produce different blank node identifiers each time.
+Essentially Jena contains functionality that allows it to predictably generate identifiers from the original identifier present in the file e.g. `_:blank`.  This means that wherever `_:blank` appears  in the original file we are guaranteed to assign it the same internal identifier.  Note that this functionality uses a seed value to ensure that blank nodes coming from different input files are not assigned the same identifier.
+
+When used with Hadoop this seed is chosen based on a combination of the Job ID and the input file path.  This means that the same file processed by different jobs will produce different blank node identifiers each time.  However within a job every read of the file will predictably generate blank node identifiers so splitting does not prevent correct blank node identification.
 
 Additionally the binary serialisation we use for our RDF primitives (described on the [Common API](common.html)) page guarantees that internal identifiers are preserved as-is when communicating values across the cluster.
 
@@ -70,7 +72,7 @@ If you are concerned about potential data corruption as a result of this then yo
 
 The other thing to consider with regards to blank nodes in output is that Hadoop will by default create multiple output files (one for each reducer) so even if consistent and valid blank nodes are output they may be spread over multiple files.
 
-In multi-stage pipelines you will need to manually concatenate these files back together (assuming they are in a format that allows this e.g. NTriples) as otherwise when you pass them as input to the next job the blank node identifiers will diverge from each other.  [JENA-820](https://issues.apache.org/jira/browse/JENA-820) discusses this problem and introduces a special configuration setting that can be used to resolve this.  Note that even with this setting enabled some formats are not capable of respecting it, see the later section on [Job Configuration Options](#job-configuration-options) for more details.
+In multi-stage pipelines you may need to manually concatenate these files back together (assuming they are in a format that allows this e.g. NTriples) as otherwise when you pass them as input to the next job the blank node identifiers will diverge from each other.  [JENA-820](https://issues.apache.org/jira/browse/JENA-820) discusses this problem and introduces a special configuration setting that can be used to resolve this.  Note that even with this setting enabled some formats are not capable of respecting it, see the later section on [Job Configuration Options](#job-configuration-options) for more details.
 
 An alternative workaround is to always use RDF Thrift as the intermediate output format since it preserves blank node identifiers precisely as they are seen.  This also has the advantage that RDF Thrift is extremely fast to read and write which can speed up multi-stage pipelines considerably.
 
@@ -195,15 +197,17 @@ In many cases you may have data that you know contains invalid tuples, in such c
     
 #### Global Blank Node Identity
 
-The default behaviour of these libraries is to allocate file scoped blank node identifiers in such a way that the same syntactic identifier read from the same file (even if by different nodes/processes) is allocated the same blank node ID.  However the same syntactic identifier in different files should result in different blank nodes.  However as discussed earlier in the case of multi-stage jobs the intermediate outputs may be split over several files which can cause the blank node identifiers to diverge from each other when they are read back in.
+The default behaviour of this library is to allocate file scoped blank node identifiers in such a way that the same syntactic identifier read from the same file is allocated the same blank node ID even across input splits within a job.  Conversely the same syntactic identifier in different input files will result in different blank nodes within a job.
 
-For multi-stage jobs this is often (but not always) incorrect and undesirable behaviour in which case you can set the `rdf.io.input.bnodes.global-identity` property to true:
+However as discussed earlier in the case of multi-stage jobs the intermediate outputs may be split over several files which can cause the blank node identifiers to diverge from each other when they are read back in by subsequent jobs.  For multi-stage jobs this is often (but not always) incorrect and undesirable behaviour in which case you will need to set the `rdf.io.input.bnodes.global-identity` property to true for the subsequent jobs:
 
     job.getConfiguration.setBoolean(RdfIOConstants.GLOBAL_BNODE_IDENTITY, true);
     
-Note however that not all formats are capable of honouring this option, notably RDF/XML and JSON-LD.
+**Important** - This should only be set for the later jobs in a multi-stage pipeline and should rarely (if ever) be set for single jobs or the first job of a pipeline.
+    
+Even with this setting enabled not all formats are capable of honouring this option, RDF/XML and JSON-LD will ignore this option and should be avoided as intermediate output formats.
 
-As noted earlier an alternative workaround is to use RDF Thrift as the intermediate format since it guarantees to preserve blank node identifiers precisely.
+As noted earlier an alternative workaround to enabling this setting is to instead use RDF Thrift as the intermediate output format since it guarantees to preserve blank node identifiers as-is on both reads and writes.
 
 #### Output Batch Size
 
