@@ -137,6 +137,48 @@ using the constants in `Explain.InfoLevel`.
 
      qExec.getContext().set(ARQ.symLogExec,Explain.InfoLevel.FINE) ;
 
+## tdbquery --explain
+
+The `--explain` parameter can be used for understanding the query execution. 
+An execution can detail the query, algebra and every point at which the 
+dataset is touched.
+
+For example, given the sample query execution with `tdbquery` below
+
+    tdbquery --loc=DB "SELECT * WHERE { ?a ?b ?c }"
+
+we can include the `--explain` parameter to the command
+
+    tdbquery --explain --loc=DB "SELECT * WHERE { ?a ?b ?c }"
+
+and increase the logging levels, in order to output more information about 
+the query execution.
+
+    # log4j.properties
+    log4j.rootLogger=INFO, stdlog
+    log4j.appender.stdlog=org.apache.log4j.ConsoleAppender
+    log4j.appender.stdlog.layout=org.apache.log4j.PatternLayout
+    log4j.appender.stdlog.layout.ConversionPattern=%d{HH:mm:ss} %-5p %-25c{1} :: %m%n
+    # the query execution logger
+    log4j.logger.com.hp.hpl.jena.arq.exec=INFO
+
+It is important to create a `log4j.logger.com.hp.hpl.jena.arq.exec` logger, 
+as otherwise the command won't output the query execution details.
+
+The command output will be similar to this one.
+
+    00:05:20 INFO  exec                      :: QUERY
+      SELECT  *
+      WHERE
+        { ?a ?b ?c }
+    00:05:20 INFO  exec                      :: ALGEBRA
+      (quadpattern (quad <urn:x-arq:DefaultGraphNode> ?a ?b ?c))
+    00:05:20 INFO  exec                      :: TDB
+      (quadpattern (quad <urn:x-arq:DefaultGraphNode> ?a ?b ?c))
+    00:05:20 INFO  exec                      :: Execute :: (?a ?b ?c)
+
+The logging operation can be expensive, so try to limit it when possible.
+
 ## Statistics Rule File
 
 The syntax is `SSE`, a simple format that uses
