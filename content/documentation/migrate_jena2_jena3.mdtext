@@ -1,0 +1,69 @@
+Title: Migrating from Jena2 to Jena3
+
+Apache Jena3 is a major version release for Jena - it is not binary or compatibly with
+Jena2. The migration consists of package renaming and database reloading.
+
+## Key Changes
+
+* [Package renaming](#packaging)
+* [RDF 1.1 Semantics for plain literals](#rdf11-plain-literals)
+* [Persistent data (TDB, SDB) should be reloaded.](#persistent-data)
+
+## Package Name Changes (#packaging)
+
+Packages with a base name of `com.hp.hpl.jena` become `org.apache.jena`.
+
+Global replacement of `import com.hp.hpl.jena.` with `import
+org.apache.jena.` will cover a large majority of cases.
+
+The Jena APIs remain unchanaged expect for this renaming.
+
+Only java package names are being changed.  Vocabularies are not affected.
+
+@@ *Provisional : We need to identify if an key other changes are to be included.*
+
+## RDF 1.1
+
+Many of the changes and refinements for RDF 1.1 are already in Jena2. The
+parsers for Turtle-family languages already follow the RDF 1.1 grammars
+and output is compatible with RDF 1.1 and earlier output details.
+
+### RDF 1.1 changes for plain literals (#rdf11-plain-literals)
+
+In RDF 1.1, all literals have a datatype.  The datatype of a plain literal
+with no language tag (also called a "simple literal") has datatype
+`xsd:string`.  A plain literal with a language tag has datatype
+`rdf:langString`.
+
+Consequences:
+
+`"abc"` and `"abc"^^xsd:string` are the same RDF term in RDF 1.1.  Jena2
+memory models have always treated these as the same value, but different
+terms. Jena2 peristent models treated them as two separate term and two
+separate values.
+
+Data is not invalidated by this change.
+
+* The parsers will give datatypes to all data read, there is no need to
+change the data.  
+
+* Output is in the datatype-less form (an abbreaviated syntax) even in
+N-triples.
+
+* Applications with explicitly use `^^xsd:string` (or in RDF/XML,
+`rdf:datatype="http://www.w3.org/2001/XMLSchema#string"`) will see a change
+in appearance.
+
+* Applications with a mix of plain literals and explicit `^^xsd:string` 
+(the RDF 1.1 Work Group belived these to be uncommon) may see changes.
+
+* Applications that do their own RDF output need to be careful to not assume
+that having datatype excludes the possibility of also having a language
+tag.
+
+## Persistent Data (#persistent-data)
+
+For data stored in [TDB](tdb/) and SDB, it is advisable to reload data.
+
+Data that does not use explicit `xsd:string` should be safe but it is still
+recommended that data is reloaded at a convenient time.
