@@ -41,29 +41,29 @@ triple:
 
 ### Evaluator Methods
  
-    public boolean evaluate( Action action, SecNode graphIRI );
+    public boolean evaluate( Object principal, Action action, SecNode graphIRI );
 Determine if the action is permitted within the graph.
 
-    public boolean evaluate( Action action, SecNode graphIRI, SecTriple triple );
+    public boolean evaluate( Object principal, Action action, SecNode graphIRI, SecTriple triple );
 Determine if the action is allowed on the triple within the graph.
 
-    public boolean evaluate( Set<Action> actions, SecNode graphIRI );
+    public boolean evaluate( Object principal, Set<Action> actions, SecNode graphIRI );
 Determine if all actions are allowed on the graph.
     
-    public boolean evaluate( Set<Action> actions, SecNode graphIRI, SecTriple triple );            
+    public boolean evaluate( Object principal, Set<Action> actions, SecNode graphIRI, SecTriple triple );            
 Determine if all the actions are allowed on the triple within the graph.            
 
-    public boolean evaluateAny( Set<Action> actions, SecNode graphIRI );
+    public boolean evaluateAny( Object principal, Set<Action> actions, SecNode graphIRI );
 Determine if any of the actions are allowed on the graph.
    
-    public boolean evaluateAny( Set<Action> actions, SecNode graphIRI, SecTriple triple );
+    public boolean evaluateAny( Object principal, Set<Action> actions, SecNode graphIRI, SecTriple triple );
 Determine if any of the actions are allowed on the triple within the graph.
 
-    public boolean evaluateUpdate( SecNode graphIRI, SecTriple from, SecTriple to );
+    public boolean evaluateUpdate( Object principal, SecNode graphIRI, SecTriple from, SecTriple to );
 Determine if the user is allowed to update the "from" triple to the "to" triple.            
 
-    public Principal getPrincipal();   
-returns the current principal or null if there is no current principal.    
+    public Object getPrincipal();   
+Returns the current principal or null if there is no current principal.    
 
 ## Sample Implementation
 
@@ -73,6 +73,8 @@ implementation simply has a `setPrincipal(String name)` method.  A real implemen
 user principal or name from the authentication system.  This implementation also requires access to the underlying
 model to determine if the user has access, however, that is not a requirement of the SecurityEvaluator in general.
 Determining access from the information provided is an exercise for the implementer. 
+
+See the example jar for another implementation example.
 
 <!-- language: lang-java -->
     
@@ -94,13 +96,14 @@ Determining access from the information provided is an exercise for the implemen
         }
         
         @Override
-        public boolean evaluate(Action action, SecNode graphIRI) {
+        public boolean evaluate(Object principal, Action action, SecNode graphIRI) {
             // we allow any action on a graph.
             return true;
         }
     
-        private boolean evaluate( Resource r )
+        private boolean evaluate( Object principalObj, Resource r )
         {
+            Principal principal = (Principal)principalObj;
             // a message is only available to sender or recipient
             if (r.hasProperty( RDF.type, msgType ))
             {
@@ -110,7 +113,7 @@ Determining access from the information provided is an exercise for the implemen
             return true;    
         }
         
-        private boolean evaluate( SecNode node )
+        private boolean evaluate( Object principal, SecNode node )
         {
             if (node.equals( SecNode.ANY )) {
                 return false;  // all wild cards are false
@@ -118,11 +121,11 @@ Determining access from the information provided is an exercise for the implemen
             
             if (node.getType().equals( SecNode.Type.URI)) {
                 Resource r = model.createResource( node.getValue() );
-                return evaluate( r );
+                return evaluate( principal, r );
             }
             else if (node.getType().equals( SecNode.Type.Anonymous)) {
                 Resource r = model.getRDFNode( NodeFactory.createAnon( new AnonId( node.getValue()) ) ).asResource();
-                return evaluate( r );
+                return evaluate( principal, r );
             }
             else
             {
@@ -131,42 +134,42 @@ Determining access from the information provided is an exercise for the implemen
     
         }
         
-        private boolean evaluate( SecTriple triple ) {
-            return evaluate( triple.getSubject()) &&
-                    evaluate( triple.getObject()) &&
-                    evaluate( triple.getPredicate());
+        private boolean evaluate( Object principal, SecTriple triple ) {
+            return evaluate( principal, triple.getSubject()) &&
+                    evaluate( principal, triple.getObject()) &&
+                    evaluate( principal, triple.getPredicate());
         }
         
         @Override
-        public boolean evaluate(Action action, SecNode graphIRI, SecTriple triple) {
-            return evaluate( triple );
+        public boolean evaluate(Object principal, Action action, SecNode graphIRI, SecTriple triple) {
+            return evaluate( principal, triple );
         }
     
         @Override
-        public boolean evaluate(Set<Action> actions, SecNode graphIRI) {
+        public boolean evaluate(Object principal, Set<Action> actions, SecNode graphIRI) {
             return true;
         }
     
         @Override
-        public boolean evaluate(Set<Action> actions, SecNode graphIRI,
+        public boolean evaluate(Object principal, Set<Action> actions, SecNode graphIRI,
                 SecTriple triple) {
-            return evaluate( triple );
+            return evaluate( principal, triple );
         }
     
         @Override
-        public boolean evaluateAny(Set<Action> actions, SecNode graphIRI) {
+        public boolean evaluateAny(Object principal, Set<Action> actions, SecNode graphIRI) {
             return true;
         }
     
         @Override
-        public boolean evaluateAny(Set<Action> actions, SecNode graphIRI,
+        public boolean evaluateAny(Object principal, Set<Action> actions, SecNode graphIRI,
                 SecTriple triple) {
-            return evaluate( triple );
+            return evaluate( principal, triple );
         }
     
         @Override
-        public boolean evaluateUpdate(SecNode graphIRI, SecTriple from, SecTriple to) {
-            return evaluate( from ) && evaluate( to );
+        public boolean evaluateUpdate(Object principal, SecNode graphIRI, SecTriple from, SecTriple to) {
+            return evaluate( principal, from ) && evaluate( principal, to );
         }
     
         public void setPrincipal( String userName )
