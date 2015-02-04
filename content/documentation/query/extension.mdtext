@@ -52,7 +52,12 @@ access the queried dataset.
 The ARQ function library uses this mechanism.  The namespace of the
 ARQ function library is <`http://jena.hpl.hp.com/ARQ/function#>`.
 
-    PREFIX afn: <http://jena.hpl.hp.com/ARQ/function#>PREFIX dc: <http://purl.org/dc/elements/1.1/>SELECT ?v{ ?x dc:date ?date . FILTER (?date < afn:now() )}
+    PREFIX afn: <http://jena.hpl.hp.com/ARQ/function#>
+    PREFIX dc: <http://purl.org/dc/elements/1.1/>
+    SELECT ?v { 
+        ?x dc:date ?date . 
+        FILTER (?date < afn:now() )
+    }
 
 The afn:now returns the time the query started.
 
@@ -80,15 +85,26 @@ be query variable). They may take a list for subject or object.
 One common case is for access to collections (RDF lists) or
 containers (rdf:Bag, rdf:Seq, rdf:Alt).
 
-    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>SELECT ?member{ ?x :p ?list .     # Some way to find the list ?list list:member ?member .}
+    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>
+    SELECT ?member { 
+        ?x :p ?list .     # Some way to find the list 
+        ?list list:member ?member .
+    }
 
 which can also be written:
 
-    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>SELECT ?member{ ?x :p [ list:member ?member ] }
+    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>
+    SELECT ?member { 
+        ?x :p [ list:member ?member ] 
+    }
 
 Likewise, RDF containers:
 
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>SELECT ?member{ ?x :p ?bag .     # Some way to find the bag ?bag rdfs:member ?member .}
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?member { 
+        ?x :p ?bag .     # Some way to find the bag 
+        ?bag rdfs:member ?member .
+    }
 
 Property functions can also take lists in the subject or object
 slot.
@@ -99,7 +115,10 @@ ad localname parts to variables (if the variables are already
 bound, not constants are used, `splitIRI` will check the values).
 
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    PREFIX apf: <java:com.hp.hpl.jena.query.pfunction.library.>SELECT ?namespace ?localname{ xsd:string apf:splitIRI (?namespace ?localname) }
+    PREFIX apf: <java:com.hp.hpl.jena.query.pfunction.library.>
+    SELECT ?namespace ?localname { 
+        xsd:string apf:splitIRI (?namespace ?localname) 
+    }
 
 Property functions might conflict with inference rules and it can
 be turned off by the Java code:
