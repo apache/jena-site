@@ -1,0 +1,153 @@
+Title: Adding Jena-Security to Fuseki.
+
+## Overview
+
+The goal of this document is to add jena-security to a fuseki deployment to restrict access to graph data.  This example will take the jena-security example application, deploy the data to a fuseki instance and add the jena-security to achieve the same access restrictions that the example  application has.
+
+To do this you will need a Fuseki installation, the Security Packages and a SecurityEvaluator implementation.  For this example we will use the SecurityEvaluator from the Security-Examples.
+
+## Set up
+
+This example uses Fuseki 2.0.0-SNAPSHOT, and Security 2.12.2-SNAPSHOT and Apache Commons Collections v4.  If you are using an earlier Security version you will need to download the source code to compile the example.
+
+Fuseki can be downloaded from: 
+[https://repository.apache.org/content/repositories/snapshots/org/apache/jena/apache-jena-fuseki/]
+
+Jena Security jars can be downloaded from: 
+[https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-security/]
+
+1. Download and unpack Fuseki.  The directory that you unpack Fuseki into will be referred to as the `Fuseki Home` directory for the remainder of this document.
+
+2. Download Security 2.12.2 jar and 2.12.2 security-example jar.
+
+3. Copy the Security jar and the Security example jar into the Fuseki Home directory.  For the rest of this document the security jar will be referred to as `security.jar` and the security-example.jar as `example.jar`
+
+4. Download the Apache Commons Collections v4
+[http://commons.apache.org/proper/commons-collections/download_collections.cgi]
+Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
+
+5. Add security jars to the startup script/batch file.
+
+* On *NIX edit fuseki-server script 
+
+comment out the line that reads `exec java  $JVM_ARGS -jar "$JAR" "$@"`
+uncomment the last two lines that read:
+
+     ##   APPJAR=MyCode.jar
+     ##   java $JVM_ARGS -cp "$JAR:$APPJAR" org.apache.jena.fuseki.cmd.FusekiCmd "$@"
+
+
+change `MyCode.jar` to `security.jar:example.jar:commons-collections*.jar`
+
+* On Windows edit fuseki-server.bat file 
+
+comment out the line that reads `java -Xmx1200M -jar fuseki-server.jar %*`
+uncomment the line that reads
+`@REM  java ... -cp fuseki-server.jar;MyCustomCode.jar org.apache.jena.fuseki.cmd.FusekiCmd %*`
+
+change `MyCustomCode.jar` to `security.jar;example.jar;commons-collections*.jar`
+
+
+6. run the fuseki-server script or batch file.
+
+7. Stop the server. 
+
+8. Extract teh example configuration into the newly created `Fuseki Home/run` directory.
+From the example.jar archive extract 
+ * `/org/apache/jena/security/example/example.ttl` into the `Fuseki Home/run` directory
+ * `/org/apache/jena/security/example/fuseki/config.ttl` into the `Fuseki Home/run` directory
+ * `/org/apache/jena/security/example/fuseki/shiro.ini` into the `Fuseki Home/run` directory
+
+
+9. run `fuseki-server –config=run/config.ttl` or `fuseki-server.bat –config=run/config.ttl`
+
+## Review of configuration
+
+At this point the system is configured with the following logins:
+
+<table>
+<tr><th>Login</th><th>password</th><th>Access to</th></tr>
+<tr><td>admin</td><td>admin</td></td>Everything</td></tr>
+<tr><td>alice</td><td>alice</td></td>Only messages to or from alice</td></tr>
+<tr><td>bob</td><td>bob</td></td>Only messages to or from bob</td></tr>
+<tr><td>chuck</td><td>chuck</td></td>Only messages to or from chuck</td></tr>
+<tr><td>darla</td><td>darla</td></td>Only messages to or from darla</td></tr>
+</table>
+
+The messages graph is defined in the run/example.ttl file.
+
+The run/shiro.ini file lists the users and their passwords and restricts access to the graphs.
+
+The run.config.ttl file adds the security to the graph as follows:
+
+Define all the prefixes 
+
+    @prefix fuseki:  <http://jena.apache.org/fuseki#> .
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+    @prefix sec:    <http://apache.org/jena/security/Assembler#> .
+    @prefix my:     <http://example.org/#> .
+
+
+Load the SecuredAssembler class from the security library and define the sec:Model as a subclass of ja:NamedModel.
+
+    [] ja:loadClass    "org.apache.jena.security.SecuredAssembler" .
+    sec:Model       rdfs:subClassOf  ja:NamedModel .
+
+
+Define the base model that contains the unsecured data.
+
+    my:baseModel rdf:type ja:MemoryModel;
+        ja:content [ja:externalContent <file:./example.ttl>] 
+        .   
+
+
+Define the secured model.  This is where permissions is applied to the my:baseModel to create a model that has permission restrictions.  Note that it is using the security evaluator implementation (sec:evaluatorImpl) called my:secEvaluator which we will define next.
+
+    my:securedModel rdf:type sec:Model ;
+        sec:baseModel my:baseModel ;
+        ja:modelName "https://example.org/securedModel" ;
+        sec:evaluatorImpl my:secEvaluator .
+
+Define the security evaluator.  This is where we use the example ShiroExampleEvaluator.  For your production environment you will replace "org.apache.jena.security.example.ShiroExampleEvaluator"  with your SecurityEvaluator implementation.  Note that  ShiroExampleEvaluator constructor takes a Model argument.  We pass in the unsecured baseModel so that the evaluator can read it unencumbered.  Your implementation of SecurityEvaluator may have different parameters to meet your specific needs.
+
+    my:secEvaluator rdf:type sec:Evaluator ;
+        sec:args [  
+            rdf:_1 my:baseModel ;
+        ] ;
+        sec:evaluatorClass "org.apache.jena.security.example.ShiroExampleEvaluator" .
+
+
+Define the dataset that we will use for in the server.
+
+    my:securedDataset rdf:type ja:RDFDataset ;
+        ja:defaultGraph my:securedModel .
+
+
+Define the fuseki:Server.
+
+    my:fuskei rdf:type fuseki:Server ;
+        fuseki:services (
+            my:service1
+        ) .
+
+Define the service for the fuseki:Service.  Note that the fuseki:dataset served by this server is the secured dataset defined above.
+   
+    my:service1 rdf:type fuseki:Service ;
+        rdfs:label                        "My Secured Data Service" ;
+        fuseki:name                       "myAppFuseki" ;       # http://host:port/myAppFuseki
+        fuseki:serviceQuery               "query" ;    # SPARQL query service
+        fuseki:serviceQuery               "sparql" ;   # SPARQL query service
+        fuseki:serviceUpdate              "update" ;   # SPARQL query service
+        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
+        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
+        # A separate ead-only graph store endpoint:
+        fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
+        fuseki:dataset                   my:securedDataset ;
+    .
+
+
+
+
