@@ -33,12 +33,12 @@ Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
         3. Uncomment the line that reads `\#\#   java $JVM_ARGS -cp "$JAR:$APPJAR" org.apache.jena.fuseki.cmd.FusekiCmd "$@"`
         4. change `MyCode.jar` to `security.jar:example.jar:commons-collections*.jar`
     
-    * On Windows edit fuseki-server.bat file 
-       1. comment out the line that reads `java -Xmx1200M -jar fuseki-server.jar %*`
-       2. uncomment the line that reads `@REM  java ... -cp fuseki-server.jar;MyCustomCode.jar org.apache.jena.fuseki.cmd.FusekiCmd %*`
-       3. change `MyCustomCode.jar` to `security.jar;example.jar;commons-collections*.jar`
+    * On Windows edit fuseki-server.bat file.
+        1. Comment out the line that reads `java -Xmx1200M -jar fuseki-server.jar %*`
+        2. Uncomment the line that reads `@REM  java ... -cp fuseki-server.jar;MyCustomCode.jar org.apache.jena.fuseki.cmd.FusekiCmd %*`
+        3. Change `MyCustomCode.jar` to `security.jar;example.jar;commons-collections*.jar`
 
-6. run the fuseki-server script or batch file.
+6. Run the fuseki-server script or batch file.
 
 7. Stop the server. 
 
@@ -48,7 +48,7 @@ Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
     * extract `/org/apache/jena/security/example/fuseki/config.ttl` into the `Fuseki Home/run` directory
     * extract `/org/apache/jena/security/example/fuseki/shiro.ini` into the `Fuseki Home/run` directory
 
-9. run `fuseki-server –config=run/config.ttl` or `fuseki-server.bat –config=run/config.ttl`
+9. Run `fuseki-server –config=run/config.ttl` or `fuseki-server.bat –config=run/config.ttl`
 
 ## Review of configuration
 
@@ -65,9 +65,11 @@ At this point the system is configured with the following logins:
 
 The messages graph is defined in the `run/example.ttl` file.
 
-The `run/shiro.ini` file lists the users and their passwords and restricts access to the graphs.
+The `run/shiro.ini` file lists the users and their passwords and configures Fuseki to require authentication to access to the graphs.
 
-The `run/config.ttl` file adds the security to the graph as follows:
+The `run/config.ttl` file adds the permissions to the graph as follows by applying the 
+`org.apache.jena.security.example.ShiroExampleEvaluator` security evaluator to the message
+graph.
 
 Define all the prefixes 
 
