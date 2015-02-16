@@ -5,12 +5,12 @@ Query Builder for Jena.  Implementations of Ask, Construct and Select builders t
 developers to create queries without resorting to StringBuilders or similar solutions.
 
 Each of the builders has a series of methods to define the query.  Each method returns the 
-builder for easy chaing.  The  example:
+builder for easy chaining.  The  example:
 
 
     SelectBuilder sb = new SelectBuilder()
         .addVar( "*" )
-        .addWhere( "?s", "?o", "?p" );
+        .addWhere( "?s", "?p", "?o" );
     
     Query q = sb.build() ;
 
@@ -51,16 +51,13 @@ The query builders have the ability to replace variables with other values.  Thi
 
     SelectBuilder sb = new SelectBuilder()
         .addVar( "*" )
-        .addWhere( "?s", "?o", "?p" );
+        .addWhere( "?s", "?p", "?o" );
     
-    sb.setVar( Var.alloc( "?p" ), NodeFactory.createURI( "http://xmlns.com/foaf/0.1/Person" ) ) ;
+    sb.setVar( Var.alloc( "?o" ), NodeFactory.createURI( "http://xmlns.com/foaf/0.1/Person" ) ) ;
     Query q = sb.build();
 
-produces 
+produces
 
     SELECT * 
     WHERE 
       { ?s ?p <http://xmlns.com/foaf/0.1/Person> }
-
-
-
