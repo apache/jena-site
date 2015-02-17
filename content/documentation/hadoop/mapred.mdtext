@@ -16,6 +16,8 @@ The following common tasks are supported:
 - Splitting
 - Transforming
 
+Note that standard Map/Reduce programming rules apply as normal.  For example if a mapper/reducer transforms between data types then you need to make `setMapOutputKeyClass()`, `setMapOutputValueClass()`, `setReducerOutputKeyClass()` and `setReducerOutputValueClass()` calls on your Job configuration as necessary.
+
 ## Counting
 
 Counting is one of the classic Map/Reduce tasks and features as both the official Map/Reduce example for both Hadoop itself and for Elephas.  Implementations cover a number of different counting tasks that you might want to carry out upon RDF data, in most cases you will use the desired `Mapper` implementation in conjunction with the `NodeCountReducer`.
@@ -36,7 +38,9 @@ Finally you may be interested in the usage of namespaces within your data, in th
 
 ## Filtering
 
-Filtering is another classic Map/Reduce use case, here you want to take the data and extract only the portions that you are interested in based on some criteria.  All our filter `Mapper` implementations also support a Job configuration option named `rdf.mapreduce.filter.invert` allowing their effects to be inverted if desired.
+Filtering is another classic Map/Reduce use case, here you want to take the data and extract only the portions that you are interested in based on some criteria.  All our filter `Mapper` implementations also support a Job configuration option named `rdf.mapreduce.filter.invert` allowing their effects to be inverted if desired e.g.
+
+    config.setProperty(RdfMapReduceConstants.FILTER_INVERT, true);
 
 ### Valid Data
 
@@ -47,7 +51,7 @@ One type of filter that may be useful particularly if you are generating RDF dat
 - Object can be a URI/Blank Node/Literal
 - Graph can only be a URI or Blank Node
 
-If you wanted to extract only the bad data e.g. for debugging then you can of course invert these filters by setting `rdf.mapreduce.filter.invert` to `true`.
+If you wanted to extract only the bad data e.g. for debugging then you can of course invert these filters by setting `rdf.mapreduce.filter.invert` to `true` as shown above.
 
 ### Ground Data
 
@@ -55,9 +59,13 @@ In some cases you may only be interesting in triples/quads that are grounded i.e
 
 ### Data with a specific URI
 
-In lots of case you may want to extract only data where a specific URI occurs in a specific position, for example if you wanted to extract all the `rdf:type` declarations then you might want to use the `TripleFilterByPredicateUriMapper` or `QuadFilterByPredicateUriMapper` as appropriate.  The job configuration option `rdf.mapreduce.filter.predicate.uris` is used to provide a comma separated list of the full URIs you want the filter to accept.
+In lots of case you may want to extract only data where a specific URI occurs in a specific position, for example if you wanted to extract all the `rdf:type` declarations then you might want to use the `TripleFilterByPredicateUriMapper` or `QuadFilterByPredicateUriMapper` as appropriate.  The job configuration option `rdf.mapreduce.filter.predicate.uris` is used to provide a comma separated list of the full URIs you want the filter to accept e.g.
 
-Similar to the counting of node usage you can substitute `Predicate` for `Subject`, `Object` or `Graph` as desired.  You will also need to do this in the job configuration option, for example to filter on subject URIs in quads use the `QuadFilterBySubjectUriMapper` and the `rdf.mapreduce.filter.subject.uris` configuration option.
+    config.setProperty(RdfMapReduceConstants.FILTER_PREDICATE_URIS, "http://example.org/predicate,http://another.org/predicate");
+
+Similar to the counting of node usage you can substitute `Predicate` for `Subject`, `Object` or `Graph` as desired.  You will also need to do this in the job configuration option, for example to filter on subject URIs in quads use the `QuadFilterBySubjectUriMapper` and the `rdf.mapreduce.filter.subject.uris` configuration option e.g.
+
+    config.setProperty(RdfMapReduceConstants.FILTER_SUBJECT_URIS, "http://example.org/myInstance");
 
 ## Grouping
 
@@ -75,3 +83,46 @@ Splitting allows you to split triples/quads up into the constituent RDF nodes, w
 Transforming provides some very simple implementations that allow you to convert between triples and quads.  For the lossy case of going from quads to triples simply use the `QuadsToTriplesMapper`.
 
 If you want to go the other way - triples to quads - this requires adding a graph field to each triple and we provide two implementations that do that.  Firstly there is `TriplesToQuadsBySubjectMapper` which puts each triple into a graph based on its subject i.e. all triples with a common subject go into a graph named for the subject.  Secondly there is `TriplesToQuadsConstantGraphMapper` which simply puts all triples into the default graph, if you wish to change the target graph you should extend this class.  If you wanted to select the graph to use based on some arbitrary criteria you should look at extending the `AbstractTriplesToQuadsMapper` instead.
+
+# Example Jobs
+
+## Node Count
+
+The following example shows how to configure a job which performs a node count i.e. counts the usages of RDF terms (aka nodes in Jena parlance) within the data:
+
+    
+    // Assumes we have already created a Hadoop Configuration 
+    // and stored it in the variable config
+    Job job = Job.getInstance(config);
+    
+    // This is necessary as otherwise Hadoop won't ship the JAR to all
+    // nodes and you'll get ClassDefNotFound and similar errors
+    job.setJarByClass(Example.class);
+    
+    // Give our job a friendly name
+    job.setJobName("RDF Triples Node Usage Count");
+
+    // Mapper class
+    // Since the output type is different from the input type have to declare
+    // our output types
+    job.setMapperClass(TripleNodeCountMapper.class);
+    job.setMapOutputKeyClass(NodeWritable.class);
+    job.setMapOutputValueClass(LongWritable.class);
+    
+    // Reducer class
+    job.setReducerClass(NodeCountReducer.class);
+
+    // Input
+    // TriplesInputFormat accepts any RDF triples serialisation
+    job.setInputFormatClass(TriplesInputFormat.class);
+    
+    // Output
+    // NTriplesNodeOutputFormat produces lines consisting of a Node formatted
+    // according to the NTriples spec and the value separated by a tab
+    job.setOutputFormatClass(NTriplesNodeOutputFormat.class);
+    
+    // Set your input and output paths
+    FileInputFormat.setInputPath(job, new Path("/example/input"));
+    FileOutputFormat.setOutputPath(job, new Path("/example/output"));
+    
+    // Now run the job...
