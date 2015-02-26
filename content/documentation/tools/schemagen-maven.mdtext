@@ -10,15 +10,15 @@ it can be used by IDE's such as Eclipse to provide name-completion for
 constants from the ontology.
 
 For some projects, invoking `schemagen` from the command line, perhaps via `ant`,
-is sufficient. For projects organised around Apache maven, it would be convenient to integrate
-the schemagen translation step into maven's normal build process. This plugin
+is sufficient. For projects organised around Apache Maven, it would be convenient to integrate
+the schemagen translation step into Maven's normal build process. This plugin
 provides a means to do just that.
 
 ## Pre-requisites
 
-This plugin adds a step to the maven build process to automatically translate RDFS
+This plugin adds a step to the Maven build process to automatically translate RDFS
 and OWL files, encoded as RDF/XML, Turtle or N-triples into Java source files.
-This plugin is designed to be used with a Java project that is already using Apache maven to
+This plugin is designed to be used with a Java project that is already using Apache Maven to
 control the build. Non-Java projects do not need this tool. Projects that are
 not using Maven should see the [schemagen documentation](schemagen.html)
 for ways to run `schemagen` from the command line.
@@ -29,13 +29,34 @@ for ways to run `schemagen` from the command line.
 Schemagen is available from the maven central repository. To use it, add
 the following dependency to your `pom.xml`:
 
-    <dependency>
-      <groupId>org.apache.jena.tools</groupId>
-      <artifactId>schemagen</artifactId>
-      <version>0.2-SNAPSHOT</version>
-      <type>maven-plugin</type>
-    </dependency>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-maven-tools</artifactId>
+          <version>x.y.z</version>
+          <executions>
+            <execution>
+              <id>schemagen</id>
+              <goals>
+                <goal>translate</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+    <dependencies>
+       <dependency>
+         <groupId>org.apache.jena</groupId>
+         <artifactId>jena-core</artifactId>
+         <version>x.y.z</version>
+      </dependency>
+    </dependencies>
 
+Replace the `x.y.z` above with the latest versions as found by
+browsing [jena-maven-tools](http://central.maven.org/maven2/org/apache/jena/jena-maven-tools/) 
+and [jena-core](http://central.maven.org/maven2/org/apache/jena/jena-core/) in Maven Central.
 
 
 ## Configuration: basic principles
@@ -52,15 +73,15 @@ been generated). So we need:
   * a mechanism to specify common options for all input files
   * a mechanism to specify per-file unique options
 
-In maven, all such configuration information is provided via the `pom.xml` file. We tell
-maven to use the plugin via the `<build>/<plugins>` section:
+In Maven, all such configuration information is provided via the `pom.xml` file. We tell
+Maven to use the plugin via the `<build> <plugins>` section:
 
     <build>
       <plugins>
         <plugin>
-          <groupId>org.openjena.tools</groupId>
-          <artifactId>schemagen</artifactId>
-          <version>0.2-SNAPSHOT</version>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-maven-tools</artifactId>
+          <version>x.y.z</version>
           <configuration>
           </configuration>
           <executions>
@@ -74,6 +95,11 @@ maven to use the plugin via the `<build>/<plugins>` section:
         </plugin>
       </plugins>
     </build>
+
+Replace the `x.y.z` above with the latest versions as found by
+browsing [jena-maven-tools](http://central.maven.org/maven2/org/apache/jena/jena-maven-tools/) 
+ in Maven Central.
+
 
 The configuration options all nest inside the `<configuration>` section.
 
@@ -93,7 +119,7 @@ in `src/main/vocabs`:
 
 Options are, in general, given in the `<fileOptions>` section. A given
 `<source>` refers to one input source - one file - as named by the
-`<input> name. The actual option names are taken from the RDF [config
+`<input>` name. The actual option names are taken from the RDF [config
 file property names](http://jena.apache.org/documentation/tools/schemagen.html),
 omitting the namespace:
 
@@ -115,38 +141,50 @@ across all input sources:
 
 ## Example configuration
 
+**Note:** Replace the `x.y.z` below with the latest versions as found by
+browsing [jena-maven-tools](http://central.maven.org/maven2/org/apache/jena/jena-maven-tools/) 
+and [jena-core](http://central.maven.org/maven2/org/apache/jena/jena-core/) in Maven Central.
+
+
     <build>
-      <plugins>
-        <plugin>
-          <groupId>org.openjena.tools</groupId>
-          <artifactId>schemagen</artifactId>
-          <version>0.2-SNAPSHOT</version>
-          <configuration>
-            <includes>
-              <include>src/main/vocabs/*.ttl</include>
-              <include>src/main/vocabs/foaf.rdf</include>
-            </includes>
-            <fileOptions>
-              <source>
-                <input>default</input>
-                <package-name>org.example.test</package-name>
-              </source>
-              <source>
-                <!-- Test2.java (only) will contain OntModel declarations -->
-                <input>src/main/vocabs/demo2.ttl</input>
-                <ontology>true</ontology>
-              </source>
-            </fileOptions>
-          </configuration>
-          <executions>
-            <execution>
-              <id>schemagen</id>
-              <goals>
-                <goal>translate</goal>
-              </goals>
-            </execution>
-          </executions>
+     <plugins>
+      <plugin>
+        <groupId>org.apache.jena</groupId>
+        <artifactId>jena-maven-tools</artifactId>
+        <version>x.y.z</version>
+        <configuration>
+          <includes>
+            <include>src/main/vocabs/*.ttl</include>
+            <include>src/main/vocabs/foaf.rdf</include>
+          </includes>
+          <fileOptions>
+            <source>
+              <input>default</input>
+              <package-name>org.example.test</package-name>
+            </source>
+            <source>
+              <!-- Test2.java (only) will contain OntModel declarations -->
+              <input>src/main/vocabs/demo2.ttl</input>
+              <ontology>true</ontology>
+            </source>
+          </fileOptions>
+        </configuration>
+        <executions>
+         <execution>
+          <id>schemagen</id>
+           <goals>
+            <goal>translate</goal>
+           </goals>
+          </execution>
+         </executions>
         </plugin>
-      </plugins>
-    </build>
+       </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+         <groupId>org.apache.jena</groupId>
+         <artifactId>jena-core</artifactId>
+         <version>x.y.z</version>
+        </dependency>
+      </dependencies>
 
