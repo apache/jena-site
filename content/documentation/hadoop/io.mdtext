@@ -18,7 +18,16 @@ In some cases there are file formats that may be processed in multiple ways i.e.
 
 Hadoop natively provides support for compressed input and output providing your Hadoop cluster is appropriately configured.  The advantage of compressing the input/output data is that it means there is less IO workload on the cluster however this comes with the disadvantage that most compression formats block Hadoop's ability to *split* up the input.
 
-Hadoop generally handles compression automatically and all our input and output formats are capable of handling compressed input and output as necessary.
+Hadoop generally handles compression automatically and all our input and output formats are capable of handling compressed input and output as necessary.  However in order to use this your Hadoop cluster/job configuration must be appropriately configured to inform Hadoop about what compression codecs are in use.
+
+For example to enable BZip2 compression (assuming your cluster doesn't enable this by default):
+
+    // Assumes you already have a Configuration object you are preparing 
+    // in the variable config
+    
+    config.set(HadoopIOConstants.IO_COMPRESSION_CODECS, BZip2Codec.class.getCanonicalName());
+
+See the Javadocs for the Hadoop [CompressionCodec](https://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/compress/CompressionCodec.html) API to see the available out of the box implementations.  Note that some clusters may provide additional compression codecs beyond those built directly into Hadoop.
 
 # RDF IO in Hadoop
 
