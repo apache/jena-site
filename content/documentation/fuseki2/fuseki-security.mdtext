@@ -1,12 +1,74 @@
-## SPARQL etc from Java
+Title: Security in Fuseki2
 
-> _@@_ Placeholder.
+Fuseki2 provides security by using [Apache Shiro](http://shiro.apache.org/).
 
-Provided by [Apache Shiro](http://shiro.apache.org/).
+The default is that the SPARQL protocols are open but the administrative
+actions are limited to the localhost. "localhost" is determined by
+connecting using the `http://localhost:.../...`. It must be "localhost", or
+`127.0.0.1` (IPv4), or `[::1]` (IPv6), not the external IP address of the
+machine.
 
-Defaults:
+There is an example to enable simple user/password security; this is only
+suitable where the connection is secure, is shown `shiro.ini` file with
+defaults user 'admin' and password 'pw'.  These should be changed before
+use.
 
-Datasets are open
+This has some use where the server is in a secure network environment with
+additional restrictions on extenral requests also applied.  behind a
+reverse proxy and the connection can have addition security (e.g. no access
+to URLs starting '/$/').
 
-Admin functions that require security use, by default, user 'admin', password 'pw'.
+The Apache Shiro website has documentation for creating more sophisticated
+setups.
 
+The security provided in Fuseki is not intended to replace existing
+mechanisms.  Security can also be given to a Fuseki server outside the
+server using [Apache Httpd](http://httpd.apache.org/) or
+[Nginx](http://nginx.org/) as a reverse proxy then limiting the fuseki
+server to only process requests from the local machine by controlling
+ports.
+
+Changing the security setup requires a server restart.
+
+Contributions of more examples are very welcome.
+
+## Examples
+
+The shipped `shiro.ini` has additional comments.
+
+### The default configuration.
+
+This is a minimal configuration for the default configuration.
+
+```
+[main]
+localhost=org.apache.jena.fuseki.authz.LocalhostFilter
+
+[urls]
+## Control functions open to anyone
+/$/status = anon
+/$/ping   = anon
+## and the rest are restricted to localhost.
+## See above for 'localhost'
+/$/** = localhost
+/**=anon
+```
+
+### Simple user/password
+
+This extract shows the simple user/password setup.
+
+It adds a `[users]` section and changes the `/$/**` line in `[urls]`
+
+```
+[users]
+admin=pw
+
+[urls]
+## Control functions open to anyone
+/$/status = anon
+/$/ping   = anon
+/$/** = authcBasic,user[admin]
+# Everything else
+/**=anon
+```
