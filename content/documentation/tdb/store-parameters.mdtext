@@ -1,9 +1,40 @@
 Title: TDB - Store Parameters
 
-TDB (as of version Jena 2.13.0, TDB 1.1.2) supports configuration of the
+TDB (as of version Jena 2.13.1, TDB 1.1.3) supports configuration of the
 databases when they are first created and each time an application connects
 to an existing database.  Databases using the default settings built-into
 TDB continue to work exactly as before.
+
+## Setting Store Parameters
+
+In TDB, there is exactly one internal object for each dataset in the JVM
+and this is shared between all application datasets for that location of
+persistent storage.
+
+Setting store parameters is done by setting the internal system state
+before any other access to the disk area occurs. It is not possible to have
+different setups for the same dataset on disk.
+
+`StoreParams` are set by populating the internal state with the setup
+before a application level dataset is created.
+
+    TDBFactory.setup(Location location, StoreParams params)
+
+This must be called before any application calls to get a `Dataset` (or
+`DatasetGraph`) object otherwise `IllegalStateException` is thrown by this
+function.
+
+    Location location = ... ;
+    StoreParams customParams = ... ;
+
+    TDBFactory.setup(location, customParams) ;
+    
+    Dataset ds = TDBFactory.createDataset(location) ;
+    ...
+
+It is only possible to change store parameters by expelling the underlying
+`StoreConnection`, which looses all caching, and calling
+`TDBFactory.setup`.  Access to the dataset is then a cold start.
 
 ## Per-connect Options
 
