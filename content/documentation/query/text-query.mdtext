@@ -43,6 +43,7 @@ the actual label.  More details are given below.
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Text Index](#building-a-text-index)
 - [Deletion of Indexed Entities](#deletion-of-indexed-entities)
+- [Configuring Alternative TextDocProducers](#configuring-alternative-textdocproducers)
 - [Maven Dependency](#maven-dependency)
 
 ## Architecture
@@ -417,6 +418,72 @@ does, returning the whole label.
 By only indexing but not storing the literals themselves, the index is kept smaller.
 It may be necessary to periodically rebuild the index if a large proportion
 of the RDF data changes.
+
+# Configuring Alternative TextDocProducers
+
+The default behaviour when text indexing is to index a single
+property as a single field, generating a different `Document` 
+for each indexed triple. To change this behaviour requires 
+writing and configuring an alternative `TextDocProducer`.
+
+To configure a `TextDocProducer`, say `net.code.MyProducer` in a dataset assembly,
+use the property `textDocProducer`, eg:
+
+	<#ds-with-lucene> rdf:type text:TextDataset;
+		text:index <#indexLucene> ;
+		text:dataset <#ds> ;
+		text:textDocProducer <java:net.code.MyProducer> ;
+		.
+
+where `CLASSNAME` is the full java class name. It must have either
+a single-argument constructor of type `TextIndex`, or a two-argument
+constructor `(DatasetGraph, TextIndex)`. The `TextIndex` argument
+will be the configured text index, and the `DatasetGraph` argument
+will be the graph of the configured dataset.
+
+For example, to explicitly create the default `TextDocProducer` use:
+
+	...
+	    text:textDocProducer <java:org.apache.jena.query.text.TextDocProducerTriples> ;
+	...
+
+`TextDocProducerTriples` produces a new document for each subject/field
+added to the dataset, using `TextIndex.addEntity(Entity)`. 
+
+## Example 
+
+The example class below is a `TextDocProducer` that only indexes
+`ADD`s of quads for which the subject already had at least one
+property-value. It uses the two-argument constructor to give it
+access to the dataset so that it count the `(?G, S, P, ?O)` quads
+with that subject and predicate, and delegates the indexing to
+`TextDocProducerTriples` if there are at least two values for
+that property (one of those values, of course, is the one that
+gives rise to this `change()`).
+
+      public class Example extends TextDocProducerTriples {
+      
+          final DatasetGraph dg;
+          
+          public Example(DatasetGraph dg, TextIndex indexer) {
+              super(indexer);
+              this.dg = dg;
+          }
+          
+          public void change(QuadAction qaction, Node g, Node s, Node p, Node o) {
+              if (qaction == QuadAction.ADD) {
+                  if (alreadyHasOne(s, p)) super.change(qaction, g, s, p, o);
+              }
+          }
+      
+          private boolean alreadyHasOne(Node s, Node p) {
+              int count = 0;
+              Iterator<Quad> quads = dg.find( null, s, p, null );
+              while (quads.hasNext()) { quads.next(); count += 1; }
+              return count > 1;
+          }
+      }
+
 
 ## Maven Dependency
 
