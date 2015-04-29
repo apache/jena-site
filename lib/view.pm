@@ -28,7 +28,7 @@ sub single_narrative {
     my %args = @_;
     my $file = "content$args{path}";
     my $template = $args{template};
-    $args{path} =~ s/\.mdtext$/\.html/;
+    $args{path} =~ s/\.md(text)?$/\.html/;
     $args{breadcrumbs} = breadcrumbs($args{path});
 
     read_text_file $file, \%args;
