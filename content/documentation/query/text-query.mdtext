@@ -104,13 +104,17 @@ The following forms are all legal:
     ?s text:query 'word'              # query
     ?s text:query (rdfs:label 'word') # query specific property if multiple
     ?s text:query ('word' 10)         # with limit on results
+    (?s ?score) text:query 'word'     # query capturing also the score
 
 The most general form is:
    
-    ?s text:query (property 'query string' 'limit')
+    (?s ?score) text:query (property 'query string' 'limit')
 
 Only the query string is required, and if it is the only argument the
 surrounding `( )` can be omitted.
+
+When a 2-element list is used as the subject, the second variable gets
+assigned the raw score from the text index as a float value.
 
 The property URI is only necessary if multiple properties have been indexed.
 
