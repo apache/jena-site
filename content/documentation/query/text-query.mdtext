@@ -1,5 +1,3 @@
-Title: Text searches with SPARQL
-
 This module was first released with Jena 2.11.0.
 
 This extension to ARQ combines SPARQL and text search.
@@ -40,6 +38,7 @@ the actual label.  More details are given below.
     -   [Configuring an analyzer](#configuring-an-analyzer)
     -   [Configuration by Code](#configuration-by-code)
     -   [Graph-specific Indexing](#graph-specific-indexing)
+    -   [Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index)
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Text Index](#building-a-text-index)
 - [Deletion of Indexed Entities](#deletion-of-indexed-entities)
@@ -105,16 +104,13 @@ The following forms are all legal:
     ?s text:query (rdfs:label 'word') # query specific property if multiple
     ?s text:query ('word' 10)         # with limit on results
     (?s ?score) text:query 'word'     # query capturing also the score
-
+    
 The most general form is:
    
-    (?s ?score) text:query (property 'query string' 'limit')
+     (?s ?score) text:query (property 'query string' 'limit')
 
 Only the query string is required, and if it is the only argument the
 surrounding `( )` can be omitted.
-
-When a 2-element list is used as the subject, the second variable gets
-assigned the raw score from the text index as a float value.
 
 The property URI is only necessary if multiple properties have been indexed.
 
@@ -246,9 +242,18 @@ needs to identify the text dataset by it's URI
 ### Configuring an Analyzer
 
 Text to be indexed is passed through a text analyzer that divides it into tokens 
-and may perform other transformations such as eliminating stop words.  If a Lucene
-text index is used then, by default a `StandardAnalyzer` is used.  If a Solr text
+and may perform other transformations such as eliminating stop words. If a Solr text
 index is used, the analyzer used is determined by the Solr configuration.
+If a Lucene text index is used, then by default a `StandardAnalyzer` is used. However, 
+it can be replaced by another analyzer with the `text:analyzer` property. 
+For example with a `SimpleAnalyzer`:   
+
+    <#indexLucene> a text:TextIndexLucene ;
+            text:directory <file:Lucene> ;
+            text:analyzer [
+                a text:SimpleAnalyzer
+            ]
+            . 
 
 It is possible to configure an alternative analyzer for each field indexed in a
 Lucene index.  For example:
@@ -275,7 +280,16 @@ for details of what these analyzers do.
 In addition, Jena provides `LowerCaseKeywordAnalyzer`,
 which is a case-insensitive version of `KeywordAnalyzer`.
 
-New in Jena 2.13.0:
+In Jena 3.0.0:
+
+Support for the new `LocalizedAnalyzer` has been introduced to deal with Lucene 
+language specific analyzers. 
+See [Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index)
+part for details.
+
+#### Analyzer for Query
+
+New in Jena 2.13.0.
 
 There is an ability to specify an analyzer to be used for the
 query string itself.  It will find terms in the query text.  If not set, then the
@@ -341,6 +355,116 @@ EntityDefinition constructors that support the graphField parameter, e.g.
 
 **Note:** If you migrate from a global (non-graph-aware) index to a graph-aware index,
 you need to rebuild the index to ensure that the graph information is stored.
+
+### Linguistic support with Lucene index
+
+It is now possible to take advantage of languages of triple literals to enhance 
+index and queries. Sub-sections below detail different settings with the index, 
+and use cases with SPARQL queries.
+
+#### Explicit Language Field in the Index 
+
+Literals' languages of triples can be stored (during triple addition phase) into the 
+index to extend query capabilities. 
+For that, the new `text:langField` property must be set in the EntityMap assembler :
+
+    <#entMap> a text:EntityMap ;
+        text:entityField      "uri" ;
+        text:defaultField     "text" ;        
+        text:langField        "lang" ;       
+        . 
+
+If you configure the index via Java code, you need to set this parameter to the 
+EntityDefinition instance, e.g.
+
+    EntityDefinition docDef = new EntityDefinition(entityField, defaultField);
+    docDef.setLangField("lang");
+
+ 
+#### SPARQL Linguistic Clause Forms
+
+Once the `langField` is set, you can use it directly inside SPARQL queries, for that the `'lang:xx'`
+argument allows you to target specific localized values. For example:
+
+    //target english literals
+    ?s text:query (rdfs:label 'word' 'lang:en' ) 
+    
+    //target unlocalized literals
+    ?s text:query (rdfs:label 'word' 'lang:none') 
+    
+    //ignore language field
+    ?s text:query (rdfs:label 'word')
+
+
+#### LocalizedAnalyzer
+
+You can specify and use a LocalizedAnalyzer in order to benefit from Lucene language 
+specific analyzers (stemming, stop words,...). Like any others analyzers, it can 
+be done for default text indexation, for each different field or for query.
+
+With an assembler configuration, the `text:language` property needs to be provided, e.g :
+
+    <#indexLucene> a text:TextIndexLucene ;
+        text:directory <file:Lucene> ;
+        text:entityMap <#entMap> ;
+        text:analyzer [
+            a text:LocalizedAnalyzer ;
+            text:language "fr"
+        ]
+        .
+
+will configure the index to analyze values of the 'text' field using a FrenchAnalyzer.
+
+To configure the same example via Java code, you need to provide the analyzer to the
+index configuration object:
+
+        TextIndexConfig config = new TextIndexConfig(def);
+        Analyzer analyzer = Util.getLocalizedAnalyzer("fr");
+        config.setAnalyzer(analyzer);
+        Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config) ;
+
+Where `def`, `ds1` and `dir` are instances of `EntityDefinition`, `Dataset` and 
+`Directory` classes.
+
+**Note**: You do not have to set the `text:langField` property with a single 
+localized analyzer.
+
+#### Multilingual Support
+
+Let us suppose that we have many triples with many localized literals in many different 
+languages. It is possible to take all this languages into account for future mixed localized queries.
+Just set the `text:multilingualSupport` property at `true` to automatically enable the localized
+indexation (and also the localized analyzer for query) :
+
+    <#indexLucene> a text:TextIndexLucene ;
+        text:directory "mem" ;
+        text:multilingualSupport true;     
+        .
+
+Via Java code, set the multilingual support flag : 
+
+        TextIndexConfig config = new TextIndexConfig(def);
+        config.setMultilingualSupport(true);
+        Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config) ;
+
+Thus, this multilingual index combines dynamically all localized analyzers of existing languages and 
+the storage of langField properties.
+
+For example, it is possible to involve different languages into the same text search query :
+
+    SELECT ?s
+    WHERE {
+        { ?s text:query ( rdfs:label 'institut' 'lang:fr' ) }
+        UNION
+        { ?s text:query ( rdfs:label 'institute' 'lang:en' ) }
+    }
+
+Hence, the result set of the query will contain "institute" related subjects 
+(institution, institutional,...) in French and in English.
+
+**Note**: If the `text:langField` property is not set, the "lang" field will be
+used anyway by default, because multilingual index cannot work without it.
+
 
 ## Working with Fuseki
 
