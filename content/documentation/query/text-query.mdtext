@@ -545,9 +545,33 @@ In the initial example:
 the SPARQL query is checking that the `rdfs:label` triple exists, and if it
 does, returning the whole label.
 
-By only indexing but not storing the literals themselves, the index is kept smaller.
-It may be necessary to periodically rebuild the index if a large proportion
-of the RDF data changes.
+
+Jena 3.0 provides a solution to address this situation. RDF triple deletion can be 
+synchronized within the index. Each removed triple literals in the graph can automatically 
+have their related entry removed in the index. A unique ID is computed, and stored in the index, 
+to represent the quad. It guarantees the uniqueness of the stored information and 
+allows to retrieve it easily.
+
+To enable Deletion support, this uid field must be provided within the configuration.
+
+If you use an assembler configuration, set the uid field using the `text:uidField` property 
+on the EntityMap, e.g.
+
+    <#entMap> a text:EntityMap ;
+        text:entityField      "uri" ;
+        text:defaultField     "text" ;        
+        text:uidField         "uid" ;       
+        . 
+
+If you configure the index via Java code, you need to set this parameter to the 
+EntityDefinition instance, e.g.
+
+    EntityDefinition docDef = new EntityDefinition(entityField, defaultField);
+    docDef.setUidField("uid");
+
+**Note**: If you migrate from a global (non-deletion-support) index to a deletion-support 
+index, you need to rebuild the index to ensure that the uid information is
+stored.
 
 # Configuring Alternative TextDocProducers
 
