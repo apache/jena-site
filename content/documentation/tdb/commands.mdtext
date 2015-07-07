@@ -122,8 +122,32 @@ Bulk loader and index builder. Faster than `tdbloader` but only works
 on Linux and Mac OS/X since it relies on some Unix system utilities.
 
 This bulk loader can only be used to create a database. It may
-overwrite existing data. It only accepts the --loc argument and a
-list of files to load.
+overwrite existing data. It requires accepts the `--loc` argument and a
+list of files to load e.g.
+
+    > tdbloader2 --loc /path/for/database input1.ttl input2.ttl ...
+
+#### Advanced `tdbloader2` Usage
+
+There are various other advanced options available to customise the
+behaviour of the bulk loader.  Run with `--help` to see the full usage 
+summary.
+
+It is possible to do builds in phases by using the `tdbloader2data` and
+`tdbloader2index` scripts separately though this should only be used
+by advanced users.  You can also do this by passing the `--phase`
+argument to the `tdbloader2` script and specifying `data` or `index` as
+desired.
+
+The indexing phase of the build uses the `sort` utility to prepare the raw
+data for indexing, this can potentially require large amounts of disk space
+and the scripts will automatically check and warn/abort if the disk space
+looks to be/is insufficient.
+
+If you are building a large dataset (i.e. gigabytes of input data) you may 
+wish to have the [PipeViewer](http://www.ivarch.com/programs/pv.shtml)
+tool installed on your system as this will provide extra progress information 
+during the indexing phase of the build.
 
 ### `tdbquery`
 
