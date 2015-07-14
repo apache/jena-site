@@ -6,8 +6,8 @@ import org.xml.sax.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
-import com.hp.hpl.jena.rdf.arp.*;
-import com.hp.hpl.jena.rdf.model.*;
+import org.apache.jena.rdf.arp.*;
+import org.apache.jena.rdf.model.*;
 
 /**
  * @author Jeremy J. Carroll
