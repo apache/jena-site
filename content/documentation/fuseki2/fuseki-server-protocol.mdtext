@@ -41,6 +41,7 @@ Further operations may be added within this naming scheme.
 | <tt>GET</tt>    | `/$/stats/*{name}*`    |               |
 ||
 | <tt>POST</tt>   | `/$/backup/*{name}*`   |             |
+| <tt>GET</tt>    | `/$/backup-list/`      |             |
 | <tt>POST</tt>   | `/$/sleep`             |             |
 ||
 | <tt>GET</tt>    | `/$/tasks/`            |               | 
@@ -143,7 +144,7 @@ Pattern: `/$/backup/*{name}*`
 
 This operation initiates a backup and returns a JSON object with the task Id in it.
 
-Backups are written to the server local directory 'backups' as  gzip-compressed N-Quads files.
+Backups are written to the server local directory 'backups' as gzip-compressed N-Quads files.
 
 See [Tasks](#tasks) for how to monitor a backups progress.
 
@@ -155,6 +156,14 @@ The task id can be used to construct a URL to get details of the task:
 ```
 /$/tasks/*{taskId}*
 ```
+
+Pattern: `/$/backups-lists/`
+
+Returns a list of all the files in the backup area of the server. This is
+useful for managing the files externally.
+
+The returned JOSN object is `{ backups: [ ... ] }` where the `[]` array is
+a list of file names.
 
 ## Tasks
 Some operations cause a backgrond task to be executed, backup is an example.
