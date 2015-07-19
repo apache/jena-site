@@ -3,17 +3,12 @@ Title: Migrating from Jena2 to Jena3
 Apache Jena3 is a major version release for Jena - it is not binary compatibly with
 Jena2. The migration consists of package renaming and database reloading.
 
-
-> @@ Logger name changes
-> @@ java:
-> @@ assemblers
-> @@ version numbers
-
 ## Key Changes
 
 * [Package renaming](#packaging)
 * [RDF 1.1 Semantics for plain literals](#rdf11-plain-literals)
 * [Persistent data (TDB, SDB) should be reloaded.](#persistent-data)
+* Java8 is required.
 
 ## Package Name Changes {#packaging}
 
@@ -24,9 +19,21 @@ org.apache.jena.` will cover the majority of cases.
 
 The Jena APIs remain unchanged expect for this renaming.
 
+### Vocaabularies unchanged
+
 Only java package names are being changed.  Vocabularies are not affected.
 
-@@ *Provisional : We need to identify if any other key changes are to be included.*
+### Assemblers
+
+Migration support is provided by mapping `ja:loadClass` names beginning
+`com.hp.hpl.jena` internally to `org.apache.jena`. A warning is logged.
+
+Any assmeeberlers that 
+
+### Logging
+
+This will also affect logging: logger names reflect the java class naming
+so loggers for `com.hp.hpl.jena` become `org.apache.jena`
 
 ## RDF 1.1
 
@@ -76,9 +83,8 @@ recommended that data is reloaded at a convenient time.
 
 ## Other 
 
-Gone:
-ModelFactory.createFileModelMaker // JA.FileModel
+The `GraphStore` interface has been removed.
 
-Gone:
-GraphStore
+`ModelFactory.createFileModelMaker` has been removed.
 
+See [security/] for changes to `jena-permission`.
