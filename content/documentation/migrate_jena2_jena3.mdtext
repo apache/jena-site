@@ -9,6 +9,8 @@ Jena2. The migration consists of package renaming and database reloading.
 * [RDF 1.1 Semantics for plain literals](#rdf11-plain-literals)
 * [Persistent data (TDB, SDB) should be reloaded.](#persistent-data)
 * Java8 is required.
+* [Security renamed to Permissions. Security Evaluator changes required](#permissions-changes)
+
 
 ## Package Name Changes {#packaging}
 
@@ -81,10 +83,19 @@ For data stored in [TDB](tdb/) and [SDB](sdb/), it is advisable to reload data.
 Data that does not use explicit `xsd:string` should be safe but it is still
 recommended that data is reloaded at a convenient time.
 
+## Security package renamed to Permissions {#permissions-changes}
+
+Jena Security has been renamed Jena Permissions and the Maven _artifact id_ has been changed to _jena-permissions_ to reflect this change.
+
+Shim code that was introduced to map Jena classes to security classes has been removed.  This change requires changes to SecurtyEvaluator implementations.  More detals are available at the <a href="permissions/migration2To3.html>Permissions migration documentation</a>.
+
 ## Other 
 
 The `GraphStore` interface has been removed.
 
 `ModelFactory.createFileModelMaker` has been removed.
 
-See ["Jena Security"](security/) for changes to `jena-permission`.
+Gone:
+LateBindingIterator: use LazyIterator instead
+EarlyBindingIterator: no replacement
+UniqueExtendedIterator: use ExtendedIterator with unique filter.
