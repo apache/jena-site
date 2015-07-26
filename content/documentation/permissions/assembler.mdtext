@@ -1,15 +1,15 @@
-Title: Jena Security - Assembler For a Secured Model
+Title: Jena Permissions - Assembler For a Secured Model
 
-Jena Security provides a standard Jena assembler making it easy to use the `SecuredModel` in an Assembler based environment.  To use the security assembler the assembler file must contain the lines:
+Jena Permissions provides a standard Jena assembler making it easy to use the `SecuredModel` in an Assembler based environment.  To use the permissions assembler the assembler file must contain the lines:
 
-    [] ja:loadClass    "org.apache.jena.security.SecuredAssembler" .
+    [] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .
      sec:Model       rdfs:subClassOf  ja:NamedModel .
 
 The secured assembler provides XXXXXXXXXXXx properties for the assembler files.
 
 Assuming we define
 
-     @prefix sec:    <http://apache.org/jena/security/Assembler#> .
+     @prefix sec:    <http://apache.org/jena/permissions/Assembler#> .
 
 Then the following resources are defined
 
@@ -21,7 +21,7 @@ The following are properties are also defined:
 
 `sec:evaluatorFactory` - Identifies the class name of a factory class that implements a no-argument `getInstance()` method that returns an instance of `SecurityEvaluator`.
 
-`sec:baseModel` - Identifies the ja:Model that is to have security applied to it.
+`sec:baseModel` - Identifies the ja:Model that is to have permissions applied to it.
 
 `sec:evaluatorImpl` - Identifies an instance of `SecurityEvaluator`.
 
@@ -54,4 +54,4 @@ The second mechanism is to use the `sec:Evaluator` method.
 
 In the above example `my:secEvaluator` is defined as a `sec:Evaluator` implemented by the class `"your.implementation.SecurityEvaluator"`.  When the instance is constructed the constructor with one (1) argument is used and it is passed `my:secInfoModel` as an argument.  `my:secInfoModel` may be any type supported by the assembler.  If more than one argument is desired then `rdf:_2`, `rdf:_3`, `rdf:_4`, etc. may be added to the `sec:args` list.  The  `"your.implementation.SecurityEvaluator"` with the proper number of arguments will be called.  It is an error to have more than one argument with the proper number of arguments.  
 
-After constructon the value of `my:securedModel` is used to construct the `my:securedModel` instance.  This has the same properties as the previous example other than that the `SecurityEvaluator` instance is different.
+After construction the value of `my:securedModel` is used to construct the `my:securedModel` instance.  This has the same properties as the previous example other than that the `SecurityEvaluator` instance is different.
