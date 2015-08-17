@@ -1,16 +1,28 @@
+Title: ARQ - Construct Quad
 # ARQ - Construct Quad
 
 ## Introduction
-The current W3C recommendation of [SPARQL 1.1](http://www.w3.org/TR/sparql11-query/) supports the CONSTRUCT query form, which returns a single RDF graph specified by a graph template.
-The result is an RDF graph formed by taking each query solution in the solution sequence, substituting for the variables in the graph template, and combining the triples into a single RDF graph by set union.
-However, it does not directly generate quads or [RDF datasets](http://www.w3.org/TR/sparql11-query/#rdfDataset). 
-In order to eliminate this limitation, Jena ARQ extends the grammar of the CONSTRUCT query form and provides the according components, which brings more conveniences for the users manipulating RDF datasets with SPARQL.
+
+The current W3C recommendation of 
+[SPARQL 1.1](http://www.w3.org/TR/sparql11-query/) supports the CONSTRUCT query
+form, which returns a single RDF graph specified by a graph template.  The
+result is an RDF graph formed by taking each query solution in the solution
+sequence, substituting for the variables in the graph template, and
+combining the triples into a single RDF graph by set union.  However, it
+does not directly generate quads or 
+[RDF datasets](http://www.w3.org/TR/sparql11-query/#rdfDataset).  
+In order to
+eliminate this limitation, Jena ARQ extends the grammar of the CONSTRUCT
+query form and provides the according components, which brings more
+conveniences for the users manipulating RDF datasets with SPARQL.
 
 ## Query Syntax
 
-A CONSTRUST template of the SPARQL 1.1 query String is [Turtle](http://www.w3.org/TR/turtle/) format with possible variables.
-The syntax for this extension follows that style in ARQ, using [TriG](http://www.w3.org/TR/trig/) plus variables. 
-Just like SPARQL 1.1, there're 2 forms for ARQ Contruct Quad query String:
+A CONSTRUST template of the SPARQL 1.1 query String is
+[Turtle](http://www.w3.org/TR/turtle/) format with possible variables.  The
+syntax for this extension follows that style in ARQ, using
+[TriG](http://www.w3.org/TR/trig/) plus variables.  Just like SPARQL 1.1,
+there're 2 forms for ARQ Contruct Quad query String:
 
 ### Complete Form
 
@@ -28,9 +40,10 @@ Just like SPARQL 1.1, there're 2 forms for ARQ Contruct Quad query String:
 	... 
     }
 
-The default graphs and the named graphs can be constructed within the CONSTRUCT clause in the above way.
-Note that, for constructing the named graph, the token of GRAPH can be optional.
-The brackets of the triples to be constructed in the default graph can also be optional.
+The default graphs and the named graphs can be constructed within the
+CONSTRUCT clause in the above way.  Note that, for constructing the named
+graph, the token of GRAPH can be optional.  The brackets of the triples to
+be constructed in the default graph can also be optional.
 
 ### Short Form
 
@@ -39,18 +52,23 @@ The brackets of the triples to be constructed in the default graph can also be o
 	... 
     }
 
-A short form is provided for the case where the template and the pattern are the same and the pattern is just a basic dataset pattern (no FILTERs and no complex graph patterns are allowed in the short form). The keyword WHERE is required in the short form.
+A short form is provided for the case where the template and the pattern
+are the same and the pattern is just a basic dataset pattern (no FILTERs
+and no complex graph patterns are allowed in the short form). The keyword
+WHERE is required in the short form.
 
 ### Grammar
 
 The normative definition of the syntax grammar of the query string is defined in this table:
 
-ConstructQuery            | ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE'  '{' ConstructQuads '}' SolutionModifier )
-ConstructTemplate         | ::= '{' ConstructQuads '}¡¯
-ConstructQuads            | ::= TriplesTemplate? ( ConstructQuadsNotTriples '.'? TriplesTemplate? )*
-ConstructQuadsNotTriples  | ::= ( 'GRAPH'  VarOrIri )?   '{' TriplesTemplate? '}'
-TriplesTemplate           | ::= TriplesSameSubject ( '.' TriplesTemplate? )?
-DatasetClause, WhereClause, SolutionModifier, TriplesTemplate, VarOrIri, TriplesSameSubject | [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
+    ConstructQuery            | ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE'  '{' ConstructQuads '}' SolutionModifier )
+    ConstructTemplate         | ::= '{' ConstructQuads '}¡¯
+    ConstructQuads            | ::= TriplesTemplate? ( ConstructQuadsNotTriples '.'? TriplesTemplate? )*
+    ConstructQuadsNotTriples  | ::= ( 'GRAPH'  VarOrIri )?   '{' TriplesTemplate? '}'
+    TriplesTemplate           | ::= TriplesSameSubject ( '.' TriplesTemplate? )?
+
+`DatasetClause`, `WhereClause`, `SolutionModifier`, `TriplesTemplate`, `VarOrIri`,
+`TriplesSameSubject` are as for the [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
 
 ## Programming API
 
@@ -63,29 +81,40 @@ One difference of the 2 methods is:
 The method of execConstructQuads() returns an Iterator of Quad, allowing duplication.
 But execConstructDataset() constructs the desired Dataset object with only unique Quads.
 
-In order to use these methods, it's required to swtich on the query syntax of ARQ beforehead, when creating the Query object:
+In order to use these methods, it's required to swtich on the query syntax
+of ARQ beforehead, when creating the Query object:
     
     Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
 
-If the query is supposed to construct only triples, not quads, the triples will be constructed in the default graph. For example:
+If the query is supposed to construct only triples, not quads, the triples
+will be constructed in the default graph. For example:
 
     String queryString = "CONSTRUCT { ?s ?p ?o } WHERE ... "
     ...
-    Iterator<Quad> quads = qexec.execConstructQuads(); // The graph node of the quads are the default graph (ARQ uses <urn:x-arq:DefaultGraphNode>).
+    // The graph node of the quads are the default graph (ARQ uses <urn:x-arq:DefaultGraphNode>).
+    Iterator<Quad> quads = qexec.execConstructQuads(); 
 
-If the query string stands for constructing quads while the method of exeConstructTriples() are called,
-it returns only the triples in the default graph of the CONSTRUCT query template. It's called a "projection" on the default graph. For instance:
+If the query string stands for constructing quads while the method of
+exeConstructTriples() are called, it returns only the triples in the
+default graph of the CONSTRUCT query template. It's called a "projection"
+on the default graph. For instance:
 
     String queryString = "CONSTRUCT { ?s ?p ?o . GRAPH ?g1 { ?s1 ?p1 ?o1 } } WHERE ..."
     ...
-    Iterator<Triple> triples = qexec.exeConstructTriples(); // The part of "GRAPH ?g1 { ?s1 ?p1 ?o1 }" will be ignored. Only "?s ?p ?o" in the default graph will be returned.
+    // The part of "GRAPH ?g1 { ?s1 ?p1 ?o1 }" will be ignored. Only "?s ?p ?o" in the default graph will be returned.
+    Iterator<Triple> triples = qexec.exeConstructTriples();
 
 More examples can be found at jena-arq/src-examples/arq/examples/constructquads/ExampleConstructQuads.java
 
 ## Fuseki Support
 
-Jena [Fuseki] is also empowed with Construct Quad query as a built-in function. No more addtional configuration is required to switch it on.
-Because [QueryEngineHTTP](http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/sparql/engine/http/QueryEngineHTTP.html) is just an implementation of QueryExcecution, there's no much difference for the client users to manipulate the programming API described in the previous sections, e.g.
+Jena [Fuseki] is also empowed with Construct Quad query as a built-in
+function. No more addtional configuration is required to switch it on.
+Because
+[QueryEngineHTTP](http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/sparql/engine/http/QueryEngineHTTP.html)
+is just an implementation of QueryExcecution, there's no much difference
+for the client users to manipulate the programming API described in the
+previous sections, e.g.
 
     String queryString = " CONSTRUCT { GRAPH <http://example/ns#g1> {?s ?p ?o} } WHERE {?s ?p ?o}" ;
     Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
