@@ -39,6 +39,7 @@ the actual label.  More details are given below.
     -   [Configuration by Code](#configuration-by-code)
     -   [Graph-specific Indexing](#graph-specific-indexing)
     -   [Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index)
+    -   [Storing Literal Values](#storing-literal-values)
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Text Index](#building-a-text-index)
 - [Deletion of Indexed Entities](#deletion-of-indexed-entities)
@@ -100,14 +101,15 @@ This is different to LARQ v1.
 
 The following forms are all legal:
 
-    ?s text:query 'word'              # query
-    ?s text:query (rdfs:label 'word') # query specific property if multiple
-    ?s text:query ('word' 10)         # with limit on results
-    (?s ?score) text:query 'word'     # query capturing also the score
+    ?s text:query 'word'                   # query
+    ?s text:query (rdfs:label 'word')      # query specific property if multiple
+    ?s text:query ('word' 10)              # with limit on results
+    (?s ?score) text:query 'word'          # query capturing also the score
+    (?s ?score ?literal) text:query 'word' # ... and original literal value
     
 The most general form is:
    
-     (?s ?score) text:query (property 'query string' 'limit')
+     (?s ?score ?literal) text:query (property 'query string' 'limit')
 
 Only the query string is required, and if it is the only argument the
 surrounding `( )` can be omitted.
@@ -465,6 +467,35 @@ Hence, the result set of the query will contain "institute" related subjects
 **Note**: If the `text:langField` property is not set, the "lang" field will be
 used anyway by default, because multilingual index cannot work without it.
 
+### Storing Literal Values
+
+New in Jena 3.0.0.
+
+It is possible to configure the text index to store enough information in the
+text index to be able to access the original indexed literal values at query time.
+This is controlled by two configuration options. First, the `text:storeValues` property
+must be set to `true` for the text index:
+
+    <#indexLucene> a text:TextIndexLucene ;
+        text:directory "mem" ;
+        text:storeValues true;     
+        .
+
+Or using Java code, used the `setValueStored` method of `TextIndexConfig`:
+
+        TextIndexConfig config = new TextIndexConfig(def);
+        config.setValueStored(true);
+
+Additionally, setting the `langField` configuration option is recommended. See 
+[Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index) 
+for details. Without the `langField` setting, the stored literals will not have 
+language tag or datatype information.
+
+At query time, the stored literals can be accessed by using a 3-element list
+of variables as the subject of the `text:query` property function. The literal
+value will be bound to the third variable:
+
+    (?s ?score ?literal) text:query 'word'
 
 ## Working with Fuseki
 
