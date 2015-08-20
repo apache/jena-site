@@ -1,21 +1,21 @@
 Title: ARQ - Construct Quad
 
 The current W3C recommendation of 
-[SPARQL 1.1](http://www.w3.org/TR/sparql11-query/) supports the CONSTRUCT query
-form, which returns a single RDF graph specified by a graph template.  The
+[SPARQL 1.1](http://www.w3.org/TR/sparql11-query/) supports the [CONSTRUCT query
+form](http://www.w3.org/TR/sparql11-query/#construct), which returns a single RDF graph specified by a graph template.  The
 result is an RDF graph formed by taking each query solution in the solution
 sequence, substituting for the variables in the graph template, and
 combining the triples into a single RDF graph by set union.  However, it
 does not directly generate quads or 
 [RDF datasets](http://www.w3.org/TR/sparql11-query/#rdfDataset).  
 In order to
-eliminate this limitation, Jena ARQ extends the grammar of the CONSTRUCT
+eliminate this limitation, Jena ARQ extends the grammar of the `CONSTRUCT`
 query form and provides the according components, which brings more
 conveniences for the users manipulating RDF datasets with SPARQL.
 
 ## Query Syntax
 
-A CONSTRUST template of the SPARQL 1.1 query String is
+A `CONSTRUST` template of the SPARQL 1.1 query String is
 [Turtle](http://www.w3.org/TR/turtle/) format with possible variables.  The
 syntax for this extension follows that style in ARQ, using
 [TriG](http://www.w3.org/TR/trig/) plus variables.  Just like SPARQL 1.1,
@@ -34,52 +34,54 @@ there're 2 forms for ARQ Contruct Quad query String:
         :s ?p :o
     } WHERE { 
         # SPARQL 1.1 WHERE Clause
-	... 
+        ... 
     }
 
 The default graphs and the named graphs can be constructed within the
-CONSTRUCT clause in the above way.  Note that, for constructing the named
-graph, the token of GRAPH can be optional.  The brackets of the triples to
+`CONSTRUCT` clause in the above way.  Note that, for constructing the named
+graph, the token of `GRAPH` can be optional.  The brackets of the triples to
 be constructed in the default graph can also be optional.
 
 ### Short Form
 
     CONSTRUCT WHERE { 
         # Basic dataset pattern (only the default graph and the named graphs)
-	... 
+        ... 
     }
 
 A short form is provided for the case where the template and the pattern
-are the same and the pattern is just a basic dataset pattern (no FILTERs
+are the same and the pattern is just a basic dataset pattern (no `FILTER`s
 and no complex graph patterns are allowed in the short form). The keyword
-WHERE is required in the short form.
+`WHERE` is required in the short form.
 
 ### Grammar
 
 The normative definition of the syntax grammar of the query string is defined in this table:
 
-    ConstructQuery            | ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE'  '{' ConstructQuads '}' SolutionModifier )
-    ConstructTemplate         | ::= '{' ConstructQuads '}'
-    ConstructQuads            | ::= TriplesTemplate? ( ConstructQuadsNotTriples '.'? TriplesTemplate? )*
-    ConstructQuadsNotTriples  | ::= ( 'GRAPH'  VarOrIri )?   '{' TriplesTemplate? '}'
-    TriplesTemplate           | ::= TriplesSameSubject ( '.' TriplesTemplate? )?
+Rule                      |     | Expression
+--------------------------|-----|------------------------
+ConstructQuery            | ::= | 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier \| DatasetClause* 'WHERE'  '{' ConstructQuads '}' SolutionModifier )
+ConstructTemplate         | ::= | '{' ConstructQuads '}'
+ConstructQuads            | ::= | TriplesTemplate? ( ConstructQuadsNotTriples '.'? TriplesTemplate? )*
+ConstructQuadsNotTriples  | ::= | ( 'GRAPH'  VarOrIri )?   '{' TriplesTemplate? '}'
+TriplesTemplate           | ::= | TriplesSameSubject ( '.' TriplesTemplate? )?
 
 `DatasetClause`, `WhereClause`, `SolutionModifier`, `TriplesTemplate`, `VarOrIri`,
 `TriplesSameSubject` are as for the [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
 
 ## Programming API
 
-ARQ provides 2 additional methods in QueryExecution for Construct Quad.
+ARQ provides 2 additional methods in [QueryExecution](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/query/QueryExecution.html) for Construct Quad.
 
     Iterator<Quad> QueryExecution.execConstructQuads() // allow duplication
     Dataset QueryExecution.execConstructDataset() // no duplication
 
 One difference of the 2 methods is: 
-The method of execConstructQuads() returns an Iterator of Quad, allowing duplication.
-But execConstructDataset() constructs the desired Dataset object with only unique Quads.
+The method of `execConstructQuads()` returns an `Iterator` of `Quad`, allowing duplication.
+But `execConstructDataset()` constructs the desired Dataset object with only unique `Quad`s.
 
 In order to use these methods, it's required to swtich on the query syntax
-of ARQ beforehead, when creating the Query object:
+of ARQ beforehead, when creating the `Query` object:
     
     Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
 
@@ -92,8 +94,8 @@ will be constructed in the default graph. For example:
     Iterator<Quad> quads = qexec.execConstructQuads(); 
 
 If the query string stands for constructing quads while the method of
-exeConstructTriples() are called, it returns only the triples in the
-default graph of the CONSTRUCT query template. It's called a "projection"
+`exeConstructTriples()` are called, it returns only the triples in the
+default graph of the `CONSTRUCT` query template. It's called a "projection"
 on the default graph. For instance:
 
     String queryString = "CONSTRUCT { ?s ?p ?o . GRAPH ?g1 { ?s1 ?p1 ?o1 } } WHERE ..."
@@ -101,14 +103,14 @@ on the default graph. For instance:
     // The part of "GRAPH ?g1 { ?s1 ?p1 ?o1 }" will be ignored. Only "?s ?p ?o" in the default graph will be returned.
     Iterator<Triple> triples = qexec.exeConstructTriples();
 
-More examples can be found at jena-arq/src-examples/arq/examples/constructquads/ExampleConstructQuads.java
+More examples can be found at `ExampleConstructQuads.java` under `jena-arq/src-examples`
 
 ## Fuseki Support
 
-Jena [Fuseki] is also empowed with Construct Quad query as a built-in
+Jena [Fuseki](http://jena.apache.org/documentation/fuseki2/index.html) is also empowed with Construct Quad query as a built-in
 function. No more addtional configuration is required to switch it on.
 Because
-[QueryEngineHTTP](http://jena.apache.org/documentation/javadoc/arq/com/hp/hpl/jena/sparql/engine/http/QueryEngineHTTP.html)
+[QueryEngineHTTP](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html)
 is just an implementation of QueryExcecution, there's no much difference
 for the client users to manipulate the programming API described in the
 previous sections, e.g.
@@ -117,7 +119,8 @@ previous sections, e.g.
     Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
     try ( QueryExecution qExec = QueryExecutionFactory.sparqlService(serviceQuery, query) ) { // serviceQuery is the URL of the remote service
         Iterator<Quad> result = qExec.execConstructQuads();
-	...
+        ...
     }
     ...
 
+[ARQ documentation index](index.html)
