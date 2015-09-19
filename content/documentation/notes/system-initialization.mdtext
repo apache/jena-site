@@ -18,16 +18,14 @@ is done when the application first uses any Jena code by using class initializer
 
 ## Initialization code
 
-Initialzation code is an implementation of `JenaSubsystemLifecycle`.
-and must have a zero-argument constructor.
+Initialzation code is an implementation of `JenaSubsystemLifecycle`
+and the class must have a zero-argument constructor.
 
-```
-public interface JenaSubsystemLifecycle {
-    public void start() ;
-    public void stop() ;
-    default public int level() { return 9999 ; }
-}
-```
+    public interface JenaSubsystemLifecycle {
+        public void start() ;
+        public void stop() ;
+        default public int level() { return 9999 ; }
+    }
 
 The code also supply a level, indicating its place in the order of initialization.
 The levels used by Jena are:
@@ -54,7 +52,7 @@ when in doubt about the initialization state is safe.
 Overlapping concurrent calls to `JenaSystem.init()` are thread-safe.
 On a return from `JenaSystem.init()`, Jena has been initialized at some point.
 
-== The Standard Subsystem Registry
+## The Standard Subsystem Registry
 
 The `JenaSubsystemRegistry` normally used is based on `java.util.ServiceLoader`.
 It looks for class resources
@@ -84,7 +82,6 @@ An application can change the `JenaSubsystemRegistry` instance.
 This must be done before any Jena code is called anywhere
 in the current JVM. 
 
-```
     // Example alternative registry.
     JenaSubsystemRegistry r = new JenaSubsystemRegistryBasic() {
         @Override
@@ -103,4 +100,3 @@ in the current JVM.
 
     // Initialize Jena
     JenaSystem.init() ;
-```
