@@ -276,18 +276,47 @@ Lucene index.  For example:
 will configure the index to analyze values of the 'text' field
 using a `StandardAnalyzer` with the given list of stop words.
 
-Other analyzer types that may be specified are `SimpleAnalyzer` and `KeywordAnalyzer`,
-neither of which has any configuration parameters. See the Lucene documentation
-for details of what these analyzers do. 
-In addition, Jena provides `LowerCaseKeywordAnalyzer`,
-which is a case-insensitive version of `KeywordAnalyzer`.
+Other analyzer types that may be specified are `SimpleAnalyzer` and
+`KeywordAnalyzer`, neither of which has any configuration parameters. See
+the Lucene documentation for details of what these analyzers do. Jena also
+provides `LowerCaseKeywordAnalyzer`, which is a case-insensitive version of
+`KeywordAnalyzer`, and `ConfigurableAnalyzer` (see below).
 
-In Jena 3.0.0:
+Support for the new `LocalizedAnalyzer` has been introduced in Jena 3.0.0 to
+deal with Lucene language specific analyzers. See [Linguistic Support with
+Lucene Index](#linguistic-support-with-lucene-index) part for details.
 
-Support for the new `LocalizedAnalyzer` has been introduced to deal with Lucene 
-language specific analyzers. 
-See [Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index)
-part for details.
+#### ConfigurableAnalyzer
+
+`ConfigurableAnalyzer` was introduced in Jena 3.0.1. It allows more detailed
+configuration of text analysis parameters by independently selecting a
+`Tokenizer` and zero or more `TokenFilter`s which are applied in order after
+tokenization. See the Lucene documentation for details on what each
+tokenizer and token filter does.
+
+The available `Tokenizer` implementations are:
+
+* `StandardTokenizer`
+* `KeywordTokenizer`
+* `WhitespaceTokenizer`
+* `LetterTokenizer`
+
+The available `TokenFilter` implementations are:
+
+* `StandardFilter`
+* `LowerCaseFilter`
+* `ASCIIFoldingFilter`
+
+Configuration is done using Jena assembler like this:
+
+    text:analyzer [
+      a text:ConfigurableAnalyzer ;
+      text:tokenizer text:KeywordTokenizer ;
+      text:filters (text:ASCIIFoldingFilter, text:LowerCaseFilter)
+    ]
+
+Here, `text:tokenizer` must be one of the four tokenizers listed above and
+the optional `text:filters` property specifies a list of token filters.
 
 #### Analyzer for Query
 
