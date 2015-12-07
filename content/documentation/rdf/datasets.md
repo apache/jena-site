@@ -1,14 +1,16 @@
 Title: In-memory, trasnactional Dataset
 
-The in-memory, transactional dataset provides a dataset with full ACID transaction semanticms, including abort. It provides for multiple readers and a writer concurrently
-together with full snapshot isolation of the dataset.  Readers see an unchanging,
-consistent dataset where aggregate operations return stable results.
+The in-memory, transactional dataset provides a dataset with full ACID
+transactext-modetion semanticms, including abort. It provides for multiple
+readers and a writer concurrently together with full snapshot isolation of
+the dataset.  Readers see an unchanging, consistent dataset where aggregate
+operations return stable results.
 
 First introduced in Jena version 3.0.1 as a beta, then in 3.1.0.
 
-During the beta phase, please log any issues with [Apache Jena JIRA|https://issues.apache.org/jira/issues/?jql=project%20%3D%20JENA%20ORDER%20BY%20key%20DESC%2C%20priority%20DESC].
+During the beta phase, please log any issues with [Apache Jena JIRA](https://issues.apache.org/jira/issues/?jql=project%20%3D%20JENA%20ORDER%20BY%20key%20DESC%2C%20priority%20DESC0.
 
-## API
+### API use
 
 A new instance of the class is obtained by a call to `DatasetFactory.createTxnMem()`:
 
@@ -33,24 +35,27 @@ or
        ds.commit() ;
     } finally { ds.end() ; }
 
-If the application does not call `commit()`, the transaction aborts and the changes are lost. The same happens if the application throws an exception.
+If the application does not call `commit()`, the transaction aborts and the
+changes are lost. The same happens if the application throws an exception.
 
-## Non-transactional use.
+### Non-transactional use.
 
-If used outside of a transaction, the implementation proiveds auto-commit functionality. Each triple or added or deleted is done inside an implicit transaction. This can lead to
-measurable slow down. It is better to do a group of operations inside a single transaction
-explicitly in the application code.
+If used outside of a transaction, the implementation proiveds auto-commit
+functionality. Each triple or added or deleted is done inside an implicit
+transaction. This can lead to measurable slow down. It is better to do
+related operations inside a single transaction explicitly in the
+application code.
 
-## Assembler
+### Assembler Use
 
-The assembler provies for the creation of a dataset and also loading it with data read from URLs (files or from any other URL).
+The assembler provies for the creation of a dataset and also loading it
+with data read from URLs (files or from any other URL).
 
-* Type: `ja:MemoryDataset`
-
-* Properties:
-   * `ja:data` <i>`urlForData`</i>
-   * `ja:pNamedGraph`, for loading a specific graph of the dataset.
-     This uses `ja:graphName` to specific the name and `ja:data` to load data.
+-    Type: `ja:MemoryDataset`
+-    Properties:
+     - `ja:data` <i>`urlForData`</i>
+     -  `ja:namedGraph`, for loading a specific graph of the dataset.
+        This uses `ja:graphName` to specific the name and `ja:data` to load data.
 
 The examples use the following prefixes:
 
@@ -61,7 +66,7 @@ To create an empty in-memory dataset, all that is required is the line:
 
     [] rdf:type ja:MemoryDataset .
 
-With triples for the default graph, from file "dataFile.ttl", Turtle format.
+With triples for the default graph, from file `dataFile.ttl`, Turtle format.
 
     [] rdf:type ja:MemoryDataset ;
         ja:data <file:dataFile.ttl> .
