@@ -1,4 +1,4 @@
-Title: In-memory, trasnactional Dataset
+Title: In-memory, transactional Dataset
 
 The in-memory, transactional dataset provides a dataset with full ACID
 transactext-modetion semanticms, including abort. It provides for multiple
