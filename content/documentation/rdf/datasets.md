@@ -1,8 +1,8 @@
 Title: In-memory, transactional Dataset
 
 The in-memory, transactional dataset provides a dataset with full ACID
-transactext-modetion semanticms, including abort. It provides for multiple
-readers and a writer concurrently together with full snapshot isolation of
+transaction semantics, including abort. It provides for multiple
+readers and a concurrent writer together with full snapshot isolation of
 the dataset.  Readers see an unchanging, consistent dataset where aggregate
 operations return stable results.
 
@@ -16,18 +16,18 @@ A new instance of the class is obtained by a call to `DatasetFactory.createTxnMe
 
     Dataset ds = DatasetFactory.createTxnMem() ;
 
-This can then be used by the application:
+This can then be used by the application for reading:
 
     Dataset ds = DatasetFactory.createTxnMem() ;
-    ds.begin(READ) ;
+    ds.begin(ReadWrite.READ) ;
     try {
        ... SPARQL query ...
     } finally { ds.end() ; }
 
-or
+or writing:
 
     Dataset ds = DatasetFactory.createTxnMem() ;
-    ds.begin(WRITE) ;
+    ds.begin(ReadWrite.WRITE) ;
     try {
        ... SPARQL update ...
        ... SPARQL query ...
@@ -40,21 +40,21 @@ changes are lost. The same happens if the application throws an exception.
 
 ### Non-transactional use.
 
-If used outside of a transaction, the implementation proiveds auto-commit
+If used outside of a transaction, the implementation provides "auto-commit"
 functionality. Each triple or added or deleted is done inside an implicit
-transaction. This can lead to measurable slow down. It is better to do
+transaction. This have a measurable peformance impact. It is better to do
 related operations inside a single transaction explicitly in the
 application code.
 
 ### Assembler Use
 
-The assembler provies for the creation of a dataset and also loading it
+The assembler provides for the creation of a dataset and also loading it
 with data read from URLs (files or from any other URL).
 
 -    Type: `ja:MemoryDataset`
 -    Properties:
      - `ja:data` <i>`urlForData`</i>
-     -  `ja:namedGraph`, for loading a specific graph of the dataset.
+     - `ja:namedGraph`, for loading a specific graph of the dataset.
         This uses `ja:graphName` to specific the name and `ja:data` to load data.
 
 The examples use the following prefixes:
@@ -66,12 +66,12 @@ To create an empty in-memory dataset, all that is required is the line:
 
     [] rdf:type ja:MemoryDataset .
 
-With triples for the default graph, from file `dataFile.ttl`, Turtle format.
+With triples for the default graph, from file `dataFile.ttl`, Turtle format:
 
     [] rdf:type ja:MemoryDataset ;
         ja:data <file:dataFile.ttl> .
 
-With triples from several files
+With triples from several files:
 
     [] rdf:type ja:MemoryDataset ;
         ja:data <file:data1.ttl> ;
@@ -84,7 +84,7 @@ Load TriG:
     [] rdf:type ja:MemoryDataset ;
         ja:data <file:data.trig> .
 
-Load a file of triples, put into a named graph.
+Load a file of triples into a named graph:
 
     [] rdf:type ja:MemoryDataset ;
         ja:namedGraph [ ja:graphName <http://example/graph> ; ja:data <file:///fullPath/data.ttl> ] .
