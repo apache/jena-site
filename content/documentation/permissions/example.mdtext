@@ -1,38 +1,38 @@
-Title: Adding Jena-Permissions to Fuseki
+Title: Adding Jena Permissions to Fuseki
 
 ## Overview
 
-The goal of this document is to add jena-permissions to a fuseki deployment to restrict access to graph data.  This example will take the jena-permission example application, deploy the data to a fuseki instance and add the jena-permission to achieve the same access restrictions that the example  application has.
+The goal of this document is to add Jena Permissions to a fuseki deployment to restrict access to graph data. This example will take the example application, deploy the data to a fuseki instance and add the Jena Permissions to achieve the same access restrictions that the example application has.
 
-To do this you will need a Fuseki installation, the Permissions Packages and a SecurityEvaluator implementation.  For this example we will use the SecurityEvaluator from the Permissions-Examples.
+To do this you will need a Fuseki installation, the Permissions Packages and a SecurityEvaluator implementation. For this example we will use the SecurityEvaluator from the permissions-example.
 
 ## Set up
 
-This example uses Fuseki 2.3.0, Permissions 3.0.0 and Apache Commons Collections v4. 
+This example uses Fuseki 2.3.0, Permissions 3.0.0 and Apache Commons Collections v4.
 
-Fuseki can be downloaded from: 
+Fuseki can be downloaded from:
 [https://repository.apache.org/content/repositories/snapshots/org/apache/jena/apache-jena-fuseki/]
 
-Jena Permissions jars can be downloaded from: 
+Jena Permissions jars can be downloaded from:
 [https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-permissions/]
 
-1. Download and unpack Fuseki.  The directory that you unpack Fuseki into will be referred to as the `Fuseki Home` directory for the remainder of this document.
+1. Download and unpack Fuseki. The directory that you unpack Fuseki into will be referred to as the `Fuseki Home` directory for the remainder of this document.
 
 2. Download permissions 3.0.0 jar and 3.0.0 permissions-example jar.
 
-3. Copy the permissions jar and the permissions-example jar into the Fuseki Home directory.  For the rest of this document the permissions jar will be referred to as `permissions.jar` and the permissions-example.jar as `example.jar`
+3. Copy the permissions jar and the permissions-example jar into the Fuseki Home directory. For the rest of this document the permissions jar will be referred to as `permissions.jar` and the permissions-example.jar as `example.jar`
 
 4. Download the Apache Commons Collections v4
 [http://commons.apache.org/proper/commons-collections/download_collections.cgi]
 Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
 
 5. Add security jars to the startup script/batch file.
-    * On \*NIX edit fuseki-server script 
+    * On \*NIX edit fuseki-server script
         1. Comment out the line that reads `exec java  $JVM_ARGS -jar "$JAR" "$@"`
         2. Uncomment the line that reads `\#\#   APPJAR=MyCode.jar`
         3. Uncomment the line that reads `\#\#   java $JVM_ARGS -cp "$JAR:$APPJAR" org.apache.jena.fuseki.cmd.FusekiCmd "$@"`
         4. change `MyCode.jar` to `permissions.jar:example.jar:commons-collections*.jar`
-    
+
     * On Windows edit fuseki-server.bat file.
         1. Comment out the line that reads `java -Xmx1200M -jar fuseki-server.jar %*`
         2. Uncomment the line that reads `@REM  java ... -cp fuseki-server.jar;MyCustomCode.jar org.apache.jena.fuseki.cmd.FusekiCmd %*`
@@ -40,10 +40,10 @@ Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
 
 6. Run the fuseki-server script or batch file.
 
-7. Stop the server. 
+7. Stop the server.
 
 8. Extract the example configuration into the newly created `Fuseki Home/run` directory.
-    From the example.jar archive: 
+    From the example.jar archive:
     * extract `/org/apache/jena/permissions/example/example.ttl` into the `Fuseki Home/run` directory
     * extract `/org/apache/jena/permissions/example/fuseki/config.ttl` into the `Fuseki Home/run` directory
     * extract `/org/apache/jena/permissions/example/fuseki/shiro.ini` into the `Fuseki Home/run` directory
@@ -67,11 +67,11 @@ The messages graph is defined in the `run/example.ttl` file.
 
 The `run/shiro.ini` file lists the users and their passwords and configures Fuseki to require authentication to access to the graphs.
 
-The `run/config.ttl` file adds the permissions to the graph as follows by applying the 
+The `run/config.ttl` file adds the permissions to the graph as follows by applying the
 `org.apache.jena.permissions.example.ShiroExampleEvaluator` security evaluator to the message
 graph.
 
-Define all the prefixes 
+Define all the prefixes.
 
     @prefix fuseki:  <http://jena.apache.org/fuseki#> .
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
@@ -91,21 +91,21 @@ Load the SecuredAssembler class from the permissions library and define the perm
 Define the base model that contains the unsecured data.
 
     my:baseModel rdf:type ja:MemoryModel;
-        ja:content [ja:externalContent <file:./example.ttl>] 
-        .   
+        ja:content [ja:externalContent <file:./example.ttl>]
+        .
 
 
-Define the secured model.  This is where permissions is applied to the my:baseModel to create a model that has permission restrictions.  Note that it is using the security evaluator implementation (sec:evaluatorImpl) called my:secEvaluator which we will define next.
+Define the secured model. This is where permissions is applied to the my:baseModel to create a model that has permission restrictions. Note that it is using the security evaluator implementation (sec:evaluatorImpl) called my:secEvaluator which we will define next.
 
     my:securedModel rdf:type sec:Model ;
         perm:baseModel my:baseModel ;
         ja:modelName "https://example.org/securedModel" ;
         perm:evaluatorImpl my:secEvaluator .
 
-Define the security evaluator.  This is where we use the example ShiroExampleEvaluator.  For your production environment you will replace "org.apache.jena.security.example.ShiroExampleEvaluator"  with your SecurityEvaluator implementation.  Note that  ShiroExampleEvaluator constructor takes a Model argument.  We pass in the unsecured baseModel so that the evaluator can read it unencumbered.  Your implementation of SecurityEvaluator may have different parameters to meet your specific needs.
+Define the security evaluator. This is where we use the example ShiroExampleEvaluator. For your production environment you will replace "org.apache.jena.security.example.ShiroExampleEvaluator" with your SecurityEvaluator implementation. Note that ShiroExampleEvaluator constructor takes a Model argument. We pass in the unsecured baseModel so that the evaluator can read it unencumbered. Your implementation of SecurityEvaluator may have different parameters to meet your specific needs.
 
     my:secEvaluator rdf:type perm:Evaluator ;
-        perm:args [  
+        perm:args [
             rdf:_1 my:baseModel ;
         ] ;
         perm:evaluatorClass "org.apache.jena.permissions.example.ShiroExampleEvaluator" .
@@ -124,8 +124,8 @@ Define the fuseki:Server.
             my:service1
         ) .
 
-Define the service for the fuseki:Service.  Note that the fuseki:dataset served by this server is the secured dataset defined above.
-   
+Define the service for the fuseki:Service. Note that the fuseki:dataset served by this server is the secured dataset defined above.
+
     my:service1 rdf:type fuseki:Service ;
         rdfs:label                        "My Secured Data Service" ;
         fuseki:name                       "myAppFuseki" ;       # http://host:port/myAppFuseki
@@ -138,7 +138,3 @@ Define the service for the fuseki:Service.  Note that the fuseki:dataset served 
         fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
         fuseki:dataset                   my:securedDataset ;
     .
-
-
-
-
