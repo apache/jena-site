@@ -100,3 +100,20 @@ in the current JVM.
 
     // Initialize Jena
     JenaSystem.init() ;
+
+## Jena initialization in multi-classloader environments
+
+In some applications with multiple classloaders, or different classloader strategies, Jena initialization may
+not work as expected. If the Jena initialization debug information shows that components were not loaded correctly,
+trying to switch the context class loader may fix the initialization process.
+
+    ClassLoader contextClassLoader = null;
+    try {
+        contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+        JenaSystem.DEBUG_INIT = true;
+        // ...
+    } finally {
+        Thread.currentThread().setContextClassLoader(contextClassLoader);
+    }
+
