@@ -11,9 +11,6 @@ against data corruption, unexpected process termination and system crashes and t
 This feature is part of version TDB 0.9.0 and later.  Databases created with version of TDB 0.8.X can be used with 0.9.X
 to add transactional capability.
 
-The file format of 1.0.X and 0.9.X is compatible with TDB 0.8.X.
-See below for reverting a database to 0.8.X.
-
 ## Contents
 
 -   [Overview](#overview)
@@ -73,11 +70,10 @@ resources.
 ## API for Transactions
 
 TDB supports the general Jena API for transactions on RDF datasets 
-(introduced in Jena 2.7.0, ARQ 2.9.0).  Not all storage systems support 
-this style of transactions.
+(introduced in Jena 2.7.0, ARQ 2.9.0).
 
 A TDB-backed dataset can be used non-transactionally but once used in a transaction, 
-it should be used transactionally after that.
+it must be used transactionally after that.
 
 ### Read transactions
 
@@ -195,7 +191,7 @@ Thread 2:
        ...
      } finally { dataset.end() ; }
 
-or create a dataset object on the thread (the case above is preferred):
+or create a dataset object on the thread:
 
 Thread 1:
 
@@ -215,7 +211,7 @@ Thread 2:
      } finally { dataset.end() ; }
 
 Each thread has a separate `dataset` object; these safely share the 
-same storage but have independent transactions.
+same storage. in both cases, the transactions are independent.
 
 ## Multi JVM
 
