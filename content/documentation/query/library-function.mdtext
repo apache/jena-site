@@ -20,7 +20,9 @@ ARQ also provides an implementation the
 
 ## Function Library
 
-The prefix `afn` is `<http://jena.hpl.hp.com/ARQ/function#>`.
+The prefix `afn` is `<http://jena.apache.org/ARQ/function#>`.
+(the old prefix of `<http://jena.hpl.hp.com/ARQ/function#>` contineus to
+work. Applications are encouraged to switch.)
 
 Direct loading using a URI prefix of
 `<java:org.apache.jena.sparql.function.library.>` (note the final
@@ -29,93 +31,79 @@ dot) is deprecated.
 The prefix `fn` is `<http://www.w3.org/2005/xpath-functions#>` (the
 XPath and XQuery function namespace).
 
-### XQuery/XPath functions and operators supported
+The prefix `math` is `<http://www.w3.org/2005/xpath-functions/math#>`.
+
+### Custom Aggregates
+
+The prefix `agg:` is `<http://jena.apache.org/ARQ/function/aggregate#>`.
+
+The statistical aggregates are provided are:
+
+`agg:stdev`, `agg:stdevp`, `agg:var`, `agg:stvarp`
+
+These are modelled after SQL aggregate functions `STDDEV`, `STDDEVP`,
+`VAR`, `VARP`.
+
+### XQuery/XPath Functions and Operators supported
+
+ARQ supports the scalar functions and operators from 
+"[XQuery 1.0 and XPath 2.0 Functions and Operators v3.1](https://www.w3.org/TR/xpath-functions-3/)". 
+
+Functions in involving sequences are not supported.
+
+See [XSD Support](xsd-support.html) for details of datatypes and functions
+currenty supported.  To check the exact current registrations, see
+<tt>[function/StandardFunctions.java](https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java)</tt>.
+
+#### Addtional Functions Provided by ARQ
+
+Most of these have equivalents, or near equivalents, in SPARQL or as an
+XQuery function and are to be preferred. These ARQ-specific versions remain
+for compatibility.
+
+**RDF Graph Functions**
+
+Function name | Description | Alternative
+------------- | ----------- | -----------
+`afn:bnode(?x)`  | Return the blank node label if ?x is a blank node. | `STR(?x)`
+`afn:localname(?x)` | The local name of ?x | `REPLACE(STR(?x), "^(.*)(/|#)([^#/]*)$", "$3")
+`afn:namespace(?x)` | The namespace of ?x  | `REPLACE(STR(?x), "^(.*)(/|#)([^#/]*)$", "$1")
+
+The prefix and local name of a IRI is based on splitting the IRI, not on any prefixes in the query or dataset.
 
 **String Functions**
 
-Function name | Description
-------------- | -----------
-`fn:contains(string, substr)` | Test whether *`substr`* occurs in *string.*
-`fn:starts-with(string, match)` | Test whether *`string`* starts with *`substr`.*
-`fn:ends-with(string, match)` | Test whether *`string`* ends with *`substr.`*
-`fn:string-length(string)` | Return the length of a *`string`*.
-`fn:lower-case(string)` | Return a string which is the lower case equivalent of the argument.
-`fn:upper-case(string)` | Return a string which is the upper case equivalent of the argument.
-`fn:matches(string, pattern [, flags])` | Regular expression match.
-`fn:concat(string, ...)` | Return the concatenation of strings.
-`fn:substring(string, begin [,length])` | Returns the substring of a *`string`*, given by *`begin`* (integer) and, optionally, length *`length`*. 
-
-Absence of *`length`* means to end of string.  Strings are indexed
-from zero.
--   **Strings start from one**, not zero as they do in Java and C\#.
--   The **third argument is the length**, like C\# but unlike Java, where
-    it is the *endIndex*.
+Function name | Description | Alternative
+------------- | ----------- | -----------
+`afn:substr(string, startIndex [,endIndex])` | Substring, Java style using *`startIndex`* and *`endIndex`*.
+`afn:substring` | Synonym for afn:substr
+`afn:strjoin(sep, string ...)` | Concatenate string together, with a separator.
+`afn:sha1sum(resource)` | Calculate the SHA1 checksum of a literal or URI | `SHA1(STR(resource))`
 
 Notes:
 
 1.  Strings in
-    "[XQuery 1.0 and XPath 2.0 Functions and Operators](http://www.w3.org/TR/xpath-functions/)"
+    "[XQuery 1.0 and XPath 2.0 Functions and Operators](http://www.w3.org/TR/xpath-functions-3/)"
     start from character position one, unlike Java and C\# where
     strings start from zero.
 2.  The `fn:substring` operation takes an optional length, like C\#
     but different from Java, where it is the *endIndex* of the first
     character after the substring.
-
-The operation `afn:substring` provides Java semantics.
-
-**Mathematical Functions**
-
-Function name | Description
-------------- | -----------
-`afn:min(num1, num2)` | Return the minimum of two expressions evaluating to numbers.
-`afn:max(num1, num2)` | Return the maximum of two expressions evaluating to numbers.
-`fn:round(v)`  | Return the nearest integer value to the argument.
-`fn:abs(v)`  | Return the absolute value.
-`fn:floor(v)` | Return the greatest integer value less than the argument (as a double).
-`fn:ceiling(v)` | Return the smallest integer value than the argument (as a double).
-
-Note: See also `afn:min` and `afn:max` for binary min and max
-functions.
-
-**Boolean Functions**
-
-Function name | Description
-------------- | -----------
-`fn:boolean(value)` | Boolean effective value of *`value`*.
-`fn:not(value)`  | Logical negation of the boolean effective value of *`value`*.
-
-#### Functions provided by ARQ
-
-**RDF Graph Functions**
-
-Function name | Description
-------------- | -----------
-`afn:bnode(?x)`  | Return the blank node label if ?x is a blank node.
-`afn:localname(?x)` | The local name of ?x if a IRI. Based on splitting the IRI, not on any prefixes in the query or dataset.
-`afn:namespace(?x)` | The namespace of ?x if a IRI. Based on splitting the IRI, not on any prefixes in the query or dataset.
-
-**String Functions**
-
-Function name | Description
-------------- | -----------
-`afn:substr(string, startIndex [,endIndex])` | Substring, Java style using *`startIndex`* and *`endIndex`*.
-`afn:substring` | Synonym for afn:substr
-`afn:strjoin(sep, string ...)` | Concatenate string together, with a separator.
-`afn:sha1sum(resource)` | Calculate the SHA1 checksum of a literal or URI.
+3.  `afn:substr` uses Java-style  *`startIndex`* and *`endIndex`*.
 
 **Mathematical Functions**
 
-Function name | Description
-------------- | -----------
-`afn:min(num1, num2)` | Return the minimum of two expressions evaluating to numbers.
-`afn:max(num1, num2)` | Return the maximum of two expressions evaluating to numbers.
-`afn:pi()` | The value of pi, as an XSD double.
-`afn:e()` | The value of e, as an XSD double.
-`afn:sqrt(num)` | The square root of num.
+Function name | Description | Alternative
+------------- | ----------- | -----------
+`afn:min(num1, num2)` | Return the minimum of two numbers | `fn:min`
+`afn:max(num1, num2)` | Return the maximum of two numbers | `fn:max`
+`afn:pi()` | The value of pi, as an XSD double | `math:pi()`
+`afn:e()` | The value of e, as an XSD double | `math:exp(1)`
+`afn:sqrt(num)` | The square root of num | `math:sqrt`
 
 **Miscellaneous Functions**
 
-Function name | Description
-------------- | -----------
-`afn:now()` | Current time.  Actually, the time the query started. Constant throughout a query execution.
-`afn:sha1sum(resource)` | Calculate the SHA1 checksum of a literal or URI.
+Function name | Description | Alternative
+------------- | ----------- | -----------
+`afn:now()` | Current time. Actually, the time the query started. | `NOW()`
+`afn:sha1sum(resource)` | Calculate the SHA1 checksum | `SHASUM`
