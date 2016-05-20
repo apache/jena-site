@@ -339,11 +339,16 @@ the `TextIndexLucene` resource:
 
 New in Jena 3.1.0.
 
-It is possible to select another query parser (currently only
-AnalyzingQueryParser is supported) instead of the default QueryParser. The
-main difference between these query parsers is that AnalyzingQueryParser
-performs analysis also for wildcard queries. This is useful in combination
-with accent-insensitive wildcard queries. The query parser is specified on
+It is possible to select a query parser other than the default QueryParser.
+
+The available `QueryParser` implementations are:
+
+* `AnalyzingQueryParser`: Performs analysis for wildcard queries . This is useful in combination
+with accent-insensitive wildcard queries.
+* `ComplexPhraseQueryParser`: Permits complex phrase query syntax. Eg: "(john jon jonathan~) peters*".
+This is useful for performing wildcard or fuzzy queries on individual terms in a phrase.
+
+The query parser is specified on
 the `TextIndexLucene` resource:
 
     <#indexLucene> a text:TextIndexLucene ;
