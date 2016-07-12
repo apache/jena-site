@@ -5,10 +5,11 @@ library over the core functionality - applications do not have to use `Txn`
 to use transactions.
 
 Features:
-* Java8 idioms
-* Application exceptions cause transaction aborts.
-* "Transaction continuation" - use any existing active trsnaction.
-* Autocommit - ensure actions are inside a transaction even if none is active.
+
+-   Java8 idioms
+-   Application exceptions cause transaction aborts.
+-   "Transaction continuation" - use any existing active trsnaction.
+-   Autocommit - ensure actions are inside a transaction even if none is active.
 
 ## Transactions
 

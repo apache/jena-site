@@ -2,9 +2,10 @@ Title: Jena Transactions
 
 This page gives an overview transaction in Jena.
 
-There are two2 API for transactions: the [basic transaction interface](transactions_api.html)
-styled after the conventional `begin`-`commit` and a [higher level `Txn` API](#txn.html)
-that builds on the basic API using Java8 features.
+There are two API for transactions: the [basic transaction
+interface](transactions_api.html) styled after the conventional
+`begin`-`commit` and a [higher level `Txn` API](#txn.html) that builds
+on the basic API using Java8 features.
 
 ## APIs
 
@@ -41,11 +42,11 @@ There is a default implementation, based on MRSW locking (multiple-reader or sin
 that can be used with any mixed set of components. Certain storage sub-systems provide
 better concurrency with MR+SW (multiple-read and single writer).
 
-| Dataset | Facilties | Creation |
+| Dataset   | Facilties | Creation |
 |-----------|-----------|----------|
-| `TxnMem` | MR+SW | `DatasetFactory.createTxnMem` |
-| TDB | MR+SW, persistent | `TDBFactory.create` |
-| General | MRSW | `DatasetFactory.create` |
+| TxnMem    | MR+SW     | `DatasetFactory.createTxnMem` |
+| TDB       | MR+SW, persistent | `TDBFactory.create` |
+| General   | MRSW      | `DatasetFactory.create` |
 
 The general dataset can have have any graphs added to it (e.g. inference graphs).
 
