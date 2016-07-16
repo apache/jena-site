@@ -15,7 +15,7 @@ in the source code for that version.
 
 The supported datatypes (including those required by SPARQL 1.1), including
 full operator support, are the XSD atomic datatypes excpt for XML-related
-ones.  Sequnces are not supported.
+ones.  Sequences are not supported.
 
 `xsd:string`, `xsd:boolean`, 
 `xsd:decimal`, `xsd:integer`, `xsd:double`, `xsd:float`, `xsd:double`
@@ -39,7 +39,7 @@ Supported functions:
 
 `fn:concat`, `fn:substring`, `fn:string-length`, 
 `fn:upper-case`, `fn:lower-case`, `fn:contains`, `fn:starts-with`, `fn:ends-with`,
-`fn:substring-before`, `fn:substring-after`, `fn:matches`,
+`fn:substring-before`, `fn:substring-after`, `fn:matches`, `fn:replace`, 
 `fn:abs`, `fn:ceiling`, `fn:floor`, `fn:round`,
 `fn:encode-for-uri`,
 
@@ -50,20 +50,16 @@ Supported functions:
 `fn:days-from-duration`, `fn:hours-from-duration`,
 `fn:minutes-from-duration`, `fn:seconds-from-duration`,
 
-`fn:boolean`, `fn:not`
+`fn:boolean`, `fn:not`,
+`fn:normalize-space`, `fn:normalize-unicode`,
+`fn:format-number`,
+`fn:round-half-to-even`,
 
 `math:pi`,  `math:exp`, `math:exp10`, `math:log`, `math:log10`, `math:pow`, `math:sqrt`,
 `math:sin`, `math:cos`, `math:tan`, `math:asin`, `math:acos`, `math:atan`, `math:atan2`
 
 #### F&O Functions not currently supported:
 
-`fn:normalize-space`, `fn:normalize-unicode`,
-`fn:replace`,
-`fn:format-number`,
-`fn:round-half-to-even`,
-`fn:adjust-dateTime-to-timezone`,
-`fn:adjust-date-to-timezone`,
-`fn:adjust-time-to-timezone`,
 `fn:format-dateTime`,
 `fn:format-date`,
 `fn:format-time`.
