@@ -1,6 +1,6 @@
 Title: Jena Transactions
 
-This page gives an overview transaction in Jena.
+This page gives an overview of transactions in Jena.
 
 There are two API for transactions: the [basic transaction
 interface](transactions_api.html) styled after the conventional
