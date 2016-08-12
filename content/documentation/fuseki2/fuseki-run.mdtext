@@ -1,18 +1,17 @@
-# Running Fuseki
+Title: Running Fuseki
 
 Fuseki can be run in three ways
 
-* [As a standalone server](#fuseki-as-a-standalone-server)
-* [As a Web Application](#fuseki-as-a-web-application) inside a container such as Apache Tomcat or Jetty.
-* [As a service](#fuseki-as-a-service) run by the operation system, for example, started when the machine boots.
-
-@@caution: it is possible that the way these three forms are delivered will
-change internally but the scripts used here will retain the same interface.
+* [As a standalone server](#fuseki-standalone-server)
+* [As a service](#fuseki-service) run by the operation system, for example, started when the machine
+* [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty.
+boots.
+* [As an embedded SPARQ server](#fuseki-embedded).
 
 See "[Fuseki Configuration](fuseki-configuration.html)" for information on
-how to provides datasetsand configure services.
+how to provides datasets and configure services.
 
-## Fuseki as a Standalone Server
+## Fuseki as a Standalone Server {#fuseki-standalone-server}
 
 This is running Fuseki from the command line.
 
@@ -41,7 +40,17 @@ distribution.
 Unlike Fuseki v1, starting with no dataset and no configuration is possible.
 Datasets can be added from the admin UI to a running server.
 
-## Fuseki as a Web Application
+## Fuseki as a Service {#fuseki-service}
+
+Fuseki can run as an operating system service, started when the server
+machine boots.  The script `fuseki` is a Linux `init.d` with the common
+secondary arguments of `start` and `stop`.
+
+Process arguments are read from `/etc/default/fuseki` including
+`FUSEKI_HOME` and `FUSEKI_BASE`.  `FUSEKI_HOME` should be the directory
+where the distribution was unpacked.
+
+## Fuseki as a Web Application {#fuseki-web-application}
 
 Fuseki can run from a
 [WAR](http://en.wikipedia.org/wiki/WAR_%28file_format%29) file.  Fuseki
@@ -56,12 +65,20 @@ directory.  It is initialised the first time Fuseki runs, including a
 intended as a starting point.  It restricts use of the admin UI to the
 local machine.
 
-## Fuseki as a Service
+## Fuskei as an Embedded SPARQL Server {#fuseki-embedded}.
 
-Fuseki can run as an operating system service, started when the server
-machine boots.  The script `fuseki` is a Linux `init.d` with the common
-secondary arguments of `start` and `stop`.
+Fuseki can be run from inside an Java application to provide SPARQL
+services to application data. The application can continue to access and
+update the datasets served by the server.
 
-Process arguments are read from `/etc/default/fuseki` including
-`FUSEKI_HOME` and `FUSEKI_BASE`.  `FUSEKI_HOME` should be the directory
-where the distribution was unpacked.
+Basic example:
+
+    Dataset ds = ...
+    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+      .add("/dataset", ds)
+      .build() ;
+    server.start() ;
+
+See the [full documentation](fuseki-embedded.html) for details of
+configuration and working with data shared with the [embedded
+Fuseki](fuseki-embedded.html) instance.
