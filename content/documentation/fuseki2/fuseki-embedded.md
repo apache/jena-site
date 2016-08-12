@@ -117,14 +117,15 @@ To silence logging from Java, try:
 
 ## Building a server {#build}
 
-When a ``FusekiEmbeddedServer`` server is built, it is not running;
-the application needs to start it.
+A ``FusekiEmbeddedServer`` is built by creating a configuration,
+building the server, then running it.  The application needs to start
+the server.
 
 The default port for a Fuseki embedded server is 3330. This is different for the default
 port for Fuseki running as a standalone server or as a wwabbapp application.
 
 
-## Example 1
+### Example 1
 Create a server on port 3330, that provides the default set of endpoints for an RDF
 dataset that can be updated via HTTP.
 
@@ -149,7 +150,7 @@ URLs:
 
 "GSP" = SPARQL Graph Store Protocol
 
-## Example 2
+### Example 2
 Create a server on port 3332, that provides the default set of endpoints for a data
 set that is read-only over HTTP. The application can still update the dataset.
 
@@ -167,7 +168,7 @@ set that is read-only over HTTP. The application can still update the dataset.
 | GSP read-only  | ``http://host:3332/ds/data``    |
 | GET quads      | ``http://host:3332/ds``         |
 
-## Example 3
+### Example 3
 
 Different combinations of services and endpoint names can be given using a `DataService`.
 
@@ -193,7 +194,7 @@ string is used to determine the operation.
 | GSP read-only   | ``http://host:3332/ds``  |
 | GET/POST quads  | ``http://host:3332/ds``  |
 
-## Example 4
+### Example 4
 
 Multiple datasets can be served by one server.
 
