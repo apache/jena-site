@@ -32,13 +32,13 @@ and exit code for a transaction, eliminating coding errors.
 
 The form is:
 
-    Txn.execRead(ds, ()-> {
+    Txn.executeRead(ds, ()-> {
         . . .
     }) ;
 
 and
 
-    Txn.execWrite(ds, ()-> {
+    Txn.executeWrite(ds, ()-> {
         . . .
     }) ;
 
@@ -48,7 +48,7 @@ This first example shows how to write a SPARQL query .
 
     Dataset ds = ... ;
     Query query = ... ;
-    Txn.execRead(ds, ()-> {
+    Txn.executeRead(ds, ()-> {
         try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
             ResultSetFormatter.out(qExec.execSelect()) ;
         }
@@ -61,7 +61,7 @@ Writing to a file is a read-action (it does not update the RDF data, the
 writer needs to read the dataset or model):
 
     Dataset ds = ... ;
-    Txn.execRead(ds, ()-> {
+    Txn.executeRead(ds, ()-> {
         RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
     }) ;
 
@@ -69,7 +69,7 @@ whereas reading data into an RDF dataset needs to be a write transaction
 (the dataset or model is chanaged).
 
     Dataset ds = ... ;
-    Txn.execWrite(ds, ()-> {
+    Txn.executeWrite(ds, ()-> {
         RDFDataMgr.read(ds, "data.ttl") ;
     }) ;
 
@@ -80,7 +80,7 @@ queries:
     Dataset ds = ... ;
     Query query1 = ... ;
     Query query2 = ... ;
-    Txn.execRead(ds, ()-> {
+    Txn.executeRead(ds, ()-> {
          try(QueryExecution qExec1 = QueryExecutionFactory.create(query1, ds)) {
              ...
          }
@@ -89,7 +89,7 @@ queries:
          }
     }) ;
 
-The `Txn.exec` block can return a result but only with the condition
+A `Txn.calculateRead` block can return a result but only with the condition
 that what is returned does not touch the data again unless it uses a new
 transaction.
 
@@ -101,7 +101,7 @@ results needs to be take:
 
     Dataset ds = ... ;
     Query query = ... ;
-    List<String> results = Txn.execReadRtn(ds, ()-> {
+    List<String> results = Txn.calculateRead(ds, ()-> {
          List<String> accumulator = new ArrayList<>() ;
          try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
              qExec.execSelect().forEachRemaining((row)->{
@@ -115,7 +115,7 @@ results needs to be take:
 
     Dataset ds = ... ;
     Query query = ... ;
-    ResultSet List<String> resultSet = Txn.execReadRtn(ds, ()-> {
+    ResultSet List<String> resultSet = Txn.calculateRead(ds, ()-> {
          List<String> accumulator = new ArrayList<>() ;
          try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
              return ResutSetFactory.copyResults(qExec.execSelect()) ;
@@ -131,9 +131,9 @@ dataset.
 
 ## Autocommit and Transaction continuation
 
-If there is a transaction already started for the thread, the `Txn.exec` will be performed as part of
+If there is a transaction already started for the thread, the `Txn.execute...` will be performed as part of
 the transaction and that transaction is not terminated.  If there is not transaction already started,
-a transaction is wrapped around the `Txn.exec` action.
+a transaction is wrapped around the `Txn.execute...` action.
 
     Dataset datsset = ...
     // Main transaction.
@@ -141,10 +141,10 @@ a transaction is wrapped around the `Txn.exec` action.
     try {
       ...
       // Part of the transaction above.
-      Txn.execRead(dataset, () -> ...) ;
+      Txn.executeRead(dataset, () -> ...) ;
       ...
       // Part of the transaction above - no commit/abort
-      Txn.execWrite(dataset, () -> ...) ;
+      Txn.executeWrite(dataset, () -> ...) ;
 
       dataset.commit() ;
     } finally { dataset.end() ; }
