@@ -111,7 +111,7 @@ RDF Datasets are encoded as a stream of `RDF_Triple` and `RDF-Quad`.
 ## Thrift encoding of SPARQL Result Sets {#encoding-result-sets}
 
 A SPARQL Result Set is encoded as a list of variables (the header), then
-a list of rows (the results).
+a stream of rows (the results).
 
     struct RDF_VarTuple {
     1: list<RDF_VAR> vars
