@@ -80,7 +80,7 @@ RDF Thrift uses the Thrift compact protocol.
     12: RDF_Decimal     valDecimal
     }
 
-## Thrift encoding of Graphs and Datasets {#encoding-graphs-datasets}
+## Thrift encoding of Triples, Quads and rows. {#encoding-tuples}
 
     struct RDF_Triple {
     1: required RDF_Term S
@@ -101,13 +101,22 @@ RDF Thrift uses the Thrift compact protocol.
     3: RDF_Quad         quad
     }
     
+## Thrift encoding of RDF Graphs and RDF Datasets {#encoding-graphs-datasets}
+
+RDF Graphs are encoded as a stream of `RDF_Triple`.
+
+RDF Datasets are encoded as a stream of `RDF_Triple` and `RDF-Quad`.
+
+
 ## Thrift encoding of SPARQL Result Sets {#encoding-result-sets}
 
+A SPARQL Result Set is encoded as a list of variables (the header), then
+a list of rows (the results).
+
     struct RDF_VarTuple {
-    1: list&lt;RDF_VAR&gt; vars
+    1: list<RDF_VAR> vars
     }
     
     struct RDF_DataTuple {
-    1: list&lt;RDF_Term&gt; row
+    1: list<RDF_Term> row
     }
-
