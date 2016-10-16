@@ -1,7 +1,6 @@
 Title: Writing RDF in Apache Jena
 
-This page describes the RIOT (RDF I/O technology) output capabilities
-introduced in Jena 2.10.1.
+This page describes the RIOT (RDF I/O technology) output capabilities.
 
 See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
 
@@ -14,6 +13,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
   - [Streamed Block Formats](#streamed-block-formats)
   - [Line printed formats](#line-printed-formats)
   - [N-Triples and N-Quads](#n-triples-and-n-quads)
+  - [JSON-LD](#json-ld)
   - [RDF Binary](#rdf-thrift)
   - [RDF/XML](#rdfxml)
 - [Examples](#examples)
@@ -51,11 +51,11 @@ are available as part of the standard setup.
 
 * Turtle
 * N-Triples
-* RDF/XML
-* JSON-LD
-* RDF/JSON
-* TriG
 * NQuads
+* TriG
+* JSON-LD
+* RDF/XML
+* RDF/JSON
 * TriX
 * RDF Binary
 
@@ -279,8 +279,6 @@ needing any writer state.
 
 <p>&nbsp;</p>
 
-<p><small>Introduced in version: Jena 2.10.2</small></p>
-
 The main N-Triples and N-Quads writers follow RDF 1.1 and output using UTF-8.  
 For compatibility with old software, writers are provided that output
 in ASCII (using `\u` escape sequences for non-ASCI characters where necessary).
@@ -289,6 +287,34 @@ in ASCII (using `\u` escape sequences for non-ASCI characters where necessary).
 |-----------------|
 | NTRIPLES_ASCII  |
 | NQUADS_ASCII    |
+
+### JSON-LD
+
+JSON-LD output is supported, in its various flavors 
+("compacted", "expanded", "flattened", "framed"), 
+by using one of the following RDFFormats:
+
+| RDFFormat              |
+|------------------------|
+| JSONLD_EXPAND_PRETTY   |
+| JSONLD_EXPAND_FLAT     | 
+| JSONLD_COMPACT_PRETTY  | 
+| JSONLD_COMPACT_FLAT    | 
+| JSONLD_FLATTEN_PRETTY  |
+| JSONLD_FLATTEN_FLAT    |
+| JSONLD_FRAME_PRETTY    |
+| JSONLD_FRAME_FLAT      |
+
+Teh default registration for `JSONLD` is `JSONLD_PRETTY` and
+`JSONLD_PRETTY` is identical to `JSONLD_COMPACT_PRETTY`.
+
+Output can be customized, passing more info to the writer by using the
+"Context" mechanism provided by Jena.  The same mechanism is used to
+pass the "frame" in the `JSONLD_FRAME_PRETTY` and `JSONLD_FRAME_FLAT`
+cases.
+
+What can be done, and how it can be, is explained in the 
+[sample code](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExJsonLD.java).
 
 ### RDF Binary
 
