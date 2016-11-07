@@ -8,17 +8,17 @@ To do this you will need a Fuseki installation, the Permissions Packages and a S
 
 ## Set up
 
-This example uses Fuseki 2.3.0, Permissions 3.0.0 and Apache Commons Collections v4.
+This example uses Fuseki 2.3.0 or higher, Permissions 3.1.0 or higher and Apache Commons Collections v4.
 
 Fuseki can be downloaded from:
-[https://repository.apache.org/content/repositories/snapshots/org/apache/jena/apache-jena-fuseki/]
+[https://repository.apache.org/content/repositories/releases/org/apache/jena/apache-jena-fuseki/]
 
 Jena Permissions jars can be downloaded from:
-[https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-permissions/]
+[https://repository.apache.org/content/repositories/releases/org/apache/jena/jena-permissions/]
 
 1. Download and unpack Fuseki. The directory that you unpack Fuseki into will be referred to as the `Fuseki Home` directory for the remainder of this document.
 
-2. Download permissions 3.0.0 jar and 3.0.0 permissions-example jar.
+2. Download the permissions jar and the associated permissions-example jar.
 
 3. Copy the permissions jar and the permissions-example jar into the Fuseki Home directory. For the rest of this document the permissions jar will be referred to as `permissions.jar` and the permissions-example.jar as `example.jar`
 
@@ -29,8 +29,8 @@ Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
 5. Add security jars to the startup script/batch file.
     * On \*NIX edit fuseki-server script
         1. Comment out the line that reads `exec java  $JVM_ARGS -jar "$JAR" "$@"`
-        2. Uncomment the line that reads `\#\#   APPJAR=MyCode.jar`
-        3. Uncomment the line that reads `\#\#   java $JVM_ARGS -cp "$JAR:$APPJAR" org.apache.jena.fuseki.cmd.FusekiCmd "$@"`
+        2. Uncomment the line that reads `##   APPJAR=MyCode.jar`
+        3. Uncomment the line that reads `##   java $JVM_ARGS -cp "$JAR:$APPJAR" org.apache.jena.fuseki.cmd.FusekiCmd "$@"`
         4. change `MyCode.jar` to `permissions.jar:example.jar:commons-collections*.jar`
 
     * On Windows edit fuseki-server.bat file.
@@ -88,7 +88,7 @@ Load the SecuredAssembler class from the permissions library and define the perm
        perm:Model       rdfs:subClassOf  ja:NamedModel .
 
 
-Define the base model that contains the unsecured data.
+Define the base model that contains the unsecured data.  This can be any model type.  For our example we use an in memory model that reads the exampl.ttl file.
 
     my:baseModel rdf:type ja:MemoryModel;
         ja:content [ja:externalContent <file:./example.ttl>]
@@ -111,7 +111,8 @@ Define the security evaluator. This is where we use the example ShiroExampleEval
         perm:evaluatorClass "org.apache.jena.permissions.example.ShiroExampleEvaluator" .
 
 
-Define the dataset that we will use for in the server.
+Define the dataset that we will use for in the server.  Note that in the example dataset only contains the single secured model, adding multiple models and mising secured and
+unsecured models is supported.
 
     my:securedDataset rdf:type ja:RDFDataset ;
         ja:defaultGraph my:securedModel .
@@ -138,3 +139,44 @@ Define the service for the fuseki:Service. Note that the fuseki:dataset served b
         fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
         fuseki:dataset                    my:securedDataset ;
     .
+
+## Review of ShiroExampleEvaluator
+
+The ShiroExampleEvaluator uses triple level permissions to limit access to the "messages" in the graph to only those people in the message is address to or from.
+It is connected to the Shiro system by the `getPrincipal()` implementation where it simply calls the Shiro SecurityUtils.getSubject() method to return the current 
+shiro user.
+
+    /**
+     * Return the Shiro subject.  This is the subject that Shiro currently has logged in.
+     */
+    @Override
+    public Object getPrincipal() {
+        return SecurityUtils.getSubject();
+    }
+
+This example allows any action on a graph as is seen in the `evaluate(Object principal, Action action, Node graphIRI)` and `evaluateAny(Object principal, Set<Action> actions, Node graphIRI)` methods.  This is the first permissions check.  If you wish to restrict users from specific graphs this method should be recoded to perform the check.
+
+
+	/**
+	 * We allow any action on the graph itself, so this is always true.
+	 */
+	@Override
+	public boolean evaluate(Object principal, Action action, Node graphIRI) {
+		// we allow any action on a graph.
+		return true;
+	}
+    
+    /**
+     * As per our design, users can access any graph.  If we were to implement rules that 
+     * restricted user access to specific graphs, those checks would be here and we would 
+     * return <code>false</code> if they were not allowed to access the graph.  Note that this
+     * method is checking to see that the user may perform ANY of the actions in the set on the
+     * graph.
+     */
+    @Override
+    public boolean evaluateAny(Object principal, Set<Action> actions, Node graphIRI) {
+        return true;
+    }
+
+The other overridden methods are implemented using one of three (3) private methods that evaluate if the user should have access to the data based on our security design.
+To implement your security design you should understand what each of the methods checks.  See the [SecurityEvaluator](../../javadoc/permissions/org/apache/jena/permissions/SecurityEvaluator.html) javadocs.
