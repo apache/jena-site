@@ -48,19 +48,18 @@ distributed query evaluation. The algebra operation is executed
 without regard to how selective the pattern is. So the order of the
 query will affect the speed of execution. Because it involves HTTP
 operations, asking the query in the right order matters a lot.
-Don't ask for the whole of a bookstore just to find book whose
+Don't ask for the whole of a bookstore just to find a book whose
 title comes from a local RDF file - ask the bookshop a query with
 the title already bound from earlier in the query.
 
 ## Controlling `SERVICE` requests.
 
-The `SERVICE` operation in a SPARQL query may be configured via the Context.
-The values for configuration can be set in the global context (accessed via 
+The `SERVICE` operation in a SPARQL query may be configured via the Context. The values for configuration can be set in the global context (accessed via 
 `ARQ.getContext()`) or in the per-query execution context.
 
 The prefix  `srv:` is the IRI `<http://jena.hpl.hp.com/Service#>`.
 
-### Summary
+### Configuration for ARQ through version 3.1.0
 
 Symbol | Usage
 ------ | -----
@@ -71,7 +70,7 @@ Symbol | Usage
 `srv:queryAuthPwd` |  Basic authentication
 `srv:queryContext` | Per-endpoint configuration
 
-### `srv:queryTimeout`
+#### `srv:queryTimeout`
 
 Set the connect and read timeouts for the query.
 
@@ -86,21 +85,21 @@ read timout = 0
 
 Values of 0 indicate no timeout and service operation will wait until the remote server responds.
 
-### `srv:queryGzip`
+#### `srv:queryGzip`
 
 Sets the allow Gzip flag.
 
 Boolean: True indicates that gzip compressed data is acceptable.
 false
 
-### `srv:queryDeflate`
+#### `srv:queryDeflate`
 
 Sets the allow Deflate flag.
 
 Boolean: True indicates that deflate compression is acceptable
 False
 
-### `srv:queryAuthUser`
+#### `srv:queryAuthUser`
 
 Sets the user id for basic auth.
 
@@ -108,7 +107,7 @@ String: The user id to log in with
 
 If null or null length no user id is sent.
 
-### `srv:queryAuthPwd`
+#### `srv:queryAuthPwd`
 
 Sets the password for basic auth.
 
@@ -116,13 +115,43 @@ String: The password to log in with.
 
 If null or null length no password is sent.
 
-### srv:serviceContext
+#### `srv:serviceContext`
 Provides a mechanism to override system context settings on a per URI basis.
 
 The value is a `Map<String,Context>` where the map key is the URI of the service endpoint, and the `Context` is a set of values to override the default values.
 
 If a context is provided for the URI the system context is copied and the URI specific values are then copied in.  This ensures that any URI specific settings will be used.
 
+### Configuration for ARQ after version 3.1.0
 
+Symbol | Usage | Default
+------ | ----- | -------
+`srv:queryTimeout` | Set timeouts | none
+`srv:queryCompression` | Enable use of deflation and GZip | true
+`srv:queryClient` | Enable use of a specific client | none
+`srv:queryContext` | Per-endpoint configuration | none
+
+#### `srv:queryTimeout`
+
+As documented above.
+
+
+#### `srv:queryCompression`
+
+Sets the flag for use of deflation and GZip.
+
+Boolean: True indicates that gzip compressed data is acceptable.
+
+#### `srv:queryClient`
+
+Enable use of a specific client
+
+Provides a slot for a specific [HttpClient][1] for use with a specific `SERVICE`
+
+#### `srv:serviceContext`
+
+As documented above.
 
 [ARQ documentation index](index.html)
+
+[1]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
