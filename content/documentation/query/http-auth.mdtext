@@ -16,12 +16,73 @@ Notice:    Licensed to the Apache Software Foundation (ASF) under one
            specific language governing permissions and limitations
            under the License.
 
-From ARQ 2.11.0 through ARQ 3.1.0 there is a Jena-specific unified HTTP operation framework that provides a uniform mechanism for 
-HTTP authentication that also allows ARQ to support a broader range of authentication mechanisms than were previously possible. After ARQ 3.1.0, Jena exposes the underlying HTTP Commons functionality to the same end. This documentation is therefore devided into two sections. The first explains the older Jena-specific functionality, and the second explains how to use HTTP Commons code to the same ends.
+After [Jena 3.1.0](#http-authentication-from-jena-311), Jena exposes the underlying HTTP Commons functionality to support a range of authentication mechanisms as well as [other HTTP configuration][16]. From [Jena 3.0.0 through Jena 3.1.0](#http-authentication-from-jena 300-through-310) there is a Jena-specific framework that provides a uniform mechanism for HTTP authentication. This documentation is therefore devided into two sections. The first explains how to use HTTP Commons code, and the second explains the older Jena-specific functionality.
 
-## HTTP Authentication before ARQ 3.1.0
+## HTTP Authentication from Jena 3.1.1
 
-### Applying Authentication
+Applying Authentication
+
+APIs that support authentication typically provide methods for providing an [HttpClient] for use with the given instance of that API class. Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default client that is used when no other client is explicitly specified.  This may be configured via the 
+`setDefaultHttpClient(HttpClient httpClient)` method of the [HttpOp][13] class. This allows for static-scoped configuration of HTTP behavior.
+
+### Examples of authentication
+
+This section includes a series of examples showing how to use HTTP Commons classes to perform authenticated work. Most of them take advantage of `HttpOp.setDefaultHttpClient` as described above.
+
+#### Simple authentication using username and password
+
+First we build an authenticating client:
+
+    CredentialsProvider credsProvider = new BasicCredentialsProvider();
+    Credentials credentials = new UsernamePasswordCredentials("user", "passwd");
+    credsProvider.setCredentials(AuthScope.ANY, credentials);
+    HttpClient httpclient = HttpClients.custom()
+        .setDefaultCredentialsProvider(credsProvider)
+        .build();
+    HttpOp.setDefaultHttpClient(httpclient);
+
+Notice that we gave no scope for use with the credentials (`AuthScope.ANY`). We can make further use of that parameter if we want to assign a scope for some credentials:
+
+    CredentialsProvider credsProvider = new BasicCredentialsProvider();
+    Credentials unscopedCredentials = new UsernamePasswordCredentials("user", "passwd");
+    credsProvider.setCredentials(AuthScope.ANY, unscopedCredentials);
+    Credentials scopedCredentials = new UsernamePasswordCredentials("user", "passwd");
+    final String host = "http://example.com/sparql";
+    final int port = 80;
+    final String realm = "aRealm";
+    final String schemeName = "DIGEST";
+    AuthScope authscope = new AuthScope(host, port, realm, schemeName);
+    credsProvider.setCredentials(authscope, scopedCredentials);
+    HttpClient httpclient = HttpClients.custom()
+        .setDefaultCredentialsProvider(credsProvider)
+        .build();
+    HttpOp.setDefaultHttpClient(httpclient);
+	
+#### Authenticating via a form
+
+For this case we introduce an [HttpClientContext][17], which we can use to retrieve the cookie we get from logging into a form. We then use the cookie to authenticate elsewhere.
+
+    // we'll use this context to maintain our HTTP "conversation"
+    HttpClientContext httpContext = new HttpClientContext();
+
+    // first we use a method on HttpOp to log in and get our cookie
+    Params params = new Params();
+    params.addParam("username", "Bob Wu");
+    params.addParam("password", "my password");
+    HttpOp.execHttpPostForm("http://example.com/loginform", params , null, null, null, httpContext);
+
+    // now our cookie is stored in httpContext
+    CookieStore cookieStore = httpContext.getCookieStore();
+
+    // lastly we build a client that uses that cookie
+    HttpClient httpclient = HttpClients.custom()
+	    .setDefaultCookieStore(cookieStore)
+		.build();
+    HttpOp.setDefaultHttpClient(httpclient);
+
+## HTTP Authentication from Jena 3.0.0 through 3.1.0
+
+Applying Authentication
 
 APIs that support authentication typically provide two methods for providing authenticators, a `setAuthentication(String username, char[] password)` method
 which merely configures a `SimpleAuthenticator`.  There will also be a `setAuthenticator(HttpAuthenticator authenticator)` method
@@ -43,14 +104,14 @@ avoids the needs to cast and manually set the authenticator afterwards e.g.
         ...
     }
 
-#### Authenticators
+### Authenticators
 
 Authentication mechanisms are provided by [HttpAuthenticator][1] implementations of which a number are provided built into ARQ.
 
 This API provides the authenticator with access to the `HttpClient`, `HttpContext` and target `URI` of the request that is about to be carried 
 out.  This allows for authenticators to add credentials to requests on a per-request basis and/or to use different mechanisms and credentials for different services.
 
-##### SimpleAuthenticator
+#### SimpleAuthenticator
 
 The [simple authenticator][2] is as the name suggests the simplest implementation.  It takes a single set of credentials which is applied to
 any service.
@@ -58,7 +119,7 @@ any service.
 Authentication however is not preemptive so unless the remote service sends a HTTP challenge (401 Unauthorized or 407 Proxy Authorization
  Required) then credentials will not actually be submitted.
 
-##### ScopedAuthenticator
+#### ScopedAuthenticator
 
 The [scoped authenticator][3] is an authenticator which maps credentials to different service URIs.  This allows you to specify different 
 credentials for different services as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are 
@@ -69,13 +130,13 @@ if you define credentialsfor `http://example.org` then these are used for any re
 e.g. `http://example.org/some/path`.  However if you had also defined credentials for `http://example.org/some/path` then these would be 
 used in favor of those for `http://example.org`
 
-##### ServiceAuthenticator
+#### ServiceAuthenticator
 
 The [service authenticator][4] is an authenticator which uses information encoded in the ARQ context and basically provides access to the 
 existing credential provision mechanisms provided for the `SERVICE` clause, see [Basic Federated Query][5] for more information on 
 configuration for this.
 
-##### FormsAuthenticator
+#### FormsAuthenticator
 
 The [forms authenticator][6] is an authenticator usable with services that require form based logins and use session cookies to verify login state.
 This is intended for use with services that don't support HTTP's built-in authentication mechanisms for whatever reason.  One example of this 
@@ -106,7 +167,7 @@ that maps each service to an associated form login and passing that to the `Form
 
 Currently forms based login that require more than just a username and password are not supported.
 
-##### PreemptiveBasicAuthenticator
+#### PreemptiveBasicAuthenticator
 
 This [authenticator][8] is a decorator over another authenticator that enables preemptive basic authentication, this **only** works for servers 
 that support basic authentication and so will cause authentication failures when any other authentication scheme is required.  You should **only**
@@ -123,12 +184,12 @@ Also be aware that basic authentication is very insecure since it sends credenti
 many servers will use more secure schemes like Digest authentication which **cannot** be done preemptively as they require more complex
 challenge response sequences.
 
-##### DelegatingAuthenticator
+#### DelegatingAuthenticator
 
 The [delegating authenticator][12] allows for mapping different authenticators to different services, this is useful when you need to mix and 
 match the types of authentication needed.
 
-#### The Default Authenticator
+### The Default Authenticator
 
 Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default 
 authenticator that is used when no authenticator is explicitly specified.  This may be configured via the 
@@ -141,68 +202,6 @@ You can configure the default authenticator to whatever you need so even if you 
 provided that it is using ARQs APIs to make these then authentication will still be applied.
 
 Note that the default authenticator may be disabled by setting it to `null`.
-
-## HTTP Authentication after ARQ 3.1.0
-
-### Applying Authentication
-
-APIs that support authentication typically provide methods for providing an [HttpClient] for use with the given instance of that API class. `HttpClient` is [extremely flexible][16] and can handle most scenarios very well. Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default client that is used when no other client is explicitly specified.  This may be configured via the 
-`setDefaultHttpClient(HttpClient httpClient)` method of the [HttpOp][13] class. This allows for static-scoped configuration of HTTP behavior.
-
-#### Examples of authentication
-
-This section includes a series of examples showing how to use HTTP Commons classes to perform authenticated work. Most of them take advantage of `HttpOp.setDefaultHttpClient` as described above.
-
-##### Simple authentication using username and password
-
-First we build an authenticating client:
-
-    CredentialsProvider credsProvider = new BasicCredentialsProvider();
-    Credentials credentials = new UsernamePasswordCredentials("user", "passwd");
-    credsProvider.setCredentials(AuthScope.ANY, credentials);
-    HttpClient httpclient = HttpClients.custom()
-        .setDefaultCredentialsProvider(credsProvider)
-        .build();
-    HttpOp.setDefaultHttpClient(httpclient);
-
-Notice that we gave no scope for use with the credentials (`AuthScope.ANY`). We can make further use of that parameter if we want to assign a scope for some credentials:
-
-    CredentialsProvider credsProvider = new BasicCredentialsProvider();
-    Credentials unscopedCredentials = new UsernamePasswordCredentials("user", "passwd");
-    credsProvider.setCredentials(AuthScope.ANY, unscopedCredentials);
-    Credentials scopedCredentials = new UsernamePasswordCredentials("user", "passwd");
-    final String host = "http://example.com/sparql";
-    final int port = 80;
-    final String realm = "aRealm";
-    final String schemeName = "DIGEST";
-    AuthScope authscope = new AuthScope(host, port, realm, schemeName);
-    credsProvider.setCredentials(authscope, scopedCredentials);
-    HttpClient httpclient = HttpClients.custom()
-        .setDefaultCredentialsProvider(credsProvider)
-        .build();
-    HttpOp.setDefaultHttpClient(httpclient);
-	
-##### Authenticating via a form
-
-For this case we introduce an [HttpClientContext][17], which we can use to retrieve the cookie we get from logging into a form. We then use the cookie to authenticate elsewhere.
-
-    // we'll use this context to maintain our HTTP "conversation"
-    HttpClientContext httpContext = new HttpClientContext();
-
-    // first we use a method on HttpOp to log in and get our cookie
-    Params params = new Params();
-    params.addParam("username", "Bob Wu");
-    params.addParam("password", "my password");
-    HttpOp.execHttpPostForm("http://example.com/loginform", params , null, null, null, httpContext);
-
-    // now our cookie is stored in httpContext
-    CookieStore cookieStore = httpContext.getCookieStore();
-
-    // lastly we build a client that uses that cookie
-    HttpClient httpclient = HttpClients.custom()
-	    .setDefaultCookieStore(cookieStore)
-		.build();
-    HttpOp.setDefaultHttpClient(httpclient);
 
 ## Other concerns
 
