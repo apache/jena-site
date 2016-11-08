@@ -16,13 +16,11 @@ Notice:    Licensed to the Apache Software Foundation (ASF) under one
            specific language governing permissions and limitations
            under the License.
 
-After [Jena 3.1.0](#http-authentication-from-jena-311), Jena exposes the underlying HTTP Commons functionality to support a range of authentication mechanisms as well as [other HTTP configuration][16]. From [Jena 3.0.0 through Jena 3.1.0](#http-authentication-from-jena 300-through-310) there is a Jena-specific framework that provides a uniform mechanism for HTTP authentication. This documentation is therefore devided into two sections. The first explains how to use HTTP Commons code, and the second explains the older Jena-specific functionality.
+After [Jena 3.1.0](#http-authentication-from-jena-311), Jena exposes the underlying HTTP Commons functionality to support a range of authentication mechanisms as well as [other HTTP configuration][16]. From [Jena 3.0.0 through Jena 3.1.0](#http-authentication-from-jena-300-through-310) there is a Jena-specific framework that provides a uniform mechanism for HTTP authentication. This documentation is therefore devided into two sections. The first explains how to use HTTP Commons code, and the second explains the older Jena-specific functionality.
 
 ## HTTP Authentication from Jena 3.1.1
 
-Applying Authentication
-
-APIs that support authentication typically provide methods for providing an [HttpClient] for use with the given instance of that API class. Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default client that is used when no other client is explicitly specified.  This may be configured via the 
+APIs that support authentication typically provide methods for providing an [HttpClient][15] for use with the given instance of that API class. Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default client that is used when no other client is explicitly specified.  This may be configured via the 
 `setDefaultHttpClient(HttpClient httpClient)` method of the [HttpOp][13] class. This allows for static-scoped configuration of HTTP behavior.
 
 ### Examples of authentication
@@ -81,8 +79,6 @@ For this case we introduce an [HttpClientContext][17], which we can use to retri
     HttpOp.setDefaultHttpClient(httpclient);
 
 ## HTTP Authentication from Jena 3.0.0 through 3.1.0
-
-Applying Authentication
 
 APIs that support authentication typically provide two methods for providing authenticators, a `setAuthentication(String username, char[] password)` method
 which merely configures a `SimpleAuthenticator`.  There will also be a `setAuthenticator(HttpAuthenticator authenticator)` method
