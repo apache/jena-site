@@ -77,6 +77,17 @@ For this case we introduce an [HttpClientContext][17], which we can use to retri
 	    .setDefaultCookieStore(cookieStore)
 		.build();
     HttpOp.setDefaultHttpClient(httpclient);
+	
+	// alternatively we could use the context directly
+	Query query = ...
+	QueryEngineHTTP qEngine = QueryExecutionFactory.createServiceRequest("http:example.com/someSPARQL", query);
+	qEngine.setHttpContext(httpContext);
+	ResultSet results = qEngine.execSelect();
+	
+
+### Using authentication functionality in direct query execution
+
+Jena offers support for [directly creating](sparql-remote.html#from-your-application) SPARQL queries against remote services. To use [QueryExecutionFactory][18] in this case, select the methods (`sparqlService`, `createServiceRequest`) that offer an `HttpClient` parameter and use an authenticating client in that slot. In the case of [QueryEngineHTTP][9], it is possible to use constructors that have a parameter slot for an `HttpClient`, but it is also possible post-construction to use `setClient(HttpClient client)` and `setHttpContext(HttpClientContext context)` (as shown above). These techniques allow control over HTTP behavior when requests are made to remote services.
 
 ## HTTP Authentication from Jena 3.0.0 through 3.1.0
 
@@ -230,3 +241,4 @@ ARQ allows the user to configure HTTP behavior to use on a per-`SERVICE` basis, 
   [15]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
   [16]: https://hc.apache.org/httpcomponents-client-ga/examples.html
   [17]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/protocol/HttpClientContext.html
+  [18]: https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/query/QueryExecutionFactory.html
