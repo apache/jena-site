@@ -113,6 +113,7 @@ The operations are to fetch a graph, set the RDF data in a graph,
 add more RDF data into a graph, and delete a graph from a dataset.
 
 For example: load two files:
+
     try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
         conn.load("data1.ttl") ;
         conn.load("data2.nt") ;
@@ -121,8 +122,9 @@ For example: load two files:
 The file extension is used to determine the syntax.
 
 There is also a set of scripts to help do these operations from the command
-line with <a href="http://jena.apache.org/documentation/fuseki2/soh.html"
->SOH</a>. It is possible to write curl scripts as well.  The SPARQL Graph
+line with 
+<a href="http://jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
+It is possible to write curl scripts as well.  The SPARQL Graph
 Store Protocol provides a standardised way to manage the data in a dataset.
 
 In addition, `RDFConnection` provides an extension to give the same style
@@ -146,7 +148,9 @@ This provides a form of checking for large datasets when "copy" is impractical.
 * None &ndash; the models and datasets are passed back with no additional wrappers
 and they can be updated with the changes being made the underlying dataset.
 
-The default for a local `RDFConnection` is "none".  
+The default for a local `RDFConnection` is "none". When used with TDB,
+accessing returned models must be done with <a href="../txn">transactions</a>
+in this mode.
 
 ## Query Usage
 
