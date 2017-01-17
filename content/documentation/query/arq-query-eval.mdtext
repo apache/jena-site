@@ -9,10 +9,10 @@ particular circumstances. These mechanisms are used by
 
 ARQ can be [extended in various ways](extension.html) to
 incorporate custom code into a query.
-[Custom filter functions](extension.html#value-functions) and
+[Custom filter functions](extension.html#filter-functions) and
 [property functions](extension.html#property-functions) provide ways
 to add application specific code. The
-[free text search](/documentation/larq/) capabilities, using Apache
+[free text search](/documentation/query/text-query.html) capabilities, using Apache
 Lucene, are provided via a property function. Custom filter
 functions and property functions should be used where possible.
 
@@ -21,7 +21,7 @@ the `Graph` interface. This can be used to encapsulate specific
 specialised storage and also for wrapping non-RDF sources to look
 like RDF. There is a common implementation framework provided by
 `GraphBase` so only one operation, the `find` method, needs to be
-written for a read-only data source. Basic find works well is many
+written for a read-only data source. Basic find works well in many
 cases, and the whole Jena API will be able to use the extension. 
 For higher SPARQL performance, ARQ can be extended at the
 [basic graph matching](#graph-matching-and-a-custom-stagegenerator) or
@@ -61,9 +61,9 @@ The parsing step turns a query string into a `Query` object. The
 class `Query` represents the abstract syntax tree (AST) for the
 query and provides methods to create the AST, primarily for use by
 the parser. The query object also provides methods to serialize the
-query to a string. Because this is the AST, the string produced is
+query to a string. Because this is from an AST, the string produced will be
 very close to the original query with the same syntactic elements,
-but without comments, and formatted with a whitespace for
+but without comments, and formatted with whitespace for
 readability. It is not usually the best way to build a query
 programmatically and the AST is not normally an extension point.
 
@@ -109,7 +109,7 @@ the internal data-structure for the algebra.
 
 The [online SPARQL validator](http://www.sparql.org/validator.html)
 at [sparql.org](http://sparql.org/) can be used to see the algebra
-expression for a SPARQL query. This validator is also include in
+expression for a SPARQL query. This validator is also included in
 [Fuseki](../fuseki2/).
 
 ### High-Level Optimization and Transformations
@@ -217,15 +217,15 @@ engine factories.
 
 When the query execution factory is given a dataset and query, the
 query execution factory tries each registered engine factory in
-turn calling the `accept` method (for query of algebra depending on
+turn calling the `accept` method (for query or algebra depending on
 how it was presented). The registry is kept in reverse registration
 order - the most recently registered query engine factory is tried
-first. The first query engine factor to return true is chosen and
+first. The first query engine factory to return true is chosen and
 no further engine factories are checked.
 
 When a query engine factory is chosen, the `create` method is
 called to return a `Plan` object for the execution. The main
-operation of the plan interface is to get the `QueryIterator` for
+operation of the `Plan` interface is to get the `QueryIterator` for
 the query.
 
 See the example in
@@ -237,7 +237,7 @@ The main query engine can execute any query. It contains a number
 of basic graph pattern matching implementations including one that
 uses the `Graph.find` operation so it can work with any
 implementation of the Jena Graph SPI. The main query engine works
-with general purpose datasets but not quad stores directly; it
+with general purpose datasets but not directly with quad stores; it
 evaluates patterns on each graph in turn. The main query engine
 includes optimizations for the standard Jena implementation of
 in-memory graphs.
@@ -275,7 +275,7 @@ match a basic graph pattern.
 The correct point to hook into ARQ for just extending basic graph
 pattern matching (BGPs) is to provide a custom `StageGenerator`. 
 (To hook into filtered basic graph patterns, the extension will
-need to provide it's own `OpExecutor` factory). The advantage of
+need to provide its own `OpExecutor` factory). The advantage of
 the `StageGenerator` mechanism, as compared to the more general
 `OpExecutor` described below, is that it more self-contained and
 requires less detail about the internal evaluation of the other
@@ -392,7 +392,7 @@ graph pattern matching.
 
 Note: this is not the way to provide custom filter operations.  See
 the documentation for
-[application-provided filter functions](extension.html#valueFunctions).
+[application-provided filter functions](extension.html#filter-functions).
 
 Each step of evaluation in the main query engine is performed by a
 `OpExecutor` and a new one is created from a factory at each step. 
@@ -400,7 +400,7 @@ The factory is registered in the execution context. The
 implementation of a specialized `OpExecutor` can inherit from the
 standard one and override only those algebra operators it wishes to
 deal with, including inspecting the execution and choosing to
-passing up to the super-class based on the details of the
+pass up to the super-class based on the details of the
 operation.  From the query above, only regex filters might be
 specially handled.
 
@@ -409,9 +409,9 @@ Registering an `OpExecutorFactory`:
     OpExecutorFactory customExecutorFactory = new MyOpExecutorFactory(...) ;
     QC.setFactory(ARQ.getCOntext(), customExecutorFactory) ;
 
-QC is a point of indirection that chooses the execution process at
+`QC` is a point of indirection that chooses the execution process at
 each stage in a query so if the custom execution wishes to evaluate
-an algebra operation within another operation, it shoudl call
+an algebra operation within another operation, it should call
 `QC.execute`. Be careful not to loop endlessly if the operation is
 itself handled by the custom evaluator. This can be done by
 swapping in a different `OpExecutorFactory`.
@@ -466,7 +466,7 @@ graphs can be mixed with database backed graphs as well as custom
 storage systems. Query execution proceeds per-graph so that an
 custom `OpExecutor` will need to test the graph to work with to
 make sure it is of the right class. The pattern in the
-`StageGenerator` extension point is an example of design pattern in
+`StageGenerator` extension point is an example of a design pattern in
 that situation.
 
 ## Custom Query Engines
@@ -474,7 +474,7 @@ that situation.
 A custom query engine enables an extension to choose which datasets
 it wishes to handle. It also allows the extension to intercept
 query execution during the setup of the execution so it can modify
-the algebra expression, introduce it's own algebra extensions,
+the algebra expression, introduce its own algebra extensions,
 choose which high-level optimizations to apply and also transform
 to the expression into quad form. Execution can proceed with the
 normal algorithm or a custom `OpExecutor` or a custom Stage
