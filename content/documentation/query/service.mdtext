@@ -59,6 +59,40 @@ The `SERVICE` operation in a SPARQL query may be configured via the Context. The
 
 The prefix  `srv:` is the IRI `<http://jena.hpl.hp.com/Service#>`.
 
+### Configuration from Jena version 3.1.1
+
+Symbol | Usage | Default
+------ | ----- | -------
+`srv:queryTimeout` | Set timeouts | none
+`srv:queryCompression` | Enable use of deflation and GZip | true
+`srv:queryClient` | Enable use of a specific client | none
+`srv:queryContext` | Per-endpoint configuration | none
+
+#### `srv:queryTimeout`
+
+As documented above.
+
+
+#### `srv:queryCompression`
+
+Sets the flag for use of deflation and GZip.
+
+Boolean: True indicates that gzip compressed data is acceptable.
+
+#### `srv:queryClient`
+
+Enable use of a specific client
+
+Provides a slot for a specific [HttpClient][1] for use with a specific `SERVICE`
+
+#### `srv:serviceContext`
+
+As documented above.
+
+[ARQ documentation index](index.html)
+
+[1]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
+
 ### Configuration for Jena version 3.0.0 through 3.1.0
 
 Symbol | Usage
@@ -121,37 +155,3 @@ Provides a mechanism to override system context settings on a per URI basis.
 The value is a `Map<String,Context>` where the map key is the URI of the service endpoint, and the `Context` is a set of values to override the default values.
 
 If a context is provided for the URI the system context is copied and the URI specific values are then copied in.  This ensures that any URI specific settings will be used.
-
-### Configuration from Jena version 3.1.1
-
-Symbol | Usage | Default
------- | ----- | -------
-`srv:queryTimeout` | Set timeouts | none
-`srv:queryCompression` | Enable use of deflation and GZip | true
-`srv:queryClient` | Enable use of a specific client | none
-`srv:queryContext` | Per-endpoint configuration | none
-
-#### `srv:queryTimeout`
-
-As documented above.
-
-
-#### `srv:queryCompression`
-
-Sets the flag for use of deflation and GZip.
-
-Boolean: True indicates that gzip compressed data is acceptable.
-
-#### `srv:queryClient`
-
-Enable use of a specific client
-
-Provides a slot for a specific [HttpClient][1] for use with a specific `SERVICE`
-
-#### `srv:serviceContext`
-
-As documented above.
-
-[ARQ documentation index](index.html)
-
-[1]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
