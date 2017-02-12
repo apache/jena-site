@@ -16,7 +16,9 @@ dependencies and application code, the contents of the Jena files must
 be combined and be present in the combined jar as a java resource of the
 same name.
 
-The shade plugin is capable of doing this process in a build.
+The 
+[maven shade plugin](https://maven.apache.org/plugins/maven-shade-plugin/) 
+is capable of doing this process in a build using a "transformer".
 
 The Apache Jena uses the shade plugin technique itself to make the combined jar
 for Fuseki.  It uses the maven shade plugin with a `transformer`.
@@ -36,7 +38,7 @@ This is an extract from the POM:
 
 See
 [jena-fuseki2/jena-fuseki-server/pom.xml](https://github.com/apache/jena/blob/master/jena-fuseki2/jena-fuseki-server/pom.xml)
-for the complete shade polugin setup used by Fuseki.
+for the complete shade plugin setup used by Fuseki.
 
 If doing manually, create a single file in your application jar the
 all lines of all the services resource files. The order does not matter
