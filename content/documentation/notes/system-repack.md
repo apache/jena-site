@@ -1,9 +1,9 @@
 Title: Combining Apache Jena jars
 
 Apache Jena initalizes uses Java's
-[ServiceLoader|https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html]
+[ServiceLoader](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
 mechanism to locate initialization steps. The 
-documentation for process in Jena is [available here|system-initialization.html].
+documentation for process in Jena is [available here](system-initialization.html).
 
 There are a number of files (Java resources) in Jena jars named:
 
@@ -35,7 +35,7 @@ This is an extract from the POM:
         </transformers>
 
 See
-[jena-fuseki2/jena-fuseki-server/pom.xml|https://github.com/apache/jena/blob/master/jena-fuseki2/jena-fuseki-server/pom.xml]
+[jena-fuseki2/jena-fuseki-server/pom.xml](https://github.com/apache/jena/blob/master/jena-fuseki2/jena-fuseki-server/pom.xml)
 for the complete shade polugin setup used by Fuseki.
 
 If doing manually, create a single file in your application jar the
