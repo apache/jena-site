@@ -210,4 +210,4 @@ operations are visible to the called code.
 ## Examples
 
 See
-https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/rdfconnection/examples
+<a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">here</a> for examples.
