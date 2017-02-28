@@ -26,7 +26,7 @@ The `dataset.end()` declares the end of the read transaction.  Applications may 
 `dataset.commit()` or `dataset.abort()` which all have the same effect for a read transaction.
 
 This example has two queries - no updates between or during the queries will be seen by
-this code even if another thread commits changes in the lifetime of this transaction. transaction.
+this code even if another thread commits changes in the lifetime of this transaction.
 
      Dataset dataset = ... ;
      dataset.begin(ReadWrite.READ) ;
