@@ -30,18 +30,19 @@ this code even if another thread commits changes in the lifetime of this transac
 
      Dataset dataset = ... ;
      dataset.begin(ReadWrite.READ) ;
-     String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
+     try {
+         String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
+         try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
+             ResultSet rs = qExec.execSelect() ;
+             ResultSetFormatter.out(rs) ;
+         }
 
-     try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
-         ResultSet rs = qExec.execSelect() ;
-         ResultSetFormatter.out(rs) ;
-     }
-
-     String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
-     try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
-         rs = qExec.execSelect() ;
-         ResultSetFormatter.out(rs) ;
-     }
+         String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
+         try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
+             rs = qExec.execSelect() ;
+             ResultSetFormatter.out(rs) ;
+         }
+     } finally { dataset.end() ; }
 
 ### Write transactions
 
