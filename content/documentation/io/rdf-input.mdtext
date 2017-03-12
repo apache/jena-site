@@ -9,6 +9,7 @@ See [Writing RDF](rdf-output.html) for details of the RIOT Writer system.
     * [Determining the RDF syntax](#determining-the-rdf-syntax)
     * [Example 1 : Common usage](#example-1-common-usage)
     * [Example 2 : Using the RDFDataMgr](#example-2-using-the-rdfdatamgr)
+    * [Example 3 : Using RDFParser(#example-3-using-rdfparser)
 * [Logging](#logging)
 * [The StreamManager and LocationMapper](#streammanager-and-locationmapper)
     * [Configuring a `StreamManager`](#configuring-a-streammanager)
@@ -33,8 +34,9 @@ The major classes in the RIOT API are:
 | Class | Comment |
 |-------|---------|
 | RDFDataMgr        | Main set of functions to read and load models and datasets |
-| StreamManager     | Handles the opening of typed input streams |
 | StreamRDF         | Interface for the output of all parsers |
+| RDFParser         | Detailed setup of a parser |
+| StreamManager     | Handles the opening of typed input streams |
 | RDFLanguages      | Registered languages |
 | RDFParserRegistry | Registered parser factories |
 
@@ -91,8 +93,10 @@ If the syntax is not as the file extension, a language can be declared:
 ### Example 2 : Using the RDFDataMgr
 
 In versions of Jena priot to 2.10.0, the `FileManager` provided some of
-this functionality. It was more basic, and not properly web enabled.  The
-`RDFDataMgr` superceeds the `FileManager`.  "load*" operations create an
+this functionality. It was more basic, and not properly web enabled.
+The API `RDFDataMgr` superceeds the `FileManager`.
+
+ `RDFDataMgr "load*" operations create an
 in-memory container (model, or dataset as appropriate); "read" operations
 add data into an existing model or dataset.
 
@@ -106,6 +110,24 @@ add data into an existing model or dataset.
 
     // Read into an existing Model
     RDFDataMgr.read(model, "data2.ttl") ;
+
+### Example 3 : Using RDFParser
+
+Detail control over the setup of the parsing process is provided by
+`RDFParser` which provides a builder pattern.  It has many options - see
+[the javadoc for all details](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html).
+
+For example, to read Trig data, and set the error handler specially,
+
+        // The parsers will do the necessary character set conversion.  
+        try (InputStream in = new FileInputStream("data.some.unusal.extension")) {
+            RDFParser.create()
+                .source(in)
+                .lang(RDFLanguages.TRIG)
+                .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
+                .base("http://example/base")
+                .parse(noWhere);
+        }
 
 ## Logging
 
