@@ -7,7 +7,7 @@ SPARQL queries. Text indexes are additional information for
 accessing the RDF graph.
 
 The text index can be either [Apache Lucene](http://lucene.apache.org/core) for a
-same-machine text index, or [Apache Solr](http://lucene.apache.org/solr/)
+same-machine text index, or [Elasticsearch](https://www.elastic.co/)
 for a large scale enterprise search application.
 
 Some example code is [available here](https://github.com/apache/jena/tree/master/jena-text/src/main/java/examples/).
@@ -55,7 +55,7 @@ external content with only additional RDF in the RDF store.
 The text index uses the native query language of the index:
 [Lucene query format](http://lucene.apache.org/core/4_1_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
 or
-[Solr query format](http://wiki.apache.org/solr/SolrQuerySyntax).
+[Elasticsearch query format](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html).
 
 A text-supporting dataset is configured with a description of which
 properties work with.  When data is added, any properties matching the
@@ -84,7 +84,7 @@ The maintenance of the index is external to the RDF data store.
 
 ### External applications
 
-By using Solr, in either pattern A (RDF data indexed) or pattern B
+By using Elasticsearch, in either pattern A (RDF data indexed) or pattern B
 (external content indexed), other applications can share the
 text index with SPARQL search.
 
@@ -159,11 +159,11 @@ The usual way to describe an index is with a
 [Jena assembler description](../assembler/index.html).  Configurations can
 also be built with code. The assembler describes a 'text
 dataset' which has an underlying RDF dataset and a text index. The text
-index describes the text index technology (Lucene or Solr) and the details
+index describes the text index technology (Lucene or Elasticsearch) and the details
 needed for for each.
 
 A text index has an "entity map" which defines the properties to
-index, the name of the lucene/solr field and field used for storing the URI
+index, the name of the Lucene/Elasticsearch field and field used for storing the URI
 itself.
 
 For common RDF use, there will be one field, mapping a property to a text
@@ -196,8 +196,8 @@ The following is an example of a TDB dataset with a text index.
     text:TextDataset      rdfs:subClassOf   ja:RDFDataset .
     # Lucene index
     text:TextIndexLucene  rdfs:subClassOf   text:TextIndex .
-    # Solr index
-    text:TextIndexSolr    rdfs:subClassOf   text:TextIndex .
+    # Elasticsearch index
+    text:TextIndexES    rdfs:subClassOf   text:TextIndex .
 
     ## ---------------------------------------------------------------
     ## This URI must be fixed - it's used to assemble the text dataset.
@@ -244,10 +244,9 @@ needs to identify the text dataset by it's URI
 ### Configuring an Analyzer
 
 Text to be indexed is passed through a text analyzer that divides it into tokens 
-and may perform other transformations such as eliminating stop words. If a Solr text
-index is used, the analyzer used is determined by the Solr configuration.
-If a Lucene text index is used, then by default a `StandardAnalyzer` is used. However, 
-it can be replaced by another analyzer with the `text:analyzer` property. 
+and may perform other transformations such as eliminating stop words. If a Lucene
+or Elasticsearch text index is used, then by default a `StandardAnalyzer` is used.
+However, it can be replaced by another analyzer with the `text:analyzer` property. 
 For example with a `SimpleAnalyzer`:   
 
     <#indexLucene> a text:TextIndexLucene ;
@@ -356,6 +355,8 @@ the `TextIndexLucene` resource:
         text:entityMap <#entMap> ;
         text:queryParser text:AnalyzingQueryParser .
 
+
+Elasticsearch currently doesn't support Analyzers beyond Standard Analyzer. 
 
 ### Configuration by Code
 
@@ -733,4 +734,14 @@ then use the following maven dependency:
     </dependency>
 
 adjusting the version <code>X.Y.Z</code> as necessary.  This will automatically
-include a compatible version of Lucene and the Solr java client, but not Solr server.
+include a compatible version of Lucene.
+
+For Elasticsearch implementation, you can include the following Maven Dependency:
+
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-text-es</artifactId>
+      <version>X.Y.Z</version>
+    </dependency>
+
+adjusting the version <code>X.Y.Z</code> as necessary.
