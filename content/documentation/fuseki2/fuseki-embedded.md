@@ -9,6 +9,7 @@ and testing.
 * [Dependencies and Setup](#dependencies)
 * [Logging](#logging)
 * [Building a Server](#build)
+* [Running as a standalone server](#fuseki-basic)
 
 The embedded server does not depend on any files on disk (other than for
 databases provided by the application), and does not provide
@@ -24,7 +25,7 @@ storage choice. `DatasetFactory.createTxnMem()` is a good choice for in-memory u
 To build and start the server:
 
     Dataset ds = ...
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
       .add("/rdf", ds)
       .build() ;
     server.start() ;
@@ -117,20 +118,26 @@ To silence logging from Java, try:
 
 ## Building a server {#build}
 
-A ``FusekiEmbeddedServer`` is built by creating a configuration,
+A ``FusekiServer`` is built by creating a configuration,
 building the server, then running it.  The application needs to start
 the server.
 
 The default port for a Fuseki embedded server is 3330. This is different for the default
-port for Fuseki running as a standalone server or as a wwabbapp application.
+port for Fuseki running as a standalone server or as a webapp application.
 
+## Running as a standalone server {#fuseki-basic}
+
+The artifact {{org.apache.jena::jena-fuseki-basic}} is a packaging of
+the embedded server that runs from the command line.  Unlike the full
+Fuseki server, it is only configured from the command line and has no
+persistent work area on-disk.
 
 ### Example 1
 Create a server on port 3330, that provides the default set of endpoints for an RDF
 dataset that can be updated via HTTP.
 
     DatasetGraph ds = DatasetFactory.createTxnMem() ;
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
         .add("/ds", ds)
         .build() ;
     server.start() ;
@@ -155,7 +162,7 @@ Create a server on port 3332, that provides the default set of endpoints for a d
 set that is read-only over HTTP. The application can still update the dataset.
 
     Dataset ds = ... ;
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
         .setPort(3332)
         .add("/ds", ds, true)
         .build() ;
@@ -178,7 +185,7 @@ Different combinations of services and endpoint names can be given using a `Data
     dataService.addEndpoint(OperationName.Query, "");
     dataService.addEndpoint(OperationName.Update, "");
 
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
        .setPort(3332)
        .add("/data", dataService)
        .build() ;
@@ -200,7 +207,7 @@ Multiple datasets can be served by one server.
 
     Dataset ds1 = ...
     Dataset ds2 = ...
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
         .add("/data1", ds1)
         .add("/data1-readonly", ds1, true)
         .add("/data2", ds2)

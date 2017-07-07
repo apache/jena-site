@@ -1,12 +1,13 @@
 Title: Running Fuseki
 
-Fuseki can be run in three ways
+Fuseki can be run in a number of ways:
 
 * [As a standalone server](#fuseki-standalone-server)
 * [As a service](#fuseki-service) run by the operation system, for example, started when the machine
-* [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty.
+* [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty
 boots.
-* [As an embedded SPARQL server](#fuseki-embedded).
+* [As an embedded SPARQL server](#fuseki-embedded)
+* [As a simple development standalone server](#fuseki-basic)
 
 See "[Fuseki Configuration](fuseki-configuration.html)" for information on
 how to provide datasets and configure services.
@@ -74,7 +75,7 @@ update the datasets served by the server.
 Basic example:
 
     Dataset ds = ...
-    FusekiEmbeddedServer server = FusekiEmbeddedServer.create()
+    FusekiServer server = FusekiServer.create()
       .add("/dataset", ds)
       .build() ;
     server.start() ;
@@ -82,3 +83,10 @@ Basic example:
 See the [full documentation](fuseki-embedded.html) for details of
 configuration and working with data shared with the [embedded
 Fuseki](fuseki-embedded.html) instance.
+
+## Simple Development Standalone Server {#fuseki-basic}
+
+The artifact {{org.apache.jena::jena-fuseki-basic}} is a packaging of
+the embedded server that runs from the command line.  Unlike the full
+Fuseki server, it is only configured from the command line and has no
+persistent work area on-disk.
