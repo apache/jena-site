@@ -127,7 +127,7 @@ port for Fuseki running as a standalone server or as a webapp application.
 
 ## Running as a standalone server {#fuseki-basic}
 
-The artifact {{org.apache.jena::jena-fuseki-basic}} is a packaging of
+The artifact `org.apache.jena::jena-fuseki-basic` is a packaging of
 the embedded server that runs from the command line.  Unlike the full
 Fuseki server, it is only configured from the command line and has no
 persistent work area on-disk.
