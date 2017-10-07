@@ -1,4 +1,4 @@
-Title: Apache Jena - TDB2
+Title: TDB2
 
 TDB2 is a component of
 [Apache Jena](http://jena.apache.org) for RDF storage
@@ -20,7 +20,7 @@ of millions of triples.
     - "Writer pays" - readers don't
 - Datatypes of numerics preserved; `xsd:doubles` supported.
 
-*TDB2 is not compatible with TDB1*
+**TDB2 is not compatible with TDB1**
 
 ## Documentation
 

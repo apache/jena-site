@@ -1,4 +1,4 @@
-Title: Apache Jena TDB2 - Database Administration.
+Title: TDB2 - Database Administration
 
 @@backup
 @@admin
