@@ -45,9 +45,9 @@ A TDB2 database can be backed up by calling:
 
     DatabaseMgr.backup(dataset.asDatasetGraph());
 
-which will create a dump file with timestamp:
+which will create a dump file including a timestamp:
 
-<pre>    
+<pre>
 <i>location</i>/Backups/backup-<i>yyyy-MM-dd_HH:mm:ss</i>.nq.gz
 </pre>
 
