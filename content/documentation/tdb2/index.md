@@ -8,7 +8,7 @@ TDB2 can be used with Apache Jena Fuseki.
 
 TDB1 is the previous generation native storage system for Jena.
 
-Comparsed to TDB1:
+Compared to TDB1:
 
 - No size limits on transactions : bulk uploads into a live Fuseki can be 100's
 of millions of triples.
