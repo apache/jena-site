@@ -65,5 +65,22 @@ The RDF merge of all named graph can be accessed as the named graph
 `urn:x-arq:UnionGraph` using
 `Dataset.getNamedModel("urn:x-arq:UnionGraph")` .
 
+## Dataset Inferencing
 
+Inferencing on a Model in a Dataset, using the [TDB Java API](java_api.html), follows the same pattern as an in-memory InfModel.
+The use of [TDB Transactions](tdb_transactions.html) is **strongly** recommended to avoid data corruption.
 
+      //Open TDB Dataset
+      String directory = ...
+      Dataset dataset = TDBFactory.createDataset(directory);
+
+      //Retrieve Named Graph from Dataset, or use Default Graph.
+      String graphURI = "http://example.org/myGraph";
+      Model model = dataset.getNamedModel(graphURI);
+
+      //Create RDFS Inference Model, or use other Reasoner e.g. OWL.
+      InfModel infModel = ModelFactory.createRDFSModel(model);
+
+      ...
+      //Perform operations on infModel.
+      ...
