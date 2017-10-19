@@ -102,7 +102,7 @@ load with a mixture of queries and updates.  Having investigate the problem this
 
 TDB uses write-ahead logging so new data is written both to an on-disk journal and kept in-memory.  This is necessary because TDB permits
 a single writer and multiple readers at any one time and readers are guaranteed to always see the state of the database at the time they
-started reading.  Therefore until there are no active readers it is not possible to update the database directly since readers are actively
+started reading.  Therefore, until there are no active readers it is not possible to update the database directly since readers are actively
 accessing it hence why a journal is used.  The in-memory journal holds some memory that cannot be freed up until such time as the database
 has no active readers/writers and the changes it holds can be safely flushed to disk.
 
@@ -110,8 +110,20 @@ This means that in scenarios where there is continuous high load on the system T
 eventually causing out of memory errors in Fuseki.  You can see if you are experiencing this issue by examining your database directory, if it
 contains a `.jrnl` file that is non-empty then Fuseki/TDB is having to hold the journal in-memory.
 
-**However** because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting 
-Fuseki the journal will be flushed to disk.
+**However**, because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting 
+Fuseki the journal will be flushed to disk. When using the [TDB Java API](java_api.html), the journal can be flushed by closing any datasets and releasing the TDB resources.
+    
+      Dataset dataset = TDBFactory.createDataset(directory) ;
+      try{
+         ...
+         dataset.begin(ReadWrite.READ) ;
+         // Perform operations      
+         dataset.end() ;
+         ... 
+      }finally{
+         dataset.close();
+         TDBFactory.release(dataset);
+      }
 
 <a name="ssd"></a>
 ## Should I use a SSD?
