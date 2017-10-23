@@ -19,8 +19,8 @@ right.
 `Backups` is the directory used to write backup files.
 
 `tdb.lock` is the lock file to stop multiple use of the same database at
-the same time by different JVM processes. (If yuo wish to share a datbase
-bewteen processes, or machines, consider using [Fuseki2 with TDB2](tdb2_fuseki.html).
+the same time by different JVM processes. (If you wish to share a database
+between processes, or machines, consider using [Fuseki2 with TDB2](tdb2_fuseki.html).
 
 ## Compaction
 

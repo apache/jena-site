@@ -41,7 +41,7 @@ There are two markers for transaction features supported.
 If `begin`, `commit` and `end` are supported (which is normally the case)
 `supportsTransactions` returns true.
 
-If, further, `abort` is suported, then `supportsTransactionAbort` is true.
+If, further, `abort` is supported, then `supportsTransactionAbort` is true.
 
 ### General hierarchy
 
@@ -49,7 +49,7 @@ If, further, `abort` is suported, then `supportsTransactionAbort` is true.
 
 This provides some basic machinery and provides implementations of
 operations that have alternative styles.  It converts `add(G,S,P,O)` to
-`add(quad)` and `delete(G,S,P,O)` to `delele(quad)` and converts
+`add(quad)` and `delete(G,S,P,O)` to `delete(quad)` and converts
 `find(quad)` to `find(G,S,P,O)`.
 
 It provides basic implementations of `deleteAny(?,?,?,?)` and `clear()`.
@@ -136,7 +136,7 @@ A small class that provides the "get a graph" operations over a
 `DatasetGraph` using `GraphView`.
 
 Not used because subclasses usually want to inherit from a different part
-fo the hierarchy but the idea of implementating `getDefaultGraph()` and
+fo the hierarchy but the idea of implementing `getDefaultGraph()` and
 `getGraph(Node)` as calls to `GraphView` is used elsewhere.
 
 Do not use with an implementations that store using graph
@@ -183,9 +183,9 @@ Abort requires work to be undone.  Jena may in the future provide reverse
 replay abort (do the adds and deletes in reverse operation, reverse order)
 but this is partial. It does not protect against the DatasetGraph
 implementation throwing exceptions nor JVM or machine crash (if any
-persistence). It still needs MRSW to achive isolation.
+persistence). It still needs MRSW to archive isolation.
 
-Read-commited needs synchronization safe datastructures -including
+Read-committed needs synchronization safe datastructures -including
 co-ordinated changes to several place at once (ConcurrentHashMap isn't
 enough - need to update 2 or more ConcurrentHashMaps together).
 

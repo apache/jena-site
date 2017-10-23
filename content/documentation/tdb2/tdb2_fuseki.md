@@ -4,7 +4,7 @@ TDB2 is incorporated into Fuseki2, both in the full server, with UI, and
 [Fuseki2 basic server](../fuseki2/fuseki-embedded.html#fuseki-basic).
 
 In each case, the database needs to be defined in a configuration file,
-either a completw server configuration (see below) or as an entry in the
+either a complete server configuration (see below) or as an entry in the
 `FUSEKI_BASE/configuration/` area of the full server.
 
 Example complete server configuration file for full or basic servers:
@@ -50,7 +50,7 @@ The key difference is the declared `rdf:type` of the dataset.
 
 Note that the Fuseki UI does not provide a way to create TDB2 databases;
 a configuration file must be used. Once setup, upload, query and graph
-editting will be routed to the TDB2 database.
+editing will be routed to the TDB2 database.
 
 For a service configuration in `FUSEKI_BASE/configuration/`:
 

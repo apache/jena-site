@@ -33,7 +33,7 @@ To build and start the server:
 then the application can modify the dataset:
 
     // Add some data while live.
-    // Write trasnaction.
+    // Write transaction.
     Txn.execWrite(dsg, ()->RDFDataMgr.read(dsg, "D.trig")) ;
 
 or read the dataset and see any updates made by remote systems:
@@ -61,11 +61,11 @@ To include an embedded Fuseki server in the application:
       <version>2.x.y</version> <!-- Set the version -->
     </dependency>
 
-This brings in enough dependencies to run Fuseki. Applicartion writers are strongly
-encouraged to use a dependency manager because the numbe rof Jetty and other dependencies
+This brings in enough dependencies to run Fuseki. Application writers are strongly
+encouraged to use a dependency manager because the number of Jetty and other dependencies
 is quite large and difficult to set manually.
 
-This dependency does not include a logging setting. Fusek uses [slf4j](http://slf4j.org/).
+This dependency does not include a logging setting. Fuseki uses [slf4j](http://slf4j.org/).
 See section "[Logging](#logging)" for details.
 
 If the application wishes to use a dataset with a [text-index](http://jena.apache.org/documentation/query/text-query.html)

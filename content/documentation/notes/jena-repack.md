@@ -1,6 +1,6 @@
 Title: Combining Apache Jena jars
 
-Apache Jena initalizes uses Java's
+Apache Jena initializes uses Java's
 [ServiceLoader](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
 mechanism to locate initialization steps. The 
 documentation for process in Jena is [available here](system-initialization.html).

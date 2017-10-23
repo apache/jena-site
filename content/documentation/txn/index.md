@@ -15,7 +15,7 @@ on the basic API using Java8 features.
 ## Overview
 
 Transaction provide applications with a safe way to use and update data between
-threads. The properies of transactions are [ACID](https://en.wikipedia.org/wiki/ACID)
+threads. The properties of transactions are [ACID](https://en.wikipedia.org/wiki/ACID)
 - Atomic, Consistent, Isolation, Durable -
 meaning that groups of changes are made visible to other transactions
 in a single unit or all chnages are not at all, and when made chnages are not
@@ -24,12 +24,12 @@ reversed, or the case of persistent storage, not lost or the database corrupted.
 Jena provides transaction on datasets and provides "serializable transactions".
 Any application code reading data sees all changes made elsewhere,
 not parts of changes.  In particular, SPARQL aggregation like `COUNT` are
-correct and do no tsee partial changes due to other transactions.
+correct and do not see partial changes due to other transactions.
 
 The exact details are dependent on the implementation.
 
 Transactions can not be [nested](https://en.wikipedia.org/wiki/Nested_transaction)
-(a tranaction happening inside an outertransaction results in chnages visble only
+(a transaction happening inside an outertransaction results in chnages visible only
 to the outer transaction until that commits).
 
 Transactions are "per thread". Actions by different threads on the same dataset are
@@ -42,12 +42,12 @@ There is a default implementation, based on MRSW locking (multiple-reader or sin
 that can be used with any mixed set of components. Certain storage sub-systems provide
 better concurrency with MR+SW (multiple-read and single writer).
 
-| Dataset   | Facilties | Creation |
+| Dataset   | Facilities | Creation |
 |-----------|-----------|----------|
 | TxnMem    | MR+SW     | `DatasetFactory.createTxnMem` |
 | TDB       | MR+SW, persistent | `TDBFactory.create` |
 | General   | MRSW      | `DatasetFactory.create` |
 
-The general dataset can have have any graphs added to it (e.g. inference graphs).
+The general dataset can have any graphs added to it (e.g. inference graphs).
 
 [More details of transactions in TDB](transactions_tdb.html).

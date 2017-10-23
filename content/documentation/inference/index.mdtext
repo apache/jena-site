@@ -1035,7 +1035,7 @@ configuration still leaves something to be desired and will the subject of futur
 </table>
 <p>As we gain experience with the ways in which OWL is used and the capabilities
   of the rule-based approach we imagine useful subsets of functionality emerging
-  - like that that supported by the RDFS reasoner in the form of the level settings.</p>
+  - like that supported by the RDFS reasoner in the form of the level settings.</p>
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
 ###<a name="OWLexamples"></a>OWL Example
@@ -1045,7 +1045,7 @@ configuration still leaves something to be desired and will the subject of futur
 <p>The schema file shows a simple, artificial ontology concerning computers which
   defines a GamingComputer as a Computer which includes at least one bundle of
   type GameBundle and a component with the value gamingGraphics. </p>
-<p>The data file shows information on serveral hypothetical computer configurations
+<p>The data file shows information on several hypothetical computer configurations
   including two different descriptions of the configurations &quot;whiteBoxZX&quot;
   and &quot;<code>bigName42</code>&quot;.</p>
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
@@ -1088,9 +1088,9 @@ configuration still leaves something to be desired and will the subject of futur
   property inheritance (<code>eg:hasComponent eg:gameGraphics</code> derives from
   <code>hasGraphics</code> being a subProperty of <code>hasComponent</code>) and
   cardinality reasoning (it is the sameAs <code>eg:unknownMB</code> because computers
-  are defined to have only one motherboard and the two diffferent descriptions
+  are defined to have only one motherboard and the two different descriptions
   of <code>whileBoxZX</code> use these two different terms for the mother board).<i>
-  </i>The anonymous rdf:type statement referencesthe <code>&quot;hasValue(eg:hasComponent,
+  </i>The anonymous rdf:type statement references the <code>&quot;hasValue(eg:hasComponent,
   eg:gamingGraphics)&quot; </code>restriction mentioned in the definition of GamingComputer.</p>
 <p>A second, typical operation is instance recognition. Testing if an individual
   is an instance of a class expression. In this case the <code>whileBoxZX</code>
@@ -1108,7 +1108,7 @@ configuration still leaves something to be desired and will the subject of futur
         System.out.println("Failed to recognize white box correctly");
     }
 
-<p> Which gnerates the output:</p>
+<p> Which generates the output:</p>
 <pre>  <i>White box recognized as gaming computer</i></pre>
 <p>Finally, we can check for inconsistencies within the data by using the validation
   interface:</p>
@@ -1180,7 +1180,7 @@ class B = cardinality(P,1)</pre>
   a separation of direct and indirect relations for transitive properties such
   as subClassOf. The current implementation of the full and mini OWL reasoner
   fails to do this and the direct forms of the queries will fail. The OWL Micro
-  reasoner, which is but a small extension of RDFS, does suppor the direct queries.</p>
+  reasoner, which is but a small extension of RDFS, does support the direct queries.</p>
 <p>This does not affect querying though the Ontology API, which works around this
   limitation. It only affects direct RDF accesses to the inference model.</p>
 
@@ -1209,7 +1209,7 @@ class B = cardinality(P,1)</pre>
 ####Incompleteness
 <p>The rule based approach cannot offer a complete solution for OWL/Lite, let
   alone the OWL/Full fragment corresponding to the OWL/Lite constructs. In addition
-  the current implementation is still under development and may well have ommisions
+  the current implementation is still under development and may well have ommissions
   and oversights. We intend that the reasoner should be sound (all inferred triples
   should be valid) but not complete. </p>
 
@@ -1730,7 +1730,7 @@ floating point or XSDDateTime).</div>
       it will bind the first n capture groups to the arguments ?m1 to ?mn.
       The regular expression pattern syntax is that provided by java.util.regex.
       Note that the capture groups are numbered from 1 and the first capture group
-      will be bound to ?m1, we ignore the implicit capature group 0 which corresponds to
+      will be bound to ?m1, we ignore the implicit capture group 0 which corresponds to
       the entire matched string. So for example
       <pre>regexp('foo bar', '(.*) (.*)', ?m1, ?m2)</pre>
       will bind <code>m1</code> to <code>"foo"</code> and <code>m2</code> to <code>"bar"</code>.</div>
@@ -1813,7 +1813,7 @@ floating point or XSDDateTime).</div>
     <td width="59%">
       <div align="left">Binds ?val to the ?index'th entry
 in the RDF list ?list. If there is no such entry the variable will be unbound
-and the call will fail. Only useable in rule bodies.</div>
+and the call will fail. Only usable in rule bodies.</div>
     </td>
   </tr>
   <tr>
@@ -1960,12 +1960,12 @@ while (i.hasNext()) {
 
 ###<a name="RDFSPlusRules"></a>Combining RDFS/OWL with custom rules
 <p>Sometimes one wishes to write generic inference rules but combine them
- with some RDFS or OWL infernece. With the current Jena architecture limited forms of this
+ with some RDFS or OWL inference. With the current Jena architecture limited forms of this
  is possible but you need to be aware of the limitations.</p>
 <p>There are two ways of achieving this sort of configuration within Jena (not
  counting using an external engine that already supports such a combination).</p>
 <p>Firstly, it is possible to cascade reasoners, i.e. to construct one InfModel
- using another InfModel as the base data. The strength of this appoach is that
+ using another InfModel as the base data. The strength of this approach is that
  the two inference processes are separate and so can be of different sorts. For
  example one could create a GenericRuleReasoner whose base model is an external
  OWL reasoner. The chief weakness of the approach is that it is "layered" - the
@@ -1975,7 +1975,7 @@ while (i.hasNext()) {
  is performance. A query to an InfModel is generally expensive and involves lots
  of queries to the data. The outer InfModel in our layered case will
  typically issue a lot of queries to the inner model, each of which may
- trigger more inferenece. If the inner model caches all of its inferences
+ trigger more inference. If the inner model caches all of its inferences
  (e.g. a forward rule engine) then there may not be very much redundancy there but
  if not then performance can suffer dramatically. </p>
 <p>Secondly, one can create a single GenericRuleReasoner whose rules combine
@@ -2007,7 +2007,7 @@ while (i.hasNext()) {
  computing all possible answers when an application might only want a few.]</p>
 <p>
  A simple example of this is that the <em>interesting</em> bits of RDFS
- can be captured by enabled TranstiveClosureCaching and including just the
+ can be captured by enabled TransitiveClosureCaching and including just the
  four core rules:</p>
 <pre>
 [rdfs2:  (?x ?p ?y), (?p rdfs:domain ?c) -&gt; (?x rdf:type ?c)]

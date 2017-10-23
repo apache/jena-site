@@ -96,7 +96,7 @@ for the transaction body.
 ### Remote Transactions
 
 SPARQL does not define a remote transaction standard protocol. Each remote
-operation shuld be atomic (all happens or nothing happens) - this is the
+operation should be atomic (all happens or nothing happens) - this is the
 responsibility of the remote server.
 
 An `RDFConnection` will at least provide the client-side locking features.
@@ -141,7 +141,7 @@ with local connections, 3 isolations modes are available:
 
 * Copy &ndash; the models and datasets returned are independent copies.
 Updates are made to the return copy only. This is most like
-a remote connectionand is useful for testing.
+a remote connection and is useful for testing.
 * Read-only &ndash; the models and datasets are made read-only but any changes
 to the underlying RDF data by changes by another route will be visible.
 This provides a form of checking for large datasets when "copy" is impractical.
@@ -158,7 +158,7 @@ in this mode.
 `CONSTRUCT`, `DESCRIBE`, `ASK`) as well as a way to get the lower level
 `QueryExecution` for specialized configuration.
 
-When creating an `QueryExecution` explicitly, care shoud be taken to close
+When creating an `QueryExecution` explicitly, care should be taken to close
 it. If the application wishes to capture the result set from a SELECT query and
 retain it across the lifetime of the transaction or `QueryExecution`, then
 the application should create a copy which is not attached to any external system
@@ -179,7 +179,7 @@ with `ResultSetFactory.copyResults`.
 
 ## Update Usage
 
-SPARQL Update opertions can be performed and mixed with other operations.
+SPARQL Update operations can be performed and mixed with other operations.
 
       try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
           Txn.execWrite(conn, ()-> {

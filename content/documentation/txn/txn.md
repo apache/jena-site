@@ -8,12 +8,12 @@ Features:
 
 -   Java8 idioms
 -   Application exceptions cause transaction aborts.
--   "Transaction continuation" - use any existing active trsnaction.
+-   "Transaction continuation" - use any existing active transaction.
 -   Autocommit - ensure actions are inside a transaction even if none is active.
 
 ## Transactions
 
-The [basic transactions API](basic_txn_api.html) provides opertions
+The [basic transactions API](basic_txn_api.html) provides operations
 `begin`, `commit`, `abort` and `end`.
 
 A write transaction looks like:
@@ -66,7 +66,7 @@ writer needs to read the dataset or model):
     }) ;
 
 whereas reading data into an RDF dataset needs to be a write transaction
-(the dataset or model is chanaged).
+(the dataset or model is changed).
 
     Dataset ds = ... ;
     Txn.executeWrite(ds, ()-> {
@@ -118,7 +118,7 @@ results needs to be take:
     ResultSet List<String> resultSet = Txn.calculateRead(ds, ()-> {
          List<String> accumulator = new ArrayList<>() ;
          try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
-             return ResutSetFactory.copyResults(qExec.execSelect()) ;
+             return ResultSetFactory.copyResults(qExec.execSelect()) ;
          }
     }) ;
     // use "resultSet"
@@ -126,7 +126,7 @@ results needs to be take:
 ## Working with RDF Models
 
 The unit of transaction is the dataset.  Model in datasets are just views of that dataset.
-Model should not be passed out of a transaction because they are still atatched to the
+Model should not be passed out of a transaction because they are still attached to the
 dataset.
 
 ## Autocommit and Transaction continuation
@@ -135,7 +135,7 @@ If there is a transaction already started for the thread, the `Txn.execute...` w
 the transaction and that transaction is not terminated.  If there is not transaction already started,
 a transaction is wrapped around the `Txn.execute...` action.
 
-    Dataset datsset = ...
+    Dataset dataset = ...
     // Main transaction.
     dataset.begin(ReadWrite.WRITE) ;
     try {
@@ -153,7 +153,7 @@ a transaction is wrapped around the `Txn.execute...` action.
 
 `Txn` uses Java `Runnable` for the application code, passed into control code
 that wraps the transaction operations around the application code. This results
-in application code automatically applied transction begin/commit/end as needed.   
+in application code automatically applied transaction begin/commit/end as needed.   
 
 A bare read transaction requires the following code structure (no exception handling):   
 

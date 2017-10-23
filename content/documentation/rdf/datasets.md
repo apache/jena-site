@@ -42,7 +42,7 @@ changes are lost. The same happens if the application throws an exception.
 
 If used outside of a transaction, the implementation provides "auto-commit"
 functionality. Each triple or added or deleted is done inside an implicit
-transaction. This have a measurable peformance impact. It is better to do
+transaction. This have a measurable performance impact. It is better to do
 related operations inside a single transaction explicitly in the
 application code.
 

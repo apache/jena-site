@@ -1,4 +1,4 @@
-Title: Jena Transactons API
+Title: Jena Transactions API
 
 -   [API for Transactions](#api-for-transactions)
     - [Read transactions](#read-transactions)
@@ -7,7 +7,7 @@ Title: Jena Transactons API
 
 ## API for Transactions
 
-This page decribes the basic transaction API in Jena (3.1.0 and later).
+This page describes the basic transaction API in Jena (3.1.0 and later).
 
 There is also a [higher-level API](txn.html) useful in many situations
 but sometimes it is necessary to use the basic transaction API described here.
