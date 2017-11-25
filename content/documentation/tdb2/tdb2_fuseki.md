@@ -17,7 +17,7 @@ PREFIX :        &lt;#&gt;
 PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
 PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-<b>PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;</b>;
+<b>PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;</b>
 PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 
 [] rdf:type fuseki:Server ;
