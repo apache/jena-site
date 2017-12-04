@@ -1,5 +1,7 @@
 Title: Jena Full Text Search
 
+Title: Jena Full Text Search
+
 This extension to ARQ combines SPARQL and full text search via
 [Lucene](https://lucene.apache.org) 6.4.1 or
 [ElasticSearch](https://www.elastic.co) 5.2.1 (which is built on
@@ -64,7 +66,21 @@ illustrates creating an in-memory dataset with a Lucene index.
 ## Table of Contents
 
 -   [Architecture](#architecture)
+    -   [External content](#external-content)
+    -   [External applications](#external-applications)
+    -   [Document structure](#document-structure)
 -   [Query with SPARQL](#query-with-sparql)
+    -   [Syntax](#syntax)
+        -   [Input arguments](#input-arguments)
+        -   [Output arguments](#output-arguments)
+    -   [Query strings](#query-strings)
+        -   [Simple queries](#simple-queries)
+        -   [Queries with language tags](#queries-with-language-tags)
+        -   [Queries that retrieve literals](#queries-that-retrieve-literals)
+        -   [Queries with graphs](#queries-with-graphs)
+        -   [Queries across multiple `Fields`](#queries-across-multiple-fields)
+        -   [Queries with _Boolean Operators_ and _Term Modifiers_](#queries-with-boolean-operators-and-term-modifiers)
+    -   [Good practice](#good-practice)
 -   [Configuration](#configuration)
     -   [Text Dataset Assembler](#text-dataset-assembler)
     -   [Configuring an analyzer](#configuring-an-analyzer)
@@ -108,6 +124,7 @@ dropped from the RDF store.
 
 The text index uses the native query language of the index:
 [Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
+(with [restrictions](#input-arguments))
 or
 [Elasticsearch query language](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html).
 
@@ -134,6 +151,64 @@ The maintenance of the index is external to the RDF data store.
 By using Elasticsearch, other applications can share the text index with
 SPARQL search.
 
+### Document structure
+
+As mentioned above, text indexing of a triple involves associating a Lucene
+document with the triple. How is this done?
+
+Lucene documents are composed of `Field`s. Indexing and searching are performed 
+over the contents of these `Field`s. For an RDF triple to be indexed in Lucene the 
+_property_ of the triple must be 
+[configured in the entity map of a TextIndex](#entity-map-definition).
+This associates a Lucene analyzer with the _`property`_ which will be used
+for indexing and search. The _`property`_ becomes the _searchable_ Lucene 
+`Field` in the resulting document.
+
+A Lucene index includes a _default_ `Field`, which is specified in the configuration, 
+that is the field to search if not otherwise named in the query. In jena-text 
+this field is configured via the `text:defaultField` property which is then mapped 
+to a specific RDF property via `text:predicate` (see [entity map](#entity-map-definition) 
+below).
+
+There are several additional `Field`s that will be included in the
+document that is passed to the Lucene `IndexWriter` depending on the
+configuration options that are used. These additional fields are used to
+manage the interface between Jena and Lucene and are not generally 
+searchable per se.
+
+The most important of these additional `Field`s is the `text:entityField`.
+This configuration property defines the name of the `Field` that will contain
+the _URI_ or _blank node id_ of the _subject_ of the triple being indexed. This property does
+not have a default and must be specified for most uses of `jena-text`. This
+`Field` is often given the name, `uri`, in examples. It is via this `Field`
+that `?s` is bound in a typical use such as:
+
+    select ?s
+    where {
+        ?s text:query "some text"
+    }
+
+Other `Field`s that may be configured: `text:uidField`, `text:graphField`,
+and so on are discussed below.
+
+Given the triple:
+
+    ex:SomeOne skos:prefLabel "zorn protégé a prés"@fr ;
+
+The following is an abbreviated illustration a Lucene document that Jena will create and
+request Lucene to index:
+
+    Document<
+        <uri:http://example.org/SomeOne> 
+        <graph:urn:x-arq:DefaultGraphNode> 
+        <label:zorn protégé a prés> 
+        <lang:fr> 
+        <uid:28959d0130121b51e1459a95bdac2e04f96efa2e6518ff3c090dfa7a1e6dcf00> 
+        >
+
+It may be instructive to refer back to this example when considering the various
+points below.
+
 ## Query with SPARQL
 
 The URI of the text extension property function is
@@ -143,63 +218,292 @@ The URI of the text extension property function is
 
     ...   text:query ...
 
+### Syntax
 
 The following forms are all legal:
 
-    ?s text:query 'word'                   # query
-    ?s text:query (rdfs:label 'word')      # query specific property if multiple
-    ?s text:query ('word' 10)              # with limit on results
-    (?s ?score) text:query 'word'          # query capturing also the score
-    (?s ?score ?literal) text:query 'word' # ... and original literal value
+    ?s text:query 'word'                              # query
+    ?s text:query ('word' 10)                         # with limit on results
+    ?s text:query (rdfs:label 'word')                 # query specific property if multiple
+    ?s text:query (rdfs:label 'protégé' 'lang:fr')    # restrict search to French
+    (?s ?score) text:query 'word'                     # query capturing also the score
+    (?s ?score ?literal) text:query 'word'            # ... and original literal value
     
 The most general form is:
    
-     (?s ?score ?literal) text:query (property 'query string' limit)
+     (?s ?score ?literal) text:query (property 'query string' limit 'lang:xx')
 
-Only the query string is required, and if it is the only argument the
-surrounding `( )` can be omitted.
-
-Input arguments:
+#### Input arguments:
 
 | &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
 |-------------------|--------------------------------|
 | property          | (optional) URI (including prefix name form) |
-| query string      | The native query string        |
+| query string      | Lucene query string fragment       |
 | limit             | (optional) `int` limit on the number of results       |
-
-Output arguments:
-
-| &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
-|-------------------|--------------------------------|
-| indexed term      | The indexed RDF term.          |
-| score             | (optional) The score for the match. |
-| hit               | (optional) The literal matched. |
+| lang:xx           | (optional) language tag spec       |
 
 The `property` URI is only necessary if multiple properties have been
 indexed and the property being searched over is not the [default field
-of the index](#entity-map-definition).  Also the `property` URI **must
-not** be used when the `query string` refers explicitly to one or more
-fields.
+of the index](#entity-map-definition).
 
-The results include the subject URI, `?s`; the `?score` assigned by the
-text search engine; and the entire matched `?literal` (if the index has
+The `query string` syntax conforms the underlying index [Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
+or
+[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html). In the case of Lucene the syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. _No use of `Fields` within the `query string` is supported._
+
+The optional `limit` indicates the maximum hits to be returned by Lucene.
+
+The `lang:xx` specification is an optional string, where _xx_ is 
+a BCP-47 language tag. This restricts searches to field values that were originally 
+indexed with the tag _xx_. Searches may be restricted to field values with no 
+language tag via `"lang:none"`. 
+
+If both `limit` and `lang:xx` are present, then `limit` must precede `lang:xx`.
+
+If only the query string is required, the surrounding `( )` _may be_ omitted.
+
+#### Output arguments:
+
+| &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
+|-------------------|--------------------------------|
+| subject URI       | The subject of the indexed RDF triple.          |
+| score             | (optional) The score for the match. |
+| literal           | (optional) The matched object literal. |
+
+The results include the _subject URI_; the _score_ assigned by the
+text search engine; and the entire matched _literal_ (if the index has
 been [configured to store literal values](#text-dataset-assembler)).
+The _subject URI_ may be a variable, e.g., `?s`, or a _URI_. In the
+latter case the search is restricted to triples with the specified
+subject. The _score_ and the _literal_ **must** be variables.
 
-If the `query string` refers to more than one field, e.g.,
+If only the _subject_ variable, `?s` is needed then it **must be** written without 
+surrounding `( )`; otherwise, an error is signalled.
 
-    "label: printer AND description: \"large capacity cartridge\""
+### Query strings
 
-then the `?literal` in the results will not be bound since there is no
-single field that contains the match &ndash; the match is separated over
-two fields.
+There are several points that need to be considered when formulating
+SPARQL queries using the Lucene interface. As mentioned above, in the case of Lucene the `query string` syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. 
 
-If an output indexed term is already a known value, either as a constant
-in the query or variable already set, then the index lookup becomes a
-check that this is a match for the input arguments.
+**No _explicit_ use of `Fields` within the `query string` is supported.**
+
+#### Simple queries
+
+The simplest use of the jena-text Lucene integration is:
+
+    ?s text:query "some phrase"
+
+This will bind `?s` to each entity URI that is the subject of a triple
+that has the default property and an object literal that matches
+the argument string, e.g.:
+
+    ex:AnEntity skos:prefLabel "this is some phrase to match"
+
+This query form will indicate the _subjects_ that have literals that match
+for the _default property_ which is determined via the configuration of
+the `text:predicate` of the [`text:defaultField`](#default-text-field) 
+(in the above this has been assumed to be `skos:prefLabel`.
+
+For a _non-default property_ it is necessary to specify the property as
+an input argument to the `text:query`:
+
+    ?s text:query (rdfs:label "protégé")
+
+(see [below](#entity-map-definition) for how RDF _property_ names 
+are mapped to Lucene `Field` names).
+
+If this use case is sufficient for your needs you can skip on to the 
+[sections on configuration](#configuration).
+
+#### Queries with language tags
+
+When working with `rdf:langString`s it is necessary that the
+[`text:langField`](#language-field) has been configured. Then it is
+as simple as writing queries such as:
+
+    ?s text:query "protégé"@fr
+
+to return results where the given term or phrase has been
+indexed under French in the [`text:defaultField`](#default-text-field).
+
+It is also possible to use the optional `lang:xx` argument, for example:
+
+    ?s text:query ("protégé" 'lang:fr') .
+
+In general, the presence of a language tag, `xx`, on the `query string` or
+`lang:xx` in the `text:query` adds `AND lang:xx` to the query sent to Lucene, 
+so the above example becomes the following Lucene query:
+
+    "label:protégé AND lang:fr"
+
+For _non-default properties_ the general form is used:
+
+    ?s text:query (skos:altLabel "protégé" 'lang:fr')
+
+Note that an explicit language tag on the `query string` takes precedence
+over the `lang:xx`, so the following
+
+    ?s text:query ("protégé"@fr 'lang:none')
+
+will find French matches rather than matches indexed without a language tag.
+
+#### Queries that retrieve literals
+
+It is possible to retrieve the *literal*s that Lucene finds matches for
+assuming that
+
+    <#TextIndex#> text:storeValues true ;
+
+has been specified in the `TextIndex` configuration. So
+
+    (?s ?sc ?lit) text:query (rdfs:label "protégé")
+
+will bind the matching literals to `?lit`, e.g.,
+
+    "zorn protégé a prés"@fr
+    
+Note it is necessary to include a variable to capture the Lucene _score_
+even if this value is not otherwise needed since the _literal_ variable
+is determined by position.
+
+#### Queries with graphs
+
+Assuming that the [`text:graphField`](#graph-field) has been configured, 
+then, when a triple is indexed, the graph that the triple resides in is 
+included in the document and may be used to restrict searches or to retrieve the graph that a matching triple resides in.
+
+For example:
+
+    select ?s ?lit
+    where {
+      graph ex:G2 { (?s ?sc ?lit) text:query "zorn" } .
+    }
+
+will restrict searches to triples with the _default property_ that reside 
+in graph, `ex:G2`.
+
+On the other hand:
+
+    select ?g ?s ?lit
+    where {
+      graph ?g { (?s ?sc ?lit) text:query "zorn" } .
+    }
+
+will iterate over the graphs in the dataset, searching each in turn for
+matches.
+
+Note that there is a known issue when a `lang:xx` argument is included in
+the above pattern, so that the restriction to given language is not obeyed. 
+This will be corrected in a future release. However, use of a language tag
+on the `query string` is not subject to this issue.
+
+If there is suitable structure to the graphs, e.g., a known `rdf:type` and
+depending on the selectivity of the text query and number of graphs, 
+it may be more performant to express the query as follows:
+
+    select ?g ?s ?lit
+    where {
+      (?s ?sc ?lit) text:query "zorn" .
+      graph ?g { ?s a ex:Item } .
+    }
+
+Note that this form does not have any issue with `lang:xx` as described
+above, since the graph is extracted after the text search.
+
+#### Queries across multiple `Field`s
+
+As mentioned earlier, the text index uses the
+[native Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description);
+however, there are important constraints on how the Lucene query language is used within jena-text. In particular, _explicit_ references to Lucene `Fields` with the `query string` **are not** supported. So how are Lucene queries that would otherwise refer to multiple `Fields` expressed?
+
+The key is understanding that each triple is a separate document and so queries across Lucene `Fields` need to be expressed as SPARQL queries referring to the corresponding RDF _properties_. Note that there are typically three `Fields` in a document that are used
+during searching:
+
+1. the field corresponding to the property of the indexed triple,
+2. the field for the language of the literal (if configured), and 
+3. the graph that the triple is in (if configured). 
+
+Given these it should be clear from the above that the
+Jena Text integration constructs a Lucene query from the _property_, _query string_, `lang:xx`, and SPARQL graph arguments.
+
+For example, consider the following triples:
+
+    ex:SomePrinter 
+        rdfs:label     "laser printer" ;
+        ex:description "includes a large capacity cartridge" .
+
+ assuming an appropriate configuration, if we try to retrieve `ex:SomePrinter`
+ with the following Lucene `query string`:
+
+    ?s text:query "label:printer AND description:\"large capacity cartridge\""
+
+then this query can not find the expected results since the `AND` is interpreted
+by Lucene to indicate that all documents that contain a matching `label` field _and_
+a matching `description` field are to be returned; yet, from the discussion above
+regarding the [structure of Lucene documents in jena-text](#document-structure) it
+is evident that there is not one but rather in fact two separate documents one with a 
+`label` field and one with a `description` field so an effective SPARQL query is:
+
+    ?s text:query (rdfs:label "printer") .
+    ?s text:query (ex:description "large capacity cartridge") .
+
+which leads to `?s` being bound to `ex:SomePrinter`.
+
+In other words when a query is to involve two or more _properties_ then it
+expressed at the SPARQL level, as it were, versus in Lucene's query language.
+
+It is worth noting that the equivalent of a Lucene `OR` of `Fields` is expressed
+simply via SPARQL `union`:
+
+    { ?s text:query (rdfs:label "printer") . }
+    union
+    { ?s text:query (ex:description "large capacity cartridge") . }
+
+Suppose the matching literals are required for the above then it should be clear
+from the above that:
+
+    (?s ?sc1 ?lit1) text:query (skos:prefLabel "printer") .
+    (?s ?sc2 ?lit2) text:query (ex:description "large capacity cartridge") .
+
+will be the appropriate form to retrieve the _subject_ and the associated literals, `?lit1` and `?lit2`. (Obviously, in general, the _score_ variables, `?sc1` and `?sc2`
+must be distinct since it is very unlikely that the scores of the two Lucene queries
+will ever match).
+
+There is no loss of expressiveness of the Lucene query language versus the jena-text
+integration of Lucene. Any cross-field `AND`s are replaced by concurrent SPARQL calls to
+text:query as illustrated above and uses of Lucene `OR` can be converted to SPARQL 
+`union`s. Uses of Lucene `NOT` are converted to appropriate SPARQL `filter`s.
+
+#### Queries with _Boolean Operators_ and _Term Modifiers_
+
+On the other hand the various features of the [Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
+are all available to be used for searches within a `Field`. For example, _Boolean Operators_ on _Terms_:
+
+    ?s text:query (ex:description "(large AND cartridge)")
+
+and
+
+    (?s ?sc ?lit) text:query (ex:description "(includes AND (large OR capacity))")
+    
+or _fuzzy_ searches:
+
+    ?s text:query (ex:description "include~")
+
+and so on will work as expected.
+
+**Always surround the query string with `( )` if more than a single term or phrase
+are involved.**
+
 
 ### Good practice
 
-The query engine does not have information about the selectivity of the
+From the above it should be clear that best practice, except in the simplest cases
+is to use explicit `text:query` forms such as:
+
+    (?s ?sc ?lit) text:query (ex:someProperty "a single Field query")
+
+possibly with _limit_ and `lang:xx` arguments.
+
+Further, the query engine does not have information about the selectivity of the
 text index and so effective query plans cannot be determined
 programmatically.  It is helpful to be aware of the following two
 general query patterns.
@@ -394,7 +698,7 @@ The `text:entityField ` specifies the field name of the field that will contain 
 is returned on a match. The value of the property is arbitrary so long as it is unique among the
 defined names.
 
-#### Automatic document deletion
+#### UID Field and automatic document deletion
 
 When the `text:uidField` is defined in the `EntityMap` then dropping a triple will result in the 
 corresponding document, if any, being deleted from the text index. The value, `"uid"`, is arbitrary 
@@ -470,7 +774,7 @@ provides `LowerCaseKeywordAnalyzer`, which is a case-insensitive version of
 
 Support for the new `LocalizedAnalyzer` has been introduced in Jena 3.0.0 to
 deal with Lucene language specific analyzers. See [Linguistic Support with
-Lucene Index](#linguistic-support-with-lucene-index) part for details.
+Lucene Index](#linguistic-support-with-lucene-index) for details.
 
 Support for `GenericAnalyzer`s has been introduced in Jena 3.4.0 to allow
 the use of Analyzers that do not have built-in support, e.g., `BrazilianAnalyzer`; 
@@ -607,15 +911,14 @@ you need to rebuild the index to ensure that the graph information is stored.
 
 ### Linguistic support with Lucene index
 
-It is now possible to take advantage of languages of triple literals to enhance 
-index and queries. Sub-sections below detail different settings with the index, 
-and use cases with SPARQL queries.
+Language tags associated with `rdfs:langStrings` occuring as literals in triples may
+be used to enhance indexing and queries. Sub-sections below detail different settings with the index, and use cases with SPARQL queries.
 
 #### Explicit Language Field in the Index 
 
-Literals' languages of triples can be stored (during triple addition phase) into the 
-index to extend query capabilities. 
-For that, the new `text:langField` property must be set in the EntityMap assembler :
+The language tag for object literals of triples can be stored (during triple insert/update) 
+into the index to extend query capabilities. 
+For that, the `text:langField` property must be set in the EntityMap assembler :
 
     <#entMap> a text:EntityMap ;
         text:entityField      "uri" ;
@@ -629,10 +932,12 @@ EntityDefinition instance, e.g.
     EntityDefinition docDef = new EntityDefinition(entityField, defaultField);
     docDef.setLangField("lang");
 
+Note that configuring the `text:langField` does not determine a language specific
+analyzer. It merely records the tag associated with an indexed `rdfs:langString`.
  
 #### SPARQL Linguistic Clause Forms
 
-Once the `langField` is set, you can use it directly inside SPARQL queries, for that the `'lang:xx'`
+Once the `langField` is set, you can use it directly inside SPARQL queries. For that the `lang:xx`
 argument allows you to target specific localized values. For example:
 
     //target english literals
@@ -644,6 +949,7 @@ argument allows you to target specific localized values. For example:
     //ignore language field
     ?s text:query (rdfs:label 'word')
 
+Refer [above](#queries-with-language-tags) for further discussion on querying.
 
 #### LocalizedAnalyzer
 
@@ -651,7 +957,7 @@ You can specify a LocalizedAnalyzer in order to benefit from Lucene language
 specific analyzers (stemming, stop words,...). Like any other analyzers, it can 
 be done for default text indexing, for each different field or for query.
 
-With an assembler configuration, the `text:language` property needs to
+Using an assembler configuration, the `text:language` property needs to
 be provided, e.g :
 
     <#indexLucene> a text:TextIndexLucene ;
@@ -663,7 +969,7 @@ be provided, e.g :
         ]
         .
 
-will configure the index to analyze values of the 'text' field using a
+will configure the index to analyze values of the _default property_ field using a
 FrenchAnalyzer.
 
 To configure the same example via Java code, you need to provide the analyzer to the
@@ -678,15 +984,17 @@ Where `def`, `ds1` and `dir` are instances of `EntityDefinition`, `Dataset` and
 `Directory` classes.
 
 **Note**: You do not have to set the `text:langField` property with a single 
-localized analyzer.
+localized analyzer. Also note that the above configuration will use the
+FrenchAnalyzer for all strings indexed under the _default property_ regardless
+of the language tag associated with the literal (if any).
 
 #### Multilingual Support
 
 Let us suppose that we have many triples with many localized literals in
 many different languages. It is possible to take all these languages
-into account for future mixed localized queries.  Just set the
-`text:multilingualSupport` property at `true` to automatically enable
-the localized indexing (and also the localized analyzer for query) :
+into account for future mixed localized queries.  Configure the
+`text:multilingualSupport` property to enable indexing and search via localized 
+analyzers based on the language tag:
 
     <#indexLucene> a text:TextIndexLucene ;
         text:directory "mem" ;
@@ -699,10 +1007,13 @@ Via Java code, set the multilingual support flag :
         config.setMultilingualSupport(true);
         Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config) ;
 
-Thus, this multilingual index combines dynamically all localized analyzers of existing languages and 
-the storage of langField properties.
+This multilingual index combines dynamically all localized analyzers of existing 
+languages and the storage of langField properties. 
 
-For example, it is possible to refer to different languages in the same text search query :
+The multilingual analyzer becomes the _default analyzer_ and the Lucene 
+`StandardAnalyzer` is the default analyzer used when there is no language tag.
+
+It is straightforward to refer to different languages in the same text search query:
 
     SELECT ?s
     WHERE {
@@ -714,7 +1025,9 @@ For example, it is possible to refer to different languages in the same text sea
 Hence, the result set of the query will contain "institute" related
 subjects (institution, institutional,...) in French and in English.
 
-**Note**: If the `text:langField` property is not set, the `text:langField` will default to"lang".
+**Note** When multilingual indexing is enabled for a _property_, e.g., rdfs:label,
+there will actually be two copies of each literal indexed. One under the `Field` name, 
+"label", and one under the name "label_xx", where "xx" is the language tag.
 
 ### Generic and Defined Analyzer Support
 
