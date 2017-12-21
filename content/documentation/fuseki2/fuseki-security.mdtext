@@ -1,43 +1,50 @@
 Title: Security in Fuseki2
 
-Fuseki2 provides security by using 
-[Apache Shiro](http://shiro.apache.org/). This is controlled by a
-configuration file `shiro.ini` located at `$FUSEKI_BASE/shiro.ini`.
-If not found, the server initializes this with an preset initial
-configuration. This can then be replaced or edited as required. This file
+Fuseki2 provides security by using  [Apache Shiro](http://shiro.apache.org/).
+This is controlled by the configuration file `shiro.ini` located at
+`$FUSEKI_BASE/shiro.ini`. If not found, the server initializes with a default
+configuration. This can then be replaced or edited as required. An existing file
 is never overwritten by the server.
 
-The default is that the SPARQL protocols are open but the administrative
-actions are limited to the localhost. "localhost" is determined by
-connecting using the `http://localhost:.../...`. It must be "localhost", or
-`127.0.0.1` (IPv4), or `[::1]` (IPv6), not the external IP address of the
-machine.
+In its default configuration, SPARQL endpoints are open to the public but
+administrative functions are limited to `localhost`. One can access it via
+`http://localhost:.../...`. Or the according IPv4 or IPv6 address, for example
+`127.0.0.1` (IPv4), or `[::1]` (IPv6). Access from an external machine is not
+considered as localhost and thus restricted.
 
-Once shiro has been configured to perform user authentication it provides 
-a good foundation on which to implement the [Jena Permissions](../permissions/)
-layer.  There is an [example implementation](../permissions/example.html) 
-documented in the Jena Permissions section.  The Jena Permissions layer can 
-be used to restrict access to specific graphs or triples within graphs.
+Once Shiro has been configured to perform user authentication it provides  a
+good foundation on which the [Jena Permissions](../permissions/) layer can be
+configured. There is an [example implementation](../permissions/example.html)
+documented in the Jena Permissions section. The Jena Permissions layer can be
+used to restrict access to specific graphs or triples within graphs.
 
-There is an example to enable simple user/password security; this is only
-suitable where the connection is secure, is shown `shiro.ini` file with
-defaults user 'admin' and password 'pw'.  These should be changed before
-use.
+A simple example to enable basic user/password authentication is shown in the
+default `shiro.ini` configuration. The default admin user is `admin` and the
+password is `pw`. This can be changed directly in the INI file. Note that this
+setup is not recommended for production for various reasons  (no TLS, passwords
+in plain text etc.), consult the [Shiro
+INI](https://shiro.apache.org/configuration.html#Configuration-INISections)
+documentation for best practices.
 
-This has some use where the server is in a secure network environment with
-additional restrictions on external requests also applied.  behind a
-reverse proxy and the connection can have addition security (e.g. no access
-to URLs starting '/$/').
+As mentioned above, the default setup only restricts access to the admin pages
+of Fuseki. To avoid clashes with dataset names, the namespace of the admin
+interface starts with '/$/', consult the [Fuseki HTTP Administration Protocol
+](../fuseki2/fuseki-server-protocol.html) documentation for more details.
 
-The Apache Shiro website has documentation for creating more sophisticated
-setups.
+If access to SPARQL endpoints should be restricted, additional [Shiro
+ACLs](https://shiro.apache.org/web.html#Web-WebINIconfiguration) are necessary.
+This is done in the `[urls]` section of the configuration. As an example,
+restricting access to the `../query` SPARQL endpoint for all datasets on Fuseki
+could be done with this wildcard pattern:
 
-The security provided in Fuseki is not intended to replace existing
-mechanisms.  Security can also be given to a Fuseki server outside the
-server using [Apache Httpd](http://httpd.apache.org/) or
-[Nginx](http://nginx.org/) as a reverse proxy then limiting the fuseki
-server to only process requests from the local machine by controlling
-ports.
+`/**/query = authcBasic,user[admin]`
+
+Anonymous SPARQL queries would no longer be possible in this example.
+
+Again, please consult the [Apache Shiro](https://shiro.apache.org/) website for
+details and more sophisticated setups. The default configuration of Fuseki is
+kept simple but is *not* recommended for setups where sensitive data is
+provided.
 
 Changing the security setup requires a server restart.
 
@@ -80,4 +87,5 @@ It adds a `[users]` section and changes the `/$/**` line in `[urls]`
     # Everything else
     /**=anon
     
+
 
