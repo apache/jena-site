@@ -18,7 +18,7 @@ Transaction provide applications with a safe way to use and update data between
 threads. The properties of transactions are [ACID](https://en.wikipedia.org/wiki/ACID)
 - Atomic, Consistent, Isolation, Durable -
 meaning that groups of changes are made visible to other transactions
-in a single unit or all chnages are not at all, and when made chnages are not
+in a single unit or all changes are not at all, and when made changes are not
 reversed, or the case of persistent storage, not lost or the database corrupted.
 
 Jena provides transaction on datasets and provides "serializable transactions".
