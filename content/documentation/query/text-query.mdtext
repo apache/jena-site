@@ -228,10 +228,11 @@ The following forms are all legal:
     ?s text:query (rdfs:label 'protégé' 'lang:fr')    # restrict search to French
     (?s ?score) text:query 'word'                     # query capturing also the score
     (?s ?score ?literal) text:query 'word'            # ... and original literal value
+    (?s ?score ?literal ?g) text:query 'word'         # ... and the graph
     
 The most general form is:
    
-     (?s ?score ?literal) text:query (property 'query string' limit 'lang:xx')
+     (?s ?score ?literal ?g) text:query (property 'query string' limit 'lang:xx')
 
 #### Input arguments:
 
@@ -268,16 +269,14 @@ If only the query string is required, the surrounding `( )` _may be_ omitted.
 | subject URI       | The subject of the indexed RDF triple.          |
 | score             | (optional) The score for the match. |
 | literal           | (optional) The matched object literal. |
+| graph URI         | (optional) The graph URI of the triple. |
 
 The results include the _subject URI_; the _score_ assigned by the
 text search engine; and the entire matched _literal_ (if the index has
 been [configured to store literal values](#text-dataset-assembler)).
 The _subject URI_ may be a variable, e.g., `?s`, or a _URI_. In the
 latter case the search is restricted to triples with the specified
-subject. The _score_ and the _literal_ **must** be variables.
-
-If only the _subject_ variable, `?s` is needed then it **must be** written without 
-surrounding `( )`; otherwise, an error is signalled.
+subject. The _score_, _literal_ and _graph URI_ **must** be variables.
 
 ### Query strings
 
@@ -400,6 +399,17 @@ it may be more performant to express the query as follows:
       (?s ?sc ?lit) text:query "zorn" .
       graph ?g { ?s a ex:Item } .
     }
+
+Further, if `tdb:unionDefaultGraph true` for a TDB dataset backing a Lucene index then it is possible to retrieve the graphs that contain triples resulting from a Lucene search via the fourth output argument to `text:query`:
+
+    select ?g ?s ?lit
+    where {
+      (?s ?sc ?lit ?g) text:query "zorn" .
+    }
+
+This will generally perform much better than either of the previous approaches when there are
+large numbers of graphs since the Lucene search will run once and the returned _documents_ carry
+the containing graph URI for free as it were.
 
 #### Queries across multiple `Field`s
 
