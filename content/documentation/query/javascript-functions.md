@@ -2,12 +2,12 @@ Title: ARQ - JavaScript SPARQL Functions
 
 ARQ supports (Jena v3.7.0 onwards) writing 
 [custom SPARQL functions](https://www.w3.org/TR/sparql11-query/#extensionFunctions)
-in JavaScript. These functions can be used in FILTER and for calulatinfg
-values for BIND and AS in SELECT expressions.
+in JavaScript. These functions can be used in FILTERs and for calculating
+values to assigb wiuth AS in BIND and SELECT expressions.
 
-For convenience, XSD datatypes for strings, numbers and booleans are
-comverted to the native JavaScript datatypes. RDFterm that do not fit
-easily into JavaScript datatypes are handled with a object class `NV`.
+XSD datatypes for strings, numbers and booleans are converted to the
+native JavaScript datatypes. RDFterms that do not fit easily into
+JavaScript datatypes are handled with a object class `NV`.
 
 ## Loading JavaScript functions
 
@@ -19,15 +19,15 @@ Example:
 
     sparql --set arq:js-library=SomeFile.js --data ... --query ...
 
-will execute omn teghdata with the JavaScript functions from file
+will execute on the data with the JavaScript functions from file
 "SomeFile.js" available.
 
-JavScript functions cammn also be from a string directly from within Java using constant
+JavScript functions can also be set from a string directly from within Java using constant
 `ARQ.symJavaScriptFunctions` ("http://jena.apache.org/ARQ#js-functions").
 
 ## Using JavaScript functions
 
-SPARQL functions implemented in JavaScript are autoatica called when a
+SPARQL functions implemented in JavaScript are automatically called when a
 URI starting "http://jena.apache.org/ARQ/jsFunction#" used.
 
 This can conveniently be abbreviated by:
@@ -36,30 +36,30 @@ This can conveniently be abbreviated by:
 
 ### Arguments and Function Results
 
-`xsd:string` (a string with no language tag), any XSD numbers
-(integer, decimal, float, double and all the derived types) are
+`xsd:string` (a string with no language tag), any XSD numbers (integer,
+decimal, float, double and all the derived types) and `xsd:boolean` are
 converted to JavaScript string, number and boolean respectively.
 
 SPARQL functions must return a value. When a function returns a value,
-it can be one of these JavaScript natbve dadatypes, in which case the
-reverse conversion is applied back to XSD datatypes.
+it can be one of these JavaScript natbive datatypes, in which case the
+reverse conversion is applied back to XSD datatypes.  For numbers, the
+conversion is back to `xsd:integer` (if it has no fractional part) or
+`xsd:double`.
 
-For numbers, the conversion is back to `xsd:integer` (if it has no
-fractional part) or `xsd:double`.
+The JavaScript function can also create `NodeValue` (or `NV`) objects
+for other datatypes by calling Java from withint the JAavScript script
+engine of the Java runtime.
 
-The JavaScript fucntion can also create `NodeValue` (or `NV`) objects
-for other datatypes.
+URIs are passed as `NV` object and are available in JavaScript as a string.
 
-URIs are passed as `NV` object and evaluate in JavaScript to a string.
-
-The class `NV` is used for all other RDF terms (including URIs).
+The class `NV` is used for all other RDF terms.
 
 Returning JavaScript `null` is the error indicator and a SPARQL
 expression error (`ExprEvalException`) is raised, like any other
-expression error in SPARQL. That in turn will cause the whole
-expression the function was involved in to evaluate to an error (unelss
-a special form like `COALESCE` is used). In a `FILTER` that typcially
-makes the filter evaluate as "false".
+expression error in SPARQL. That, in turn, will cause the whole
+expression the function is part of to evaluate to an error (unless
+a special form like `COALESCE` is used). In a `FILTER` that typically
+makes the filter evaluate to "false".
 
 ## Example
 
@@ -93,25 +93,24 @@ and the query `Q.rq`
     
     SELECT ?input (js:toCamelCase(?input) AS ?X)
     {
-        VALUES ?input { "some words to process" }
+        VALUES ?input { "some woRDs to PROCESS" }
     }
 
 which can be executed with:
 
+    sparql --set arq:js-library=functions.js --query Q.rq
 
-    sparql --set arq:js-library=SomeFile.js --query Q.rq
-
-to result in
+and it results in:
 
     --------------------------------------------------
     | input                   | X                    |
     ==================================================
-    | "some words to process" | "someWordsToProcess" |
+    | "some woRDs to PROCESS" | "someWordsToProcess" |
     --------------------------------------------------
-    
+
 ## Use with Fuseki
 
-The content seeting can be provided on the command line starting the
+The context setting can be provided on the command line starting the
 server, for example:
 
     fuseki --set arq:js-library=functions.js --mem /ds
