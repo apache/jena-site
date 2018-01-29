@@ -1,5 +1,7 @@
 Title: Jena Full Text Search
 
+Title: Jena Full Text Search
+
 This extension to ARQ combines SPARQL and full text search via
 [Lucene](https://lucene.apache.org) 6.4.1 or
 [ElasticSearch](https://www.elastic.co) 5.2.1 (which is built on
@@ -231,7 +233,7 @@ The following forms are all legal:
     
 The most general form is:
    
-     (?s ?score ?literal ?g) text:query (property 'query string' limit 'lang:xx')
+     ( ?s ?score ?literal ?g ) text:query ( property 'query string' limit 'lang:xx' 'highlight:yy' )
 
 #### Input arguments:
 
@@ -241,13 +243,13 @@ The most general form is:
 | query string      | Lucene query string fragment       |
 | limit             | (optional) `int` limit on the number of results       |
 | lang:xx           | (optional) language tag spec       |
-| highlight:xx      | (optional) highlighting options    |
+| highlight:yy      | (optional) highlighting options    |
 
 The `property` URI is only necessary if multiple properties have been
 indexed and the property being searched over is not the [default field
 of the index](#entity-map-definition).
 
-The `query string` syntax conforms the underlying index [Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
+The `query string` syntax conforms to the underlying index [Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
 or
 [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html). In the case of Lucene the syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. _No use of `Fields` within the `query string` is supported._
 
@@ -258,9 +260,9 @@ a BCP-47 language tag. This restricts searches to field values that were origina
 indexed with the tag _xx_. Searches may be restricted to field values with no 
 language tag via `"lang:none"`. 
 
-The `highlight:xx` specification is an optional string where _xx_ are options that control the highlighting of search result literals. See [below](#highlighting) for details.
+The `highlight:yy` specification is an optional string where _yy_ are options that control the highlighting of search result literals. See [below](#highlighting) for details.
 
-If both `limit` and one or more of `lang:xx` or `highlight:xx` are present, then `limit` must precede these arguments.
+If both `limit` and one or more of `lang:xx` or `highlight:yy` are present, then `limit` must precede these arguments.
 
 If only the query string is required, the surrounding `( )` _may be_ omitted.
 
@@ -499,7 +501,7 @@ are involved.**
 
 #### Highlighting
 
-The highlighting option uses the Lucene `Highlighter` and `SimpleHTMLFormatter` to insert highlighting markup into the literals returned from search results (hence the text dataset must be configured to store the literals). The highlighted results are returned via the _literal_ output argument.
+The highlighting option uses the Lucene `Highlighter` and `SimpleHTMLFormatter` to insert highlighting markup into the literals returned from search results (hence the text dataset must be configured to store the literals). The highlighted results are returned via the _literal_ output argument. This highlighting feature, introduced in version 3.7.0, does not require re-indexing by Lucene. 
 
 The simplest way to request highlighting is via `'highlight:'`. This will apply all the defaults:
 
@@ -521,7 +523,7 @@ then a resulting literal binding might be:
 
     "the quick ↦brown fox↤ jumped over the lazy baboon"
 
-The `RIGHT_ARROW` is Unicode \u21a6 and the `LEFT_ARROW` is Unicode \u21a4. These are chosen to be single characters that in most situations will be very unlikely to occur in resulting literals. The `fragSize` of 128 is chosen to be large enough that in many situations the matches will result in single fragments. If the literal is larger than 128 characters and there are several matches in the literal then there may be additional fragments separated by the `DIVIDES`, Unicode \u2223.
+The `RIGHT_ARROW` is Unicode, \u21a6, and the `LEFT_ARROW` is Unicode, \u21a4. These are chosen to be single characters that in most situations will be very unlikely to occur in resulting literals. The `fragSize` of 128 is chosen to be large enough that in many situations the matches will result in single fragments. If the literal is larger than 128 characters and there are several matches in the literal then there may be additional fragments separated by the `DIVIDES`, Unicode, \u2223.
 
 Depending on the analyzer used and the tokenizer, the highlighting will result in marking each token rather than an entire phrase. The `joinHi` option is by default `true` so that entire phrases are highlighted together rather than as individual tokens as in:
 
