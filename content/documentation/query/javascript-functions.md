@@ -127,7 +127,7 @@ or it can be specificied in the server coinfiguration file `config.ttl`:
         # Set the server-wide context
         ja:context [
              ja:cxtName "arq:js-library" ;
-             ja:cxtValue "/home/afs/tmp/JSF/functions.js"
+             ja:cxtValue "/filepath/functions.js"
         ] ;
     .
 
