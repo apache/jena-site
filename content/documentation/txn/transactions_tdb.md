@@ -1,6 +1,19 @@
 ## API for Transactions
 
-## Overview from TDB doc
+## TDB1 and TDB2
+
+[TDB1](/documentation/tdb), the original native TDB database for Apache
+Jena, and [TDB2](documentation/tdb2) are related but different systems.
+Their transaction systems both provide
+[Serializable](http://en.wikipedia.org/wiki/Isolation_%28database_systems%29#SERIALIZABLE)
+transactions, the highest
+[isolation level](http://en.wikipedia.org/wiki/Isolation_%28database_systems%29).
+with one active write transaction and multiple read
+transactions at the same time.
+
+TDB2 does not have the transaction size limitations of TDB1.
+
+## TDB1
 
 The transaction mechanism in TDB is based on
 [write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).
@@ -20,9 +33,6 @@ There can be active read transactions seeing the state of the
 database before the updates, and read transactions seeing the state
 of the database after the updates running at the same time.
 
-Transactional TDB works with SPARQL Query, SPARQL Update, SPARQL
-Graph Store Update as well as the full Jena API.
-
 TDB provides
 [Serializable](http://en.wikipedia.org/wiki/Isolation_%28database_systems%29#SERIALIZABLE)
 transactions, the highest
@@ -30,9 +40,6 @@ transactions, the highest
 
 ## Limitations
 
-(some of these limitations may be removed in later versions)
-
--   Bulk loads: the TDB bulk loader is not transactional
 -   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
 -   Some active transaction state is held exclusively in-memory,
     limiting scalability.
@@ -42,3 +49,19 @@ transactions, the highest
 If a single read transaction runs for a long time when there are
 many updates, the system will consume a lot of temporary
 resources.
+
+## TDB2
+
+The transaction mechanism in TDB2 is based on
+[MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)
+using immutable datastructrures, which are known as ["persistent data
+structures"](https://en.wikipedia.org/wiki/Persistent_data_structure)
+(although this name, for the functional programming community, is
+slightly confusing).
+
+## Limitations
+
+(some of these limitations may be removed in later versions)
+
+-   Bulk loads: the TDB2 bulk loader is not transactional
+-   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.

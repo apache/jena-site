@@ -68,7 +68,7 @@ needs to start a new transaction to perform further operations on the
 dataset.
 
      Dataset dataset = ... ;
-     dataset.begin(ReadWrite.WRITE) ;
+     dataset.begin(TxnType.WRITE) ;
 
      try {
          Model model = dataset.getDefaultModel() ;
@@ -103,6 +103,31 @@ dataset.
             dataset.end() ;
         }
 
+## Transaction Types, Modes and Promotion.
+
+Transaction hava type (enum `TxnType`) and a mode (enum `ReadWrite`).
+`TxnType.READ` and `TxnType.Write` strart the transaction in
+that mode and it is fixed fro the transaction's lifetime. A `READ`
+trasnaction can never update the data of the transactional object it is
+acting on.
+
+Transactiosn can have type `TxnType.READ_PROMOTE` and
+`TxnType.READ_COMMITTED_PROMOTE`. These start in mode `READ` but can
+become mode `WRITE`, either implicitly by attempting an update, or
+explicitly by calling `promote`.
+
+`READ_PROMOTE` only succeeds if no writer has made any changes since
+this transaction started. It gives full isolation.
+
+`READ_COMMITTED_PROMOTE` always succeeds because it changes the view of
+the data to include any changes made up to that point (it is "read
+committed"). Applicationd should be aware that data they have read up
+until the point of promotion (the first call or `.promote` or first
+update made) may now be invalid. For this reason, `READ_PROMOTE` is preferred.
+
+`begin()`, the method with no arguments, is equivalent to
+`begin(TxnType.READ_PROMOTE)`.
+
 ## Multi-threaded use
 
 Each dataset object has one transaction active at a time per thread.
@@ -118,7 +143,7 @@ Either:
 
 Thread 1:
 
-     dataset.begin(ReadWrite.WRITE) ;
+     dataset.begin(TxnType.WRITE) ;
      try {
        ...
        dataset.commit() ;
@@ -126,7 +151,7 @@ Thread 1:
 
 Thread 2:
 
-     dataset.begin(ReadWrite.READ) ;
+     dataset.begin(TxnType.READ) ;
      try {
        ...
      } finally { dataset.end() ; }
@@ -136,7 +161,7 @@ It is possible (in TDB) to create different dataset objects to the same location
 Thread 1:
 
      Dataset dataset = TDBFactory.createDataset(location) ;
-     dataset.begin(ReadWrite.WRITE) ;
+     dataset.begin(TxnType.WRITE) ;
      try {
        ...
        dataset.commit() ;
@@ -145,7 +170,7 @@ Thread 1:
 Thread 2:
 
      Dataset dataset = TDBFactory.createDataset(location) ;
-     dataset.begin(ReadWrite.READ) ;
+     dataset.begin(TxnType.READ) ;
      try {
        ...
      } finally { dataset.end() ; }
