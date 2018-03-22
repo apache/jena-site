@@ -103,6 +103,44 @@ An `RDFConnection` will at least provide the client-side locking features.
 This means that overlapping operations that change data are naturally
 handled by the transaction pattern within a single JVM.
 
+## Configuring a remote `RDFConnection`.
+
+The default settings on a remote connection should work for any SPARQL
+triple store endpoint which supports HTTP content negotiation. Sometimes
+different settings are desirable or required and `RDFConnectionRemote` provides a
+builder to construct `RDFConnectionRemote`s.
+
+At its simplest, it is:
+
+    RDFConnectionRemoteBuilder builder = RDFConnection.create()
+                .destination("http://host/triplestore");
+
+which uses default settings used by `RDFConenctionFactory.connect`.
+
+See [example
+4](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample4.java)
+and [example
+5](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java).
+
+There are many options, including setting HTTP headers for content types
+([javadoc](http://jena.apache.org/documentation/javadoc/rdfconnection/index.html))
+and providing detailed configuration with 
+[Apache HttpComponents HttpClient](https://hc.apache.org/httpcomponents-client-ga/).
+
+### Fuseki Specific Connection
+
+If the remote destination is a Apache Jena Fuseki server, then teh
+default egneral settings work but it is possible to have a specialised connection 
+
+        RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
+              .destination("http://host/fuseki");
+
+which uses settings tuned to Fuseki, including round-trip handling of
+blank nodes.
+
+See [example 
+6](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample6.java).
+
 ## Graph Store Protocol
 
 The <a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
