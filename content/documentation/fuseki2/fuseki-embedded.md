@@ -10,6 +10,7 @@ and testing.
 * [Logging](#logging)
 * [Building a Server](#build)
 * [Running as a standalone server](#fuseki-basic)
+* [Examples](#examples)
 
 The embedded server does not depend on any files on disk (other than for
 databases provided by the application), and does not provide
@@ -131,6 +132,14 @@ The artifact `org.apache.jena:jena-fuseki-basic` is a packaging of
 the embedded server that runs from the command line.  Unlike the full
 Fuseki server, it is only configured from the command line and has no
 persistent work area on-disk.
+
+    java -jar jena-fuseki-basic-$VER-server.jar --help
+
+The arguments are the same as the [standalone full server command line
+program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server
+).
+
+## Examples
 
 ### Example 1
 Create a server on port 3330, that provides the default set of endpoints for an RDF
