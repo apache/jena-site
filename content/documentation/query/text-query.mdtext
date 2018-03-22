@@ -1,7 +1,5 @@
 Title: Jena Full Text Search
 
-Title: Jena Full Text Search
-
 This extension to ARQ combines SPARQL and full text search via
 [Lucene](https://lucene.apache.org) 6.4.1 or
 [ElasticSearch](https://www.elastic.co) 5.2.1 (which is built on
@@ -523,7 +521,7 @@ then a resulting literal binding might be:
 
     "the quick ↦brown fox↤ jumped over the lazy baboon"
 
-The `RIGHT_ARROW` is Unicode, \u21a6, and the `LEFT_ARROW` is Unicode, \u21a4. These are chosen to be single characters that in most situations will be very unlikely to occur in resulting literals. The `fragSize` of 128 is chosen to be large enough that in many situations the matches will result in single fragments. If the literal is larger than 128 characters and there are several matches in the literal then there may be additional fragments separated by the `DIVIDES`, Unicode, \u2223.
+The `RIGHT_ARROW` is Unicode \u21a6 and the `LEFT_ARROW` is Unicode \u21a4. These are chosen to be single characters that in most situations will be very unlikely to occur in resulting literals. The `fragSize` of 128 is chosen to be large enough that in many situations the matches will result in single fragments. If the literal is larger than 128 characters and there are several matches in the literal then there may be additional fragments separated by the `DIVIDES`, Unicode \u2223.
 
 Depending on the analyzer used and the tokenizer, the highlighting will result in marking each token rather than an entire phrase. The `joinHi` option is by default `true` so that entire phrases are highlighted together rather than as individual tokens as in:
 
@@ -653,6 +651,7 @@ The following is an example of a TDB dataset with a text index.
         text:analyzer [ a text:StandardAnalyzer ] ;
         text:queryAnalyzer [ a text:KeywordAnalyzer ] ;
         text:queryParser text:AnalyzingQueryParser ;
+        text:defineAnalyzers [ . . . ] ;
         text:multilingualSupport true ;
      .
 
@@ -685,6 +684,8 @@ during indexing and querying. The default analyzer defaults to Lucene's `Standar
 used to analyze the query string. If not set the analyzer used to index a given field is used.
 
 - `text:queryParser` is optional and specifies an [alternative query parser](#alternative-query-parsers)
+
+- `text:defineAnalyzers` is optional and allows specification of [additional analyzers, tokenizers and filters](#defined-analyzers)
 
 - `text:multilingualSupport` enables [Multilingual Support](#multilingual-support)
 
@@ -863,8 +864,10 @@ Configuration is done using Jena assembler like this:
       text:filters (text:ASCIIFoldingFilter, text:LowerCaseFilter)
     ]
 
-Here, `text:tokenizer` must be one of the four tokenizers listed above and
-the optional `text:filters` property specifies a list of token filters.
+From Jena 3.7.0, it is possible to define tokenizers and filters in addition to the _built-in_
+choices above that may be used with the `ConfigurableAnalyzer`. Tokenizers and filters are 
+defined via `text:defineAnalyzers` in the `text:TextIndexLucene` assembler section
+using [`text:GenericTokenizer` and `text:GenericFilter`](#generic-analyzers-tokenizers-and-filters).
 
 #### Analyzer for Query
 
@@ -1088,9 +1091,10 @@ supported, e.g., a stop words `FileReader` or a `stemExclusionSet`; or
 make use of Analyzers not included in the bundled Lucene distribution,
 e.g., a `SanskritIASTAnalyzer`. Two features have been added to enhance
 the utility of jena-text: 1) `text:GenericAnalyzer`; and 2)
-`text:DefinedAnalyzer`.
+`text:DefinedAnalyzer`. Further, since Jena 3.7.0, features to allow definition of
+tokenizers and filters are included.
 
-#### Generic Analyzer
+#### Generic Analyzers, Tokenizers and Filters
 
 A `text:GenericAnalyzer` includes a `text:class` which is the fully
 qualified class name of an Analyzer that is accessible on the jena
@@ -1098,6 +1102,11 @@ classpath. This is trivial for Analyzer classes that are included in the
 bundled Lucene distribution and for other custom Analyzers a simple
 matter of including a jar containing the custom Analyzer and any
 associated Tokenizer and Filters on the classpath.
+
+Similarly, `text:GenericTokenizer` and `text:GenericFilter` allow to access any tokenizers
+or filters that are available on the Jena classpath. These two types are used _only_ to define
+tokenizer and filter configurations that may be referred to when specifying a
+[ConfigurableAnalyzer](#configurableanalyzer).
 
 In addition to the `text:class` it is generally useful to include an
 ordered list of `text:params` that will be used to select an appropriate
@@ -1108,7 +1117,7 @@ the list of `text:params` includes:
 
 * an optional `text:paramName` of type `Literal` that is useful to identify the purpose of a 
 parameter in the assembler configuration
-* a required `text:paramType` which is one of:
+* a `text:paramType` which is one of:
 
 | &nbsp;Type&nbsp;  | &nbsp; Description&nbsp;    |
 |-------------------|--------------------------------|
@@ -1118,6 +1127,10 @@ parameter in the assembler configuration
 |`text:TypeInt`|a java `int`|
 |`text:TypeString`|a java `String`|
 |`text:TypeSet`|an `org.apache.lucene.analysis.CharArraySet`|
+
+and is required for the types `text:TypeAnalyzer`, `text:TypeFile` and `text:TypeSet`, but,
+since Jena 3.7.0, may be implied by the form of the literal for the types: `text:TypeBoolean`,
+`text:TypeInt` and `text:TypeString`.
 
 * a required `text:paramValue` with an object of the type corresponding to `text:paramType`
 
@@ -1167,11 +1180,22 @@ one approach is to define an `AnalyzerWrapper` that uses available parameter typ
 such an analyzer is the Kuromoji morphological analyzer for Japanese text that uses constructor 
 parameters of types: `UserDictionary`, `JapaneseTokenizer.Mode`, `CharArraySet` and `Set<String>`.
 
+As mentioned above, the simple types: `TypeInt`, `TypeBoolean`, and `TypeString` may be written
+without explicitly including `text:paramType` in the parameter specification. For example:
+
+                    [ text:paramName "maxShingleSize" ;
+                      text:paramValue 3 ]
+
+is sufficient to specify the parameter.
+
 #### Defined Analyzers
 
 The `text:defineAnalyzers` feature allows to extend the [Multilingual Support](#multilingual-support)
 defined above. Further, this feature can also be used to name analyzers defined via `text:GenericAnalyzer`
 so that a single (perhaps complex) analyzer configuration can be used is several places.
+
+Further, since Jena 3.7.0, this feature is also used to name tokenizers and filters that
+can be referred to in the specification of a `ConfigurableAnalyzer`.
 
 The `text:defineAnalyzers` is used with `text:TextIndexLucene` to provide a list of analyzer
 definitions:
@@ -1193,6 +1217,35 @@ References to a defined analyzer may be made in the entity map like:
         a text:DefinedAnalyzer
         text:useAnalyzer <#foo> ]
 
+Since Jena 3.7.0, a `ConfigurableAnalyzer` specification can refer to any defined tokenizer 
+and filters, as in:
+
+    text:defineAnalyzers (
+         [ text:defineAnalyzer :configuredAnalyzer ;
+           text:analyzer [
+                a text:ConfigurableAnalyzer ;
+                text:tokenizer :ngram ;
+                text:filters ( :asciiff text:LowerCaseFilter ) ] ]
+         [ text:defineTokenizer :ngram ;
+           text:tokenizer [
+                a text:GenericTokenizer ;
+                text:class "org.apache.lucene.analysis.ngram.NGramTokenizer" ;
+                text:params (
+                     [ text:paramName "minGram" ;
+                       text:paramValue 3 ]
+                     [ text:paramName "maxGram" ;
+                       text:paramValue 7 ]
+                     ) ] ]
+         [ text:defineFilter :asciiff ;
+           text:filter [
+                a text:GenericFilter ;
+                text:class "org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter" ;
+                text:params (
+                     [ text:paramName "preserveOriginal" ;
+                       text:paramValue true ]
+                     ) ] ]
+         ) ;
+
 ##### Extending multilingual support
 
 The [Multilingual Support](#multilingual-support) described above allows for a limited set of 
@@ -1204,26 +1257,27 @@ associated with each analyzer. So if one is wanting to use:
 * refer to custom analyzers that might be associated with generalized BCP-47 language tags, 
 such as, `sa-x-iast` for Sanskrit in the IAST transliteration, 
 
-then `text:defineAnalyzers` with `text:addLang` will add the desired analyzers to the multilingual 
-support so that fields with the appropriate language tags will use the appropriate custom analyzer.
+then `text:defineAnalyzers` with `text:addLang` will add the desired analyzers to the
+multilingual support so that fields with the appropriate language tags will use the appropriate 
+custom analyzer.
 
-When `text:defineAnalyzers` is used with `text:addLang` then `text:multilingualSupport` is implicitly
-added if not already specified and a warning is put in the log:
+When `text:defineAnalyzers` is used with `text:addLang` then `text:multilingualSupport` is 
+implicitly added if not already specified and a warning is put in the log:
 
         text:defineAnalyzers (
             [ text:addLang "sa-x-iast" ;
               text:analyzer [ . . . ] ]
 
-this adds an analyzer to be used when the `text:langField` has the value `sa-x-iast` during indexing
-and search.
+this adds an analyzer to be used when the `text:langField` has the value `sa-x-iast` during 
+indexing and search.
 
 ##### Naming analyzers for later use
 
 Repeating a `text:GenericAnalyzer` specification for use with multiple fields in an entity map
-may be cumbersome. The `text:defineAnalyzer` is used in an element of a `text:defineAnalyzers` list
-to associate a resource with an analyzer so that it may be referred to later in a `text:analyzer`
-object. Assuming that an analyzer definition such as the following has appeared among the
-`text:defineAnalyzers` list:
+may be cumbersome. The `text:defineAnalyzer` is used in an element of a `text:defineAnalyzers` 
+list to associate a resource with an analyzer so that it may be referred to later in a 
+`text:analyzer` object. Assuming that an analyzer definition such as the following has appeared 
+among the `text:defineAnalyzers` list:
 
     [ text:defineAnalyzer <#foo>
       text:analyzer [ . . . ] ]
