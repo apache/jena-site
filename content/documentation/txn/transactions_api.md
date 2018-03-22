@@ -3,6 +3,7 @@ Title: Jena Transactions API
 -   [API for Transactions](#api-for-transactions)
     - [Read transactions](#read-transactions)
     - [Write transactions](#write-transactions)
+    - [Transaction promotion](#types-modes-promotion)
 -   [Txn](txn.html) - A higher level API to transactions
 
 ## API for Transactions
@@ -103,7 +104,7 @@ dataset.
             dataset.end() ;
         }
 
-## Transaction Types, Modes and Promotion.
+## Transaction Types, Modes and Promotion. {#types-modes-promotion}
 
 Transaction hava type (enum `TxnType`) and a mode (enum `ReadWrite`).
 `TxnType.READ` and `TxnType.Write` strart the transaction in

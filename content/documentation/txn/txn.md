@@ -42,7 +42,7 @@ and
         . . .
     }) ;
 
-## Usage: Read Transactions
+## Usage
 
 This first example shows how to write a SPARQL query .
 
@@ -122,6 +122,11 @@ results needs to be take:
          }
     }) ;
     // use "resultSet"
+
+The functions `Txn.execute` and `Txn.calculate` start `READ_PROMOTE`
+transactions which start in "read" mode but convert to "write" mode if
+needed.  For details of transaction promtion see the
+c[section in the transaction API documentation](transactions_api.html#types-modes-promotion).
 
 ## Working with RDF Models
 
