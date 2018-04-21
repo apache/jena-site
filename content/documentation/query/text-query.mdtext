@@ -1246,6 +1246,37 @@ and filters, as in:
                      ) ] ]
          ) ;
 
+And after 3.7.1 users are able to use the JenaText custom filter `SelectiveFoldingFilter`.
+This filter is not part of the Apache Lucene, but rather a custom implementation available
+for JenaText users.
+
+It is based on the Apache Lucene's `ASCIIFoldingFilter`, but with the addition of a
+white-list for characters that must not be replaced. This is especially useful for languages
+where some special characters and diacritical marks are useful when searching.
+
+Here's an example:
+
+    text:defineAnalyzers (
+         [ text:defineAnalyzer :configuredAnalyzer ;
+           text:analyzer [
+                a text:ConfigurableAnalyzer ;
+                text:tokenizer :tokenizer ;
+                text:filters ( :selectiveFoldingFilter text:LowerCaseFilter ) ] ]
+         [ text:defineTokenizer :tokenizer ;
+           text:tokenizer [
+                a text:GenericTokenizer ;
+                text:class "org.apache.lucene.analysis.core.LowerCaseTokenizer" ] ]
+         [ text:defineFilter :selectiveFoldingFilter ;
+           text:filter [
+                a text:GenericFilter ;
+                text:class "org.apache.jena.query.text.filter.SelectiveFoldingFilter" ;
+                text:params (
+                     [ text:paramName "whitelisted" ;
+                       text:paramType text:TypeSet ;
+                       text:paramValue ("ç" "ä") ]
+                     ) ] ]
+         ) ;
+
 ##### Extending multilingual support
 
 The [Multilingual Support](#multilingual-support) described above allows for a limited set of 
