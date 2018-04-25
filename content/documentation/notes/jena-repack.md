@@ -7,7 +7,7 @@ documentation for process in Jena is [available here](system-initialization.html
 
 There are a number of files (Java resources) in Jena jars named:
 
-    META-INF/services/org.apache.jena.system.JenaSubsystemLifecycle
+    META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle
 
 Each has different contents, usually one or two lines.
 
