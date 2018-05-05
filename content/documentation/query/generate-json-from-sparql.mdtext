@@ -113,8 +113,17 @@ of ARQ beforehand, when creating the `Query` object:
 
 ## Fuseki Support
 
-JSON queries work correctly in the Fuseki web interface, but at the moment the support for
-remote calls has not been implemented. The web interface editor parses the SPARQL implementation
-syntax, so syntax errors are expected at this moment when using the 'JSON' clause.
+Users are able to use Fuseki web interface, as well as the other HTTP endpoints to submit
+queries using any programming language. The following example shows how to POST to the query
+endpoint passing the query as a form data field.
+
+    curl -XPOST --data "query=JSON { 'name' : ?name, 'age': ?age } WHERE {  }" http://localhost:3030/ds/query
+
+At the moment the support for remote calls has not been implemented in `QueryEngineHTTP`, so creating
+the `QueryExecutor` programmatically in Java for a remote call would result in an exception.
+
+The web interface editor parses the SPARQL implementation syntax, so syntax errors are expected
+in the web editor at this moment when using the `JSON` clause. The query should still be correctly
+executed, and the results displayed as with other normal SPARQL queries.
 
 [ARQ documentation index](index.html)
