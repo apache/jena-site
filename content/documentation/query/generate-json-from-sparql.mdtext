@@ -91,7 +91,7 @@ Rule                      |     | Expression
 --------------------------|-----|------------------------
 JsonQuery                 | ::= | JsonClause ( DatasetClause )\* WhereClause SolutionModifier
 JsonClause                | ::= | 'JSON' '\{' JsonObjectMember ( ',' JsonObjectMember )\* '\}'
-JsonObjectMember          | ::= | String ':' ( Var | RDFLiteral | NumericLiteral | BooleanLiteral)
+JsonObjectMember          | ::= | String ':' ( Var \| RDFLiteral \| NumericLiteral \| BooleanLiteral)
 
 `DatasetClause`, `WhereClause`, `SolutionModifier`, `String`, `Var`, 'RDFLiteral',
 `NumericLiteral`, and 'BooleanLiteral' are as for the [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
@@ -117,10 +117,7 @@ Users are able to use Fuseki web interface, as well as the other HTTP endpoints 
 queries using any programming language. The following example shows how to POST to the query
 endpoint passing the query as a form data field.
 
-    curl -XPOST --data "query=JSON { 'name' : ?name, 'age': ?age } WHERE {  }" http://localhost:3030/ds/query
-
-At the moment the support for remote calls has not been implemented in `QueryEngineHTTP`, so creating
-the `QueryExecutor` programmatically in Java for a remote call would result in an exception.
+    curl -XPOST --data "query=JSON { 'name' : ?name, 'age': ?age } WHERE { ... }" http://localhost:3030/ds/query
 
 The web interface editor parses the SPARQL implementation syntax, so syntax errors are expected
 in the web editor at this moment when using the `JSON` clause. The query should still be correctly
