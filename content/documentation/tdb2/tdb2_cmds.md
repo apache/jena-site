@@ -32,25 +32,29 @@ Basic usage: load files into a database at location "DB":
     tdb2.tdbloader --loc DB file1 file2 ....
 
 All TDB2 loaders can update datasets and do not have to work on an empty
-dataset.  However, all but the basic loader work by manipulting the low
-level datatstructures, and are tuned to large changes of data. They do
-not provide perfect transaction isolation in case a load goes wrong for
-some reason. The multiphase loading operations use partial transactions
-which can leave the database in a strange state.
+dataset.  However, only the basic and sequential loader are fully
+transactional in the presense of crashes. The other loadrs, while
+faster, work by manipulting the low-level datastructures, and are tuned
+for large changes of data. They do not provide perfect transaction
+isolation in case a load goes wrong for some reason. The multiphase
+loading operations use partial transactions which can leave the database
+in a strange state.
 
 When working with large data to load, it is advisable to check it
-complete first with `riot --validate`. Parse errors during loading can
+completely first with `riot --validate`. Parse errors during loading can
 lead to inconsistent indexing. Fixing bad data, even if legal RDF, such
 as bad lexicial forms of literals or bad URIs, is much easier before the
 data is in the database.
 
-Because loading in very hardware dependent, the right choice for any
+Because loading in hardware dependent, the right choice for any
 situation can only be found by trying each loader to see what works best
-and the notes below are just initial guidance.  The default choice is
+and the notes below are only initial guidance. The default choice is
 a reasonable starting point. Closing all applications to release their
 memory and not use CPU improves the loading process performance.
 
-Loader options:
+### Loader options
+
+The choice of loader is given by the optional `--loader` argument.
 
 `--loader=basic`
 
