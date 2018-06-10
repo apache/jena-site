@@ -1780,7 +1780,11 @@ floating point or XSDDateTime).</div>
       <div align="left">Remove the statement (triple) which caused the n'th body
         term of this (forward-only) rule to match. Remove will propagate the
         change to other consequent rules including the firing rule (which must
-        thus be guarded by some other clauses). Drop will silently remove the
+        thus be guarded by some other clauses).
+        In particular, if the removed statement (triple) appears in the body of
+        a rule that has already fired, the consequences of such rule are
+        retracted from the deducted model.
+         Drop will silently remove the
         triple(s) from the graph but not fire any rules as a consequence.
         These are clearly non-monotonic operations and, in particular, the
         behaviour of a rule set in which different rules both drop and create the
