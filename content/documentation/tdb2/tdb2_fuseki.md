@@ -3,9 +3,12 @@ Title: DB2 - Use with Fuseki2
 TDB2 is incorporated into Fuseki2, both in the full server, with UI, and
 [Fuseki2 basic server](../fuseki2/fuseki-embedded.html#fuseki-basic).
 
-In each case, the database needs to be defined in a configuration file,
+The TDB2 database can be in a configuration file,
 either a complete server configuration (see below) or as an entry in the
 `FUSEKI_BASE/configuration/` area of the full server.
+
+The command line start-up for Fuseki (both full and basic versions) uses the
+the `--tdb2` flag to modify the `--loc` argument to work with a TDB2 dataset.
 
 Example complete server configuration file for full or basic servers:
 The base URL will be of the form `http::/_host:port_/tdb2-database`.
