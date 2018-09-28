@@ -2,14 +2,14 @@ Title: RDF Connection : SPARQL operations API
 
 `RDFConnection` provides a unified set of operations for working on RDF
 with SPARQL operations. It provides <a
-href="http://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a
-href="http://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a
-href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
+href="https://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a
+href="https://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a
+href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
 Store</a> operations.  The interface is uniform - the same interface
 applies to local data and to remote data using HTTP and the SPARQL
-protocols ( <a href="http://www.w3.org/TR/sparql11-protocol/">SPARQL
+protocols ( <a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL
 protocol</a> and <a
-href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
+href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
 Protocol</a>).
 
 ## Outline
@@ -45,7 +45,7 @@ in the example above):
     conn.close() ;
 
 Jena also provides a separate
-[SPARQL over JDBC driver](http://jena.staging.apache.org/documentation/jdbc/index.html)
+[SPARQL over JDBC driver](//jena.staging.apache.org/documentation/jdbc/index.html)
 library.
 
 ## Transactions
@@ -123,7 +123,7 @@ and [example
 5](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java).
 
 There are many options, including setting HTTP headers for content types
-([javadoc](http://jena.apache.org/documentation/javadoc/rdfconnection/index.html))
+([javadoc](//jena.apache.org/documentation/javadoc/rdfconnection/index.html))
 and providing detailed configuration with 
 [Apache HttpComponents HttpClient](https://hc.apache.org/httpcomponents-client-ga/).
 
@@ -143,7 +143,7 @@ See [example
 
 ## Graph Store Protocol
 
-The <a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
+The <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
 Store Protocol</a> (GSP) is a set of operations to work on whole graphs in a
 dataset.  It provides a standardised way to manage the data in a dataset.
 
@@ -161,7 +161,7 @@ The file extension is used to determine the syntax.
 
 There is also a set of scripts to help do these operations from the command
 line with 
-<a href="http://jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
+<a href="//jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
 It is possible to write curl scripts as well.  The SPARQL Graph
 Store Protocol provides a standardised way to manage the data in a dataset.
 
