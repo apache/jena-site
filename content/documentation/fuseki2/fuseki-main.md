@@ -1,4 +1,4 @@
-Title: Fuseki : Embedded Server
+Title: Fuseki : Main Server
 
 Fuseki can be run in the background by an application as an embedded server.  The
 application can safely work with the dataset directly from java while having Fuseki
@@ -9,7 +9,7 @@ and testing.
 * [Dependencies and Setup](#dependencies)
 * [Logging](#logging)
 * [Building a Server](#build)
-* [Running as a standalone server](#fuseki-basic)
+* [Running as a deployment or development server](#fuseki-server)
 * [Examples](#examples)
 
 The embedded server does not depend on any files on disk (other than for
@@ -58,8 +58,8 @@ To include an embedded Fuseki server in the application:
 
     <dependency>
       <groupId>org.apache.jena</groupId>
-      <artifactId>jena-fuseki-embedded</artifactId>
-      <version>2.x.y</version> <!-- Set the version -->
+      <artifactId>jena-fuseki-main</artifactId>
+      <version>3.x.y</version> <!-- Set the version -->
     </dependency>
 
 This brings in enough dependencies to run Fuseki. Application writers are strongly
@@ -126,18 +126,17 @@ the server.
 The default port for a Fuseki embedded server is 3330. This is different for the default
 port for Fuseki running as a standalone server or as a webapp application.
 
-## Running as a standalone server {#fuseki-basic}
+## Running as a configured deployment or development server {#fuseki-server}
 
-The artifact `org.apache.jena:jena-fuseki-basic` is a packaging of
-the embedded server that runs from the command line.  Unlike the full
+The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
+the "main" server that runs from the command line.  Unlike the UI 
 Fuseki server, it is only configured from the command line and has no
 persistent work area on-disk.
 
-    java -jar jena-fuseki-basic-$VER-server.jar --help
+    java -jar jena-fuseki-server-$VER.jar --help
 
-The arguments are the same as the [standalone full server command line
-program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server
-).
+The arguments are the same as the 
+[full UI server command line program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
 
 ## Examples
 

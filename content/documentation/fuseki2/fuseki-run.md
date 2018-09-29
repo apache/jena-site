@@ -6,8 +6,8 @@ Fuseki can be run in a number of ways:
 * [As a service](#fuseki-service) run by the operation system, for example, started when the machine
 * [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty
 boots.
-* [As an embedded SPARQL server](#fuseki-embedded)
-* [As a simple development standalone server](#fuseki-basic)
+* [As a configurable SPARQL server](#fuseki-main)
+* [As a deployment and development standalone server](#fuseki-server)
 
 See "[Fuseki Configuration](fuseki-configuration.html)" for information on
 how to provide datasets and configure services.
@@ -68,7 +68,7 @@ directory.  It is initialised the first time Fuseki runs, including a
 intended as a starting point.  It restricts use of the admin UI to the
 local machine.
 
-## Fuseki as an Embedded SPARQL Server {#fuseki-embedded}
+## Fuseki as Configuable and Embeddable SPARQL Server {#fuseki-main}
 
 Fuseki can be run from inside an Java application to provide SPARQL
 services to application data. The application can continue to access and
@@ -82,13 +82,13 @@ Basic example:
       .build() ;
     server.start() ;
 
-See the [full documentation](fuseki-embedded.html) for details of
-configuration and working with data shared with the [embedded
-Fuseki](fuseki-embedded.html) instance.
+See the [full documentation](fuseki-main.html) for details of
+configuration and working with data shared with the
+[Fuseki main server](fuseki-main.html) instance.
 
-## Simple Development Standalone Server {#fuseki-basic}
+## Fuseki-Server (no UI) {#fuseki-server}
 
-The artifact `org.apache.jena:jena-fuseki-basic` is a packaging of
-the embedded server that runs from the command line.  Unlike the full
+The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
+the "main" server that runs from the command line.  Unlike the full
 Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk.
+persistent work area on-disk. It has full SPARQL and all storage options.

@@ -26,7 +26,7 @@ storage systems.
     - [As a standalone server](fuseki-run.html#fuseki-standalone-server)
     - [As a service](fuseki-run.html#fuseki-service)
     - [As a web application](fuseki-run.html#fuseki-web-application)
-    - [As an embedded SPARQL server](fuseki-embedded.html)
+    - [As an standalone SPARQL server](fuseki-main.html)
 - Architecture
     - [Server URI scheme : services and datasets](fuseki-data-services.html)
     - [Server Admin Protocol](fuseki-server-protocol.html)
