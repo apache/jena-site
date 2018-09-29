@@ -1,7 +1,7 @@
-Title: DB2 - Use with Fuseki2
+Title: TDB2 - Use with Fuseki2
 
 TDB2 is incorporated into Fuseki2, both in the full server, with UI, and
-[Fuseki2 basic server](../fuseki2/fuseki-embedded.html#fuseki-basic).
+embeddable [Fuseki2 main server](../fuseki2/fuseki-embedded.html#fuseki-basic).
 
 The TDB2 database can be in a configuration file,
 either a complete server configuration (see below) or as an entry in the
