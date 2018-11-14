@@ -1,20 +1,45 @@
 Title: Fuseki : Main Server
 
+Fuseki main is a packagign of Fuseki as trile store without a UI for administration.
+
+
 Fuseki can be run in the background by an application as an embedded server.  The
 application can safely work with the dataset directly from java while having Fuseki
-provide SPARQL access over HTTP.  An embedded server is also useful for development
-and testing.
+provide SPARQL access over HTTP.  An embedded server is useful for
+adding functonality around a triple store and also for development and testing.
 
+* [Running as a deployment or development server](#fuseki-server)
 * [Application Use](#usage)
 * [Dependencies and Setup](#dependencies)
 * [Logging](#logging)
 * [Building a Server](#build)
-* [Running as a deployment or development server](#fuseki-server)
 * [Examples](#examples)
 
-The embedded server does not depend on any files on disk (other than for
-databases provided by the application), and does not provide
-the Fuseki UI or admins functions to create dataset via HTTP.
+The main server does not depend on any files on disk (other than for
+databases provided by the application), and does not provide the Fuseki
+UI or admins functions to create dataset via HTTP.
+
+## Running as a configured deployment or development server {#fuseki-server}
+
+The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
+the "main" server that runs from the command line.  Unlike the UI 
+Fuseki server, it is only configured from the command line and has no
+persistent work area on-disk.
+
+    java -jar jena-fuseki-server-$VER.jar --help
+
+The arguments are the same as the 
+[full UI server command line
+program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
+There are no special enviornment variables.
+
+
+The entry point is `org.apache.jena.fuseki.main.cmds.FusekiMainCmd` so
+the server can also be run as:
+
+    java -cp jena-fuseki-server-$VER.jar:...OtherJars... \
+        org.apache.jena.fuseki.main.cmds.FusekiMainCmd ARGS
+
 
 ## Application Use {#usage}
 
@@ -126,19 +151,7 @@ the server.
 The default port for a Fuseki embedded server is 3330. This is different for the default
 port for Fuseki running as a standalone server or as a webapp application.
 
-## Running as a configured deployment or development server {#fuseki-server}
-
-The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
-the "main" server that runs from the command line.  Unlike the UI 
-Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk.
-
-    java -jar jena-fuseki-server-$VER.jar --help
-
-The arguments are the same as the 
-[full UI server command line program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
-
-## Examples
+## Examples of embedded use {#examples}
 
 ### Example 1
 Create a server on port 3330, that provides the default set of endpoints for an RDF
@@ -199,7 +212,7 @@ Different combinations of services and endpoint names can be given using a `Data
        .build() ;
     server.start() ;
 
-This setup puts all the operation on the datset URL. The ``Content-type`` and any query
+This setup puts all the operation on the dataset URL. The ``Content-type`` and any query
 string is used to determine the operation.
 
 | Service | Endpoint |

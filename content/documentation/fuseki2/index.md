@@ -50,11 +50,7 @@ Releases of Apache Jena Fuseki can be downloaded from one of the mirror sites:
 
 and previous releases are available from [the archive](http://archive.apache.org/dist/jena/).
 We strongly recommend that users use the latest official Apache releases of Jena Fuseki in
-preference to any older versions or of development builds.
-
-Fuseki requires Java8 for Fuseki2.
-
-See also the [Jena2/Jena3 migration](/documentation/migrate_jena2_jena3.html) notes.
+preference to any older versions.
 
 **Fuseki download files**
 
@@ -68,6 +64,14 @@ Filename | Description
        <groupId>org.apache.jena</groupId>
        <artifactId>jena-fuseki-war</artifactId>
        <type>war</type>
+       <version>X.Y.Z</version>
+    </dependency>
+
+and for [Fuseki Main](fuseki-main):
+
+    <dependency>
+       <groupId>org.apache.jena</groupId>
+       <artifactId>jena-fuseki-main</artifactId>
        <version>X.Y.Z</version>
     </dependency>
 
@@ -113,7 +117,7 @@ Development builds (not a formal release):
 [SNAPSHOT](https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-fuseki/)
 
 Source code mirrored to github:
-[https://github.com/apache/jena/jena-fuseki2](https://github.com/apache/jena/jena-fuseki2)
+[https://github.com/apache/jena/tree/master/jena-fuseki2](https://github.com/apache/jena/tree/master/jena-fuseki2)
 
 ## Fuseki 1
 
