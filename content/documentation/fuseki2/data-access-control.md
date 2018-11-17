@@ -35,8 +35,8 @@ Https support is configured from the fuseki server command line.
 
 | Argument |    |  |
 |----------|----|--|
-| `--https=`         | Name of file for certificate details.   | |
-| `--httpsPort`     | The port for https   | Default: 3043 |
+| `--https=<i>SETUP</i>`         | Name of file for certificate details.   | |
+| `--httpsPort=<i>PORT</i>`     | The port for https   | Default: 3043 |
 
 The `--https` argument names a file in JSON which includes the name of
 the certificate file and password for the certificate.
@@ -104,10 +104,10 @@ details.  This section is a breif summary of some relevant options:
 | curl argument  | Value |--|
 |----------------|-------|--|
 | `-n`, `--netrc` | |  Take passwords from `.netrc` (`_netrc` on windows) |
-| `--user=`   | `user:password` | Set the uses and password (visible to all on the local machine) |
-| `--anyauth` |  | Use server nominated authentication scheme            |
-| `--basic`   |  | Use HTTP basic auth                                   |
-| `--digest`  |  | USe HTTP digest auth                                  |
+| `--user=`       | `user:password` | Set the uses and password (visible to all on the local machine) |
+| `--anyauth`     |  | Use server nominated authentication scheme            |
+| `--basic`       |  | Use HTTP basic auth                                   |
+| `--digest`      |  | Use HTTP digest auth                                  |
 | `-k`, `--insecure` |  | Don't check HTTPS certifcate. This allows for self-signed or expired, certificates or ones with the wrong host name. |
 
 ### Using `wget`
@@ -125,7 +125,7 @@ details.  This section is a breif summary of some relevant options:
 ## Access Control Lists {#acl}
 
 ACLs can be applied to the server as a whole, to a dataset, to endpoints, and to
-graphs within a dataset. Thsi section covers server, dataset and endpoint access control
+graphs within a dataset. This section covers server, dataset and endpoint access control
 lists. Graph-level access control is [covered below](#graph-acl).
 
 Access control lists (ACL) as part of the server configuration file.
