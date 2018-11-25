@@ -63,7 +63,7 @@ This is a minimal configuration for the default configuration.
 
     [urls]
     ## Control functions open to anyone
-    /$/status = anon
+    /$/server = anon
     /$/ping   = anon
     ## and the rest are restricted to localhost.
     ## See above for 'localhost'
