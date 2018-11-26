@@ -1,114 +1,127 @@
-## Data Access Control.
+Title: Data Access Control for Fuseki
 
-Fuseki can provide access control at the level of the server, on datasets,
-on endpoints and also at the graph level within a dataset. It also
+Fuseki can provide access control at the level on the server, on datasets,
+on endpoints and also on specific graphs within a dataset. It also
 provides native https to protect data in-flight.
 
 [Fuseki Main](http://jena.apache.org/documentation/fuseki2/fuseki-main.html)
 provides some common patterns of authentication.
 
-Fuseki Full (Fuseki with the UI) can be used when
-[run in a web application server such as Tomcat](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-web-application)
-to provide authentication of the user.
-
-Graph level Data Access Control provides control over the visibility of
-graphs within a dataset, and including the union graph of a dataset and
+[Graph level Data Access Control](#graph-acl) provides control over the visibility of
+graphs within a dataset, including the union graph of a dataset and
 the default graph. Currently, Graph level access control only applies to
 read-only datasets.
 
-See "[Fuseki Security](fuseki-security)" for configuring security over
-the whole of the Fuseki UI.
+Fuseki Full (Fuseki with the UI) can be used when
+[run in a web application server such as Tomcat](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-web-application)
+to provide authentication of the user.  See "[Fuseki Security](fuseki-security)" for configuring security over the whole of the Fuseki UI.
 
 ## Contents
 
 - [HTTPS](#https)
 - [Authentication](#authentication)
+  - [Using curl](#using-curl)
+  - [Using wget](#using-wget)
 - [Access control lists](#acl)
-- [Graph level access control](#graph-acl)
+  - [Format of ja:allowedUsers](#alloweduser)
+  - [Server Level ACLs]{#server-acl}
+  - [Dataset Level ACLs]{#dataset-acl}
+  - [Endpoint Level ACLs]{#endpoint-acl}
+- [Graph Access Control Lists](#graph-acl)
+  - [Graph Security Registry]()#graph-security-registry)
 - [Configuring Jetty directly](#jetty-configuration)
-- [Confuguring Fuseki in Java code](#embedded-setup)
 
 ## HTTPS
 
 This section applies to Fuseki Main.
-Https support is configured from the fuseki server command line.
+HTTPS support is configured from the fuseki server command line.
 
-| Argument |    |  |
+| Server Argument |    |  |
 |----------|----|--|
-| `--https=<i>SETUP</i>`         | Name of file for certificate details.   | |
-| `--httpsPort=<i>PORT</i>`     | The port for https   | Default: 3043 |
+| <tt>--https=<i>SETUP</i></tt>         | Name of file for certificate details.   | |
+| <tt>--httpsPort=<i>PORT</i></tt>     | The port for https   | Default: 3043 |
 
 The `--https` argument names a file in JSON which includes the name of
 the certificate file and password for the certificate.
 
-    { "cert": <i>KEYSTORE</i> , "passwd": <i>SECRET</i> } 
+### HTTPS certificate details file {#https-details}
+
+The file is a simple JSON file:
+<pre>
+    { "cert": <i>KEYSTORE</i> , "passwd": <i>SECRET</i> }
+</pre>
 
 This file must be protected by file access settings so that it can only
 be read by the userid running the server.  One way is to put the
 keystore certificate and the certificate details file in the same
-directory, then making the directory secure.
+directory, then make the directory secure.
 
 ### Self-signed certificates
 
 A self-signed certificate provides an encrypted link to the server and
-stops some attacks. What it does not do is gaurantee the identity of the
-host name of the Fuseki server to the client system.
+stops some attacks. What it does not do is guarantee the identity of the
+host name of the Fuseki server to the client system. A signed certificate provides that through the chain of trust. A self-signed certificate does protect data in HTTP responses.
 
 A self-signed certificate can be generated with:
 
-    keytool -keystore keystore -alias jetty -genkey -keyalg RSA
+<pre>
+    keytool -keystore <i>keystore</i> -alias <i>jetty</i> -genkey -keyalg RSA
+</pre>
 
 For information on creating a certificate, see the Jetty documentation
 for [generating certificates](http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html#generating-key-pairs-and-certificates).
 
 ## Authentication
 
-This section applies to Fuskei Main.
+This section applies to Fuseki Main.
 
 [Authentication](https://en.wikipedia.org/wiki/Authentication),
 is establishing the identity of the principal (user or program) accessing the
 system. Fuseki Main provides users/password setup and HTTP authentication,
-[digest](https://en.wikipedia.org/wiki/Digest_access_authentication) or 
+[digest](https://en.wikipedia.org/wiki/Digest_access_authentication) or
 [basic](https://en.wikipedia.org/wiki/Basic_access_authentication)).
 
 These should be [used with HTTPS](#https).
 
-| Argument         |  |  |
-| `--passwd=FILE`  | Password file | |
-| `--auth=`        | "basic" or "digest"   | Default is "digest" |
+| Server Argument  |  |  |
+|------------------|-----|-----|
+| <tt>--passwd=<i>FILE</i></tt>  | Password file | |
+| <tt>--auth=</tt>               | "basic" or "digest"   | Default is "digest" |
 
 These can also be given in the server configuration file:
 
-    <#server> rdf:type fuseki:Server ;
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
         fuseki:passwd  "<i>password_file</i>" ;
         fuseki:auth    "<i>digest</i>" ;
         ...
+</pre>
 
 The format of the password file is:
 
     username: password
 
-and passwords can be stored in hash or obfuscated form. 
+and passwords can be stored in hash or obfuscated form.
 
 [Password file format](http://www.eclipse.org/jetty/documentation/current/configuring-security.html#hash-login-service).
 
-If different authentication is required, the full facilities of 
+If different authentication is required, the full facilities of
 [Eclipse Jetty configuration](http://www.eclipse.org/jetty/documentation/current/configuring-security.html)
-are available.
+are available - see [the section below](#jetty-configuration).
 
 ### Using `curl`
 
 See the [curl documentation](https://curl.haxx.se/docs/manpage.html) for full
-details.  This section is a breif summary of some relevant options:
+details.  This section is a brief summary of some relevant options:
 
 | curl argument  | Value |--|
 |----------------|-------|--|
 | `-n`, `--netrc` | |  Take passwords from `.netrc` (`_netrc` on windows) |
-| `--user=`       | `user:password` | Set the uses and password (visible to all on the local machine) |
+| `--user=`       | `user:password` | Set the user and password (visible to all on the local machine) |
 | `--anyauth`     |  | Use server nominated authentication scheme            |
 | `--basic`       |  | Use HTTP basic auth                                   |
 | `--digest`      |  | Use HTTP digest auth                                  |
-| `-k`, `--insecure` |  | Don't check HTTPS certifcate. This allows for self-signed or expired, certificates or ones with the wrong host name. |
+| `-k`, `--insecure` |  | Don't check HTTPS certifcate.<br/> This allows for self-signed or expired certificates, or ones with the wrong host name. |
 
 ### Using `wget`
 
@@ -117,10 +130,10 @@ details.  This section is a breif summary of some relevant options:
 
 | wget argument  | Value |--|
 |----------------|-------|--|
-| --http-user | user | Set the user.
-| --http-password | password |  Set the password (visible to all on the local machine) |
+| `--http-user`  | user name | Set the user.
+| `--http-password` | password |  Set the password (visible to all on the local machine) |
 |   | | `wget` uses users/password from `.wgetrc` or `.netrc` by default. |
-| `--no-check-certificate` | |  Don't check HTTPS certifcate. This allows for self-signed or expired, certificates or ones with the wrong host name. |
+| `--no-check-certificate` | |  Don't check HTTPS certifcate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name. |
 
 ## Access Control Lists {#acl}
 
@@ -132,9 +145,9 @@ Access control lists (ACL) as part of the server configuration file.
 
     fuseki --conf assembler.ttl ...
 
-ACLs are provided by the `ja:allowedUsers` property 
+ACLs are provided by the `ja:allowedUsers` property
 
-### Format of `ja:allowedUsers`
+### Format of `ja:allowedUsers` {#alloweduser}
 
 The list of users allowed access can be an RDF list or repeated use of
 the property or a mixture. The different seting are combined into one ACL.
@@ -149,52 +162,58 @@ There is a special user name "*" which means "any authenticated user".
 
 ### Server Level ACLs {#server-acl}
 
-    <#server> rdf:type fuseki:Server ;
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
        <i>fuseki:allowedUsers    "user1", "user2", "user3";</i>
        ...
        fuseki:services ( ... ) ;
        ...
        .
+</pre>
 
 A useful pattern is:
 
-    <#server> rdf:type fuseki:Server ;
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
        <i>fuseki:allowedUsers    "*";</i>
        ...
        fuseki:services ( ... ) ;
        ...
        .
+</pre>
 
-whcih requires all access to authenticated and the allowed users are
+which requires all access to authenticated and the allowed users are
 those in the password file.
 
-### Dataset Level {#dataset-acl}
+### Dataset Level ACLs{#dataset-acl}
 
 When there is an access control list on the `fuseki:Service`, it applies
-to all requests to the endpoints of the server. 
+to all requests to the endpoints of the dataset.
 
 Any server-wide "allowedUsers" configuration also applies and both
 levels must allow the user access.
 
-    <#service_auth> rdf:type fuseki:Service ;
+<pre>
+    &lt;#service_auth&gt; rdf:type fuseki:Service ;
         rdfs:label                      "ACL controlled dataset" ;
         fuseki:name                     "db-acl" ;
-    
+
         <i>fuseki:allowedUsers             "user1", "user3";</i>
-    
-        ## Chocie of operations.
+
+        ## Choice of operations.
         fuseki:serviceQuery             "query" ;
         fuseki:serviceQuery             "sparql" ;
         fuseki:serviceReadGraphStore    "get" ;
-    
+
         fuseki:serviceUpdate            "update" ;
         fuseki:serviceUpload            "upload" ;
         fuseki:serviceReadWriteGraphStore "data" ;
-    
-        fuseki:dataset                  <#base_dataset>;
-        .
 
-### Endpoint Level {#endpoint-acl}
+        fuseki:dataset                  &lt;#base_dataset&gt;;
+        .
+</pre>
+
+### Endpoint Level ACLs {#endpoint-acl}
 
 An access control list can be applied to an individual endpoint.
 Again, any  other "allowedUsers" configuration, service-wide, or
@@ -205,21 +224,20 @@ server-wide) also applies.
         fuseki:serviceUpdate [ fuseki:name "update ;
                                fuseki:allowedUsers "user1"] ;
 
-Only <em>user1</em> can use SPARQL udpate both <em>user1</em> and
-<em>user2</em> can use SPARQl query.
+Only <em>user1</em> can use SPARQL update both <em>user1</em> and
+<em>user2</em> can use SPARQL query.
 
-## Graph Level {#graph-acl}
+## Graph Access Control Lists {#graph-acl}
 
 Graph level access control is defined using a specific dataset
-implmentation for the service.
+implementation for the service.
 
     <#access_dataset>  rdf:type access:AccessControlledDataset ;
         access:registry   ... ;
         access:dataset    ... ;
         .
 
-ACLs are defined in a [Graph Security Registry](#graph-security-registry) which lists the
-users and graph URIs.
+Graph ACLs are defined in a [Graph Security Registry](#graph-security-registry) which lists the users and graph URIs.
 
     <#service_tdb2> rdf:type fuseki:Service ;
         rdfs:label                      "Graph-level access controlled dataset" ;
@@ -239,7 +257,7 @@ users and graph URIs.
     <#tdb_dataset_shared> rdf:type tdb:DatasetTDB ;
         . . .
 
-All dataset stroage types are supported.
+All dataset storage types are supported. TDB1 and TBD2 have special implementations for handling graph access control.
 
 ### Graph Security Registry {#graph-security-registry}
 
@@ -263,7 +281,7 @@ list of URIs as its object.
 ## Jetty Configuration {#jetty-configuration}
 
 For authentication configuration not covered by Fuseki configuration,
-the deployed server can be run using a Jetty comnfiguration.
+the deployed server can be run using a Jetty configuration.
 
 Server command line: <tt>--jetty=<i>jetty.xml</i></tt>.
 
