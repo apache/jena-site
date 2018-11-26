@@ -20,15 +20,15 @@ to provide authentication of the user.  See "[Fuseki Security](fuseki-security)"
 
 - [HTTPS](#https)
 - [Authentication](#authentication)
-  - [Using curl](#using-curl)
-  - [Using wget](#using-wget)
+    - [Using curl](#using-curl)
+    - [Using wget](#using-wget)
 - [Access control lists](#acl)
-  - [Format of ja:allowedUsers](#alloweduser)
-  - [Server Level ACLs]{#server-acl}
-  - [Dataset Level ACLs]{#dataset-acl}
-  - [Endpoint Level ACLs]{#endpoint-acl}
+    - [Format of ja:allowedUsers](#alloweduser)
+    - [Server Level ACLs]{#server-acl}
+    - [Dataset Level ACLs]{#dataset-acl}
+    - [Endpoint Level ACLs]{#endpoint-acl}
 - [Graph Access Control Lists](#graph-acl)
-  - [Graph Security Registry]()#graph-security-registry)
+    - [Graph Security Registry](#graph-security-registry)
 - [Configuring Jetty directly](#jetty-configuration)
 
 ## HTTPS
@@ -103,7 +103,7 @@ The format of the password file is:
 
 and passwords can be stored in hash or obfuscated form.
 
-[Password file format](http://www.eclipse.org/jetty/documentation/current/configuring-security.html#hash-login-service).
+Documentation of the [Eclipse Jetty Password file format](http://www.eclipse.org/jetty/documentation/current/configuring-security.html#hash-login-service).
 
 If different authentication is required, the full facilities of
 [Eclipse Jetty configuration](http://www.eclipse.org/jetty/documentation/current/configuring-security.html)
@@ -143,7 +143,9 @@ lists. Graph-level access control is [covered below](#graph-acl).
 
 Access control lists (ACL) as part of the server configuration file.
 
-    fuseki --conf assembler.ttl ...
+<pre>
+    fuseki --conf <i>configFile.ttl</i>
+</pre>
 
 ACLs are provided by the `ja:allowedUsers` property
 
@@ -164,7 +166,7 @@ There is a special user name "*" which means "any authenticated user".
 
 <pre>
     &lt;#server&gt; rdf:type fuseki:Server ;
-       <i>fuseki:allowedUsers    "user1", "user2", "user3";</i>
+       <b>fuseki:allowedUsers    "user1", "user2", "user3";</b>
        ...
        fuseki:services ( ... ) ;
        ...
@@ -175,14 +177,14 @@ A useful pattern is:
 
 <pre>
     &lt;#server&gt; rdf:type fuseki:Server ;
-       <i>fuseki:allowedUsers    "*";</i>
+       <b>fuseki:allowedUsers    "*";</b>
        ...
        fuseki:services ( ... ) ;
        ...
        .
 </pre>
 
-which requires all access to authenticated and the allowed users are
+which requires all access to to be authenticated and the allowed users are
 those in the password file.
 
 ### Dataset Level ACLs{#dataset-acl}
@@ -198,7 +200,7 @@ levels must allow the user access.
         rdfs:label                      "ACL controlled dataset" ;
         fuseki:name                     "db-acl" ;
 
-        <i>fuseki:allowedUsers             "user1", "user3";</i>
+        <b>fuseki:allowedUsers             "user1", "user3";</b>
 
         ## Choice of operations.
         fuseki:serviceQuery             "query" ;
@@ -224,7 +226,7 @@ server-wide) also applies.
         fuseki:serviceUpdate [ fuseki:name "update ;
                                fuseki:allowedUsers "user1"] ;
 
-Only <em>user1</em> can use SPARQL update both <em>user1</em> and
+Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 <em>user2</em> can use SPARQL query.
 
 ## Graph Access Control Lists {#graph-acl}
@@ -239,23 +241,28 @@ implementation for the service.
 
 Graph ACLs are defined in a [Graph Security Registry](#graph-security-registry) which lists the users and graph URIs.
 
-    <#service_tdb2> rdf:type fuseki:Service ;
+<pre>
+    &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
         rdfs:label                      "Graph-level access controlled dataset" ;
         fuseki:name                     "db-graph-acl" ;
         ## Read-only operations.
         fuseki:serviceQuery             "query" ;
         fuseki:serviceQuery             "sparql" ;
         fuseki:serviceReadGraphStore    "get" ;
-        fuseki:dataset                  <#access_dataset>;
+        fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
         .
 
-    <#access_dataset>  rdf:type access:AccessControlledDataset ;
-        access:registry   <#securityRegistry> ;
-        access:dataset    <#tdb_dataset_shared> ;
+    &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
+        access:registry   &lt;#securityRegistry&gt; ;
+        access:dataset    &lt;#tdb_dataset_shared&gt; ;
         .
 
-    <#tdb_dataset_shared> rdf:type tdb:DatasetTDB ;
+    &lt;#securityRegistry&gt;rdf:type access:SecurityRegistry ;
+       . . .
+
+    &lt;#tdb_dataset_shared&gt; rdf:type tdb:DatasetTDB ;
         . . .
+</pre>
 
 All dataset storage types are supported. TDB1 and TBD2 have special implementations for handling graph access control.
 
@@ -285,5 +292,4 @@ the deployed server can be run using a Jetty configuration.
 
 Server command line: <tt>--jetty=<i>jetty.xml</i></tt>.
 
-[Documentation for
-`jetty.xml`](https://www.eclipse.org/jetty/documentation/current/jetty-xml-config.html).
+[Documentation for `jetty.xml`](https://www.eclipse.org/jetty/documentation/current/jetty-xml-config.html).
