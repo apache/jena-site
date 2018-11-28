@@ -24,9 +24,9 @@ to provide authentication of the user.  See "[Fuseki Security](fuseki-security)"
     - [Using wget](#using-wget)
 - [Access control lists](#acl)
     - [Format of ja:allowedUsers](#alloweduser)
-    - [Server Level ACLs]{#server-acl}
-    - [Dataset Level ACLs]{#dataset-acl}
-    - [Endpoint Level ACLs]{#endpoint-acl}
+    - [Server Level ACLs](#server-acl)
+    - [Dataset Level ACLs](#dataset-acl)
+    - [Endpoint Level ACLs](#endpoint-acl)
 - [Graph Access Control Lists](#graph-acl)
     - [Graph Security Registry](#graph-security-registry)
 - [Configuring Jetty directly](#jetty-configuration)
