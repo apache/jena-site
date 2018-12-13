@@ -1,5 +1,6 @@
 Title: Functions in ARQ
 
+The regular expressions for fan:localname and afn:namespace were incorrect.
 SPARQL allows custom functions in expressions so that
 queries can be used on domain-specific data. SPARQL defines a
 function by URI (or prefixed name) in FILTER expressions.  ARQ
@@ -67,8 +68,8 @@ for compatibility.
 Function name | Description | Alternative
 ------------- | ----------- | -----------
 `afn:bnode(?x)`  | Return the blank node label if ?x is a blank node. | `STR(?x)`
-`afn:localname(?x)` | The local name of ?x | `REPLACE(STR(?x), "^(.*)(/&#124;#)([^#/]*)$", "$3")`
-`afn:namespace(?x)` | The namespace of ?x  | `REPLACE(STR(?x), "^(.*)(/&#124;#)([^#/]*)$", "$1")`
+`afn:localname(?x)` | The local name of ?x | `REPLACE(STR(?x), "^(.*)(/|#)([^#/]*)$", "$3")`
+`afn:namespace(?x)` | The namespace of ?x  | `REPLACE(STR(?x), "^(.*)(/|#)([^#/]*)$", "$1")`
 
 The prefix and local name of a IRI is based on splitting the IRI, not on any prefixes in the query or dataset.
 
