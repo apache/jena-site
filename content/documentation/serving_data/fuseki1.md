@@ -1,14 +1,13 @@
 Title: Fuseki: serving RDF data over HTTP
 
+## See the [Fuseki2 documentation](/documentation/fuseki2/).
+
 ----
 > This page covers Fuseki v1.
 > Fuseki1 is deprecated and has been retired. 
 > The last release of Jena with this module is Jena 3.9.0.
 > See [jena-fuseki1/README.md](https://github.com/apache/jena/tree/master/fuseki1).
 > This is the original documentation.
-----
-
-> See the [Fuseki2 documentation](/documentation/fuseki2/).
 ----
 
 Fuseki is a SPARQL server. It provides REST-style SPARQL HTTP Update, SPARQL Query,
