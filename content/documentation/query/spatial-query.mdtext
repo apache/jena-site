@@ -2,6 +2,9 @@ Title: Spatial searches with SPARQL
 
 This module was first released with Jena 2.11.0.
 
+It is planned to retire this modukle in favour of a [GeoSPARQL
+implementation](https://github.com/galbiston/geosparql-jena).
+
 This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query.
 It gives applications the ability to perform simple spatial searches within SPARQL queries.
 Spatial indexes are additional information for accessing the RDF graph.
@@ -46,9 +49,10 @@ This query makes a spatial query for the places within 10 kilometres of Bristol 
 
     import org.apache.jena.query.spatial.EntityDefinition
     ...
-    // In lucene, "entityField" stores the uri of the subject (e.g. a place), 
+    // In Lucene, "entityField" stores the uri of the subject (e.g. a place), 
     // while "geoField" holds the indexed geo data (e.g. latitude/longitude).
-    EntityDefinition entDef = new EntityDefinition("entityField", "geoField"); 
+    // Using fields "uri" and "geo":
+    EntityDefinition entDef = new EntityDefinition("uri", "geo"); 
 
     // index in File system (or use an in-memory one)
     Directory dir = FSDirectory.open(indexDir); 
@@ -94,7 +98,7 @@ to `JtsSpatialContextFactory`, which is an optional choice. In this way, the JTS
 
     import org.apache.jena.query.spatial.EntityDefinition
     ...
-    EntityDefinition entDef = new EntityDefinition("entityField", "geoField");
+    EntityDefinition entDef = new EntityDefinition("uri", "geo");
     
     // use JtsSpatialContextFactory to support 2) WKT literals (optional)
     entDef.setSpatialContextFactory("com.spatial4j.core.context.jts.JtsSpatialContextFactory");
@@ -110,7 +114,7 @@ You can simply add predicates to let jena-spatial recognize them using
     import org.apache.jena.query.spatial.EntityDefinition
     ...
 
-    EntityDefinition entDef = new EntityDefinition("entityField", "geoField");
+    EntityDefinition entDef = new EntityDefinition("uri"", "geo");
 
     // custom geo predicates for 1) Latitude/Longitude Format
     Resource lat_1 = ResourceFactory.createResource("http://localhost/jena_example/#latitude_1") ;
