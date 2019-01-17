@@ -31,10 +31,18 @@ Basic usage: load files into a database at location "DB":
 
     tdb2.tdbloader --loc DB file1 file2 ....
 
+To load the data into a named graph, use the `--graph=IRI` argument:
+
+    tdb2.tdbloader --loc DB --graph=https://example.org/graph#name file1
+
+For the complete syntax and list of all arguments use `--help`:
+
+    tdb2.tdbloader --help
+
 All TDB2 loaders can update datasets and do not have to work on an empty
 dataset.  However, only the basic and sequential loader are fully
-transactional in the presense of crashes. The other loadrs, while
-faster, work by manipulting the low-level datastructures, and are tuned
+transactional in the presence of crashes. The other loaders, while
+faster, work by manipulating the low-level datastructures, and are tuned
 for large changes of data. They do not provide perfect transaction
 isolation in case a load goes wrong for some reason. The multiphase
 loading operations use partial transactions which can leave the database
@@ -43,7 +51,7 @@ in a strange state.
 When working with large data to load, it is advisable to check it
 completely first with `riot --validate`. Parse errors during loading can
 lead to inconsistent indexing. Fixing bad data, even if legal RDF, such
-as bad lexicial forms of literals or bad URIs, is much easier before the
+as bad lexical forms of literals or bad URIs, is much easier before the
 data is in the database.
 
 Because loading in hardware dependent, the right choice for any
@@ -61,13 +69,13 @@ The choice of loader is given by the optional `--loader` argument.
 The basic loader loads data as a single transaction into the dataset on
 a single thread. It is suitable for small data and also for
 incrementally adding to a dataset safely, A machine crash while running
-this loader will not invaldiate the database; the load simply will not happen.
+this loader will not invalidate the database; the load simply will not happen.
 
 `--loader=sequential`
 
 The sequential loader is a single threaded loader that loads the primary
 index then each of the other indexes. It is suitable only for low resource
-hardware, especiallyin a low I/O bandwidth siuation.
+hardware, especially in a low I/O bandwidth situation.
 
 `--loader=phased` (default)
 
