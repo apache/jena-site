@@ -235,10 +235,6 @@ and a database in the directory DB, an assembler description of:
     @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
 
-    [] ja:loadClass "org.apache.jena.tdb.TDB" .
-    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
-    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
-
     <#dataset> rdf:type      tdb:DatasetTDB ;
          tdb:location "DB" ;
          .
@@ -328,9 +324,6 @@ with its datasets.
        # See java doc for ARQ.queryTimeout
        # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
 
-       # Load custom code (rarely needed)
-       # ja:loadClass "your.code.Class" ;
-
        # Services available.  Only explicitly listed services are configured.
        #  If there is a service description not linked from this list, it is ignored.
        fuseki:services (
@@ -345,13 +338,6 @@ All datasets are described by
 Assemblers provide an extensible way of describing many kinds of
 objects. Set up any assembler extensions - here, the TDB assembler
 support.
-
-    # Declaration additional assembler items.
-    [] ja:loadClass "org.apache.jena.tdb.TDB" .
-
-    # TDB
-    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
-    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ### Service 1
 

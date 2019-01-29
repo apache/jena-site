@@ -69,7 +69,7 @@ There are mainly 2 types of RDF representation of geo data, which are both suppo
 
 **1) Latitude/Longitude Format (in gonames, DBPedia and Linked Geo Data)**
 
-    @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
     :EGBB rdf:type :LargeAirport ;
         geo:lat "52.4539"^^xsd:float ;
         geo:long "-1.74803"^^xsd:float .
@@ -79,7 +79,7 @@ There are mainly 2 types of RDF representation of geo data, which are both suppo
 
 **2) Well Known Text (WKT) Literal (in DBPedia and Linked Geo Data)**
 
-    @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+    PREFIX ogc: <http://www.opengis.net/ont/geosparql#>
     :node1000032677 a :Geometry ;
         ogc:asWKT "POINT(7.338818000000001 51.4433324)"^^ogc:wktLiteral .
     airports:EGBB_Fake_In_Box rdf:type airports_sc:LargeAirport ;
@@ -172,24 +172,13 @@ Once setup this way, any data added to the spatial dataset is automatically inde
 The following is an example of a TDB dataset with a spatial index.
 
     ## Example of a TDB dataset and spatial index
-    
-    @prefix :        <http://localhost/jena_example/#> .
-    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
-    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-    @prefix spatial: <http://jena.apache.org/spatial#> .
-    
-    # TDB
-    [] ja:loadClass "org.apache.jena.tdb.TDB" .
-    tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
-    tdb:GraphTDB    rdfs:subClassOf  ja:Model .
-    
-    # Spatial
-    [] ja:loadClass "org.apache.jena.query.spatial.SpatialQuery" .
-    spatial:SpatialDataset  rdfs:subClassOf  ja:RDFDataset .
-    #spatial:SpatialIndexSolr  rdfs:subClassOf  spatial:SpatialIndex .
-    spatial:SpatialIndexLucene  rdfs:subClassOf   spatial:SpatialIndex .
+
+    PREFIX :        <http://localhost/jena_example/#>
+    PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX tdb:     <http://jena.hpl.hp.com/2008/tdb#>
+    PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+    PREFIX spatial: <http://jena.apache.org/spatial#>
     
     ## ---------------------------------------------------------------
     ## This URI must be fixed - it's used to assemble the spatial dataset.
