@@ -616,54 +616,94 @@ For simple RDF use, there will be one field, mapping a property to a text
 index field. More complex setups, with multiple properties per entity
 (URI) are possible.
 
+The assembler file can be either default configuration file (.../run/config.ttl)
+or a custom file in ...run/configuration folder. Note that you can use several files
+simultaneously.
+
+You have to edit the file (see comments in the assembler code below):
+
+1. provide values for paths and a fixed URI for tdb:DatasetTDB
+2. modify the entity map : add the fields you want to index and desired options (filters, tokenizers...)
+
+If your assembler file is run/config.ttl, you can index the dataset with this command :
+
+    java -cp ./fuseki-server.jar jena.textindexer --desc=run/config.ttl
+
 Once configured, any data added to the text dataset is automatically
-indexed as well.
+indexed as well: [Building a Text Index](#building-a-text-index).
 
 ### Text Dataset Assembler
 
-The following is an example of a TDB dataset with a text index.
+The following is an example of an assembler file defining a TDB dataset with a Lucene text index.
 
-    PREFIX :        <http://localhost/jena_example/#>
-    PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX tdb:     <http://jena.hpl.hp.com/2008/tdb#>
-    PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
-    PREFIX text:    <http://jena.apache.org/text#>
+    ######## Example of a TDB dataset and text index#########################
+    # The main doc sources are:
+    #  - https://jena.apache.org/documentation/fuseki2/fuseki-configuration.html
+    #  - https://jena.apache.org/documentation/assembler/assembler-howto.html
+    #  - https://jena.apache.org/documentation/assembler/assembler.ttl
+    # See https://jena.apache.org/documentation/fuseki2/fuseki-layout.html for the destination of this file.
+    #########################################################################
+    
+    @prefix :        <http://localhost/jena_example/#> .
+    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+    @prefix text:    <http://jena.apache.org/text#> .
+    @prefix skos:    <http://www.w3.org/2004/02/skos/core#>
+    @prefix fuseki:  <http://jena.apache.org/fuseki#> .
 
-    ## Example of a TDB dataset and text index
+    [] rdf:type fuseki:Server ;
+       fuseki:services (
+         :myservice
+       ) .
 
-    # A TextDataset is a regular dataset with a text index.
-    text:TextDataset      rdfs:subClassOf   ja:RDFDataset .
-    # Lucene index
-    text:TextIndexLucene  rdfs:subClassOf   text:TextIndex .
-    # Elasticsearch index
-    text:TextIndexES    rdfs:subClassOf   text:TextIndex .
+    :myservice rdf:type fuseki:Service ;
+        fuseki:name                       "myds" ;     # e.g : `s-query --service=http://localhost:3030/myds "select * ..."`
+        fuseki:serviceQuery               "query" ;    # SPARQL query service
+        fuseki:serviceUpdate              "update" ;   # SPARQL update service
+        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
+        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
+        fuseki:dataset                    :text_dataset ;
+        .
 
     ## ---------------------------------------------------------------
-    ## This URI must be fixed - it's used to assemble the text dataset.
-
+    
+    # A TextDataset is a regular dataset with a text index.
     :text_dataset rdf:type     text:TextDataset ;
-        text:dataset   <#dataset> ;
+        text:dataset   :mydataset ; # <-- replace `:my_dataset` with the desired URI
         text:index     <#indexLucene> ;
-        .
+    .
 
     # A TDB dataset used for RDF storage
-    <#dataset> rdf:type      tdb:DatasetTDB ;
+    :mydataset rdf:type      tdb:DatasetTDB ; # <-- replace `:my_dataset` with the desired URI - as above
         tdb:location "DB" ;
         tdb:unionDefaultGraph true ; # Optional
-        .
+    .
     
     # Text index description
     <#indexLucene> a text:TextIndexLucene ;
-        text:directory <file:/some/path/lucene-index> ;
+        text:directory <file:path> ;  # <-- replace `<file:path>` with your path (e.g., `<file:/.../fuseki/run/databases/MY_INDEX>`)
         text:entityMap <#entMap> ;
         text:storeValues true ; 
         text:analyzer [ a text:StandardAnalyzer ] ;
         text:queryAnalyzer [ a text:KeywordAnalyzer ] ;
         text:queryParser text:AnalyzingQueryParser ;
         text:defineAnalyzers [ . . . ] ;
-        text:multilingualSupport true ;
-     .
+        text:multilingualSupport true ; # optional
+    .
+    # Entity map (see documentation for other options)
+    <#entMap> a text:EntityMap ;
+        text:defaultField     "label" ;
+        text:entityField      "uri" ;
+        text:uidField         "uid" ;
+        text:langField        "lang" ;
+        text:graphField       "graph" ;
+        text:map (
+            [ text:field "label" ; 
+              text:predicate skos:prefLabel ]
+        ) .
+
+See below for [more on defining an entity map](#entity-map-definition)
 
 The `text:TextDataset` has two properties:
 
