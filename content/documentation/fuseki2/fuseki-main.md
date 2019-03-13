@@ -1,6 +1,6 @@
 Title: Fuseki : Main Server
 
-Fuseki main is a packagign of Fuseki as trile store without a UI for administration.
+Fuseki main is a packaging of Fuseki as trile store without a UI for administration.
 
 
 Fuseki can be run in the background by an application as an embedded server.  The
