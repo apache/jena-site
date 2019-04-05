@@ -1,12 +1,12 @@
 Title: Fuseki : Main Server
 
-Fuseki main is a packaging of Fuseki as trile store without a UI for administration.
+Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.
 
 
 Fuseki can be run in the background by an application as an embedded server.  The
 application can safely work with the dataset directly from java while having Fuseki
 provide SPARQL access over HTTP.  An embedded server is useful for
-adding functonality around a triple store and also for development and testing.
+adding functionality around a triple store and also for development and testing.
 
 * [Running as a deployment or development server](#fuseki-server)
 * [Application Use](#usage)
@@ -31,7 +31,7 @@ persistent work area on-disk.
 The arguments are the same as the 
 [full UI server command line
 program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
-There are no special enviornment variables.
+There are no special environment variables.
 
 
 The entry point is `org.apache.jena.fuseki.main.cmds.FusekiMainCmd` so
@@ -95,7 +95,7 @@ This dependency does not include a logging setting. Fuseki uses [slf4j](http://s
 See section "[Logging](#logging)" for details.
 
 If the application wishes to use a dataset with a [text-index](http://jena.apache.org/documentation/query/text-query.html)
-then the application wil also need to include jena-text in its dependencies.
+then the application will also need to include jena-text in its dependencies.
 
 ## Logging {#logging}
 
