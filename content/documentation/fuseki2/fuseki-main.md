@@ -19,6 +19,8 @@ The main server does not depend on any files on disk (other than for
 databases provided by the application), and does not provide the Fuseki
 UI or admins functions to create dataset via HTTP.
 
+See also [Data Access Control for Fuseki](data-access-control).
+
 ## Running as a configured deployment or development server {#fuseki-server}
 
 The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
