@@ -2,6 +2,8 @@ Title: Apache Jena GeoSPARQL
 
 An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
 
+An [integration with Fuseki](geosparql-fuseki) is available.
+
 ## Features
 This implementation follows the 11-052r4 OGC GeoSPARQL standard (http://www.opengeospatial.org/standards/geosparql).
 The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.
