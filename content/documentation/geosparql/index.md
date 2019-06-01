@@ -18,7 +18,7 @@ It implements the six Conformance Classes described in the GeoSPARQL document:
 The WKT (as described in 11-052r4) and GML 2.0 Simple Features Profile (10-100r3) serialisations are supported.
 Additional serialisations can be implemented by extending the
 `org.apache.jena.geosparql.implementation.datatype.GeometryDatatype`
-and registering with Apache Jena's `org.apache.jena.datatypes.TypeMapper`.
+and registering with Jena's `org.apache.jena.datatypes.TypeMapper`.
 
 All three spatial relation families are supported: _Simple Feature_, _Egenhofer_ and _RCC8_.
 
@@ -42,13 +42,11 @@ The following additional features are also provided:
 ## Getting Started
 GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.
 
-```
-<dependency>
-    <groupId>org.apache.jena</groupId>
-    <artifactId>jena-geosparql</artifactId>
-    <version>...</version>
-</dependency>
-```
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-geosparql</artifactId>
+      <version>...</version>
+    </dependency>
 
 A HTTP server (SPARQL endpoint) using is available - for details, see the [Geosparql Fuseki documentation](geosparql-fuseki).
 
@@ -87,34 +85,30 @@ Caching of frequently used but small quantity data is also applied in several _r
 
 Example GeoSPARQL query:
 
-```
-PREFIX geo: <http://www.opengis.net/ont/geosparql#>
-
-SELECT ?obj
-WHERE{
-    ?subj geo:sfContains ?obj
-}ORDER by ?obj
-```
+    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    
+    SELECT ?obj
+    WHERE{
+        ?subj geo:sfContains ?obj
+    } ORDER by ?obj
 
 ### Querying Datasets & Models with SPARQL
 
 The setup of GeoSPARQL Jena only needs to be performed once in an application.
-After it is setup querying is performed using Apache Jena's standard query methods.
+After it is setup querying is performed using Jena's standard query methods.
 
 To query a Model with GeoSPARQL or standard SPARQL:
 
-```
-GeoSPARQLConfig.setupMemoryIndex();
-Model model = .....;
-String query = ....;
+    GeoSPARQLConfig.setupMemoryIndex();
+    Model model = .....;
+    String query = ....;
+    
+    try (QueryExecution qe = QueryExecutionFactory.create(query, model)) {
+        ResultSet rs = qe.execSelect();
+        ResultSetFormatter.outputAsTSV(rs);
+    }
 
-try (QueryExecution qe = QueryExecutionFactory.create(query, model)) {
-    ResultSet rs = qe.execSelect();
-    ResultSetFormatter.outputAsTSV(rs);
-}
-```
-
-More information on SPARQL querying using Apache Jena can be found on their website (https://jena.apache.org/tutorials/sparql.html).
+More information on SPARQL querying using Jena can be found on their website (https://jena.apache.org/tutorials/sparql.html).
 If your dataset needs to be separate from your application and accessed over HTTP then you probably need
 the [GeoSPARQL Fuseki project](geosparql-fuseki).
 The GeoSPARQL functionality needs to be setup in the application or Fuseki server where the dataset is located.
@@ -162,10 +156,6 @@ The Simple Features standard, and by extension GeoSPARQL, simplify calculations 
 Therefore, datasets using a geographic spatial/coordinate reference system, which are based on latitude and longitude on an ellipsoid, e.g. WGS84, will have minor error introduced.
 This error has been deemed acceptable due to the simplification in calculation it offers.
 
-### Apache Jena
-A Java framework for building Semantic Web and Linked Data applications.
-The framework provides standard compliance for RDF and SPARQL and include extensions for persistent storage (TDB) and HTTP server (Fuseki).
-
 ### Apache SIS/SIS_DATA Environment Variable
 Apache Spatial Information System (SIS) is a free software, Java language library for developing geospatial applications.
 SIS provides data structures for geographic features and associated meta-data along with methods to manipulate those data structures.
@@ -176,10 +166,9 @@ The full EPSG dataset is not distributed due to the EPSG terms of use being inco
 Several options are available to include the EPSG dataset by setting the `SIS_DATA` environment variable (http://sis.apache.org/epsg.html).
 
 An embedded EPSG dataset can be included in a Gradle application by adding the following dependency to `build.gradle`:
-```
-ext.sisVersion = "0.8"
-implementation "org.apache.sis.non-free:sis-embedded-data:$sisVersion"
-```
+
+    ext.sisVersion = "0.8"
+    implementation "org.apache.sis.non-free:sis-embedded-data:$sisVersion"
 
 ### Java Topology Suite
 The JTS Topology Suite is a Java library for creating and manipulating vector geometry.
@@ -243,21 +232,18 @@ In the case of `Features` this requires the `hasDefaultGeometry` property to be 
 
 This means the query:
 
-```
-    ?subj geo:hasDefaultGeometry ?subjGeom .
-    ?subjGeom geo:hasSerialization ?subjLit .
 
-    ?obj geo:hasDefaultGeometry ?objGeom .
-    ?objGeom geo:hasSerialization ?objLit .
-
-    FILTER(geof:sfContains(?subjLit, ?objLit))
-```
+        ?subj geo:hasDefaultGeometry ?subjGeom .
+        ?subjGeom geo:hasSerialization ?subjLit .
+        
+        ?obj geo:hasDefaultGeometry ?objGeom .
+        ?objGeom geo:hasSerialization ?objLit .
+        
+        FILTER(geof:sfContains(?subjLit, ?objLit))
 
 becomes:
 
-```
-    ?subj geo:sfContains ?obj .
-```
+        ?subj geo:sfContains ?obj .
 
 Methods are available to apply the `hasDefaultGeometry` property to every `Geometry` with a single `hasGeometry`
 property, see `org.apache.jena.geosparql.configuration.GeoSPARQLOperations`.
@@ -366,22 +352,20 @@ Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.
 
 Geo predicates can be converted to Geometry Literals in query and then used with the GeoSPARQL filter functions.
 
-```
-    ?subj wgs:lat ?lat .
-    ?subj wgs:long ?lon .
-    BIND(spatialF:convertLatLon(?lat, ?lon) as ?point) .
-    BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) . #Coordinate order is Lon/Lat without stated SRS URI.
-    FILTER(geof:sfContains(?box, ?point))
-```
+      ?subj wgs:lat ?lat .
+      ?subj wgs:long ?lon .
+      BIND(spatialF:convertLatLon(?lat, ?lon) as ?point) .
+      #Coordinate order is Lon/Lat without stated SRS URI.
+      BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
+      FILTER(geof:sfContains(?box, ?point))
 
 Alternatively, utilising more shapes, relations and spatial reference systems can be achieved by converting the dataset to the GeoSPARQL structure.
 
-```
-    ?subj geo:hasGeometry ?geom .
-    ?geom geo:hasSerialization ?geomLit .
-    BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) . #Coordinate order is Lon/Lat without stated SRS URI.
-    FILTER(geof:sfContains(?box, ?geomLit))
-```
+      ?subj geo:hasGeometry ?geom .
+      ?geom geo:hasSerialization ?geomLit .
+      #Coordinate order is Lon/Lat without stated SRS URI.
+      BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
+      FILTER(geof:sfContains(?box, ?geomLit))
 
 Datasets can contain both Geo predicates and Geometry Literals without interference.
 However, a dataset containing both types will only examine those `Features` which have Geometry Literals for spatial relations, i.e. the check for Geo predicates is a fallback when Geometry Literals aren't found.
@@ -487,7 +471,7 @@ This Implementation|Other Implementations
 ---------- | ----------
 Implements all six components of the GeoSPARQL standard.|Generally partially implement the Geometry Topology and Geometry Extensions. Do not implement the Query Rewrite Extension.
 Pure Java and does not require a supporting relational database. Configuration requires a single line of code (although Apache SIS may need some setting up, see above).|Require setting up a database, configuring a geospatial extension and setting environment variables.
-Uses Apache Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.|Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.
+Uses Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.|Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.
 Automatically determines geometry properties and handles mixed cases of units or coordinate reference systems. The GeoSPARQL standard suggests this approach but does not require it.|Tend to produce errors or no results in these situations.
 Performs indexing and caching on-demand which reduces set-up time and only performs calculations that are required.|Perform indexing in the data loading phase and initialisation phase, which can lead to lengthy delays (even on relatively small datasets).
 Uses JTS which does not truncate coordinate precision and applies spatial equality.|May truncate coordinate precision and apply lexical equality, which is quicker but does not comply with the GeoSPARQL standard.
