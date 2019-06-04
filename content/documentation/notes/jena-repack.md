@@ -43,3 +43,14 @@ for the complete shade plugin setup used by Fuseki.
 If doing manually, create a single file in your application jar the
 all lines of all the services resource files. The order does not matter
 - Jena calls modules in the right order.
+
+For Gradle, the [shadowJar plugin](https://imperceptiblethoughts.com/shadow/)
+has the
+[mergeServiceFiles](https://imperceptiblethoughts.com/shadow/configuration/merging/#merging-service-descriptor-files)
+operation.
+
+    // Merging Service Files
+    shadowJar {
+      mergeServiceFiles()
+      . . .
+    }
