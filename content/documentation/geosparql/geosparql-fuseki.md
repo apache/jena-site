@@ -25,11 +25,19 @@ the [GeoSPARQL Jena project](index).
       <version>...</version>
     </dependency>
 
-### Command Line
-Run from the command line (see `releases` tab) and send queries over HTTP.
+or download the binary from the 
+[Maven central repository org/apache/jena/jena-fuseki-geosparql](http://central.maven.org/maven2/org/apache/jena/jena-fuseki-geosparql/)
 
-Get Started Example:
-`.\geosparql-fuseki.bat -rf "geosparql_test.rdf>xml" -i`
+### Command Line
+Run from the command line and send queries over HTTP.
+
+`java -jar jena-fuseki-geosparql-VER.jar ARGS`
+
+written `geosparql-fuseki` below.
+
+#### Examples
+
+`java -jar jena-fuseki-geosparql-VER.jar -rf "geosparql_test.rdf" -i`
 
 The example file `geosparql_test.rdf` in the GitHub repository contains several geometries in geodectic WGS84 (EPSG:4326).
 The example file `geosparql_test_27700.rdf` is identical but in the projected OSGB36 (EPSG:27770) used in the United Kingdom.
@@ -38,26 +46,28 @@ RDFS inferencing is applied using the GeoSPARQL schema to infer additional relat
 
 Examples:
 
-* Load RDF file (XML format) into memory and run server: `.\geosparql-fuseki.bat -rf "test.rdf>xml"`
+* Load RDF file (XML format) into memory and run server: `geosparql-fuseki -rf "test.rdf"`
 
-* Load RDF file (TTL format: default) into memory, apply GeoSPARQL schema with RDFS inferencing and run server: `.\geosparql-fuseki.bat -rf "test.rdf" -i`
+* Load RDF file (TTL format: default) into memory, apply GeoSPARQL schema with RDFS inferencing and run server: `geosparql-fuseki -rf "test.rdf" -i`
 
-* Load RDF file into memory, write spatial index to file and run server: `.\geosparql-fuseki.bat -rf "test.rdf" -si "spatial.index"`
+* Load RDF file into memory, write spatial index to file and run server: `geosparql-fuseki -rf "test.rdf" -si "spatial.index"`
 
-* Load RDF file into persistent TDB and run server: `.\geosparql-fuseki.bat -rf "test.rdf>xml" -t ".\TestTDB"`
+* Load RDF file into persistent TDB and run server: `geosparql-fuseki -rf "test.rdf" -t "TestTDB"`
 
-* Load from persistent TDB and run server: `.\geosparql-fuseki.bat -t ".\TestTDB"`
+* Load from persistent TDB and run server: `geosparql-fuseki -t "TestTDB"`
 
-* Load from persistent TDB, change port and run server: `.\geosparql-fuseki.bat -t ".\TestTDB" -p 3030`
+* Load from persistent TDB, change port and run server: `geosparql-fuseki -t "TestTDB" -p 3030`
 
  See [rdf-tables](https://github.com/galbiston/rdf-tables) in _Output Formats/Serialisations_ for supported RDF format keywords.
 
-__N.B.__ Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. """test.rdf>xml""". Otherwise, logging output will be sent to a file called "xml". Also, "The input line is too long" error can mean the path to the .bat exceeds the character limit and needs shortening.
+__N.B.__ Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. """test.rdf""". Otherwise, logging output will be sent to a file called "xml". Also, "The input line is too long" error can mean the path to the  exceeds the character limit and needs shortening.
 
 ### Embedded Server
 Run within a Java application to provide GeoSPARQL support over HTTP to other applications:
 
-`GeosparqlServer server = new GeosparqlServer(portNumber, datasetName, isLoopbackOnly, dataset, isUpdate);`
+    FusekiLogging.setLogging();
+    GeosparqlServer server =
+        new GeosparqlServer(portNumber, datasetName, isLoopbackOnly, dataset, isUpdate);
 
 ## SPARQL Query Example
 Once the default server is running it can be queried using Jena as follows:
