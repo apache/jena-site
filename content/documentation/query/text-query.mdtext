@@ -89,6 +89,7 @@ illustrates creating an in-memory dataset with a Lucene index.
     -   [Good practice](#good-practice)
 -   [Configuration](#configuration)
     -   [Text Dataset Assembler](#text-dataset-assembler)
+        -   [Lists of Indexed Properties](#lists-of-indexed-properties)
     -   [Configuring an analyzer](#configuring-an-analyzer)
     -   [Configuration by Code](#configuration-by-code)
     -   [Graph-specific Indexing](#graph-specific-indexing)
@@ -247,13 +248,13 @@ The following forms are all legal:
     
 The most general form is:
    
-     ( ?s ?score ?literal ?g ) text:query ( property 'query string' limit 'lang:xx' 'highlight:yy' )
+     ( ?s ?score ?literal ?g ) text:query ( property* 'query string' limit 'lang:xx' 'highlight:yy' )
 
 #### Input arguments:
 
 | &nbsp;Argument&nbsp;  | &nbsp; Definition&nbsp;    |
 |-------------------|--------------------------------|
-| property          | (optional) URI (including prefix name form) |
+| property          | (zero or more) property URIs (including prefix name form) |
 | query string      | Lucene query string fragment       |
 | limit             | (optional) `int` limit on the number of results       |
 | lang:xx           | (optional) language tag spec       |
@@ -263,9 +264,38 @@ The `property` URI is only necessary if multiple properties have been
 indexed and the property being searched over is not the [default field
 of the index](#entity-map-definition).
 
+Since 3.13.0, `property` may be a list of zero or more (prior to 3.13.0 zero or one) Lucene indexed properties, or a defined 
+[`text:propList` of indexed properties](#lists-of-indexed-properties). 
+The meaning is an `OR` of searches on a variety of properties. This can be used in place of SPARQL level `UNION`s of 
+individual `text:query`s. For example, instead of:
+
+    select ?foo where {
+      {
+        (?s ?sc ?lit) text:query ( rdfs:label "some query" ).
+      }
+      union
+      {
+        (?s ?sc ?lit) text:query ( skos:altLabel "some query" ).
+      }
+      union
+      { 
+        (?s ?sc ?lit) text:query ( skos:prefLabel "some query" ).
+      }
+    }
+
+it can be more performant to push the unions into the Lucene query by rewriting as:
+
+    (?s ?sc ?lit) text:query ( rdfs:label skos:prefLabel skos:altLabel "some query" )
+
+which creates a Lucene query:
+
+    (altLabel:"some query" OR prefLabel:"some query" OR label:"some query")
+
 The `query string` syntax conforms to the underlying index [Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
 or
-[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html). In the case of Lucene the syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. _No use of `Fields` within the `query string` is supported._
+[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html). In the case of Lucene the 
+syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. _No 
+use of `Fields` within the `query string` is supported._
 
 The optional `limit` indicates the maximum hits to be returned by Lucene.
 
@@ -274,7 +304,8 @@ a BCP-47 language tag. This restricts searches to field values that were origina
 indexed with the tag _xx_. Searches may be restricted to field values with no 
 language tag via `"lang:none"`. 
 
-The `highlight:yy` specification is an optional string where _yy_ are options that control the highlighting of search result literals. See [below](#highlighting) for details.
+The `highlight:yy` specification is an optional string where _yy_ are options that control the highlighting of search 
+result literals. See [below](#highlighting) for details.
 
 If both `limit` and one or more of `lang:xx` or `highlight:yy` are present, then `limit` must precede these arguments.
 
@@ -299,7 +330,8 @@ subject. The _score_, _literal_ and _graph URI_ **must** be variables.
 ### Query strings
 
 There are several points that need to be considered when formulating
-SPARQL queries using the Lucene interface. As mentioned above, in the case of Lucene the `query string` syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. 
+SPARQL queries using the Lucene interface. As mentioned above, in the case of Lucene the `query string` syntax is 
+restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. 
 
 **No _explicit_ use of `Fields` within the `query string` is supported.**
 
@@ -688,7 +720,8 @@ The following is an example of an assembler file defining a TDB dataset with a L
         text:analyzer [ a text:StandardAnalyzer ] ;
         text:queryAnalyzer [ a text:KeywordAnalyzer ] ;
         text:queryParser text:AnalyzingQueryParser ;
-        text:defineAnalyzers [ . . . ] ;
+        text:propLists ( [ . . . ] . . . ) ;
+        text:defineAnalyzers ( [ . . . ] . . . ) ;
         text:multilingualSupport true ; # optional
     .
     # Entity map (see documentation for other options)
@@ -735,6 +768,8 @@ used to analyze the query string. If not set the analyzer used to index a given 
 
 - `text:queryParser` is optional and specifies an [alternative query parser](#alternative-query-parsers)
 
+- `text:propLists` is optional and allows to specify [lists of indexed properties](#lists-of-indexed-properties) for use in `text:query`
+
 - `text:defineAnalyzers` is optional and allows specification of [additional analyzers, tokenizers and filters](#defined-analyzers)
 
 - `text:multilingualSupport` enables [Multilingual Support](#multilingual-support)
@@ -768,6 +803,34 @@ since the assembler contains two dataset definitions, one for the text
 dataset, one for the base data.  Therefore, the application needs to
 identify the text dataset by it's URI
 `http://localhost/jena_example/#text_dataset`.
+
+#### Lists of Indexed Properties
+
+Since 3.13.0, an optional `text:TextIndexLucene` feature, `text:propLists` allows to define lists of Lucene indexed 
+properties that may be used in `text:query`s. For example:
+
+    text:propLists (
+        [ text:propListProp ex:labels ;
+          text:props ( skos:prefLabel 
+                       skos:altLabel 
+                       rdfs:label ) ;
+        ]
+        [ text:propListProp ex:workStmts ;
+          text:props ( ex:workColophon 
+                       ex:workAuthorshipStatement 
+                       ex:workEditionStatement ) ;
+        ]
+    ) ;
+
+The `text:propLists` is a list of _property list_ definitions. Each _property list_ defines a new property, 
+`text:propListProp` that will be used to refer to the list in a `text:query`, for example, `ex:labels` and 
+`ex:workStmts`, above. The `text:props` is a list of Lucene indexed properties that will be searched over when the 
+_property list_ property is referred to in a `text:query`. For example:
+
+    ?s text:query ( ex:labels "some text" ) .
+
+will request Lucene to search for documents representing triples, ?s ?p ?o, where ?p is one of: `rdfs:label` OR 
+`skos:prefLbael` OR `skos:altLabel`, matching the query string.
 
 ### Entity Map definition
 
