@@ -40,7 +40,7 @@ Some useful prefix declarations:
     @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
     @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-    @prefix :        <#> .
+    @prefix :        <#> .
 
 ### Assembler Initialization
 
@@ -64,16 +64,16 @@ The base name is `/ds`.
 
     ## Updateable in-memory dataset.
 
-    <#service1> rdf:type fuseki:Service ;
-        fuseki:name                       "ds" ;       # http://host:port/ds
-        fuseki:serviceQuery               "sparql" ;   # SPARQL query service
-        fuseki:serviceQuery               "query" ;    # SPARQL query service (alt name)
-        fuseki:serviceUpdate              "update" ;   # SPARQL update service
-        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
-        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
+    <#service1> rdf:type fuseki:Service ;
+        fuseki:name                       "ds" ;       # http://host:port/ds
+        fuseki:serviceQuery               "sparql" ;   # SPARQL query service
+        fuseki:serviceQuery               "query" ;    # SPARQL query service (alt name)
+        fuseki:serviceUpdate              "update" ;   # SPARQL update service
+        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
+        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
         # A separate read-only graph store endpoint:
-        fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
-        fuseki:dataset                   <#dataset> ;
+        fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
+        fuseki:dataset                   <#dataset> ;
         .
 
 `<#dataset>` refers to a dataset description in the same file.
@@ -86,11 +86,11 @@ SPARQl Graph Store protocol).
 This service offers read-only access to a dataset with a single
 graph of data.
 
-    <#service2> rdf:type fuseki:Service ;
-        fuseki:name                     "/ds-ro" ;   # http://host:port/ds-ro
-        fuseki:serviceQuery             "query" ;    # SPARQL query service
-        fuseki:serviceReadGraphStore    "data" ;     # SPARQL Graph store protocol (read only)
-        fuseki:dataset           <#dataset> ;
+    <#service2> rdf:type fuseki:Service ;
+        fuseki:name                     "/ds-ro" ;   # http://host:port/ds-ro
+        fuseki:serviceQuery             "query" ;    # SPARQL query service
+        fuseki:serviceReadGraphStore    "data" ;     # SPARQL Graph store protocol (read only)
+        fuseki:dataset           <#dataset> ;
         .
 
 ### Dataset
@@ -99,23 +99,23 @@ graph of data.
 
 An in-memory dataset, with data in the default graph taken from a local file.
 
-    <#books>    rdf:type ja:RDFDataset ;
-        rdfs:label "Books" ;
+    <#books>    rdf:type ja:RDFDataset ;
+        rdfs:label "Books" ;
         ja:defaultGraph
-          [ rdfs:label "books.ttl" ;
-            a ja:MemoryModel ;
-            ja:content [ja:externalContent <file:Data/books.ttl> ] ;
-          ] ;
+          [ rdfs:label "books.ttl" ;
+            a ja:MemoryModel ;
+            ja:content [ja:externalContent <file:Data/books.ttl> ] ;
+          ] ;
         .
 
 #### TDB
 
-    <#dataset> rdf:type      tdb:DatasetTDB ;
-        tdb:location "DB" ;
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+        tdb:location "DB" ;
         # Query timeout on this dataset (1s, 1000 milliseconds)
-        ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
+        ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
         # Make the default graph be the union of all named graphs.
-        ## tdb:unionDefaultGraph true ;
+        ## tdb:unionDefaultGraph true ;
          .
 
 #### Inference
@@ -133,16 +133,16 @@ web application and the additional classes
 
 ### Server Section
 
-    [] rdf:type fuseki:Server ;
+    [] rdf:type fuseki:Server ;
        # Server-wide context parameters can be given here.
        # For example, to set query timeouts: on a server-wide basis:
        # Format 1: "1000" -- 1 second timeout
        # Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
        # See java doc for ARQ.queryTimeout
-       # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
+       # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
 
        # Load custom code (rarely needed)
-       # ja:loadClass "your.code.Class" ;
+       # ja:loadClass "your.code.Class" ;
        .
 
 ## Compatibility with Fuseki 1 configuration

@@ -221,9 +221,9 @@ An access control list can be applied to an individual endpoint.
 Again, any  other "allowedUsers" configuration, service-wide, or
 server-wide) also applies.
 
-        fuseki:serviceQuery  [ fuseki:name "query ;
+        fuseki:serviceQuery  [ fuseki:name "query" ;
                                fuseki:allowedUsers "user1", "user2"] ;
-        fuseki:serviceUpdate [ fuseki:name "update ;
+        fuseki:serviceUpdate [ fuseki:name "update" ;
                                fuseki:allowedUsers "user1"] ;
 
 Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
