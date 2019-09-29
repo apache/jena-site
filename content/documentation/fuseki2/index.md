@@ -12,8 +12,7 @@ as well as the
 
 Fuseki is tightly integrated with [TDB](../tdb/index.html) to provide a robust,
 transactional persistent storage layer, and incorporates
-[Jena text query](../query/text-query.html)
-and [Jena spatial query](../query/spatial-query.html).
+[Jena text query](../query/text-query.html).
 It can be used to provide the protocol engine for other RDF query and
 storage systems.
 
