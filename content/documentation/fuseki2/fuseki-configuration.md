@@ -61,7 +61,7 @@ This example offers SPARQL Query, SPARQL Update and SPARQL Graph
 Store protocol, as well as file upload.
 
 Note: As of Jena 3.13.0, 
-[an additional, more expressive configuration for endpoints](fuseki-config-doc.html)
+[an additional, more expressive configuration for endpoints](fuseki-config-endpoint.html)
 is available.
 
 The base name is `/ds`.
