@@ -71,7 +71,9 @@ illustrates creating an in-memory dataset with a Lucene index.
 ## Table of Contents
 
 -   [Architecture](#architecture)
-    -   [External content](#external-content)
+    -   [One triple equals one document](#one-triple-equals-one-document)
+    -   [One document equals one entity](#one-document-equals-one-entity)
+        -   [External Content](#external-content)
     -   [External applications](#external-applications)
     -   [Document structure](#document-structure)
 -   [Query with SPARQL](#query-with-sparql)
@@ -84,6 +86,8 @@ illustrates creating an in-memory dataset with a Lucene index.
         -   [Queries that retrieve literals](#queries-that-retrieve-literals)
         -   [Queries with graphs](#queries-with-graphs)
         -   [Queries across multiple `Fields`](#queries-across-multiple-fields)
+            -   [Multiple fields in the default integration model](#multiple-fields-in-the-default-integration-model)
+            -   [Multiple fields in the one document equals one entity model](#multiple-fields-in-the-one-document-equals-one-entity-model)
         -   [Queries with _Boolean Operators_ and _Term Modifiers_](#queries-with-boolean-operators-and-term-modifiers)
         -   [Highlighting](#highlighting)
     -   [Good practice](#good-practice)
@@ -108,6 +112,9 @@ illustrates creating an in-memory dataset with a Lucene index.
 - [Working with Fuseki](#working-with-fuseki)
 - [Building a Text Index](#building-a-text-index)
 - [Configuring Alternative TextDocProducers](#configuring-alternative-textdocproducers)
+  - [Default behavior](#default-behavior)
+    - [Example](#example)
+  - [Multiple fields per document](#multiple-fields-per-document)
 - [Maven Dependency](#maven-dependency)
 
 ## Architecture
@@ -118,13 +125,21 @@ of which are indexed so that searches matching contents of specified
 fields can return a reference to the document containing the fields with
 matching values.
 
-The basic idea of the Jena text extension is to associate a triple with
+There are two models for extending Jena with text indexing and search:
+
+- One Jena _triple_ equals one Lucene _document_
+- One Lucene _document_ equals one Jena _entity_
+
+### One triple equals one document
+
+The basic Jena text extension associates a triple with
 a document and the _property_ of the triple with a _field_ of a document
 and the _object_ of the triple (which must be a literal) with the value
 of the field in the document. The _subject_ of the triple then becomes
 another field of the document that is returned as the result of a search
 match to identify what was matched. (NB, the particular triple that
-matched is not identified. Only, its subject.)
+matched is not identified. Only, its subject and _optionally_ the matching 
+literal and match score.)
 
 In this manner, the text index provides an inverted index that maps
 query string matches to subject URIs.
@@ -144,19 +159,30 @@ The text index uses the native query language of the index:
 or
 [Elasticsearch query language](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html).
 
-### External content
+### One document equals one entity
 
-It is also possible that the indexed text is content external to the RDF
-store with only additional triples (about the indexed text) in the RDF
-store. The subject URI returned as a search result may then be
-considered to refer via the indexed property to the external content.
+There are two approaches to creating indexed documents that contain more
+than one indexed field:
+- Using an externally maintained Lucene index
+- [Multiple fields per document](#multiple-fields-per-document)
 
-There is no requirement that the text data indexed is present in the RDF
-data.  As long as the index contains the index text documents to match the
-index description, then text search can be performed.
+When using this integration model, `text:query` returns the _subject_ URI
+for the document on which additional triples of metadata may be associated, 
+and optionally the Lucene score for the match.
 
-For example, if the content of a collection of documents is indexed and the
-URI naming the document is the result of the text search, then an RDF
+#### External content
+
+When document content is externally indexed via Lucene and accessed in Jena 
+via a `text:TextDataset` then the subject URI returned for a search result 
+is considered to refer to the external content, and metadata about the 
+document is represented as triples in Jena with the subject URI.
+
+There is no requirement that the indexed document content be present 
+in the RDF data.  As long as the index contains the index text documents to 
+match the index description, then text search can be performed with queries that explicitly mention indexed fields in the document.
+
+That is, if the content of a collection of documents is externally indexed 
+and the URI naming the document is the result of the text search, then an RDF
 dataset with the document metadata can be combined with accessing the
 content by URI.
 
@@ -169,8 +195,9 @@ SPARQL search.
 
 ### Document structure
 
-As mentioned above, text indexing of a triple involves associating a Lucene
-document with the triple. How is this done?
+As mentioned above, when using the (_default_) one-triple equals one-document model,
+text indexing of a triple involves associating a Lucene document with the triple. 
+How is this done?
 
 Lucene documents are composed of `Field`s. Indexing and searching are performed 
 over the contents of these `Field`s. For an RDF triple to be indexed in Lucene the 
@@ -246,9 +273,18 @@ The following forms are all legal:
     (?s ?score ?literal) text:query 'word'            # ... and original literal value
     (?s ?score ?literal ?g) text:query 'word'         # ... and the graph
     
-The most general form is:
+The most general form when using the _default_ [one-triple equals one-document](#one-triple-equals-one-document)
+integration model is:
    
      ( ?s ?score ?literal ?g ) text:query ( property* 'query string' limit 'lang:xx' 'highlight:yy' )
+
+while for the [one-document equals one-entity model](#one-document-equals-one-entity), the general form is:
+
+     ( ?s ?score ) text:query ( 'query string' limit )
+
+and if only the _subject_ URI is needed:
+
+     ?s text:query ( 'query string' limit )
 
 #### Input arguments:
 
@@ -291,11 +327,18 @@ which creates a Lucene query:
 
     (altLabel:"some query" OR prefLabel:"some query" OR label:"some query")
 
-The `query string` syntax conforms to the underlying index [Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
-or
-[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html). In the case of Lucene the 
-syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. _No 
-use of `Fields` within the `query string` is supported._
+The `query string` syntax conforms to the underlying 
+[Lucene](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description),
+or when appropriate, 
+[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.2/query-dsl.html).
+
+In the case of the _default_ [one-triple equals one-document](#one-triple-equals-one-document) model, the Lucene query syntax is restricted to `Terms`, `Term modifiers`,
+`Boolean Operators` applied to `Terms`, and `Grouping` of terms. 
+
+Additionally, the use of `Fields` within the `query string` is supported when using the [one-document equals one-entity](#one-document-equals-one-entity) text integration model.
+
+When using the [default model](#one-triple-equals-one-document), 
+use of `Fields` in the query string **will generally lead to unpredictable results.**
 
 The optional `limit` indicates the maximum hits to be returned by Lucene.
 
@@ -330,14 +373,20 @@ subject. The _score_, _literal_ and _graph URI_ **must** be variables.
 ### Query strings
 
 There are several points that need to be considered when formulating
-SPARQL queries using the Lucene interface. As mentioned above, in the case of Lucene the `query string` syntax is 
-restricted to `Terms`, `Term modifiers`, `Boolean Operators` applied to `Terms`, and `Grouping` of terms. 
+SPARQL queries using either of the Lucene integration models. 
 
-**No _explicit_ use of `Fields` within the `query string` is supported.**
+As mentioned above, in the case of the [default model](#one-triple-equals-one-document) 
+the `query string` syntax is restricted to `Terms`, `Term modifiers`, `Boolean Operators` 
+applied to `Terms`, and `Grouping` of terms. 
+
+Explicit use of `Fields` in the _query string_ is only useful with the
+[one-document equals one-entity model](#one-document-equals-one-entity); 
+and otherwise will generally produce unexpected results.
+See [Queries across multiple `Fields`](#queries-across-multiple-fields).
 
 #### Simple queries
 
-The simplest use of the jena-text Lucene integration is:
+The simplest use of the jena-text Lucene integration is like:
 
     ?s text:query "some phrase"
 
@@ -362,6 +411,20 @@ are mapped to Lucene `Field` names).
 
 If this use case is sufficient for your needs you can skip on to the 
 [sections on configuration](#configuration).
+
+**Please note** that the query:
+
+    ?s text:query "some phrase"
+
+when using the Lucene `StandardAnalyzer` or similar will treat the query string
+as an `OR` of terms: `some` and `phrase`. If a phrase search is required then
+it is necessary to surround the phrase by double quotes, `"`:
+
+    ?s text:query "\"some phrase\""
+
+This will only match strings that contain `"some phrase"`, while the former
+query will match strings like: `"there is a phrase for some"` or
+`"this is some of the various sorts of phrase that might be matched"`.
 
 #### Queries with language tags
 
@@ -463,19 +526,26 @@ the containing graph URI for free as it were.
 
 #### Queries across multiple `Field`s
 
-As mentioned earlier, the text index uses the
-[native Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description);
-however, there are important constraints on how the Lucene query language is used within jena-text. In particular, _explicit_ references to Lucene `Fields` with the `query string` **are not** supported. So how are Lucene queries that would otherwise refer to multiple `Fields` expressed?
+As mentioned earlier, the Lucene text index uses the
+[native Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description).
 
-The key is understanding that each triple is a separate document and so queries across Lucene `Fields` need to be expressed as SPARQL queries referring to the corresponding RDF _properties_. Note that there are typically three `Fields` in a document that are used
-during searching:
+##### Multiple fields in the default integration model
+
+For the [default integration model](#one-triple-equals-one-document), since each document 
+has only one field containing searchable text, searching for documents containing
+multiple fields will generally not find any results.  
+
+Note that the [default model](#one-triple-equals-one-document) provides three Lucene `Fields` 
+in a document that are used during searching:
 
 1. the field corresponding to the property of the indexed triple,
 2. the field for the language of the literal (if configured), and 
-3. the graph that the triple is in (if configured). 
+3. the graph that the triple is in (if configured).
 
-Given these it should be clear from the above that the
-Jena Text integration constructs a Lucene query from the _property_, _query string_, `lang:xx`, and SPARQL graph arguments.
+Given these, it should be clear from the above that the 
+[default model](#one-triple-equals-one-document)
+constructs a Lucene query from the _property_, _query string_, `lang:xx`, and 
+SPARQL graph arguments.
 
 For example, consider the following triples:
 
@@ -500,11 +570,12 @@ is evident that there is not one but rather in fact two separate documents one w
 
 which leads to `?s` being bound to `ex:SomePrinter`.
 
-In other words when a query is to involve two or more _properties_ then it
-expressed at the SPARQL level, as it were, versus in Lucene's query language.
+In other words when a query is to involve two or more _properties_ of a given _entity_
+then it is expressed at the SPARQL level, as it were, versus in Lucene's query language.
 
-It is worth noting that the equivalent of a Lucene `OR` of `Fields` is expressed
-simply via SPARQL `union`:
+It is worth noting that the equivalent of a Lucene `OR` of `Fields` can be expressed
+using SPARQL `union`, though since 3.13.0 this can be expressed in Jena text
+using a property list - see [Input arguments](#input-arguments):
 
     { ?s text:query (rdfs:label "printer") . }
     union
@@ -525,10 +596,23 @@ integration of Lucene. Any cross-field `AND`s are replaced by concurrent SPARQL 
 text:query as illustrated above and uses of Lucene `OR` can be converted to SPARQL 
 `union`s. Uses of Lucene `NOT` are converted to appropriate SPARQL `filter`s.
 
+##### Multiple fields in the one-document equals one-entity model
+
+If Lucene documents have been indexed with [multiple searchable fields](#one-document-equals-one-entity) 
+then compound queries expressed directly in the Lucene query language can significantly improve search
+performance, in particular, where the individual components of the Lucene query generate
+a lot of results which must be combined in SPARQL.
+
+It is possible to have text queries that search multiple fields within a text query.
+Doing this is more complex as it requires the use of either an externally managed 
+text index or code must be provided to build the multi-field text documents to be indexed.
+See [Multiple fields per document](#multiple-fields-per-document).
+
 #### Queries with _Boolean Operators_ and _Term Modifiers_
 
 On the other hand the various features of the [Lucene query language](http://lucene.apache.org/core/6_4_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description)
-are all available to be used for searches within a `Field`. For example, _Boolean Operators_ on _Terms_:
+are all available to be used for searches within a `Field`. 
+For example, _Boolean Operators_ on _Terms_:
 
     ?s text:query (ex:description "(large AND cartridge)")
 
@@ -1670,10 +1754,16 @@ only when you want to rebuild the index from scratch.
 
 # Configuring Alternative TextDocProducers
 
-The default behaviour when text indexing is to index a single
-property as a single field, generating a different `Document` 
-for each indexed triple. To change this behaviour requires 
+## Default Behavior
+
+The [default behavior](#one-triple-equals-one-document) when performing text indexing 
+is to index a single property as a single field, generating a different `Document` 
+for each indexed triple. This behavior may be augmented by 
 writing and configuring an alternative `TextDocProducer`.
+
+**Please note** that `TextDocProducer.change(...)` is called once for each triple that is
+`ADD`ed or `DELETE`d, and thus can not be directly used to accumulate multiple properties
+for use in composing a single multi-fielded Lucene document. [See below](#multiple-fields-per-document).
 
 To configure a `TextDocProducer`, say `net.code.MyProducer` in a dataset assembly,
 use the property `textDocProducer`, eg:
@@ -1699,7 +1789,7 @@ For example, to explicitly create the default `TextDocProducer` use:
 `TextDocProducerTriples` produces a new document for each subject/field
 added to the dataset, using `TextIndex.addEntity(Entity)`. 
 
-## Example 
+### Example 
 
 The example class below is a `TextDocProducer` that only indexes
 `ADD`s of quads for which the subject already had at least one
@@ -1733,8 +1823,14 @@ gives rise to this `change()`).
           }
       }
 
+## Multiple fields per document
 
-## Maven Dependency
+In principle it should be possible to extend Jena to allow for creating documents with 
+multiple searchable fields by extending `org.apache.jena.sparql.core.DatasetChangesBatched`
+such as with `org.apache.jena.query.text.TextDocProducerEntities`; however, this form of
+extension is not currently (Jena 3.13.1) functional.
+
+# Maven Dependency
 
 The <code>jena-text</code> module is included in Fuseki.  To use it within application code,
 then use the following maven dependency:
