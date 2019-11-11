@@ -98,5 +98,5 @@ shows validation and printing of the validation report in a text form and in RDF
 
 Example
 [`Shacl02_validateTransaction`](https://github.com/apache/jena/tree/master/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl02_validateTransaction.java)
-shows how to update a graph only if, after the changes, the graph is validate
+shows how to update a graph only if, after the changes, the graph is validated
 according to the shapes provided.
