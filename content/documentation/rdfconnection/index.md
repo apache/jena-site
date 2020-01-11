@@ -124,13 +124,13 @@ and [example
 
 There are many options, including setting HTTP headers for content types
 ([javadoc](//jena.apache.org/documentation/javadoc/rdfconnection/index.html))
-and providing detailed configuration with 
+and providing detailed configuration with
 [Apache HttpComponents HttpClient](https://hc.apache.org/httpcomponents-client-ga/).
 
 ### Fuseki Specific Connection
 
-If the remote destination is a Apache Jena Fuseki server, then teh
-default egneral settings work but it is possible to have a specialised connection 
+If the remote destination is a Apache Jena Fuseki server, then the
+default general settings work but it is possible to have a specialised connection
 
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
               .destination("http://host/fuseki");
@@ -138,7 +138,7 @@ default egneral settings work but it is possible to have a specialised connectio
 which uses settings tuned to Fuseki, including round-trip handling of
 blank nodes.
 
-See [example 
+See [example
 6](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample6.java).
 
 ## Graph Store Protocol
@@ -155,12 +155,12 @@ For example: load two files:
     try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
         conn.load("data1.ttl") ;
         conn.load("data2.nt") ;
-      } 
+      }
 
 The file extension is used to determine the syntax.
 
 There is also a set of scripts to help do these operations from the command
-line with 
+line with
 <a href="//jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
 It is possible to write curl scripts as well.  The SPARQL Graph
 Store Protocol provides a standardised way to manage the data in a dataset.
@@ -173,7 +173,7 @@ provided).
 
 ### Local vs Remote
 
-GSP operations work on while models and datasets. When used on a remote connection, 
+GSP operations work on while models and datasets. When used on a remote connection,
 the result of a GSP operation is a separate copy of the remote RDF data.  When working
 with local connections, 3 isolations modes are available:
 
@@ -247,5 +247,5 @@ operations are visible to the called code.
 
 ## Examples
 
-See
-<a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">here</a> for examples.
+* for simple usage examples see <a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a>.
+* for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a>.
