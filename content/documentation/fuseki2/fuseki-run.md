@@ -89,6 +89,7 @@ configuration and working with data shared with the
 ## Fuseki-Server (no UI) {#fuseki-server}
 
 The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
-the "main" server that runs from the command line.  Unlike the full
-Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk. It has full SPARQL and all storage options.
+the [Fuseki "main" server](fuseki-main.html) server that runs from 
+the command line.  Unlike the full Fuseki server, it is only configured
+from the command line and has no persistent work area on-disk. 
+It has full SPARQL and all storage options.
