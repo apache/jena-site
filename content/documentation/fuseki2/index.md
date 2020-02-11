@@ -22,10 +22,11 @@ storage systems.
 - [Getting Started](#getting-started-with-fuseki)
 - [Security](fuseki-security.html)
 - [Running Fuseki](fuseki-run.html)
-    - [As a standalone server](fuseki-run.html#fuseki-standalone-server)
+    - [As a standalone server with UI](fuseki-run.html#fuseki-standalone-server)
     - [As a service](fuseki-run.html#fuseki-service)
     - [As a web application](fuseki-run.html#fuseki-web-application)
     - [As an standalone SPARQL server](fuseki-main.html)
+    - [As an embedded SPARQL server](fuseki-main.html)
 - Architecture
     - [Server URI scheme : services and datasets](fuseki-data-services.html)
     - [Server Admin Protocol](fuseki-server-protocol.html)
