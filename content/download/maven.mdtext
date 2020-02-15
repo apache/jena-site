@@ -13,10 +13,8 @@ please read and follow [these instructions](http://maven.apache.org/download.htm
 Released maven artifacts are mirrored to the central maven repositories.
 This can take a few days.
 
-The Jena repositories at Apache are:
-
- * [https://repository.apache.org/content/repositories/releases/](https://repository.apache.org/content/repositories/releases/) for released versions
- * [https://repository.apache.org/content/repositories/snapshots/](https://repository.apache.org/content/repositories/snapshots/) for development builds.
+Development snapshots are available as well.  
+[https://repository.apache.org/content/repositories/snapshots/](https://repository.apache.org/content/repositories/snapshots/)
 
 Stable Jena releases are automatically mirrored by the central Maven
 repositories, so there will normally be no need to add any extra
@@ -47,13 +45,11 @@ in the other artifacts.
         <version>a.b.c</version>
       </dependency>
 
-The version number of TDB needs to be checked - it is not the same as apache-jena.
-
 Other modules need to be added separately, for example:
 
       <dependency>
         <groupId>org.apache.jena</groupId>
-        <artifactId>jena-sdb</artifactId>
+        <artifactId>jena-text</artifactId>
         <version>x.y.z</version>
       </dependency>
 
@@ -103,19 +99,15 @@ structuring Jena development.
     <td>The formal released source-released for each Jena release. This is not a maven-runnable set of binary files</td>
   </tr>
   <tr>
-    <td><code>jena-spatial</code></td>
-    <td><code>jar</code></td>
-    <td>SPARQL Spatial Search. Included in Fuseki.</td>
-  </tr>
-  <tr>
     <td><code>jena-text</code></td>
     <td><code>jar</code></td>
     <td>SPARQL Text Search. Included in Fuseki.</td>
   </tr>
   <tr>
-    <td><code>jena-csv</code></td>
+    <td><code>jena-querybuilder</code></td>
     <td><code>jar</code></td>
-    <td>A simple CSV mapping to RDF and amenable to SPARQL</td>
+    <td>A utility package to simplify the building of ARQ queries in code.
+    </td>
   </tr>
   <tr>
     <td><code>jena-elephas</code></td>
@@ -123,30 +115,19 @@ structuring Jena development.
     <td>A collection of tools for working with RDF on the Hadoop platform</td>
   </tr>
   <tr>
-    <td><code>jena-fuseki-war</code></td>
+    <td><code>jena-fuseki-main</code></td>
     <td><code>war</code></td>
-    <td>WAR file for Fuseki</td>
+    <td>Fuseki packaged for embedding in an application.</td>
   </tr>
   <tr>
-    <td><code>jena-security</code></td>
+    <td><code>jena-permissions</code></td>
     <td><code>jar</code></td>
-    <td>Security (Permissions) wrapper around Jena RDF implementation.</td>
-  </tr>
-  <tr>
-    <td><code>jena-maven-tools</code></td>
-    <td>maven-plugin</td>
-    <td>Maven Plugins, including schemagen</td>
+    <td>Security wrapper around Jena RDF implementation.</td>
   </tr>
   <tr>
     <td><code>jena-jdbc-driver-bundle</code></td>
     <td><code>jar</code></td>
     <td>A collection of JDBC drivers</td>
-  </tr>
-  <tr>
-    <td><code>jena-querybuilder</code></td>
-    <td><code>jar</code></td>
-    <td>A utility package to simplify the building of ARQ queries in code.
-    </td>
   </tr>
 </table>
 
@@ -183,7 +164,7 @@ install them in your local Maven repository, then you simply checkout the source
 tree and build with maven 
 <code>mvn install</code>. This assumes you have Maven and Git installed:
 
-    git://git.apache.org/jena.git
+    git clone https://github.com/apache/jena/
     cd jena
     mvn clean install
 
