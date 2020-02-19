@@ -43,15 +43,15 @@ relativamente simples, então esta abordagem não exigirá muito tempo.</p>
 <ol>
   <li><a href="#ch-Introduction">Introdução</a></li>
   <li><a href="#ch-Statements">Sentenças</a></li>
-  <li><a href="#ch-Writing RDF">Escrita de RDF</a></li>
-  <li><a href="#ch-Reading RDF">Leitura de RDF</a></li>
+  <li><a href="#ch-Writing-RDF">Escrita de RDF</a></li>
+  <li><a href="#ch-Reading-RDF">Leitura de RDF</a></li>
   <li><a href="#ch-Prefixes">Controle de Prefixos</a></li>
-  <li><a href="#ch-Jena RDF Packages">Pacotes de Jena RDF</a></li>
-  <li><a href="#ch-Navigating a Model">Navegação em Modelos</a></li>
-  <li><a href="#ch-Querying a Model">Consulta de Modelos</a></li>
-  <li><a href="#ch-Operations on Models">Operações em Modelos</a></li>
+  <li><a href="#ch-Jena-RDF-Packages">Pacotes de Jena RDF</a></li>
+  <li><a href="#ch-Navigating-a-Model">Navegação em Modelos</a></li>
+  <li><a href="#ch-Querying-a-Model">Consulta de Modelos</a></li>
+  <li><a href="#ch-Operations-on-Models">Operações em Modelos</a></li>
   <li><a href="#ch-Containers">Containers</a></li>
-  <li><a href="#ch-More about Literals and Datatypes">Mais sobre Literais e Datatypes</a></li>
+  <li><a href="#ch-More-about-Literals-and-Datatypes">Mais sobre Literais e Datatypes</a></li>
   <li><a href="#ch-Glossary">Glossário</a></li>
 </ol>
 
@@ -204,7 +204,7 @@ http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#FN  "John Smith"
 <p>O W3C <a href="http://www.w3.org/2001/sw/RDFCore/">RDFCore Working
 Group</a> definiu uma notação similar chamada <a href="http://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples</a>. O nome significa "notação de triplas". Nós veremos na próxima sessão que o Jena possui uma interface de escrita de N-Triples também.</p>
 
-<h2><a id="ch-Writing RDF">Escrita de RDF</a></h2>
+<h2><a id="ch-Writing-RDF">Escrita de RDF</a></h2>
 
 <p>Jena possui métodos para ler e escrever RDF como XML. Eles podem ser usados para armazenar o modelo RDF em um arquivo e carregá-lo novamente em outro momento.</p>
 
@@ -265,7 +265,7 @@ model.write(System.out, "N-TRIPLE");
 
 <p>Isso produzirá uma saída similar à do tutorial 3, que está em conformidade com a especificação de N-Triplas.</p>
 
-<h2><a id="ch-Reading RDF">Leitura de RDF</a></h2>
+<h2><a id="ch-Reading-RDF">Leitura de RDF</a></h2>
 
 <p><a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstra a leitura  num modelo de sentenças gravadas num RDF XML. Com este tutorial, nós teremos criado uma pequena base de dados de vcards na forma RDF/XML. O código a seguir fará leitura e escrita. <em>Note que para esta aplicação rodar, o arquivo de entrada precisa estar no diretório da aplicação.</em></p>
 
@@ -461,7 +461,7 @@ Você verá que os prefixos da entrada são preservados na saída. Todos os pref
 <p>Jena possui outras operações sobre mapeamento de prefixos de um modelo, como um<code>Map</code> de Java extraído a partir dos mapeamentos existentes, ou a adição de um grupo inteiro de mapeamentos de uma só vez; olhe a documentação de <code>PrefixMapping</code> para mais detalhes.
 
 
-<h2 id="ch-Jena RDF Packages">Pacotes Jena RDF</h2>
+<h2 id="ch-Jena-RDF-Packages">Pacotes Jena RDF</h2>
 
 <p>Jena é uma API JAVA para aplicações de web semântica. O pacote RDF chave para o desenvolvedor é
 <code>org.apache.jena.rdf.model</code>. A API  tem sido definida em termos de interfaces, logo o código da aplicação pode trabalhar com diferentes implementações sem causar mudanças. Esse pacote contém interfaces para representar modelos, recursos, propriedades, literais, sentenças e todos os outros conceitos chaves de RDF, e um ModelFactory para criação de modelos. Portanto, o código da aplicação permanece independente da implementação, o melhor é usar interfaces onde for possível e não implementações específicas de classes.</p>
@@ -472,7 +472,7 @@ Você verá que os prefixos da entrada são preservados na saída. Todos os pref
 <code>PropertyImpl</code>, e <code>LiteralImpl</code> que podem ser usadas diretamente ou então herdadas por diferentes implementações. As aplicações devem raramente usar essas classes diretamente. Por exemplo, em vez de criar um nova instância de  <code>ResourceImpl</code>, é melhor usar o método <code>createResource</code> do modelo que estiver sendo usado. Desta forma, se a implementação do modelo usar uma implementação otimizada de <code>Resource</code>, então não serão necessárias conversões entre os dois tipos.</p>
 
 
-<h2 id="ch-Navigating a Model">Navegação em Modelos</h2>
+<h2 id="ch-Navigating-a-Model">Navegação em Modelos</h2>
 
 <p>Até agora, este tutorial mostrou como criar, ler e escrever modelos RDF. Chegou o momento de mostrar como acessar as informações mantidas num modelo.</p>
 
@@ -547,7 +547,7 @@ while (iter.hasNext()) {
 </p>
 
 
-<h2 id="ch-Querying a Model">Consultas em Modelos</h2>
+<h2 id="ch-Querying-a-Model">Consultas em Modelos</h2>
 
 <p>A sessão anterior mostrou como navegar um modelo a partir de um recurso com uma URI conhecida. Essa sessão mostrará como fazer buscas em um modelo. O núcleo da API Jena suporta um limitada primitiva de consulta. As consultas mais poderosas de SPARQL são descritas em outros lugares.</p>
 
@@ -686,7 +686,7 @@ StmtIterator iter = model.listStatements(
 
 <p>Embora possam ser funcionalmente equivalentes, a primeira forma vai listar todas as sentenças do modelo e testar cada uma individualmente, a segunda forma permite índices mantidos pela implementação para melhor a perfomance. Tente isso em modelos grandes e veja você mesmo, mas prepare uma chícara de café antes.</p>
 
-<h2 id="ch-Operations on Models">Operações em Modelos</h2>
+<h2 id="ch-Operations-on-Models">Operações em Modelos</h2>
 
 <p>Jena provê três operações para manipular modelos. Elas são operações comuns de conjunto: unão, intersecção e diferença.</p>
 
@@ -837,7 +837,7 @@ tutorial 10</a>, que coloca esses fragmentos de código juntos num exemplo compl
 
 <p>As classes de Jena oferecem métodos para manipular containers, incluindo adição de novos membros, inserção de novos membros no meio de um container e a remoção de membros existentes. As classes de container Jena atualmente garantem que a lista ordenada de propriedades usadas começam com rdf:_1 e é contíguo. O RDFCore WG relaxou essa regra, permitindo uma representação parcial dos containers. Isso, portanto, é uma área de Jena que pode ser mudada no futuro.</p>
 
-<h2 id="ch-More about Literals and Datatypes">Mais sobre Literais e Datatypes</h2>
+<h2 id="ch-More-about-Literals-and-Datatypes">Mais sobre Literais e Datatypes</h2>
 
 <p>Literais RDF não são apenas strings. Literais devem ter uma tag para indicar a linguagem da literal. O diálogo de uma literal em Inglês é considerado diferente de um diálogo de uma literal em Francês. Esse comportamento estranho é um artefato da sintaxe RDF/XML original.</p>
 
@@ -899,7 +899,7 @@ model.write(system.out, "N-TRIPLE");</pre>
 
 <p>O RDFCore WG definiu mecanismos para suportar datatypes em RDF. Jena os suporta usando mecanismos de <i>literais tipadas</i>; isso não é discutido neste tutorial.</p>
 
-<h2 id="ch-Glossary">Glossário</h2>
+<h2 id="ch-gGlossary">Glossário</h2>
 
 <dl>
 
