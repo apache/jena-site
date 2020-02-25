@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Tutorial SPARQL – Padrões Básicos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/tutorials/sparql_basic_patterns_pt.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Tutorial SPARQL – Padrões Básicos</h1>
+            
+	<p>Esta sessão cobre os padrões básicos e as soluções, os principais blocos das consultas SPARQL.</p>
+<h2 id="soluções">Soluções</h2>
+<p>Soluções são um conjunto de pares de variáveis com um valor. Uma consulta <code>SELECT</code> expõe diretamente as soluções (depois de ordenar/limitar/deslocar) como o conjunto resultado – outras formas de consulta usam as soluções para fazer um grafo. Solução é a maneira como o padrão é casado – em que os valores das variáveis são utilizados para casar com o padrão.</p>
+<p>A primeira consulta de exemplo teve uma solução simples. Mude o padrão para esta segunda consulta: (<a href="sparql_data/q-bp1.rq">q-bp1.rq</a>):</p>
+<pre><code>SELECT ?x ?fname
+WHERE {?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  ?fname}
+</code></pre>
+<p>Isso tem quatro soluções, uma pra cada propriedade nome de VCARD das triplas na fonte de dados.</p>
+<pre><code>----------------------------------------------------
+| x                                | name          |
+====================================================
+| &lt;http://somewhere/RebeccaSmith/&gt; | &quot;Becky Smith&quot; |
+| &lt;http://somewhere/SarahJones/&gt;   | &quot;Sarah Jones&quot; |
+| &lt;http://somewhere/JohnSmith/&gt;    | &quot;John Smith&quot;  |
+| &lt;http://somewhere/MattJones/&gt;    | &quot;Matt Jones&quot;  |
+----------------------------------------------------
+</code></pre>
+<p>Até agora, com padrões de triplas e padrões básicos, cada variável será definida em cada solução. As soluções de uma consulta podem ser pensadas como uma tabela, mas no caso geral, é uma tabela onde nem sempre cada linha vai ter um valor para cada coluna. Todas as soluções para uma consulta SPARQL não têm que ter valores para todas as variáveis em todas as soluções como veremos depois.</p>
+<h2 id="padrões-básicos">Padrões Básicos</h2>
+<p>Um padrão básico é um conjunto de padrões de triplas. Ele casa quando todo o padrão da tripla casa com o mesmo valor usado cada vez que a variável com o mesmo nome é usada.</p>
+<pre><code>SELECT ?givenName
+WHERE
+  { ?y  &lt;http://www.w3.org/2001/vcard-rdf/3.0#Family&gt;  &quot;Smith&quot; .
+    ?y  &lt;http://www.w3.org/2001/vcard-rdf/3.0#Given&gt;  ?givenName .
+  }
+</code></pre>
+<p>Essa consulta (<a href="sparql_data/q-bp2.rq">q-bp2.rq</a>)envolve dois padrões de triplas, cada tripla termina com &lsquo;.&rsquo; (mas o ponto depois do último pode ser omitido como foi omitido no exemplo de padrão de uma tripla). A variável y tem que ser a mesma para cada casamento de padrão de tripla. As soluções são:</p>
+<pre><code>-------------
+| givenName |
+=============
+| &quot;John&quot;    |
+| &quot;Rebecca&quot; |
+-------------
+</code></pre>
+<h3 id="qnames">QNames</h3>
+<p>Aqui temos um mecanismo prático para escrever longas URIs usando prefixos. A consulta acima poderia ser escrita mais claramente como a consulta:
+(<a href="sparql_data/q-bp3.rq">q-bp3.rq</a>):</p>
+<pre><code>PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
+
+SELECT ?givenName
+WHERE
+ { ?y vcard:Family &quot;Smith&quot; .
+   ?y vcard:Given  ?givenName .
+ }
+</code></pre>
+<p>Isso é um mecanismo de prefixagem – as duas partes do URI, da declaração do prefixo e da parte depois de &ldquo;:&rdquo; no qname são concatenadas. Isso não é exatamente como um qname XML é, mas usa as regras de RDF para transformar o qname numa URI concatenando as partes.</p>
+<h3 id="blank-nodes">Blank Nodes</h3>
+<p>Mude a consulta só para retornar y da seguinte forma:
+(<a href="sparql_data/q-bp4.rq">q-bp4.rq</a>) :</p>
+<pre><code>PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
+
+SELECT ?y ?givenName
+WHERE
+ { ?y vcard:Family &quot;Smith&quot; .
+   ?y vcard:Given  ?givenName .
+ }
+</code></pre>
+<p>e os blank nodes aparecem</p>
+<pre><code>--------------------
+| y    | givenName |
+====================
+| _:b0 | &quot;John&quot;    |
+| _:b1 | &quot;Rebecca&quot; |
+--------------------
+</code></pre>
+<p>como os estranhos qnames iniciados com  _:. Isso não é o título interno do blank node – isso é o ARQ imprimindo-os, atribuindo _:b0, _:b1 para mostrar quando dois blank nodes são o mesmo. Aqui eles são diferentes. Isso não revela o título interno usado para um blank node, mas isso está disponível quando usar a API Java.</p>
+<p><a href="sparql_filters_pt.html">Próximo: Filtros</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

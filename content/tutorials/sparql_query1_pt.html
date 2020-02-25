@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Tutorial SPARQL - A primeira consulta SPARQL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/tutorials/sparql_query1_pt.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Tutorial SPARQL - A primeira consulta SPARQL</h1>
+            
+	<p>Nesta sessão, vamos olhar para a primeira consulta simples e mostrar como executá-la em Jena.</p>
+<h2 id="o-hello-world-de-consultas">O &ldquo;hello world&rdquo; de consultas</h2>
+<p>O arquivo &ldquo;<a href="sparql_data/q1.rq">q1.rq</a>&rdquo; contem a seguinte consulta:</p>
+<pre><code>SELECT ?x
+WHERE { ?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  &quot;John Smith&quot; }
+</code></pre>
+<p>executando esta consulta com a aplicação de consultas em linhas de comando:</p>
+<pre><code>---------------------------------
+| x                             |
+=================================
+| &lt;http://somewhere/JohnSmith/&gt; |
+---------------------------------
+</code></pre>
+<p>Isso funciona casando o padrão da tripla na clausula <code>WHERE</code> contra as triplas no grafo RDF. O predicado e o objeto da tripla são valores fixos, então o padrão vai casar somente triplas com estes valores. O sujeito é a variável, e não há outras restrições para a variável. O padrão casa qualquer tripla com aquele predicado e aquele objeto, e isso casa com soluções para <code>x</code>.</p>
+<p>O item entre  &lt;&gt; é a URI (atualmente, é uma IRI) e o item entre &quot;&rdquo; é uma literal. Assim como Turtle, N3 ou N-Triplas, literais tipadas são escritas com ^^e tags de linguagem podem ser adicionadas com @.</p>
+<p>?x é uma variável chamada x. A ? não faz parte do nome e por conta disso não aparece nos resultados.</p>
+<p>Há um casamento. A consulta retorna o casamento na variável x da consulta. A saída mostrada foi obtida usando uma das aplicações de ARQ em linhas de comando.</p>
+<h2 id="executando-a-consulta">Executando a consulta</h2>
+<p>Há <a href="/documentation/query/cmds.html">scripts de ajuda</a> nos diretórios de  ARQ <code>bat/</code> e
+<code>bin/</code> de sua distribuição. Eles podem não estar na distribuição do Jena. Você deve checar esses scripts antes de usá-los.</p>
+<h3 id="instalação-no-windows">Instalação no Windows</h3>
+<p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
+<pre><code>set ARQROOT=c:\MyProjects\ARQ
+</code></pre>
+<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
+<p>No diretório do ARQ, execute:</p>
+<pre><code>bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+</code></pre>
+<p>Você pode simplesmente colocar o diretório <code>bat/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
+<h3 id="scripts-bash-para-linuxcyquinunix">scripts bash para Linux/Cyquin/Unix</h3>
+<p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
+<pre><code>export ARQROOT=$HOME/MyProjects/ARQ
+</code></pre>
+<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
+<p>No diretório do ARQ, execute:</p>
+<pre><code>bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
+</code></pre>
+<p>Você pode simplesmente colocar o diretório <code>bin/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
+<p><a href="http://www.cygwin.com/">Cygwin</a> é um ambiente Linux para Windows.</p>
+<h3 id="usando-a-aplicação-de-linhas-de-comando-de-jena-diretamente">Usando a aplicação de linhas de comando de Jena diretamente</h3>
+<p>Você precisará modificar o classpath para incluir <em>todos</em> os arquivos jar do diretório <code>lib/</code> do ARQ.</p>
+<p>Por exemplo, no Windows:</p>
+<pre><code>ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
+ARQdir\lib\commons-logging-1.1.jar;ARQdir\lib\concurrent.jar;ARQdir\lib\icu4j_3_4.jar;
+ARQdir\lib\iri.jar;ARQdir\lib\jena.jar;ARQdir\lib\jenatest.jar;
+ARQdir\lib\json.jar;ARQdir\lib\junit.jar;ARQdir\lib\log4j-1.2.12.jar;
+ARQdir\lib\lucene-core-2.2.0.jar;ARQdir\lib\stax-api-1.0.jar;
+ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
+</code></pre>
+<p>onde <code>&lt;i&gt;ARQdir&lt;/i&gt;</code> é onde você descompactou o ARQ. Isso tudo precisa estar numa linha.</p>
+<p>Os nomes dos arquivos JAR muitas vezes mudam e novos arquivos são adicionados – verifique essa lista com sua versão do ARQ.</p>
+<p>Os comandos estão no pacote ARQ.</p>
+<p><a href="sparql_basic_patterns_pt.html">Próximo: Padrões Básicos</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena schemagen HOWTO</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/tools/schemagen.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena schemagen HOWTO</h1>
+            
+	<p>The <code>schemagen</code> provided with Jena is used to convert an OWL or RDFS vocabulary into a Java class file that contains static
+constants for the terms in the vocabulary. This documents outlines
+the use of schemagen, and the various options and templates that
+may be used to control the output.</p>
+<p>Schemagen is typically invoked from the command line or from a
+built script (such as Ant). Synopsis of the command:</p>
+<pre><code>java jena.schemagen -i &lt;input&gt; [-a &lt;namespaceURI&gt;] [-o &lt;output file&gt;] [-c &lt;config uri&gt;] [-e &lt;encoding&gt;] ...
+</code></pre>
+<p>Schemagen is highly configurable, either with command line options
+or by RDF information read from a configuration file. <strong>Many</strong>
+other options are defined, and these are described in detail below.
+Note that the <code>CLASSPATH</code> environment variable must be set to
+include the Jena <code>.jar</code> libraries.</p>
+<h2 id="summary-of-configuration-options">Summary of configuration options</h2>
+<p>For quick reference, here is a list of all of the schemagen options
+(both command line and configuration file). The use of these
+options is explained in detail below.</p>
+<p>Table 1: schemagen options</p>
+<table>
+<thead>
+<tr>
+<th>Command line option</th>
+<th>RDF config file property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a &lt;uri&gt;</code></td>
+<td><code>sgen:namespace</code></td>
+<td>The namespace URI for the vocabulary. Names with this URI as prefix are automatically included in the generated vocabulary. If not specified, the base URI of the ontology is used as a default (butnote that some ontology documents don&rsquo;t define a base URI).</td>
+</tr>
+<tr>
+<td><code>-c &lt;filename&gt;</code><br /><code>-c &lt;url&gt;</code></td>
+<td></td>
+<td>Specify an alternative config file.</td>
+</tr>
+<tr>
+<td><code>--classdec &lt;string&gt;</code></td>
+<td><code>sgen:classdec</code></td>
+<td>Additional decoration for class header (such as <code>implements</code>)</td>
+</tr>
+<tr>
+<td><code>--classnamesuffix &lt;string&gt;</code></td>
+<td><code>sgen:classnamesuffix</code></td>
+<td>Option for adding a suffix to the generated class name, e.g. &ldquo;Vocab&rdquo;.</td>
+</tr>
+<tr>
+<td><code>--classSection &lt;string&gt;</code></td>
+<td><code>sgen:classSection</code></td>
+<td>Section declaration comment for class section.</td>
+</tr>
+<tr>
+<td><code>--classTemplate &lt;string&gt;</code></td>
+<td><code>sgen:classTemplate</code></td>
+<td>Template for writing out declarations of class resources.</td>
+</tr>
+<tr>
+<td><code>--datatypesSection &lt;string&gt;</code></td>
+<td><code>sgen:datatypesSection</code></td>
+<td>Section declaration comment for datatypes section.</td>
+</tr>
+<tr>
+<td><code>--datatypeTemplate &lt;string&gt;</code></td>
+<td><code>sgen:datatypeTemplate</code></td>
+<td>Template for writing out declarations of datatypes.</td>
+</tr>
+<tr>
+<td><code>--declarations &lt;string&gt;</code></td>
+<td><code>sgen:declarations</code></td>
+<td>Additional declarations to add at the top of the class.</td>
+</tr>
+<tr>
+<td><code>--dos</code></td>
+<td><code>sgen:dos</code></td>
+<td>Use MSDOS-style line endings (i.e. \r\n). Default is Unix-style line endings.</td>
+</tr>
+<tr>
+<td><code>-e &lt;string&gt;</code></td>
+<td><code>sgen:encoding</code></td>
+<td>The surface syntax of the input file (e.g. RDF/XML, N3). Defaults to RDF/XML.</td>
+</tr>
+<tr>
+<td><code>--footer &lt;string&gt;</code></td>
+<td><code>sgen:footer</code></td>
+<td>Template for standard text to add to the end of the file.</td>
+</tr>
+<tr>
+<td><code>--header &lt;string&gt;</code></td>
+<td><code>sgen:header</code></td>
+<td>Template for the file header, including the class comment.</td>
+</tr>
+<tr>
+<td><code>-i &lt;filename&gt;</code> <br /><code>-i &lt;url&gt;</code></td>
+<td><code>sgen:input</code></td>
+<td>Specify the input document to load</td>
+</tr>
+<tr>
+<td><code>--include &lt;uri&gt;</code></td>
+<td><code>sgen:include</code></td>
+<td>Option for including non-local URI&rsquo;s in vocabulary</td>
+</tr>
+<tr>
+<td><code>--individualsSection &lt;string&gt;</code></td>
+<td><code>sgen:individualsSection</code></td>
+<td>Section declaration comment for individuals section.</td>
+</tr>
+<tr>
+<td><code>--individualTemplate &lt;string&gt;</code></td>
+<td><code>sgen:individualTemplate</code></td>
+<td>Template for writing out declarations of individuals.</td>
+</tr>
+<tr>
+<td><code>--inference</code></td>
+<td><code>sgen:inference</code></td>
+<td>Causes the model that loads the document prior to being processed to apply inference rules appropriate to the language. E.g. OWL inference rules will be used on a <code>.owl</code> file.</td>
+</tr>
+<tr>
+<td><code>--marker &lt;string&gt;</code></td>
+<td><code>sgen:marker</code></td>
+<td>Specify the marker string for substitutions, default is &lsquo;%&rsquo;</td>
+</tr>
+<tr>
+<td><code>-n &lt;string&gt;</code></td>
+<td><code>sgen:classname</code></td>
+<td>The name of the generated class. The default is to synthesise a name based on input document name.</td>
+</tr>
+<tr>
+<td><code>--noclasses</code></td>
+<td><code>sgen:noclasses</code></td>
+<td>Option to suppress classes in the generated vocabulary file</td>
+</tr>
+<tr>
+<td><code>--nocomments</code></td>
+<td><code>sgen:noComments</code></td>
+<td>Turn off all comment output in the generated vocabulary</td>
+</tr>
+<tr>
+<td><code>--nodatatypes</code></td>
+<td><code>sgen:nodatatypes</code></td>
+<td>Option to suppress datatypes in the generated vocabulary file.</td>
+</tr>
+<tr>
+<td><code>--noheader</code></td>
+<td><code>sgen:noHeader</code></td>
+<td>Prevent the output of a file header, with class comment etc.</td>
+</tr>
+<tr>
+<td><code>--noindividuals</code></td>
+<td><code>sgen:noindividuals</code></td>
+<td>Option to suppress individuals in the generated vocabulary file.</td>
+</tr>
+<tr>
+<td><code>--noproperties</code></td>
+<td><code>sgen:noproperties</code></td>
+<td>Option to suppress properties in the generated vocabulary file.</td>
+</tr>
+<tr>
+<td><code>-o &lt;filename&gt;</code>  <br /> <code>-o &lt;dir&gt;</code></td>
+<td><code>sgen:output</code></td>
+<td>Specify the destination for the output. If the given value evaluates to a directory, the generated class will be placed in that directory with a file name formed from the generated (or given) class name with &ldquo;.java&rdquo; appended.</td>
+</tr>
+<tr>
+<td><code>--nostrict</code></td>
+<td><code>sgen:noStrict</code></td>
+<td>Option to turn off strict checking for ontology classes and properties (prevents <code>ConversionExceptions</code>).</td>
+</tr>
+<tr>
+<td><code>--ontology</code></td>
+<td><code>sgen:ontology</code></td>
+<td>The generated vocabulary will use the ontology API terms, in preference to RDF model API terms.</td>
+</tr>
+<tr>
+<td><code>--owl</code></td>
+<td><code>sgen:owl</code></td>
+<td>Specify that the language of the source is OWL (the default). Note that RDFS is a subset of OWL, so this setting also suffices for RDFS.</td>
+</tr>
+<tr>
+<td><code>--package &lt;string&gt;</code></td>
+<td><code>sgen:package</code></td>
+<td>Specify the Java package name and directory.</td>
+</tr>
+<tr>
+<td><code>--propSection &lt;string&gt;</code></td>
+<td><code>sgen:propSection</code></td>
+<td>Section declaration comment for properties section.</td>
+</tr>
+<tr>
+<td><code>--propTemplate &lt;string&gt;</code></td>
+<td><code>sgen:propTemplate</code></td>
+<td>Template for writing out declarations of property resources.</td>
+</tr>
+<tr>
+<td><code>-r &lt;uri&gt;</code></td>
+<td></td>
+<td>Specify the uri of the root node in the RDF configuration model.</td>
+</tr>
+<tr>
+<td><code>--rdfs</code></td>
+<td><code>sgen:rdfs</code></td>
+<td>Specify that the language of the source ontology is RDFS.</td>
+</tr>
+<tr>
+<td><code>--strictIndividuals</code></td>
+<td><code>sgen:strictIndividuals</code></td>
+<td>When selecting the individuals to include in the output class, schemagen will normally include those individuals whose <code>rdf:type</code> is in the included namespaces for the vocabulary. However, if <code>strictIndividuals</code> is turned on, then all individuals in the output class must themselves have a URI in the included namespaces.</td>
+</tr>
+<tr>
+<td><code>--uppercase</code></td>
+<td><code>sgen:uppercase</code></td>
+<td>Option for mapping constant names to uppercase (like Java constants). Default is to leave the case of names unchanged.</td>
+</tr>
+<tr>
+<td><code>--includeSource</code></td>
+<td><code>sgen:includeSource</code></td>
+<td>Serializes the source code of the vocabulary, and includes this into the generated class file. At class load time, creates a <code>Model</code> containing the definitions from the source</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-does-schemagen-do">What does schemagen do?</h2>
+<p>RDFS and OWL provide a very convenient means to define a
+controlled vocabulary or ontology. For general ontology processing,
+Jena provides various API&rsquo;s to allow the source files to be read in
+and manipulated. However, when developing an application, it is
+frequently convenient to refer to the controlled vocabulary terms
+directly from Java code. This leads typically to the declaration of
+constants, such as:</p>
+<pre><code>    public static final Resource A_CLASS = new ResourceImpl( &quot;http://example.org/schemas#a-class&quot; );
+</code></pre>
+<p>When these constants are defined manually, it is tedious and
+error-prone to maintain them in synch with the source ontology
+file. Schemagen automates the production of Java constants that
+correspond to terms in an ontology document. By automating the step
+from source vocabulary to Java constants, a source of error and
+inconsistency is removed.</p>
+<h3 id="example">Example</h3>
+<p>Perhaps the easiest way to explain the detail of what schemagen
+does is to show an example. Consider the following mini-RDF
+vocabulary:</p>
+<pre><code>&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+         xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;
+            xmlns=&quot;http://example.org/eg#&quot;
+         xml:base=&quot;http://example.org/eg&quot;&gt;
+  &lt;rdfs:Class rdf:ID=&quot;Dog&quot;&gt;
+      &lt;rdfs:comment&gt;A class of canine companions&lt;/rdfs:comment&gt;
+  &lt;/rdfs:Class&gt;
+  &lt;rdf:Property rdf:ID=&quot;petName&quot;&gt;
+      &lt;rdfs:comment&gt;The name that everyone calls a dog&lt;/rdfs:comment&gt;
+      &lt;rdfs:domain rdf:resource=&quot;http://example.org/eg#Dog&quot; /&gt;
+  &lt;/rdf:Property&gt;
+  &lt;rdf:Property rdf:ID=&quot;kennelName&quot;&gt;
+      &lt;rdfs:comment&gt;Posh dogs have a formal name on their KC certificate&lt;/rdfs:comment&gt;
+  &lt;/rdf:Property&gt;
+  &lt;Dog rdf:ID=&quot;deputy&quot;&gt;
+      &lt;rdfs:comment&gt;Deputy is a particular Dog&lt;/rdfs:comment&gt;
+      &lt;kennelName&gt;Deputy Dawg of Chilcompton&lt;/kennelName&gt;
+  &lt;/Dog&gt;
+&lt;/rdf:RDF&gt;
+</code></pre>
+<p>We process this document with a command something like:
+<code>Java jena.schemagen -i deputy.rdf -a http://example.org/eg#</code>
+to produce the following generated class:</p>
+<pre><code>/* CVS $Id: schemagen.html,v 1.16 2010-06-11 00:08:23 ian_dickinson Exp $ */
+
+import org.apache.jena.rdf.model.*;
+
+/**
+ * Vocabulary definitions from deputy.rdf
+ * @author Auto-generated by schemagen on 01 May 2003 21:49
+ */
+public class Deputy {
+    /** &lt;p&gt;The RDF model that holds the vocabulary terms&lt;/p&gt; */
+    private static Model m_model = ModelFactory.createDefaultModel();
+    
+    /** &lt;p&gt;The namespace of the vocabulary as a string {@value}&lt;/p&gt; */
+    public static final String NS = &quot;http://example.org/eg#&quot;;
+    
+    /** &lt;p&gt;The namespace of the vocabulary as a resource {@value}&lt;/p&gt; */
+    public static final Resource NAMESPACE = m_model.createResource( &quot;http://example.org/eg#&quot; );
+    
+    /** &lt;p&gt;The name that everyone calls a dog&lt;/p&gt; */
+    public static final Property petName = m_model.createProperty( &quot;http://example.org/eg#petName&quot; );
+    
+    /** &lt;p&gt;Posh dogs have a formal name on their KC certificate&lt;/p&gt; */
+    public static final Property kennelName = m_model.createProperty( &quot;http://example.org/eg#kennelName&quot; );
+    
+    /** &lt;p&gt;A class of canine companions&lt;/p&gt; */
+    public static final Resource Dog = m_model.createResource( &quot;http://example.org/eg#Dog&quot; );
+    
+    /** &lt;p&gt;Deputy is a particular Dog&lt;/p&gt; */
+    public static final Resource deputy = m_model.createResource( &quot;http://example.org/eg#deputy&quot; );
+    
+}
+</code></pre>
+<p>Some things to note in this example. All of the named classes,
+properties and individuals from the source document are translated
+to Java constants (below we show how to be more selective than
+this). The properties of the named resources are <em>not</em> translated:
+schemagen is for giving access to the names in the vocabulary or
+schema, not to perform a general translation of RDF to Java. The
+RDFS comments from the source code are translated to Javadoc
+comments. Finally, we no longer directly call <code>new ResourceImpl</code>:
+this idiom is no longer recommended by the Jena team.</p>
+<p>We noted earlier that schemagen is highly configurable. One
+additional argument generates a vocabulary file that uses Jena&rsquo;s
+ontology API, rather than the RDF model API. We change <code>rdfs:Class</code>
+to <code>owl:Class</code>, and invoke
+<code>Java jena.schemagen -i deputy.rdf -b http://example.org/eg# --ontology</code>
+to get:</p>
+<pre><code>/* CVs $Id: schemagen.html,v 1.16 2010-06-11 00:08:23 ian_dickinson Exp $ */
+
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.ontology.*;
+/**
+ * Vocabulary definitions from deputy.rdf
+ * @author Auto-generated by schemagen on 01 May 2003 22:03
+ */
+public class Deputy {
+    /** &lt;p&gt;The ontology model that holds the vocabulary terms&lt;/p&gt; */
+    private static OntModel m_model = ModelFactory.createOntologyModel( ProfileRegistry.OWL_LANG );
+    
+    /** &lt;p&gt;The namespace of the vocabulary as a string {@value}&lt;/p&gt; */
+    public static final String NS = &quot;http://example.org/eg#&quot;;
+    
+    /** &lt;p&gt;The namespace of the vocabulary as a resource {@value}&lt;/p&gt; */
+    public static final Resource NAMESPACE = m_model.createResource( &quot;http://example.org/eg#&quot; );
+    
+    /** &lt;p&gt;The name that everyone calls a dog&lt;/p&gt; */
+    public static final Property petName = m_model.createProperty( &quot;http://example.org/eg#petName&quot; );
+    
+    /** &lt;p&gt;Posh dogs have a formal name on their KC certificate&lt;/p&gt; */
+    public static final Property kennelName = m_model.createProperty( &quot;http://example.org/eg#kennelName&quot; );
+    
+    /** &lt;p&gt;A class of canine companions&lt;/p&gt; */
+    public static final OntClass Dog = m_model.createClass( &quot;http://example.org/eg#Dog&quot; );
+    
+    /** &lt;p&gt;Deputy is a particular Dog&lt;/p&gt; */
+    public static final Individual deputy = m_model.createIndividual( Dog, &quot;http://example.org/eg#deputy&quot; );
+    
+}
+</code></pre>
+<h2 id="general-principles">General principles</h2>
+<p>In essence, schemagen will load a single vocabulary file,
+and generate a Java
+class that contains static constants for the named classes,
+properties and instances of the vocabulary. Most of the generated
+components of the output Java file can be controlled by option
+flags, and formatted with a template. Default templates are
+provided for all elements, so the minimum amount of necessary
+information is actually very small.</p>
+<p>Options can be specified on the command line (when invoking
+schemagen), or may be preset in an RDF file. Any mixture of command
+line and RDF option specification is permitted. Where a given
+option is specified both in an RDF file and on the command line,
+the command line setting takes precedence. Thus the options in the
+RDF file can be seen as defaults.</p>
+<h3 id="specifying-command-line-options">Specifying command line options</h3>
+<p>To specify a command line option, add its name (and optional value)
+to the command line when invoking the schemagen tool. E.g:
+<code>Java jena.schemagen -i myvocab.owl --ontology --uppercase</code></p>
+<h3 id="specifying-options-in-an-rdf-file">Specifying options in an RDF file</h3>
+<p>To specify an option in an RDF file, create a resource of type
+<code>sgen:Config</code>, with properties corresponding to the option names
+listed in Table 1. The following fragment shows a small options
+file. A complete example configuration file is shown in
+<a href="#appendixa">appendix A</a>.</p>
+<p>By default, schemagen will look for a configuration file named
+<code>schemagen.rdf</code> in the current directory. To specify another
+configuration, use the <code>-c</code> option with a URL to reference the
+configuration. Multiple configurations (i.e. multiple <code>sgen:Config</code>
+nodes) can be placed in one RDF document. In this case, each
+configuration node must be named, and the URI specified in the <code>-r</code>
+command line option. If there is no <code>-r</code> option, schemagen will
+look for a node of type <code>rdf:type sgen:Config</code>. If there are
+multiple such nodes in the model, it is indeterminate which one
+will be used.</p>
+<h3 id="using-templates">Using templates</h3>
+<p>We have several times referred to a template being used to
+construct part of the generated file. What is a template? Simply
+put, it is a fragment of output file. Some templates will be used
+at most once (for example the file header template), some will be
+used many times (such as the template used to generate a class
+constant). In order to make the templates adaptable to the job
+they&rsquo;re doing, before it is written out a template has
+<em>keyword substitution</em> performed on it. This looks for certain
+keywords delimited by a pair of special characters (% by default),
+and replaces them with the current binding for that keyword. Some
+keyword bindings stay the same throughout the processing of the
+file, and some are dependent on the language element being
+processed. The substitutions are:</p>
+<p>Table 2: Substitutable keywords in templates</p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Meaning</th>
+<th>Typical value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>classname The name of the Java class being generated</td>
+<td>Automatically defined from the document name, or given with the <code>-n</code> option</td>
+<td></td>
+</tr>
+<tr>
+<td>date</td>
+<td>The date and time the class was generated</td>
+<td></td>
+</tr>
+<tr>
+<td>imports</td>
+<td>The Java imports for this class</td>
+<td></td>
+</tr>
+<tr>
+<td>nl</td>
+<td>The newline character for the current platform</td>
+<td></td>
+</tr>
+<tr>
+<td>package</td>
+<td>The Java package name</td>
+<td>As specified by an option. The option just gives the package name, schemagen turns the name into a legal Java statement.</td>
+</tr>
+<tr>
+<td>sourceURI</td>
+<td>The source of the document being processed</td>
+<td>As given by the <code>-i</code> option or in the config file.</td>
+</tr>
+<tr>
+<td>valclass</td>
+<td>The Java class of the value being defined</td>
+<td>E.g. Property for vocabulary properties, Resource for classes in RDFS, or OntClass for classes using the ontology API</td>
+</tr>
+<tr>
+<td>valcreator</td>
+<td>The method used to generate an instance of the Java representation</td>
+<td>E.g. <code>createResource</code> or <code>createClass</code></td>
+</tr>
+<tr>
+<td>valname</td>
+<td>The name of the Java constant being generated</td>
+<td>This is generated from the name of the resource in the source file, adjusted to be a legal Java identifier. By default, this will preserve the case of the RDF constant, but setting <code>--uppercase</code> will map all constants to upper-case names (a common convention in Java code).</td>
+</tr>
+<tr>
+<td>valtype</td>
+<td>The rdf:type for an individual</td>
+<td>The class name or URI used when creating an individual in the ontology API</td>
+</tr>
+<tr>
+<td>valuri</td>
+<td>The full URI of the value being defined</td>
+<td>From the RDF, without adjustment.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="details-of-schemagen-options">Details of schemagen options</h2>
+<p>We now go through each of the configuration options in detail.</p>
+<p><strong>Note</strong>: for brevity, we assume a standard prefix <code>sgen</code> is
+defined for resource URI&rsquo;s in the schemagen namespace. The
+expansion for <code>sgen</code> is:
+<code>http://jena.hpl.hp.com/2003/04/schemagen#</code>, thus:</p>
+<pre><code>xmlns:sgen=&quot;http://jena.hpl.hp.com/2003/04/schemagen#&quot;
+</code></pre>
+<h3 id="note-on-legal-java-identifiers">Note on legal Java identifiers</h3>
+<p>Schemagen will attempt to ensure that all generated code will
+compile as legal Java. Occasionally, this means that identifiers
+from input documents, which are legal components of RDF URI
+identifiers, have to be modified to be legal Java identifiers.
+Specifically, any character in an identifier name that is not a
+legal Java identifier character will be replaced with the character
+&lsquo;_&rsquo; (underscore). Thus the name &lsquo;<code>trading-price</code>&rsquo; might become
+<code>'trading_price</code>&rsquo;. In addition, Java requires that identifiers be
+distinct. If a name clash is detected (for example, <code>trading-price</code>
+and <code>trading+price</code> both map to the same Java identifier),
+schemagen will add disambiguators to the second and subsequent
+uses. These will be based on the role of the identifier; for
+example property names are disambiguated by appending <code>_PROPn</code> for
+increasing values of <code>n</code>. In a well-written ontology, identifiers
+are typically made distinct for clarity and ease-of-use by the
+ontology users, so the use of the disambiguation tactic is rare.
+Indeed, it may be taken as a hint that refactoring the ontology
+itself is desirable.</p>
+<h3 id="specifying-the-configuration-file">Specifying the configuration file</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-c &lt;*config-file-path*&gt;</code><br /><code>-c &lt;*config-file-URL*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>The default configuration file name is <code>schemagen.rdf</code> in the
+current directory. To specify a different configuration file,
+either as a file name on the local file system, or as a URL (e.g.
+an <code>http:</code> address), the config file location is passed with the
+<code>-c</code> option. If no <code>-c</code> option is given, and there is no
+configuration file in the current directory, schemagen will
+continue and use default values (plus the other command line
+options) to configure the tool. If a file name or URL is given with
+<code>-c</code>, and that file cannot be located, schemagen will stop with an
+error.</p>
+<p>Schemagen will assume the language encoding of the
+configuration file is implied by the filename/ULRL suffix: &ldquo;.n3&rdquo;
+means N3, &ldquo;.nt&rdquo; means NTRIPLES, &ldquo;.rdf&rdquo; and &ldquo;.owl&rdquo; mean &ldquo;RDF/XML&rdquo;.
+By default it assumes RDF/XML.</p>
+<h3 id="specifying-the-configuration-root-in-the-configuration-file">Specifying the configuration root in the configuration file</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-r &lt;*config-root-URI*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>It is possible to have more than one set of configuration options
+in one configuration file. If there is only one set of
+configuration options, schemagen will locate the root by searching
+for a resource of rdf:type sgen:Config. If there is more than one,
+and no root is specified on the command line, it is not specified
+which set of configuration options will be used. The root URI given
+as a command line option must match exactly with the URI given in
+the configuration file. For example:</p>
+<pre><code>Java jena.schemagen -c config/localconf.rdf -r http://example.org/sg#project1
+</code></pre>
+<p>matches:</p>
+<pre><code>...
+ &lt;sgen:Config rdf:about=&quot;http://example.org/SG#project1&quot;&gt;
+   ....
+ &lt;/sgen:Config&gt;
+</code></pre>
+<h3 id="specifying-the-input-document">Specifying the input document</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-i &lt;*input-file-path*&gt;</code><br /><code>-i &lt;*input-URL*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:input rdf:resource=&quot;*inputURL*&quot; /&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The only mandatory argument to schemagen is the input document to
+process. This can be specified in the configuration file, though
+this does, of course, mean that the same configuration cannot be
+applied to multiple different input files for consistency. However,
+by specifying the input document in the default configuration file,
+schemagen can easily be invoked with the minimum of command line
+typing. For other means of automating schemagen, see
+<a href="#ant">using schemagen with Ant</a>.</p>
+<h3 id="specifying-the-output-location">Specifying the output location</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-o &lt;*input-file-path*&gt;</code><br /><code>-o &lt;*output-dir*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:output rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*output-path-or-dir*&lt;/sgen:output&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Schemagen must know where to write the generated Java file. By
+default, the output is written to the standard output. Various
+options exist to change this. The output location can be specified
+either on the command line, or in the configuration file. If
+specified in the configuration file, the resource must be a string
+literal, denoting the file path. If the path given resolves to an
+existing directory, then it is assumed that the output will be
+based on the <a href="#class-name">name</a> of the generated class (i.e. it
+will be the class name with Java appended). Otherwise, the path is
+assumed to point to a file. Any existing file that has the given
+path name will be overwritten.</p>
+<p>By default, schemagen will create files that have the Unix
+convention for line-endings (i.e. &lsquo;\n&rsquo;). To switch to DOS-style
+line endings, use <code>--dos</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--dos</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:dos rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:dos&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="specifying-the-class-name">Specifying the class name</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-n &lt;*class-name*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:classname rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*classname*&lt;/sgen:classname&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>By default, the name of the class will be based on the name of the
+input file. Specifically, the last component of the input
+document&rsquo;s path name, with the prefix removed, becomes the class
+name. By default, the initial letter is adjusted to a capital to
+conform to standard Java usage. Thus <code>file:vocabs/trading.owl</code>
+becomes <code>Trading.java</code>. To override this default algorithm, a class
+name specified by <code>-n</code> or in the config file is used exactly as
+given.</p>
+<p>Sometimes it is convenient to have all vocabulary files
+distinguished by a common suffix, for example <code>xyzSchema.java</code> or
+<code>xyzVocabs.java</code>. This can be achieved by the classname-suffix
+option:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--classnamesuffix &lt;*suffix*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:classnamesuffix rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*suffix*&lt;/sgen:classnamesuffix&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>See also the <a href="#java-ids">note on legal Java identifiers</a>, which
+applies to generated class names.</p>
+<h3 id="specifying-the-vocabulary-namespace">Specifying the vocabulary namespace</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-a &lt;*namespace-URI*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:namespace rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*namespace*&lt;/sgen:namespace&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Since ontology files are often modularised, it is not the case that
+all of the resource names appearing in a given document are being
+defined by that ontology. They may appear simply as part of the
+definitions of other terms. Schemagen assumes that there is one
+primary namespace for each document, and it is names from that
+namespace that will appear in the generated Java file.</p>
+<p>In an OWL ontology, this namespace is computed by
+finding the owl:Ontology element, and using its
+namespace as the primary namespace of the ontology. This may not be
+available (it is not, for example, a part of RDFS) or correct, so
+the namespace may be specified directly with the <code>-a</code> option or in
+the configuration file.</p>
+<p>Schemagen does not, in the present version, permit more than one
+primary namespace per generated Java class. However, constants from
+namespaces other than the primary namespace may be included in the
+generated Java class by the include option:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--include &lt;*namespace-URI*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:include rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*namespace*&lt;/sgen:include&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The include option may repeated multiple times to include a variety
+of constants from other namespaces in the output class.</p>
+<p>Since OWL and RDFS ontologies may include individuals that are
+named instances of declared classes, schemagen will include
+individuals among the constants that it generates in Java. By
+default, an individual will be included if its class has a URI that
+is in one of the permitted namespaces for the vocabulary, even if
+the individual itself is not in that namespace. If the option
+<code>strictIndividuals</code> is set, individuals are <strong>only</strong> included if
+they have a URI that is in the permitted namespaces for the
+vocabulary.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--strictIndividuals</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:strictIndividuals /&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="specifying-the-syntax-encoding-of-the-input-document">Specifying the syntax (encoding) of the input document</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>-e &lt;*encoding*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:encoding rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*encoding*&lt;/sgen:encoding&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Jena can parse a number of different presentation syntaxes for RDF
+documents, including RDF/XML, N3 and NTRIPLE. By default, the
+encoding will be derived from the name of the input document (e.g.
+a document <code>xyz.n3</code> will be parsed in N3 format), or, if the
+extension is non-obvious the default is RDF/XML. The encoding, and
+hence the parser, to use on the input document may be specified by
+the encoding configuration option.</p>
+<h3 id="choosing-the-style-of-the-generated-class-ontology-or-plain-rdf">Choosing the style of the generated class: ontology or plain RDF</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--ontology</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:ontology rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;*true or false*&lt;/sgen:ontology&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>By default, the Java class generated by schemagen will generate
+constants that are plain RDF Resource, Property or Literal
+constants. When working with OWL or RDFS ontologies, it may
+be more convenient to have constants that are OntClass,
+ObjectProperty, DatatypeProperty and Individual Java objects. To
+generate these ontology constants, rather than plain RDF constants,
+set the ontology configuration option.</p>
+<p>Furthermore, since Jena can handle input ontologies in
+OWL (the default), and RDFS, it is necessary to be able to specify
+which language is being processed. This will affect both the
+parsing of the input documents, and the language profile selected
+for the constants in the generated Java class.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--owl</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:owl rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:owl&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--rdfs</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:rdfs rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:owl&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Prior to Jena 2.2, schemagen used a Jena model to load the input
+document that also applied some <em>rules of inference</em> to the input
+data. So, for example, a resource that is mentioned as the
+<code>owl:range</code> of a property can be inferred to be
+<code>rdf:type owl:Class</code>, and hence listed in the class constants in
+the generated Java class, even if that fact is not directly
+asserted in the input model. From Jena 2.2 onwards, this option is
+now <strong>off by default</strong>. If correct handling of an input document by
+schemagen requires the use of inference rules, this must be
+specified by the <code>inference</code> option.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--inference</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:inference rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:owl&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="specifying-the-java-package">Specifying the Java package</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--package &lt;*package-name*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:package rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*package-name*&lt;/sgen:package&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>By default, the Java class generated by schemagen will not be in a
+Java package. Set the package configuration option to specify the
+Java package name. <strong>Change from Jena 2.6.4-SNAPSHOT onwards:</strong>
+Setting the package name will affect the directory into which the
+generated class will be written: directories will be appended to
+the <a href="#output">output directory</a> to match the Java package.</p>
+<h3 id="additional-decorations-on-the-main-class-declaration">Additional decorations on the main class declaration</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--classdec &lt;*class-declaration*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:classdec rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*class-declaration*&lt;/sgen:classdec&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>In some applications, it may be convenient to add additional
+information to the declaration of the Java class, for example that
+the class implements a given interface (such as
+<code>java.lang.Serializable</code>). Any string given as the value of the
+class-declaration option will be written immediately after
+&ldquo;<code>public class &lt;i&gt;ClassName&lt;/i&gt;</code>&rdquo;.</p>
+<h3 id="adding-general-declarations-within-the-generated-class">Adding general declarations within the generated class</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--declarations &lt;*declarations*&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:declarations rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*declarations*&lt;/sgen:declarations&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Some more complex vocabularies may require access to static
+constants, or other Java objects or factories to fully declare the
+constants defined by the given templates. Any text given by the
+declarations option will be included in the generated class after
+the class declaration but before the body of the declared
+constants. The value of the option should be fully legal Java code
+(though the <a href="#templates">template</a> substitutions will be performed
+on the code). Although this option can be declared as a command
+line option, it is typically easier to specify as a value in a
+configuration options file.</p>
+<h3 id="omitting-sections-of-the-generated-vocabulary">Omitting sections of the generated vocabulary</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--noclasses</code><br /><code>--nodatatypes</code><br /><code>--noproperties</code><br /><code>--noindividuals</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:noclassses rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:noclassses&gt;</code><br /><code>&lt;sgen:nodatatypes rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:nodatatypes&gt;</code><br /><code>&lt;sgen:noproperties rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:noproperties&gt;</code><br /><code>&lt;sgen:noindividuals rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:noindividuals&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>By default, the vocabulary class generated from a given ontology
+will include constants for each of the included classes, datatypes, properties
+and individuals in the ontology. To omit any of these groups, use
+the corresponding <em>noXYZ</em> configuration option. For example,
+specifying <code>--noproperties</code> means that the generated class will not
+contain any constants corresponding to predicate names from the
+ontology, irrespective of what is in the input document.</p>
+<h3 id="section-header-comments">Section header comments</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--classSection *&lt;section heading&gt;*</code><br /><code>--datatypeSection *&lt;section heading&gt;*</code><br /><code>--propSection *&lt;section heading&gt;*</code><br /><code>--individualSection *&lt;section heading*&gt;</code><br /><code>--header *&lt;file header section&gt;*</code><br /><code>--footer *&lt;file footer section&gt;*</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>&lt;sgen:classSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*section heading*&lt;/sgen:classSection&gt;</code><br /><code>&lt;sgen:datatypeSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*section heading*&lt;/sgen:datatypeSection&gt;</code><br /><code>&lt;sgen:propSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*section heading*&lt;/sgen:propSection&gt;</code><br /><code>&lt;sgen:individualSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*section heading*&lt;/sgen:individualSection&gt;</code><br /><code>&lt;sgen:header rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*file header*&lt;/sgen:header&gt;</code><br /><code>&lt;sgen:footer rdf:datatype=&quot;&amp;xsd;string&quot;&gt;*file footer*&lt;/sgen:footer&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Some coding styles use block comments to delineate different
+sections of a class. These options allow the introduction of
+arbitrary Java code, though typically this will be a comment block,
+at the head of the sections of class constant declarations,
+datatype constant declarations, property constant declarations,
+and individual constant declarations.</p>
+<h3 id="include-vocabulary-source-code">Include vocabulary source code</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Command line</strong></td>
+<td><code>--includeSource</code></td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>\&lt;sgen:includeSource rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true\&lt;/sgen:includeSource&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Schemagen&rsquo;s primary role is to provide Java constants corresponding to the names in
+a vocabulary. Sometimes, however, we may need more information from the vocabulary
+source file to available. For example, to know the domain and range of the properties
+in the vocabulary. If you set the configuration parameter <code>--includeSource</code>, schemagen
+will:</p>
+<ul>
+<li>convert the input vocabulary into string form and include that string form in the
+generated Java class</li>
+<li>create a Jena model when the Java vocabulary class is first loaded, and load the string-ified
+vocabulary into that model</li>
+<li>attach the generated constants to that model, so that, for example, you can look up the
+declared domain and range of a property or the declared super-classes of a class.</li>
+</ul>
+<p>Note that Java compilers typically impose some limit on the size of a Java source file (or, more
+specifically, on the size of <code>.class</code> file they will generate. Loading a particularly large
+vocabulary with <code>--includeSource</code> may risk breaching that limit.</p>
+<h2 id="using-schemagen-with-maven">Using schemagen with Maven</h2>
+<p><a href="http://maven.apache.org/">Apache Maven</a> is a build automation tool typically used for Java.  You can use <code>exec-maven-plugin</code> and <code>build-helper-maven-plugin</code> to run <code>schemagen</code> as part of the <code>generate-sources</code> goal of your project.  The following example shows one way of performing this task.  The developer should customize command-line options or use a configuration file instead as needed.</p>
+<pre><code>  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;phase&gt;generate-sources&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;java&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;mainClass&gt;jena.schemagen&lt;/mainClass&gt;
+              &lt;commandlineArgs&gt;
+                --inference \
+                -i ${basedir}/src/main/resources/example.ttl \
+                -e TTL \
+                --package org.example.ont \
+                -o ${project.build.directory}/generated-sources/java \
+                -n ExampleOnt
+              &lt;/commandlineArgs&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;add-source&lt;/id&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;add-source&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;sources&gt;
+                &lt;source&gt;${project.build.directory}/generated-sources/java&lt;/source&gt;
+              &lt;/sources&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+</code></pre>
+<p>At this point you can run <code>mvn generate-sources</code> in your project to cause <code>schemagen</code> to run and create your Java source (note that this goal is run automatically from <code>mvn compile</code> or <code>mvn install</code>, so there really isn&rsquo;t any reason to run it manually unless you wish to just generate the source).  The source file is placed in the maven standard <code>target/generated-sources/java</code> directory, which is added to the project classpath by <code>build-helper-maven-plugin</code>.</p>
+<h2 id="using-schemagen-with-ant">Using schemagen with Ant</h2>
+<p><a href="http://ant.apache.org/">Apache Ant</a> is a tool for automating build
+steps in Java (and other language) projects. For example, it is the
+tool used to compile the Jena sources to the jena.jar file, and to
+prepare the Jena distribution prior to download. Although it would
+be quite possible to create an Ant <em>taskdef</em> to automate the
+production of Java classes from input vocabularies, we have not yet
+done this. Nevertheless, it is straightforward to use schemagen
+from an ant build script, by making use of Ant&rsquo;s built-in Java
+task, which can execute an arbitrary Java program.</p>
+<p>The following example shows a complete ant target definition for
+generating ExampleVocab.java from example.owl. It ensures that the
+generation step is only performed when example.owl has been updated
+more recently than ExampleVocab.java (e.g. if the definitions in
+the owl file have recently been changed).</p>
+<pre><code>  &lt;!-- properties --&gt;
+  &lt;property name=&quot;vocab.dir&quot;       value=&quot;src/org/example/vocabulary&quot; /&gt;
+  &lt;property name=&quot;vocab.template&quot;  value=&quot;${rdf.dir}/exvocab.rdf&quot; /&gt;
+  &lt;property name=&quot;vocab.tool&quot;      value=&quot;jena.schemagen&quot; /&gt;
+
+  &lt;!-- Section: vocabulary generation --&gt;
+  &lt;target name=&quot;vocabularies&quot; depends=&quot;exVocab&quot; /&gt;
+
+  &lt;target name=&quot;exVocab.check&quot;&gt;
+    &lt;uptodate
+       property=&quot;exVocab.nobuild&quot;
+       srcFile=&quot;${rdf.dir}/example.owl&quot;
+       targetFile=&quot;${vocab.dir}/ExampleVocab.java&quot; /&gt;
+  &lt;/target&gt;
+
+  &lt;target name=&quot;exVocab&quot; depends=&quot;exVocab.check&quot; unless=&quot;exVocab.nobuild&quot;&gt;
+    &lt;Java classname=&quot;${vocab.tool}&quot; classpathref=&quot;classpath&quot; fork=&quot;yes&quot;&gt;
+      &lt;arg value=&quot;-i&quot; /&gt;
+      &lt;arg value=&quot;file:${rdf.dir}/example.owl&quot; /&gt;
+      &lt;arg value=&quot;-c&quot; /&gt;
+      &lt;arg value=&quot;${vocab.template}&quot; /&gt;
+      &lt;arg value=&quot;--classnamesuffix&quot; /&gt;
+      &lt;arg value=&quot;Vocab&quot; /&gt;
+      &lt;arg value=&quot;--include&quot; /&gt;
+      &lt;arg value=&quot;http://example.org/2004/01/services#&quot; /&gt;
+      &lt;arg value=&quot;--ontology&quot; /&gt;
+    &lt;/Java&gt;
+  &lt;/target&gt;
+</code></pre>
+<p>Clearly it is up to each developer to find the appropriate balance
+between options that are specified via the command line options,
+and those that are specified in the configuration options file
+(<code>exvocab.rdf</code> in the above example). This is not the only, nor
+necessarily the &ldquo;right&rdquo; way to use schemagen from Ant, but if it
+points readers in the appropriate direction to produce a custom
+target for their own application it will have served its purpose.</p>
+<h2 id="appendix-a-complete-example-configuration-file">Appendix A: Complete example configuration file</h2>
+<p>The source of this example is provided in the Jena download as
+<code>etc/schemagen.rdf</code>. For clarity, RDF/XML text is highlighted in
+blue.</p>
+<pre><code>&lt;?xml version='1.0'?&gt;
+
+&lt;!DOCTYPE rdf:RDF [
+    &lt;!ENTITY jena    'http://jena.hpl.hp.com/'&gt;
+
+    &lt;!ENTITY rdf     'http://www.w3.org/1999/02/22-rdf-syntax-ns#'&gt;
+    &lt;!ENTITY rdfs    'http://www.w3.org/2000/01/rdf-schema#'&gt;
+    &lt;!ENTITY owl     'http://www.w3.org/2002/07/owl#'&gt;
+    &lt;!ENTITY xsd     'http://www.w3.org/2001/XMLSchema#'&gt;
+    &lt;!ENTITY base    '&amp;jena;2003/04/schemagen'&gt;
+    &lt;!ENTITY sgen    '&amp;base;#'&gt;
+]&gt;
+
+&lt;rdf:RDF
+  xmlns:rdf   =&quot;&amp;rdf;&quot;
+  xmlns:rdfs  =&quot;&amp;rdfs;&quot;
+  xmlns:owl   =&quot;&amp;owl;&quot;
+  xmlns:sgen  =&quot;&amp;sgen;&quot;
+  xmlns       =&quot;&amp;sgen;&quot;
+  xml:base    =&quot;&amp;base;&quot;
+&gt;
+
+&lt;!--
+    Example schemagen configuration for use with jena.schemagen
+    Not all possible options are used in this example, see Javadoc and Howto for full details.
+
+    Author: Ian Dickinson, mailto:ian.dickinson@hp.com
+    CVs:    $Id: schemagen.html,v 1.16 2010-06-11 00:08:23 ian_dickinson Exp $
+--&gt;
+
+&lt;sgen:Config&gt;
+    &lt;!-- specifies that the  source document uses OWL --&gt;
+    &lt;sgen:owl rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:owl&gt;
+
+    &lt;!-- specifies that we want the generated vocab to use OntClass, OntProperty, etc, not Resource and Property --&gt;
+    &lt;sgen:ontology rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:ontology&gt;
+
+    &lt;!-- specifies that we want names mapped to uppercase (as standard Java constants) --&gt;
+    &lt;sgen:uppercase rdf:datatype=&quot;&amp;xsd;boolean&quot;&gt;true&lt;/sgen:uppercase&gt;
+
+    &lt;!-- append Vocab to class name, so input beer.owl becomes BeerVocab.java --&gt;
+    &lt;sgen:classnamesuffix rdf:datatype=&quot;&amp;xsd;string&quot;&gt;Vocab&lt;/sgen:classnamesuffix&gt;
+
+    &lt;!-- the Java package that the vocabulary is in --&gt;
+    &lt;sgen:package rdf:datatype=&quot;&amp;xsd;string&quot;&gt;com.example.vocabulary&lt;/sgen:package&gt;
+
+    &lt;!-- the directory or file to write the results out to --&gt;
+    &lt;sgen:output rdf:datatype=&quot;&amp;xsd;string&quot;&gt;src/com/example/vocabulary&lt;/sgen:output&gt;
+
+    &lt;!-- the template for the file header --&gt;
+&lt;sgen:header rdf:datatype=&quot;&amp;xsd;string&quot;&gt;/*****************************************************************************
+ * Source code information
+ * -----------------------
+ * Original author    Jane Smart, example.com
+ * Author email       jane.smart@example.com
+ * Package            @package@
+ * Web site           @website@
+ * Created            %date%
+ * Filename           $RCSfile: schemagen.html,v $
+ * Revision           $Revision: 1.16 $
+ * Release status     @releaseStatus@ $State: Exp $
+ *
+ * Last modified on   $Date: 2010-06-11 00:08:23 $
+ *               by   $Author: ian_dickinson $
+ *
+ * @copyright@
+ *****************************************************************************/
+
+
+// Package
+///////////////////////////////////////
+%package%
+
+
+// Imports
+///////////////////////////////////////
+%imports%
+
+
+
+/**
+ * Vocabulary definitions from %sourceURI%
+ * @author Auto-generated by schemagen on %date%
+ */&lt;/sgen:header&gt;
+
+&lt;!-- the template for the file footer (note @footer@ is an Ant-ism, and will not be processed by SchemaGen) --&gt;
+&lt;sgen:footer rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+/*
+@footer@
+*/
+&lt;/sgen:footer&gt;
+
+&lt;!-- template for extra declarations at the top of the class file --&gt;
+&lt;sgen:declarations rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+    /** Factory for generating symbols */
+    private static KsValueFactory s_vf = new DefaultValueFactory();
+&lt;/sgen:declarations&gt;
+
+&lt;!-- template for introducing the properties in the vocabulary --&gt;
+&lt;sgen:propSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+    // Vocabulary properties
+    ///////////////////////////
+&lt;/sgen:propSection&gt;
+
+&lt;!-- template for introducing the classes in the vocabulary --&gt;
+&lt;sgen:classSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+    // Vocabulary classes
+    ///////////////////////////
+&lt;/sgen:classSection&gt;
+
+&lt;!-- template for introducing the datatypes in the vocabulary --&gt;
+&lt;sgen:datatypeSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+    // Vocabulary datatypes
+    ///////////////////////////
+&lt;/sgen:datatypeSection&gt;
+
+&lt;!-- template for introducing the individuals in the vocabulary --&gt;
+&lt;sgen:individualsSection rdf:datatype=&quot;&amp;xsd;string&quot;&gt;
+    // Vocabulary individuals
+    ///////////////////////////
+&lt;/sgen:individualsSection&gt;
+
+&lt;!-- template for doing fancy declarations of individuals --&gt;
+&lt;sgen:individualTemplate rdf:datatype=&quot;&amp;xsd;string&quot;&gt;public static final KsSymbol %valname% = s_vf.newSymbol( &quot;%valuri%&quot; );
+
+    /** Ontology individual corresponding to {@link #%valname%} */
+    public static final %valclass% _%valname% = m_model.%valcreator%( %valtype%, &quot;%valuri%&quot; );
+&lt;/sgen:individualTemplate&gt;
+
+&lt;/sgen:Config&gt;
+
+&lt;/rdf:RDF&gt;
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - ARQ - Writing Property Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/writing_propfuncs.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">ARQ - Writing Property Functions</h1>
+            
+	<p><strong>ARQ - Writing Property Functions</strong></p>
+<p>See also <a href="writing_functions.html">Writing Filter Functions</a>.</p>
+<p>Applications can add SPARQL property functions to the query engine. This is done by first implementing the
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunction.html"><code>PropertyFunction</code></a>
+interface, and then either registering that function or using the fake <code>java:</code> URI scheme to dynamically
+load the function.</p>
+<p><strong>Writing SPARQL Property Functions</strong></p>
+<p>Similar to SPARQL Filter Functions, a SPARQL Property Function is an extension point of the SPARQL query language
+that allows a URI to name a function in the query processor. A key difference is that Property Functions may
+generate new bindings.</p>
+<p>Just like
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/function/Function.html">org.apache.jena.sparql.function.Function</a>
+there are various utility classes provided to simplify the creation of a Property Function. The selection of
+one depends on the &lsquo;style&rsquo; of the desired built-in. For example, <code>PFuncSimple</code> is expected to be the predicate
+of triple patterns <code>?such ex:as ?this</code>, where neither argument is an <code>rdf:list</code>, and either may be a variable.
+Alternatively, <code>PFuncAssignToObject</code> assumes that the subject will be bound, while the object will be a variable.</p>
+<pre><code>PropertyFunction
+    |
+    |--PropertyFunctionBase
+          |
+          |--PropertyFunctionEval
+                |
+                |--PFuncSimpleAndList
+                |
+                |--PFuncSimple
+                     |
+                     |--PFuncAssignToObject
+                     |
+                     |--PFuncAssignToSubject
+                |
+                |--PFuncListAndSimple
+                |
+                |--PFuncListAndList
+</code></pre>
+<p>The choice of extension point determines the function signature that the developer will need to implement, and
+primarily determines whether some of the arguments will be
+<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Node.html"><code>org.apache.jena.graph.Node</code></a>s or
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropFuncArg.html"><code>org.apache.jena.sparql.pfunction.PropFuncArg</code></a>s.
+In the latter case, the programmer can determine whether the argument is a list as well as how many
+arguments it consists of.</p>
+<p><strong>Registration</strong></p>
+<p>Every property function is associated with a particular
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/util/Context.html"><code>org.apache.jena.sparql.util.Context</code></a>.
+This allows you to limit the availability of the function to be global or associated with a particular dataset.
+For example, a custom Property Function may expose an index which only has meaning with respect to some set
+of data.</p>
+<p>Assuming you have an implementation of
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionFactory</code></a>
+(shown later), you can register a function as follows:</p>
+<pre><code>final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ARQ.getContext());
+reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory);
+PropertyFunctionRegistry.set(ARQ.getContext(), reg);
+</code></pre>
+<p>The only difference between global and dataset-specific registration is where the <code>Context</code> object comes from:</p>
+<pre><code>final Dataset ds = DatasetFactory.createMem();
+final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ds.getContext());
+reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory);
+PropertyFunctionRegistry.set(ds.getContext(), reg);
+</code></pre>
+<p>Note that
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionRegistry.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionRegistry</code></a>
+has other <code>put</code> methods that allow registration by passing a <code>Class</code> object, as well.</p>
+<p><strong>Implementation</strong></p>
+<p>The implementation of a Property Function is actually quite straight forward once one is aware of the tools
+at their disposal to do so. For example, if we wished to create a Property Function that returns no results
+regardless of their arguments we could do so as follows:</p>
+<pre><code>public class ExamplePropertyFunctionFactory implements PropertyFunctionFactory {
+    @Override
+    public PropertyFunction create(final String uri)
+    {	
+        return new PFuncSimple()
+        {
+            @Override
+            public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCxt) 
+            {	
+                return QueryIterNullIterator.create(execCtx);
+            }
+        };
+    }
+}
+</code></pre>
+<p><code>Node</code> and <code>PropFuncArg</code> objects allow the developer to reflect on the state of the arguments, and choose what
+bindings to generate given the intended usage of the Property Function. For example, if the function expects a
+list of three bound arguments for the object of the property, then it can throw a <code>ExprEvalException</code>
+(or derivative) to indicate incorrect use. It is the responsibility of the developer to identify what parts
+of the argument are bound, and to respond appropriately.</p>
+<p>For example, if <code>?a ex:f ?b</code> were a triple pattern in a query, it could be called with <code>?a</code> bound, <code>?b</code> bound,
+or neither. It may make sense to return new bindings that include <code>?b</code> if passed a concrete value for <code>?a</code>,
+or conversely to generate new bindings for <code>?a</code> when passed a concrete <code>?b</code>. If both <code>?a</code> and <code>?b</code> are bound,
+and the function wishes to confirm that the pairing is valid, it can return the existing binding. If there are
+no valid solutions to return, then an empty solution may be presented.</p>
+<p>There are several extremely useful implementations of <code>QueryIterator</code> within the Jena library that make it
+easy to support typical use cases.</p>
+<p>Of particular note:</p>
+<ul>
+<li><a href="https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterNullIterator.html"><code>QueryIterNullIterator</code></a> - to indicate that there are no valid solutions/bindings for the given values</li>
+<li><a href="https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterSingleton.html"><code>QueryIterSingleton</code></a> - to provide a single solution/binding for the given values</li>
+<li><a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterPlainWrapper.html"><code>QueryIterPlainWrapper</code></a> - to provide multiple solutions/bindings for the given values</li>
+</ul>
+<p>The second two cases require instances of <code>Binding</code> objects which can be obtained through static methods of
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/binding/BindingFactory.html"><code>BindingFactory</code></a>.
+Creation of <code>Binding</code> objects will also require references to <a href="https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/core/Var.html"><code>Var</code></a>
+and <a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/NodeFactory.html"><code>NodeFactory</code></a></p>
+<p>Note that it can make a lot of sense to generate the <code>Iterator&lt;Binding&gt;</code> for <code>QueryIterPlainWrapper</code> by means of
+Jena&rsquo;s <code>ExtendedIterator</code>. This can allow domain-specific value to be easily mapped to <code>Binding</code> objects in
+a lazy fashion.</p>
+<p><strong>Graph Operations</strong></p>
+<p>Additional operations on the current, or another, Graph can be achieved through the Execution Context.
+Once retrieved the Graph can be operated upon directly, queried or wrapped in a Model, if preferred.
+New Triples or Graphs can therefore be created as part of the Property Function.</p>
+<pre><code>  //Retrieve current Graph.
+  Graph graph = execCxt.getActiveGraph();
+  
+  //Wrap Graph in a Model.
+  Model model = ModelFactory.createModelForGraph(graph);
+
+  //Retrieve DatasetGraph of current Graph.
+  DatasetGraph datasetGraph = execCxt.getDataset();
+
+  //Retrieve a different Graph in the Dataset.
+  Node otherGraphNode = NodeFactory.createURI(&quot;http://example.org/otherGraph&quot;);
+  Graph otherGraph = datasetGraph.getNamedGraph(otherGraphNode);
+
+  //Create a new Graph in the Dataset, or overwrite an existing Named Graph.
+  Graph newGraph = ...
+  //Add data to the newGraph as retaining empty Graphs is implementation dependent.
+  datasetGraph.addGraph(otherGraphNode, newGraph);
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

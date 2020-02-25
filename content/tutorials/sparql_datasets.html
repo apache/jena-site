@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - SPARQL Tutorial - Datasets</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/tutorials/sparql_datasets.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">SPARQL Tutorial - Datasets</h1>
+            
+	<p>This section covers RDF Datasets - an RDF Dataset is the unit that
+is queried by a SPARQL query. It consists of a default graph, and a
+number of named graphs.</p>
+<h2 id="querying-datasets">Querying datasets</h2>
+<p>The graph matching operation
+(<a href="sparql_basic_patterns.html">basic patterns</a>,
+<a href="sparql_optionals.html"><code>OPTIONAL</code>s</a>, and <a href="sparql_union.html"><code>UNION</code>s</a>) work on
+one RDF graph.  This starts out being the default graph of the
+dataset but it can be changed by the <code>GRAPH</code> keyword.</p>
+<pre><code>GRAPH uri { ... pattern ... }
+
+GRAPH var { ... pattern ... }
+</code></pre>
+<p>If a URI is given, the pattern will be matched against the graph in
+the dataset with that name - if there isn&rsquo;t one, the <code>GRAPH</code> clause
+fails to match at all.</p>
+<p>If a variable is given, all the named graphs (not the default
+graph) are tried.  The variable may be used elsewhere so that if,
+during execution, its value is already known for a solution, only
+the specific named graph is tried.</p>
+<h3 id="example-data">Example Data</h3>
+<p>An RDF dataset can take a variety of forms.  Two common setups are
+to have the default graph being the union (the RDF merge) of all
+the named graphs or to have the default graph be an inventory of
+the named graphs (where they came from, when they were read etc). 
+There are no limitations - one graph can be included twice under
+different names, or some graphs may share triples with others.</p>
+<p>In the examples below we will use the following dataset that might
+occur for an RDF aggregator of book details:</p>
+<p>Default graph (<a href="sparql_data/ds-dft.ttl">ds-dft.ttl</a>):</p>
+<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+&lt;ds-ng-1.ttl&gt; dc:date &quot;2005-07-14T03:18:56+0100&quot;^^xsd:dateTime .
+&lt;ds-ng-2.ttl&gt; dc:date &quot;2005-09-22T05:53:05+0100&quot;^^xsd:dateTime .
+</code></pre>
+<p>Named graph (<a href="sparql_data/ds-ng-1.ttl">ds-ng-1.ttl</a>):</p>
+<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+[] dc:title &quot;Harry Potter and the Philospher's Stone&quot; .
+[] dc:title &quot;Harry Potter and the Chamber of Secrets&quot; .
+</code></pre>
+<p>Named graph (<a href="sparql_data/ds-ng-2.ttl">ds-ng-2.ttl</a>):</p>
+<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+[] dc:title &quot;Harry Potter and the Sorcerer's Stone&quot; .
+[] dc:title &quot;Harry Potter and the Chamber of Secrets&quot; .
+</code></pre>
+<p>That is, we have two small graphs describing some books, and we
+have a default graph which records when these graphs were last
+read.</p>
+<p>Queries can be run with the command line application (this would be
+all one line):</p>
+<pre><code>java -cp ... arq.sparql
+    --graph ds-dft.ttl --namedgraph ds-ng-1.ttl --namedgraph ds-ng-2.ttl
+    --query query file
+</code></pre>
+<p>Datasets don&rsquo;t have to be created just for the lifetime of the query. 
+They can be created and stored in a database, as would be more
+usual for an aggregator application.</p>
+<h3 id="accessing-the-dataset">Accessing the Dataset</h3>
+<p>The first example just accesses the default graph
+(<a href="sparql_data/q-ds-1.rq">q-ds-1.rq</a>):</p>
+<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX : &lt;.&gt;
+
+SELECT *
+{ ?s ?p ?o }
+</code></pre>
+<p>(The &ldquo;<code>PREFIX : &lt;.&gt;</code>&rdquo;  just helps format the output)</p>
+<pre><code>----------------------------------------------------------------------
+| s            | p       | o                                         |
+======================================================================
+| :ds-ng-2.ttl | dc:date | &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime |
+| :ds-ng-1.ttl | dc:date | &quot;2005-07-14T03:18:56+01:00&quot;^^xsd:dateTime |
+----------------------------------------------------------------------
+</code></pre>
+<p>This is the default graph only - nothing from the named graphs
+because they aren&rsquo;t queried unless explicitly indicated via
+<code>GRAPH</code>.</p>
+<p>We can query for all triples by querying the default graph and the
+named graphs (<a href="sparql_data/q-ds-2.rq">q-ds-2.rq</a>):</p>
+<pre><code>PREFIX  xsd:    &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX  dc:     &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX  :       &lt;.&gt;
+
+SELECT *
+{
+    { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } }
+}
+</code></pre>
+<p>giving:</p>
+<pre><code>---------------------------------------------------------------------------------------
+| s            | p        | o                                          | g            |
+=======================================================================================
+| :ds-ng-2.ttl | dc:date  | &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime  |              |
+| :ds-ng-1.ttl | dc:date  | &quot;2005-07-14T03:18:56+01:00&quot;^^xsd:dateTime  |              |
+| _:b0         | dc:title | &quot;Harry Potter and the Sorcerer's Stone&quot;    | :ds-ng-2.ttl |
+| _:b1         | dc:title | &quot;Harry Potter and the Chamber of Secrets&quot;  | :ds-ng-2.ttl |
+| _:b2         | dc:title | &quot;Harry Potter and the Chamber of Secrets&quot;  | :ds-ng-1.ttl |
+| _:b3         | dc:title | &quot;Harry Potter and the Philospher's Stone&quot;  | :ds-ng-1.ttl |
+---------------------------------------------------------------------------------------
+</code></pre>
+<h3 id="querying-a-specific-graph">Querying a specific graph</h3>
+<p>If the application knows the name graph, it can directly ask a
+query such as finding all the titles in a given graph
+(<a href="sparql_data/q-ds-3.rq">q-ds-3.rq</a>):</p>
+<pre><code>PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX : &lt;.&gt;
+
+SELECT ?title
+{
+  GRAPH :ds-ng-2.ttl
+    { ?b dc:title ?title }
+}
+</code></pre>
+<p>Results:</p>
+<pre><code>---------------------------------------------
+| title                                     |
+=============================================
+| &quot;Harry Potter and the Sorcerer's Stone&quot;   |
+| &quot;Harry Potter and the Chamber of Secrets&quot; |
+---------------------------------------------
+</code></pre>
+<h3 id="querying-to-find-data-from-graphs-that-match-a-pattern">Querying to find data from graphs that match a pattern</h3>
+<p>The name of the graphs to be queried can be determined with the
+query itself. The same process for variables applies whether they
+are part of a graph pattern or the <code>GRAPH</code> form. The query below
+(<a href="sparql_data/q-ds-4.rq">q-ds-4.rq</a>) sets a condition on the variable used to
+select named graphs, based on information in the default graph.</p>
+<pre><code>PREFIX  xsd:    &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX  dc:     &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX  :       &lt;.&gt;
+
+SELECT ?date ?title
+{
+  ?g dc:date ?date . FILTER (?date &gt; &quot;2005-08-01T00:00:00Z&quot;^^xsd:dateTime )
+  GRAPH ?g
+      { ?b dc:title ?title }
+}
+</code></pre>
+<p>The results of executing this query on the example dataset are the
+titles in one of the graphs, the one with the date later than 1
+August 2005.</p>
+<pre><code>-----------------------------------------------------------------------------------------
+| date                                      | title                                     |
+=========================================================================================
+| &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime | &quot;Harry Potter and the Sorcerer's Stone&quot;   |
+| &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime | &quot;Harry Potter and the Chamber of Secrets&quot; |
+-----------------------------------------------------------------------------------------
+</code></pre>
+<h2 id="describing-rdf-datasets---from-and-from-named">Describing RDF Datasets - <code>FROM</code> and <code>FROM NAMED</code></h2>
+<p>A query execution can be given the dataset when the execution
+object is built or it can be described in the query itself. When
+the details are on the command line, a temporary dataset is created
+but an application can create datasets and then use them in many
+queries.</p>
+<p>When described in the query, <code>FROM &lt;</code><em><code>url</code></em><code>&gt;</code> is used to identify
+the contents to be in the default graph. There can be more than one
+<code>FROM</code> clause and the default graph is result of reading each file
+into the default graph. It is the RDF merge of the individual
+graphs.</p>
+<p>Don&rsquo;t be confused by the fact the default graph is described by one
+or more URLs in <code>FROM</code> clauses. This is where the data is read
+from, not the name of the graph. As several FROM clauses can be
+given, the data can be read in from several places but none of them
+become the graph name.</p>
+<p><code>FROM NAMED &lt;</code><em><code>url</code></em><code>&gt;</code> is used to identify a named graph. The
+graph is given the name <em>url</em> and the data is read from that
+location. Multiple <code>FROM NAMED</code> clauses cause multiple graphs to be
+added to the dataset.</p>
+<p>Note that graphs are loaded with the Jena FileManager which
+includes the ability to provide alternative locations for files.
+For example, the query may have <code>FROM NAMED &lt;http://example/data&gt;</code>,
+and the data actually be read from <code>file:local.rdf</code>. The name of
+the graph will be <a href="http://example/data%5C">http://example/data\</a> as in the query.</p>
+<p>For example, the query to find all the triples in both default
+graph and named graphs could be written as
+(<a href="sparql_data/q-ds-5.rq">q-ds-5.rq</a>):</p>
+<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX :    &lt;.&gt;
+
+SELECT *
+FROM       &lt;ds-dft.ttl&gt;
+FROM NAMED &lt;ds-ng-1.ttl&gt;
+FROM NAMED &lt;ds-ng-2.ttl&gt;
+{
+   { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } }
+}
+</code></pre>
+<p><a href="sparql_results.html">Next: results</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

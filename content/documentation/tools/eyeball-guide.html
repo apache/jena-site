@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - A brief guide to Jena Eyeball</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/tools/eyeball-guide.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">A brief guide to Jena Eyeball</h1>
+            
+	<p><b>This page is historical &ldquo;for information only&rdquo; - there is no Apache
+release of Eyeball and the code has not been updated for Jena3.<br>
+<br/>
+The <a href="https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/">original source code is available</a>.
+</b></p>
+<p>So you&rsquo;ve got Eyeball installed and you&rsquo;ve run it on one of your
+files, and Eyeball doesn&rsquo;t like it. You&rsquo;re not sure why, or what to
+do about it. Here&rsquo;s what&rsquo;s going on.</p>
+<p>Eyeball inspects your model against a set of <em>schemas</em>. The default
+set of schemas includes RDF, RDFS, the XSD datatypes, and any
+models your model imports: you can add additional schemas from the
+command line or configuration file. Eyeball uses those schemas to
+work out what URIs count as &ldquo;declared&rdquo; in advance. It also checks
+URIs and literals for syntactic correctness and name space prefixes
+for being &ldquo;sensible&rdquo;. Let&rsquo;s look at some of the messages you can
+get.</p>
+<h2 id="unknown-predicate-reports">Unknown predicate reports</h2>
+<p>You&rsquo;ll probably find several messages like this:
+predicate not declared in any schema: somePredicateURI</p>
+<p>Eyeball treats the imported models, and (independently) the
+specified schemas, as single OntModels, and extracts those
+OntModels&rsquo; properties. It includes the RDF and RDFS schemas.
+Anything used as a predicate that isn&rsquo;t one of those properties is
+reported.</p>
+<p>If you&rsquo;re using OWL, you can silence the &ldquo;undeclared property&rdquo;
+messages about OWL properties by adding to your Eyeball command
+line the option:
+-assume owl</p>
+<p>Eyeball will read the OWL schema (it has a copy stashed away in the
+<em>mirror</em> directory) and add the declared properties to its known
+list. This works for any filename or URL you like, so long as
+there&rsquo;s RDF there and it has a suitable file suffix - <em>.n3</em> for N3
+or <em>.rdf</em> or <em>.owl</em> for RDF/XML - and for the built-in names <em>dc</em>
+(basic Dublin Core), <em>dcterms</em> (Dublin Core terms) and <em>dc-all</em>
+(both). So you can construct your own schemas, which declare your
+own domain-specific property declarations, and invoke Eyeball with</p>
+<pre><code>-assume owl *mySchemaFile.n3* *otherSchemaFile.rdf*
+</code></pre>
+<p>You can give short names (like <strong>dc</strong> and <strong>rdfs</strong>) to your own
+schemas, or collections of schemas, using an Eyeball <em>config file</em>,
+but you&rsquo;ll have to see the <a href="eyeball-manual.html">manual</a> to find out how.</p>
+<h2 id="unknown-class-reports">Unknown class reports</h2>
+<p>You may see messages like this:</p>
+<pre><code>class not declared in any schema: someClassURI
+</code></pre>
+<p>Having read the previous section, you can probably work out what&rsquo;s
+going on: Eyeball reads the schemas (and imports) and extracts the
+declared OntClasses. Then anything used as a class that isn&rsquo;t one
+of those declared classes is reported..</p>
+<p>And that&rsquo;s exactly it. &ldquo;Used as a class&rdquo; means appearing as <strong>C</strong>
+or <strong>D</strong> in any statement of the form:</p>
+<pre><code>\_ rdf:type C
+\_ rdfs:domain C
+\_ rdfs:range C
+C rdfs:subClassOf D
+</code></pre>
+<h2 id="suppressing-inspectors">Suppressing inspectors</h2>
+<p>It may be that you&rsquo;re not interested in the &ldquo;unknown predicate&rdquo; or
+&ldquo;unknown class&rdquo; reports until you&rsquo;ve sorted out the URIs. Or maybe
+you don&rsquo;t care about them. In that case, you can switch them off.</p>
+<p>Eyeball&rsquo;s different checks are carried out by <em>inspector</em> classes.
+These classes are given short names by entries in Eyeball config
+files (which are RDF files written using N3; you can see the
+default config file by looking in Eyeball&rsquo;s <code>etc</code> directory for
+<code>eyeball2-config.n3</code>). By adding eg:</p>
+<pre><code>-exclude property class
+</code></pre>
+<p>to the Eyeball command line, you can <em>exclude</em> the inspectors with
+those short names from the check. <em>property</em> is the short name for
+the &ldquo;unknown property&rdquo; inspector, and <em>class</em> is the short name for
+the &ldquo;unknown class&rdquo; inspector.</p>
+<h2 id="namespace-and-uri-reports">Namespace and URI reports</h2>
+<p>Eyeball checks all the URIs in the model, including (if available)
+those used for namespaces. (And literals, but see below.) Here&rsquo;s an
+example:</p>
+<pre><code>bad namespace URI: &quot;file:some-filename&quot;
+    on prefix: &quot;pqr&quot;
+    for reason: file URI inappropriate for namespace
+</code></pre>
+<p>A &ldquo;bad namespace URI&rdquo; means that Eyeball doesn&rsquo;t like the URI for a
+namespace in the model. The &ldquo;on prefix&rdquo; part of the report says
+what the namespace prefix is, and the &ldquo;for reason&rdquo; part gives the
+reason. In this case, we (the designer of Eyeball) feel that it is
+unwise to use file URIs - which tend to depend on internal details
+of your directory structure - for global concepts.
+A more usual reason is that the URI is syntactically illegal. Here
+are some possibilities:</p>
+<table>
+<thead>
+<tr>
+<th>problem</th>
+<th>explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>URI contains spaces</td>
+<td>literal spaces are not legal in URIs. This usually arises from file URIs when the file has a space in its name. Spaces in URIs have to be encoded.</td>
+</tr>
+<tr>
+<td>URI has no scheme</td>
+<td>The URI has no scheme at all. This usually happens when some relative URI hasn&rsquo;t been resolved properly, eg there&rsquo;s no xml base in an RDF/XML document.</td>
+</tr>
+<tr>
+<td>URI has an unrecognised scheme</td>
+<td>The scheme part of the URI - the bit before the first colon - isn&rsquo;t recognised. Eyeball knows, by default, four schemes: <strong>http</strong>, <strong>ftp</strong>, <strong>file</strong>, and <strong>urn</strong>. This usually arises when a QName has &ldquo;escaped&rdquo; from somewhere, or from a typo. You can tell Eyeball about other schemes, if you need them.</td>
+</tr>
+<tr>
+<td>scheme should be lower-case</td>
+<td>The scheme part of the URI contains uppercase letters. While this is not actually <em>wrong</em>, it is unconventional and pointless.</td>
+</tr>
+<tr>
+<td>URI doesn&rsquo;t fit pattern</td>
+<td>Eyeball has some (weak) checks on the syntax of URIs in different schemes, expressed as patterns in its config files. If a URI doesn&rsquo;t match the pattern, Eyeball reports this problem. At the moment, you&rsquo;ll only get this report for a <strong>urn</strong> URI like <em>urn:x-hp:23487682347</em> where the URN id (the bit between the first and second colons, here <em>x-hp</em>) is illegal.</td>
+</tr>
+<tr>
+<td>URI syntax error</td>
+<td>A catch-all error: Java couldn&rsquo;t make any sense of this URI at all.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="problems-with-literals">Problems with literals</h2>
+<p>Eyeball checks literals (using the <em>literal inspector</em>, whose short
+name is <strong>literal</strong> if you want to switch it off), but the checking
+is quite weak because it doesn&rsquo;t understand types at the moment.
+You can get two different classes of error.</p>
+<pre><code>bad language: someLanguageCode
+on literal: theLiteralInQuestion
+</code></pre>
+<p>Literals with language codes (things like <strong>en-UK</strong> or <strong>de</strong>) are
+checked to make sure that the language code conforms to the general
+syntax for language codes: alphanumeric words separated by hyphens,
+with the first containing no digits.</p>
+<p>(Later versions of Eyeball will likely allow you to specify <em>which</em>
+language codes you want to permit in your models. But we haven&rsquo;t
+got there yet.)</p>
+<pre><code>bad datatype URI: someURI
+on literal: theLiteralInQuestion
+for reason: theReason
+</code></pre>
+<p>Similarly, literals with datatypes are checked to make sure that
+the type URI is legal. That&rsquo;s it for the moment: Eyeball doesn&rsquo;t
+try to find out if the URI really is a type URI, or if the spelling
+of the literal is OK for that type. But it spots the bad URIs. (The
+messages are the same as those that appear in the URI checking -
+above - for the very good reason that it&rsquo;s the same code doing the
+checking.)</p>
+<h2 id="problematic-prefixes">Problematic prefixes</h2>
+<p>Both RDF/XML and N3 allow (and RDF/XML requires) namespaces to be
+abbreviated by prefixes. Eyeball checks prefixes for two possible
+problems. The first:</p>
+<pre><code>non-standard namespace for prefix
+</code></pre>
+<p>This arises when a &ldquo;standard&rdquo; prefix has been bound to a namespace
+URI which isn&rsquo;t its usual one. The &ldquo;standard&rdquo; prefixes are taken
+from Jena&rsquo;s <code>PrefixMapping.Extended</code> and are currently:</p>
+<pre><code>**rdf, rdfs, owl, xsd, rss, vcard**
+</code></pre>
+<p>And the second:</p>
+<pre><code>Jena generated prefix found
+</code></pre>
+<p>This arises when the model contains prefixes of the form <code>j.N</code>,
+where N is a number. These are generated by Jena when writing
+RDF/XML for URIs that must have a prefix (because they are used as
+types or predicates) but haven&rsquo;t been given one.</p>
+<p>If you&rsquo;re not bothered about inventing short prefixes for your
+namespaces, you can <strong>-exclude</strong> <code>jena-prefix</code> to suppress this
+inspection.</p>
+<h2 id="but-how-do-i-">But how do I &hellip;</h2>
+<p>The reports described so far are part of Eyeball&rsquo;s default set of
+inspections. There are some other checks that it can do that are
+switched off by default, because they are expensive, initially
+overwhelming, or downright obscure. If you need to add these checks
+to your eyeballing, this is how to do it.</p>
+<h3 id="-make-sure-everything-is-typed">&hellip; make sure everything is typed?</h3>
+<p>Some applications (or a general notion of cleanliness) require that
+every individual in an RDF model has an explicit <code>rdf:type</code>. The
+Eyeball check for this isn&rsquo;t enabled by default, because lots of
+casual RDF use doesn&rsquo;t need it, and more sophisticated use has
+models with enough inference power to infer types.</p>
+<p>You can add the <strong>all-typed</strong> inspector to the inspectors that
+Eyeball will run by adding to the command line:</p>
+<pre><code>-inspectors defaultInspectors all-typed
+</code></pre>
+<p>The <strong>all-typed</strong> inspector will generate a message</p>
+<pre><code>resource has no rdf:type
+</code></pre>
+<p>for each resource in the model which is not the subject of an
+<code>rdf:type</code> statement.</p>
+<h3 id="-check-for-type-consistency">&hellip; check for type consistency?</h3>
+<p>One easy mistake to make in RDF is to make an assertion - we&rsquo;ll
+call it <strong>S P O</strong> - about some subject <strong>S</strong> which is &ldquo;of the wrong
+type&rdquo;, that is, not of whatever type <strong>P</strong>&lsquo;s domain is. This isn&rsquo;t,
+in principle, an error, since RDF resources can have multiple
+types, and this just makes <strong>S</strong> have a type which is a subtype of
+both <strong>P</strong>&lsquo;s domain and whatever type it was supposed to have.</p>
+<p>To spot this, and related problems, Eyeball has the
+<strong>consistent-type</strong> inspector. You can add it to the inspections in
+the same way as the <strong>all-typed</strong> inspector:</p>
+<pre><code>-inspectors defaultInspectors consistent-type
+</code></pre>
+<p>It checks that every resource which has been given at least one
+type has a type which is a subtype of all its types, under an
+additional assumption:</p>
+<pre><code>Types in the type graph (the network of rdfs:subClassOf statements)
+are disjoint (share no instances) unless the type graph says
+they're not.
+</code></pre>
+<p>For example, suppose that both <strong>A</strong> and <strong>B</strong> are subclasses of
+<strong>Top</strong>, and that there are no other subclass relationships. Then
+<strong>consistent-types</strong> assumes that there are (supposed to be) no
+resources which have both <strong>A</strong> and <strong>B</strong> as types. If it finds a
+resource <strong>X</strong> which <em>does</em> have both types, it generates a message
+like this:</p>
+<pre><code>no consistent type for: X
+has associated type: A
+has associated type: B
+has associated type: Top
+</code></pre>
+<p>It&rsquo;s up to you to disentangle the types and work out what went
+wrong.</p>
+<p><em>Note</em>: this test requires that Eyeball do a significant amount of
+inference, to complete the type hierarchy and check the domains and
+ranges of properties. It&rsquo;s quite slow, which is one reason it isn&rsquo;t
+switched on by default.</p>
+<h3 id="-check-the-right-number-of-values-for-a-property">&hellip; check the right number of values for a property?</h3>
+<p>You want to make sure that your data has the right properties for
+things of a certain type: say, that a book has at least one author
+(or editor), an album has at least one track, nobody in your
+organisation has more than ten managers, a Jena contrib has at
+least a <code>dc:creator</code>, a <code>dc:name</code>, and a <code>dc:description</code>. You
+write some OWL <em>cardinality constraints</em>:</p>
+<pre><code>my:Type rdfs:subClassOf [owl:onProperty my:track;
+owl:minCardinality 1]
+</code></pre>
+<p>Then you discover that, for wildly technical reasons, the OWL
+validation code in Jena doesn&rsquo;t think it&rsquo;s an error for some album
+to have no tracks (maybe there&rsquo;s a namespace error).
+You can enable Eyeball&rsquo;s <em>cardinality inspector</em> by adding</p>
+<pre><code>-inspectors cardinality
+</code></pre>
+<p>to the command line. You&rsquo;ll now get a report item for every
+resource that has <code>rdf:type</code> your restricted type (<code>my:Type</code> above)
+but doesn&rsquo;t have the right (at least one) value for the property.
+It will look something like:</p>
+<pre><code>cardinality failure for: my:Instance
+    on type: my:Type
+    on property: my:track
+    cardinality range: [min: 1]
+    number of values: 0
+    values: {}
+</code></pre>
+<p>If there are some values for the property - say you&rsquo;ve supplied an
+<code>owl:maxCardinality</code> restriction and then gone over the top - they
+get listed inside the <code>values</code> curly braces.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

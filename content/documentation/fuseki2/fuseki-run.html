@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Running Fuseki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-run.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Running Fuseki</h1>
+            
+	<p>Fuseki can be run in a number of ways:</p>
+<ul>
+<li><a href="#fuseki-standalone-server">As a standalone server</a></li>
+<li><a href="#fuseki-service">As a service</a> run by the operation system, for example, started when the machine</li>
+<li><a href="#fuseki-web-application">As a Web Application</a> inside a container such as Apache Tomcat or Jetty
+boots.</li>
+<li><a href="#fuseki-main">As a configurable SPARQL server</a></li>
+<li><a href="#fuseki-server">As a deployment and development standalone server</a></li>
+</ul>
+<p>See &ldquo;<a href="fuseki-configuration.html">Fuseki Configuration</a>&rdquo; for information on
+how to provide datasets and configure services.</p>
+<h2 id="fuseki-standalone-server">Fuseki as a Standalone Server</h2>
+<p>This is running Fuseki from the command line.</p>
+<pre><code>fuseki-server [--mem | --loc=DIR] [[--update] /NAME]
+
+fuseki-server --config=CONFIG
+</code></pre>
+<p>where <code>/NAME</code> is the dataset publishing name at this server in URI space.</p>
+<p>The argument <code>--tdb2</code> puts the command line handling into &ldquo;TDB2 mode&rdquo;.
+A dataset created with <code>--loc</code> is a TDB2 dataset.</p>
+<p>See <code>fuseki-server --help</code> for details of more arguments.</p>
+<p><code>FUSEKI_BASE</code>, the runtime area for the server instance, defaults to the
+<code>run/</code> directory of the current directory.</p>
+<p>Fuseki v2 supports the same style of configuration file as Fuseki v1 but it
+is better to separate the data service definitions from the server
+configuration with one definition per file in <code>FUSEKI_BASE/configuration</code>;
+see &ldquo;<a href="fuseki-configuration.html">Fuseki Configuration</a>&quot;.</p>
+<p>If you get the error message <code>Can't find jarfile to run</code> then you either
+need to put a copy of <code>fuseki-server.jar</code> in the current directory or set
+the environment variable <code>FUSEKI_HOME</code> to point to an unpacked Fuseki
+distribution.</p>
+<p>Unlike Fuseki v1, starting with no dataset and no configuration is possible.
+Datasets can be added from the admin UI to a running server.</p>
+<h2 id="fuseki-service">Fuseki as a Service</h2>
+<p>Fuseki can run as an operating system service, started when the server
+machine boots.  The script <code>fuseki</code> is a Linux <code>init.d</code> with the common
+secondary arguments of <code>start</code> and <code>stop</code>.</p>
+<p>Process arguments are read from <code>/etc/default/fuseki</code> including
+<code>FUSEKI_HOME</code> and <code>FUSEKI_BASE</code>.  <code>FUSEKI_HOME</code> should be the directory
+where the distribution was unpacked.</p>
+<h2 id="fuseki-web-application">Fuseki as a Web Application</h2>
+<p>Fuseki can run from a
+<a href="http://en.wikipedia.org/wiki/WAR_%28file_format%29">WAR</a> file.  Fuseki
+requires at least support for the Servlet 3.0 API (e.g. Apache Tomcat 7 or
+Jetty 8) as well as Java8.</p>
+<p><code>FUSEKI_HOME</code> is not applicable.</p>
+<p><code>FUSEKI_BASE</code> defaults to <code>/etc/fuseki</code> which must be a writeable
+directory.  It is initialised the first time Fuseki runs, including a
+<a href="http://shiro.apache.org/">Apache Shiro</a> security file but this is only
+intended as a starting point.  It restricts use of the admin UI to the
+local machine.</p>
+<h2 id="fuseki-main">Fuseki as Configuable and Embeddable SPARQL Server</h2>
+<p>Fuseki can be run from inside an Java application to provide SPARQL
+services to application data. The application can continue to access and
+update the datasets served by the server.</p>
+<p>Basic example:</p>
+<pre><code>Dataset ds = ...
+FusekiServer server = FusekiServer.create()
+  .add(&quot;/dataset&quot;, ds)
+  .build() ;
+server.start() ;
+</code></pre>
+<p>See the <a href="fuseki-main.html">full documentation</a> for details of
+configuration and working with data shared with the
+<a href="fuseki-main.html">Fuseki main server</a> instance.</p>
+<h2 id="fuseki-server">Fuseki-Server (no UI)</h2>
+<p>The artifact <code>org.apache.jena:jena-fuseki-server</code> is a packaging of
+the <a href="fuseki-main.html">Fuseki &ldquo;main&rdquo; server</a> server that runs from
+the command line.  Unlike the full Fuseki server, it is only configured
+from the command line and has no persistent work area on-disk.
+It has full SPARQL and all storage options.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

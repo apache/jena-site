@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Reading RDF in Apache Jena</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/io/rdf-input.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Reading RDF in Apache Jena</h1>
+            
+	<p>This page details the setup of RDF I/O technology (RIOT) for input
+introduced in Jena 2.10.</p>
+<p>See <a href="rdf-output.html">Writing RDF</a> for details of the RIOT Writer system.</p>
+<ul>
+<li><a href="#api">API</a>
+<ul>
+<li><a href="#determining-the-rdf-syntax">Determining the RDF syntax</a></li>
+<li><a href="#example-1-common-usage">Example 1 : Common usage</a></li>
+<li><a href="#example-2-using-the-rdfdatamgr">Example 2 : Using the RDFDataMgr</a></li>
+<li><a href="#example-3-using-rdfparser">Example 3 : Using RDFParser</a></li>
+</ul>
+</li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#streammanager-and-locationmapper">The StreamManager and LocationMapper</a>
+<ul>
+<li><a href="#configuring-a-streammanager">Configuring a <code>StreamManager</code></a></li>
+<li><a href="#configuring-a-locationmapper">Configuring a <code>LocationMapper</code></a></li>
+</ul>
+</li>
+<li><a href="#advanced-examples">Advanced examples</a>
+<ul>
+<li><a href="#iterating-over-parser-output">Iterating over parser output</a></li>
+<li><a href="#filter-the-output-of-parsing">Filtering the output of parsing</a></li>
+<li><a href="#add-a-new-language">Add a new language</a></li>
+</ul>
+</li>
+</ul>
+<p>Full details of operations are given in the javadoc.</p>
+<h2 id="api">API</h2>
+<p>Much of the functionality is accessed via the Jena Model API; direct
+calling of the RIOT subsystem isn&rsquo;t needed.  A resource name
+with no URI scheme is assumed to be a local file name.</p>
+<p>Applications typically use at most <code>RDFDataMgr</code> to read RDF datasets.</p>
+<p>The major classes in the RIOT API are:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDFDataMgr</td>
+<td>Main set of functions to read and load models and datasets</td>
+</tr>
+<tr>
+<td>StreamRDF</td>
+<td>Interface for the output of all parsers</td>
+</tr>
+<tr>
+<td>RDFParser</td>
+<td>Detailed setup of a parser</td>
+</tr>
+<tr>
+<td>StreamManager</td>
+<td>Handles the opening of typed input streams</td>
+</tr>
+<tr>
+<td>RDFLanguages</td>
+<td>Registered languages</td>
+</tr>
+<tr>
+<td>RDFParserRegistry</td>
+<td>Registered parser factories</td>
+</tr>
+</tbody>
+</table>
+<h3 id="determining-the-rdf-syntax">Determining the RDF syntax</h3>
+<p>The syntax of the RDF file is determined by the content type (if an HTTP
+request), then the file extension if there is no content type. Content type
+<code>text/plain</code> is ignored; it is assumed to be type returned for an unconfigured
+http server. The application can also pass in a declared language hint.</p>
+<p>The string name traditionally used in <code>model.read</code> is mapped to RIOT <code>Lang</code>
+as:</p>
+<table>
+<thead>
+<tr>
+<th>Jena reader</th>
+<th>RIOT Lang</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;TURTLE&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;TTL&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;Turtle&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;N-TRIPLES&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;N-TRIPLE&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;NT&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/XML&quot;</code></td>
+<td><code>RDFXML</code></td>
+</tr>
+<tr>
+<td><code>&quot;N3&quot;</code></td>
+<td><code>N3</code></td>
+</tr>
+<tr>
+<td><code>&quot;JSON-LD&quot;</code></td>
+<td><code>JSONLD</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/JSON&quot;</code></td>
+<td><code>RDFJSON</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/JSON&quot;</code></td>
+<td><code>RDFJSON</code></td>
+</tr>
+</tbody>
+</table>
+<p>The following is a suggested Apache httpd .htaccess file:</p>
+<pre><code>AddType  text/turtle             .ttl
+AddType  application/rdf+xml     .rdf
+AddType  application/n-triples   .nt
+
+AddType  application/ld+json     .jsonld
+AddType  application/owl+xml     .owl
+
+AddType  text/trig               .trig
+AddType  application/n-quads     .nq
+
+AddType  application/trix+xml    .trix
+AddType  application/rdf+thrift  .trdf
+</code></pre>
+<h3 id="example-1--common-usage">Example 1 : Common usage</h3>
+<p>In this example, a file in the current directory is read as Turtle.</p>
+<pre><code>Model model = ModelFactory.createDefaultModel() ;
+model.read(&quot;data.ttl&quot;) ;
+</code></pre>
+<p>If the syntax is not as the file extension, a language can be declared:</p>
+<pre><code>model.read(&quot;data.foo&quot;, &quot;TURTLE&quot;) ;
+</code></pre>
+<h3 id="example-2--using-the-rdfdatamgr">Example 2 : Using the RDFDataMgr</h3>
+<p>In versions of Jena priot to 2.10.0, the <code>FileManager</code> provided some of
+this functionality. It was more basic, and not properly web enabled.
+The API <code>RDFDataMgr</code> superceeds the <code>FileManager</code>.</p>
+<p>`RDFDataMgr &ldquo;load*&rdquo; operations create an
+in-memory container (model, or dataset as appropriate); &ldquo;read&rdquo; operations
+add data into an existing model or dataset.</p>
+<pre><code>// Create a model and read into it from file 
+// &quot;data.ttl&quot; assumed to be Turtle.
+Model model = RDFDataMgr.loadModel(&quot;data.ttl&quot;) ;
+
+// Create a dataset and read into it from file 
+// &quot;data.trig&quot; assumed to be TriG.
+Dataset dataset = RDFDataMgr.loadDataset(&quot;data.trig&quot;) ;
+
+// Read into an existing Model
+RDFDataMgr.read(model, &quot;data2.ttl&quot;) ;
+</code></pre>
+<h3 id="example-3--using-rdfparser">Example 3 : Using RDFParser</h3>
+<p>Detail control over the setup of the parsing process is provided by
+<code>RDFParser</code> which provides a builder pattern.  It has many options - see
+<a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html">the javadoc for all details</a>.</p>
+<p>For example, to read Trig data, and set the error handler specially,</p>
+<pre><code>    // The parsers will do the necessary character set conversion.  
+    try (InputStream in = new FileInputStream(&quot;data.some.unusual.extension&quot;)) {
+        RDFParser.create()
+            .source(in)
+            .lang(RDFLanguages.TRIG)
+            .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
+            .base(&quot;http://example/base&quot;)
+            .parse(noWhere);
+    }
+</code></pre>
+<h2 id="logging">Logging</h2>
+<p>The parsers log to a logger called <code>org.apache.jena.riot</code>.  To avoid <code>WARN</code>
+messages, set this in log4j.properties to <code>ERROR</code>.</p>
+<h2 id="streammanager-and-locationmapper">StreamManager and LocationMapper</h2>
+<p>By default, the <code>RDFDataMgr</code> uses the global <code>StreamManager</code> to open typed
+InputStreams.  This is available to applications via <code>RDFDataMgr.open</code> as well as directly
+using a <code>StreamManager</code>.</p>
+<p>The <code>StreamManager</code> is chosen based on the <code>Context</code> object for the
+operation, but normally this defaults to the global <code>Context</code> available via
+<code>Context.get()</code>.  The constant <code>RDFDataMgr.streamManagerSymbol</code>, which is
+<code>http://jena.apache.org/riot/streamManager</code> is used.</p>
+<p>Specialized StreamManagers can be configured with specific locators for
+data:</p>
+<ul>
+<li>File locator (with own current directory)</li>
+<li>URL locator</li>
+<li>Class loader locator</li>
+<li>Zip file locator</li>
+</ul>
+<h3 id="configuring-a-streammanager">Configuring a <code>StreamManager</code></h3>
+<p>The <code>StreamManager</code> can be reconfigured with different places to look for
+files.  The default configuration used for the global <code>StreamManager</code> is
+a file access class, where the current directory is that of the java
+process, a URL accessor for reading from the web, and a
+class loader-based accessor.  Different setups can be built and used
+either as the global set up,</p>
+<p>There is also a <code>LocationMapper</code> for rewriting file names and URLs before
+use to allow placing known names in different places (e.g. having local
+copies of import http resources).</p>
+<h3 id="configuring-a-locationmapper">Configuring a <code>LocationMapper</code></h3>
+<p>Location mapping files are RDF, usually written in Turtle although
+an RDF syntax can be used.</p>
+<pre><code>@prefix lm: &lt;http://jena.hpl.hp.com/2004/08/location-mapping#&gt;
+
+[] lm:mapping
+   [ lm:name &quot;file:foo.ttl&quot; ;      lm:altName &quot;file:etc/foo.ttl&quot; ] ,
+   [ lm:prefix &quot;file:etc/&quot; ;       lm:altPrefix &quot;file:ETC/&quot; ] ,
+   [ lm:name &quot;file:etc/foo.ttl&quot; ;  lm:altName &quot;file:DIR/foo.ttl&quot; ]
+   .
+</code></pre>
+<p>There are two types of location mapping: exact match renaming and
+prefix renaming. When trying to find an alternative location, a
+<code>LocationMapper</code> first tries for an exact match; if none is found,
+the LocationMapper will search for the longest matching prefix. If
+two are the same length, there is no guarantee on order tried;
+there is no implied order in a location mapper configuration file
+(it sets up two hash tables).</p>
+<p>In the example above, <code>file:etc/foo.ttl</code> becomes <code>file:DIR/foo.ttl</code>
+because that is an exact match. The prefix match of file:/etc/ is
+ignored.</p>
+<p>All string tests are done case sensitively because the primary use
+is for URLs.</p>
+<p>Notes:</p>
+<ul>
+<li>Property values are not URIs, but strings. This is a system
+feature, not an RDF feature. Prefix mapping is name rewriting;
+alternate names are not treated as equivalent resources in the rest
+of Jena. While application writers are encouraged to use URIs to
+identify files, this is not always possible.</li>
+<li>There is no check to see if the alternative system resource is
+equivalent to the original.</li>
+</ul>
+<p>A LocationMapper finds its configuration file by looking for the
+following files, in order:</p>
+<ul>
+<li><code>file:location-mapping.rdf</code></li>
+<li><code>file:location-mapping.ttl</code></li>
+<li><code>file:etc/location-mapping.rdf</code></li>
+<li><code>file:etc/location-mapping.ttl</code></li>
+</ul>
+<p>This is a specified as a path - note the path separator is always
+the character &lsquo;;&rsquo; regardless of operating system because URLs
+contain &lsquo;:'.</p>
+<p>Applications can also set mappings programmatically. No
+configuration file is necessary.</p>
+<p>The base URI for reading models will be the original URI, not the alternative location.</p>
+<h3 id="debugging">Debugging</h3>
+<p>Using log4j, set the logging level of the classes:</p>
+<ul>
+<li>org.apache.jena.riot.stream.StreamManager</li>
+<li>org.apache.jena.riot.stream.LocationMapper</li>
+</ul>
+<h2 id="advanced-examples">Advanced examples</h2>
+<p>Example code may be found in <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/">jena-arq/src-examples</a>.</p>
+<h3 id="iterating-over-parser-output">Iterating over parser output</h3>
+<p>One of the capabilities of the RIOT API is the ability to treat parser output as an iterator,
+this is useful when you don&rsquo;t want to go to the trouble of writing a full sink implementation and can easily express your
+logic in normal iterator style.</p>
+<p>To do this you use one of the subclasses of
+<a href="https://github.com/apache/jena/tree/master/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFIterator.java?view=markup">PipedRDFIterator</a>
+in conjunction with a <a href="https://github.com/apache/jena/tree/master/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFStream.java?view=markup">PipedRDFStream</a>.</p>
+<p>This <code>PipedRDFStream</code> provides an implementation of <code>StreamRDF</code> which allows it to consume parser output and this is consumed by
+the <code>PipedRDFIterator</code> implementation.  This has some advantages over a direct <code>StreamRDF</code> implementation since it allows the parser
+production of data to run ahead of your consumption of data which may result in better overall throughput.</p>
+<p>The only complication is that you need to ensure that the thread feeding the <code>PipedRDFStream</code> and the consumer of the iterator are on different threads
+as otherwise you can run into a deadlock situation where one is waiting on data from the other which is never started.</p>
+<p>See <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_6.java">RIOT example 6</a>
+which shows an example usage including a simple way to push the parser onto a different thread to avoid the possible deadlock.</p>
+<h3 id="filter-the-output-of-parsing">Filter the output of parsing</h3>
+<p>When working with very large files, it can be useful to
+process the stream of triples or quads produced
+by the parser so as to work in a streaming fashion.</p>
+<p>See <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_4.java">RIOT example 4</a></p>
+<h3 id="add-a-new-language">Add a new language</h3>
+<p>The set of languages is not fixed. A new languages,
+together with a parser, can be added to RIOT as shown in
+<a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_5.java">RIOT example 5</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

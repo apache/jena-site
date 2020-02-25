@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - TDB Optimizer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/tdb/optimizer.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">TDB Optimizer</h1>
+            
+	<p>Query execution in TDB involves both static and dynamic
+optimizations. Static optimizations are transformations of the
+SPARQL algebra performed before query execution begins; dynamic
+optimizations involve deciding the best execution approach during
+the execution phase and can take into account the actual data so
+far retrieved.</p>
+<p>The optimizer has a number of strategies: a statistics based
+strategy, a fixed strategy and a strategy of no reordering.</p>
+<p>For the preferred statistics strategy, the TDB optimizer uses
+information captured in a per-database statistics file. The file
+takes the form of a number of rules for approximate matching counts
+for triple patterns. The statistic file can be automatically
+generated. The user can add and modify rules to tune the database
+based on higher level knowledge, such as inverse function
+properties.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#running-tdbstats">Running tdbstats</a></li>
+<li><a href="#choosing-the-optimizer-strategy">Choosing the optimizer strategy</a></li>
+<li><a href="#filter-placement">Filter placement</a></li>
+<li><a href="#investigating-what-is-going-on">Investigating what is going on</a></li>
+<li><a href="#statistics-rule-file">Statistics Rule File</a>
+<ul>
+<li><a href="#statistics-rule-language">Statistics Rule Language</a></li>
+<li><a href="#abbreviated-rule-form">Abbreviated Rule Form</a></li>
+<li><a href="#defaults">Defaults</a></li>
+</ul>
+</li>
+<li><a href="#generating-a-statistics-file">Generating a statistics file</a>
+<ul>
+<li><a href="#generating-statistics-for-union-graphs">Generating statistics for Union Graphs</a></li>
+</ul>
+</li>
+<li><a href="#writing-rules">Writing Rules</a></li>
+</ul>
+<h2 id="quickstart">Quickstart</h2>
+<p>This section provides a practical how-to.</p>
+<ol>
+<li>Load data.</li>
+<li>Generate the statistics file. Run tdbstats.</li>
+<li>Place the file generated in the database directory with the
+name stats.opt.</li>
+</ol>
+<h2 id="running-tdbstats">Running <code>tdbstats</code></h2>
+<p>Usage:</p>
+<pre><code> tdbstats --loc=DIR|--desc=assemblerFile [--graph=URI]
+</code></pre>
+<h2 id="choosing-the-optimizer-strategy">Choosing the optimizer strategy</h2>
+<p>TDB chooses the basic graph pattern optimizer by the presence of a
+file in the database directory.</p>
+<p>Optimizer control files</p>
+<table>
+<thead>
+<tr>
+<th>File name</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>none.opt</code></td>
+<td>No reordering - execute triple patterns in the order in the query</td>
+</tr>
+<tr>
+<td><code>fixed.opt</code></td>
+<td>Use a built-in reordering based on the number of variables in a triple pattern.</td>
+</tr>
+<tr>
+<td><code>stats.opt</code></td>
+<td>The contents of this file are the weighing rules (see below).</td>
+</tr>
+</tbody>
+</table>
+<p>The contents of the files <code>none.opt</code> and <code>fixed.opt</code> are not read
+and don&rsquo;t matter. They can be zero-length files.</p>
+<p>If more then one file is found, the choice is made: <code>stats.opt</code>
+over <code>fixed.opt</code> over <code>none.opt</code>.</p>
+<p>The &ldquo;no reorder&rdquo; strategy can be useful in investigating the
+effects. Filter placement still takes place.</p>
+<h2 id="filter-placement">Filter placement</h2>
+<p>One of the key optimization is of filtered basic graph patterns.
+This optimization decides the best order of triple patterns in a
+basic graph pattern and also the best point at which to apply the
+filters within the triple patterns.</p>
+<p>Any filter expression of a basic graph pattern is placed
+immediately after all it&rsquo;s variables will be bound. Conjunctions at
+the top level in filter expressions are broken into their
+constituent pieces and placed separately.</p>
+<h2 id="investigating-what-is-going-on">Investigating what is going on</h2>
+<p>TDB can optionally log query execution details. This is controlled
+by two setting: the logging level and a context setting. Having two
+setting means it is possible to log some queries and not others.</p>
+<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are
+sent at level &ldquo;info&rdquo;. So for log4j, the following can be set in the
+log4j.properties file:</p>
+<pre><code># Execution logging
+log4j.logger.org.apache.jena.arq.info=WARN
+log4j.logger.org.apache.jena.arq.exec=WARN
+</code></pre>
+<p>In versions of TDB before 0.8.7, this is:</p>
+<pre><code>log4j.logger.org.apache.jena.tdb.exec=INFO
+</code></pre>
+<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To
+set globally:</p>
+<pre><code>TDB.getContext().set(ARQ.symLogExec,true) ;
+</code></pre>
+<p>and it may also be set on an individual query execution using it&rsquo;s
+local context.</p>
+<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
+    qExec.getContext().set(ARQ.symLogExec,true) ;
+    ResultSet rs = qExec.execSelect() ;
+ }
+</code></pre>
+<p>Use <code>TDB.symLogExec</code> for versions prior to 0.8.8.</p>
+<p>On the command line:</p>
+<pre><code> tdbquery --set tdb:logExec=true --file queryfile
+</code></pre>
+<p>TDB version 0.8.3 provides more fine-grained logging controls.
+Instead of &ldquo;true&rdquo;, which sets all levels, the following can be
+used:</p>
+<h2 id="explanation-levels">Explanation Levels</h2>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INFO</td>
+<td>Log each query</td>
+</tr>
+<tr>
+<td>FINE</td>
+<td>Log each query and it&rsquo;s algebra form after optimization</td>
+</tr>
+<tr>
+<td>ALL</td>
+<td>Log query, algebra and every database access (can be expensive)</td>
+</tr>
+<tr>
+<td>NONE</td>
+<td>No information logged</td>
+</tr>
+</tbody>
+</table>
+<p>These can be specified as string, to the command line tools, or
+using the constants in <code>Explain.InfoLevel</code>.</p>
+<pre><code> qExec.getContext().set(ARQ.symLogExec,Explain.InfoLevel.FINE) ;
+</code></pre>
+<h2 id="tdbquery---explain">tdbquery &ndash;explain</h2>
+<p>The <code>--explain</code> parameter can be used for understanding the query execution.
+An execution can detail the query, algebra and every point at which the
+dataset is touched.</p>
+<p>For example, given the sample query execution with <code>tdbquery</code> below</p>
+<pre><code>tdbquery --loc=DB &quot;SELECT * WHERE { ?a ?b ?c }&quot;
+</code></pre>
+<p>we can include the <code>--explain</code> parameter to the command</p>
+<pre><code>tdbquery --explain --loc=DB &quot;SELECT * WHERE { ?a ?b ?c }&quot;
+</code></pre>
+<p>and increase the logging levels, in order to output more information about
+the query execution.</p>
+<pre><code># log4j.properties
+log4j.rootLogger=INFO, stdlog
+log4j.appender.stdlog=org.apache.log4j.ConsoleAppender
+log4j.appender.stdlog.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdlog.layout.ConversionPattern=%d{HH:mm:ss} %-5p %-25c{1} :: %m%n
+# the query execution logger
+log4j.logger.org.apache.jena.arq.exec=INFO
+</code></pre>
+<p>It is important to create a <code>log4j.logger.org.apache.jena.arq.exec</code> logger,
+as otherwise the command won&rsquo;t output the query execution details.</p>
+<p>The command output will be similar to this one.</p>
+<pre><code>00:05:20 INFO  exec                      :: QUERY
+  SELECT  *
+  WHERE
+    { ?a ?b ?c }
+00:05:20 INFO  exec                      :: ALGEBRA
+  (quadpattern (quad &lt;urn:x-arq:DefaultGraphNode&gt; ?a ?b ?c))
+00:05:20 INFO  exec                      :: TDB
+  (quadpattern (quad &lt;urn:x-arq:DefaultGraphNode&gt; ?a ?b ?c))
+00:05:20 INFO  exec                      :: Execute :: (?a ?b ?c)
+</code></pre>
+<p>The logging operation can be expensive, so try to limit it when possible.</p>
+<h2 id="statistics-rule-file">Statistics Rule File</h2>
+<p>The syntax is <code>SSE</code>, a simple format that uses
+<a href="http://www.w3.org/TeamSubmission/turtle/" title="http://www.w3.org/TeamSubmission/turtle/">Turtle</a>-syntax
+for RDF terms, keywords for other terms (for example, the stats
+marks a statistics data structure), and forms a tree data
+structure.</p>
+<p>The structure of a statistics file takes the form:</p>
+<pre><code>(prefix ...
+  (stats
+    (meta ...)
+    rule
+    rule
+   ))
+</code></pre>
+<p>that is, a <code>meta</code> block and a number of pattern rules.</p>
+<p>A simple example:</p>
+<pre><code>(prefix ((: &lt;http://example/))
+  (stats
+    (meta
+      (timestamp &quot;2008-10-23T10:35:19.122+01:00&quot;^^&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt;)
+      (run@ &quot;2008/10/23 10:35:19&quot;)
+      (count 11))
+    (:p 7)
+    (&lt;http://example/q&gt; 7)
+  ))
+</code></pre>
+<p>This example statistics file contains some metadata about
+statistics (time and date the file was generated, size of graph),
+the frequence count for two predicates
+<code>http://example/p</code> (written
+using a prefixed name) and
+<code>http://example/q</code> (written in
+full).</p>
+<p>The numbers are the estimated counts. They do not have to be exact</p>
+<ul>
+<li>they guide the optimizer in choosing one execution plan over
+another. They do not have to exactly up-to-date providing the
+relative counts are representative of the data.</li>
+</ul>
+<h3 id="statistics-rule-language">Statistics Rule Language</h3>
+<p>A rule is made up of a triple pattern and a count estimation for
+the approximate number of matches that the pattern will yield. This
+does have to be exact, only an indication.</p>
+<p>In addition, the optimizer considers which variables will be bound
+to RDF terms by the time a triplepatetrn is reached in the
+execution plan being considered. For example, in the basic graph
+pattern:</p>
+<pre><code>{ ?x  :identifier  1234 .
+  ?x  :name        ?name .
+}
+</code></pre>
+<p>then ?x will be bound in pattern ?x :name ?name to an RDF term if
+executed after the pattern ?x :identifier 1234.</p>
+<p>A rule is of the form:</p>
+<pre><code>( (subj pred obj) count)
+</code></pre>
+<p>where <em>subj</em>, <em>pred</em>, <em>obj</em> are either RDF terms or one of the
+tokens in the following table:</p>
+<h3 id="statistic-rule-tokens">Statistic rule tokens</h3>
+<p>Token | Description
+TERM | Matches any RDF term (URI, Literal, Blank node)
+VAR | Matches a named variable (e.g. ?x)
+URI | Matches a URI
+LITERAL | Matches an RDF literal
+BNODE | Matches an RDF blank node (in the data)
+ANY  |Matches anything - a term or variable</p>
+<p>From the example above, <code>(VAR :identifier TERM)</code> will match
+<code>?x :identifier 1234</code>.</p>
+<p><code>(TERM :name VAR)</code> will match <code>?x :name ?name</code> when in a potential plan
+where the <code>:identifier</code> triple pattern is first because <code>?x</code> will be a
+bound term at that point but not if this triple pattern is
+considered first.</p>
+<p>When searching for a weighting of a triple pattern, the first rule
+to match is taken.</p>
+<p>The rule which says an RDF graph is a set of triples:</p>
+<pre><code>((TERM TERM TERM) 1)
+</code></pre>
+<p>is always implicitly present.</p>
+<p>BNODE does not match a blank node in the query (which is a variable
+and matches VAR) but in the data, if it is known that slot of a
+triple pattern is a blank node.</p>
+<h3 id="abbreviated-rule-form">Abbreviated Rule Form</h3>
+<p>While a complete rule is of the form:</p>
+<pre><code>( (subj pred obj) count)
+</code></pre>
+<p>there is an abbreviated form:</p>
+<pre><code>(predicate count)
+</code></pre>
+<p>The abbreviated form is equivalent to writing:</p>
+<pre><code>((TERM predicate ANY) X)
+((ANY predicate TERM) Y)
+((ANY predicate ANY) count)
+</code></pre>
+<p>where for small graphs (less that 100 triples) X=2, Y=4 but Y=40 if
+the predicate is rdf:type and 2, 10, 1000 for large graphs. Use of
+&ldquo;VAR rdf:type Class&rdquo; can be a quite unselective triple pattern and
+so there is a preference to move it later in the order of execution
+to allow more selective patterns reduce the set of possibilities
+first. The astute reader may notice that ontological information
+may render it unnecessary (the domain or range of another property
+implies the class of some resource). TDB does not currently perform
+this optimization.</p>
+<p>These number are merely convenient guesses and the application can
+use the full rules language for detailed control of pattern
+weightings.</p>
+<h3 id="defaults">Defaults</h3>
+<p>A rule of the form:</p>
+<pre><code>(other number)
+</code></pre>
+<p>is used when no matches from other rules (abbreviated or full) when
+matching a triple pattern that has a URI in the predicate position.
+If a rule of this form is absent, the default is to place the
+triple pattern after all known triple patterns; this is the same as
+specifying -1 as the number. To declare that the rules are complete
+and no other predicates occur in the data, set this to 0 (zero)
+because the triple pattern can not match the data (the predicate
+does not occur).</p>
+<h2 id="generating-a-statistics-file">Generating a statistics file</h2>
+<p>The command line <code>tdbstats</code> will scan the data and produce a rules
+file based on the frequency of properties. The output should first
+go to a temporary file, then that file moved into the database
+location.</p>
+<p>Practical tip: Don&rsquo;t feed the output of this command directly to
+<em>location</em>/stats.opt because when the command starts it will find
+an empty statistics file at that location.</p>
+<h3 id="generating-statistics-for-union-graphs">Generating statistics for Union Graphs</h3>
+<p>By default <code>tdbstats</code> only processes the default graph of a dataset. However
+in some circumstances it is desirable to have the statistics generated
+over Named Graphs in the dataset.</p>
+<p>The <code>tdb:unionDefaultGraph</code> option will cause TDB to synthesize a default
+graph for SPARQL queries, from the union of all Named Graphs in the
+dataset.</p>
+<p>Ideally the statistics file should be generated against this
+union graph. This can be achieved using the <code>--graph</code> option as follows:</p>
+<pre><code> tdbstats --graph urn:x-arq:UnionGraph --loc /path/to/indexes
+</code></pre>
+<p>The <code>graph</code> parameter uses a built-in TDB <a href="/documentation/tdb/datasets.html#special-graph-names">special graph name</a></p>
+<h2 id="writing-rules">Writing Rules</h2>
+<p>Rule for an inverse functional property:</p>
+<pre><code>((VAR :ifp TERM) 1 )
+</code></pre>
+<p>and even if a property is only approximately identifying for
+resources (e.g. date of birth in a small dataset of people), it is
+useful to indicate this. Because the counts needed are only
+approximations so the optimizer can choose one order over another,
+and does not need to predicate exact counts, rules that are usually
+right but may be slightly wrong are still useful overall.</p>
+<p>Rules involving rdf:type can be useful where they indicate whether
+a particular class is common or not. In some datasets</p>
+<pre><code>((VAR rdf:type class) ...)
+</code></pre>
+<p>may help little because a property whose domain is that class, or a
+subclass, may be more elective. SO a rule like:</p>
+<pre><code>((VAR :property VAR) ...)
+</code></pre>
+<p>is more selective.</p>
+<p>In other datasets, there may be many classes, each with a small
+number of instances, in which case</p>
+<pre><code>((VAR rdf:type class) ...)
+</code></pre>
+<p>is a useful selective rule.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

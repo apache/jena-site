@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Txn - A library for working with Transactions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/txn/txn.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Txn - A library for working with Transactions</h1>
+            
+	<p><code>Txn</code> provides a high level interface to Jena transactions.  It is a
+library over the core functionality - applications do not have to use <code>Txn</code>
+to use transactions.</p>
+<p>Features:</p>
+<ul>
+<li>Java8 idioms</li>
+<li>Application exceptions cause transaction aborts.</li>
+<li>&ldquo;Transaction continuation&rdquo; - use any existing active transaction.</li>
+<li>Autocommit - ensure actions are inside a transaction even if none is active.</li>
+</ul>
+<h2 id="transactions">Transactions</h2>
+<p>The <a href="basic_txn_api.html">basic transactions API</a> provides operations
+<code>begin</code>, <code>commit</code>, <code>abort</code> and <code>end</code>.</p>
+<p>A write transaction looks like:</p>
+<pre><code>dataset.begin(ReadWrite.write) ;
+try {
+    ... write operations ...
+    dataset.commit() ;  // Or abort
+} finally {
+    dataset.end() ;
+}
+</code></pre>
+<p><code>Txn</code> simplifies writing transaction handling by wrapping application code,
+contained in a Java lambda expression or a Java Runnable object, in the correct entry
+and exit code for a transaction, eliminating coding errors.</p>
+<p>The form is:</p>
+<pre><code>Txn.executeRead(ds, ()-&gt; {
+    . . .
+}) ;
+</code></pre>
+<p>and</p>
+<pre><code>Txn.executeWrite(ds, ()-&gt; {
+    . . .
+}) ;
+</code></pre>
+<h2 id="usage">Usage</h2>
+<p>This first example shows how to write a SPARQL query .</p>
+<pre><code>Dataset ds = ... ;
+Query query = ... ;
+Txn.executeRead(ds, ()-&gt; {
+    try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+        ResultSetFormatter.out(qExec.execSelect()) ;
+    }
+}) ;
+</code></pre>
+<p>Here, a <code>try-with-resources</code> ensures correct handling of the
+<code>QueryExecution</code> inside a read transaction.</p>
+<p>Writing to a file is a read-action (it does not update the RDF data, the
+writer needs to read the dataset or model):</p>
+<pre><code>Dataset ds = ... ;
+Txn.executeRead(ds, ()-&gt; {
+    RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
+}) ;
+</code></pre>
+<p>whereas reading data into an RDF dataset needs to be a write transaction
+(the dataset or model is changed).</p>
+<pre><code>Dataset ds = ... ;
+Txn.executeWrite(ds, ()-&gt; {
+    RDFDataMgr.read(ds, &quot;data.ttl&quot;) ;
+}) ;
+</code></pre>
+<p>Applications are not limited to a single operation inside a transaction. It
+can involve multiple applications read operations, such as making several
+queries:</p>
+<pre><code>Dataset ds = ... ;
+Query query1 = ... ;
+Query query2 = ... ;
+Txn.executeRead(ds, ()-&gt; {
+     try(QueryExecution qExec1 = QueryExecutionFactory.create(query1, ds)) {
+         ...
+     }
+     try(QueryExecution qExec2 = QueryExecutionFactory.create(query2, ds)) {
+         ...
+     }
+}) ;
+</code></pre>
+<p>A <code>Txn.calculateRead</code> block can return a result but only with the condition
+that what is returned does not touch the data again unless it uses a new
+transaction.</p>
+<p>This includes returning a result set or returning a model from a dataset.</p>
+<p><code>ResultSets</code> by default stream - each time <code>hasNext</code> or <code>next</code> is
+called, new data might be read from the RDF dataset.  A copy of the
+results needs to be take:</p>
+<pre><code>Dataset ds = ... ;
+Query query = ... ;
+List&lt;String&gt; results = Txn.calculateRead(ds, ()-&gt; {
+     List&lt;String&gt; accumulator = new ArrayList&lt;&gt;() ;
+     try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+         qExec.execSelect().forEachRemaining((row)-&gt;{
+             String strThisRow = row.getLiteral(&quot;variable&quot;).getLexicalForm() ;
+             accumulator.add(strThisRow) ;
+         }) ;
+     }
+     return accumulator ;
+}) ;
+// use &quot;results&quot;
+
+Dataset ds = ... ;
+Query query = ... ;
+ResultSet List&lt;String&gt; resultSet = Txn.calculateRead(ds, ()-&gt; {
+     List&lt;String&gt; accumulator = new ArrayList&lt;&gt;() ;
+     try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+         return ResultSetFactory.copyResults(qExec.execSelect()) ;
+     }
+}) ;
+// use &quot;resultSet&quot;
+</code></pre>
+<p>The functions <code>Txn.execute</code> and <code>Txn.calculate</code> start <code>READ_PROMOTE</code>
+transactions which start in &ldquo;read&rdquo; mode but convert to &ldquo;write&rdquo; mode if
+needed.  For details of transaction promtion see the
+c<a href="transactions_api.html#types-modes-promotion">section in the transaction API documentation</a>.</p>
+<h2 id="working-with-rdf-models">Working with RDF Models</h2>
+<p>The unit of transaction is the dataset.  Model in datasets are just views of that dataset.
+Model should not be passed out of a transaction because they are still attached to the
+dataset.</p>
+<h2 id="autocommit-and-transaction-continuation">Autocommit and Transaction continuation</h2>
+<p>If there is a transaction already started for the thread, the <code>Txn.execute...</code> will be performed as part of
+the transaction and that transaction is not terminated.  If there is not transaction already started,
+a transaction is wrapped around the <code>Txn.execute...</code> action.</p>
+<pre><code>Dataset dataset = ...
+// Main transaction.
+dataset.begin(ReadWrite.WRITE) ;
+try {
+  ...
+  // Part of the transaction above.
+  Txn.executeRead(dataset, () -&gt; ...) ;
+  ...
+  // Part of the transaction above - no commit/abort
+  Txn.executeWrite(dataset, () -&gt; ...) ;
+
+  dataset.commit() ;
+} finally { dataset.end() ; }
+</code></pre>
+<h2 id="design">Design</h2>
+<p><code>Txn</code> uses Java <code>Runnable</code> for the application code, passed into control code
+that wraps the transaction operations around the application code. This results
+in application code automatically applied transaction begin/commit/end as needed.</p>
+<p>A bare read transaction requires the following code structure (no exception handling):</p>
+<pre><code>  txn.begin(ReadWrite.READ) ;
+  try {
+     ... application code ...
+  } finally { txn.end() ; }
+</code></pre>
+<p>while a write transaction requires either a <code>commit</code> or an <code>abort</code>
+at the end of the application code as well.</p>
+<p>Without the transaction continuation code (simplified, the <code>Txn</code> code
+for a read transaction takes the form:</p>
+<pre><code>public static &lt;T extends Transactional&gt; void executeRead(T txn, Runnable r) {
+    txn.begin(ReadWrite.READ) ;
+    try { r.run() ; }
+    catch (Throwable th) { txn.end() ; throw th ; }
+    txn.end() ;
+}  
+</code></pre>
+<p>See <a href="https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/query/Txn.java"><code>Txn.java</code></a> for full details.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

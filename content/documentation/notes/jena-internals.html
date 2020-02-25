@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Notes on Jena internals</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/jena-internals.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Notes on Jena internals</h1>
+            
+	<p><em><strong><span style="font-size:larger;">Note: These notes are not kept up to date.</span></strong></em></p>
+<p><strong>They may be of interest into the original design of the <em>Enhanced Node</em> mechanism.</strong></p>
+<h2 id="enhanced-nodes">Enhanced Nodes</h2>
+<p>This note is a development of the original note on the enhanced
+node and graph design of Jena 2.</p>
+<h3 id="key-objectives-for-the-enhanced-node-design">Key objectives for the enhanced node design</h3>
+<p>One problem with the Jena 1 design was that both the DAML layer and
+the RDB layer independently extended Resource with domain-specific
+information. That made it impossible to have a DAML-over-RDB
+implementation. While this could have been fixed by using the
+&ldquo;enhanced resource&rdquo; mechanism of Jena 1, that would have left a
+second problem.</p>
+<p>In Jena 1.0, once a resource has been determined to be a DAML Class
+(for instance), that remains true for the lifetime of the model. If
+a resource starts out not qualifying as a DAML Class (no
+<code>rdf:type daml:Class</code>) then adding the type assertion later doesn&rsquo;t
+make it a Class. Similarly, of a resource is a DAML Class, but then
+the type assertion is retracted, the resource is still apparently a
+class.</p>
+<p>Hence being a DAMLClass is a <em>view</em> of the resource that may change
+over time. Moreover, a given resource may validly have a number of
+different views simultaneously. Using the current <code>DAMLClass</code>
+implementation method means that a given resource is limited to a
+single such view.</p>
+<p>A key objective of the new design is to allow different views, or
+<em>facets</em>, to be used dynamically when accessing a node. The new
+design allows nodes to be polymorphic, in the sense that the same
+underlying node from the graph can present different encapsulations</p>
+<ul>
+<li>thus different affordances to the programmer - on request.</li>
+</ul>
+<p>In summary, the enhanced node design in Jena 2.0 allows programmers
+to:</p>
+<ul>
+<li>provide alternative perspectives onto a node from a graph,
+supporting additional functionality particular to that perspective;</li>
+<li>dynamically convert a between perspectives on nodes;</li>
+<li>register implementations of implementation classes that present
+the node as an alternative perspective.</li>
+</ul>
+<h3 id="terminology">Terminology</h3>
+<p>To assist the following discussion, the key terms are introduced
+first.</p>
+<p>node
+~ A subject or object from a triple in the underlying graph
+graph
+~ The underlying container of RDF triples that simplifies the
+previous abstraction Model
+enhanced node
+~ An encapsulation of a node that adds additional state or
+functionality to the interface defined for node. For example, a bag
+is a resource that contains a number of other resources; an
+enhanced node encapsulating a bag might provide simplified
+programmatic access to the members of the bag.
+enhanced graph
+~ Just as an enhanced node encapsulates a node and adds extra
+functionality, an enhanced graph encapsulates an underlying graph
+and provides additional features. For example, both Model and
+DAMLModel can be thought of as enhancements to the (deliberately
+simple) interface to graphs.
+polymorphic
+~ An abstract super-class of enhanced graph and enhanced node
+that exists purely to provide shared implementation.
+personality
+~ An abstraction that circumscribes the set of alternative views
+that are available in a given context. In particular, defines a
+mapping from types (q.v.) to implementations (q.v.). This seems to
+be taken to be closed for graphs.
+implementation
+~ A factory object that is able to generate polymorphic objects
+that present a given enhanced node according to a given type. For
+example, an alt implementation can produce a sub-class of enhanced
+node that provides accessors for the members of the alt.</p>
+<h4 id="key-points">Key points</h4>
+<p>Some key features of the design are:</p>
+<ul>
+<li>every enhanced graph has a single graph personality, which
+represents the types of all the enhanced nodes that can be created
+in this graph;</li>
+<li>every enhanced node refers to that personality</li>
+<li>different kinds of enhanced graph can have different
+personalities, for example, may implement interfaces in different
+ways, or not implement some at all.</li>
+<li>enhanced nodes wrap information in the graph, but keep no
+independent state; they may be discarded and regenerated at whim.</li>
+</ul>
+<h3 id="how-an-enhanced-node-is-created">How an enhanced node is created</h3>
+<h4 id="creation-from-another-enhanced-node">Creation from another enhanced node</h4>
+<p>If <code>en</code> is an enhanced node representing some resource we wish to
+be able to view as being of some (Java) class/interface <code>T</code>, the
+expression <code>en.as(T.class)</code> will either deliver an EnhNode of type
+<code>C</code>, if it is possible to do so, or throw an exception if not.</p>
+<p>To check if the conversion is allowed, without having to catch
+exceptions, the expression <code>en.canAs(T.class)</code> delivers <code>true</code> iff
+the conversion is possible.</p>
+<h4 id="creation-from-a-base-node">Creation from a base node</h4>
+<p>Somehow, some seed enhanced node must be created, otherwise <code>as()</code>
+would have nothing to work on. Subclasses of enhanced node provide
+constructors (perhaps hidden behind factories) which wrap plain
+nodes up in enhanced graphs. Eventually these invoke the
+constructor
+<code>EnhNode(Node,EnhGraph)</code></p>
+<p>It&rsquo;s up to the constructors for the enhanced node subclasses to
+ensure that they are called with appropriate arguments.</p>
+<h4 id="internal-operation-of-the-conversion">internal operation of the conversion</h4>
+<p><code>as(Class T)</code> is defined on EnhNode to invoke <code>asInternal(T)</code> in
+<code>Polymorphic</code>. If the original enhanced node <code>en</code>is already a valid
+instance of <code>T</code>, it is returned as the result. Validity is checked
+by the method <code>isValue()</code>.</p>
+<p>If <code>en</code> is not already of type <code>T</code>, then a cache of alternative
+views of <code>en</code> is consulted to see if a suitable alternative exists.
+The cache is implemented as a <em>sibling ring</em> of enhanced nodes -
+each enhanced node has a link to its next sibling, and the &ldquo;last&rdquo;
+node links back to the &ldquo;first&rdquo;. This makes it cheap to find
+alternative views if there are not too many of them, and avoids
+caches filling up with dead nodes and having to be flushed.</p>
+<p>If there is no existing suitable enhanced node, the node&rsquo;s
+personality is consulted. The personality maps the desired class
+type to an <code>Implementation</code> object, which is a factory with a
+<code>wrap</code> method which takes a (plain) node and an enhanced graph and
+delivers the new enhanced node after checking that its conditions
+apply. The new enhanced node is then linked into the sibling ring.</p>
+<h3 id="how-to-build-an-enhanced-node--graph">How to build an enhanced node &amp; graph</h3>
+<p>What you have to do to define an enhanced node/graph
+implementation:</p>
+<ol>
+<li>define an interface <code>I</code> for the new enhanced node. (You could
+use just the implementation class, but we&rsquo;ve stuck with the
+interface, because there might be different implementations)</li>
+<li>define the implementation class <code>C</code>. This is just a front for
+the enhanced node. All the state of <code>C</code> is reflected in the graph
+(except for caching; but beware that the graph can change without
+notice).</li>
+<li>define an <code>Implementation</code> class for the factory. This class
+defines methods <code>canWrap</code> and <code>wrap</code>, which test a node to see if
+it is allowed to represent <code>I</code> and construct an implementation of
+<code>C</code>respectively.</li>
+<li>Arrange that the personality of the graph maps the class of <code>I</code>
+to the factory. At the moment we do this by using (a copy of) the
+built-in graph personality as the personality for the enhanced
+graph.</li>
+</ol>
+<p>For an example, see the code for <code>ReifiedStatementImpl</code>.</p>
+<h2 id="reification-api">Reification API</h2>
+<h3 id="introduction">Introduction</h3>
+<p>This document describes the reification API in Jena2, following
+discussions based on the 0.5a document. The essential decision made
+during that discussion is that reification triples are captured and
+dealt with by the Model transparently and appropriately.</p>
+<h3 id="context">Context</h3>
+<p>The first Jena implementation made some attempt to optimise the
+representation of reification. In particular it tried to avoid so
+called &lsquo;triple bloat&rsquo;, <em>ie</em> requiring four triples to represent the
+reification of a statement. The approach taken was to make a
+<em>Statement</em> a subclass of <em>Resource</em> so that properties could be
+directly attached to statement objects.</p>
+<p>There are a number of defects in the Jena 1 approach.</p>
+<ul>
+<li>Not everyone in the team was bought in to the approach</li>
+<li>The <em>.equals()</em> method for <em>Statement</em>s was arguably wrong and
+also violated the Java requirements on a <em>.equals()</em></li>
+<li>The implied triples of a reification were not present so could
+not be searched for</li>
+<li>There was confusion between the optimised representation and
+explicit representation of reification using triples</li>
+<li>The optimisation did not round trip through RDF/XML using the
+the writers and ARP.</li>
+</ul>
+<p>However, there are some supporters of the approach. They liked:</p>
+<ul>
+<li>the avoidance of triple bloat</li>
+<li>that the extra reifications statements are not there to be
+found on queries or ListStatements and do not affect the <em>size()</em>
+method.</li>
+</ul>
+<p>Since Jena was first written the RDFCore WG have clarified the
+meaning of a reified statement. Whilst Jena 1 took a reified
+statement to denote a statement, RDFCore have decided that a
+reified statement denotes an occurrence of a statement, otherwise
+called a stating. The Jena 1 <em>.equals()</em> methods for <em>Statement</em>s
+is thus inappropriate for comparing reified statements.
+The goal of reification support in the Jena 2 implementation are:</p>
+<ul>
+<li>to conform to the revised RDF specifications</li>
+<li>to maintain the expectations of Jena 1; <em>ie</em> they should still be
+able to reify everything without worrying about triple bloat if
+they want to</li>
+<li>as far as is consistent with 2, to not break existing code, or
+at least make it easy to transition old code to Jena 2.</li>
+<li>to enable round tripping through RDF/XML and other RDF
+representation languages</li>
+<li>enable a complete standard compliant implementation, but not
+necessarily as default</li>
+</ul>
+<h3 id="presentation-api">Presentation API</h3>
+<p><em>Statement</em> will no longer be a subclass of <em>Resource</em>. Thus a
+statement may not be used where a resource is expected. Instead, a
+new interface <em>ReifiedStatement</em> will be defined:</p>
+<pre><code>public interface ReifiedStatement extends Resource
+    {
+    public Statement getStatement();
+    // could call it a day at that or could duplicate convenience
+    // methods from Statement, eg getSubject(), getInt().
+    ...
+    }
+</code></pre>
+<p>The <em>Statement</em> interface will be extended with the following
+methods:
+public interface Statement
+&hellip;
+public ReifiedStatement createReifiedStatement();
+public ReifiedStatement createReifiedStatement(String URI);
+/* */
+public boolean isReified();
+public ReifiedStatement getAnyReifiedStatement();
+/* */
+public RSIterator listReifiedStatements();
+/* */
+public void removeAllReifications();
+&hellip;</p>
+<p><em>RSIterator</em> is a new iterator which returns <em>ReifiedStatement</em>s.
+It is an extension of <em>ResourceIterator</em>.
+The <em>Model</em> interface will be extended with the following methods:</p>
+<pre><code>public interface Model
+    ...
+    public ReifiedStatement createReifiedStatement(Statement stmt);
+    public ReifiedStatement createReifiedStatement(String URI, Statement stmt);
+/* */
+    public boolean isReified(Statement st);
+    public ReifiedStatement getAnyReifiedStatement(Statement stmt);
+/* */
+    public RSIterator listReifiedStatements();
+    public RSIterator listReifiedStatements(Statement stmt);
+/* */
+    public void removeReifiedStatement(reifiedStatement rs);
+    public void removeAllReifications(Statement st);
+    ...
+</code></pre>
+<p>The methods in <em>Statement</em> are defined to be the obvious calls of
+methods in <em>Model</em>. The interaction of those models is expressed
+below. Reification operates over statements in the model which use
+predicates <strong>rdf:subject</strong>, <strong>rdf:predicate</strong>, <strong>rdf:object</strong>, and
+<strong>rdf:type</strong> with object <strong>rdf:Statement</strong>.
+<em>statements with those predicates are, by default, invisible</em>. They
+do not appear in calls of <em>listStatements</em>, <em>contains</em>, or uses of
+the <em>Query</em> mechanism. Adding them to the model will not affect
+<em>size()</em>. Models that do not hide reification quads will also be
+available.</p>
+<h3 id="retrieval">Retrieval</h3>
+<p>The <em>Model::as()</em> mechanism will allow the retrieval of reified
+statements.</p>
+<pre><code>someResource.as( ReifiedStatement.class )
+</code></pre>
+<p>If <em>someResource</em> has an associated reification quad, then this
+will deliver an instance <em>rs</em> of <em>ReifiedStatement</em> such that
+<em>rs.getStatement()</em> will be the statement <em>rs</em> reifies. Otherwise a
+<em>DoesNotReifyException</em> will be thrown. (Use the predicate
+<em>canAs()</em> to test if the conversion is possible.)
+It does not matter how the quad components have arrived in the
+model; explicitly asserted or by the <em>create</em> mechanisms described
+below. If quad components are removed from the model, existing
+<em>ReifiedStatement</em> objects will continue to function, but
+conversions using <em>as()</em> will fail.</p>
+<h3 id="creation">Creation</h3>
+<p><em>createReifiedStatement(Statement stmt)</em> creates a new
+<em>ReifiedStatement</em> object that reifies <em>stmt</em>; the appropriate
+quads are inserted into the model. The resulting resource is a
+blank node.</p>
+<p><em>createReifiedStatement(String URI, Statement stmt)</em> creates a new
+<em>ReifiedStatement</em> object that reifies <em>stmt</em>; the appropriate
+quads are inserted into the model. The resulting resource is a
+<em>Resource</em> with the URI given.</p>
+<h3 id="equality">Equality</h3>
+<p>Two reified statements are <em>.equals()</em> iff they reify the same
+statement and have <em>.equals()</em> resources. Thus it is possible for
+equal <em>Statement</em>s to have unequal reifications.</p>
+<h3 id="isreified">IsReified</h3>
+<p><em>isReified(Statement st)</em> is true iff in the <em>Model</em> of this
+<em>Statement</em> there is a reification quad for this <em>Statement</em>. It
+does not matter if the quad was inserted piece-by-piece or all at
+once using a <em>create</em> method.</p>
+<h3 id="fetching">Fetching</h3>
+<p><em>getAnyReifiedStatement(Statement st)</em> delivers an existing
+<em>ReifiedStatement</em> object that reifies <em>st</em>, if there is one;
+otherwise it creates a new one. If there are multiple reifications
+for <em>st</em>, it is not specified which one will be returned.</p>
+<h3 id="listing">Listing</h3>
+<p><em>listReifiedStatements()</em> will return an <em>RSIterator</em> which will
+deliver all the reified statements in the model.</p>
+<p><em>listReifiedStatements( Statement st )</em> will return an <em>RSIterator</em>
+which will deliver all the reified statements in the model that
+reifiy <em>st</em>.</p>
+<h3 id="removal">Removal</h3>
+<p><em>removeReifiedStatement(ReifiedStatement rs)</em> will remove the
+reification <em>rs</em> from the model by removing the reification quad.
+Other reified statements with different resources will remain.</p>
+<p><em>removeAllReifications(Statement st)</em> will remove all the
+reifications in this model which reify <em>st</em>.</p>
+<h3 id="input-and-output">Input and output</h3>
+<p>The writers will have access to the complete set of <em>Statement</em>s
+and will be able to write out the quad components.</p>
+<p>The readers need have no special machinery, but it would be
+efficient for them to be able to call <em>createReifiedStatement</em> when
+detecting an reification.</p>
+<h3 id="performance">Performance</h3>
+<p>Jena1&rsquo;s &ldquo;statements as resources&rdquo; approach avoided triples bloat by
+not storing the reification quads. How, then, do we avoid triple
+bloat in Jena2?</p>
+<p>The underlying machinery is intended to capture the reification
+quad components and store them in a form optimised for reification.
+In particular, in the case where a statement is completely reified,
+it is expected to store only the implementation representation of
+the <em>Statement</em>.</p>
+<p><em>createReifiedStatement</em> is expected to bypass the construction and
+detection of the quad components, so that in the &ldquo;usual case&rdquo; they
+will never come into existence.</p>
+<h2 id="the-reification-spi">The Reification SPI</h2>
+<h3 id="introduction-1">Introduction</h3>
+<p>This document describes the reification SPI, the mechanisms by
+which the Graph family supports the Model API reification
+interface.</p>
+<p>Graphs handle reification at two levels. First, their reifier
+supports requests to reify triples and to search for reifications.
+The reifier is responsible for managing the reification information
+it adds and removes - the graph is not involved.</p>
+<p>Second, a graph may optionally allow all triples added and removed
+through its normal operations (including the bulk update
+interfaces) to be monitored by its reifier. If so, all appropriate
+triples become the property of the reifier - they are no longer
+visible through the graph.</p>
+<p>A graph may also have a reifier that doesn&rsquo;t do any reification.
+This is useful for internal graphs that are not exposed as models.
+So there are three kinds of <code>Graph</code>:</p>
+<p>Graphs that do no reification;
+Graphs that only do explicit reification;
+Graphs that do implicit reification.</p>
+<h3 id="graph-operations-for-reification">Graph operations for reification</h3>
+<p>The primary reification operation on graphs is to extract their
+<code>Reifier</code> instance. Handing reification off to a different class
+allows reification to be handled independently of other Graph
+issues, eg query handling, bulk update.</p>
+<h4 id="graphgetreifier---reifier">Graph.getReifier() -&gt; Reifier</h4>
+<p>Returns the <code>Reifier</code> for this <code>Graph</code>. Each graph has a single
+reifier during its lifetime. The reifier object need not be
+allocated until the first call of <code>getReifier()</code>.</p>
+<h3 id="addtriple-deletetriple">add(Triple), delete(Triple)</h3>
+<p>These two operations may defer their triples to the graph&rsquo;s reifier
+using <code>handledAdd(Triple)</code> and <code>handledDelete(Triple)</code>; see below
+for details.</p>
+<h3 id="interface-reifier">Interface Reifier</h3>
+<p>Instances of <code>Reifier</code> handle reification requests from their
+<code>Graph</code> and from the API level code (issues by the API class
+<code>ModelReifier</code>.</p>
+<h4 id="reifiergethiddentriples---graph">reifier.getHiddenTriples() -&gt; Graph</h4>
+<p>The reifier may keep reification triples to itself, coded in some
+special way, rather than having them stored in the parent <code>Graph</code>.
+This method exposes those triples as another <code>Graph</code>. This is a
+dynamic graph - it changes as the underlying reifications change.
+However, it is read-only; triples cannot be added to or removed
+from it.
+The <code>SimpleReifier</code> implementation currently does not implement a
+dynamic graph. This is a bug that will need fixing.</p>
+<h4 id="reifiergetparentgraph---graph">reifier.getParentGraph() -&gt; Graph</h4>
+<p>Get the <code>Graph</code> that this reifier serves; the result is never
+<code>null</code>. (Thus the observable relationship between graphs and
+reifiers is 1-1.)</p>
+<h4 id="class-alreadyreifiedexception">class AlreadyReifiedException</h4>
+<p>This class extends <code>RDFException</code>; it is the exception that may be
+thrown by <code>reifyAs</code>.</p>
+<h3 id="reifierreifyas-triple-t-node-n----node">reifier.reifyAs( Triple t, Node n ) -&gt; Node</h3>
+<p>Record the <code>t</code> as reified in the parent <code>Graph</code> by the given <code>n</code>
+and returns <code>n</code>. If <code>n</code> already reifies a different <code>Triple</code>, throw
+a <code>AlreadyReifiedException</code>.
+Calling <code>reifyAs(t,n)</code> is like adding the triples:</p>
+<p><code>n rdf:type ref:Statement</code>
+<code>n rdf:subject t.getSubject()</code>
+<code>n rdf:predicate t.getPredicate()</code>
+<code>n rdf:object t.getObject()</code>
+to the associated Graph; however, it is intended that it is
+efficient in both time and space.</p>
+<h4 id="reifierhastriple-triple-t----boolean">reifier.hasTriple( Triple t ) -&gt; boolean</h4>
+<p>Returns true iff some <code>Node n</code> reifies <code>t</code> in this <code>Reifier</code>,
+typically by an unretracted call of <code>reifyAs(t,n)</code>.
+The intended (and actual) use for <code>hasTriple(Triple)</code> is in the
+implementation of <code>isReified(Statement)</code> in <code>Model</code>.</p>
+<h4 id="reifiergettriple-node-n----triple">reifier.getTriple( Node n ) -&gt; Triple</h4>
+<p>Get the single <code>Triple</code> associated with <code>n</code>, if there is one. If
+there isn&rsquo;t, return <code>null</code>.
+A node reifies at most one triple. If <code>reifyAs</code>, with its explicit
+check, is bypassed, and extra reification triples are asserted into
+the parent graph, then <code>getTriple()</code> will simply return <code>null</code>.</p>
+<h3 id="reifierallnodes---extendediterator">reifier.allNodes() -&gt; ExtendedIterator</h3>
+<p>Returns an (extended) iterator over all the nodes that (still)
+reifiy something in this reifier.
+This is intended for the implementation of <code>listReifiedStatements</code>
+in <code>Model</code>.</p>
+<h4 id="reifierallnodes-triple-t----closableiterator">reifier.allNodes( Triple t ) -&gt; ClosableIterator</h4>
+<p>Returns an iterator over all the nodes that (still) reify the
+triple _t_.</p>
+<h3 id="reifierremove-node-n-triple-t-">reifier.remove( Node n, Triple t )</h3>
+<p>Remove the association between <code>n</code> and the triple<code>t</code>. Subsequently,
+<code>hasNode(n)</code> will return false and <code>getTriple(n)</code> will return
+<code>null</code>.
+This method is used to implement <code>removeReification(Statement)</code> in
+<code>Model</code>.</p>
+<h4 id="reifierremove-triple-t-">reifier.remove( Triple t )</h4>
+<p>Remove all the associations between any node <code>n</code> and <code>t</code>; ie, for
+all <code>n</code> do <code>remove(n,t)</code>.
+This method is used to implement <code>removeAllReifications</code> in
+<code>Model</code>.</p>
+<h4 id="handledadd-triple-t----boolean">handledAdd( Triple t ) -&gt; boolean</h4>
+<p>A graph doing reification may choose to monitor the triples being
+added to it and have the reifier handle reification triples. In
+this case, the graph&rsquo;s <code>add(t)</code> should call <code>handledAdd(t)</code> and
+only proceed with its add if the result is <code>false</code>.
+A graph that does not use <code>handledAdd()</code> [and <code>handledDelete()</code>]
+can only use the explicit reification supplied by its reifier.</p>
+<h4 id="handledremove-triple-t-">handledRemove( Triple t )</h4>
+<p>As for <code>handledAdd(t)</code>, but applied to <code>delete</code>.</p>
+<h3 id="simplereifier">SimpleReifier</h3>
+<p><code>SimpleReifier</code> is an implementation of <code>Reifier</code> suitable for
+in-memory <code>Graph</code>s built over <code>GraphBase</code>. It operates in either of
+two modes: with and without triple interception. With interception
+enabled, reification triples fed to (or removed from) its parent
+graph are captured using <code>handledAdd()</code> and <code>handledRemove</code>;
+otherwise they are ignored and the graph must store them itself.
+<code>SimpleReifier</code> keeps a map from nodes to the reification
+information about that node. Nodes which have no reification
+information (most of them, in the usual case) do not appear in the
+map at all.</p>
+<p>Nodes with partial or excessive reification information are
+associated with <code>Fragments</code>. A <code>Fragments</code> for a node <code>n</code> records
+separately</p>
+<p>the <code>S</code>s of all <code>n ref:subject S</code> triples
+the <code>P</code>s of all <code>n ref:predicate P</code> triples
+the <code>O</code>s of all <code>n ref:subject O</code> triples
+the <code>T</code>s of all <code>n ref:type T[Statement]</code> triples
+If the <code>Fragments</code> becomes <em>singular</em>, ie each of these sets
+contains exactly one element, then <code>n</code> represents a reification of
+the triple <code>(S, P, O)</code>, and the <code>Fragments</code> object is replaced by
+that triple.
+(If another reification triple for <code>n</code> arrives, then the triple is
+re-exploded into <code>Fragments</code>.)</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

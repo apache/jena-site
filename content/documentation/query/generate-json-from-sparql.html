@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - ARQ - Generate JSON from SPARQL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/generate-json-from-sparql.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">ARQ - Generate JSON from SPARQL</h1>
+            
+	<p>The current W3C recommendation of
+<a href="http://www.w3.org/TR/sparql11-query/">SPARQL 1.1</a> supports the <a href="https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/">query results in
+JSON format</a>. What is
+described in this page is not that format, but an extension of Apache Jena, which allows
+users to define how results should be returned in a key/value pair fashion, providing
+this way a simpler output. This output can be easily used as model for web applications,
+or inspecting data.</p>
+<p>Compare the output of this extension:</p>
+<pre><code>[
+  {
+    &quot;book&quot;: &quot;http://example.org/book/book6&quot;,
+    &quot;title&quot;: &quot;Harry Potter and the Half-Blood Prince&quot;
+  },
+  {
+    &quot;book&quot;: &quot;http://example.org/book/book7&quot;,
+    &quot;title&quot;: &quot;Harry Potter and the Deathly Hallows&quot;
+  },
+]
+</code></pre>
+<p>With the output of the SPARQL 1.1 query result JSON format below:</p>
+<pre><code>{
+  &quot;head&quot;: { &quot;vars&quot;: [ &quot;book&quot; , &quot;title&quot; ]
+  } ,
+  &quot;results&quot;: { 
+    &quot;bindings&quot;: [
+      {
+        &quot;book&quot;: { &quot;type&quot;: &quot;uri&quot; , &quot;value&quot;: &quot;http://example.org/book/book6&quot; } ,
+        &quot;title&quot;: { &quot;type&quot;: &quot;literal&quot; , &quot;value&quot;: &quot;Harry Potter and the Half-Blood Prince&quot; }
+      } ,
+      {
+        &quot;book&quot;: { &quot;type&quot;: &quot;uri&quot; , &quot;value&quot;: &quot;http://example.org/book/book7&quot; } ,
+        &quot;title&quot;: { &quot;type&quot;: &quot;literal&quot; , &quot;value&quot;: &quot;Harry Potter and the Deathly Hallows&quot; }
+      }
+    ]
+  }
+}
+</code></pre>
+<p>This feature was added in Jena 3.8.0.</p>
+<h2 id="query-syntax">Query Syntax</h2>
+<p>The <code>JSON</code> syntax is similar in certain ways to the SPARQL <code>CONSTRUCT</code> syntax.</p>
+<pre><code>PREFIX purl: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX w3: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; 
+PREFIX : &lt;http://example.org/book/&gt; 
+
+JSON {
+  &quot;author&quot;: ?author, 
+  &quot;title&quot;: ?title 
+}
+WHERE 
+{
+  ?book purl:creator ?author .
+  ?book purl:title ?title . 
+  FILTER (?author = 'J.K. Rowling')
+}
+</code></pre>
+<p>As in <code>CONSTRUCT</code>, users are able to specify how the output must look like, using a simple
+key/value pair pattern, which could produce the following output for the query above.</p>
+<pre><code>[
+  { 
+    &quot;author&quot; : &quot;J.K. Rowling&quot; ,
+    &quot;title&quot; : &quot;Harry Potter and the Deathly Hallows&quot;
+  }
+  { 
+    &quot;author&quot; : &quot;J.K. Rowling&quot; ,
+    &quot;title&quot; : &quot;Harry Potter and the Philosopher's Stone&quot;
+  }
+  { 
+    &quot;author&quot; : &quot;J.K. Rowling&quot; ,
+    &quot;title&quot; : &quot;Harry Potter and the Order of the Phoenix&quot;
+  }
+  { 
+    &quot;author&quot; : &quot;J.K. Rowling&quot; ,
+    &quot;title&quot; : &quot;Harry Potter and the Half-Blood Prince&quot;
+  }
+]
+</code></pre>
+<h3 id="grammar">Grammar</h3>
+<p>The normative definition of the syntax grammar of the query string is defined in this table:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th></th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JsonQuery</td>
+<td>::=</td>
+<td>JsonClause ( DatasetClause )* WhereClause SolutionModifier</td>
+</tr>
+<tr>
+<td>JsonClause</td>
+<td>::=</td>
+<td>&lsquo;JSON&rsquo; &lsquo;{&rsquo; JsonObjectMember ( &lsquo;,&rsquo; JsonObjectMember )* &lsquo;}&rsquo;</td>
+</tr>
+<tr>
+<td>JsonObjectMember</td>
+<td>::=</td>
+<td>String &lsquo;:&rsquo; ( Var | RDFLiteral | NumericLiteral | BooleanLiteral )</td>
+</tr>
+</tbody>
+</table>
+<p><code>DatasetClause</code>, <code>WhereClause</code>, <code>SolutionModifier</code>, <code>String</code>, <code>Var</code>, &lsquo;RDFLiteral&rsquo;,
+<code>NumericLiteral</code>, and &lsquo;BooleanLiteral&rsquo; are as for the <a href="http://www.w3.org/TR/sparql11-query/#grammar">SPARQL 1.1 Grammar</a></p>
+<h2 id="programming-api">Programming API</h2>
+<p>ARQ provides 2 additional methods in <a href="http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/query/QueryExecution.html">QueryExecution</a> for JSON.</p>
+<pre><code>Iterator&lt;JsonObject&gt; QueryExecution.execJsonItems()
+JsonArray QueryExecution.execJson()
+</code></pre>
+<p>In order to use these methods, it&rsquo;s required to switch on the query syntax
+of ARQ beforehand, when creating the <code>Query</code> object:</p>
+<pre><code>Query query = QueryFactory.create(queryString, Syntax.syntaxARQ)
+String queryString = &quot;JSON { 'name' : ?name, 'age' : ?age } WHERE ... &quot;
+...
+Iterator&lt;JsonObject&gt; json = qexec.execJsonItems()
+</code></pre>
+<h2 id="fuseki-support">Fuseki Support</h2>
+<p>Users are able to use Fuseki web interface, as well as the other HTTP endpoints to submit
+queries using any programming language. The following example shows how to POST to the query
+endpoint passing the query as a form data field.</p>
+<pre><code>curl -XPOST --data &quot;query=JSON { 'name' : ?name, 'age': ?age } WHERE { ... }&quot; http://localhost:3030/ds/query
+</code></pre>
+<p>The web interface editor parses the SPARQL implementation syntax, so syntax errors are expected
+in the web editor at this moment when using the <code>JSON</code> clause. The query should still be correctly
+executed, and the results displayed as with other normal SPARQL queries.</p>
+<p><a href="index.html">ARQ documentation index</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

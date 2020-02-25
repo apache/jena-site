@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Using ARP Without Jena</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/io/arp_standalone.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Using ARP Without Jena</h1>
+            
+	<p>ARP can be used both as a Jena subsystem, or as a standalone
+RDF/XML parser. This document gives a quick guide to using ARP
+standalone.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#sample">Sample Code</a></li>
+<li><a href="#handlers">ARP Event Handling</a></li>
+<li><a href="#config">Configuring ARP</a></li>
+<li><a href="#interrupt">Interrupting ARP</a></li>
+<li><a href="#sax2rdf">Using Other SAX Sources</a></li>
+<li><a href="#memory">Memory usage</a></li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>To load an RDF file:</p>
+<ol>
+<li>Create an
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#ARP()">ARP</a> instance.</li>
+<li>Set parse options, particularly error detection control, using
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()">getOptions</a>
+or
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setOptionsWith(org.apache.jena.rdf.arp.ARPOptions)">setOptionsWith</a>.</li>
+<li>Set its handlers, by calling the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
+or
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
+methods, and then.
+<ul>
+<li>Setting the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">statement handler</a>.</li>
+<li>Optionally setting the other handlers.</li>
+</ul>
+</li>
+<li>Call a
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#load(java.io.InputStream,%20java.lang.String)">load</a>
+method</li>
+</ol>
+<p>Xerces is used for parsing the XML. The SAXEvents generated by
+Xerces are then analysed as RDF by ARP. It is possible to use a
+different source of SAX events.</p>
+<p>Errors may occur in either the XML or the RDF part.</p>
+<h2 id="sample-code">Sample Code</h2>
+<pre><code>ARP arp = new ARP();
+
+// initialisation - uses ARPConfig interface only.
+arp.getOptions().setLaxErrorMode();
+
+arp.getHandlers().setErrorHandler(new ErrorHandler(){
+    public void fatalError(SAXParseException e){
+           // TODO code
+    }
+    public void error(SAXParseException e){
+            // TODO code
+    }
+    public void warning(SAXParseException e){
+            // TODO code
+    }
+});
+arp.getHandlers().setStatementHandler(new StatementHandler(){
+    public void statement(AResource a, AResource b, ALiteral l){
+            // TODO code
+    }
+    public void statement(AResource a, AResource b, AResource l){
+            // TODO code
+    }
+});
+
+// parsing.
+
+try {
+    // Loading fixed input ...
+    arp.load(new StringReader(
+        &quot;&lt;rdf:RDF  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'&gt;\n&quot;
+        +&quot;&lt;rdf:Description&gt;&lt;rdf:value rdf:parseType='Literal'&gt;&quot;
+        +&quot;&lt;b&gt;hello&lt;/b&gt;&lt;/rdf:value&gt;\n&quot;
+        +&quot;&lt;/rdf:Description&gt;&lt;/rdf:RDF&gt;&quot;
+    ));
+
+}
+catch (IOException ioe){
+    // something unexpected went wrong
+}
+catch (SAXParseException s){
+    // This error will have been reported
+}
+catch (SAXException ss) {
+    // This error will not have been reported.
+}
+</code></pre>
+<h2 id="arp-event-handling">ARP Event Handling</h2>
+<p>ARP reports events concerning:</p>
+<ul>
+<li>Triples found in the input.</li>
+<li>Errors in the input.</li>
+<li>Namespace declarations.</li>
+<li>Scope of blank nodes.</li>
+</ul>
+<p>User code is needed to respond to any of these events of interest.
+This is written by implementing any of the relevant interfaces:
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/StatementHandler.html">StatementHandler</a>,
+org.xml.sax.ErrorHandler,
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/NamespaceHandler.html">NamespaceHandler</a>,
+and
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html">ExtendedHandler</a>.</p>
+<p>An individual handler is set by calling the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
+method on the ARP instance. This returns an encapsulation of all
+the handlers being used. A specific handler is set by calling the
+appropriate set&hellip;Handler method on that object, e.g.
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">setStatementHandler</a>.</p>
+<p>All the handlers can be copied from one ARP instance to another by
+using the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
+method:</p>
+<pre><code> ARP from, to;
+ // initialize from and to
+ // ...
+
+ to.setHandlersWith(from.getHandlers());
+</code></pre>
+<p>The error handler reports both XML and RDF errors, the former
+detected by Xerces. See
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setErrorHandler(org.xml.sax.ErrorHandler)">ARPHandlers.setErrorHandler</a>
+for details of how to distinguish between them.</p>
+<h2 id="configuring-arp">Configuring ARP</h2>
+<p>ARP can be configured to treat most error conditions as warnings or
+to be ignored, and to treat some non-error conditions as warnings
+or errors.</p>
+<p>In addition, the behaviour in response to input that does not have
+an <code>&lt;rdf:RDF&gt;</code> root element is configurable: either to treat the
+whole file as RDF anyway, or to scan the file looking for embedded
+<code>&lt;rdf:RDF&gt;</code> elements.</p>
+<p>As with the handlers, there is an options object that encapsulates
+these settings. It can be accessed using
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()"><code>getOptions</code></a>,
+and then individual settings can be made using the methods in
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPOptions.html"><code>ARPOptions</code></a>.</p>
+<p>It is also possible to copy all the option settings from one ARP
+instance to another:</p>
+<pre><code> ARP from, to;
+ // initialize from and to ...
+
+ to.setOptionsWith(from.getOptions());
+</code></pre>
+<p>The <a href="iohowto.html#arp_properties">I/O how-to</a> gives some more
+detail about the options settings, although it assumes the use of
+the Jena <code>RDFReader</code> interface.</p>
+<h2 id="interrupting-arp">Interrupting ARP</h2>
+<p>It is possible to interrupt an ARP thread. See the
+<a href="iohowto.html#interrupting_arp">I/O how-to</a> for details.</p>
+<h2 id="using-other-sax-sources">Using Other SAX Sources</h2>
+<p>It is possible to use ARP with other SAX input sources, e.g. from a
+non-Xerces parser, or from an in-memory XML source, such as a DOM
+tree.</p>
+<p>Instead of an ARP instance, you create an instance of
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html">SAX2RDF</a> using
+the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#newInstance(java.lang.String)">newInstance</a>
+method. This can be configured just like an ARP instance, following
+the initialization section of the <a href="#sample">sample code</a>.</p>
+<p>This is used like a SAX2Model instance as
+<a href="sax.html">described elsewhere</a>.</p>
+<h2 id="memory-usage">Memory usage</h2>
+<p>For very large files, ARP does not use any additional memory except
+when either the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html#discardNodesWithNodeID()">ExtendedHandler.discardNodesWithNodeID</a>
+returns false or when the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/AResource.html#setUserData(java.lang.Object)">AResource.setUserData</a>
+method has been used. In these cases ARP needs to remember the
+<code>rdf:nodeID</code> usage through the file life time.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

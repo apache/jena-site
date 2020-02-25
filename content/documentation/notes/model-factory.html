@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Creating Jena models</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/model-factory.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Creating Jena models</h1>
+            
+	<h2 id="introduction">Introduction</h2>
+<p>Jena is a moderately complicated system, with several
+different kinds of <code>Model</code> and ways of constructing them. This note
+describes the Jena <code>ModelFactory</code>, a one-stop shop for
+creating Jena models. <code>ModelFactory</code> lives in Java package
+<code>org.apache.jena.rdf.model</code>.</p>
+<p>This note is an introduction, not an exhaustive description. As
+usual consult the Javadoc for details of the methods and classes to
+use.</p>
+<h2 id="simple-model-creation">Simple model creation</h2>
+<p>The simplest way to create a model (if not the shortest) is to call
+<code>ModelFactory.createDefaultModel()</code>. This [by default] delivers a
+plain RDF model, stored in-memory, that does no inference and has
+no special ontology interface.</p>
+<h2 id="database-model-creation">Database model creation</h2>
+<p><em>Note:</em> this section previously referred to creating database models
+with RDB, a now obsolete Jena features. For methods of creating models
+with <a href="/documentation/sdb/index.html">SDB</a> and <a href="/documentation/tdb/index.html">TDB</a>
+please see the relevant reference sections.</p>
+<h2 id="inference-model-creation">Inference model creation</h2>
+<p>An important feature of Jena is support for different kinds of
+inference over RDF-based models (used for RDFS and OWL).
+Inference models are constructed by applying <em>reasoners</em> to
+<em>base models</em> and optionally <em>schema</em>. The statements deduced by
+the reasoner from the base model then appear in the inferred model
+alongside the statements from the base model itself.
+RDFS reasoning is directly available:</p>
+<ul>
+<li>
+<p><code>createRDFSModel(Model base)</code> creates an inference model over the
+base model using the built-in RDFS inference rules and any RDFS
+statements in the base model.</p>
+</li>
+<li>
+<p><code>createRDFSModel(Model schema, Model base)</code> creates an RDFS
+inference model from the base model and the supplied schema model.
+The advantage of supplying the schema separately is that the
+reasoner may be able to compute useful information in advance on
+the assumption that the schema won&rsquo;t change, or at least not change
+as often as the base model.</p>
+</li>
+</ul>
+<p>It&rsquo;s possible to use other reasoning systems than RDFS. For these a
+Reasoner is required:</p>
+<ul>
+<li>
+<p><code>createInfModel(Reasoner reasoner, Model base)</code> creates an
+inference model using the rules of <code>reasoner</code> over the model
+<code>base</code>.</p>
+</li>
+<li>
+<p><code>createInfModel(Reasoner reasoner, Model schema, Model base)</code> Just
+as for the RDFS case, the schema may be supplied separately to
+allow the reasoner to digest them before working on the model.</p>
+</li>
+</ul>
+<p>From where do you fetch your reasoners? From the
+<em>reasoner registry</em>, the class
+<a href="/documentation/javadoc/jena/org/apache/jena/reasoner/ReasonerRegistry.html">ReasonerRegistry</a>.
+This allows reasoners to be looked up by name, but also provides
+some predefined access methods for well-know reasoners:</p>
+<ul>
+<li>
+<p><code>getOWLReasoner()</code>: the reasoner used for OWL inference</p>
+</li>
+<li>
+<p><code>getRDFSReasoner()</code>: the reasoner used for RDFS inference</p>
+</li>
+<li>
+<p><code>getTransitiveReasoner()</code>: a reasoner for doing subclass and
+sub-property closure.</p>
+</li>
+</ul>
+<h2 id="ontology-model-creation">Ontology model creation</h2>
+<p>An <em>ontology model</em> is one that presents RDF as an ontology -
+classes, individuals, different kinds of properties, and so forth.
+Jena supports RDFS and OWL ontologies through <em>profiles</em>.
+There is extensive documentation on
+<a href="../ontology/index.html">Jena&rsquo;s ontology support</a>, so all we&rsquo;ll do
+here is summarise the creation methods.</p>
+<ul>
+<li>
+<p><code>createOntologyModel()</code> Creates an ontology model which is
+in-memory and presents OWL ontologies.</p>
+</li>
+<li>
+<p><code>createOntologyModel(OntModelSpec spec, Model base)</code> Creates an
+ontology model according the
+<a href="/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html">OntModelSpec</a>
+<code>spec</code> which presents the ontology of <code>base</code>.</p>
+</li>
+<li>
+<p><code>createOntologyModel(OntModelSpec spec, ModelMaker maker, Model base)</code>
+Creates an OWL ontology model according to the <code>spec</code> over the
+<code>base</code> model. If the ontology model needs to construct additional
+models (for OWL imports), use the <code>ModelMaker</code> to create them. [The
+previous method will construct a <code>MemModelMaker</code> for this.]</p>
+</li>
+</ul>
+<p>Where do <code>OntModelSpec</code>s come from? There&rsquo;s a cluster of
+constants in the class which provide for common uses; to name but
+three:</p>
+<ul>
+<li>
+<p><code>OntModelSpec.OWL_MEM_RDFS_INF</code> OWL ontologies, model stored in
+memory, using RDFS entailment only</p>
+</li>
+<li>
+<p><code>OntModelSpec.RDFS_MEM</code> RDFS ontologies, in memory, but doing no
+additional inferences</p>
+</li>
+<li>
+<p><code>OntModelSpec.OWL_DL_MEM_RULE_INF</code> OWL ontologies, in memory, with
+the full OWL Lite inference</p>
+</li>
+</ul>
+<h2 id="creating-models-from-assembler-descriptions">Creating models from Assembler descriptions</h2>
+<p>A model can be built from a description of the required model.
+This is documented in the
+<a href="../assembler/assembler-howto.html">assembler howto</a>.
+Access to the
+assembler system for model creation is provided by three
+ModelFactory methods:</p>
+<ul>
+<li>
+<p><code>assembleModelFrom( Model singleRoot )</code>: assemble a Model from the
+single Model description in <code>singleRoot</code>. If there is no such
+description, or more than one, an exception is thrown. If a
+description has to be selected from more than one available
+candidates, consider using the methods below.</p>
+</li>
+<li>
+<p><code>findAssemblerRoots( Model m )</code>: answer a Set of all the Resources
+in <code>m</code> which are of type <code>ja:Model</code>, ie descriptions of models to
+assemble. (Note that this will include sub-descriptions of embedded
+models if they are present.)</p>
+</li>
+<li>
+<p><code>assembleModelFrom( Resource root )</code>: answer a Model assembled
+according to the description hanging from <code>root</code>.
+Assemblers can construct other things as well as models, and the
+Assembler system is user-extensible: see the howto for details.</p>
+</li>
+</ul>
+<h3 id="file-based-models">File-based models</h3>
+<p>The method <code>ModelFactory.createFileModelMaker(String)</code> returns a
+<code>ModelMaker</code> which attaches models to filing-system files. The
+<code>String</code> argument is the <em>fileBase</em>. When a file-ModelMaker opens a
+file, it reads it from a file in the directory named by the
+fileBase; when the model is closed (and <em>only</em> then, in the current
+implementation), the contents of the model are written back to the
+file.</p>
+<p>Because the names of models in a modelMaker can be arbitrary
+character strings, in particular URIs, they are translated slightly
+to avoid confusion with significant characters of common filing
+systems. In the current implementation,</p>
+<ul>
+<li>colon : is converted to \_C</li>
+<li>slash / is converted to \_S</li>
+<li>underbar _ is converted to \_U</li>
+</ul>
+<h2 id="modelmakers">ModelMakers</h2>
+<p>Plain models can be given names which allows them to be &ldquo;saved&rdquo; and
+looked up by name later. This is handled by implementations of the
+interface <code>ModelMaker</code>; each <code>ModelMaker</code> produces Models of the
+same kind. The simplest kind of <code>ModelMaker</code> is a memory model
+maker, which you get by calling
+<code>ModelFactory.createMemModelMaker()</code>. The methods you&rsquo;d want to use
+to start with on a ModelMaker are:</p>
+<ul>
+<li>
+<p><code>createModel(String)</code>: create a model with the given name in the
+ModelMaker. If a model with that name already exists, then that
+model is used instead.</p>
+</li>
+<li>
+<p><code>openModel(String)</code>: open an existing model with the given name. If
+no such model exists, create a new empty one and give it that name.
+[createModel(String) and openModel(String) behave in the same way,
+but each has a two-argument form for which the behaviour is
+different. Use whichever one best fits your intention.]</p>
+</li>
+<li>
+<p><code>createModel()</code>: create a fresh anonymous model.</p>
+</li>
+<li>
+<p><code>getModel()</code>: each <code>ModelMaker</code> has a <em>default model</em>; this method
+returns that model.</p>
+</li>
+</ul>
+<p>There are other methods, for removing models, additional control
+over create <em>vs</em> open, closing the maker, and looking names up; for
+those consult the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelMaker.html">ModelMaker JavaDoc</a>.</p>
+<h2 id="miscellany">Miscellany</h2>
+<p>Finally, <code>ModelFactory</code> contains a collection of methods for some
+special cases not conveniently dealt with elsewhere.</p>
+<p><code>createModelForGraph(Graph g)</code> is used when an advanced user with
+access to the Jena SPI has constructed or obtained a <code>Graph</code> and
+wishes to present it as a model. This method wraps the graph up as
+a plain model. Alterations to the graph are visible in the model,
+and <em>vice versa</em>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

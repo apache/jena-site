@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - LARQ - adding free text searches to SPARQL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/larq/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">LARQ - adding free text searches to SPARQL</h1>
+            
+	<p><strong>As of Jena 2.11.0, LARQ is replaced by <a href="../query/text-query.html">jena-text</a></strong></p>
+<p><a href="../query/text-query.html">jena-text</a> includes use of Apache Solr
+as a shared, search server, or Apache Lucene as a local text index.
+From Fuseki 0.2.7, jena-text is built into Fuseki.</p>
+<p>LARQ is not compatible with jena-text; the index format has changed and the
+integration with SPARQL is different.</p>
+<hr/>
+<p>LARQ is a combination of <a href="../query/index.html">ARQ</a> and <a href="http://lucene.apache.org/java/docs/index.html">Lucene</a>. It gives users the ability to perform free text searches within their SPARQL queries. Lucene indexes are additional information for accessing the RDF graph, not storage for the graph itself.</p>
+<p>Some example code is available here: <a href="https://svn.apache.org/repos/asf/jena/Archive/jena-larq/src/test/java/org/apache/jena/larq/examples/">https://svn.apache.org/repos/asf/jena/Archive/jena-larq/src/test/java/org/apache/jena/larq/examples/</a>.</p>
+<p>Two helper commands are provided: <code>larq.larqbuilder</code> and <code>larq.larq</code> used respectively for updating and querying LARQ indexes.</p>
+<p>A full description of the free text query language syntax is given in the <a href="http://lucene.apache.org/java/3_0_0/queryparsersyntax.html">Lucene query syntax</a> document.</p>
+<h2 id="usage-patterns">Usage Patterns</h2>
+<p>There are three basic usage patterns supported:</p>
+<ul>
+<li>Pattern 1 : index string literals. The index will return the literals matching the Lucene search pattern.</li>
+<li>Pattern 2 : index subject resources by string literal. The index returns the subjects with property value matching a text query.</li>
+<li>Pattern 3 : index graph nodes based on strings not present in the graph.</li>
+</ul>
+<p>Patterns 1 and 2 have the indexed content in the graph. Both 1 and 2 can be modified by specifying a property so that only values of a given property are indexed. Pattern 2 is less flexible as <a href="#query-using-a-lucene-index">discussed below</a>. Pattern 3 is covered in the <a href="#external-content">external content</a> section below.</p>
+<p>LARQ can be used in other ways as well but the classes for these patterns are supplied. In both patterns 1 and 2, strings are indexed, being plain strings, string with any language tag or any literal with datatype XSD string.</p>
+<h2 id="index-creation">Index Creation</h2>
+<p>There are many ways to use Lucene, which can be set up to handle particular features or languages. The creation of the index is done outside of the ARQ query system proper and only accessed at query time. LARQ includes some platform classes and also utility classes to create indexes on string literals for the use cases above. Indexing can be performed as the graph is read in, or to built from an existing graph.</p>
+<h3 id="index-builders">Index Builders</h3>
+<p>An index builder is a class to create a Lucene index from RDF data.</p>
+<ul>
+<li><code>IndexBuilderString</code>: This is the most commonly used index builder. It indexes plain literals (with or without language tags) and XSD strings and stores the complete literal. Optionally, a property can be supplied which restricts indexing to strings in statements using that property.</li>
+<li><code>IndexBuilderSubject</code>: Index the subject resource by a string literal, an store the subject resource, possibly restricted by a specified property.</li>
+</ul>
+<p>Lucene has many ways to create indexes and the index builder classes do not attempt to provide all possible Lucene features. Applications may need to extend or modify the standard index builders provided by LARQ.</p>
+<h3 id="index-creation-1">Index Creation</h3>
+<p>An index can be built while reading RDF into a model:</p>
+<pre><code>// -- Read and index all literal strings.
+IndexBuilderString larqBuilder = new IndexBuilderString() ;
+
+// -- Index statements as they are added to the model.
+model.register(larqBuilder) ;
+
+FileManager.get().readModel(model, datafile) ;
+
+// -- Finish indexing
+larqBuilder.closeWriter() ;
+model.unregister(larqBuilder) ;
+
+// -- Create the access index  
+IndexLARQ index = larqBuilder.getIndex() ;
+</code></pre>
+<p>or it can be created from an existing model:</p>
+<pre><code>// -- Create an index based on existing statements
+larqBuilder.indexStatements(model.listStatements()) ;
+// -- Finish indexing
+larqBuilder.closeWriter() ;
+// -- Create the access index  
+IndexLARQ index = larqBuilder.getIndex() ;
+</code></pre>
+<h2 id="index-registration">Index Registration</h2>
+<p>Next the index is made available to ARQ. This can be done globally:</p>
+<pre><code>// -- Make globally available
+LARQ.setDefaultIndex(index) ;
+</code></pre>
+<p>or it can be set on a per-query execution basis.</p>
+<pre><code>QueryExecution qExec = QueryExecutionFactory.create(query, model) ;
+// -- Make available to this query execution only
+LARQ.setDefaultIndex(qExec.getContext(), index) ;
+</code></pre>
+<p>In both these cases, the default index is set, which is the one expected by property function <code>pf:textMatch</code>. Use of multiple indexes in the same query can be achieved by introducing new properties.  The application can subclass the search class <code>org.apache.jena.larq.LuceneSearch</code> to set different indexes with different property names.</p>
+<h2 id="query-using-a-lucene-index">Query using a Lucene index</h2>
+<p>Query execution is as usual using the property function pf:textMatch. &ldquo;textMatch&rdquo; can be thought of as an implied relationship in the data. Note the prefix ends in &ldquo;.&quot;.</p>
+<pre><code>String queryString = StringUtils.join(&quot;\n&quot;, new String[]{
+        &quot;PREFIX pf: &lt;http://jena.hpl.hp.com/ARQ/property#&gt;&quot;,
+        &quot;SELECT * {&quot; ,
+        &quot;    ?lit pf:textMatch '+text'&quot;,
+        &quot;}&quot;
+    }) ;
+Query query = QueryFactory.create(queryString) ;
+QueryExecution qExec = QueryExecutionFactory.create(query, model) ;
+ResultSetFormatter.out(System.out, qExec.execSelect(), query) ;
+</code></pre>
+<p>The subjects with a property value of the matched literals can be retrieved by looking up the literals in the model:</p>
+<pre><code>PREFIX pf: &lt;http://jena.hpl.hp.com/ARQ/property#&gt;
+SELECT ?doc
+{
+    ?lit pf:textMatch '+text' .
+    ?doc ?p ?lit
+}
+</code></pre>
+<p>This is a more flexible way of achieving the effect of using a <code>IndexBuilderSubject</code>. <code>IndexBuilderSubject</code> can be more compact when there are many large literals (it stores the subject not the literal) but does not work for blank node subjects without extremely careful co-ordination with a persistent model. Looking the literal up in the model does not have this complication.</p>
+<h2 id="accessing-the-lucene-score">Accessing the Lucene Score</h2>
+<p>The application can get access to the Lucene match score by using a list argument for the subject of <code>pf:textMatch</code>. The list must have two arguments, both unbound variables at the time of the query.</p>
+<pre><code>PREFIX pf: &lt;http://jena.hpl.hp.com/ARQ/property#&gt;
+SELECT ?doc ?score 
+{
+    (?lit ?score ) pf:textMatch '+text' .
+    ?doc ?p ?lit
+}
+</code></pre>
+<h2 id="limiting-the-number-of-matches">Limiting the number of matches</h2>
+<p>When used with just a query string, pf:textMatch returns all the Lucene matches. In many applications, the application is only interested in the first few matches (Lucene returns matches in order, highest scoring first), or only matches above some score threshold. The query argument that forms the object of the pf:textMatch property can also be a list, including a score threshold and a total limit on the number of results matched.</p>
+<pre><code>?lit pf:textMatch ( '+text' 100 ) .        # Limit to at most 100 hits
+
+?lit pf:textMatch ( '+text' 0.5 ) .        # Limit to Lucene scores of 0.5 and over.
+
+?lit pf:textMatch ( '+text' 0.5 100 ) .    # Limit to scores of 0.5 and limit to 100 hits
+</code></pre>
+<h2 id="direct-application-use">Direct Application Use</h2>
+<p>The IndexLARQ class provides the ability to search programmatically, not just from ARQ. The searchModelByIndex method returns an iterator over RDFNodes.</p>
+<pre><code>// -- Create the access index  
+IndexLARQ index = larqBuilder.getIndex() ;
+
+NodeIterator nIter = index.searchModelByIndex(&quot;+text&quot;) ;
+for ( ; nIter.hasNext() ; )
+{
+    // if it's an index storing literals ...
+    Literal lit = (Literal)nIter.nextNode() ;
+}
+</code></pre>
+<h2 id="external-content">External Content</h2>
+<ul>
+<li>Pattern 3: index graph nodes based on strings not present in the graph.</li>
+</ul>
+<p>Sometimes, the index needs to be created based on external material and the index gives nodes in the graph. This can be done by using <code>IndexBuilderNode</code> which is a helper class to relate external material to some RDF node.</p>
+<p>Here, the indexed content is not in the RDF graph at all.  For example, the indexed content may come from HTML.XHTML, PDFs or XML documents and the RDF graph only holds the metadata about these content items.</p>
+<p>The <a href="http://lucene.apache.org/java/3_4_0/contributions.html#Lucene%20Document%20Converters">Lucene contributions page</a> lists some content converters.</p>
+<h2 id="getting-help-and-getting-involved">Getting Help and Getting Involved</h2>
+<p>If you have a problem with LARQ, make sure you read the <a href="../../help_and_support/index.html">Getting help with Jena</a> page and post a message on the <a href="mailto:users@jena.apache.org?s=%5BLARQ%5D">users@jena.apache.org</a> mailing list.
+You can also search the jena-users mailing list archives <a href="http://markmail.org/search/?q=larq+list%3Aorg.apache.jena.users">here</a>.</p>
+<p>If you use LARQ and you want to get involved, make sure you read the <a href="../../getting_involved/index.html">Getting Involved</a> page. You can help us making LARQ better by:</p>
+<ul>
+<li>improving this documentation, writing tutorials or blog posts about LARQ</li>
+<li>letting us know how you use LARQ, your use cases and what are in your opinion missing features</li>
+<li>answering users question about LARQ on the <a href="mailto:users@jena.apache.org?s=%5BLARQ%5D">users@jena.apache.org</a> mailing list</li>
+<li>submitting bug reports and feature requests on JIRA: <a href="https://issues.apache.org/jira/browse/JENA">https://issues.apache.org/jira/browse/JENA</a></li>
+<li>voting or submitting patches for the currently <a href="https://issues.apache.org/jira/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+JENA+AND+component+%3D+LARQ+AND+status+%3D+Open+ORDER+BY+priority+DESC&amp;mode=hide">open bugs or improvements</a> for LARQ</li>
+<li>checking out LARQ source code, playing with it and let us know your ideas for possible improvements: <a href="https://svn.apache.org/repos/asf/jena/Archive/jena-larq">https://svn.apache.org/repos/asf/jena/Archive/jena-larq</a></li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

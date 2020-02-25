@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - The DatasetGraph hierarchy.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/datasetgraph.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">The DatasetGraph hierarchy.</h1>
+            
+	<p><em>These notes were written February 2016.</em></p>
+<p><code>DatasetGraph</code> forms the basic of storage as
+<a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDFDataset</a>.  There
+is a class hierarchy to make implementation a matter of choosing the style
+of implementation and adding specific functionality.</p>
+<p>The hierarchy of the significant classes is:
+(there are others adding special features)</p>
+<pre><code>DatasetGraph - the interface
+    DatasetGraphBase
+        DatasetGraphBaseFind
+            DatasetGraphCollection
+                DatasetGraphMapLink - ad hoc collection of graphs
+            DatasetGraphOne
+            DatasetGraphTriplesQuads
+                DatasetGraphInMemory - fully transactional in-memory.
+                DatasetGraphMap
+        DatasetGraphQuads 
+    DatasetGraphTrackActive - transaction support 
+        DatasetGraphTransaction - This is the main TDB dataset.
+        DatasetGraphWithLock - MRSW support
+    DatasetGraphWrapper
+        DatasetGraphTxn - TDB usage
+        DatasetGraphViewGraphs
+</code></pre>
+<p>Other important classes:</p>
+<pre><code>GraphView
+</code></pre>
+<h3 id="datasetgraph">DatasetGraph</h3>
+<p>This is the interface. Includes <code>Transactional</code> operations.</p>
+<p>There are two markers for transaction features supported.</p>
+<p>If <code>begin</code>, <code>commit</code> and <code>end</code> are supported (which is normally the case)
+<code>supportsTransactions</code> returns true.</p>
+<p>If, further, <code>abort</code> is supported, then <code>supportsTransactionAbort</code> is true.</p>
+<h3 id="general-hierarchy">General hierarchy</h3>
+<p><strong>DatasetGraphBase</strong></p>
+<p>This provides some basic machinery and provides implementations of
+operations that have alternative styles.  It converts <code>add(G,S,P,O)</code> to
+<code>add(quad)</code> and <code>delete(G,S,P,O)</code> to <code>delete(quad)</code> and converts
+<code>find(quad)</code> to <code>find(G,S,P,O)</code>.</p>
+<p>It provides basic implementations of <code>deleteAny(?,?,?,?)</code> and <code>clear()</code>.</p>
+<p>It provides a Lock (LockMRSW) and the Context.</p>
+<p>From here on down, the storage aspect of the hierarchy splits depending on
+implementation style.</p>
+<p><strong>DatasetGraphBaseFind</strong></p>
+<p>This is the beginning of the hierarchy for DSGs that store using different units for default graph and named graphs.
+This class splits find/4 into the following variants:</p>
+<pre><code>    findInDftGraph
+    findInUnionGraph
+    findQuadsInUnionGraph
+    findUnionGraphTriples
+    findInSpecificNamedGraph
+    findInAnyNamedGraphs
+</code></pre><p><strong>DatasetGraphTriplesQuads</strong></p>
+<p>This is the beginning of the hierarchy for DSGs implemented as a set of triples for the default graph and a set of quads for all the named graphs.</p>
+<p>It splits add(Quad) and delete(Quad) into:</p>
+<pre><code>addToDftGraph
+addToNamedGraph
+deleteFromDftGraph
+deleteFromNamedGraph
+</code></pre>
+<p>and makes</p>
+<pre><code>setDefaultGraph
+addGraph
+removeGraph
+</code></pre>
+<p>copy-in operations - triples are copied into the graph or removed from the
+graph, rather than the graph being shared.</p>
+<p>** DatasetGraphInMemory**</p>
+<p>The main in-memory implementation, providing full transactions (serializable isolation, abort).</p>
+<p>Use this one!</p>
+<p>This class backs <code>DatasetFactory.createTxnMem()</code>.</p>
+<p><strong>DatasetGraphMap</strong></p>
+<p>The in-memory implementation using in-memory Graphs as the storage for Triples.
+It provides MRSW-transactions (serializable isolation, no real abort).
+Use this if a single threaded application.</p>
+<p>This class backs <code>DatasetFactory.create()</code>.</p>
+<p><strong>DatasetGraphCollection</strong></p>
+<p>Operations split into operations on a collection of Graphs, one for the default graph, and a map of (Node,Graph) for the named graphs.
+It provides MRSW-transactions (serializable isolation, no real abort).</p>
+<p><strong>DatasetGraphMapLink</strong></p>
+<p>This implementation is manages Graphs provided by the application.</p>
+<p>It provides MRSW-transactions (serializable isolation, no real abort).
+Applications need to be careful when modifying the Graphs directly and also
+modifying them via the DatasetGraph interface.</p>
+<p>This class backs <code>DatasetFactory.createGeneral()</code>.</p>
+<p><strong>DatasetGraphWrapper</strong></p>
+<p>Indirection to another <code>DatasetGraph</code>.</p>
+<p>Surprisingly useful.</p>
+<p><strong>DatasetGraphViewGraphs</strong></p>
+<p>A small class that provides the &ldquo;get a graph&rdquo; operations over a
+<code>DatasetGraph</code> using <code>GraphView</code>.</p>
+<p>Not used because subclasses usually want to inherit from a different part
+fo the hierarchy but the idea of implementing <code>getDefaultGraph()</code> and
+<code>getGraph(Node)</code> as calls to <code>GraphView</code> is used elsewhere.</p>
+<p>Do not use with an implementations that store using graph
+(e.g. <code>DatasetGraphMap</code>, <code>DatasetGraphMapLink</code>) because it goes into an
+infinite recursion if they use GraphView internally.</p>
+<p><strong>GraphView</strong></p>
+<p>Implementation of the Graph interface as a view of a DatasetGraph including
+providing a basic implementation of the union graph.  Subclasses can, and do,
+provide a better mechanisms for the union graph based on their internal
+indexes.</p>
+<p><strong>DatasetGraphOne</strong></p>
+<p>An implement that only provides a default graph, given at creation time.
+This is a fixed - the app can&rsquo;t add named graphs.</p>
+<p>Cuts through all the machinery to be a simple, direct implementation.</p>
+<p>Backs up <code>DatasetGraphFactory.createOneGraph</code> but not
+<code>DatasetFactory.create(Model)</code> which provided are adding named graphs.</p>
+<p><strong>DatasetGraphQuads</strong></p>
+<p>Root for implementations based on just quad storage, no special triples in
+the default graph (e.g. the default graph is always the calculated union of
+named graphs).</p>
+<p>Not used currently.</p>
+<p><strong>DatasetGraphTrackActive</strong></p>
+<p>Framework for implementing transactions.  Provides checking.</p>
+<p><strong>DatasetGraphWithLock</strong></p>
+<p>Provides transactions, without abort by default, using a lock.  If the lock
+is LockMRSW, we get multiple-readers or a single writer at any given moment
+in time. As most datastructures are multi-thread reader safe, this style
+works over systems that do not themselves provide transactions.</p>
+<p>Abort requires work to be undone.  Jena may in the future provide reverse
+replay abort (do the adds and deletes in reverse operation, reverse order)
+but this is partial. It does not protect against the DatasetGraph
+implementation throwing exceptions nor JVM or machine crash (if any
+persistence). It still needs MRSW to archive isolation.</p>
+<p>Read-committed needs synchronization safe datastructures -including
+co-ordinated changes to several place at once (ConcurrentHashMap isn&rsquo;t
+enough - need to update 2 or more ConcurrentHashMaps together).</p>
+<h3 id="tdb">TDB</h3>
+<p><strong>DatasetGraphTDB</strong></p>
+<p><code>DatasetGraphTDB</code> is concerned with the storage
+historical and not used directly by applications.</p>
+<p><strong>DatasetGraphTransaction</strong></p>
+<p>This is the class returned by <code>TDBFactory</code>, wrapped in <code>DatasetImpl</code>.</p>
+<p>Different in TDB2 - DatasetGraphTransaction not used, DatasetGraphTDB is transactional.</p>
+<p><strong>DatasetGraphTxn</strong></p>
+<p>This is the TDB per-transaction <code>DatasetGraph</code> using the transaction view
+of indexes.  For the application, it is held in the transactions
+<code>ThreadLocal</code> in <code>DatasetGraphTransaction</code>.</p>
+<p>Internally, each read transaction for the same generation of the data uses
+the same <code>DatasetGraphTransaction</code>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - The core RDF API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/rdf/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">The core RDF API</h1>
+            
+	<p>This section provides some basic reference notes on the core Jena RDF API.
+For a more tutorial introduction, please see <a href="/tutorials">the tutorials</a>.</p>
+<h2 id="core-concepts">Core concepts</h2>
+<h3 id="graphs-models">Graphs, models</h3>
+<p>In Jena, all state information provided by a collection of RDF triples is
+contained in a data structure called a <code>Model</code>. The model denotes an
+<em>RDF graph</em>, so called because it contains a collection of <em>RDF nodes</em>,
+attached to each other by labelled relations. Each relationship goes
+only in one direction, so the triple:</p>
+<pre><code>example:ijd foaf:name &quot;Ian&quot;
+</code></pre>
+<p>can be read as &lsquo;<em>resource</em> <code>example:ijd</code> <em>has property</em> <code>foaf:name</code> <em>with value</em> <code>&quot;Ian&quot;</code>&rsquo;.
+Clearly the reverse is not true. Mathematically, this makes the model an instance of a
+<a href="http://en.wikipedia.org/wiki/Directed_graph">directed graph</a>.</p>
+<p>In Java terms, we use the class <code>Model</code> as the primary container of RDF information
+contained in graph form. <code>Model</code> is designed to have a rich API, with many methods
+intended to make it easier to write RDF-based programs and applications. One of
+<code>Model</code>'s other roles is to provide an abstraction over different ways of storing
+the RDF nodes and relations: in-memory data structures, disk-based persistent stores
+and inference engines, for example, all provide <code>Model</code> as a core API.</p>
+<p>While this common abstraction is appealing to API users, it is less convenient when trying
+to create a new abstraction over a different storage medium. For example, suppose we
+wanted to present an RDF triples view of an LDAP store by wrapping it as a Jena <code>Model</code>.
+Internally, Jena uses a much simpler abstraction, <code>Graph</code> as the common interface to
+low-level RDF stores. <code>Graph</code> has a much simpler API, so is easier to re-implement
+for different store substrates.</p>
+<p>In summary there are three distinct concepts of RDF containers in Jena:</p>
+<ul>
+<li><em>graph</em>, a mathematical view of the directed relations between nodes in a connected structure</li>
+<li><code>Model</code>, a rich Java API with many convenience methods for Java application developers</li>
+<li><code>Graph</code>, a simpler Java API intended for extending Jena&rsquo;s functionality.</li>
+</ul>
+<p>As an application developer, you will mostly be concerned with <code>Model</code>.</p>
+<h3 id="nodes-resources-literals-and-blank-nodes">Nodes: resources, literals and blank nodes</h3>
+<p>So if RDF information is contained in a graph of connected nodes, what do the nodes themselves
+look like? There are two distinct types of nodes: URI references and literals. Essentially, these
+denote, respectively, some resource about which we wish to make some assertions, and concrete data values that
+appear in those assertions. In the example above, <code>example:ijd</code> is a resource, denoting a person,
+and <code>&quot;Ian&quot;</code> denotes the value of a property of that resource (that property being first name, in this case).
+The resource is denoted by a URI, shown in abbreviated form here (about which more below).</p>
+<p>What is the nature of the relationship between the resource node in the graph (<code>example:ijd</code>) and
+an actual person (the author of this document)? That turns out to be a surprisingly subtle and
+complex matter, which we won&rsquo;t dwell on here.
+See <a href="http://www.jenitennison.com/blog/node/159">this very good summary of the issues</a>
+by Jeni Tennison for a detailed analysis. Suffice to say here that <em>resources</em> - somehow - denote
+the things we want to describe in an RDF model.</p>
+<p>A resource represented as a URI denotes a named thing - it has an identity. We can use that identity
+to refer to directly the resource, as we will see below. Another kind of node in the graph is a <em>literal</em>,
+which just represents a data value such as the string <code>&quot;ten&quot;</code> or the number <code>10</code>. Literals representing
+values other than strings may have an attached <em>datatype</em>, which helps an RDF processor correctly
+convert the string representation of the literal into the correct value in the computer. By default,
+RDF assumes the <a href="http://www.w3.org/TR/xmlschema-2/">datatypes used XSD</a> are available, but in fact
+any datatype URI may be used.</p>
+<p>RDF allows one special case of resources, in which we don&rsquo;t actually know the identity (i.e. the URI)
+of the resource. Consider the sentence &ldquo;I gave my friend five dollars&rdquo;. We know from this claim
+that I have friend, but we don&rsquo;t know who that friend is. We also know a property of the friend -
+namely that he or she is five dollars better off than before.  In RDF, we can model this situation by
+using a special type of resource called an <em>anonymous resource</em>. In the RDF semantics, an anonymous
+resource is represented as having an identity which is blank, so they are often referred to
+as nodes in the graph with blank identities, or <em>blank nodes</em>, typically shortened to <em>bNodes</em>.</p>
+<p>In Jena, the Java interface <code>Resource</code> represents both ordinary URI resources and bNodes (in the case
+of a bNode, the <code>getURI()</code> method returns <code>null</code>, and the <code>isAnon()</code> method returns true).
+The Java interface <code>Literal</code> represents literals. Since both resources and literals may appear
+as nodes in a graph, the common interface <code>RDFNode</code> is a super-class of both <code>Resource</code> and <code>Literal</code>.</p>
+<h3 id="triples">Triples</h3>
+<p>In an RDF graph, the relationships always connect one subject resource to one other resource or
+one literal. For example:</p>
+<pre><code>example:ijd foaf:firstName &quot;Ian&quot;.
+example:ijd foaf:knows example:mary.
+</code></pre>
+<p>The relationship, or <em>predicate</em>, always connects two nodes (formally, it has <em>arity</em> two). The first
+argument of the predicate is node we are linking <em>from</em>, and the second is the node we are linking
+<em>to</em>. We will often refer to these as the <em>subject</em> and <em>object</em> of the RDF statement, respectively.
+The pattern subject-predicate-object is sufficiently commonplace that we will sometimes use the
+abbreviation SPO. More commonly, we refer to a statement of one subject, predicate and object as a <em>triple</em>,
+leading naturally to the term <em>triplestore</em> to refer to a means of storing RDF information.</p>
+<p>In Jena, the Java class used to represent a single triple is <code>Statement</code>. According to the RDF
+specification, only resources can be the subject of an RDF triple, whereas the object can be a
+resource or a literal. The key methods for extracting the elements of a <code>Statement</code> are then:</p>
+<ul>
+<li><code>getSubject()</code> returning a <code>Resource</code></li>
+<li><code>getObject()</code> returning an <code>RDFNode</code></li>
+<li><code>getPredicate()</code> returning a <code>Property</code> (see below for more on Properties)</li>
+</ul>
+<p>The predicate of a triple corresponds to the label on an edge in the RDF graph. So in the figure
+below, the two representations are equivalent:</p>
+<p><img src="rdf-graph-and-triples.png" alt="Picture of two RDF triples in graphical and text form" title="RDF graph and triples"></p>
+<p>Technically, an RDF graph corresponds to a set of RDF triples. This means that an RDF resource
+can only be the subject of at most one triple with the same predicate and object (because sets do
+not contain any duplicates).</p>
+<h3 id="properties">Properties</h3>
+<p>As mentioned above, the connection between two resources or a resource and a literal in an RDF graph
+is labelled with the identity of the property. Just as RDF itself uses URI&rsquo;s as names for resources,
+minimising the chances of accidental name collisions, so too are properties identified with URI&rsquo;s. In fact,
+RDF Properties are just a special case of RDF Resources. Properties are denoted in Jena by the <code>Property</code>
+object, which is a Java sub-class of <code>Resource</code> (itself a Java sub-class of <code>RDFNode</code>).</p>
+<p>One difference between properties and resources in general is that RDF does not permit anonymous
+properties, so you can&rsquo;t use a bNode in place of a <code>Property</code> in the graph.</p>
+<h3 id="namespaces">Namespaces</h3>
+<p>Suppose two companies, Acme Inc, and Emca Inc, decide to encode their product catalogues in RDF. A key
+piece of information to include in the graph is the price of the product, so both decide to use a <code>price</code>
+predicate to denote the relationship between a product and its current price. However, Acme wants the
+price to include applicable sales taxes, whereas Emca wants to exclude them. So the notion of price
+is slightly different in each case. However, using the name &lsquo;price&rsquo; on its own risks losing this
+distinction.</p>
+<p>Fortunately, RDF specifies that a property is identified by a URI, and &lsquo;price&rsquo; on its own is not a URI.
+A logical solution is for both Acme and Emca to use their own web spaces to provide different
+base URIs on which to construct the URI for the property:</p>
+<pre><code>http://acme.example/schema/products#price
+http://emca.example/ontology/catalogue/price
+</code></pre>
+<p>These are clearly now two distinct identities, and so each company can define the semantics of the
+price property without interfering with the other. Writing out such long strings each time, however,
+can be unwieldy and a source of error. A <em>compact URI</em> or <a href="http://www.w3.org/TR/curie/"><em>curie</em></a>
+is an abbreviated form in which a namespace and name are separated by a colon character:</p>
+<pre><code>acme-product:price
+emca-catalogue:price
+</code></pre>
+<p>where <code>acme-product</code> is defined to be <code>http://acme.example/schema/products#</code>. This can be defined,
+for example, in Turtle:</p>
+<pre><code>@prefix acme-product: &lt;http://acme.example/schema/products#&gt;.
+
+acme-product:widget acme-product:price &quot;44.99&quot;^^xsd:decimal.
+</code></pre>
+<p>The datatype <code>xsd:decimal</code> is another example of an abbreviated URI. Note that no <code>@prefix</code> rules
+are defined by RDF or Turtle: authors of RDF content should ensure that all prefixes used in curies
+are defined before use.</p>
+<p><strong>Note</strong></p>
+<p>Jena does not treat namespaces in a special way. A <code>Model</code> will remember any prefixes defined
+in the input RDF (see the <a href="http://jena.apache.org/documentation/javadoc/jena/org/apache/jena/shared/PrefixMapping.html"><code>PrefixMapping</code></a>
+interface; all Jena <code>Model</code> objects extend <code>PrefixMapping</code>), and the output writers which
+serialize a model to XML or Turtle will normally attempt to use prefixes to abbreviate URI&rsquo;s.
+However internally, a <code>Resource</code> URI is not separated into a namespace and local-name pair.
+The method <code>getLocalName()</code> on <code>Resource</code> will attempt to calculate what a reasonable local
+name might have been, but it may not always recover the pairing that was used in the
+input document.</p>
+<p>can be used as the <em>subject</em> of statements about the properties
+of that resource, as above, but also as the value of a statement. For example, the property
+<code>is-a-friend-of</code> might typically connect two resources denoting people</p>
+<h2 id="jena-packages">Jena packages</h2>
+<p>As a guide to the various features of Jena, here&rsquo;s a description of the main Java packages.
+For brevity, we shorten <code>org.apache.jena</code> to <code>oaj</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Description</th>
+<th>More information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oaj.jena.rdf.model</td>
+<td>The Jena core. Creating and manipulating RDF graphs.</td>
+<td></td>
+</tr>
+<tr>
+<td>oaj.riot</td>
+<td>Reading and Writing RDF.</td>
+<td></td>
+</tr>
+<tr>
+<td>oaj.jena.datatypes</td>
+<td>Provides the core interfaces through which datatypes are described to Jena.</td>
+<td><a href="http://jena.apache.org/documentation/notes/typed-literals.html">Typed literals</a></td>
+</tr>
+<tr>
+<td>oaj.jena.ontology</td>
+<td>Abstractions and convenience classes for accessing and manipulating ontologies represented in RDF.</td>
+<td><a href="http://jena.apache.org/documentation/ontology/index.html">Ontology API</a></td>
+</tr>
+<tr>
+<td>oaj.jena.rdf.listeners</td>
+<td>Listening for changes to the statements in a model</td>
+<td></td>
+</tr>
+<tr>
+<td>oaj.jena.reasoner</td>
+<td>The reasoner subsystem is supports a range of inference engines which derive additional information from an RDF model</td>
+<td><a href="http://jena.apache.org/documentation/inference/index.html">Reasoner how-to</a></td>
+</tr>
+<tr>
+<td>oaj.jena.shared</td>
+<td>Common utility classes</td>
+<td></td>
+</tr>
+<tr>
+<td>oaj.jena.vocabulary</td>
+<td>A package containing constant classes with predefined constant objects for classes and properties defined in well known vocabularies.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>oaj.jena.xmloutput |   Writing RDF/XML. | <a href="http://jena.apache.org/documentation/io/index.html">I/O index</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

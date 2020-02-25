@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Permissions - Migration notes: Version 2.x to Version 3.x</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/permissions/migration2To3.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Permissions - Migration notes: Version 2.x to Version 3.x</h1>
+            
+	<p>When Jena moved from version 2 to version 3 there was a major renaming of packages. One of the packages renamed was the Jena Permissions package. It was formerly named Jena Security. There are several changes that need to occur to migrate from jena-security version 2.x to jena-permissions version 3.x.</p>
+<h1 id="changes">Changes</h1>
+<h2 id="package-rename">Package Rename</h2>
+<p>There are two major changes to package names.</p>
+<ul>
+<li>
+<p>As with the rest of the Jena code all references to <em>com.hp.hpl.jena</em> have been changed to <em>org.apache.jena</em>. For integrator code this means that a simple rename of the includes is generally all that is required for this. See the main Migration Notes page for other hints and tips regarding this change.</p>
+</li>
+<li>
+<p>Jena Security has been renamed Jena Permissions and the Maven <em>artifact id</em> has been changed to <em>jena-permissions</em> to reflect this change.</p>
+</li>
+<li>
+<p>The permissions assembler namespace has been changed to <code>http://apache.org/jena/permissions/Assembler#</code></p>
+</li>
+</ul>
+<h1 id="exceptions">Exceptions</h1>
+<p>Formerly Jena Permissions uses a single exception to identify the access restriction violations. With the tighter integration of permission concepts into the Jena core there are now 7 exceptions. This change will probably not required modification to the SecurityEvaluator implementation but may require modification to classes that utilize the permissions based object.</p>
+<p>All exceptions are runtime exceptions and so do not have to be explicitly caught. Javadocs indicate which methods throw which exceptions.</p>
+<ul>
+<li>
+<p>Removal of org.apache.jena.permissions.AccessDeniedException. This is replace by 5 individual exceptions.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.OperationDeniedException. This exception is a child of the <em>JenaException</em> and is the root of all operation denied states whether through process errors or through permissions violations.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.PermissionDeniedException. This exception is a child of the <em>OperationDeniedException</em> and is the root of all operations denied through permission violations. These can be because the object was staticly prohibited from performing an operation (e.g. a read-only graph) or due to the Jena Permissions layer.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.AddDeniedException. This exception is a child of <em>PermissionDeniedException</em> and used to indicate that an attempt was made to add to an unmodifiable object. It may be thrown by read-only graphs or by the permission layer when a create restriction is violated.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.DeleteDeniedException. This exception is a child of <em>PermissionDeniedException</em> and used to indicate that an attempt was made to delete from an unmodifiable object. It may be thrown by read-only graphs or by the permission layer when a delete restriction is violated.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.ReadDeniedException. This exception is a child of <em>PermissionDeniedException</em> and used to indicate that a read restriction was violated.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.UpdateDeniedException. This exception is a child of <em>PermissionDeniedException</em> and used to indicate that a update restriction was violated.</p>
+</li>
+<li>
+<p>Addition of org.apache.jena.shared.AuthenticationRequiredException. This exception is a child of <em>OperationDeniedException</em> and used to indicate that user authentication is required but has not occurred. This exception should be thrown when the SecurityEvaluator attempts to evaluate an operation and there is both a permissions restriction and the object returned by getPrincipal() indicates that the user is unauthenticated.</p>
+</li>
+</ul>
+<h1 id="removal-of-classes">Removal of Classes</h1>
+<p>The original &ldquo;security&rdquo; code was intended to be graph agnostic and so injected a &ldquo;shim&rdquo; layer to convert from graph specific classes to security specific classes. With the renaming of the package to &ldquo;permissions&rdquo; and the tighter integration to the Jena core the &ldquo;shim&rdquo; structure has been removed. This should make the permissions layer faster and cleaner to implement.</p>
+<h2 id="secnode">SecNode</h2>
+<p>The SecNode class has been removed. This was effectively a proxy for the Jena Node object and has been replaced with that object. The SecNode maintained its type (e.g. URI, Literal or Variable) using an internal Enumeration. The method getType() was used to identify the internal type. With the Jena node replacement statements of the form</p>
+<pre><code> if (secNode.getType().equals( SecNode.Type.Literal ))
+ {
+     // do something
+ }
+</code></pre>
+<p>are replaced with</p>
+<pre><code> if (node.isLiteral())
+ {
+     // do something
+ }
+</code></pre>
+<p><code>SecNode.ANY</code> has been replaced with Node.ANY as it served the same purpose.</p>
+<p><code>SecNode.FUTURE</code> has been replaced with <code>SecurityEvaluator.FUTURE</code> and is now implemented as a blank node with the label <code>urn:jena-permissions:FUTURE</code>.</p>
+<p><code>SecNode.VARIABLE</code> has been replaced with <code>SecurityEvaluator.VARIABLE</code> and is now implemented as a blank node with the label <code>urn:jena-permissions:VARIABLE</code>.</p>
+<h2 id="sectriple">SecTriple</h2>
+<p>The SecTriple class has been removed. This was effectively a proxy for the Jena Triple object and has been replaced with that object.</p>
+<h1 id="movement-of-classes">Movement of Classes</h1>
+<h2 id="secureditem">SecuredItem</h2>
+<p>The SecuredItem interface was moved from org.apache.jena.permissions.impl to org.apache.jena.permissions.</p>
+<h1 id="additional-methods">Additional Methods</h1>
+<h2 id="securityevaluator">SecurityEvaluator</h2>
+<p>The method <code>isAuthenticatedUser( Object principal )</code> has been added. The SecurityEvaluator should respond <code>true</code> if the principal is recognized as an authenticated user. The <code>principal</code> object is guaranteed to have been returned from an earlier <code>getPrincipal()</code> call.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

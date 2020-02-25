@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - CSV PropertyTable - Design</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/csv/design.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">CSV PropertyTable - Design</h1>
+            
+	<h2 id="architecture">Architecture</h2>
+<p>The architecture of CSV PropertyTable mainly involves 2 components:</p>
+<ul>
+<li><a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/PropertyTable.java">PropertyTable</a></li>
+<li><a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphPropertyTable.java">GraphPropertyTable</a></li>
+</ul>
+<p><img src="jena-csv-architecture.png" alt="Picture of architecture of jena-csv" title="Architecture of jena-csv"></p>
+<h2 id="propertytable">PropertyTable</h2>
+<p>A <code>PropertyTable</code> is collection of data that is sufficiently regular in shape it can be treated as a table.
+That means each subject has a value for each one of the set of properties.
+Irregularity in terms of missing values needs to be handled but not multiple values for the same property.
+With special storage, a PropertyTable</p>
+<ul>
+<li>is more compact and more amenable to custom storage (e.g. a JSON document store)</li>
+<li>can have custom indexes on specific columns</li>
+<li>can guarantee access orders</li>
+</ul>
+<p>More explicitly, <code>PropertyTable</code> is designed to be a table of RDF terms, or
+<a href="https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/Node.java">Nodes</a> in Jena.
+Each <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/Column.java">Column</a> of the <code>PropertyTable</code> has an unique columnKey <code>Node</code> of the predicate (or p for short).
+Each <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/Row.java">Row</a> of the <code>PropertyTable</code> has an unique rowKey <code>Node</code> of the subject (or s for short).
+You can use <code>getColumn()</code> to get the <code>Column</code> by its columnKey <code>Node</code> of the predicate, while <code>getRow()</code> for <code>Row</code>.</p>
+<p>A <code>PropertyTable</code> should be constructed in this workflow (in order):</p>
+<ol>
+<li>Create <code>Columns</code> using <code>PropertyTable.createColumn()</code> for each <code>Column</code> of the <code>PropertyTable</code></li>
+<li>Create <code>Rows</code> using <code>PropertyTable.createRow()</code> for each <code>Row</code> of the <code>PropertyTable</code></li>
+<li>For each <code>Row</code> created, set a value (<code>Node</code>) at the specified <code>Column</code>, by calling <code>Row.setValue()</code></li>
+</ol>
+<p>Once a <code>PropertyTable</code> is built, tabular data within can be accessed by the API of <code>PropertyTable.getMatchingRows()</code>, <code>PropertyTable.getColumnValues()</code>, etc.</p>
+<h2 id="graphpropertytable">GraphPropertyTable</h2>
+<p><code>GraphPropertyTable</code> implements the <a href="https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/Graph.java">Graph</a> interface (read-only) over a <code>PropertyTable</code>.
+This is subclass from <a href="https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/impl/GraphBase.java">GraphBase</a> and implements <code>find()</code>.
+The <code>graphBaseFind()</code>(for matching a <code>Triple</code>) and <code>propertyTableBaseFind()</code>(for matching a whole <code>Row</code>) methods can choose the access route based on the find arguments.
+<code>GraphPropertyTable</code> holds/wraps an reference of the <code>PropertyTable</code> instance, so that such a <code>Graph</code> can be treated in a more table-like fashion.</p>
+<p><strong>Note:</strong> Both <code>PropertyTable</code> and <code>GraphPropertyTable</code> are <em>NOT</em> restricted to CSV data.
+They are supposed to be compatible with any table-like data sources, such as relational databases, Microsoft Excel, etc.</p>
+<h2 id="graphcsv">GraphCSV</h2>
+<p><a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphCSV.java">GraphCSV</a> is a sub class of GraphPropertyTable aiming at CSV data.
+Its constructor takes a CSV file path as the parameter, parse the file using a CSV Parser, and makes a <code>PropertyTable</code> through <code>PropertyTableBuilder</code>.</p>
+<p>For CSV to RDF mapping, we establish some basic principles:</p>
+<h3 id="single-value-and-regular-shaped-csv-only">Single-Value and Regular-Shaped CSV Only</h3>
+<p>In the <a href="https://www.w3.org/2013/csvw/wiki/Main_Page">CSV-WG</a>, it looks like duplicate column names are not going to be supported. Therefore, we just consider parsing single-valued CSV tables.
+There is the current editor working <a href="http://w3c.github.io/csvw/syntax/">draft</a> from the CSV on the Web Working Group, which is defining a more regular data out of CSV.
+This is the target for the CSV work of GraphCSV: tabular regular-shaped CSV; not arbitrary, irregularly shaped CSV.</p>
+<h3 id="no-additional-csv-metadata">No Additional CSV Metadata</h3>
+<p>A CSV file with no additional metadata is directly mapped to RDF, which makes a simpler case compared to SQL-to-RDF work.
+It&rsquo;s not necessary to have a defined primary column, similar to the primary key of database. The subject of the triple can be generated through one of:</p>
+<ol>
+<li>The triples for each row have a blank node for the subject, e.g. something like the illustration</li>
+<li>The triples for row N have a subject URI which is <code>&lt;FILE#_N&gt;</code>.</li>
+</ol>
+<h3 id="data-type-for-typed-literal">Data Type for Typed Literal</h3>
+<p>All the values in CSV are parsed as strings line by line. As a better option for the user to turn on, a dynamic choice which is a posh way of saying attempt to parse it as an integer (or decimal, double, date) and if it passes, it&rsquo;s an integer (or decimal, double, date).
+Note that for the current release, all of the numbers are parsed as <code>double</code>, and <code>date</code> is not supported yet.</p>
+<h3 id="file-path-as-namespace">File Path as Namespace</h3>
+<p>RDF requires that the subjects and the predicates are URIs. We need to pass in the namespaces (or just the default namespaces) to make URIs by combining the namespaces with the values in CSV.
+We don’t have metadata of the namespaces for the columns, But subjects can be blank nodes which is useful because each row is then a new blank node. For predicates, suppose the URL of the CSV file is <code>file:///c:/town.csv</code>, then the columns can be <code>&lt;file:///c:/town.csv#Town&gt;</code> and <code>&lt;file:///c:/town.csv#Population&gt;</code>, as is showed in the illustration.</p>
+<h3 id="first-line-of-table-header-needed-as-predicates">First Line of Table Header Needed as Predicates</h3>
+<p>The first line of the CSV file must be the table header. The columns of the first line are parsed as the predicates of the RDF triples. The RDF triple data are parsed starting from the second line.</p>
+<h3 id="utf-8-encoded-only">UTF-8 Encoded Only</h3>
+<p>The CSV files must be UTF-8 encoded. If your CSV files are using Western European encodings, please change the encoding before using CSV PropertyTable.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

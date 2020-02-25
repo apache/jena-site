@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Data Access Control for Fuseki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/data-access-control.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Data Access Control for Fuseki</h1>
+            
+	<p>Fuseki can provide access control at the level on the server, on datasets,
+on endpoints and also on specific graphs within a dataset. It also
+provides native https to protect data in-flight.</p>
+<p><a href="http://jena.apache.org/documentation/fuseki2/fuseki-main.html">Fuseki Main</a>
+provides some common patterns of authentication.</p>
+<p><a href="#graph-acl">Graph level Data Access Control</a> provides control over the visibility of
+graphs within a dataset, including the union graph of a dataset and
+the default graph. Currently, Graph level access control only applies to
+read-only datasets.</p>
+<p>Fuseki Full (Fuseki with the UI) can be used when
+<a href="http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-web-application">run in a web application server such as Tomcat</a>
+to provide authentication of the user.  See &ldquo;<a href="fuseki-security">Fuseki Security</a>&rdquo; for configuring security over the whole of the Fuseki UI.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#https">HTTPS</a></li>
+<li><a href="#authentication">Authentication</a>
+<ul>
+<li><a href="#using-curl">Using curl</a></li>
+<li><a href="#using-wget">Using wget</a></li>
+</ul>
+</li>
+<li><a href="#acl">Access control lists</a>
+<ul>
+<li><a href="#alloweduser">Format of ja:allowedUsers</a></li>
+<li><a href="#server-acl">Server Level ACLs</a></li>
+<li><a href="#dataset-acl">Dataset Level ACLs</a></li>
+<li><a href="#endpoint-acl">Endpoint Level ACLs</a></li>
+</ul>
+</li>
+<li><a href="#graph-acl">Graph Access Control Lists</a>
+<ul>
+<li><a href="#graph-security-registry">Graph Security Registry</a></li>
+</ul>
+</li>
+<li><a href="#jetty-configuration">Configuring Jetty directly</a></li>
+</ul>
+<h2 id="https">HTTPS</h2>
+<p>This section applies to Fuseki Main.
+HTTPS support is configured from the fuseki server command line.</p>
+<table>
+<thead>
+<tr>
+<th>Server Argument</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><tt>&ndash;https=<i>SETUP</i></tt></td>
+<td>Name of file for certificate details.</td>
+<td></td>
+</tr>
+<tr>
+<td><tt>&ndash;httpsPort=<i>PORT</i></tt></td>
+<td>The port for https</td>
+<td>Default: 3043</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>--https</code> argument names a file in JSON which includes the name of
+the certificate file and password for the certificate.</p>
+<h3 id="https-details">HTTPS certificate details file</h3>
+<p>The file is a simple JSON file:</p>
+<pre>
+    { "cert": <i>KEYSTORE</i> , "passwd": <i>SECRET</i> }
+</pre>
+<p>This file must be protected by file access settings so that it can only
+be read by the userid running the server.  One way is to put the
+keystore certificate and the certificate details file in the same
+directory, then make the directory secure.</p>
+<h3 id="self-signed-certificates">Self-signed certificates</h3>
+<p>A self-signed certificate provides an encrypted link to the server and
+stops some attacks. What it does not do is guarantee the identity of the
+host name of the Fuseki server to the client system. A signed certificate provides that through the chain of trust. A self-signed certificate does protect data in HTTP responses.</p>
+<p>A self-signed certificate can be generated with:</p>
+<pre>
+    keytool -keystore <i>keystore</i> -alias <i>jetty</i> -genkey -keyalg RSA
+</pre>
+<p>For information on creating a certificate, see the Jetty documentation
+for <a href="http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html#generating-key-pairs-and-certificates">generating certificates</a>.</p>
+<h2 id="authentication">Authentication</h2>
+<p>This section applies to Fuseki Main.</p>
+<p><a href="https://en.wikipedia.org/wiki/Authentication">Authentication</a>,
+is establishing the identity of the principal (user or program) accessing the
+system. Fuseki Main provides users/password setup and HTTP authentication,
+<a href="https://en.wikipedia.org/wiki/Digest_access_authentication">digest</a> or
+<a href="https://en.wikipedia.org/wiki/Basic_access_authentication">basic</a>).</p>
+<p>These should be <a href="#https">used with HTTPS</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Server Argument</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><tt>&ndash;passwd=<i>FILE</i></tt></td>
+<td>Password file</td>
+<td></td>
+</tr>
+<tr>
+<td><tt>&ndash;auth=</tt></td>
+<td>&ldquo;basic&rdquo; or &ldquo;digest&rdquo;</td>
+<td>Default is &ldquo;digest&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<p>These can also be given in the server configuration file:</p>
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
+        fuseki:passwd  "<i>password_file</i>" ;
+        fuseki:auth    "<i>digest</i>" ;
+        ...
+</pre>
+<p>The format of the password file is:</p>
+<pre><code>username: password
+</code></pre>
+<p>and passwords can be stored in hash or obfuscated form.</p>
+<p>Documentation of the <a href="http://www.eclipse.org/jetty/documentation/current/configuring-security.html#hash-login-service">Eclipse Jetty Password file format</a>.</p>
+<p>If different authentication is required, the full facilities of
+<a href="http://www.eclipse.org/jetty/documentation/current/configuring-security.html">Eclipse Jetty configuration</a>
+are available - see <a href="#jetty-configuration">the section below</a>.</p>
+<h3 id="using-curl">Using <code>curl</code></h3>
+<p>See the <a href="https://curl.haxx.se/docs/manpage.html">curl documentation</a> for full
+details.  This section is a brief summary of some relevant options:</p>
+<table>
+<thead>
+<tr>
+<th>curl argument</th>
+<th>Value</th>
+<th>&ndash;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n</code>, <code>--netrc</code></td>
+<td></td>
+<td>Take passwords from <code>.netrc</code> (<code>_netrc</code> on windows)</td>
+</tr>
+<tr>
+<td><code>--user=</code></td>
+<td><code>user:password</code></td>
+<td>Set the user and password (visible to all on the local machine)</td>
+</tr>
+<tr>
+<td><code>--anyauth</code></td>
+<td></td>
+<td>Use server nominated authentication scheme</td>
+</tr>
+<tr>
+<td><code>--basic</code></td>
+<td></td>
+<td>Use HTTP basic auth</td>
+</tr>
+<tr>
+<td><code>--digest</code></td>
+<td></td>
+<td>Use HTTP digest auth</td>
+</tr>
+<tr>
+<td><code>-k</code>, <code>--insecure</code></td>
+<td></td>
+<td>Don&rsquo;t check HTTPS certifcate.<br/> This allows for self-signed or expired certificates, or ones with the wrong host name.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="using-wget">Using <code>wget</code></h3>
+<p>See the <a href="https://www.gnu.org/software/wget/manual/wget.html">wget documentation</a> for full
+details.  This section is a breif summary of some relevant options:</p>
+<table>
+<thead>
+<tr>
+<th>wget argument</th>
+<th>Value</th>
+<th>&ndash;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--http-user</code></td>
+<td>user name</td>
+<td>Set the user.</td>
+</tr>
+<tr>
+<td><code>--http-password</code></td>
+<td>password</td>
+<td>Set the password (visible to all on the local machine)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>wget</code> uses users/password from <code>.wgetrc</code> or <code>.netrc</code> by default.</td>
+</tr>
+<tr>
+<td><code>--no-check-certificate</code></td>
+<td></td>
+<td>Don&rsquo;t check HTTPS certifcate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="acl">Access Control Lists</h2>
+<p>ACLs can be applied to the server as a whole, to a dataset, to endpoints, and to
+graphs within a dataset. This section covers server, dataset and endpoint access control
+lists. Graph-level access control is <a href="#graph-acl">covered below</a>.</p>
+<p>Access control lists (ACL) as part of the server configuration file.</p>
+<pre>
+    fuseki --conf <i>configFile.ttl</i>
+</pre>
+<p>ACLs are provided by the <code>ja:allowedUsers</code> property</p>
+<h3 id="alloweduser">Format of <code>ja:allowedUsers</code></h3>
+<p>The list of users allowed access can be an RDF list or repeated use of
+the property or a mixture. The different seting are combined into one ACL.</p>
+<pre><code> fuseki:allowedUsers    &quot;user1&quot;, &quot;user2&quot;, &quot;user3&quot;;
+ fuseki:allowedUsers    &quot;user3&quot;;
+ fuseki:allowedUsers    ( &quot;user1&quot; &quot;user2&quot; &quot;user3&quot;) ;
+</code></pre>
+<p>There is a special user name &ldquo;*&rdquo; which means &ldquo;any authenticated user&rdquo;.</p>
+<pre><code>fuseki:allowedUsers  &quot;*&quot; ;
+</code></pre>
+<h3 id="server-acl">Server Level ACLs</h3>
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
+       <b>fuseki:allowedUsers    "user1", "user2", "user3";</b>
+       ...
+       fuseki:services ( ... ) ;
+       ...
+       .
+</pre>
+<p>A useful pattern is:</p>
+<pre>
+    &lt;#server&gt; rdf:type fuseki:Server ;
+       <b>fuseki:allowedUsers    "*";</b>
+       ...
+       fuseki:services ( ... ) ;
+       ...
+       .
+</pre>
+<p>which requires all access to to be authenticated and the allowed users are
+those in the password file.</p>
+<h3 id="dataset-acl">Dataset Level ACLs</h3>
+<p>When there is an access control list on the <code>fuseki:Service</code>, it applies
+to all requests to the endpoints of the dataset.</p>
+<p>Any server-wide &ldquo;allowedUsers&rdquo; configuration also applies and both
+levels must allow the user access.</p>
+<pre>
+    &lt;#service_auth&gt; rdf:type fuseki:Service ;
+        rdfs:label                      "ACL controlled dataset" ;
+        fuseki:name                     "db-acl" ;
+
+        <b>fuseki:allowedUsers             "user1", "user3";</b>
+
+        ## Choice of operations.
+        fuseki:serviceQuery             "query" ;
+        fuseki:serviceQuery             "sparql" ;
+        fuseki:serviceReadGraphStore    "get" ;
+
+        fuseki:serviceUpdate            "update" ;
+        fuseki:serviceUpload            "upload" ;
+        fuseki:serviceReadWriteGraphStore "data" ;
+
+        fuseki:dataset                  &lt;#base_dataset&gt;;
+        .
+</pre>
+<h3 id="endpoint-acl">Endpoint Level ACLs</h3>
+<p>An access control list can be applied to an individual endpoint.
+Again, any  other &ldquo;allowedUsers&rdquo; configuration, service-wide, or
+server-wide) also applies.</p>
+<pre><code>    fuseki:serviceQuery  [ fuseki:name &quot;query&quot; ;
+                           fuseki:allowedUsers &quot;user1&quot;, &quot;user2&quot;] ;
+    fuseki:serviceUpdate [ fuseki:name &quot;update&quot; ;
+                           fuseki:allowedUsers &quot;user1&quot;] ;
+</code></pre>
+<p>Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
+<em>user2</em> can use SPARQL query.</p>
+<h2 id="graph-acl">Graph Access Control Lists</h2>
+<p>Graph level access control is defined using a specific dataset
+implementation for the service.</p>
+<pre><code>&lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
+    access:registry   ... ;
+    access:dataset    ... ;
+    .
+</code></pre>
+<p>Graph ACLs are defined in a <a href="#graph-security-registry">Graph Security Registry</a> which lists the users and graph URIs.</p>
+<pre>
+    &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
+        rdfs:label                      "Graph-level access controlled dataset" ;
+        fuseki:name                     "db-graph-acl" ;
+        ## Read-only operations.
+        fuseki:serviceQuery             "query" ;
+        fuseki:serviceQuery             "sparql" ;
+        fuseki:serviceReadGraphStore    "get" ;
+        fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
+        .
+
+    &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
+        access:registry   &lt;#securityRegistry&gt; ;
+        access:dataset    &lt;#tdb_dataset_shared&gt; ;
+        .
+
+    &lt;#securityRegistry&gt;rdf:type access:SecurityRegistry ;
+       . . .
+
+    &lt;#tdb_dataset_shared&gt; rdf:type tdb:DatasetTDB ;
+        . . .
+</pre>
+<p>All dataset storage types are supported. TDB1 and TBD2 have special implementations for handling graph access control.</p>
+<h3 id="graph-security-registry">Graph Security Registry</h3>
+<p>The Graph Security Registry is defined as a number of access entries in
+either a list format &ldquo;(user graph1 graph2 &hellip;)&rdquo; or as RDF properties
+<code>access:user</code> and <code>access:graphs</code>. The property <code>access:graphs</code> has graph URI or a
+list of URIs as its object.</p>
+<pre><code>&lt;#securityRegistry&gt; rdf:type access:SecurityRegistry ;
+    access:entry ( &quot;user1&quot; &lt;http://host/graphname1&gt;  &lt;http://host/graphname2&gt; ) ;
+    access:entry ( &quot;user1&quot; &lt;http://host/graphname3&gt; ) ;
+
+    access:entry ( &quot;user1&quot; &lt;urn:x-arq:DefaultGraph&gt; ) ;
+
+    access:entry ( &quot;user2&quot; &lt;http://host/graphname9&gt; ) ;
+    access:entry [ access:user &quot;user3&quot; ; access:graphs ( &lt;http://host/graphname3&gt; &lt;http://host/graphname4&gt; ) ] ;
+    access:entry [ access:user &quot;user3&quot; ; access:graphs &lt;http://host/graphname5&gt; ] ;
+    access:entry [ access:user &quot;userZ&quot; ; access:graphs &lt;http://host/graphnameZ&gt; ] ;
+    .
+</code></pre>
+<h2 id="jetty-configuration">Jetty Configuration</h2>
+<p>For authentication configuration not covered by Fuseki configuration,
+the deployed server can be run using a Jetty configuration.</p>
+<p>Server command line: <tt>&ndash;jetty=<i>jetty.xml</i></tt>.</p>
+<p><a href="https://www.eclipse.org/jetty/documentation/current/jetty-xml-config.html">Documentation for <code>jetty.xml</code></a>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

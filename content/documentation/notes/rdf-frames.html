@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Presenting RDF as frames</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/rdf-frames.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Presenting RDF as frames</h1>
+            
+	<p>The origins of RDF as a representation language include
+<em>frame languages</em>, in which an object, or frame, was the main unit
+of structuring data. Frames have <em>slots</em>, for example a <code>Person</code>
+frame might have an <code>age</code> slot, a <code>height</code>slot etc. RDF, however,
+has taken a step beyond frame languages by making <code>rdf:Property</code> a
+first class value, not an element of a frame or resource <em>per se</em>.
+In RDF, for example, an age property can be defined:
+<code>&lt;rdf:Property rdf:ID=&quot;age&quot;&gt;</code>, and then applied to any resource,
+including, but not limited to a <code>Person</code> resource.</p>
+<p>While this introduces an extra element of modelling flexibility in
+RDF, it is often the case that users want to treat some components
+in their models in a more structured way, similar to the original
+idea of frames. It is often assumed that <code>rdfs:domain</code> restricts a
+property to be used only on resources that are in the domain class.
+For example, a frequently asked question on the Jena support list
+is why the following is not an error:</p>
+<pre><code>  &lt;rdfs:Class rdf:ID=&quot;Person&quot; /&gt;
+  &lt;rdfs:Class rdf:ID=&quot;Truck&quot; /&gt;
+  &lt;rdf:Property rdf:ID=&quot;age&quot;&gt;
+    &lt;rdfs:domain rdf:resource=&quot;Person&quot; /&gt;
+  &lt;/rdf:Property&gt;
+
+  &lt;Truck rdf:ID=&quot;truck1&quot;&gt;
+    &lt;age&gt;2&lt;/a&gt;
+  &lt;/Truck&gt;
+</code></pre>
+<p>Whereas many object-oriented or frame-oriented representations
+would regard it as an error that the <code>age</code> property was not being
+applied to a <code>Person</code>, RDF-based applications are simply entitled
+to infer that <code>truck1</code> is a (that is, has <code>rdf:type</code>) <code>Truck</code> as
+well as a <code>Person</code>. This is unlikely to be the case in any
+real-world domain, but it is a valid RDF inference.</p>
+<p>A consequence of RDF&rsquo;s design is that it is not really possible to
+answer the commonly asked question &ldquo;Which properties can be applied
+to resources of class <em>C</em>?&quot;. Strictly speaking, the RDF answer is
+&ldquo;Any property&rdquo;. However, many developers have a legitimate
+requirement to present a composite view of classes and their
+associated properties, forming more a more succinct structuring of
+an ontology or schema. The purpose of this note is to explain the
+mechanisms built-in to Jena to support a frame-like view of
+resources, while remaining correct with respect to RDF (and OWL)
+semantics.</p>
+<h2 id="basic-principles-the-properties-of-a-class">Basic principles: the properties of a class</h2>
+<p>Since any RDF property can be applied to any RDF resource, we
+require a definition of the properties of a given class that
+respects RDF semantics. Consider the following RDF fragment:</p>
+<pre><code>  &lt;rdfs:Class rdf:ID=&quot;Person&quot; /&gt;
+  &lt;rdf:Property rdf:ID=&quot;age&quot; /&gt;
+
+  &lt;Person rdf:ID=&quot;jane_doe&quot;&gt;
+    &lt;age&gt;23&lt;/a&gt;
+  &lt;/Person&gt;
+</code></pre>
+<p>Now consider that we add to this fragment that:</p>
+<pre><code>  &lt;rdf:Property rdf:about=&quot;age&quot;&gt;
+    &lt;rdfs:domain rdf:resource=&quot;Person&quot; /&gt;
+  &lt;/rdf:Property&gt;
+</code></pre>
+<p>This additional information about the domain of the <code>age</code> property
+does not add any new entailments to the model. Why? Because we
+already know that <code>jane_doe</code> is a Person. So we can consider <code>age</code>
+to be one of the properties of <code>Person</code> type resources, because if
+we use the property as a predicate of that resource, it doesn&rsquo;t add
+any new <code>rdf:type</code> information about the resource. Conversely, if
+we know that some resource has an <code>age</code>, we don&rsquo;t learn any new
+information by declaring that it has <code>rdf:type Person</code>. In summary,
+for the purposes of this HOWTO we define the
+<em>properties of a class</em> as just those properties that don&rsquo;t entail
+any new type information when applied to resources that are already
+known to be of that class.</p>
+<h2 id="sub-classes-and-more-complex-class-expressions">Sub-classes, and more complex class expressions</h2>
+<p>Given these basic principles, now consider the following RDF
+fragment:</p>
+<pre><code>  &lt;rdfs:Class rdf:ID=&quot;LivingThing&quot; /&gt;
+
+  &lt;rdfs:Class rdf:ID=&quot;Animal&quot;&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;#LivingThing&quot;&gt;
+  &lt;/rdfs:Class&gt;
+
+  &lt;rdfs:Class rdf:ID=&quot;Mammal&quot;&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;#Animal&quot;&gt;
+  &lt;/rdfs:Class&gt;
+
+  &lt;rdf:Property rdf:ID=&quot;hasSkeleton&quot;&gt;
+    &lt;rdfs:domain rdf:resource=&quot;Animal&quot; /&gt;
+  &lt;/rdf:Property&gt;
+</code></pre>
+<p>Is <code>hasSkeleton</code> one of the properties of <code>Animal</code>? Yes, because
+any resource of <code>rdf:type Animal</code> can have a <code>hasSkeleton</code> property
+(with value either true or false) without adding type information.
+Similarly, any resource that is a <code>Mammal</code> also has
+<code>rdf:type Animal</code> (by the sub-class relation), so <code>hasSkeleton</code> is
+a property of <code>Mammal</code>. However, <code>hasSkeleton</code> is <em>not</em> a property
+of <code>LivingThing</code>, since we don&rsquo;t automatically know that a living
+thing is an animal - it may be a plant. Stating that a given
+<code>LivingThing</code> has a <code>hasSkeleton</code> property, even if the value is
+false, would entail the additional <code>rdf:type</code> statement that the
+<code>LivingThing</code> is also an <code>Animal</code>.</p>
+<p>For more complex class expressions in the domain, we look to see
+what simple domain constraints are entailed. For example, a domain
+constraint <code>A ∩ B</code> (i.e. &ldquo;A intersection B&rdquo;) for property <code>p</code>
+entails that both <code>p rdfs:domain A</code> and <code>p rdfs:domain B</code> are true.
+However, the properties of neither <code>A</code> nor <code>B</code> will include <code>p</code>. To
+see this, suppose we have a resource <code>x</code> that we already know is of
+type <code>A</code>, and a statement <code>x p y</code>. This entails <code>x rdf:type A</code>
+which we already know, but also <code>x rdf:type B</code>. So information is
+added, even if we know that <code>x</code> is an instance <code>A</code>, so <code>p</code> is not a
+property of <code>A</code>. The symmetrical argument holds for <code>p</code> not being a
+property of <code>B</code>.</p>
+<p>However, if the domain of <code>p</code> is <code>A ∪ B</code> (i.e. &ldquo;A union B&rdquo;), then
+both <code>A</code> and <code>B</code> will have <code>p</code> as a property, since an occurrence
+of, say <code>x p y</code> does not allow us to conclude that either
+<code>x rdf:type A</code> or <code>x rdf:type B</code>.</p>
+<h2 id="property-hierarchies">Property hierarchies</h2>
+<p>Since sub-properties inherit the domain constraints of their parent
+property, the properties of a class will include the closure over
+the sub-property hierarchy. Extending the previous example, the
+properties of <code>Animal</code> and <code>Mammal</code> include both <code>hasSkeleton</code> and
+<code>hasEndoSkeleton</code>:</p>
+<pre><code>  &lt;rdf:Property rdf:ID=&quot;hasSkeleton&quot;&gt;
+    &lt;rdfs:domain rdf:resource=&quot;Animal&quot; /&gt;
+  &lt;/rdf:Property&gt;
+
+  &lt;rdf:Property rdf:ID=&quot;hasEndoSkeleton&quot;&gt;
+    &lt;rdfs:subPropertyOf rdf:resource=&quot;#hasSkeleton&quot; /&gt;
+  &lt;/rdf:Property&gt;
+</code></pre>
+<p>In general, there may be many different ways of deducing simple
+domain constraints from the axioms asserted in the ontology.
+Whether or not all of these possible deductions are present in any
+given RDF model depends on the power and completeness of the
+reasoner bound to that model.</p>
+<h2 id="global-properties">Global properties</h2>
+<p>Under the principled definition that we propose here, properties
+which do not express a domain value are <em>global</em>, in the sense that
+they can apply to any resource. They do not, by definition, entail
+any new type information about the individuals they are applied to.
+Put another way, the domain of a property, if unspecified, is
+either <code>rdfs:Resource</code> or <code>owl:Thing</code>, depending on the ontology
+language. These are simply the types that all resources have by
+default. Therefore, every class has all of the global properties as
+one of the properties of the class.</p>
+<p>A commonly used idiom in some OWL ontologies is to use
+<em>Restrictions</em> to create an association between a class and the
+properties of instances of that class. For example, the following
+fragment shows that all instances of <code>Person</code> should have a
+<code>familyName</code> property:</p>
+<pre><code>  &lt;owl:Class rdf:ID=&quot;Person&quot;&gt;
+    &lt;rdfs:subClassOf&gt;
+      &lt;owl:Restriction&gt;
+        &lt;owl:onProperty rdf:resource=&quot;#familyName&quot; /&gt;
+        &lt;owl:minCardinality rdf:datatype=&quot;&amp;xsd;int&quot;&gt;1&lt;/owl:minCardinality&gt;
+      &lt;/owl:Restriction&gt;
+    &lt;/rdfs:subClassOf&gt;
+  &lt;/owl:Class&gt;
+</code></pre>
+<p>This approach shows the intent of the ontology designer that
+<code>Person</code> instances have <code>familyName</code> properties. We do regard
+<code>familyName</code> as one of the <em>properties of</em> <code>Person</code>, but only
+because of the global properties principle. Unless a domain
+constraint is also specified for <code>familyName</code>, it will appear as
+one of the properties of classes other than <code>Person</code>.
+<strong>Note that this is a behaviour change from versions of Jena prior to release 2.2</strong>.
+Prior to this release, Jena used a heuristic method to attempt to
+associate restriction properties with the classes sub-classing that
+restriction. Since there were problems with precisely defining the
+heuristic, and ensuring correct behaviour (especially with
+inference models), we have dropped the use of this heuristic from
+Jena 2.2 onwards.</p>
+<h2 id="the-java-api">The Java API</h2>
+<p>Support for frame-like views of classes and properties is provided
+through the <a href="../ontology/index.html">ontology API</a>. The following
+methods are used to access the properties of a class, and the
+converse for properties:</p>
+<pre><code>  OntClass.listDeclaredProperties();
+  OntClass.listDeclaredProperties( boolean direct );
+  OntClass.hasDeclaredProperty( Property prop, boolean direct );
+  OntProperty.listDeclaringClasses();
+  OntProperty.listDeclaringClasses( boolean direct );
+</code></pre>
+<p>All of the above API methods return a Jena
+<a href="/documentation/javadoc/jena/org/apache/jena/util/iterator/ExtendedIterator.html"><code>ExtendedIterator</code></a>.</p>
+<p><strong>Note a change from the Jena 2.1 interface:</strong> the optional Boolean
+parameter on <code>listDeclaredProperties</code> has changed name from <code>all</code>
+(Jena 2.1 and earlier) to <code>direct</code> (Jena 2.2 and later). The
+meaning of the parameter has also changed: <code>all</code> was intended to
+simulate some reasoning steps in the absence of a reasoner, whereas
+<code>direct</code> is used to restrict the associations to only the local
+associations. See more on
+<a href="../ontology/index.html#direct_relationships">direct associations</a>.</p>
+<p>A further difference from Jena 2.1 is that the models that are
+constructed without reasoners perform only very limited simulation
+of the inference closure of the model. Users who wish the declared
+properties to include entailments will need to construct their
+models with one of the built-in or external reasoners. The
+difference is illustrated by the following code fragment:</p>
+<pre><code>  &lt;rdfs:Class rdf:ID=&quot;A&quot; /&gt;
+  &lt;rdfs:Property rdf:ID=&quot;p&quot;&gt;
+    &lt;rdfs:domain rdf:resource=&quot;#A&quot; /&gt;
+  &lt;/rdfs:Property&gt;
+  &lt;rdfs:Property rdf:ID=&quot;q&quot;&gt;
+    &lt;rdfs:subPropertyOf rdf:resource=&quot;#p&quot; /&gt;
+  &lt;/rdfs:Property&gt;
+
+  OntModel mNoInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
+  OntClass a0 = mNoInf.getOntClass( NS + &quot;A&quot; );
+  Iterator i0 = a0.listDeclaredProperties();
+
+  OntModel mInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM_RULE_INF );
+  OntClass a1 = mInf.getOntClass( NS + &quot;A&quot; );
+  Iterator i1 = a1.listDeclaredProperties();
+</code></pre>
+<p>Iterator <code>i1</code> will return <code>p</code> and <code>q</code>, while <code>i0</code> will return only
+<code>p</code>.</p>
+<h2 id="summary-of-changes-from-jena-22-beta-2-and-older">Summary of changes from Jena 2.2-beta-2 and older</h2>
+<p>For users updating code that uses <code>listDeclaredProperties</code> from
+versions of Jena prior to 2.2-final, the following changes should
+be noted:</p>
+<ul>
+<li>Global properties
+<code>listDeclaredProperties</code> will treat properties with no specified
+domain as global, and regard them as properties of all classes. The
+use of the <code>direct</code> flag can hide global properties from non-root
+classes.</li>
+<li>Restriction properties
+<code>listDeclaredProperties</code> no longer heuristically returns properties
+associated with a class via the <code>owl:onProperty</code> predicate of a
+restriction.</li>
+<li>Limited simulated inference
+The old version of <code>listDeclaredProperties</code> attempted to simulate
+the entailed associations between classes and properties. Users are
+now advised to attach a reasoner to their models to do this.</li>
+<li>Change in parameter semantics
+The old version of <code>listDeclaredProperties(boolean all)</code> took one
+parameter, a Boolean flag to indicate whether additional declared
+(implied) properties should be listed. Since this is now covered by
+the use, or otherwise, of a reasoner attached to the model, the new
+method signature is <code>listDeclaredProperties(boolean direct)</code>, where
+calling the method with <code>direct = true</code> will compress the returned
+results to use only the
+<a href="../ontology/index.html#direct_relationships">direct</a>
+associations.</li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

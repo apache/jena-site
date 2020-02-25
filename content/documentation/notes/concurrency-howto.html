@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Concurrent access to Models</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/concurrency-howto.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Concurrent access to Models</h1>
+            
+	<p>Applications need to be aware of the concurrency issues in access
+Jena models. API operations are not thread safe by default. Thread
+safety would simple ensure that the model data-structures remained
+intact but would not give an application consistent access to the
+RDF graph. It would also limit the throughput of multi-threaded
+applications on multiprocessor machines where true concurrency can
+lead to a reduction in response time.</p>
+<p>For example, supposed an application wishes to read the name and
+age of a person from model. This takes two API calls. It is more
+convenient to be able to read that information in a consistent
+fashion, knowing that the access to the second piece of information
+is not being done after some model change has occurred.</p>
+<p>Special care is needed with iterators. In general, Jena&rsquo;s
+iterators do <em>not</em> take a copy to enable safe use in the presence
+of concurrent update. A multi-threaded application needs to be
+aware of these issues and correctly use the mechanisms that Jena
+provides (or manage its own concurrency itself). While not zero,
+the application burden is not high.</p>
+<p>There are two main cases:</p>
+<ul>
+<li>Multiple threads in the same JVM.</li>
+<li>Multiple applications accessing the same persistent model
+(typically, a database).</li>
+</ul>
+<p>Transactions are provided by persistent models: see
+the <a href="/documentation/tdb/tdb_transactions.html">TDB documentation</a>
+and the <a href="/documentation/sdb/index.html">SDB documentation</a>
+and for details.</p>
+<p>This note describes the support for same-JVM, multi-threaded
+applications.</p>
+<h2 id="locks">Locks</h2>
+<p>Locks provide critical section support for managing the
+interactions of multiple threads in the same JVM. Jena provides
+multiple-reader/single-writer concurrency support (MRSW).</p>
+<p>The pattern general is:</p>
+<pre><code>Model model = . . . ;
+model.enterCriticalSection(Lock.READ) ;  // or Lock.WRITE
+try {
+    ... perform actions on the model ...
+    ... obey contract - no update operations if a read lock
+} finally {
+    model.leaveCriticalSection() ;
+}
+</code></pre>
+<p>Applications are expected to obey the lock contract, that is, they
+must not do update operations if they have a read lock as there can
+be other application threads reading the model concurrently.</p>
+<h2 id="iterators">Iterators</h2>
+<p>Care must be taken with iterators: unless otherwise stated, all
+iterators must be assumed to be iterating over the data-structures
+in the model or graph implementation itself.  It is not possible to
+safely pass these out of critical sections.</p>
+<h2 id="sparql-query">SPARQL Query</h2>
+<p>SPARQL query results are iterators and no different from other
+iterators in Jena for concurrency purposes. The default query
+engine does not give thread safety and the normal requirements on
+an application to ensure MRSW access in the presence of iterators
+applies. Note that Jena&rsquo;s query mechanism is itself multi-threaded.
+If the application is single threaded, no extra work is necessary.
+If the application is multi-threaded, queries should be executed
+with a read lock.</p>
+<p>Outline:</p>
+<pre><code>  Model model = ... ;
+  String queryString = &quot; .... &quot; ;
+  Query query = QueryFactory.create(queryString) ;
+  model.enterCriticalSection(Lock.READ) ;
+  try {
+    try(QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
+        ResultSet results = qexec.execSelect() ;
+        for ( ; results.hasNext() ; )
+        {
+            QuerySolution soln = results.nextSolution() ;
+            RDFNode x = soln.get(&quot;..var name..&quot;) ;
+        }
+    }
+  } finally { model.leaveCriticalSection() ; }
+</code></pre>
+<p>Updates to the model should not be performed inside the read-only
+section. For database-backed models, the application can use a
+transaction. For in-memory models, the application should collect
+the changes together during the query processing then making all
+the changes holding a write lock.</p>
+<p>Jena Locks do not provide lock promotion - an application can not
+start a &ldquo;write&rdquo; critical section while holding a &ldquo;read&rdquo; lock
+because this can lead to deadlock.</p>
+<h2 id="compatibility">Compatibility</h2>
+<p>The actually interface is called <code>Lock</code> and has implementations
+including <code>LockMRSW</code>.</p>
+<p>For compatibility with previous versions of Jena, there is a class
+<code>ModelLock</code>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

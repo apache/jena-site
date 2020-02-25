@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Reading and Writing RDF in Apache Jena</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/io/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Reading and Writing RDF in Apache Jena</h1>
+            
+	<p>This page details the setup of RDF I/O technology (RIOT).</p>
+<ul>
+<li><a href="#formats">Formats</a></li>
+<li><a href="#command-line-tools">Commands</a></li>
+<li><a href="rdf-input.html">Reading RDF in Jena</a></li>
+<li><a href="rdf-output.html">Writing RDF in Jena</a></li>
+<li><a href="streaming-io.html">Working with RDF Streams</a></li>
+<li><a href="rdfxml_howto.html">Additional details on working with RDF/XML</a></li>
+</ul>
+<h2 id="formats">Formats</h2>
+<p>The following RDF formats are supported by Jena. In addition, other syntaxes
+can be integrated into both the parser and writer registries.</p>
+<ul>
+<li>Turtle</li>
+<li>RDF/XML</li>
+<li>N-Triples</li>
+<li>JSON-LD</li>
+<li>RDF/JSON</li>
+<li>TriG</li>
+<li>N-Quads</li>
+<li>TriX</li>
+<li>RDF Binary</li>
+</ul>
+<p>RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.
+See the <a href="rdf-json.html">description of RDF/JSON</a>.</p>
+<p>RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
+for fast parsing.  See <a href="rdf-binary.html">RDF Binary using Apache Thrift</a>.</p>
+<h2 id="command-line-tools">Command line tools</h2>
+<p>There are scripts in Jena download to run these commands.</p>
+<ul>
+<li><code>riot</code> - parse, guessing the syntax from the file extension.
+Assumes N-Quads/N-Triples from stdin.</li>
+<li><code>turtle</code>, <code>ntriples</code>, <code>nquads</code>, <code>trig</code>, <code>rdfxml</code> - parse a particular language</li>
+</ul>
+<p>These can be called directly as Java programs:</p>
+<p>The file extensions understood are:</p>
+<table>
+<thead>
+<tr>
+<th> Extension </th>
+<th>  Language </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.ttl</code></td>
+<td>Turtle</td>
+</tr>
+<tr>
+<td><code>.nt</code></td>
+<td>N-Triples</td>
+</tr>
+<tr>
+<td><code>.nq</code></td>
+<td>N-Quads</td>
+</tr>
+<tr>
+<td><code>.trig</code></td>
+<td>TriG</td>
+</tr>
+<tr>
+<td><code>.rdf</code></td>
+<td>RDF/XML</td>
+</tr>
+<tr>
+<td><code>.owl</code></td>
+<td>RDF/XML</td>
+</tr>
+<tr>
+<td><code>.jsonld</code></td>
+<td>JSON-LD</td>
+</tr>
+<tr>
+<td><code>.trdf</code></td>
+<td>RDF Thrift</td>
+</tr>
+<tr>
+<td><code>.rt</code></td>
+<td>RDF Thrift</td>
+</tr>
+<tr>
+<td><code>.rj</code></td>
+<td>RDF/JSON</td>
+</tr>
+<tr>
+<td><code>.trix</code></td>
+<td>TriX</td>
+</tr>
+</tbody>
+</table>
+<p><code>.n3</code> is supported but only as a synonym for Turtle.</p>
+<p>In addition, if the extension is <code>.gz</code> the file is assumed to be gzip
+compressed. The file name is examined for an inner extension. For
+example, <code>.nt.gz</code> is gzip compressed N-Triples.</p>
+<p>These scripts call java programs in the <code>riotcmd</code> package. For example:</p>
+<pre><code>java -cp ... riotcmd.riot file.ttl
+</code></pre>
+<p>This can be a mixture of files in different syntaxes when file extensions
+are used to determine the file syntax type.</p>
+<p>The scripts all accept the same arguments (type <code>&quot;riot --help&quot;</code> to
+get command line reminders):</p>
+<ul>
+<li><code>--syntax=NAME</code>; Explicitly set the input syntax for all files.</li>
+<li><code>--validate</code>: Checking mode: same as <code>--strict --sink --check=true</code>.</li>
+<li><code>--check=true/false</code>: Run with checking of literals and IRIs either on or off.</li>
+<li><code>--time</code>: Output timing information.</li>
+<li><code>--sink</code>: No output.</li>
+<li><code>--output=FORMAT</code>: Output in a given syntax (streaming if possible).</li>
+<li><code>--formatted=FORMAT</code>: Output in a given syntax, using pretty printing.</li>
+<li><code>--stream=FORMAT</code>: Output in a given syntax, streaming (not all syntaxes can be streamed).</li>
+</ul>
+<p>To aid in checking for errors in UTF8-encoded files, there is a
+utility which reads a file of bytes as UTF8 and checks the encoding.</p>
+<ul>
+<li><code>utf8</code> &ndash; read bytes as UTF8</li>
+</ul>
+<h2 id="inference">Inference</h2>
+<p>RIOT support creation of inferred triples during the parsing
+process:</p>
+<pre><code>riotcmd.infer --rdfs VOCAB FILE FILE ...
+</code></pre>
+<p>Output will contain the base data and triples inferred based on
+RDF subclass, subproperty, domain and range declarations.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

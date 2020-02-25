@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Permissions - SecurityEvaluator implementation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/permissions/evaluator.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Permissions - SecurityEvaluator implementation</h1>
+            
+	<h2 id="overview">Overview</h2>
+<p>The SecurityEvaluator interface defines the access control operations. It provides the interface between the authentication (answers the question: &ldquo;who are you?&quot;) and the authorization (answers the question: &ldquo;what can you do?&quot;), as such it provides access to the current principal (user). The javadocs contain detailed requirements for implementations of the SecurityEvaluator interface, short notes are provided below.</p>
+<p><strong>NOTE</strong> The permissions system caches intermediate results and will only call the evaluator if the answer is not already in the cache. There is little or no advantage to implementing caching in the SecurityEvaluator itself.</p>
+<h3 id="actions">Actions</h3>
+<p>Principals may perform Create, Read, Update or Delete operations on secured resources. These operations are defined in the <code>Action</code> enum in the SecurityEvaluator interface.</p>
+<h3 id="node">Node</h3>
+<p>The permission system uses the standard Node.ANY to represent a wild-card in a permission check and the standard <code>Triple.ANY</code> to represent a triple with wild-cards in each of the three positions: subject, predicate and object.</p>
+<p>The permission system introduces two new node types <code>SecurityEvaluator.VARIABLE</code>, which represents a variable in a permissions query, and <code>SecurityEvaluator.FUTURE</code>, which represents an anonymous node that will be created in the future.</p>
+<h3 id="evaluator-methods">Evaluator Methods</h3>
+<p>The SecurityEvaluator connects the Jena permissions system with the authentication system used by the application. The SecurityEvaluator must be able to query the authentication system, or its proxy, to determine who the &ldquo;current user&rdquo; is. In this context the &ldquo;current user&rdquo; is the one making the request. In certain instances (specifically when using listeners on secured graphs and models) the &ldquo;current user&rdquo; may not be the user identified by the authentication system at the time of the query.</p>
+<p>The SecurityEvaluator must implement the following methods. Any of these methods may throw an <code>AuthenticationRequiredException</code> if there is no authenticated user.</p>
+<p>Most of these methods have a <code>principal</code> parameter. The value of that parameter is guaranteed to be a value returned from an earlier calls to getPrincipal(). The <code>principal</code> parameter, not the &ldquo;current user&rdquo; as identified by <code>getPrincipal()</code>, should be used for the permissions evaluation.</p>
+<p>None of these methods should throw any of the PermissionDeniedException based exceptions. That is handled in a different layer.</p>
+<p>See the <a href="../javadoc/permissions/org/apache/jena/permissions/SecurityEvaluator.html">SecurityEvaluator javadocs</a> for detailed implementation notes.</p>
+<pre><code>public boolean evaluate( Object principal, Action action, Node graphIRI ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if the action is permitted on the graph.</p>
+<pre><code>public boolean evaluate( Object principal, Action action, Node graphIRI, Triple triple ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if the action is allowed on the triple within the graph.</p>
+<pre><code>public boolean evaluate( Object principal, Set&lt;Action&gt; actions, Node graphIRI )throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if all actions are allowed on the graph.</p>
+<pre><code>public boolean evaluate( Object principal, Set&lt;Action&gt; actions, Node graphIRI, Triple triple ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if all the actions are allowed on the triple within the graph.</p>
+<pre><code>public boolean evaluateAny( Object principal, Set&lt;Action&gt; actions, Node graphIRI ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if any of the actions are allowed on the graph.</p>
+<pre><code>public boolean evaluateAny( Object principal, Set&lt;Action&gt; actions, Node graphIRI, Triple triple ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if any of the actions are allowed on the triple within the graph.</p>
+<pre><code>public boolean evaluateUpdate( Object principal, Node graphIRI, Triple from, Triple to ) throws AuthenticationRequiredException;
+</code></pre>
+<p>Determine if the user is allowed to update the &ldquo;from&rdquo; triple to the &ldquo;to&rdquo; triple.</p>
+<pre><code>public Object getPrincipal() throws AuthenticationRequiredException;
+</code></pre>
+<p>Return the current principal or null if there is no current principal.</p>
+<h2 id="sample-implementation">Sample Implementation</h2>
+<p>This sample is for a graph that contains a set of messages, access to the messages are limited to
+principals that the messages are to or from. Any triple that is not a message is not affected. This
+implementation simply has a <code>setPrincipal(String name)</code> method. A real implementation would request the user principal or name from the authentication system. This implementation also requires access to the underlying model to determine if the user has access, however, that is not a requirement of the SecurityEvaluator in general. Determining access from the information provided is an exercise for the implementer.</p>
+<p>Note that this implementation does not vary based on the graph being evaluated (graphIRI). The <code>graphIRI</code> parameter is provided for implementations where such variance is desired.</p>
+<p>See the example jar for another implementation example.</p>
+<!-- language: lang-java -->
+<pre><code>public class ExampleEvaluator implements SecurityEvaluator {
+
+    private Principal principal;
+    private Model model;
+    private RDFNode msgType = ResourceFactory.createResource( &quot;http://example.com/msg&quot; );
+    private Property pTo = ResourceFactory.createProperty( &quot;http://example.com/to&quot; );
+    private Property pFrom = ResourceFactory.createProperty( &quot;http://example.com/from&quot; );
+
+    /**
+     *
+     * @param model The graph we are going to evaluate against.
+     */
+    public ExampleEvaluator( Model model )
+    {
+        this.model = model;
+    }
+
+    @Override
+    public boolean evaluate(Object principal, Action action, Node graphIRI) {
+        // we allow any action on a graph.
+        return true;
+    }
+
+    // not that in this implementation all permission checks flow through
+    // this method. We can do this because we have a simple permissions
+    // requirement. A more complex set of permissions requirement would
+    // require a different strategy.
+    private boolean evaluate( Object principalObj, Resource r )
+    {
+        Principal principal = (Principal)principalObj;
+        // we do not allow anonymous (un-authenticated) reads of data.
+        // Another strategy would be to only require authentication if the
+        // data being requested was restricted -- but that is a more complex
+        // process and not suitable for this simple example.
+        if (principal == null)
+        {
+            throw new AuthenticationRequiredException();
+        }
+
+        // a message is only available to sender or recipient
+        if (r.hasProperty( RDF.type, msgType ))
+        {
+            return r.hasProperty( pTo, principal.getName() ) ||
+                    r.hasProperty( pFrom, principal.getName());
+        }
+        return true;
+    }
+
+    // evaluate a node.
+    private boolean evaluate( Object principal, Node node )
+    {
+        if (node.equals( Node.ANY )) {
+            // all wildcards are false. This forces each triple
+            // to be explicitly checked.
+            return false;
+        }
+
+        // if the node is a URI or a blank node evaluate it as a resource.
+        if (node.isURI() || node.isBlank()) {
+             Resource r = model.getRDFNode( node ).asResource();
+             return evaluate( principal, r );
+         }
+
+        return true;
+    }
+
+    // evaluate the triple by evaluating the subject, predicate and object.
+    private boolean evaluate( Object principal, Triple triple ) {
+        return evaluate( principal, triple.getSubject()) &amp;&amp;
+                evaluate( principal, triple.getObject()) &amp;&amp;
+                evaluate( principal, triple.getPredicate());
+    }
+
+    @Override
+    public boolean evaluate(Object principal, Action action, Node graphIRI, Triple triple) {
+        return evaluate( principal, triple );
+    }
+
+    @Override
+    public boolean evaluate(Object principal, Set&lt;Action&gt; actions, Node graphIRI) {
+        return true;
+    }
+
+    @Override
+    public boolean evaluate(Object principal, Set&lt;Action&gt; actions, Node graphIRI,
+            Triple triple) {
+        return evaluate( principal, triple );
+    }
+
+    @Override
+    public boolean evaluateAny(Object principal, Set&lt;Action&gt; actions, Node graphIRI) {
+        return true;
+    }
+
+    @Override
+    public boolean evaluateAny(Object principal, Set&lt;Action&gt; actions, Node graphIRI,
+            Triple triple) {
+        return evaluate( principal, triple );
+    }
+
+    @Override
+    public boolean evaluateUpdate(Object principal, Node graphIRI, Triple from, Triple to) {
+        return evaluate( principal, from ) &amp;&amp; evaluate( principal, to );
+    }
+
+    public void setPrincipal( String userName )
+    {
+        if (userName == null)
+        {
+            principal = null;
+        }
+        principal = new BasicUserPrincipal( userName );
+    }
+
+    @Override
+    public Principal getPrincipal() {
+        return principal;
+    }
+
+}
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

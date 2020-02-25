@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Assembler howto</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/assembler/assembler-howto.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Assembler howto</h1>
+            
+	<h2 id="introduction">Introduction</h2>
+<p>This document describes the vocabulary and effect of the built-in
+Jena assembler descriptions for constructing models (and other
+things). A <a href="inside-assemblers.html">companion document</a> describes
+the built-in assembler classes and how to write and integrate your
+own assemblers. If you just need a quick guide to the common model
+specifications, see the <a href="index.html">assembler quickstart</a>.</p>
+<p>This document describes how to use the Assembler classes to
+construct models &ndash; and other things &ndash; from RDF descriptions that
+use the Jena Assembler vocabulary. That vocabulary is available in
+<a href="assembler.ttl">assembler.ttl</a> as an RDFS
+schema with conventional prefix <code>ja</code> for the URI
+<code>http://jena.hpl.hp.com/2005/11/Assembler#</code>; the class <code>JA</code> is its
+Java rendition.</p>
+<p>The examples used in this document are extracted from the examples
+file <a href="examples.ttl">examples.ttl</a>. The pieces of RDF/OWL schema are
+extracted from the <code>ja-vocabulary</code> file.</p>
+<p>The property names selected are those which are the &ldquo;declared
+properties&rdquo; (as per Jena&rsquo;s <code>listDeclaredProperties</code> method) of the
+class. Only the most specialised super-classes and range classes are
+shown, so (for example) <code>rdf:Resource</code> typically won&rsquo;t appear.</p>
+<h3 id="overview">Overview</h3>
+<p>An Assembler specification is a Resource in some RDF Model. The
+properties of that Resource describe what kind of object is to be
+assembled and what its components are: for example, an InfModel is
+constructed by specifying a base model and a reasoner. The
+specifications for the components are themselves Assembler
+specifications given by other Resources in the same Model.For
+example, to specify a memory model with data loaded from a file:</p>
+<pre><code>eg:model a ja:MemoryModel
+    ; ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/example.n3&gt;]
+    .
+</code></pre>
+<p>The <code>rdf:type</code> of <code>eg:model</code> specifies that the constructed Model is to
+be a Jena memory-based model. The <code>ja:content</code> property specifies
+that the model is to be loaded with the content of the resource
+<code>file:Data/example.n3</code>. The content handler guesses from the &ldquo;.n3&rdquo;
+suffix that this file is to be read using the Jena N3 reader.</p>
+<p>Unless otherwise specified by an application, Assembler
+specifications are interpreted after <em>completion</em> by</p>
+<ol>
+<li>including the JA schema,</li>
+<li>including (recursively) the objects of any owl:imports and
+ja:imports statements, and</li>
+<li>doing <a href="#limited-rdfs-inference">(limited) RDFS inference</a>.</li>
+</ol>
+<p>(The supplied model is not modified.) In the example above,
+<code>eg:model</code> has to be given an explicit type, but the <code>ja:externalContent</code>
+bnode is implicitly typed by the domain of <code>ja:externalContent</code>. In
+this document, we will usually leave out inferrable types.</p>
+<p>We can construct our example model from the specification like this
+(you may need to tweak the filename to make this work in your
+environment):</p>
+<pre><code>Model spec = FileManager.get().loadModel( &quot;examples.ttl&quot; );
+Resource root = spec.createResource( spec.expandPrefix( &quot;eg:opening-example&quot; ) );
+Model m = Assembler.general.openModel( root );
+</code></pre>
+<p>The model is constructed from the &ldquo;root resource&rdquo;,
+<code>eg:opening-example</code> in our example. <code>general</code> knows how to create
+all the kinds of objects - not just Models - that we describe in
+the next sections.</p>
+<h2 id="specifications-common-to-all-models">Specifications common to all models</h2>
+<p>Assembler specifications can describe many kinds of models: memory,
+inference, ontology, and file-backed. All of these model
+specifications share a set of base properties for attaching
+content and prefix mappings.</p>
+<pre><code>ja:Loadable a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:initialContent a rdf:Property ;
+  rdfs:domain ja:Loadable
+  rdfs:range ja:Content
+.
+ja:content a rdf:Property ;
+  rdfs:domain ja:Loadable ;
+  rdfs:range ja:Content
+.
+
+ja:Model a rdfs:Class ;
+  rdfs:subClassOf ja:ContentItem ;
+  rdfs:subClassOf ja:Loadable
+.
+
+ja:prefixMapping a rdf:Property ;
+  rdfs:domain ja:Model ;
+  rdfs:range ja:PrefixMapping
+.
+</code></pre>
+<p>All of a model&rsquo;s <code>ja:content</code> property values are interpreted as
+specifying <code>Content</code> objects and a single composite <code>Content</code>
+object is constructed and used to initialise the model. See
+<a href="#content-specification">Content</a> for the description of Content
+specifications. For example:</p>
+<pre><code>eg:sharedContent
+    ja:externalContent &lt;http://somewhere/RDF/ont.owl&gt;
+    .
+eg:common-example a ja:MemoryModel ;
+      ja:content eg:sharedContent ;
+      ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/A.rdf&gt;] ;
+      ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/B.rdf&gt;]
+    .
+</code></pre>
+<p>The model constructed for <code>eg:A</code> will be loaded with the contents
+of <code>Data/A.n3</code>, <code>Data/B.rdf</code>, and <code>http://somewhere/RDF/ont.owl</code>.
+If the model supports transactions, then the content is loaded
+inside a transaction; if the load fails, the transaction is
+aborted, and a <code>TransactionAbortedException</code> thrown. If the content
+has any prefix mappings, then they are also added to the model.</p>
+<p>All of a model&rsquo;s <code>ja:prefixMapping</code>, <code>ja:prefix</code>, and
+<code>ja:namespace</code> properties are interpreted as specifying a
+<code>PrefixMapping</code> object and a single composite <code>PrefixMapping</code> is
+constructed and used to set the prefixes of the model. See
+<a href="#prefix-mappings">PrefixMapping</a> for the description of
+Content specifications.</p>
+<h3 id="content-specification">Content specification</h3>
+<p>A Content specification describes content that can be used to fill
+models. Content can be external (files and URLs) or literal
+(strings in the specification) or quotations (referring to RDF
+which is part of the specification).</p>
+<pre><code>ja:Content a rdfs:Class ;
+  rdfs:subClassOf ja:HasFileManager
+.
+
+ja:HasFileManager a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:fileManager a rdf:Property ;
+  rdfs:domain ja:HasFileManager ;
+  rdfs:range ja:FileManager
+.
+</code></pre>
+<p>A <code>ja:Content</code> specification may have zero or more
+<code>ja:externalContent</code> property values. These are URI resources
+naming an external (file or http etc) RDF object. The constructed
+Content object contains the union of the values of all such
+resources. For example:</p>
+<pre><code>eg:external-content-example
+    ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/C.owl&gt;,
+                       &lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;
+    .
+</code></pre>
+<p>The external content is located using a <code>FileManager</code>. If the
+<code>Content</code> resource has a <code>ja:fileManager</code> property, then the
+<code>FileManager</code> described by that resource is used. Otherwise, if the
+<code>ContentAssembler</code> assembling this specification was constructed
+with a <code>FileManager</code> argument, that <code>FileManager</code> is used.
+Otherwise, the default <code>FileManager</code>, <code>FileManager.get()</code>, is
+used.</p>
+<p>The string literal value of the any <code>ja:literalContent</code> properties
+is interpreted as RDF in an appropriate language. The constructed
+Content object contains that RDF. The language is either specified
+by an explicit <code>ja:contentEncoding</code> property value, or guessed from
+the content of the string. The only encodings permitted are &ldquo;N3&rdquo;
+and &ldquo;RDF/XML&rdquo;. For example:</p>
+<pre><code>eg:literal-content-example
+    ja:literalContent &quot;_:it dc:title 'Interesting Times'&quot;
+    .
+</code></pre>
+<p>The literal content is wrapped so that prefix declarations for
+<strong>rdf</strong>, <strong>rdfs</strong>, <strong>owl</strong>, <strong>dc</strong>, and <strong>xsd</strong> apply before
+interpretation.</p>
+<p>The property values of any <code>ja:quotedContent</code> properties should be
+resources. The subgraphs rooted at those resources (using the
+algorithm from <code>ResourceUtils.reachableClosure()</code>) are added to the
+content.</p>
+<h3 id="inference-models-and-reasoners">Inference models and reasoners</h3>
+<p>Inference models are specified by supplying a description of the
+reasoner that is used by the model and (optionally) a base model to
+reason over. For example:</p>
+<pre><code>eg:inference-example
+    ja:baseModel [a ja:MemoryModel] ;
+      ja:reasoner [ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;]
+    .
+</code></pre>
+<p>describes an inference model that uses RDFS reasoning. The
+<em>reasonerURL</em> property value is the URI used to identify the
+reasoner (it is the value of the Jena constant
+<code>RDFSRuleReasonerFactory.URI</code>). The base model is specified as a
+memory model; if it is left out, an empty memory model is used.</p>
+<pre><code>eg:db-inference-example
+    ja:baseModel eg:model-example ;
+    ja:reasoner [ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;]
+    .
+</code></pre>
+<p>The same reasoner as used as in the previous example, but now the
+base model is a specific model description in the same way as our earlier
+example.</p>
+<p>Because Jena&rsquo;s access to external reasoners goes through the same
+API as for its internal reasoners, you can access a DIG reasoner
+(such as Pellet running as a server) using an Assembler
+specification:</p>
+<pre><code>eg:external-inference-example
+    ja:reasoner [&lt;http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL&gt;
+                   &lt;http://localhost:2004/&gt; ;
+                 ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/DIGReasoner&gt;]
+    .
+</code></pre>
+<p>If there&rsquo;s a DIG server running locally on port 2004, this
+specification will create a DIG inference model that uses it.</p>
+<p>The internal rule reasoner can be supplied with rules written
+inside the specification, or outside from some resource (file or
+http: URL):
+eg:rule-inference-example
+ja:reasoner [ja:rule &ldquo;[r1: (?x my:P ?y) -&gt; (?x rdf:type my:T)]&quot;]
+.</p>
+<p>This reasoner will infer a type declaration from a use of a
+property. (The prefix <em>my</em> will have to be known to the rule
+parser, of course.)</p>
+<pre><code>ja:InfModel a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:reasoner; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:baseModel; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Model
+.
+ja:reasoner a rdf:Property ;
+  rdfs:domain ja:InfModel ;
+  rdfs:range ja:ReasonerFactory
+.
+ja:baseModel a rdf:Property ;
+  rdfs:domain ja:InfModel ;
+  rdfs:range ja:Model
+.
+
+ja:HasRules a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:rule a rdf:Property ;
+  rdfs:domain ja:HasRules
+.
+ja:rulesFrom a rdf:Property ;
+  rdfs:domain ja:HasRules
+.
+ja:rules a rdf:Property ;
+  rdfs:domain ja:HasRules ;
+  rdfs:range ja:RuleSet
+.
+</code></pre>
+<p>An InfModel&rsquo;s <code>ja:baseModel</code> property value specifies the base
+model for the inference model; if omitted, an empty memory model is
+used.</p>
+<p>An InfModel&rsquo;s <code>ja:ReasonerFactory</code> property value specifies the
+Reasoner for this inference model; if omitted, a
+GenericRuleReasoner is used.</p>
+<p>A Reasoner&rsquo;s optional <code>ja:schema</code> property specifies a Model which
+contains the schema for the reasoner to be bound to. If omitted, no
+schema is used.</p>
+<p>If the Reasoner is a GenericRuleReasoner, it may have any of the
+RuleSet properties <code>ja:rules</code>, <code>ja:rulesFrom</code>, or <code>ja:rule</code>. The
+rules of the implied <code>RuleSet</code> are added to the <code>Reasoner</code>.</p>
+<h4 id="reasonerfactory">ReasonerFactory</h4>
+<p>A ReasonerFactory can be specified by URL or by class name (but not
+both).</p>
+<pre><code>ja:ReasonerFactory a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:ReasonerURL; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:HasRules
+.
+ja:reasonerClass a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory
+.
+ja:reasonerURL a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory
+.
+ja:schema a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory ;
+  rdfs:range ja:Model
+.
+</code></pre>
+<p>If the optional unique property <code>ja:reasonerURL</code> is specified, then
+its resource value is the URI of a reasoner in the Jena reasoner
+registry; the reasoner is the one with the given URI.</p>
+<p>If the optional property <code>ja:schema</code> is specified, then the models
+specified by all the schema properties are unioned and any reasoner
+produced by the factory will have that union bound in as its schema
+(using the <code>Reasoner::bindSchema()</code> method).</p>
+<p>If the optional unique property <code>ja:reasonerClass</code> is specified,
+its value names a class which implements <code>ReasonerFactory</code>. That
+class is loaded and an instance of it used as the factory.</p>
+<p>The class may be named by the lexical form of a literal, or by a
+URI with the (fake) &ldquo;java:&rdquo; scheme.</p>
+<p>If the class has a method <code>theInstance</code>, that method is called to
+supply the <code>ReasonerFactory</code> instance to use. Otherwise, a new
+instance of that class is constructed. Jena&rsquo;s reasoner factories
+come equipped with this method; for other factories, see the
+documentation.</p>
+<h4 id="rulesets">Rulesets</h4>
+<p>A <code>RuleSet</code> specification allows rules (for ReasonerFactories) to
+be specified inline, elsewhere in the specification model, or in an
+external resource.</p>
+<pre><code>ja:RuleSet a rdfs:Class ;
+  rdfs:subClassOf ja:HasRules
+.
+</code></pre>
+<p>The optional repeatable property <code>ja:rule</code> has as its value a
+literal string which is the text of a Jena rule or rules. All those
+rules are added to the <code>RuleSet</code>.</p>
+<p>The optional repeatable property <code>ja:rulesFrom</code> has as its value a
+resource whose URI identifies a file or other external entity that
+can be loaded as Jena rules. All those rules are added to the
+<code>RuleSet</code>.</p>
+<p>The optional repeatable property <code>ja:rules</code> has as its value a
+resource which identifies another <code>RuleSet</code> in the specification
+model. All those rules from that <code>RuleSet</code> are added to this
+<code>RuleSet</code>.</p>
+<h3 id="ontology-models">Ontology models</h3>
+<p>Ontology models can be specified in several ways. The simplest is
+to use the name of an OntModelSpec from the Java OntModelSpec
+class:</p>
+<pre><code>eg:simple-ont-example
+    ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF
+    .
+</code></pre>
+<p>This constructs an <code>OntModel</code> with an empty base model and using
+the OWL_DL language and the full rule reasoner. All of the
+OntModelSpec constants in the Jena implementation are available in
+this way. A base model can be specified:</p>
+<pre><code>eg:base-ont-example
+    ja:baseModel [a ja:MemoryModel ;
+                 ja:content [ja:externalContent &lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;]]
+    .
+</code></pre>
+<p>The OntModel has a base which is a memory model loaded with the
+contents of <code>http://jena.hpl.hp.com/some-jena-data.rdf</code>. Since the
+ontModelSpec was omitted, it defaults to <code>OWL_MEM_RDFS_INF</code> - the
+same default as <code>ModelFactory.createOntologyModel()</code>.</p>
+<pre><code>ja:OntModel a rdfs:Class ;
+  rdfs:subClassOf ja:UnionModel ;
+  rdfs:subClassOf ja:InfModel
+.
+ja:ontModelSpec a rdf:Property ;
+  rdfs:domain ja:OntModel ;
+  rdfs:range ja:OntModelSpec
+.
+
+ja:OntModelSpec a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:like; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:reasonerFactory; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:importSource; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:documentManager; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:ontLanguage; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+ja:importSource a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:reasonerFactory a rdf:Property ;
+  rdfs:domain ja:OntModelSpec ;
+  rdfs:range ja:ReasonerFactory
+.
+ja:documentManager a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:ontLanguage a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:likeBuiltinSpec a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+</code></pre>
+<p><code>OntModel</code> is a subclass of <code>InfModel</code>, and the <code>ja:baseModel</code>
+property means the same thing.</p>
+<p>The <code>OntModelSpec</code> property value is a resource, interpreted as an
+OntModelSpec description based on its name and the value of the
+appropriate properties:</p>
+<ul>
+<li><code>ja:likeBuiltinSpec</code>: The value of this optional unique
+property must be a JA resource whose local name is the same as the
+name of an OntModelSpec constant (as in the simple case above).
+This is the basis for the OntModelSpec constructed from this
+specification. If absent, then <code>OWL_MEM_RDFS_INF</code> is used. To build
+an OntModelSpec with no inference, use eg
+<code>ja:likeBuiltinSpec ja:OWL_MEM</code>.</li>
+<li><code>ja:importSource</code>: The value of this optional unique property
+is a <code>ModelSource</code> description which describes where imports are
+obtained from. A <code>ModelSource</code> is usually of class <code>ja:ModelSource</code>.</li>
+<li><code>ja:documentManager</code>: This value of this optional unique
+property is a DocumentManager specification. If absent, the default
+document manager is used.</li>
+<li><code>ja:reasonerFactory</code>: The value of this optional unique
+property is the ReasonerFactory resource which will be used to
+construct this OntModelSpec&rsquo;s reasoner. A <code>reasonerFactory</code>
+specification is the same as an InfModel&rsquo;s <code>reasoner</code> specification
+(the different properties are required for technical reasons).</li>
+<li><code>ja:reasonerURL</code>: as a special case of <code>reasonerFactory</code>, a
+reasoner may be specified by giving its URL as the object of the
+optional unique <code>reasonerURL</code> property. It is not permitted to
+supply both a <code>reasonerURL</code> and <code>reasonerFactory</code> properties.</li>
+<li><code>ja:ontLanguage</code>: The value of this optional unique property is
+one of the values in the <code>ProfileRegistry</code> class which identifies
+the ontology language of this <code>OntModelSpec</code>:
+<ul>
+<li>OWL: <a href="http://www.w3.org/2002/07/owl">http://www.w3.org/2002/07/owl</a>#</li>
+<li>OWL DL: <a href="http://www.w3.org/TR/owl-features/">http://www.w3.org/TR/owl-features/</a>#term_OWLDL</li>
+<li>OWL Lite: <a href="http://www.w3.org/TR/owl-features/">http://www.w3.org/TR/owl-features/</a>#term_OWLLite</li>
+<li>RDFS: <a href="http://www.w3.org/2000/01/rdf-schema">http://www.w3.org/2000/01/rdf-schema</a>#</li>
+</ul>
+</li>
+</ul>
+<p>Any unspecified properties have default values, normally taken from
+those of <code>OntModelSpec.OWL_MEM_RDFS_INF</code>. However, if the
+OntModelSpec resource is in the JA namespace, and its local name is
+the same as that of an OntModelSpec constant, then that constant is
+used as the default value.</p>
+<h3 id="document-managers">Document managers</h3>
+<p>An <code>OntDocumentManager</code> can be specified by a <code>ja:DocumentManager</code>
+specification which describes the <code>OntDocumentManager</code>'s file
+manager and policy settings.</p>
+<pre><code>eg:mapper
+    lm:mapping [lm:altName &quot;file:etc/foo.n3&quot; ;
+    lm:name &quot;file:foo.n3&quot;]
+    .
+eg:document-manager-example
+    ja:fileManager [ja:locationMapper eg:mapper] ;
+    ja:meta [ dm:altURL &lt;http://localhost/RDF/my-alt.rdf&gt;]
+    .
+</code></pre>
+<p>In this example, <code>eg:document-manager-example</code> is a
+<code>ja:DocumentManager</code> specification. It has its own
+<code>FileManager specification</code>, the object of the
+<code>ja:fileManager property</code>; that <code>FileManager</code> has a location
+mapper, <code>eg:mapper</code>, that maps a single filename.</p>
+<p>The document manager also has an additional property to link it to
+document manager meta-data: the sub-model of the assembler
+specification reachable from <code>eg:document-manager-example</code> is
+passed to the document manager when it is created. For the meanings
+of the <code>dm:</code> properties, see the Jena ontology documentation and
+the ontology.rdf ontology.</p>
+<pre><code>ja:DocumentManager a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:policyPath; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:fileManager; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:fileManager; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:HasFileManager
+.
+ja:policyPath a rdf:Property ;
+  rdfs:domain ja:DocumentManager
+.
+</code></pre>
+<p>The <code>ja:fileManager</code> property value, if present, has as its object
+a <code>ja:FileManager</code> specification; the constructed document manager
+is given a new file manager constructed from that specification. If
+there is no <code>ja:fileManager</code> property, then the default
+<code>FileManager</code> is used.</p>
+<p>The <code>ja:policyPath</code> property value, if present, should be a string
+which is a path to policy files as described in the Jena ontology
+documentation. If absent, the usual default path is applied.</p>
+<p>If the sub-model of the assembler specification reachable from the
+DocumentManager resource contains any OntDocumentManager
+<code>DOC_MGR_POLICY</code> or <code>ONTOLOGY_SPEC</code> objects, they will be
+interpreted by the constructed document manager object.</p>
+<pre><code>ja:FileManager a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:locationMapper; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+ja:locationMapper a rdf:Property ;
+  rdfs:domain ja:FileManager ;
+  rdfs:range ja:LocationMapper
+.
+</code></pre>
+<p>A <code>ja:FileManager</code> object may have a <code>ja:locationMapper</code> property
+value which identifies the specification of a <code>LocationMapper</code>
+object initialising that file manager.</p>
+<pre><code>ja:LocationMapper a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty lm:mapping; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+lm:mapping a rdf:Property ;
+  rdfs:domain ja:LocationMapper
+.
+</code></pre>
+<p>A <code>ja:LocationMapper</code> object may have <code>lm:mapping</code> property values,
+describing the location mapping, as described in the FileManager
+documentation. (Note that the vocabulary for those items is in a
+different namespace than the JA properties and classes.)</p>
+<h3 id="union-models">Union models</h3>
+<p>Union models can be constructed from any number of sub-models and a
+single <em>root</em> model. The root model is the one written to when the
+union model is updated; the sub-models are untouched.</p>
+<pre><code>ja:UnionModel a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:rootModel; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Model
+.
+ja:rootModel a rdf:Property ;
+  rdfs:domain ja:UnionModel ;
+  rdfs:range ja:Model
+.
+ja:subModel a rdf:Property ;
+  rdfs:domain ja:UnionModel ;
+  rdfs:range ja:Model
+.
+</code></pre>
+<p>If the single <code>ja:rootModel</code> property is present, its value
+describes a model to use as the root model of the union. All
+updates to the union are directed to this root model. If no root
+model is supplied, the union is given an <em>immutable</em>, <em>empty</em> model
+as its root.</p>
+<p>Any <code>ja:subModel</code> property values have objects describing the
+remaining sub-models of the union. The order of the sub-models in
+the union is <em>undefined</em> (which is why there&rsquo;s a special rootModel
+property).</p>
+<h3 id="prefix-mappings">Prefix mappings</h3>
+<p>The PrefixMappings of a model may be set from PrefixMapping
+specifications.</p>
+<pre><code>ja:PrefixMapping a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:includes a rdf:Property ;
+  rdfs:domain ja:PrefixMapping ;
+  rdfs:range ja:PrefixMapping
+.
+
+ja:SinglePrefixMapping a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:namespace; owl:cardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:prefix; owl:cardinality 1] ;
+  rdfs:subClassOf ja:PrefixMapping
+.
+ja:namespace a rdf:Property ;
+  rdfs:domain ja:SinglePrefixMapping
+.
+ja:prefix a rdf:Property ;
+  rdfs:domain ja:SinglePrefixMapping
+.
+</code></pre>
+<p>The <code>ja:includes</code> property allows a PrefixMapping to include the
+content of other specified PrefixMappings.</p>
+<p>The <code>ja:prefix</code> and <code>ja:namespace</code> properties allow the
+construction of a single element of a prefix mapping by specifying
+the prefix and namespace of the mapping.</p>
+<h3 id="other-assembler-directives">Other Assembler directives</h3>
+<p>There are two more <code>Assembler</code> directives that can be used in an
+Assembler specification: the <em>assembler</em> and <em>imports</em> directives.</p>
+<h4 id="assembler">Assembler</h4>
+<p>A specification may contain statements of the form:</p>
+<pre><code>someResource ja:assembler &quot;some.Assembler.class.name&quot;
+</code></pre>
+<p>When <code>someResource</code> is used as the type of a root object, the
+AssemblerGroup that processes the description will use an instance
+of the Java class named by the object of the statement. That class
+must implement the <code>Assembler</code> interface. See
+<a href="inside-assemblers.html#loading-assembler-classes">loading assembler classes</a> for more
+details.</p>
+<p>Similarly, statements of the form:</p>
+<pre><code>someResource ja:loadClass &quot;some.class.name&quot;
+</code></pre>
+<p>will cause the named class to be loaded (but not treated as
+assemblers).</p>
+<h4 id="imports">Imports</h4>
+<p>If a specification contains statements of the form:</p>
+<pre><code>anyResource owl:imports someURL
+</code></pre>
+<p>or, equivalently,</p>
+<pre><code>anyResource ja:imports someURL
+</code></pre>
+<p>then the specification is regarded as also containing the contents
+of the RDF at <code>someURL</code>. That RDF may in turn contain <code>imports</code>
+referring to other RDF.</p>
+<h2 id="limited-rdfs-inference">Limited RDFS inference</h2>
+<p>The Assembler engine uses limited RDFS inference to complete the
+model it is given, so that the spec-writer does not need to write
+excessive and redundant RDF. (It does not use the usual Jena
+reasoners because this limited once-off reasoning has been faster.)
+The inference steps are:</p>
+<ul>
+<li>add all the classes from the JA schema.</li>
+<li>do subclass closure over all the classes.</li>
+<li>do domain and range inference.</li>
+<li>do simple intersection inference: if X is an instance of
+<em>intersection A B C &hellip;</em>, then X is an instance of A, B, C &hellip; (and
+their supertypes).</li>
+</ul>
+<p>This is sufficient for closed-world assembling. Other parts of the
+<code>JA</code> schema &ndash; eg, cardinality constraints &ndash; are hard-coded into the
+individual assemblers.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

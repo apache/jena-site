@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Event handling in Jena</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/event-handler-howto.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Event handling in Jena</h1>
+            
+	<h2 id="modelchangedlistener">ModelChangedListener</h2>
+<p>In Jena it is possible to monitor a <code>Model</code> for changes, so that
+code can be run after changes are applied without the coding for
+that Model having to do anything special. We call these changes
+&ldquo;events&rdquo;. This first
+design and implementation is open for user comment and we may
+refine or reduce the implementation as more experience is gained with
+it.</p>
+<p>To monitor a Model, you must <em>register</em> a <em>ModelChangedListener</em>
+with that Model:</p>
+<pre><code>    Model m = ModelFactory.createDefaultModel();
+    ModelChangedListener L = new MyListener();
+    m.register( L );
+</code></pre>
+<p><em>MyListener</em> must be an implementation of <em>ModelChangedListener</em>,
+for example:</p>
+<pre><code>    class MyListener implements ModelChangedListener
+        {
+        public void addedStatement( Statement s )
+            { System.out.println( &quot;&gt;&gt; added statement &quot; + s ); }
+        public void addedStatements( Statement [] statements ) {}
+        public void addedStatements( List statements ) {}
+        public void addedStatements( StmtIterator statements ) {}
+        public void addedStatements( Model m ) {}
+        public void removedStatement( Statement s ) {}
+        public void removedStatements( Statement [] statements ) {}
+        public void removedStatements( List statements ) {}
+        public void removedStatements( StmtIterator statements ) {}
+        public void removedStatements( Model m ) {}
+        }
+</code></pre>
+<p>This listener ignores everything except the addition of single
+statements to <em>m</em>; those it prints out. The listener has a method
+for each of the ways that statements can be added to a Model:</p>
+<ul>
+<li>as a single statement, <code>Model::add(Statement)</code></li>
+<li>as an element of an array of statements,
+<code>Model::add(Statement[])</code></li>
+<li>as an element of a list of statements, <code>Model::add(List)</code></li>
+<li>as an iterator over statements, <code>Model::add(StmtIterator)</code></li>
+<li>as part of another Model, <code>Model::add(Model)</code></li>
+</ul>
+<p>(Similarly for <em>delete</em>.)</p>
+<p>The listener method is called when the statement(s) have been added
+to the Model, if no exceptions have been thrown. It does not matter
+if the statement was <em>already</em> in the Model or not; it is the act
+of adding it that fires the listener.</p>
+<p>There is no guarantee that the statement, array, list, or model
+that is added or removed is the same one that is passed to the
+appropriate listener method, and the <em>StmtIterator</em> will never be
+the same one. However, in the current design:</p>
+<ul>
+<li>a single Statement will be .equals to the original Statement</li>
+<li>a List will be .equals to the original List</li>
+<li>a Statement[] will be the same length and have .equal elements
+in the same order</li>
+<li>a StmtIterator will deliver .equal elements in the same order</li>
+<li>a Model will contain the same statements</li>
+</ul>
+<p>We advise not relying on these ordering properties; instead assume
+that for any bulk update operation on the model, the listener will
+be told the method of update and the statements added or removed,
+but that the order may be different and duplicate statements may
+have been removed.
+Note in particular that a Model with any Listeners will have to
+record the complete contents of any <em>StmtIterator</em> that is added or
+removed to the model, so that the Model and the Listener can both
+see all the statements.</p>
+<p>Finally, there is no guarantee that <em>only</em> Statements etc added
+through the Model API will be presented to the listener; any
+Triples added to its underlying Graph will also be presented to the
+listener as statements.</p>
+<h2 id="utility-classes">Utility classes</h2>
+<p>The full Listener API is rather chunky and it can be inconvenient
+to use, especially for the creation of inline classes. There are
+four utility classes in <em>org.apache.jena.rdf.listeners:</em></p>
+<ul>
+<li><em>NullListener</em>. This class&rsquo;s methods do nothing. This is useful
+when you want to subclass and intercept only specific ways of
+updating a Model.</li>
+<li><em>ChangedListener</em>. This class only records whether some change
+has been made, but not what it is. The method <em>hasChanged()</em>
+returns <em>true</em> if some change has been made since the last call of
+<em>hasChanged()</em> [or since the listener was created].</li>
+<li><em>StatementListener</em>. This class translates all bulk update
+calls (ie the ones other than <em>addedStatement()</em> and
+<em>removedStatement()</em>) into calls to
+<em>addedStatement()/removedStatement()</em> for each Statement in the
+collection. This allows statements to be tracked whether they are
+added one at a time or in bulk.</li>
+<li><em>ObjectListener</em>. This class translates all the listener calls
+into <em>added(Object)</em> or <em>removed(Object)</em> as appropriate; it is
+left to the user code to distinguish among the types of argument.</li>
+</ul>
+<h2 id="when-listeners-are-called">When listeners are called</h2>
+<p>In the current implementation, listener methods are called
+immediately the additions or removals are made, in the same thread
+as the one making the update. If a model has multiple listeners
+registered, the order in which they are informed about an update is
+unspecified and may change from update to update. If any listener
+throws an exception, that exception is thrown through the update
+call, and other listeners may not be informed of the update.
+Hence listener code should be brief and exception-free if at all
+possible.</p>
+<h2 id="registering-and-unregistering">Registering and unregistering</h2>
+<p>A listener may be registered with the same model multiple times. If
+so, it will be invoked as many times as it is registered for each
+update event on the model.</p>
+<p>A listener <em>L</em> may be <em>unregistered</em> from a Model using the method
+<code>unregister(L)</code>. If <em>L</em> is not registered with the model, nothing
+happens.</p>
+<p>If a listener is registered multiple times with the same model,
+each <code>unregister()</code> for that listener will remove just one of the
+registrations.</p>
+<h2 id="transactions-and-databases">Transactions and databases</h2>
+<p>In the current design, listeners are not informed of transaction
+boundaries, and all events are fed to listeners as soon as they
+happen.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

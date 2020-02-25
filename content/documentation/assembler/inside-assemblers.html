@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Inside assemblers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/assembler/inside-assemblers.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Inside assemblers</h1>
+            
+	<p>This document describes Jena&rsquo;s built-in assembler classes and how
+to write and integrate your own assemblers. If you just need a
+quick guide to the common model specifications, see the
+<a href="index.html">assembler quickstart</a>; if you want more details on
+writing assembler descriptions, see the
+<a href="assembler-howto.html">assembler howto</a>.</p>
+<h2 id="the-assembler-interface">The Assembler interface</h2>
+<p>An <code>Assembler</code> is an object that builds objects (most importantly,
+<code>Model</code>s) from RDF descriptions.</p>
+<pre><code>public Object open( Assembler a, Resource root, Mode mode );
+
+public Object open( Assembler a, Resource root );
+
+public Object open( Resource root );
+
+public Model openModel( Resource root );
+
+public Model openModel( Resource root, Mode mode );
+</code></pre>
+<p>The fundamental method is the first: all the others are shorthands
+for ways of calling it. The abstract class <code>AssemblerBase</code>
+implements <code>Assembler</code> leaving only that method abstract and
+defining the others in terms of it.</p>
+<p>The definition of <code>a.open(Assembler sub, Resource root, Mode mode)</code>
+is that <code>a</code> will construct the object described by the properties
+of <code>root</code>. If this requires the construction of sub-objects from
+descriptions hanging off <code>root</code>, <code>sub.open</code> is to be used to
+construct those. If the object is to be constructed in some
+persistent store, <code>mode</code> defines whether objects can be re-used or
+created: see <a href="#modes">modes</a> for more details.</p>
+<h2 id="builtin-assemblers">Builtin assemblers</h2>
+<p>Jena comes with a collection of built-in assemblers: various
+<em>basic assemblers</em> and a composite <em>general assembler</em>. Each of
+these assemblers has a constant instance declared as a field of
+<code>Assembler</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Assembler</th>
+<th>Result class</th>
+<th>Type  constant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Temporarily omitted as the source got scrambled by the Markdown import</em> <strong>TODO</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="inside-assemblers">Inside Assemblers</h2>
+<p><code>Assembler.general</code> is a particular implementation of the
+<code>Assembler</code> interface. An <code>Assembler</code> knows how to build the
+objects - not just models - described by an Assembler
+specification. The normal route into an Assembler is through the
+method:</p>
+<ul>
+<li>open( Resource root ) ? Object</li>
+</ul>
+<p>The Assembler inspects the <code>root</code> resource properties and decides
+whether it can build an object with that description. If not, it
+throws an exception. Otherwise, it constructs and returns a
+suitable object.
+Since the creation of Models is the reason for the existence of
+Assemblers, there is a convenience wrapper method:</p>
+<ul>
+<li>openModel( Resource root ) ? Model</li>
+</ul>
+<p>which constructs the object and checks that it&rsquo;s a Model before
+returning it.
+When an <code>Assembler</code> requires sub-objects (for example, when an
+InfModel Assembler requires a Reasoner object), it uses the
+method:</p>
+<ul>
+<li>open( Assembler sub, Resource root ) ? Model</li>
+</ul>
+<p>passing in a suitable Assembler object. In fact the standard
+implementation of <code>open(root)</code> is just</p>
+<ul>
+<li>open( this, root )</li>
+</ul>
+<p>passing in itself as the sub-assembler and having
+<code>open(Assembler,Resource)</code> be the place where all the work is done.
+(Amongst other things, this makes testing easier.)
+When working with named persistent objects (typically database
+models), sometimes you need to control whether new objects should
+be constructed or old models can be reused. There is an additional
+method</p>
+<ul>
+<li>open( Assembler sub, Resource root, Mode mode )</li>
+</ul>
+<p>where the <code>Mode</code> argument controls the creation (or not) of
+persistent models. The mode is passed down to all sub-object
+creation. The standard implementation of <code>open(sub,root)</code> is just:</p>
+<ul>
+<li>open( sub, root, Mode.DEFAULT )</li>
+</ul>
+<p>A <code>Mode</code> object has two methods:</p>
+<ul>
+<li>permitCreateNew( Resource root, String name )</li>
+<li>permitUseExisting( Resource root, String name )</li>
+</ul>
+<p><code>root</code> is the root resource describing the object to be created or
+reused, and <code>name</code> is the name given to it. The result is <code>true</code>
+iff the permission is granted. <code>Mode.DEFAULT</code> permits the reuse of
+existing objects and denies the creation of new ones.
+There are four <code>Mode constants:</code></p>
+<ul>
+<li>Mode.DEFAULT - reuse existing objects</li>
+<li>Mode.CREATE - create missing objects</li>
+<li>Mode.REUSE - reuse existing objects</li>
+<li>Mode.ANY - reuse existing objects, create missing ones</li>
+</ul>
+<p>Since the <code>Mode</code> methods are passed the resource root and name, the
+user can write specialised <code>Mode</code>s that look at the name or the
+other root properties to make their decision.
+Note that the Modes only apply to persistent objects, so <em>eg</em>
+MemoryModels or PrefixMappings ignore their Mode arguments.</p>
+<h2 id="implementing-your-own-assemblers">Implementing your own assemblers</h2>
+<p>(Temporary documentation pasted in from email; will be integrated
+and made nice RSN.)</p>
+<pre><code>You have to implement the Assembler interface, most straightforwardly
+done by subclassing AssemblerBase and overriding
+
+    public Object open( Assembler a, Resource root, Mode mode );
+
+    because AssemblerBase both implements the boring methods that are
+    just specialisations of `open` and provides some utility methods
+    such as getting the values of unique properties. The arguments are
+
+    * a -- the assembler to use for any sub-assemblies
+    * root -- the resource in the assembler description for this object
+    * mode -- the persistent open vs create mode
+
+    The pattern is to look for the known properties of the root, use
+    those to define any sub-objects of the object you're assembling
+    (including using `a` for anything that's itself a structured
+    object) and then constructing a new result object from those
+    components.
+
+    Then you attach this new assembler object to its type in some
+    AssemblerGroup using that group's `implementWith` method. You
+    can attach it to the handy-but-public-and-shared group
+    `Assembler.general` or you can construct your own group. The
+    point about an AssemblerGroup is that it does the type-to-assembler
+    mapping for you -- and when an AssemblerGroup calls a component
+    assembler's `open` method, it passes /itself/ in as the `a` argument,
+    so that the invoked assembler has access to all of the component
+    assemblers of the Group.
+</code></pre>
+<h2 id="basic-assemblers">basic assemblers</h2>
+<p>There is a family of <em>basic assemblers</em>, each of which knows how to
+assemble a specific kind of object so long as they&rsquo;re given an
+Assembler that can construct their sub-objects. There are defined
+constants in <code>Assembler</code> for (an instance of) each of these basic
+assembler classes.</p>
+<table>
+<thead>
+<tr>
+<th>produces</th>
+<th>Class</th>
+<th>Type</th>
+<th>constant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default models</td>
+<td>DefaultModelAssembler</td>
+<td>ja:DefaultModel</td>
+<td>defaultModel</td>
+</tr>
+<tr>
+<td>memory models</td>
+<td>MemoryModelAssembler</td>
+<td>ja:MemoryModel</td>
+<td>memoryModel</td>
+</tr>
+<tr>
+<td>inference models</td>
+<td>InfModelAssembler</td>
+<td>ja:InfModel</td>
+<td>infModel</td>
+</tr>
+<tr>
+<td>reasoners</td>
+<td>ReasonerAssembler</td>
+<td>ja:Reasoner</td>
+<td>reasoner</td>
+</tr>
+<tr>
+<td>content</td>
+<td>ContentAssembler</td>
+<td>ja:Content</td>
+<td>content</td>
+</tr>
+<tr>
+<td>ontology models</td>
+<td>OntModelAssembler</td>
+<td>ja:OntModel</td>
+<td>ontModel</td>
+</tr>
+<tr>
+<td>rules</td>
+<td>RuleSetAssembler</td>
+<td>ja:RuleSet</td>
+<td>rules</td>
+</tr>
+<tr>
+<td>union models</td>
+<td>UnionModelAssembler</td>
+<td>ja:UnionModel</td>
+<td>unionModel</td>
+</tr>
+<tr>
+<td>prefix mappings</td>
+<td>PrefixMappingAssembler</td>
+<td>ja:PrefixMapping</td>
+<td>prefixMapping</td>
+</tr>
+<tr>
+<td>file models</td>
+<td>FileModelAssembler</td>
+<td>ja:FileModel</td>
+<td>fileModel</td>
+</tr>
+</tbody>
+</table>
+<p><code>Assembler.general</code> is an <em>assembler group</em>, which ties together
+those basic assemblers. <code>general</code> can be extended by Jena coders if
+required. Jena components that use Assembler specifications to
+construct objects will use <code>general</code> unless documented otherwise.</p>
+<p>In the remaining sections we will discuss the <code>Assembler</code> classes
+that return non-Model objects and conclude with a description of
+<code>AssemblerGroup</code>.</p>
+<h3 id="basic-assembler-contentassembler">Basic assembler ContentAssembler</h3>
+<p>The ContentAssembler constructs Content objects (using the
+<code>ja:Content</code> vocabulary) used to supply content to models. A
+Content object has the method:</p>
+<ul>
+<li>fill( Model m ) ? m</li>
+</ul>
+<p>Invoking the <code>fill</code> method adds the represented content to the
+model. The supplied ModelAssemblers automatically apply the
+<code>Content</code> objects corresponding to <code>ja:content</code> property values.</p>
+<h3 id="basic-assembler-rulesetassembler">Basic assembler RulesetAssembler</h3>
+<p>A RulesetAssembler generates lists of Jena rules.</p>
+<h3 id="basic-assembler-defaultmodelassembler">Basic assembler DefaultModelAssembler</h3>
+<p>A &ldquo;default model&rdquo; is a model of unspecified type which is
+implemented as whatever kind the assembler for <code>ja:DefaultModel</code>
+generates. The default for a DefaultModel is to create a
+MemoryModel with no special properties.</p>
+<h3 id="assemblergroup">AssemblerGroup</h3>
+<p>The AssemblerGroup class allows a bunch of other Assemblers to be
+bundled together and selected by RDF type. AssemblerGroup
+implements Assembler and adds the methods:</p>
+<ul>
+<li>implementWith( Resource type, Assembler a ) ? this</li>
+<li>assemblerFor( Resource type ) ? Assembler</li>
+</ul>
+<p>AssemblerGroup&rsquo;s implementation of <code>open(sub,root)</code> finds the
+<em>most specific type</em> of <code>root</code> that is a subclass of <code>ja:Object</code>
+and looks for the Assembler that has been associated with that type
+by a call of <code>implementWith</code>. It then delegates construction to
+that Assembler, passing <em>itself</em> as the sub-assembler. Hence each
+component Assembler only needs to know how to assemble its own
+particular objects.</p>
+<p>The <code>assemblerFor</code> method returns the assembler associated with the
+argument type by a previous call of <code>implementWith</code>, or <code>null</code> if
+there is no associated assembler.</p>
+<h3 id="loading-assembler-classes">Loading assembler classes</h3>
+<p>AssemblerGroups implement the <code>ja:assembler</code> functionality. The
+object of an <code>(type ja:assembler &quot;ClassName&quot;)</code> statement is a
+string which is taken as the name of an <code>Assembler</code> implementation
+to load. An instance of that class is associated with <code>type</code> using
+<code>implementWith</code>.</p>
+<p>If the class has a constructor that takes a single <code>Resource</code>
+object, that constructor is used to initialise the class, passing
+in the <code>type</code> subject of the triple. Otherwise the no-argument
+constructor of the class is used.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

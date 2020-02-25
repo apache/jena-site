@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Fuseki: serving RDF data over HTTP</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/serving_data/fuseki1.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Fuseki: serving RDF data over HTTP</h1>
+            
+	<h2 id="see-the-fuseki2-documentationdocumentationfuseki2">See the <a href="/documentation/fuseki2/">Fuseki2 documentation</a>.</h2>
+<hr>
+<blockquote>
+<p>This page covers Fuseki v1.
+Fuseki1 is deprecated and has been retired.
+The last release of Jena with this module is Jena 3.9.0.
+See <a href="https://github.com/apache/jena/tree/master/fuseki1">jena-fuseki1/README.md</a>.
+This is the original documentation.</p>
+</blockquote>
+<hr>
+<p>Fuseki is a SPARQL server. It provides REST-style SPARQL HTTP Update, SPARQL Query,
+and SPARQL Update using the SPARQL protocol over HTTP.</p>
+<p>The relevant SPARQL standards are:</p>
+<ul>
+<li><a href="http://www.w3.org/TR/sparql11-query/">SPARQL 1.1 Query</a></li>
+<li><a href="http://www.w3.org/TR/sparql11-update/">SPARQL 1.1 Update</a></li>
+<li><a href="http://www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 Protocol</a></li>
+<li><a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL 1.1 Graph Store HTTP Protocol</a></li>
+</ul>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#download-fuseki1">Download</a></li>
+<li><a href="#getting-started-with-fuseki">Getting Started</a></li>
+<li><a href="#security-and-access-control">Security</a></li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#server-uri-scheme">Server URI scheme</a></li>
+<li><a href="#running-a-fuseki-server">Running a Fuseki Server</a></li>
+<li><a href="#fuseki-configuration-file">Fuseki Configuration File</a></li>
+<li><a href="#sparql-over-http">SPARQL Over HTTP</a></li>
+<li><a href="#use-from-java">Use from Java</a></li>
+<li><a href="#development-system">Development System</a></li>
+</ul>
+<h2 id="download-fuseki1">Download Fuseki1</h2>
+<p>Binaries for Fuseki1 are available from the
+<a href="http://central.maven.org/maven2/org/apache/jena/jena-fuseki1/">maven
+repositories</a>.</p>
+<p>The source code is available in the Apache Jena source release.</p>
+<h2 id="getting-started-with-fuseki">Getting Started With Fuseki</h2>
+<p>This section provides a brief guide to getting up and running with
+a simple server installation. It uses the
+<a href="../fuseki2/soh.html">SOH (SPARQL over HTTP)</a> scripts included in the
+download.</p>
+<ol>
+<li>
+<p><a href="/download/#jena-fuseki">Download</a> the latest <code>jena-fuseki-*-distribution</code></p>
+</li>
+<li>
+<p>Unpack the downloaded file with <code>unzip</code> or <code>tar zxfv</code></p>
+</li>
+<li>
+<p>(Linux) <code>chmod +x fuseki-server s-*</code></p>
+</li>
+<li>
+<p>Run a server</p>
+<p>./fuseki-server &ndash;update &ndash;mem /ds</p>
+</li>
+</ol>
+<p>The server logging goes to the console:</p>
+<pre><code>09:25:41 INFO  Fuseki               :: Dataset: in-memory
+09:25:41 INFO  Fuseki               :: Update enabled
+09:25:41 INFO  Fuseki               :: Fuseki development
+09:25:41 INFO  Fuseki               :: Jetty 7.2.1.v20101111
+09:25:41 INFO  Fuseki               :: Dataset = /ds
+09:25:41 INFO  Fuseki               :: Started 2011/01/06 09:25:41 GMT on port 3030
+</code></pre>
+<h2 id="user-interface">User Interface</h2>
+<p>The Fuseki download includes a number of services:</p>
+<ul>
+<li>SPARQL Query, SPARQL Update, and file upload to a selected
+dataset.</li>
+<li>Link to the documentation (here).</li>
+<li>Validators for SPARQL query and update and for non-RDF/XML
+formats.</li>
+</ul>
+<p>For the control panel:</p>
+<ol>
+<li>In a browser, go to <code>http://localhost:3030/</code></li>
+<li>Click on <em>Control Panel</em></li>
+<li>Select the dataset (if set up above, there is only one choice).</li>
+</ol>
+<p>The page offers SPARQL operations and file upload acting on the
+selected dataset.</p>
+<h2 id="script-control">Script Control</h2>
+<p>In a new window:</p>
+<p>Load some RDF data into the default graph of the server:</p>
+<pre><code>s-put http://localhost:3030/ds/data default books.ttl
+</code></pre>
+<p>Get it back:</p>
+<pre><code>s-get http://localhost:3030/ds/data default
+</code></pre>
+<p>Query it with SPARQL using the &hellip;/query endpoint.</p>
+<pre><code>s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
+</code></pre>
+<p>Update it with SPARQL using the &hellip;/update endpoint.</p>
+<pre><code>s-update --service http://localhost:3030/ds/update 'CLEAR DEFAULT'
+</code></pre>
+<h2 id="security-and-access-control">Security and Access Control</h2>
+<p>Fuseki does not currently offer security and access control itself.</p>
+<p>Authentication and control of the number of concurrent requests can
+be added using an Apache server and either blocking the Fuseki port
+to outside traffic (e.g. on Amazon&rsquo;s EC2) or by listening only the
+<code>localhost</code> network interface. This is especially important for update
+endpoints (SPARQL Update, SPARQL Graph Store protocol with
+PUT/POST/DELETE enabled).</p>
+<p>Data can be updated without access control if the server is started
+with the <code>--update</code> argument. If started without that argument, data
+is read-only.</p>
+<h2 id="logging">Logging</h2>
+<p>Fuseki uses
+<a href="http://logging.apache.org/log4j/">Log4J</a>
+for logging. There are two main logging channels:</p>
+<ol>
+<li>The general server messages: <code>org.apache.jena.fuseki.Server</code></li>
+<li>A channel for all request messages: <code>org.apache.jena.fuseki.Fuseki</code></li>
+</ol>
+<p>The default settings are (this is an extract of a log4j properties
+file):</p>
+<pre><code># Fuseki
+# Server log.
+log4j.logger.org.apache.jena.fuseki.Server=INFO
+# Request log.
+log4j.logger.org.apache.jena.fuseki.Fuseki=INFO
+# Internal logs
+log4j.logger.org.apache.jena.fuseki=INFO
+</code></pre>
+<h2 id="server-uri-scheme">Server URI scheme</h2>
+<p>This details the service URIs for Fuseki:</p>
+<ul>
+<li><code>http://*host*/</code><em>dataset</em><code>/query</code> &ndash; the SPARQL query endpoint.</li>
+<li><code>http://*host*/</code><em>dataset</em><code>/update</code> &ndash; the SPARQL Update language
+endpoint.</li>
+<li><code>http://*host*/</code><em>dataset</em><code>/data</code> &ndash; the SPARQL Graph Store Protocol
+endpoint.</li>
+<li><code>http://*host*/</code><em>dataset</em><code>/upload</code> &ndash; the file upload endpoint.</li>
+</ul>
+<p>Where <em>dataset</em> is a URI path. Note that Fuseki defaults to using
+port 3030 so <em>host</em> is often <em>localhost:3030</em>.</p>
+<p><strong>Important</strong> - While you may set <em>dataset</em> to be the text <code>dataset</code> this should be avoided since it may interfere with the function of the control panel and web pages.</p>
+<p>The URI
+<code>http://host/</code><em>dataset</em><code>/sparql</code>
+is currently mapped to <code>/query</code> but this may change to being a
+general purpose SPARQL query endpoint.</p>
+<h2 id="running-a-fuseki-server">Running a Fuseki Server</h2>
+<p>The server can be run with the script <code>fuseki-server</code>. Common forms
+are:</p>
+<pre><code>fuseki-server --mem  /DatasetPathName
+
+fuseki-server --file=FILE /DatasetPathName
+
+fuseki-server --loc=DB /DatasetPathName
+
+fuseki-server --config=ConfigFile
+</code></pre>
+<p>There is an option <code>--port=PORT</code> to set the port number. It
+defaults to 3030.</p>
+<p><code>/DatasetPathName</code> is the name under which the dataset will be
+accessible over HTTP.  Please see the above section on Server URI scheme for notes regarding available URIs and choice of this name</p>
+<p>The server will service read requests only unless the <code>--update</code>
+argument is used.</p>
+<p>The full choice of dataset forms is:</p>
+<p><strong>Fuseki Dataset Descriptions</strong></p>
+<ul>
+<li><code>--mem</code> <br /> Create an empty, in-memory (non-persistent) dataset.</li>
+<li><code>--file=FILE</code> <br />
+Create an empty, in-memory (non-persistent) dataset, then load FILE
+into it.</li>
+<li><code>--loc=DIR</code> <br />Use an existing TDB database. Create an empty one if it does not
+exist.</li>
+<li><code>--desc=assemblerFile</code> <br /> Construct a dataset based on the general assembler description.</li>
+<li><code>--config=ConfigFile</code> <br /> Construct one or more service endpoints based on the
+<a href="#fuseki-configuration-file">configuration description</a>.</li>
+</ul>
+<p>A copy of TDB is included in the standalone server. An example
+assembler file for TDB is in tdb.ttl.</p>
+<p><strong>Fuseki Server Arguments</strong></p>
+<ul>
+<li><code>--help</code>          <br /> Print help message.</li>
+<li><code>--port=*number*</code> <br /> Run on port <em>number</em> (default is 3030).</li>
+<li><code>--localhost</code>     <br /> Listen only to the localhost network interface.</li>
+<li><code>--update</code>        <br /> Allow update. Otherwise only read requests are served (ignored if a configuration file is given).</li>
+</ul>
+<h2 id="fuseki-server-starting-with-an-empty-dataset">Fuseki Server starting with an empty dataset</h2>
+<pre><code>fuseki-server --update --mem /ds
+</code></pre>
+<p>runs the server on port 3030 with an in-memory dataset. It can be
+accessed via the appropriate protocol at the following URLs:</p>
+<ul>
+<li>SPARQL query: <code>http://localhost:3030/ds/query</code></li>
+<li>SPARQL update: <code>http://localhost:3030/ds/update</code></li>
+<li>SPARQL HTTP update: <code>http://localhost:3030/ds/data</code></li>
+</ul>
+<p>The <a href="soh.html">SPARQL Over HTTP</a> scripts take care of naming
+and protocol details. For example, to load in a file <code>data.rdf</code>:</p>
+<pre><code> s-put http://localhost:3030/ds/data default data.rdf
+</code></pre>
+<h2 id="fuseki-server-and-tdb">Fuseki Server and TDB</h2>
+<p>Fuseki include a built-in version of TDB. Run the server with the
+<code>--desc</code> argument</p>
+<pre><code>fuseki-server --desc tdb.ttl /ds
+</code></pre>
+<p>and a database in the directory DB, an assembler description of:</p>
+<pre><code>@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
+@prefix tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt; .
+
+&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
+     tdb:location &quot;DB&quot; ;
+     .
+</code></pre>
+<p>The form:</p>
+<pre><code>fuseki-server --loc=DB /ds
+</code></pre>
+<p>is a shorthand for such an assembler with location <code>DB</code>.</p>
+<p>To make triples from all the named graphs appear as the default,
+unnamed graph, use:</p>
+<pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
+     tdb:location &quot;DB&quot; ;
+     tdb:unionDefaultGraph true ;
+    .
+</code></pre>
+<h2 id="fuseki-server-and-general-dataset-descriptions">Fuseki Server and general dataset descriptions</h2>
+<p>The Fuseki server can be given an
+<a href="/documentation/assembler/">assembler description</a>
+to build a variety of model and datasets types.</p>
+<pre><code>fuseki-server --desc assembler.ttl /ds
+</code></pre>
+<p>Full details of setting up models assembler is given in the
+<a href="/documentation/assembler/">assembler documentation</a> and <a href="/documentation/assembler/assembler-howto.html">assembler howto</a>.</p>
+<p>A general dataset is described by:</p>
+<pre><code># Dataset of default graph and one named graph.
+&lt;#dataset&gt; rdf:type ja:RDFDataset ;
+   ja:defaultGraph &lt;#modelDft&gt; ;
+   ja:namedGraph
+       [ ja:graphName      &lt;http://example.org/name1&gt; ;
+         ja:graph          &lt;#model1&gt; ] ;
+   .
+
+&lt;#modelDft&gt; a ja:MemoryModel ;
+        ja:content [ ja:externalContent &lt;file:Data.ttl&gt; .
+
+&lt;#model1&gt;  rdf:type ja:MemoryModel ;
+   ja:content [ ja:externalContent &lt;file:FILE-1.ttl&gt; ] ;
+   ja:content [ ja:externalContent &lt;file:FILE-2.ttl&gt; ] ;
+   .
+</code></pre>
+<p>The models can be
+<a href="/documentation/inference/">Jena inference models</a>.</p>
+<h2 id="fuseki-configuration-file">Fuseki Configuration File</h2>
+<p>A Fuseki server can be set up using a configuration file. The
+command-line arguments for publishing a single dataset are a short
+cut that, internally, builds a default configuration based on the
+dataset name given.</p>
+<p>The configuration is an RDF graph. One graph consists of one server
+description, with a number of services, and each service offers a
+number of endpoints over a dataset.</p>
+<p>The example below is all one file (RDF graph in Turtle syntax)
+split to allow for commentary.</p>
+<h3 id="prefix-declarations">Prefix declarations</h3>
+<p>Some useful prefix declarations:</p>
+<pre><code>@prefix fuseki:  &lt;http://jena.apache.org/fuseki#&gt; .
+@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt; .
+@prefix ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
+@prefix :        &lt;#&gt; .
+</code></pre>
+<h3 id="server-section">Server Section</h3>
+<p>Order of the file does not matter to the machine, but it&rsquo;s useful
+to start with the server description, then each of the services
+with its datasets.</p>
+<pre><code>[] rdf:type fuseki:Server ;
+   # Server-wide context parameters can be given here.
+   # For example, to set query timeouts: on a server-wide basis:
+   # Format 1: &quot;1000&quot; -- 1 second timeout
+   # Format 2: &quot;10000,60000&quot; -- 10s timeout to first result, then 60s timeout to for rest of query.
+   # See java doc for ARQ.queryTimeout
+   # ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;10000&quot; ] ;
+
+   # Services available.  Only explicitly listed services are configured.
+   #  If there is a service description not linked from this list, it is ignored.
+   fuseki:services (
+     &lt;#service1&gt;
+     &lt;#service2&gt;
+   ) .
+</code></pre>
+<h3 id="assembler-initialization">Assembler Initialization</h3>
+<p>All datasets are described by
+<a href="../assembler/index.html">assembler descriptions</a>.
+Assemblers provide an extensible way of describing many kinds of
+objects. Set up any assembler extensions - here, the TDB assembler
+support.</p>
+<h3 id="service-1">Service 1</h3>
+<p>This service offers SPARQL Query, SPARQL Update and SPARQL Graph
+Store protocol, as well as file upload, on an in-memory dataset.
+Initially, the dataset is empty.</p>
+<pre><code>## ---------------------------------------------------------------
+## Updatable in-memory dataset.
+
+&lt;#service1&gt; rdf:type fuseki:Service ;
+    fuseki:name                       &quot;ds&quot; ;       # http://host:port/ds
+    fuseki:serviceQuery               &quot;query&quot; ;    # SPARQL query service
+    fuseki:serviceQuery               &quot;sparql&quot; ;   # SPARQL query service
+    fuseki:serviceUpdate              &quot;update&quot; ;   # SPARQL query service
+    fuseki:serviceUpload              &quot;upload&quot; ;   # Non-SPARQL upload service
+    fuseki:serviceReadWriteGraphStore &quot;data&quot; ;     # SPARQL Graph store protocol (read and write)
+    # A separate read-only graph store endpoint:
+    fuseki:serviceReadGraphStore      &quot;get&quot; ;      # SPARQL Graph store protocol (read only)
+    fuseki:dataset                   &lt;#dataset-mem&gt; ;
+    .
+
+&lt;#dataset-mem&gt; rdf:type ja:RDFDataset .
+</code></pre>
+<h3 id="service-2">Service 2</h3>
+<p>This service offers a number of endpoints. It is read-only, because
+only read-only endpoints are defined (SPARQL Query and HTTP GET
+SPARQl Graph Store protocol). The dataset is a single in-memory
+graph:</p>
+<p>This service offers read-only access to a dataset with a single
+graph of data.</p>
+<pre><code>&lt;#service2&gt; rdf:type fuseki:Service ;
+    fuseki:name                     &quot;books&quot; ;    # http://host:port/books
+    fuseki:serviceQuery             &quot;query&quot; ;    # SPARQL query service
+    fuseki:serviceReadGraphStore    &quot;data&quot; ;     # SPARQL Graph store protocol (read only)
+    fuseki:dataset           &lt;#books&gt; ;
+    .
+
+&lt;#books&gt;    rdf:type ja:RDFDataset ;
+    rdfs:label &quot;Books&quot; ;
+    ja:defaultGraph
+      [ rdfs:label &quot;books.ttl&quot; ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent &lt;file:Data/books.ttl&gt; ] ;
+      ] ;
+    .
+</code></pre>
+<h3 id="service-3">Service 3</h3>
+<p>This service offers SPARQL query access only to a TDB database. The
+TDB database can have specific features set, such as query timeout
+or making the default graph the union of all named graphs.</p>
+<pre><code>&lt;#service3&gt;  rdf:type fuseki:Service ;
+    fuseki:name              &quot;tdb&quot; ;       # http://host:port/tdb
+    fuseki:serviceQuery      &quot;sparql&quot; ;    # SPARQL query service
+    fuseki:dataset           &lt;#dataset&gt; ;
+    .
+
+&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
+    tdb:location &quot;DB&quot; ;
+    # Query timeout on this dataset (1s, 1000 milliseconds)
+    ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;1000&quot; ] ;
+    # Make the default graph be the union of all named graphs.
+    ## tdb:unionDefaultGraph true ;
+     .
+</code></pre>
+<h2 id="sparql-over-http">SPARQL Over HTTP</h2>
+<p><strong>SOH</strong> (SPARQL Over HTTP) is a set of command-line scripts for
+working with SPARQL 1.1. SOH is server-independent and will work
+with any compliant SPARQL 1.1 system offering HTTP access.</p>
+<p>See the <a href="soh.html">SPARQL Over HTTP</a> page.</p>
+<h3 id="examples">Examples</h3>
+<pre><code># PUT a file
+s-put http://localhost:3030/ds/data default D.nt
+
+# GET a file
+s-get http://localhost:3030/ds/data default
+
+# PUT a file to a named graph
+s-put http://localhost:3030/ds/data http://example/graph D.nt
+
+# Query
+s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
+
+# Update
+s-update --service http://localhost:3030/ds/update --file=update.ru
+</code></pre>
+<h2 id="use-from-java">Use from Java</h2>
+<h3 id="sparql-query">SPARQL Query</h3>
+<p>ARQ&rsquo;s <code>QueryExecutionFactory.sparqlService</code> can be used.</p>
+<h3 id="sparql-update">SPARQL Update</h3>
+<p>See <code>UpdateExecutionFactory.createRemote</code></p>
+<h3 id="sparql-http">SPARQL HTTP</h3>
+<p>See <code>DatasetAccessor</code></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

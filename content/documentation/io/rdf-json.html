@@ -1,0 +1,258 @@
+<html>
+<head>
+  <link href="http://jena.apache.org/css/jena.css" rel="stylesheet" type="text/css"/>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>RDF JSON - docs.api</title>
+</head>
+<body>
+
+<div id="content" style="margin-left: 20px">
+
+<p>
+<small>This page is taken from <a href="http://docs.api.talis.com/platform-api/output-types/rdf-json">The Talis Systems documentation for RDF/JSON</a>. 
+© Talis Systems Ltd. 2011. The content is available under 
+<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="">Attribution-Share Alike 3.0</a>
+</small> license.
+</p>
+
+  <h1>RDF JSON</h1>
+       
+  <p><a href="http://json.org/">JSON</a> (the serialisation of data
+    in javascript object notation) is an increasingly popular data format,
+    largely because it is easy to parse (or, in the case of javascript, simply
+    evaluate) into a data structure of the consumer's programming language of
+           choice.</p>
+  
+  <p>This is a specification for a resource-centric serialisation of RDF in
+    JSON.  It aims to serialise RDF in a structure that is easy for developers
+    to work with.</p>
+  
+  <h2>SyntaxSpecification</h2>
+
+  <p>RDF/JSON represents a set of RDF triples as a series of nested data structures. 
+    Each unique subject in the set of triples is represented as a key in 
+    JSON object (also known as associative array, dictionary or hash table).
+    The value of each key is a object whose keys are the URIs of the 
+    properties associated with each subject. The value of each property key 
+    is an array of objects representing the value of each property.</p>
+
+  <p>Blank node subjects are named using a string conforming to the <a href="http://www.dajobe.org/2004/01/turtle/#nodeID">nodeID production in Turtle</a>. For example:
+_:A1</p>
+  
+  <p>In general, a triple (subject <b>S</b>, predicate <b>P</b>, object <b>O</b>) is encoded in the following
+structure:</p>
+
+<pre>{ "S" : { "P" : [ O ] } }</pre>
+
+<p>The object of the triple <b>O</b> is represented as a further JSON object with the following
+keys:</p>
+
+<dl>
+  <dt>type</dt>
+  <dd>one of 'uri', 'literal' or 'bnode' (<b>required</b>
+    and must be lowercase)</dd>
+
+  <dt>value</dt>
+  <dd>the lexical value of the
+    object (<b>required</b>, full URIs should be used, not
+    qnames)</dd>
+  <dt>lang</dt>
+  <dd>the language of a literal value
+    (<b>optional</b> but if supplied it must not be
+    empty)</dd>
+  <dt>datatype</dt>
+  <dd>the datatype URI of the literal value (<b>optional</b>)</dd>
+</dl>
+
+  <p>The 'lang' and 'datatype' keys should only be used if the value of the 'type' key is "literal".</p>
+
+  <p>For example, the following triple:</p>
+  <pre>&lt;http://example.org/about&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Anna's Homepage" .</pre>
+  
+  <p>can be encoded in RDF/JSON as:</p>
+
+  <pre>{
+  "http://example.org/about" : 
+    {
+       "http://purl.org/dc/elements/1.1/title": [ { "type" : "literal" , "value" : "Anna's Homepage" } ]
+    }
+}</pre>
+
+  <p>Here is an example of the RDF JSON specification in the format of
+    a <a href="http://json-schema.org/">JSON Schema</a>. The latest version can
+    also be found in the <a href="http://soapjr.org/schemas/RDF_JSON">schema
+      section</a> of the <a href="http://soapjr.org/">SOAPjr.org site</a>.</p>
+
+  <pre>{
+     "version":"0.3.0",
+     "id":"RDF-JSON",
+     "description":"RDF JSON definition",
+     "type":"object",
+     "properties":{
+     },
+     "additionalProperties":{
+         "type":"object",
+         "description":"subject (root object)",
+         "optional":"true",
+         "properties":{
+         },
+         "additionalProperties":{
+             "type":"array",
+             "description":"predicate (subject object)",
+             "optional":"true",
+             "items":{
+                 "type":"object",
+                 "description":"object (value array)",
+                 "properties":{
+                     "description":"content (value object)",
+                     "type":{
+                         "type":"string",
+                         "enum":["uri","bnode","literal"]
+                     },
+                     "value":{
+                         "type":"string"
+                     },
+                     "lang":{
+                         "optional":true,
+                         "description":"See ftp://ftp.isi.edu/in-notes/bcp/bcp47.txt",
+                         "type":"string"
+                     },
+                     "datatype":{
+                         "optional":true,
+                         "format":"uri",
+                         "type":"string"
+                     }
+                 }
+             }
+         }
+     }
+}
+</pre>
+
+  <h2>Examples</h2>
+
+  <p>The following RDF/XML:</p>
+  <pre>&lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"&gt;
+  &lt;rdf:Description rdf:about="http://example.org/about"&gt;
+    &lt;dc:creator&gt;Anna Wilder&lt;/dc:creator&gt;
+    &lt;dc:title xml:lang="en"&gt;Anna's Homepage&lt;/dc:title&gt;
+    &lt;foaf:maker rdf:nodeID="person" /&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID="person"&gt;
+    &lt;foaf:homepage rdf:resource="http://example.org/about" /&gt;
+    &lt;foaf:made rdf:resource="http://example.org/about" /&gt;
+    &lt;foaf:name&gt;Anna Wilder&lt;/foaf:name&gt;
+    &lt;foaf:firstName&gt;Anna&lt;/foaf:firstName&gt;
+    &lt;foaf:surname&gt;Wilder&lt;/foaf:surname&gt;
+    &lt;foaf:depiction rdf:resource="http://example.org/pic.jpg" /&gt;
+    &lt;foaf:nick&gt;wildling&lt;/foaf:nick&gt;
+    &lt;foaf:nick&gt;wilda&lt;/foaf:nick&gt;
+    &lt;foaf:mbox_sha1sum&gt;69e31bbcf58d432950127593e292a55975bc66fd&lt;/foaf:mbox_sha1sum&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;</pre>
+  <p>Can be represented as the following RDF/JSON structure:</p><pre>{
+    "http://example.org/about" : {
+        "http://purl.org/dc/elements/1.1/creator" : [ { "value" : "Anna Wilder", "type" : "literal" } ],
+        "http://purl.org/dc/elements/1.1/title"   : [ { "value" : "Anna's Homepage", "type" : "literal", "lang" : "en" } ] ,
+        "http://xmlns.com/foaf/0.1/maker"         : [ { "value" : "_:person", "type" : "bnode" } ]
+    } ,
+ 
+    "_:person" : {
+        "http://xmlns.com/foaf/0.1/homepage"      : [ { "value" : "http://example.org/about", "type" : "uri" } ] ,
+        "http://xmlns.com/foaf/0.1/made"          : [ { "value" : "http://example.org/about", "type" : "uri" } ] ,
+        "http://xmlns.com/foaf/0.1/name"          : [ { "value" : "Anna Wilder", "type" : "literal" } ] ,
+        "http://xmlns.com/foaf/0.1/firstName"     : [ { "value" : "Anna", "type" : "literal" } ] ,
+        "http://xmlns.com/foaf/0.1/surname"       : [ { "value" : "Wilder", "type" : "literal" } ] , 
+        "http://xmlns.com/foaf/0.1/depiction"     : [ { "value" : "http://example.org/pic.jpg", "type" : "uri" } ] ,
+        "http://xmlns.com/foaf/0.1/nick"          : [ 
+                                                      { "type" : "literal", "value" : "wildling"} , 
+                                                      { "type" : "literal", "value" : "wilda" } 
+                                                    ] ,
+        "http://xmlns.com/foaf/0.1/mbox_sha1sum"  : [ {  "value" : "69e31bbcf58d432950127593e292a55975bc66fd", "type" : "literal" } ] 
+    }
+}</pre>
+
+  <h2>Serialisation Algorithm</h2>
+
+   <p>Refer to <a href="http://json.org/">http://json.org/</a> for definitions of
+     terminology</p>
+
+   <ol>
+     <li>Start a JSON object (called the root object)</li>
+     <li>Group all the triples by subject</li>
+     <li>For each subject:
+       <ol>
+         <li>Create a JSON object for the subject (called the subject
+           object)</li>
+         <li>Group all triples having the current subject by predicate</li>
+         <li>For each predicate:<ol>
+             <li>Create a JSON array (called the value array)</li>
+             <li>Select all triples having the current subject and current
+               predicate</li>
+             <li>For each value:
+               <ol>
+              <li>Create a JSON object (called the value object)</li>
+              
+              <li>Add a key/value pair to the value object with the key
+                being the string "value" and the value being the lexical
+                value of the triple value</li>
+              
+              <li>Add a key/value pair to
+                the value object with the key being the string "type" and
+                the value being one of "literal", "uri" or "bnode"
+                depending on the type of the triple's value</li>
+              #content
+              <li>If the triple's value is a plain literal and has a
+                language then add a key/value pair to the value object with the key being
+                the string "lang" and the value being the language token</li>
+              
+              <li>If the triple's value is a typed literal then add a
+                key/value pair to the value object with the key being the string
+                "datatype" and value being the URI of the datatype</li>
+              
+              <li>Push the value object onto the end of the value array</li>
+               </ol>
+             </li>
+             <li>Add a key/value pair to the subject object with the key being the predicate URI and the value being the value
+               array</li>
+           </ol>
+         </li>
+         <li>Add a key/value pair to the root object with the key being the
+           URI or blank node identifier of the subject and the value being the
+           subject object created in the previous step</li>
+       </ol>
+     </li>
+   </ol>
+   
+<!--
+   <h3>Further Examples</h3>
+
+  <p>RDF/XML can be converted into the specified RDF/JSON format by using
+    the <a href="http://convert.test.talis.com/">http://convert.test.talis.com</a>
+    web service.</p>
+-->
+  <h2>Publishing RDF/JSON on the web</h2>
+  
+  <p>If doing content-negotiation, respond to, and send the content-type
+    as <code>application/json</code>. An empty graph (ie: no triples) should
+    be served as an empty object: <code>{}</code>.</p>
+
+  <h2>References</h2>
+
+  <ol>
+    <li><a href="http://www.ietf.org/rfc/rfc3066.txt">Tags
+        for the Identification of
+        Languages</a></li>
+    <li><a href="http://docs.api.talis.com/system/errors/NodeNotFound?suri=wuid:gx:785d2e15fb97c7a4">RDF JSON
+        Brainstorming</a></li>
+    <li><a href="http://json.org/">http://json.org/</a></li>
+    <li><a href="http://www.ietf.org/rfc/rfc3986.txt">Uniform
+        Resource Identifier (URI): Generic
+        Syntax</a>
+    </li>
+  </ol>
+  </div>
+</body>
+</html>

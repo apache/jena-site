@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - ARQ - JavaScript SPARQL Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/javascript-functions.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">ARQ - JavaScript SPARQL Functions</h1>
+            
+	<p>ARQ supports (Jena v3.7.0 onwards) writing
+<a href="https://www.w3.org/TR/sparql11-query/#extensionFunctions">custom SPARQL functions</a>
+in JavaScript. These functions can be used in FILTERs and for calculating
+values to assigb wiuth AS in BIND and SELECT expressions.</p>
+<p>XSD datatypes for strings, numbers and booleans are converted to the
+native JavaScript datatypes. RDFterms that do not fit easily into
+JavaScript datatypes are handled with a object class <code>NV</code>.</p>
+<h2 id="loading-javascript-functions">Loading JavaScript functions</h2>
+<p>JavaScript is loaded from an external file using the context setting
+&ldquo;<a href="http://jena.apache.org/ARQ#js-library%22">http://jena.apache.org/ARQ#js-library&quot;</a>. This can be written as
+<code>arq:js-library</code> for commands and Fuseki configuation files.</p>
+<p>Example:</p>
+<pre><code>sparql --set arq:js-library=SomeFile.js --data ... --query ...
+</code></pre>
+<p>will execute on the data with the JavaScript functions from file
+&ldquo;SomeFile.js&rdquo; available.</p>
+<p>JavScript functions can also be set from a string directly from within Java using constant
+<code>ARQ.symJavaScriptFunctions</code> (&ldquo;<a href="http://jena.apache.org/ARQ#js-functions%22)">http://jena.apache.org/ARQ#js-functions&quot;)</a>.</p>
+<h2 id="using-javascript-functions">Using JavaScript functions</h2>
+<p>SPARQL functions implemented in JavaScript are automatically called when a
+URI starting &ldquo;<a href="http://jena.apache.org/ARQ/jsFunction#%22">http://jena.apache.org/ARQ/jsFunction#&quot;</a> used.</p>
+<p>This can conveniently be abbreviated by:</p>
+<pre><code>PREFIX js: &lt;http://jena.apache.org/ARQ/jsFunction#&gt;
+</code></pre>
+<h3 id="arguments-and-function-results">Arguments and Function Results</h3>
+<p><code>xsd:string</code> (a string with no language tag), any XSD numbers (integer,
+decimal, float, double and all the derived types) and <code>xsd:boolean</code> are
+converted to JavaScript string, number and boolean respectively.</p>
+<p>SPARQL functions must return a value. When a function returns a value,
+it can be one of these JavaScript natbive datatypes, in which case the
+reverse conversion is applied back to XSD datatypes.  For numbers, the
+conversion is back to <code>xsd:integer</code> (if it has no fractional part) or
+<code>xsd:double</code>.</p>
+<p>The JavaScript function can also create <code>NodeValue</code> (or <code>NV</code>) objects
+for other datatypes by calling Java from withint the JAavScript script
+engine of the Java runtime.</p>
+<p>URIs are passed as <code>NV</code> object and are available in JavaScript as a string.</p>
+<p>The class <code>NV</code> is used for all other RDF terms.</p>
+<p>Returning JavaScript <code>null</code> is the error indicator and a SPARQL
+expression error (<code>ExprEvalException</code>) is raised, like any other
+expression error in SPARQL. That, in turn, will cause the whole
+expression the function is part of to evaluate to an error (unless
+a special form like <code>COALESCE</code> is used). In a <code>FILTER</code> that typically
+makes the filter evaluate to &ldquo;false&rdquo;.</p>
+<h2 id="example">Example</h2>
+<p>Suppose &ldquo;functions.js&rdquo; contains code to camel case words in a string.
+For example, &ldquo;some words to process &quot; becomes &ldquo;someWordsToProcess&rdquo;.</p>
+<pre><code>// CamelCase a string
+// Words to be combined are separated by a space in the string.
+
+function toCamelCase(str) {
+    return str.split(' ')
+    .map(cc)
+    .join('');
+}
+
+function ucFirst(word)    {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+function lcFirst(word)    {
+    return word.toLowerCase();
+}
+
+function cc(word,index)   {
+    return (index == 0) ? lcFirst(word) : ucFirst(word);
+}
+</code></pre>
+<p>and the query <code>Q.rq</code></p>
+<pre><code>PREFIX js: &lt;http://jena.apache.org/ARQ/jsFunction#&gt;
+
+SELECT ?input (js:toCamelCase(?input) AS ?X)
+{
+    VALUES ?input { &quot;some woRDs to PROCESS&quot; }
+}
+</code></pre>
+<p>which can be executed with:</p>
+<pre><code>sparql --set arq:js-library=functions.js --query Q.rq
+</code></pre>
+<p>and it results in:</p>
+<pre><code>--------------------------------------------------
+| input                   | X                    |
+==================================================
+| &quot;some woRDs to PROCESS&quot; | &quot;someWordsToProcess&quot; |
+--------------------------------------------------
+</code></pre>
+<h2 id="use-with-fuseki">Use with Fuseki</h2>
+<p>The context setting can be provided on the command line starting the
+server, for example:</p>
+<pre><code>fuseki --set arq:js-library=functions.js --mem /ds
+</code></pre>
+<p>or it can be specificied in the server coinfiguration file <code>config.ttl</code>:</p>
+<pre><code>PREFIX :        &lt;#&gt;
+PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+
+[] rdf:type fuseki:Server ;
+    # Set the server-wide context
+    ja:context [
+         ja:cxtName &quot;arq:js-library&quot; ;
+         ja:cxtValue &quot;/filepath/functions.js&quot;
+    ] ;
+.
+
+&lt;#service&gt; rdf:type fuseki:Service;
+    rdfs:label                   &quot;Dataset&quot;;
+    fuseki:name                  &quot;ds&quot;;
+    fuseki:serviceQuery          &quot;sparql&quot;;
+    fuseki:dataset &lt;#dataset&gt; ;
+    .
+
+&lt;#dataset&gt; rdf:type ja:DatasetTxnMem;
+    ja:data &lt;file:D.trig&gt;;
+.
+</code></pre>
+<p>and used as:</p>
+<pre><code>fuseki --conf config.ttl
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

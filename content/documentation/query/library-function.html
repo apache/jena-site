@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Functions in ARQ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/library-function.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Functions in ARQ</h1>
+            
+	<p>The regular expressions for fan:localname and afn:namespace were incorrect.
+SPARQL allows custom functions in expressions so that
+queries can be used on domain-specific data. SPARQL defines a
+function by URI (or prefixed name) in FILTER expressions.  ARQ
+provides a function library and supports application-provided
+functions.  Functions and property functions can be
+<a href="extension.html">registered or dynamically loaded</a>.</p>
+<p>Applications can also
+<a href="writing_functions.html">provide their own functions</a>.</p>
+<p>ARQ also provides an implementation the
+<a href="http://www.dotnetrdf.org/leviathan">Leviathan Function Library</a>.</p>
+<h3 id="xqueryxpath-functions-and-operators-supported">XQuery/XPath Functions and Operators supported</h3>
+<p>ARQ supports the scalar functions and operators from
+&ldquo;<a href="https://www.w3.org/TR/xpath-functions-3/">XQuery 1.0 and XPath 2.0 Functions and Operators v3.1</a>&quot;.</p>
+<p>Functions in involving sequences are not supported.</p>
+<p>See <a href="xsd-support.html">XSD Support</a> for details of datatypes and functions
+currently supported.  To check the exact current registrations, see
+<tt><a href="https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java">function/StandardFunctions.java</a></tt>.</p>
+<p>See also the <a href="library-propfunc.html">property functions</a> library
+page.</p>
+<h3 id="function-library">Function Library</h3>
+<p>The prefix <code>afn</code> is <code>&lt;http://jena.apache.org/ARQ/function#&gt;</code>.
+(the old prefix of <code>&lt;http://jena.hpl.hp.com/ARQ/function#&gt;</code> continues to
+work. Applications are encouraged to switch.)</p>
+<p>Direct loading using a URI prefix of
+<code>&lt;java:org.apache.jena.sparql.function.library.&gt;</code> (note the final
+dot) is deprecated.</p>
+<p>The prefix <code>fn</code> is <code>&lt;http://www.w3.org/2005/xpath-functions#&gt;</code> (the
+XPath and XQuery function namespace).</p>
+<p>The prefix <code>math</code> is <code>&lt;http://www.w3.org/2005/xpath-functions/math#&gt;</code>.</p>
+<h3 id="custom-aggregates">Custom Aggregates</h3>
+<p>The prefix <code>agg:</code> is <code>&lt;http://jena.apache.org/ARQ/function/aggregate#&gt;</code>.</p>
+<p>The statistical aggregates are provided are:</p>
+<p><code>agg:stdev</code>, <code>agg:stdev_samp</code>, <code>agg:stdev_pop</code>,
+<code>agg:variance</code>, <code>agg:var_samp</code>, <code>agg:var_pop</code></p>
+<p>These are modelled after SQL aggregate functions <code>STDEV</code>, <code>STDEV_SAMP</code>, <code>STDEV_POP</code>,
+<code>VARIANCE</code>, <code>VAR_SAMP</code>, <code>VAR_POP</code>.</p>
+<p>These, as keywords, are available in ARQ&rsquo;s extended SPARQL (parse using <code>Syntax.syntaxARQ</code>).</p>
+<h3 id="additional-functions-provided-by-arq">Additional Functions Provided by ARQ</h3>
+<p>Most of these have equivalents, or near equivalents, in SPARQL or as an
+XQuery function and are to be preferred. These ARQ-specific versions remain
+for compatibility.</p>
+<p><strong>RDF Graph Functions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Function name</th>
+<th>Description</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>afn:bnode(?x)</code></td>
+<td>Return the blank node label if ?x is a blank node.</td>
+<td><code>STR(?x)</code></td>
+</tr>
+<tr>
+<td><code>afn:localname(?x)</code></td>
+<td>The local name of ?x</td>
+<td><code>REPLACE(STR(?x), &quot;^(.*)(/|#)([^#/]*)$&quot;, &quot;$3&quot;)</code></td>
+</tr>
+<tr>
+<td><code>afn:namespace(?x)</code></td>
+<td>The namespace of ?x</td>
+<td><code>REPLACE(STR(?x), &quot;^(.*)(/|#)([^#/]*)$&quot;, &quot;$1&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+<p>The prefix and local name of a IRI is based on splitting the IRI, not on any prefixes in the query or dataset.</p>
+<p><strong>String Functions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Function name</th>
+<th>Description</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>afn:sprintf(format, v1, v2, ...)</code></td>
+<td>Make a string from the format string and the RDF terms.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>afn:substr(string, startIndex [,endIndex])</code></td>
+<td>Substring, Java style using <em><code>startIndex</code></em> and <em><code>endIndex</code></em>.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>afn:substring</code></td>
+<td>Synonym for afn:substr</td>
+<td></td>
+</tr>
+<tr>
+<td><code>afn:strjoin(sep, string ...)</code></td>
+<td>Concatenate string together, with a separator.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>afn:sha1sum(resource)</code></td>
+<td>Calculate the SHA1 checksum of a literal or URI</td>
+<td><code>SHA1(STR(resource))</code></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>Strings in
+&ldquo;<a href="http://www.w3.org/TR/xpath-functions-3/">XQuery 1.0 and XPath 2.0 Functions and Operators</a>&rdquo;
+start from character position one, unlike Java and C# where
+strings start from zero.</li>
+<li>The <code>fn:substring</code> operation takes an optional length, like C#
+but different from Java, where it is the <em>endIndex</em> of the first
+character after the substring.</li>
+<li><code>afn:substr</code> uses Java-style  <em><code>startIndex</code></em> and <em><code>endIndex</code></em>.</li>
+</ol>
+<p><strong>Mathematical Functions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Function name</th>
+<th>Description</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>afn:min(num1, num2)</code></td>
+<td>Return the minimum of two numbers</td>
+<td><code>fn:min</code></td>
+</tr>
+<tr>
+<td><code>afn:max(num1, num2)</code></td>
+<td>Return the maximum of two numbers</td>
+<td><code>fn:max</code></td>
+</tr>
+<tr>
+<td><code>afn:pi()</code></td>
+<td>The value of pi, as an XSD double</td>
+<td><code>math:pi()</code></td>
+</tr>
+<tr>
+<td><code>afn:e()</code></td>
+<td>The value of e, as an XSD double</td>
+<td><code>math:exp(1)</code></td>
+</tr>
+<tr>
+<td><code>afn:sqrt(num)</code></td>
+<td>The square root of num</td>
+<td><code>math:sqrt</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Miscellaneous Functions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Function name</th>
+<th>Description</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>afn:now()</code></td>
+<td>Current time. Actually, the time the query started.</td>
+<td><code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>afn:sha1sum(resource)</code></td>
+<td>Calculate the SHA1 checksum</td>
+<td><code>SHASUM</code></td>
+</tr>
+</tbody>
+</table>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

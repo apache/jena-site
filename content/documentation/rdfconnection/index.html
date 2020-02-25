@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - RDF Connection : SPARQL operations API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/rdfconnection/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">RDF Connection : SPARQL operations API</h1>
+            
+	<p><code>RDFConnection</code> provides a unified set of operations for working on RDF
+with SPARQL operations. It provides <a
+href="https://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a
+href="https://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a
+href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
+Store</a> operations.  The interface is uniform - the same interface
+applies to local data and to remote data using HTTP and the SPARQL
+protocols ( <a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL
+protocol</a> and <a
+href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
+Protocol</a>).</p>
+<h2 id="outline">Outline</h2>
+<p><code>RDFConnection</code> provides a number of different styles for working with RDF
+data in Java.  It provides support for try-resource and functional code
+passing styles, as well the more basic sequence of methods calls.</p>
+<p>For example: using <code>try-resources</code> to manage the connection, and perform two operations, one to load
+some data, and one to make a query can be written as:</p>
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    conn.load(&quot;data.ttl&quot;) ;
+    conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+       Resource subject = qs.getResource(&quot;s&quot;) ;
+       System.out.println(&quot;Subject: &quot;+subject) ;
+    }) ;
+}
+</code></pre>
+<p>This could have been written as (approximately &ndash; the error handling is better
+in the example above):</p>
+<pre><code>RDFConnection conn = RDFConnectionFactory.connect(...)
+conn.load(&quot;data.ttl&quot;) ;
+QueryExecution qExec = conn.query(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;) ;
+ResultSet rs = qExec.execSelect() ;
+while(rs.hasNext()) {
+    QuerySolution qs = rs.next() ;
+    Resource subject = qs.getResource(&quot;s&quot;) ;
+    System.out.println(&quot;Subject: &quot;+subject) ;
+}
+qExec.close() ;
+conn.close() ;
+</code></pre>
+<p>Jena also provides a separate
+<a href="//jena.staging.apache.org/documentation/jdbc/index.html">SPARQL over JDBC driver</a>
+library.</p>
+<h2 id="transactions">Transactions</h2>
+<p>Transactions are the preferred way to work with RDF data.
+Operations on an <code>RDFConnection</code> outside of an application-controlled
+transaction will cause the system to add one for the duration of the
+operation. This &ldquo;autocommit&rdquo; feature may lead to inefficient operations due
+to excessive overhead.</p>
+<p>The <code>Txn</code> class provides a Java8-style transaction API.  Transactions are
+code passed in the <code>Txn</code> library that handles the transaction lifecycle.</p>
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    Txn.execWrite(conn, ()-&gt; {
+        conn.load(&quot;data1.ttl&quot;) ;
+        conn.load(&quot;data2.ttl&quot;) ;
+        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+           Resource subject = qs.getResource(&quot;s&quot;) ;
+           System.out.println(&quot;Subject: &quot;+subject) ;
+        }) ;
+    }) ;
+}
+</code></pre>
+<p>The traditional style of explicit <code>begin</code>, <code>commit</code>, <code>abort</code> is also available.</p>
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    conn.begin(ReadWrite.WRITE) ;
+    try {
+        conn.load(&quot;data1.ttl&quot;) ;
+        conn.load(&quot;data2.ttl&quot;) ;
+        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+           Resource subject = qs.getResource(&quot;s&quot;) ;
+           System.out.println(&quot;Subject: &quot;+subject) ;
+        }) ;
+        conn.commit() ;
+    } finally { conn.end() ; }
+}
+</code></pre>
+<p>The use of <code>try-finally</code> ensures that transactions are properly finished.
+The <code>conn.end()</code> provides an abort in case an exception occurs in the
+transaction and a commit has not been issued.  The use of <code>try-finally</code>
+ensures that transactions are properly finished.</p>
+<p><code>Txn</code> is wrapping these steps up and calling the application supplied code
+for the transaction body.</p>
+<h3 id="remote-transactions">Remote Transactions</h3>
+<p>SPARQL does not define a remote transaction standard protocol. Each remote
+operation should be atomic (all happens or nothing happens) - this is the
+responsibility of the remote server.</p>
+<p>An <code>RDFConnection</code> will at least provide the client-side locking features.
+This means that overlapping operations that change data are naturally
+handled by the transaction pattern within a single JVM.</p>
+<h2 id="configuring-a-remote-rdfconnection">Configuring a remote <code>RDFConnection</code>.</h2>
+<p>The default settings on a remote connection should work for any SPARQL
+triple store endpoint which supports HTTP content negotiation. Sometimes
+different settings are desirable or required and <code>RDFConnectionRemote</code> provides a
+builder to construct <code>RDFConnectionRemote</code>s.</p>
+<p>At its simplest, it is:</p>
+<pre><code>RDFConnectionRemoteBuilder builder = RDFConnection.create()
+            .destination(&quot;http://host/triplestore&quot;);
+</code></pre>
+<p>which uses default settings used by <code>RDFConenctionFactory.connect</code>.</p>
+<p>See <a href="https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample4.java">example
+4</a>
+and <a href="https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java">example
+5</a>.</p>
+<p>There are many options, including setting HTTP headers for content types
+(<a href="//jena.apache.org/documentation/javadoc/rdfconnection/index.html">javadoc</a>)
+and providing detailed configuration with
+<a href="https://hc.apache.org/httpcomponents-client-ga/">Apache HttpComponents HttpClient</a>.</p>
+<h3 id="fuseki-specific-connection">Fuseki Specific Connection</h3>
+<p>If the remote destination is a Apache Jena Fuseki server, then the
+default general settings work but it is possible to have a specialised connection</p>
+<pre><code>    RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
+          .destination(&quot;http://host/fuseki&quot;);
+</code></pre>
+<p>which uses settings tuned to Fuseki, including round-trip handling of
+blank nodes.</p>
+<p>See <a href="https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample6.java">example
+6</a>.</p>
+<h2 id="graph-store-protocol">Graph Store Protocol</h2>
+<p>The <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
+Store Protocol</a> (GSP) is a set of operations to work on whole graphs in a
+dataset.  It provides a standardised way to manage the data in a dataset.</p>
+<p>The operations are to fetch a graph, set the RDF data in a graph,
+add more RDF data into a graph, and delete a graph from a dataset.</p>
+<p>For example: load two files:</p>
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    conn.load(&quot;data1.ttl&quot;) ;
+    conn.load(&quot;data2.nt&quot;) ;
+  }
+</code></pre>
+<p>The file extension is used to determine the syntax.</p>
+<p>There is also a set of scripts to help do these operations from the command
+line with
+<a href="//jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
+It is possible to write curl scripts as well.  The SPARQL Graph
+Store Protocol provides a standardised way to manage the data in a dataset.</p>
+<p>In addition, <code>RDFConnection</code> provides an extension to give the same style
+of operation to work on a whole dataset (deleting the dataset is not
+provided).</p>
+<pre><code>conn.loadDataset(&quot;data-complete.trig&quot;) ;
+</code></pre>
+<h3 id="local-vs-remote">Local vs Remote</h3>
+<p>GSP operations work on while models and datasets. When used on a remote connection,
+the result of a GSP operation is a separate copy of the remote RDF data.  When working
+with local connections, 3 isolations modes are available:</p>
+<ul>
+<li>Copy – the models and datasets returned are independent copies.
+Updates are made to the return copy only. This is most like
+a remote connection and is useful for testing.</li>
+<li>Read-only – the models and datasets are made read-only but any changes
+to the underlying RDF data by changes by another route will be visible.
+This provides a form of checking for large datasets when &ldquo;copy&rdquo; is impractical.</li>
+<li>None – the models and datasets are passed back with no additional wrappers
+and they can be updated with the changes being made the underlying dataset.</li>
+</ul>
+<p>The default for a local <code>RDFConnection</code> is &ldquo;none&rdquo;. When used with TDB,
+accessing returned models must be done with <a href="../txn">transactions</a>
+in this mode.</p>
+<h2 id="query-usage">Query Usage</h2>
+<p><code>RDFConnection</code> provides methods for each of the SPARQL query forms (<code>SELECT</code>,
+<code>CONSTRUCT</code>, <code>DESCRIBE</code>, <code>ASK</code>) as well as a way to get the lower level
+<code>QueryExecution</code> for specialized configuration.</p>
+<p>When creating an <code>QueryExecution</code> explicitly, care should be taken to close
+it. If the application wishes to capture the result set from a SELECT query and
+retain it across the lifetime of the transaction or <code>QueryExecution</code>, then
+the application should create a copy which is not attached to any external system
+with <code>ResultSetFactory.copyResults</code>.</p>
+<pre><code>  try ( RDFConnection conn = RDFConnectionFactory.connect(&quot;foo&quot;) ) {
+      ResultSet safeCopy =
+          Txn.execReadReturn(conn, ()-&gt; {
+              // Process results by row:
+              conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;{
+                  Resource subject = qs.getResource(&quot;s&quot;) ;
+                  System.out.println(&quot;Subject: &quot;+subject) ;
+              }) ;
+              ResultSet rs = conn.query(&quot;SELECT * { ?s ?p ?o }&quot;).execSelect() ;
+              return ResultSetFactory.copyResults(rs) ;
+          }) ;
+  }
+</code></pre>
+<h2 id="update-usage">Update Usage</h2>
+<p>SPARQL Update operations can be performed and mixed with other operations.</p>
+<pre><code>  try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+      Txn.execWrite(conn, ()-&gt; {
+         conn.update(&quot;DELETE DATA { ... }&quot; ) ;
+         conn.load(&quot;data.ttl&quot;) ;
+         }) ;
+</code></pre>
+<h2 id="dataset-operations">Dataset operations</h2>
+<p>In addition to the SPARQL Graph Store Protocol, operations on whole
+datasets are provided for fetching (HTTP GET), adding data (HTTP POST) and
+setting the data (HTTP PUT) on a dataset URL.  This assumes the remote
+server supported these REST-style operations.  Apache Jena Fuseki does
+provide these.</p>
+<h2 id="subinterfaces">Subinterfaces</h2>
+<p>To help structure code, the <code>RDFConnection</code> consists of a number of
+different interfaces.  An <code>RDFConnection</code> can be passed to application code
+as one of these interfaces so that only certain subsets of the full
+operations are visible to the called code.</p>
+<ul>
+<li>query via <code>SparqlQueryConnection</code></li>
+<li>update via <code>SparqlUpdateConnection</code></li>
+<li>graph store protocol <code>RDFDatasetAccessConnection</code> (read operations),
+and <code>RDFDatasetConnection</code> (read and write operations).</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<ul>
+<li>for simple usage examples see <a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples"><a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a></a>.</li>
+<li>for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java"><a href="https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a></a>.</li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

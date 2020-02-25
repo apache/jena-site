@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Property Functions in ARQ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/library-propfunc.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Property Functions in ARQ</h1>
+            
+	<p>SPARQL allows custom property functions to add functionality to the
+triple matching process. Property functions can be
+<a href="extension.html">registered or dynamically loaded</a>.</p>
+<p>See also the <a href="text-query.html">free text search</a> page.</p>
+<p>See also the FILTER functions
+<a href="library-function.html">FILTER functions library</a>.</p>
+<p>Applications can also <a href="writing_propfuncs.html">provide their own property functions</a>.</p>
+<h2 id="property-function-library">Property Function Library</h2>
+<p>Prefix <code>apf:</code> which is <code>&lt;http://jena.hpl.hp.com/ARQ/property#&gt;</code>.</p>
+<p>Direct loading using a URI prefix of
+<code>&lt;java:org.apache.jena.sparql.pfunction.library.&gt;</code> (note the final
+dot) also works.</p>
+<p>The prefix <code>list:</code> is <code>http://jena.apache.org/ARQ/list#</code>.</p>
+<table>
+<tr><th>Property name</th><th>Description</th></tr>
+<tr><td>
+<i><code>list</code> </i><code>list:member</code> <i><code>member</code></i>
+</td><td>
+Membership of an RDF List (RDF Collection). If <i>list</i> is not bound
+or a constant, find and iterate all lists in the graph (can be
+slow) else evaluate for one particular list. If <i>member</i> a
+variable, generate solutions with <i>member</i> bound to each element in
+the list. If <i>member</i> is bound or a constant expression, test to
+see if a member of the list.
+</td></tr>
+<tr><td>
+<code><i>list </i>list:index <i>(index member)</i></code>
+</td><td>
+Index of an RDF List (RDF Collection). If <i>list</i> is not bound or a
+constant, find and iterate all lists in the graph (can be slow)
+else evaluate for one particular list. The object is a list pair,
+either element can be bound, unbound or a fixed node. Unbound
+variables in the object list are bound by the property function.
+</td></tr>
+<tr><td>
+<code><i>list </i>list:length <i>length</i></code>
+</td><td>
+Length of an RDF List (RDF Collection). If <i>list</i> is not bound or a
+constant, find and iterate all lists in the graph (can be slow)
+else evaluate for one particular list. The object is tested against
+or bound to the length of the list.
+</td></tr>
+<tr><td>
+<code><i>container </i>rdfs:member <i>member</i></code>
+</td><td>
+Membership of an RDF Container (rdf:Bag, rdf:Seq, rdf:Alt).
+Pre-registered URI. If this infers with queries running over a Jena
+inference model which also provides <code>rdfs:member</code>, then remove this
+from the global registry.
+<code>  PropertyFunctionRegistry.get().<br>       remove(RDFS.member.getURI()) ;</code>
+</td></tr>
+<tr><td>
+<code>apf:textMatch</code>
+</td><td>
+Free text match.
+</td></tr>
+<tr><td>
+<code><i>bag </i>apf:bag <i>member</i></code>
+</td><td>
+The argument <i>bag</i> must be bound by this point in the query or a
+constant expression. If <i>bag</i> is bound or a URI, and <i>member</i> a
+variable, generate solutions with <i>member</i> bound to each element in
+the bag. If <i>member</i> is bound or a constant expression, test to see
+if a member of the list.
+</td><tr>
+<tr><td>
+<code><i>seq</i> apf:seq <i>member</i></code>
+</td><td>
+The argument <i>seq</i> must be bound by this point in the query or a
+constant expression. If <i>seq</i> is bound or a URI, and <i>member</i> a
+variable, generate solutions with <i>member</i> bound to each element in
+the sequence. If <i>member</i> is bound or a constant expression, test
+to see if a member of the list.
+</td><tr>
+<tr><td>
+<code><i>seq</i> apf:alt <i>member</i></code>
+</td><td>
+The argument <i>alt</i> must be bound by this point in the query or a
+constant expression. If <i>alt</i> is bound or a URI, and <i>member</i> a
+variable, generate solutions with <i>member</i> bound to each element in
+the alt . If <i>member</i> is bound or a constant expression, test to
+see if a member of the list.
+</td><tr>
+<tr><td>
+<i><code>varOrTerm</code></i><code>apf:assign</code><i><code>varOrTerm</code></i>
+</td><td>
+Assign an RDF term from one side to the other.  If both are fixed
+RDF terms or bound variables, it becomes a boolean test that the
+subject is the same RDF term as the object.
+</td><tr>
+<tr><td>
+<i><code>iri</code></i><code>apf:splitIRI (<i>namespace</i> <i> localname</i>)</code><br />
+<i><code>iri</code></i><code>apf:splitURI (<i>namespace</i> <i> localname</i>)</code>
+</td><td>
+Split the IRI or URI into namespace (an IRI) and local name (a
+string). Compare if given values or bound variables, otherwise set
+the variable. The object is a list with 2 elements.
+<code>splitURI</code> is an synonym.
+</td><tr>
+<tr><td>
+<code><i>subject</i> apf:str <i>object</i></code>
+</td><td>
+The <i>subject</i> is the string form of the <i>object</i>, like the function
+str().
+<i>Object</i> must be bound or a constant. <i>Object</i> can not be a blank
+node (see <code>apf:blankNode</code>)
+</td><tr>
+<tr><td>
+   <code><i>subject</i> apf:blankNode <i>label</i><br/>
+   <code><i>subject</i> apf:bnode <i>label</i><br></td></code>
+</td><td>
+<i>Subject</i> must be bound to a blank node or a constant. <i>Label</i> is
+either a string, in which case test for whether this is the blank
+node label of <i>subject</i>, or it is a variable, which is assigned the
+blank node label as a plain string. Argument mismatch causes no
+match. Use with care.
+</td><tr>
+<tr><td>
+<code><i>subject</i> apf:versionARQ <i>version</i><br>             <br>  </code>
+</td><td>
+Set the <i>subject</i> to the IRI for ARQ and set the object to the
+version string (format "N.N.N" where N is a number). If any of the
+variables are already set, test for the correct value.
+</td><tr>
+<tr><td>
+<code><i>var</i> apf:concat <i>(arg arg ...)</i></code>
+</td><td>
+Concatenate the arguments in the object list as strings, and
+assign to <code><i>var</i></code>.
+</td><tr>
+<tr><td>
+<code><i>var</i> apf:strSplit <i>(arg arg)</i></code>
+</td><td>
+Split a string and return a binding for each result.  The subject variable should be unbound.  The first argument to the
+object list is the string to be split.  The second argument to the object list is a regular expression by which to split the string.
+The subject <code><i>var</i></code> is bound for each result of the split, and each result has the whitespace trimmed from it.
+</td><tr>
+</table>
+<p><a href="index.html">ARQ documentation index</a></p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

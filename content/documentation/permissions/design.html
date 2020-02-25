@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Permissions - Design</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/permissions/design.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Permissions - Design</h1>
+            
+	<p>Jena Permissions is designed to allow integrators to implement almost any security policy. Fundamentally it works by implementing dynamic proxies on top of the Jena Graph and Model interfaces as well as objects returned by those interfaces. The proxy verifies that the actions on those objects are permitted by the policy before allowing the actions to proceed.</p>
+<p>The graph or model is created by the <code>org.apache.jena.permissions.Factory</code> object by wrapping a Graph or Model implementation and associating it with a URI (<code>graphIRI</code>) and a SecurityEvaluator implementation. The <code>graphIRI</code> is the URI that will be used to identify the graph/model to the security evaluator.</p>
+<p>The SecurityEvaluator is an object implemented by the integrator to perform the necessary permission checks. A discussion of the SecurityEvaluator implementation can be found in the <a href="evaluator.html">Security Evaluator</a> documentation.</p>
+<p>Access to methods in secured objects are determined by the CRUD (Create, Read, Update and Delete) permissions assigned to the user.</p>
+<p>The system is designed to allow shallow (graph/model level) or deep (triple/statement level) decisions.</p>
+<p>When a secured method is called the system performs the following checks in order:</p>
+<ul>
+<li>
+<p>Determines if the user has proper access to the underlying graph/model. Generally the required permission is Update (for add or delete methods), or Read.</p>
+</li>
+<li>
+<p>If the user has access to the graph/model determine if the user has permission to execute the method against <strong>all</strong> triples/statements in the graph/model. This is performed by calling <code>SecurityEvaluator.evaluate(principal, action, graphIRI, Triple.ANY)</code>. If the evaluator returns <code>true</code> then the action is permitted. This is general case for shallow permission systems. For deep permissions systems <code>false</code> may be returned.</p>
+</li>
+<li>
+<p>if the user does not have permission to execute the method against <strong>all</strong> triples/statements the <code>SecurityEvaluator.evaluate(principal, action, graphIRI, triple)</code> method is called with the specific triple (note special cases below). If the evaluator returns <code>true</code> the action is permitted, otherwise a properly detailed PermissionDeniedException is thrown.</p>
+</li>
+</ul>
+<h1 id="special-cases">Special Cases</h1>
+<h2 id="securityevaluatorfuture">SecurityEvaluator.FUTURE</h2>
+<p>There are a couple of special cases where the Node/Resource is not known when the permission check is made. An example is the creation of a RDF List object. For example to create an empty list the following triple/statement must be constructed:</p>
+<pre><code>_:b1 rdf:first rdf:nil .
+</code></pre>
+<p>However, the permissions system can not know the value of <code>_:b1</code> until after the triple/statement is constructed and added to the graph/model. To handle this situation the permissions system asks the evaluator to evaluate the triple: <code>(SecurityEvaluator.FUTURE, RDF.first, RDF.nill)</code> Similar situations are found when adding to a list, creating reified statements, RDF alt objects, RDF sequences, or RDF anonymous resources of a specific type.</p>
+<h2 id="securityevaluatorvariable">SecurityEvaluator.VARIABLE</h2>
+<p>The <code>Node.ANY</code> node is used to identify the case where any node may be returned. Specifically it asks if the user can perform the action on <strong>All</strong> the nodes in this position in the triple. For example:</p>
+<pre><code> Node.ANY RDF:type FOAF:Person
+</code></pre>
+<p>Asks if the operation can be performed on all of the nodes of type FOAF:Person.</p>
+<p>The <code>SecurityEvaluator.VARIABLE</code> differs from <code>Node.ANY</code> in that the system is asking if there are any prohibitions, and not if the user may perform. Thus queries with the <code>VARIABLE</code> type node should return <code>true</code> where <code>ANY</code>
+returns <code>false</code>. In general this type is used in query evaluation to determine if triple level filtering of results must be performed. Thus:</p>
+<pre><code> SecurityEvaluator.VARIABLE RDF:type FOAF:Person
+</code></pre>
+<p>Asks if there are any restrictions against the user performing the action against all triples of type FOAF:Person. The assumption is that checking for restrictions may be a faster check than checking for all access. Note that by returning <code>true</code> the permissions system will check each explicit triple for access permissions. So if the system can not determine if there are access restrictions it is safe to return <code>true</code>.</p>
+<h1 id="objects-returned-from-secured-objects">Objects Returned from Secured Objects</h1>
+<p>Models and Graphs often return objects from methods. For example the <code>model.createStatement()</code> returns a <code>Statement</code> object. That object holds a reference to the model and performs operations against the model (for example <code>Statement.changeLiteralObject()</code>). Since permissions provides a dynamic wrapper around the base model to create the secured model, returning the model <code>Statement</code> would return an object that no longer has any permissions applied. Therefore the permissions system creates a <code>SecuredStatement</code> that applies permission checks to all operations before calling the base <code>Statement</code> methods.</p>
+<p>All secured objects return secured objects if those objects may read or alter the underlying graph/model.</p>
+<p>All secured objects are defined as interfaces and are returned as dynamic proxies.</p>
+<p>All secured objects have concrete implementations. These implementations must remain concrete to ensure that we handle all cases where returned objects may alter the underlying graph/model.</p>
+<h2 id="secured-listeners">Secured Listeners</h2>
+<p>Both the Graph and the Model interfaces provide a listener framework. Listeners are attached to the graph/model and changes to the graph/model are reported to them. In order to ensure that listeners do not leak information, the principal that was active when the listener was attached is preserved in a <code>CachedSecurityEvaluator</code> instance. This security evaluator implementation, wraps the original implementation and retains the current user. Thus when the listener performs the permission checks the original user is used not the current user. This is why the SecurityEvaluator <strong>must</strong> use the <code>principal</code> parameters and not call <code>getPrincipal()</code> directly during evaluation calls.</p>
+<h1 id="proxy-implementation">Proxy Implementation</h1>
+<p>The proxy implementation uses a reflection <code>InvocationHandler</code> strategy. This strategy results in a proxy that implements all the interfaces of the original object. The original object along with its <code>InvocationHandler</code> instance are kept together in an <code>ItemHolder</code> instance variable in the secured instance. When the invoker is called it determines if the called method is on the secured interface or not. If the method is on the secured interface the invocation handler method is called, otherwise the method on the base class is called.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

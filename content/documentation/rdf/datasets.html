@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - In-memory, transactional Dataset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/rdf/datasets.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">In-memory, transactional Dataset</h1>
+            
+	<p>The in-memory, transactional dataset provides a dataset with full ACID
+transaction semantics, including abort. It provides for multiple
+readers and a concurrent writer together with full snapshot isolation of
+the dataset.  Readers see an unchanging, consistent dataset where aggregate
+operations return stable results.</p>
+<p>First introduced in Jena version 3.0.1 as a beta, then in 3.1.0.</p>
+<p>During the beta phase, please log any issues with <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20JENA%20ORDER%20BY%20key%20DESC%2C%20priority%20DESC">Apache Jena JIRA</a>.</p>
+<h3 id="api-use">API use</h3>
+<p>A new instance of the class is obtained by a call to <code>DatasetFactory.createTxnMem()</code>:</p>
+<pre><code>Dataset ds = DatasetFactory.createTxnMem() ;
+</code></pre>
+<p>This can then be used by the application for reading:</p>
+<pre><code>Dataset ds = DatasetFactory.createTxnMem() ;
+ds.begin(ReadWrite.READ) ;
+try {
+   ... SPARQL query ...
+} finally { ds.end() ; }
+</code></pre>
+<p>or writing:</p>
+<pre><code>Dataset ds = DatasetFactory.createTxnMem() ;
+ds.begin(ReadWrite.WRITE) ;
+try {
+   ... SPARQL update ...
+   ... SPARQL query ...
+   ... SPARQL update ...
+   ds.commit() ;
+} finally { ds.end() ; }
+</code></pre>
+<p>If the application does not call <code>commit()</code>, the transaction aborts and the
+changes are lost. The same happens if the application throws an exception.</p>
+<h3 id="non-transactional-use">Non-transactional use.</h3>
+<p>If used outside of a transaction, the implementation provides &ldquo;auto-commit&rdquo;
+functionality. Each triple or added or deleted is done inside an implicit
+transaction. This have a measurable performance impact. It is better to do
+related operations inside a single transaction explicitly in the
+application code.</p>
+<h3 id="assembler-use">Assembler Use</h3>
+<p>The assembler provides for the creation of a dataset and also loading it
+with data read from URLs (files or from any other URL).</p>
+<ul>
+<li>Type: <code>ja:MemoryDataset</code></li>
+<li>Properties:
+<ul>
+<li><code>ja:data</code> <i><code>urlForData</code></i></li>
+<li><code>ja:namedGraph</code>, for loading a specific graph of the dataset.
+This uses <code>ja:graphName</code> to specific the name and <code>ja:data</code> to load data.</li>
+</ul>
+</li>
+</ul>
+<p>The examples use the following prefixes:</p>
+<pre><code>@prefix ja:     &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
+@prefix rdf:    &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+</code></pre>
+<p>To create an empty in-memory dataset, all that is required is the line:</p>
+<pre><code>[] rdf:type ja:MemoryDataset .
+</code></pre>
+<p>With triples for the default graph, from file <code>dataFile.ttl</code>, Turtle format:</p>
+<pre><code>[] rdf:type ja:MemoryDataset ;
+    ja:data &lt;file:dataFile.ttl&gt; .
+</code></pre>
+<p>With triples from several files:</p>
+<pre><code>[] rdf:type ja:MemoryDataset ;
+    ja:data &lt;file:data1.ttl&gt; ;
+    ja:data &lt;file:data2.nt&gt; ;
+    ja:data &lt;file:data3.jsonld&gt; ;
+    .
+</code></pre>
+<p>Load TriG:</p>
+<pre><code>[] rdf:type ja:MemoryDataset ;
+    ja:data &lt;file:data.trig&gt; .
+</code></pre>
+<p>Load a file of triples into a named graph:</p>
+<pre><code>[] rdf:type ja:MemoryDataset ;
+    ja:namedGraph [ ja:graphName &lt;http://example/graph&gt; ; ja:data &lt;file:///fullPath/data.ttl&gt; ] .
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

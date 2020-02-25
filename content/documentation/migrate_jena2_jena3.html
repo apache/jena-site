@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Migrating from Jena2 to Jena3</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/migrate_jena2_jena3.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Migrating from Jena2 to Jena3</h1>
+            
+	<p>Apache Jena3 is a major version release for Jena - it is not binary compatible with
+Jena2. The migration consists of package renaming and database reloading.</p>
+<h2 id="key-changes">Key Changes</h2>
+<ul>
+<li><a href="#packaging">Package renaming</a></li>
+<li><a href="#rdf11-plain-literals">RDF 1.1 Semantics for plain literals</a></li>
+<li><a href="#persistent-data">Persistent data (TDB, SDB) should be reloaded.</a></li>
+<li>Java8 is required.</li>
+<li><a href="#permissions-changes">Security renamed to Permissions. Security Evaluator changes required</a></li>
+</ul>
+<h2 id="packaging">Package Name Changes</h2>
+<p>Packages with a base name of <code>com.hp.hpl.jena</code> become <code>org.apache.jena</code>.</p>
+<p>Global replacement of <code>import com.hp.hpl.jena.</code> with <code>import org.apache.jena.</code> will cover the majority of cases.</p>
+<p>The Jena APIs remain unchanged expect for this renaming.</p>
+<h3 id="vocabularies-unchanged">Vocabularies unchanged</h3>
+<p>Only java package names are being changed.  Vocabularies are not affected.</p>
+<h3 id="assemblers">Assemblers</h3>
+<p>Migration support is provided by mapping <code>ja:loadClass</code> names beginning
+<code>com.hp.hpl.jena</code> internally to <code>org.apache.jena</code>. A warning is logged.</p>
+<h3 id="logging">Logging</h3>
+<p>This will also affect logging: logger names reflect the java class naming
+so loggers for <code>com.hp.hpl.jena</code> become <code>org.apache.jena</code></p>
+<h2 id="rdf-11">RDF 1.1</h2>
+<p>Many of the changes and refinements for RDF 1.1 are already in Jena2. The
+parsers for Turtle-family languages already follow the RDF 1.1 grammars
+and output is compatible with RDF 1.1 as well as earlier output details.</p>
+<h3 id="rdf11-plain-literals">RDF 1.1 changes for plain literals</h3>
+<p>In RDF 1.1, all literals have a datatype.  The datatype of a plain
+literal with no language tag (also called a &ldquo;simple literal&rdquo;) has datatype
+<code>xsd:string</code>.  A plain literal with a language tag has datatype
+<code>rdf:langString</code>.</p>
+<p>Consequences:</p>
+<p><code>&quot;abc&quot;</code> and <code>&quot;abc&quot;^^xsd:string</code> are the same RDF term in RDF 1.1.  Jena2
+memory models have always treated these as the same value, but different
+terms. Jena2 persistent models treated them as two separate term and two
+separate values.</p>
+<p>Data is not invalidated by this change.</p>
+<ul>
+<li>
+<p>The parsers will give datatypes to all data read, there is no need to
+change the data.</p>
+</li>
+<li>
+<p>Output is in the datatype-less form (an abbreviated syntax) even in
+N-triples.</p>
+</li>
+<li>
+<p>Applications which explicitly use <code>^^xsd:string</code> (or in RDF/XML,
+<code>rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#string&quot;</code>) will see a change
+in appearance.</p>
+</li>
+<li>
+<p>Applications with a mix of plain literals and explicit <code>^^xsd:string</code>
+(the RDF 1.1 Work Group believed these to be uncommon) may see changes.</p>
+</li>
+<li>
+<p>Applications that do their own RDF output need to be careful to not assume
+that having datatype excludes the possibility of also having a language tag.</p>
+</li>
+</ul>
+<h2 id="persistent-data">Persistent Data</h2>
+<p>For data stored in <a href="tdb/">TDB</a> and <a href="sdb/">SDB</a>, it is advisable to reload data.</p>
+<p>Data that does not use explicit <code>xsd:string</code> should be safe but it is still
+recommended that data is reloaded at a convenient time.</p>
+<p>Data that does use explicit <code>xsd:string</code> must be reloaded.</p>
+<h2 id="permissions-changes">Security package renamed to Permissions</h2>
+<p>Jena Security has been renamed Jena Permissions and the Maven
+<em>artifact id</em> has been changed to <em>jena-permissions</em> to reflect this change.</p>
+<p>Shim code that was introduced to map Jena classes to security classes
+has been removed.  This change requires changes to <code>SecurityEvaluator</code>
+implementations.  More details are available at the
+<a href="permissions/migration2To3.html">Permissions
+migration documentation</a>.</p>
+<h2 id="other">Other</h2>
+<ul>
+<li><code>GraphStore</code> interface has been removed</li>
+<li><code>ModelFactory.createFileModelMaker</code> has been removed</li>
+<li><code>LateBindingIterator</code> has been removed: use <code>LazyIterator</code> instead</li>
+<li><code>EarlyBindingIterator</code> has been removed: no replacement</li>
+<li><code>UniqueExtendedIterator</code> has been removed: use <code>ExtendedIterator</code> with unique filter</li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

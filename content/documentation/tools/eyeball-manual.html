@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Eyeball manual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/tools/eyeball-manual.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Eyeball manual</h1>
+            
+	<p><b>This page is historical &ldquo;for information only&rdquo; - there is no Apache
+release of Eyeball and the code has not been updated for Jena3.<br>
+<br/>
+The <a href="https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/">original source code is available</a>.
+</b></p>
+<p>This document describes Eyeball, an
+&ldquo;<a href="http://www.w3.org/RDF/">RDF</a>
+<a href="http://en.wikipedia.org/wiki/Lint_programming_tool">lint</a>&quot;.
+See
+the release notes for descriptions of changes
+from previous versions. Eyeball was a part of the
+<a href="/">Jena</a> family of RDF/OWL tools.</p>
+<p>Throughout this document, the prefix <code>eye:</code> stands for the URL
+<code>http://jena.hpl.hp.com/Eyeball\#</code>.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Eyeball is a library and command-line tool for checking RDF and OWL
+models for various common problems. These problems often result in
+technically correct but implausible RDF. Eyeball checks against
+user-provided schema files and makes various closed-world
+assumptions.</p>
+<p>Eyeball can check for:</p>
+<ul>
+<li>unknown [with respect to the schemas] properties and classes</li>
+<li>bad prefix namespaces</li>
+<li>ill-formed URIs, with user-specifiable constraints</li>
+<li>ill-formed language tags on literals</li>
+<li>datatyped literals with illegal lexical forms</li>
+<li>unexpected local names in schema namespaces</li>
+<li>untyped resources and literals</li>
+<li>individuals having consistent types, assuming complete typing</li>
+<li>likely cardinality violations</li>
+<li>broken RDF list structures</li>
+<li>suspected broken use of the typed list idiom</li>
+<li>obviously broken OWL restrictions</li>
+<li>user-specified constraints written in SPARQL</li>
+</ul>
+<p>Eyeball&rsquo;s checks are performed by Inspector plug-ins and can be
+customised by the user. Rendering its reports to output is
+performed by Renderer plug-ins which can also be customised by the
+user.</p>
+<h2 id="installation">Installation</h2>
+<p>Fetch the Eyeball distribution zipfile and unpack it somewhere
+convenient. Eyeball 2.1 comes with its own copy of Jena 2.5 with CVS updates.
+Do <em>not</em> attempt to use other versions of Jena with Eyeball.</p>
+<p>In the Eyeball distribution directory, run the Eyeball tests:</p>
+<pre><code>ant test
+</code></pre>
+<p>If these tests fail, something is wrong. Please ask on the user
+mailing list or file a Jira issue.</p>
+<p>If the tests have passed, you can use Eyeball from the installation
+directory, or copy <em>lib</em>, <em>etc</em> and <em>mirror</em> to somewhere
+convenient.</p>
+<h2 id="command-line-operation">Command line operation</h2>
+<p>You must ensure that <em>all</em> the Eyeball jars from <em>lib</em> are on your
+classpath. (Note that Eyeball comes with its own Jena jar files and
+<em>may not work</em> with other Jena jars.) The directories <em>etc</em> and
+<em>mirror</em> should be in the current directory or also on your
+classpath.</p>
+<p>Run the Eyeball command:</p>
+<pre><code>java [java options eg classpath and proxy] jena.eyeball
+    (-check | -sign | -accept) specialURL+
+    [-assume Reference*]
+    [-config fileOrURL*]
+    [-set Setting*]
+    [-root rootURI]
+    [-render Name]
+    [-include shortName*]
+    [-exclude shortName*]
+    [-analyse | -repair]
+    [-remark] [-version]
+</code></pre>
+<p>The -<em>whatever</em> sections can come in any order and may be repeated,
+in which case the additional arguments are appended to the existing
+ones. Exactly one of <em>-check</em>, <em>-sign</em>, <em>-accept</em>, or <em>version</em>
+must be provided; all the other options are optional.</p>
+<p>When Eyeball resolves ordinary filenames or URLs it uses the Jena
+file manager to possibly map those names (<em>eg</em> to redirect an
+<code>http:</code> URL to a local cached copy). See the
+<a href="../notes/file-manager.html">file manager howto</a>
+for details on how to configure the file manager.</p>
+<h3 id="examples-of-command-line-use">Examples of command-line use</h3>
+<pre><code>java jena.eyeball -version
+
+java jena.eyeball -check myDataFile.rdf
+
+java jena.eyeball -assume dc -check http://example.com/nosuch.n3
+
+java jena.eyeball -assume mySchema.rdf -check myData.rdf -render xml
+
+java jena.eyeball -check myData.rdf -include consistent-type
+
+java jena.eyeball -check myConfig.ttl -sign &gt;signedConfig.ttl
+</code></pre>
+<h3 id="-check-specialurl">-check specialURL+</h3>
+<p>The <em>-check</em> command checks the specified models for problems. The
+<em>specialURL</em>s designate the models to be checked. In the simplest
+case, these are plain filenames, <code>file:</code> URLs, or <code>http:</code> URLs. At
+least one <em>specialURL</em> must be specified. Each specified model is
+checked independently of the others.</p>
+<pre><code>-check myModel.ttl
+-check file:///c:/rdf/pizza.owl
+-check http://example.com/rdf/beer.rdf
+</code></pre>
+<p>If the <em>specialURL</em> is of the form <em>ont:NAME:base</em>, then the
+checked model is the model <em>base</em> treated as an OntModel with the
+specification <code>OntModelSpec.&lt;i&gt;NAME&lt;/i&gt;</code>; see
+<a href="../ontology/index.html">the Jena ontology documentation</a>
+for the available names.</p>
+<pre><code>-check ont:OWL_MEM_RDFS_INF:myModel.ttl
+-check ont:OWL_DL_MEM_RULE_INF:http://example.com/rdf/beer.rdf
+</code></pre>
+<p>If the <em>specialURL</em> is of the form <em>ja:R@AF</em>, then the model is
+that described by the resource <em>R</em> in the Jena
+<a href="../assembler/index.html">assembler</a>
+description file <em>AF</em>. <em>R</em> is prefix-expanded using the prefixes in
+<em>AF</em>.</p>
+<pre><code>-check ja:my:root@my-assembly.ttl
+-check ont:OWL_MEM_RDFS_INF:my:root@my-assembly.ttl
+</code></pre>
+<p>If the URL (or the base) is of the form <em>jdbc:DB:head:model</em>, then
+the checked model is the one called <em>model</em> in the database with
+connection <em>jdbc:DB:head</em>. (The database user and password must be
+specified independently using the <em>jena.db.user</em> and
+<em>jena.db.password</em> system properties.)</p>
+<pre><code>-check jdbc:mysql://localhost/test:example
+</code></pre>
+<h3 id="-config-fileorurl-and--root-rooturi">-config fileOrURL and -root rootURI</h3>
+<p>The <em>-config fileOrURL</em> options specify the Eyeball
+<a href="../assembler/index.html">assembler</a>
+configuration files to load. A single configuration model is
+constructed as the union of the contents of those files. If this
+option is omitted, the default configuration file
+<em>etc/eyeball-config.n3</em> is loaded. See
+<a href="#inside-configuration">inside the Eyeball configuration file</a> for
+details of the configuration file.</p>
+<pre><code>-config my-hacked-config-file.n3
+-config etc/eyeball-config.n3 extras.ttl
+</code></pre>
+<p>The <em>-root rootURI</em> option specifies the root resource in the
+Eyeball configuration. If this option is omitted, <em>eye:eyeball</em> is
+used by default. <em>rootURI</em> is prefix-expanded using the prefixes in
+the configuration file.</p>
+<pre><code>-root my:root
+-root my:sparse-config
+-root urn:x-hp:eyeball-roots:special
+</code></pre>
+<h3 id="-set-setting">-set Setting*</h3>
+<p>The <em>-set</em> option allows command-line tweaks to the configuration,
+<em>eg</em> for enabling checking URIs for empty local names.
+<em>You will rarely need to use this</em>; it is presented here because of
+its association with the <code>-config</code> and <code>-root</code> options.</p>
+<p>Each <em>Setting</em> has the form <code>S.P=O</code> and adds the statement
+<code>(S' P' O')</code> to the configuration.</p>
+<p>The current Eyeball converts the components of the <code>S.P=O</code> string
+into RDF nodes <code>S'</code>, <code>P'</code>, <code>O'</code> using some special rules:</p>
+<ul>
+<li>A component starting with a digit is treated as an xsd:integer
+literal (and hence should only appear as the object of the
+setting).</li>
+<li>A component starting with a quote, either <code>&quot;</code> or <code>'</code>, is
+treated as a literal whose lexical form extends to the matching
+closing quote. Note: (a)
+<em>literals with embedded spaces are not supported</em>; (b) your
+command-line interpreter may treat quotes specially, and to allow
+the quotes to pass through to Eyeball, you&rsquo;ll have to use another
+(different) pair of quotes!</li>
+<li>A component starting with <code>_</code> is treated as a blank node with
+that label.</li>
+<li>Otherwise, the component is treated as a URI reference. If it
+starts with a prefix (<em>eg</em>, <code>rdf:</code>) that prefix is expanded using
+the prefixes of the configuration file. If it has no prefix, it is
+as though the empty prefix was specified: in the default
+configuration file, that is set to the Eyeball namespace, so it is
+as though the prefix <code>eye:</code> had been used.</li>
+</ul>
+<p>For example, to enable the URI inspectors non-default reporting of
+URIs with empty local names, use:</p>
+<pre><code>-set URIInspector.reportEmptyLocalNames=&quot;'true'&quot;
+</code></pre>
+<p>Note the nested different quotes required to pass &lsquo;true&rsquo; to Eyeball
+so that it can interpret this as a literal.</p>
+<h3 id="-include-exclude-shortnames">-include/-exclude shortNames</h3>
+<p>The various Eyeball inspectors are given <em>short names</em> in the
+configuration file. By default, an Eyeball check uses a specific
+set of inspectors with short name <em>defaultInspectors</em>. Additional
+inspectors can be enabled using the <em>-include</em> option, and default
+inspectors can be disabled using the <em>-exclude</em> option. See below
+for the available inspectors and their short names, and see
+<a href="#inspectors-configuration">inspectors configuration</a> for how to
+configure inspectors.</p>
+<pre><code>-include list all-typed
+-exclude cardinality
+-include owl -exclude consistent-type
+</code></pre>
+<h3 id="-assume-reference">-assume Reference</h3>
+<p>The -assume <em>Reference</em>s identifies any assumed schemas used to
+specify the predicates and classes of the data model. The reference
+may be a file name or a URL (and may be mapped by the file
+manager).</p>
+<p>Eyeball automatically assumes the RDF and RDFS schemas, and the
+built-in XSD datatype classes. The short name <em>owl</em> can be used to
+refer to the OWL schema, <em>dc</em> to the Dublin Core schema, <em>dcterms</em>
+to the Dublin Core terms schema, and <em>dc-all</em> to both.</p>
+<pre><code>-assume owl
+-assume owl dc-all
+-assume owl my-ontology.owl
+</code></pre>
+<h3 id="-sign-and--accept-experimental">-sign and -accept (experimental)</h3>
+<p>If <em>-sign</em> is specified, Eyeball first does a <em>-check</em>. If no
+problem reports are generated, Eyeball writes a <em>signed</em> version of
+the current model to the standard output. The signature records the
+Eyeball configuration used and a weak hash of the model. If the
+input model is already signed, that signature is discarded before
+computing the new signature and writing the output.</p>
+<p>If <em>-accept</em> is specified, the model is checked for its signature.
+If it is not signed, or if the signature does not match the content
+of the model &ndash; either the hash fails, or the recorded
+configuration is not sufficient &ndash; a problem is reported; otherwise
+not.</p>
+<p>The intended use of <em>-sign</em> and <em>-accept</em> is that an application
+can require signed models which have passed some minimum set of
+inspections. The application code can then rely on the model having
+the desired properties, without having to run potentially expensive
+validation checks every time a model is loaded.</p>
+<p><em>Important</em>. Model signing is intended to catch careless mistakes,
+not for security against malicious users.</p>
+<h3 id="-version">-version</h3>
+<p>Eyeball will print its version on the standard error stream
+(currently &ldquo;<em>Eyeball 2.1 (Nova Embers)</em>&quot;).</p>
+<h3 id="-remark">-remark</h3>
+<p>Normally Eyeball issues its report or signed model to the standard
+output and exits with code 0 (success) or 1 (failure) with no
+additional output. Specifying <em>-remark</em> causes it to report
+<em>success</em> or <em>some problems reported</em> to standard error.</p>
+<h3 id="-repair-and--analyse-experimental">-repair and -analyse (experimental)</h3>
+<p>These operations are not currently documented. Try them at your
+peril: <em>-repair</em> may attempt to update your models.</p>
+<h3 id="-render-name">-render Name</h3>
+<p>The eyeball reports are written to the standard output; by default,
+the reports appear as text (RDF rendered by omitting the subjects -
+which are all blank nodes - and lightly prettifying the predicate
+and object). To change the rendering style, supply the <em>-render</em>
+option with the name of the renderer as its value. Eyeball comes
+with N3, XML, and text renderers; the Eyeball config file
+associates renderer names with their classes.</p>
+<pre><code>-render n3
+-render rdf
+</code></pre>
+<h3 id="setting-the-proxy">setting the proxy</h3>
+<p>If any of the data or schema are identified by an http: URL, and
+you are behind a firewall, you will need specify the proxy to Java
+using system properties; one way to do this is by using the Java
+command line options:</p>
+<pre><code>    -DproxySet=true
+    -DproxyHost=theProxyHostName
+    -DproxyPort=theProxyPortNumber
+</code></pre>
+<h2 id="inspectors-shipped-with-eyeball">Inspectors shipped with Eyeball</h2>
+<p>Eyeball comes with a collection of inspectors that do relatively
+simple checks.</p>
+<h3 id="propertyinspector-short-name-property">PropertyInspector (short name: &ldquo;property&rdquo;)</h3>
+<p>Checks that every predicate that appears in the model is declared
+in some <em>-assume</em>d schema or <code>owl:import</code>ed model &ndash; that is, is
+given <code>rdf:type</code> <code>rdf:Property</code> or some subclass of it.</p>
+<h3 id="classinspector-short-name-presumed-class">ClassInspector (short name: &ldquo;presumed-class&rdquo;)</h3>
+<p>Checks that every resource in the model that is used as a class,
+<em>ie</em> that appears as the object of an <code>rdf:type</code>, <code>rdfs:domain</code>, or
+<code>rdfs:range</code> statement, or as the subject or object of an
+<code>rdfs:subClassOf</code> statement, has been declared as a <code>Class</code> in the
+<em>-assume</em>d schemas or in the model under test.</p>
+<h3 id="uriinspector-short-name-uri">URIInspector (short name: &ldquo;URI&rdquo;)</h3>
+<p>Checks that every URI in the model is well-formed according to the
+rules of the Jena IRI library. May apply additional rules specified
+in the configuration file: see
+<a href="#uri-configuration">uri configuration</a> later for details.</p>
+<h3 id="literalinspector-short-name-literal">LiteralInspector (short name: &ldquo;literal&rdquo;)</h3>
+<p>Checks literals for syntactically correct language codes,
+syntactically correct datatype URIs (using the same rules as the
+URIInspector), and conformance of the lexical form of typed
+literals to their datatype.</p>
+<h3 id="prefixinspector-short-name-prefix">PrefixInspector (short name: &ldquo;prefix&rdquo;)</h3>
+<p>The PrefixInspector checks that the prefix declarations of the
+model have namespaces that are valid URIs and that if the prefix
+name is &ldquo;well-known&rdquo; (<code>rdf</code>, <code>rdfs</code>, <code>owl</code>, <code>xsd</code>, and <code>dc</code>) then
+the associated URI is the one usually associated with the prefix.</p>
+<p>The PrefixInspector also reports a problem if any prefix looks like
+an Jena automatically-generated prefix, <code>j.&lt;i&gt;Number&lt;/i&gt;</code>. (Jena
+generates these prefixes when writing RDF/XML if the XML
+syntactically requires a prefix but the model hasn&rsquo;t defined one.)</p>
+<h3 id="vocabularyinspector-short-name-vocabulary">VocabularyInspector (short name: &ldquo;vocabulary&rdquo;)</h3>
+<p>Checks that every URI in the model with a namespace which is
+mentioned in some schema is one of the URIs declared for that
+namespace &ndash; that is, it assumes that the schemas define a closed
+set of URIs.</p>
+<p>The inspector may be configured to suppress this check for
+specified namespaces: see
+<a href="#configure-vocabulary">vocabulary configuration</a> later.</p>
+<h3 id="owlsyntaxinspector-short-name-owl">OwlSyntaxInspector (short name: &ldquo;owl&rdquo;)</h3>
+<p>This inspector looks for &ldquo;suspicious restrictions&rdquo; which have some
+of the OWL restriction properties but not exactly one
+owl:onProperty and exactly one constraint (owl:allValuesFrom,
+etc).</p>
+<h3 id="sparqldriveninspector-short-name-sparql">SparqlDrivenInspector (short name: &ldquo;sparql&rdquo;)</h3>
+<p>The SparqlDrivenInspector is configured according to
+<a href="#sparql-driven">configuring the SPARQL-driven inspector</a>, and
+applies arbitrary SPARQL queries to the model. The queries can be
+required to match or prohibited from matching; a problem is
+reported if the constraint fails.</p>
+<h3 id="alltypedinspector-short-name-all-typed">AllTypedInspector (short name: &ldquo;all-typed&rdquo;)</h3>
+<p>Checks that all URI and bnode resources in the model have an
+rdf:type property in the model or the schema(s). If there is a
+statement in the configuration with property <code>eye:checkLiteralTypes</code>
+and value <code>eye:true</code>, also checks that every literal has a type or
+a language. <em>Not</em> in the default set of inspectors.</p>
+<h3 id="consistenttypeinspector-short-name-consistent-type">ConsistentTypeInspector (short name: &ldquo;consistent-type&rdquo;)</h3>
+<p>Checks that every subject in the model can be given a type which is
+the intersection of the subclasses of all its &ldquo;attached&rdquo; types &ndash; a
+&ldquo;consistent type&rdquo;.</p>
+<p>For example, if the model contains three types <code>Top</code>, <code>Left</code>, and
+<code>Right</code>, with <code>Left</code> and <code>Right</code> both being subtypes of <code>Top</code> and
+with no other subclass statements, then some <code>S</code> with <code>rdf:type</code>s
+<code>Left</code> and <code>Right</code> would generate this warning.</p>
+<h3 id="cardinalityinspector-short-name-cardinality">CardinalityInspector (short name: &ldquo;cardinality&rdquo;)</h3>
+<p>Looks for classes <em>C</em> that are subclasses of cardinality
+restrictions on some property <em>P</em> with cardinality range <em>min</em> to
+<em>max</em>. For any <em>X</em> of <code>rdf:type</code> <em>C</em>, it checks that the number of
+values of <em>P</em> is in the range <em>min..max</em> and generates a report if
+it isn&rsquo;t.</p>
+<p>Literals are counted as distinct if their values (not just their
+lexical form) are distinct. Resources are counted as distinct if
+they have different case-sensitive URIs: the CardinalityInspector
+takes no account of <code>owl:sameAs</code> statements.</p>
+<h3 id="listinspector-short-name-list">ListInspector (short name: &ldquo;list&rdquo;)</h3>
+<p>The ListInspector performs two separate checks:</p>
+<ul>
+<li>looks for lists that are ill-formed by having multiple or
+missing rdf:first or rdf:rest properties on their elements.</li>
+<li>looks for possible mis-uses of the &ldquo;typed list&rdquo; idiom, and
+reports the types so defined.</li>
+</ul>
+<p>The <em>typed list idiom</em> is boilerplate OWL for defining a type which
+is List-of-T for some type T. It takes the form:</p>
+<pre><code>my:EList a owl:Class
+    ; rdfs:subClassOf rdf:List
+    ; rdfs:subClassOf [owl:onProperty rdf:first; owl:allValuesFrom my:Element]
+    ; rdfs:subClassOf [owl:onProperty rdf:rest; owl:allValuesFrom my:EList]
+    .
+</code></pre>
+<p>The type <code>my:Element</code> is the element type of the list, and the type
+<code>EList</code> is the resulting typed list. The list inspector checks that
+all the subclasses of <code>rdf:List</code> (such as <em>EList</em> above) that are
+also subclasses of any bnode (such as the two other superclasses of
+*EList)*that has any property (<em>eg</em>, <em>owl:onProperty</em>) that has as
+an object either <code>rdf:first</code> or <code>rdf:rest</code> is a subclass defined by
+the full idiom above: if not, it reports it as a
+<code>suspectListIdiom</code>.</p>
+<h2 id="eyeball-problem-reports">Eyeball problem reports</h2>
+<p>Eyeball generates its reports as <em>items</em> in a model. Each item has
+<code>rdf:type</code> <code>eye:Item</code>, and its other properties determine what
+problem report it is. The default text renderer displays a
+prettified form of each item; use <em>-render n3</em> to expose the
+complete report structure.</p>
+<p>One of the item&rsquo;s properties is its <em>main property</em>, which
+identifies the problem; the others are qualifications supplying
+additional detail.</p>
+<h3 id="propertyinspector-predicate-not-declared">PropertyInspector: predicate not declared</h3>
+<pre><code>[] eye:unknownPredicate &quot;*URIString*&quot;.
+</code></pre>
+<p>The predicate with the given URI is not defined in any of the
+<em>-assumed</em> schemas.</p>
+<h3 id="classinspector-class-not-declared">ClassInspector: class not declared</h3>
+<pre><code>[] eye:unknownClass &quot;*URIString*&quot;.
+</code></pre>
+<p>The resource with the given URI is used as a Class, but not defined
+in any of the <em>-assumed</em> schemas.</p>
+<h3 id="uriinspector-bad-uri">URIInspector: bad URI</h3>
+<pre><code>[] eye:badURI &quot;*URIString*&quot;; eye:forReason *Reason*.
+</code></pre>
+<p>The <em>URIString</em> isn&rsquo;t legal as a URI, or is legal but fails a
+user-specified spelling constraint. <em>Reason</em> is a resource or
+string identifying the reason.</p>
+<table>
+<thead>
+<tr>
+<th>reason</th>
+<th>explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eye:uriContainsSpaces</td>
+<td>the URI contains unencoded spaces, probably as a result of sloppy use of file: URLs.</td>
+</tr>
+<tr>
+<td>eye:uriFileInappropriate</td>
+<td>a URI used as a namespace is a file: URI, which is inappropriate as a global identifier.</td>
+</tr>
+<tr>
+<td>eye:uriHasNoScheme</td>
+<td>a URI has no scheme field, probably a misused relative URI.</td>
+</tr>
+<tr>
+<td>eye:schemeShouldBeLowercase</td>
+<td>the scheme part of a URI is not lower-case; while technically correct, this is not usual practice.</td>
+</tr>
+<tr>
+<td>eye:uriFailsPattern</td>
+<td>a URI fails the pattern appropriate to its schema (as defined in the configuration for this eyeball).</td>
+</tr>
+<tr>
+<td>eye:unrecognisedScheme</td>
+<td>the URI scheme is unknown, perhaps a misplaced QName.</td>
+</tr>
+<tr>
+<td>eye:uriNoHttpAuthority</td>
+<td>an http: URI has no authority (domain name/port) component.</td>
+</tr>
+<tr>
+<td>eye:uriSyntaxFailure</td>
+<td>the URI can&rsquo;t be parsed using the general URI syntax, even with any spaces removed.</td>
+</tr>
+<tr>
+<td>eye:namespaceEndsWithNameCharacter</td>
+<td>a namespace URI ends in a character that can appear in a name, leading to possible ambiguities.</td>
+</tr>
+<tr>
+<td>eye:uriHasNoLocalname</td>
+<td>a URI has no local name according to the XML name-splitting rules. (For example, the URI <em>http://x.com/foo#12345</em> has no local name because a local name cannot start with a digit.)</td>
+</tr>
+<tr>
+<td>&ldquo;did not match required pattern <em>Tail<sub>i</sub></em> for prefix <em>Head</em>&quot;.</td>
+<td>This badURI starts with <em>Head</em>, but the remainder doesn&rsquo;t match any of the <em>Tail<sub>i</sub></em>s associated with that prefix.</td>
+</tr>
+<tr>
+<td>&ldquo;matched prohibited pattern <em>Tail</em> for prefix <em>Head</em>&quot;.</td>
+<td>This badURI starts with <em>Head</em>, and the remainder matched a prohibited <em>Tail</em> associated with that prefix.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="literalinspector-illegal-language-code">LiteralInspector: illegal language code</h3>
+<pre><code>[] eye:badLanguage &quot;*badCode*&quot;; eye:onLiteral &quot;*spelling*&quot;.
+</code></pre>
+<p>A literal with the lexical form <em>spelling</em> has the illegal language
+code <em>badCode</em>.</p>
+<h3 id="literalinspector-bad-datatype-uri">LiteralInspector: bad datatype URI</h3>
+<pre><code>[] eye:badDatatypeURI &quot;*badURI*&quot;; eye:onLiteral &quot;*spelling*&quot;.
+</code></pre>
+<p>A literal with the lexical form <em>spelling</em> has the illegal datatype
+URI <em>badURI</em>.</p>
+<h3 id="literalinspector-bad-lexical-form">LiteralInspector: bad lexical form</h3>
+<pre><code>[] eye:badLexicalForm &quot;*spelling*&quot;; eye:forDatatype &quot;*dtURI*&quot;.
+</code></pre>
+<p>A literal with the datatype URI <em>dtURI</em> has the lexical form
+<em>spelling</em>, which isn&rsquo;t legal for that datatype.</p>
+<h3 id="prefixinspector-bad-namespace-uri">PrefixInspector: bad namespace URI</h3>
+<pre><code>[] eye:badNamespaceURI &quot;*URIString*&quot; ; eye:onPrefix &quot;*prefix*&quot; ; eye:forReason *Reason*.
+</code></pre>
+<p>The namespace <em>URIString</em> for the declaration of <em>prefix</em> is
+suspicious for the given <em>Reason</em> (see the URIInspector reports for
+details of the possible reasons).</p>
+<h3 id="prefixinspector-jena-prefix-found">PrefixInspector: Jena prefix found</h3>
+<pre><code>[] eye:jenaPrefixFound &quot;*j.Digits*&quot;; eye:forNamespace &quot;*URIString*&quot;.
+</code></pre>
+<p>The namespace <em>URIString</em> has an automatically-generated Jena
+prefix.</p>
+<h3 id="prefixinspector-multiple-prefixes-for-namespace">PrefixInspector: multiple prefixes for namespace</h3>
+<pre><code>[] eye:multiplePrefixesForNamespace &quot;*NameSpace*&quot; ; eye:onPrefix &quot;*prefix&lt;sub&gt;1&lt;/sub&gt;&quot;* ...
+</code></pre>
+<p>There are multiple prefix declarations for <em>NameSpace</em>, namely,
+<em>prefix<sub>1</sub></em> etc.</p>
+<h3 id="vocabularyinspector-not-from-schema">VocabularyInspector: not from schema</h3>
+<pre><code>[] eye:notFromSchema &quot;*NameSpace*&quot;; eye:onResource *Resource*.
+</code></pre>
+<p>The <em>Resource</em> has a URI in the <em>NameSpace</em>, but isn&rsquo;t declared in
+the schema associated with that <em>NameSpace</em>.</p>
+<h3 id="owlsyntaxinspector-suspicious-restriction">OwlSyntaxInspector: suspicious restriction</h3>
+<pre><code>[] eye:suspiciousRestriction *R*; eye:forReason *Reason*...
+</code></pre>
+<p>The presumed restriction <em>R</em> is suspicious for the given
+<em>Reason</em>s:</p>
+<ul>
+<li><code>eye:missingOnProperty</code> &ndash; there is no <code>owl:onProperty</code>
+property in this suspicious restriction.</li>
+<li><code>eye:multipleOnProperty</code> &ndash; there are multiple <code>owl:onProperty</code>
+properties in this suspicious restriction.</li>
+<li><code>eye:missingConstraint</code> &ndash; there is no <code>owl:hasValue</code>,
+<code>owl:allValuesFrom</code>, <code>owl:someValuesFrom</code>, or
+<code>owl:[minC|maxC|c]ardinality</code> property in this suspicious
+restriction.</li>
+<li><code>eye:multipleConstraint</code> &ndash; there are multiple constraints (as
+above) in this suspicious restriction.</li>
+</ul>
+<p>The restriction <em>R</em> is identified by (a) supplying its immediate
+properties, and (b) identifying its named equivalent classes and
+subclasses.</p>
+<h3 id="sparqldriveninspector-require-failed">SparqlDrivenInspector: require failed</h3>
+<pre><code>[] eye:sparqlRequireFailed &quot;*message*&quot;.
+</code></pre>
+<p>A SPARQL query that was required to succeed against the model did
+not. The <em>message</em> is either the query that failed or a meaningful
+description, depending on the inspector configuration.</p>
+<h3 id="sparqldriveninspector-prohibit-failed">SparqlDrivenInspector: prohibit failed</h3>
+<pre><code>[] eye:sparqlProhibitFailed &quot;*message*&quot;.
+</code></pre>
+<p>A SPARQL query that was required to fail against the model did not.
+The <em>message</em> is either the query that succeeded or a meaningful
+description, depending on the inspector configuration.</p>
+<h3 id="alltypedinspector-should-have-type">AllTypedInspector: should have type</h3>
+<pre><code>[] eye:shouldHaveType *Resource*.
+</code></pre>
+<p>The <em>Resource</em> has no <code>rdf:type</code>. Note that when using models with
+inference, this report is unlikely, since inference may well give
+the resource a type even if it has no explicit type in the original
+model.</p>
+<h3 id="consistenttypeinspector-inconsistent-types-for-resource">ConsistentTypeInspector: inconsistent types for resource</h3>
+<pre><code>[] eye:noConsistentTypeFor *URI* ; eye:hasAttachedType *TypeURI&lt;sub&gt;i&lt;/sub&gt;*
+...
+</code></pre>
+<p>The resource <em>URI</em> has been given the various types <em>TypeURI<sub>i</sub></em>,
+but if we assume that subtypes are disjoint unless otherwise
+specified, these types have no intersection.</p>
+<p>The ConsistentTypeInspector must do at least some type inference.
+This release of Eyeball compromises by doing RDFS inference
+augmented by (very) limited union and intersection reasoning, as
+described in the Jena rules in <code>etc/owl-like.rules</code>, so its reports
+must be treated with caution. Even with these restrictions, doing
+type inference over a large model is costly: you may need to
+suppress it with <code>-exclude</code> until any other warnings are dealt
+with.</p>
+<p>While, technically, a resource with no attached types at all is
+automatically inconsistent, Eyeball quietly ignores such resources,
+since they turn up quite often in simple RDF models.</p>
+<h3 id="cardinalityinspector-cardinality-failure">CardinalityInspector: cardinality failure</h3>
+<pre><code>[] eye:cardinalityFailure *Subject*; eye:onType *T*; eye:onProperty *P*
+</code></pre>
+<p>The <em>Subject</em> has a cardinality-constrained <code>rdf:type</code> <em>T</em> with
+<code>owl:onProperty</code> <em>P</em>, but the number of distinct values in the
+model isn&rsquo;t consistent with the cardinality restriction.</p>
+<p>Additional properties describe the cardinality restriction and the
+values found:</p>
+<ul>
+<li><code>eye:numValues</code> <em>N</em>: the number of distinct values for
+(<em>Subject</em>, <em>P</em>) in the model.</li>
+<li><code>eye:cardinality</code> [<code>eye:min</code> <em>min</em>; <code>eye:max</code> <em>max</em>]: the
+minimum and maximum cardinalities permitted.</li>
+<li><code>eye:values</code> <em>Set</em>: A blank node of type <code>eye:Set</code> with an
+<code>rdfs:member</code> value for each of the values of <em>P</em>.</li>
+</ul>
+<h3 id="listinspector-ill-formed-list">ListInspector: ill-formed list</h3>
+<pre><code>[] eye:illFormedList *URI* ; eye:because [eye:element *index&lt;sub&gt;i&lt;/sub&gt;*; *Problem&lt;sub&gt;i~*]~i&lt;/sub&gt; ...
+</code></pre>
+<p>The list starting at <em>URI</em> is ill-formed because the element with
+index <em>index<sub>i</sub></em> had <em>Problem<sub>i</sub></em>. The possible problems are:</p>
+<ul>
+<li><code>eye:hasNoRest</code> &ndash; the element has no <code>rdf:rest</code> property.</li>
+<li><code>eye:hasMultipleRests</code> &ndash; the element has more than one
+<code>rdf:rest</code> property.</li>
+<li><code>eye:hasNoFirst</code> &ndash; the element has no <code>rdf:first</code> property.</li>
+<li><code>eye:hasMultipleFirsts</code> &ndash; the element has more than one
+<code>rdf:rest</code> property.</li>
+</ul>
+<h3 id="listinspector-suspect-list-idiom">ListInspector: suspect list idiom</h3>
+<pre><code>[] eye:suspectListIdiom *Type*.
+</code></pre>
+<p>The resource <em>Type</em> looks like it&rsquo;s supposed to be a use of the
+&ldquo;typed list idiom&rdquo;, but it isn&rsquo;t complete/accurate.</p>
+<h2 id="inside-the-eyeball-configuration-file">Inside the Eyeball configuration file</h2>
+<h3 id="configuration-files">Configuration files</h3>
+<p>The Eyeball command-line utility is configured by files (or URLs)
+specified on the command line: their RDF contents are unioned
+together into a single config model. If no config file is
+specified, then <em>etc/eyeball-config.n3</em> is loaded.
+The configuration file is a Jena assembler description (see
+<a href="../assembler/index.html">Assemblers</a>)
+with added Eyeball vocabulary.</p>
+<p>Eyeball is also configured by the location-mapping file
+<em>etc/location-mapping.n3</em>. The Eyeball jar contains copies of both
+the default config and the location mapper; these are used by
+default. You can provide your own <em>etc/eyeball-config.n3</em> file
+earlier on your classpath or in your current directory; this config
+replaces the default. You may provide <em>additional</em> location-mapping
+files earlier on your classpath or in your current directory.</p>
+<h3 id="configuring-schema-names">Configuring schema names</h3>
+<p>To avoid having to quote schema names in full on the Eyeball
+command line, (collections of) schemas can be given short names.
+[] eye:shortName shortNameLiteral
+; eye:schema fullSchemaURL
+&hellip;
+.</p>
+<p>A shortname can name several schemas. The Eyeball delivery has the
+short names <em>rdf</em>, <em>rdfs</em>, <em>owl</em>, and <em>dc</em> for the corresponding
+schemas (and mirror versions of those schemas so that they don&rsquo;t
+need to be downloaded each time Eyeball is run.)</p>
+<h3 id="configuring-inspectors">Configuring inspectors</h3>
+<p>The inspectors that Eyeball runs over the model are specified by
+<em>eye:inspector</em> properties of inspector resources. These resources
+are identified by <code>eye:shortName</code>s (supplied on the command line).
+Each such property value must be a plain string literal whose value
+is the full name of the Inspector class to load and run; see the
+Javadoc of Inspector for details.</p>
+<p>An inspector resource may refer to other inspector resources to
+include their inspectors, using either of the two properties
+<code>eye:include</code> or <code>eye:includeByName</code>. The value of an <code>include</code>
+property should be another inspector resource; the value of an
+<code>includeByName</code> property should be the <code>shortName</code> of an inspector
+resource.</p>
+<h3 id="configuring-the-uri-inspector">Configuring the URI inspector</h3>
+<p>As well as applying the standard URI rules, Eyeball allows extra
+pattern-oriented checks to be applied to URIs. These are specified
+by <code>eye:check</code> properties of the <code>URIInspector</code> object in the
+configuration.</p>
+<p>The object of an <code>eye:check</code> property is a bnode with <code>eye:prefix</code>,
+<code>eye:prohibit</code>, and <code>eye:require</code> properties. The objects of these
+properties must be string literals.</p>
+<p>If a URI <em>U</em> can be split into a prefix <em>P</em> and suffix <em>S</em>, and
+there is a <em>check</em> property with that prefix, and either:</p>
+<ul>
+<li>there&rsquo;s a <em>prohibit</em> property and <em>S</em> matches the object of
+that property, or</li>
+<li>there&rsquo;s a <em>require</em> property and <em>S</em> does not match the object
+of that property,</li>
+</ul>
+<p>then a problem is reported. If there are multiple <code>prohibit</code>s, then
+a problem is reported if <em>any</em> prohibition is violated; if there
+are multiple <code>require</code>s, a problem is reported if <em>none</em> of them
+succeed.</p>
+<pre><code>eye:URIInspector eye:check
+  [eye:prefix &quot;urn:x-hp:&quot;; eye:prohibit &quot;.*:.*&quot;]
+  ; [eye:prefix &quot;http://example.com/&quot;; eye:require &quot;.*eyeball.*&quot;]
+</code></pre>
+<p>The prefixes, requires, and prohibits are treated as Java patterns.
+The URI inspector can be configured to report URIs with an empty
+local name. These arise because the meaning of &ldquo;local name&rdquo; comes
+from XML, and in XML a local name must start with an NCName
+character, typically a letter but not a digit. Hence URIs like
+<code>http://example.com/productCode#1829</code> have an empty local name.
+This is sometimes confusing.</p>
+<p>To report empty local names, add the property
+<code>eye:reportEmptyLocalNames</code> to the inspector <code>eye:URIInspector</code>
+with the property value <code>true</code>. You may edit the configuration file
+or use the <code>-set</code> command-line option.</p>
+<h3 id="configuring-the-vocabulary-inspector">Configuring the vocabulary inspector</h3>
+<p>The vocabulary inspector defaults to assuming that schema
+namespaces are closed. To disable this for specified namespaces,
+the inspector object in the configuration can be given
+<code>eye:openNamespace</code> properties.</p>
+<p>The object of each of these properties must be a resource; the URI
+of this resource is an open namespace for which the inspector will
+not report problems.</p>
+<pre><code>eye:VocabularyInspector eye:openNamespace &lt;http://example.com/examples#&gt;
+</code></pre>
+<h3 id="configuring-the-sparql-driven-inspector">Configuring the SPARQL-driven inspector</h3>
+<p>The SPARQL inspector object in the configuration may be given
+<code>eye:sparql</code> properties whose objects are resources specifying
+SPARQL queries and problem messages.</p>
+<pre><code>eye:SparqlDrivenInspector eye:sparql [...]
+</code></pre>
+<p>The resource may specify a SPARQL query which must succeed in the
+model, and a message to produce if it does not.</p>
+<pre><code>eye:SparqlDrivenInspector eye:sparql
+  [eye:require &quot;select * where {?s ?p ?o}&quot;; eye:message &quot;must be non-empty&quot;]
+</code></pre>
+<p>If the query is non-trivial, the string may contain a reference to
+a file containing the query, rather than the entire query.</p>
+<pre><code>eye:require &quot;@'/home/kers/example/query-one.sparql'&quot;
+</code></pre>
+<p>The quoted filename is read using the Jena file manager and so
+respects any filename mappings. &ldquo;@&rdquo; characters not followed by &ldquo;'&rdquo;
+are not subject to substitution, except that the sequence &ldquo;@@&rdquo; is
+replaced by &ldquo;@&quot;.</p>
+<p>Using <code>eye:prohibit</code> rather than <code>eye:require</code> means that the
+problem is reported if the query succeeds, rather than if it
+fails.</p>
+<h3 id="configuring-renderers">Configuring renderers</h3>
+<p>The renderer class that Eyeball uses to render the report into text
+is giving in the config file by triples of the form:</p>
+<pre><code>[]
+  eye:renderer FullClassName
+  ; eye:shortName ShortClassHandler
+</code></pre>
+<p>The <code>FullClassName</code> is a string literal giving the full class name
+of the rendering class. That class must implement the <em>Renderer</em>
+interface and have a constructor that takes a <code>Resource</code>, its
+configuration root, as its argument.</p>
+<p>The <code>ShortClassHandle</code> is a string literal giving the short name
+used to refer to the class. The default short name used is
+<strong>default</strong>. There should be no more than one <em>eye:shortName</em>
+statement with the same ShortClassHandle in the configuration file,
+but the same class can have many different short names.</p>
+<p>The <code>TextRenderer</code> supports an additional property <code>eye:labels</code> to
+allow the appropriate labels for an ontology to be supplied to the
+renderer. Each object of a <code>eye:labels</code> statement names a model;
+all the <code>rdfs:label</code> statements in that model are used to supply
+strings which are used to render resources.</p>
+<p>The model names are strings which are interpreted by Jena&rsquo;s
+<code>FileManager</code>, so they may be redirected using Jena&rsquo;s file
+mappings.</p>
+<h2 id="inside-the-eyeball-code">Inside the Eyeball code</h2>
+<p>Eyeball can be used from within Java code; the command line merely
+provides a convenient external interface.</p>
+<h3 id="creating-an-eyeball">Creating an Eyeball</h3>
+<p>An Eyeball object has three subcomponents: the assumptions against
+which the model is to be checked, the inspectors which do the
+checking, and the renderer used to display the reports.</p>
+<p>The assumptions are bundled into a single OntModel. Multiple
+assumptions can be supplied either by adding them as sub-models or
+by loading their content directly into the OntModel.</p>
+<p>The inspectors are supplied as a single Inspector object. The
+method <code>Inspector.Operations.create(List)</code> creates a single
+Inspector from a list of Inspectors; this inspector delegates all
+its inspection methods to all of its sub-inspectors.</p>
+<p>The renderer can be anything that implements the (simple) renderer
+interface.</p>
+<p>To create an Eyeball:</p>
+<pre><code>Eyeball eyeball = new Eyeball( inspector, assumptions, renderer );
+</code></pre>
+<h3 id="to-eyeball-a-model">To eyeball a model</h3>
+<p>Models to be inspected are provided as OntModels. The problems are
+delivered to a Report object, where they are represented as an RDF
+model.</p>
+<pre><code>eyeball.inspect( report, ontModelToBeInspected )
+</code></pre>
+<p>The result is that same report object. The <em>Report::model()</em> method
+delivers an RDF model which describes the problems found by the
+inspection. The inspections supplied in the distribution use the
+EYE vocabulary, and are used in the standard reports:</p>
+<p>Every report item in the model is a blank node with
+<code>rdf:type eye:Item</code>. See earlier sections for the descriptions of
+the properties attached to an Item.</p>
+<h2 id="rebuilding-eyeball">Rebuilding Eyeball</h2>
+<p>The provided ant script can be used to rebuild Eyeball from
+source:</p>
+<pre><code>ant clean build jar
+</code></pre>
+<p>(Omitting <code>clean</code> will do an incremental build, useful for small
+changes.)</p>
+<p>The libraries required by Eyeball are all in the <code>lib</code> directory,
+including the necessary Jena jars.</p>
+<h2 id="creating-and-configuring-an-inspector">Creating and configuring an inspector</h2>
+<p>To make a new inspector available to Eyeball, a new Inspector class
+must be created and that class has to be described in the Eyeball
+configuration.</p>
+<h3 id="creating-an-inspector">Creating an Inspector</h3>
+<p>Any inspector must implement the Inspector interface, which has
+four operations:</p>
+<ul>
+<li><em>begin( Report r, OntModel assume )</em>: Begin a new inspection.
+<code>r</code> is the <code>Report</code> object which will accept the reports in this
+inspection; <code>assume</code> is the model containing the assumed
+ontologies. <code>begin</code> is responsible for declaring this inspectors
+<em>report properties</em>.</li>
+<li><em>inspectModel( Report r, OntModel m )</em>: Do a whole-model
+inspection of <code>m</code>, issuing reports to <code>r</code>.</li>
+<li><em>inspectStatement( Report r, Statement s )</em>: Inspect the single
+statement <code>s</code>, issuing reports to <code>r</code>.</li>
+<li><em>end( Report r )</em>: Do any tidying-up reports required.</li>
+</ul>
+<p>Typically <code>end</code> and one of <code>inspectModel</code> or <code>inspectStatement</code> do
+nothing.</p>
+<p>An inspector must also have a constructor that takes a <code>Resource</code>
+argument. When Eyeball creates the Inspector object, it passes the
+<code>Resource</code> which is the root of this inspector&rsquo;s configuration.
+(This is, for example, how the SPARQL-driven inspector receives the
+query strings to use.)</p>
+<p>Developers may find the class <code>InpsectorBase</code> useful; it has empty
+implementations for all the <code>Inspector</code> methods. They may also find
+<code>InspectorTestBase</code> useful when writing their inspector&rsquo;s tests,
+both for its convenience methods and because it requires that their
+class has the appropriate constructors.</p>
+<h3 id="reports-and-report-properties">Reports and report properties</h3>
+<p>Eyeball reports are statements in a report model. To let the
+renderer know which property of a report is the &ldquo;main&rdquo; one, and
+which order the other properties should appear in, the inspector&rsquo;s
+<code>begin</code> method should declare the properties:</p>
+<pre><code>r.declareProperty( EYE.badDatatypeURI );
+r.declareOrder( EYE.badLanguage, EYE.onLiteral );
+</code></pre>
+<p><code>declareProperty(P)</code> announces that <code>P</code> is a report property of
+this inspector. <code>declareOrder(F,S)</code> says that both <code>F</code> and <code>S</code> are
+report properties, and that <code>F</code> should appear before <code>S</code> in the
+rendered report.</p>
+<p>Reports are made up of <em>report items</em>, which are the subjects of
+the report properties. To create a report item, use one of
+<code>reportItem()</code> or <code>reportItem(S)</code>. The second form is appropriate
+when the report is attached to some statement <code>S</code> of the model
+being inspected; a report renderer will attempt to display <code>S</code>.</p>
+<p>To add the main property to a report item <code>R</code>, use
+<code>R.addMainProperty(P,O)</code>; to add non-main properties, use
+<code>R.addProperty(P,O)</code>.</p>
+<h3 id="configuring-an-inspector">Configuring an inspector</h3>
+<p>To add an inspector to a configuration file, choose a URI for it
+(here we&rsquo;re using <code>my:Fresh</code> and assuming a prefix declaration for
+<code>my:</code>) and a short name (here, &ldquo;fresh&rdquo;) and add a description to
+the configuration file:</p>
+<pre><code>my:Fresh a eye:Inspector
+  ; eye:shortName &quot;fresh&quot;
+  ; rdfs:label &quot;fresh checks for my application&quot;
+  ; eye:className &quot;full.path.to.Fresh&quot;
+  .
+</code></pre>
+<p>Replace <code>full.path.to.Fresh</code> with the full classname of your
+inspector. Now you can use <code>Fresh</code> by adding <em>-include fresh</em> to
+the Eyeball command line (and ensuring that the class is on your
+classpath).</p>
+<p>If you want <code>Fresh</code> to be included by default, then you must add it
+as an <code>eye:inspector</code> property of the configuration root, <em>eg</em>:</p>
+<pre><code>eye:eyeball a eye:Eyeball
+  ; eye:inspector
+    eye:PrefixInspector,    # as delivered
+    my:FreshInspector,      # new inspector
+    eye:URIInspector,       # as delivered
+    ...
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

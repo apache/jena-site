@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Writing RDF in Apache Jena</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/io/rdf-output.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Writing RDF in Apache Jena</h1>
+            
+	<p>This page describes the RIOT (RDF I/O technology) output capabilities.</p>
+<p>See <a href="rdf-input.html">Reading RDF</a> for details of the RIOT Reader system.</p>
+<ul>
+<li><a href="#api">API</a></li>
+<li><a href="#rdfformat"><code>RDFFormat</code></a></li>
+<li><a href="#jena_model_write_formats"><code>RDFFormat</code>s and Jena syntax names</a></li>
+<li><a href="#formats">Formats</a>
+<ul>
+<li><a href="#normal-printing">Normal Printing</a></li>
+<li><a href="#pretty-printed-languages">Pretty Printed Languages</a></li>
+<li><a href="#streamed-block-formats">Streamed Block Formats</a></li>
+<li><a href="#line-printed-formats">Line printed formats</a></li>
+<li><a href="#n-triples-and-n-quads">N-Triples and N-Quads</a></li>
+<li><a href="#json-ld">JSON-LD</a></li>
+<li><a href="#rdf-thrift">RDF Binary</a></li>
+<li><a href="#rdfxml">RDF/XML</a></li>
+</ul>
+</li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#notes">Notes</a></li>
+</ul>
+<p>See <a href="rdfxml_howto.html#advanced-rdfxml-output">Advanced RDF/XML Output</a>
+for details of the Jena RDF/XML writer.</p>
+<h2 id="api">API</h2>
+<p>There are two ways to write RDF data using Apache Jena RIOT,
+either via the <code>RDFDataMgr</code></p>
+<pre><code>RDFDataMgr.write(OutputStream, Model, Lang) ;
+RDFDataMgr.write(OutputStream, Dataset, Lang) ;
+RDFDataMgr.write(OutputStream, Model, RDFFormat) ;
+RDFDataMgr.write(OutputStream, Dataset, RDFFormat) ;
+</code></pre>
+<p>or the legacy way using the <code>model</code> API, where there is a limited set of <code>&quot;format&quot;</code> names</p>
+<pre><code>model.write(output, &quot;format&quot;) ;
+</code></pre>
+<p>The <em><code>format</code></em> names are <a href="#jena_model_write_formats">described below</a>; they include the
+names Jena has supported before RIOT.</p>
+<p>Many variations of these methods exist.  See the full javadoc for details.</p>
+<h2 id="rdfformat"><code>RDFFormat</code></h2>
+<p>Output using RIOT depends on the format, which involves both the language (syntax)
+being written and the variant of that syntax.</p>
+<p>The RIOT writer architecture is extensible.  The following languages
+are available as part of the standard setup.</p>
+<ul>
+<li>Turtle</li>
+<li>N-Triples</li>
+<li>NQuads</li>
+<li>TriG</li>
+<li>JSON-LD</li>
+<li>RDF/XML</li>
+<li>RDF/JSON</li>
+<li>TriX</li>
+<li>RDF Binary</li>
+</ul>
+<p>In addition, there are variants of Trutle, TriG for pretty printing,
+streamed output and flat output.  RDF/XML has variants for pretty printing
+and plain output.  Jena RIOT uses <code>org.apache.jena.riot.RDFFormat</code> as a way
+to identify the language and variant to be written.  The class contains constants
+for the standard supported formats.</p>
+<p>Note:</p>
+<ul>
+<li>RDF/JSON is not JSON-LD. See the <a href="rdf-json.html">description of RDF/JSON</a>.</li>
+<li>N3 is treated as Turtle for output.</li>
+</ul>
+<h2 id="jena_model_write_formats"><code>RDFFormat</code>s and Jena syntax names</h2>
+<p>The string name traditionally used in <code>model.write</code> is mapped to RIOT <code>RDFFormat</code>
+as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Jena writer name</th>
+<th>RIOT RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;TURTLE&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;TTL&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;Turtle&quot;</code></td>
+<td><code>TURTLE</code></td>
+</tr>
+<tr>
+<td><code>&quot;N-TRIPLES&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;N-TRIPLE&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;NT&quot;</code></td>
+<td><code>NTRIPLES</code></td>
+</tr>
+<tr>
+<td><code>&quot;JSON-LD&quot;</code></td>
+<td><code>JSONLD</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/XML-ABBREV&quot;</code></td>
+<td><code>RDFXML</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/XML&quot;</code></td>
+<td><code>RDFXML_PLAIN</code></td>
+</tr>
+<tr>
+<td><code>&quot;N3&quot;</code></td>
+<td><code>N3</code></td>
+</tr>
+<tr>
+<td><code>&quot;RDF/JSON&quot;</code></td>
+<td><code>RDFJSON</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="formats">Formats</h2>
+<h3 id="normal-printing">Normal Printing</h3>
+<p>A <code>Lang</code> can be used for the writer format, in which case it is mapped to
+an <code>RDFFormat</code> internally.  The normal writers are:</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat or Lang</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TURTLE</td>
+<td>Turtle, pretty printed</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>Turtle, pretty printed</td>
+</tr>
+<tr>
+<td>NTRIPLES</td>
+<td>N-Triples, UTF-8</td>
+</tr>
+<tr>
+<td>TRIG</td>
+<td>TriG, pretty printed</td>
+</tr>
+<tr>
+<td>NQUADS</td>
+<td>N-Quads, UTF-8</td>
+</tr>
+<tr>
+<td>JSONLD</td>
+<td>JSON-LD, pretty printed</td>
+</tr>
+<tr>
+<td>RDFXML</td>
+<td>RDF/XML, pretty printed</td>
+</tr>
+<tr>
+<td>RDFJSON</td>
+<td></td>
+</tr>
+<tr>
+<td>TRIX</td>
+<td></td>
+</tr>
+<tr>
+<td>RDFTHRFT</td>
+<td>RDF Thrift</td>
+</tr>
+</tbody>
+</table>
+<p>Pretty printed RDF/XML is also known as RDF/XML-ABBREV</p>
+<h3 id="pretty-printed-languages">Pretty Printed Languages</h3>
+<p>All Turtle and TriG formats use
+prefix names, and short forms for literals.</p>
+<p>The pretty printed versions of Turtle and TriG prints
+data with the same subject in the same graph together.
+All the properties for a given subject are sorted
+into a predefined order. RDF lists are printed as
+<code>(...)</code> and <code>[...]</code> is used for blank nodes where possible.</p>
+<p>The analysis for determining what can be pretty printed requires
+temporary datastructures and also a scan of the whole graph before
+writing begins.  Therefore, pretty printed formats are not suitable
+for writing persistent graphs and datasets.</p>
+<p>When writing at scale use either a &ldquo;blocked&rdquo; version of Turtle or TriG,
+or write N-triples/N-Quads.</p>
+<p>Example:</p>
+<pre><code>@prefix :      &lt;http://example/&gt; .
+@prefix dc:    &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:   &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+
+:book   dc:author  ( :a :b ) .
+
+:a      a           foaf:Person ;
+        foaf:knows  [ foaf:name  &quot;Bob&quot; ] ;
+        foaf:name   &quot;Alice&quot; .
+
+:b      foaf:knows  :a .
+</code></pre>
+<p>Pretty printed formats:</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+<th>Same as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TURTLE_PRETTY</td>
+<td>TURTLE, TTL</td>
+</tr>
+<tr>
+<td>TRIG_PRETTY</td>
+<td>TRIG</td>
+</tr>
+<tr>
+<td>RDFXML_PRETTY</td>
+<td>RDFXML_ABBREV, RDFXML</td>
+</tr>
+</tbody>
+</table>
+<h3 id="streamed-block-formats">Streamed Block Formats</h3>
+<p>Fully pretty printed formats can&rsquo;t not be streamed.  They require analysis
+of all of the data to be written in order to choose the short forms.  This limits
+their use in fully scalable applications.</p>
+<p>Some formats can be written streaming style, where the triples or quads
+are partially grouped together by adjacent subject or graph/subject
+in the output stream.</p>
+<p>The written data is like the pretty printed forms of Turtle or TriG,
+but without RDF lists being written in the &lsquo;(&hellip;)&rsquo; form, without
+using <code>[...]</code> for blank nodes.</p>
+<p>This gives some degree of readability while not requiring
+excessive temporary datastructure.  Arbitrary amounts of data
+can be written but blank node labels need to be tracked in order
+to use the short label form.</p>
+<p>Example:</p>
+<pre><code>@prefix :  &lt;http://example/&gt; .
+@prefix dc:  &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+
+:book   dc:author  _:b0 .
+
+_:b0    rdf:rest   _:b1 ;
+        rdf:first  :a .
+
+:a      foaf:knows  _:b2 ;
+        foaf:name   &quot;Alice&quot; ;
+        rdf:type    foaf:Person .
+
+_:b2    foaf:name  &quot;Bob&quot; .
+
+:b      foaf:knows  :a .
+
+_:b1    rdf:rest   rdf:nil ;
+        rdf:first  :b .
+</code></pre>
+<p>Formats:</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TURTLE_BLOCKS</td>
+</tr>
+<tr>
+<td>TRIG_BLOCKS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="line-printed-formats">Line printed formats</h3>
+<p>There are writers for Turtle and Trig that use the abbreviated formats for
+prefix names and short forms for literals. They write each triple or quad
+on a single line.</p>
+<p>The regularity of the output can be useful for text processing of data.<br>
+These formats do not offer more scalabilty than the stream forms.</p>
+<p>Example:</p>
+<p>The FLAT writers abbreviates IRIs, literals and blank node labels
+but always writes one complete triple on one line (no use of <code>;</code>).</p>
+<pre><code>@prefix :  &lt;http://example/&gt; .
+@prefix dc:  &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+_:b0 foaf:name &quot;Bob&quot; .
+:book dc:author _:b1 .
+_:b2 rdf:rest rdf:nil .
+_:b2 rdf:first :b .
+:a foaf:knows _:b0 .
+:a foaf:name &quot;Alice&quot; .
+:a rdf:type foaf:Person .
+_:b1 rdf:rest _:b2 .
+_:b1 rdf:first :a .
+:b foaf:knows :a .
+</code></pre>
+<p>&nbsp;</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TURTLE_FLAT</td>
+</tr>
+<tr>
+<td>TRIG_FLAT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="n-triples-and-n-quads">N-Triples and N-Quads</h3>
+<p>These provide the formats that are fastest to write,
+and data of any size can be output.  They do not use any
+internal state and formats always stream without limitation.</p>
+<p>They maximise the
+interoperability with other systems and are useful
+for database dumps. They are not human readable,
+even at moderate scale.</p>
+<p>The files can be large but they compress well with gzip.
+Compression ratios of x8-x10 can often be obtained.</p>
+<p>Example:</p>
+<p>The N-Triples writer makes no attempt to make it&rsquo;s output readable.
+It uses internal blank nodes to ensure correct labeling without
+needing any writer state.</p>
+<pre><code>_:BX2Dc2b3371X3A13cf8faaf53X3AX2D7fff &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Bob&quot; .
+&lt;http://example/book&gt; &lt;http://purl.org/dc/elements/1.1/author&gt; _:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffe .
+_:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffd &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#rest&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&gt; .
+_:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffd &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#first&gt; &lt;http://example/b&gt; .
+&lt;http://example/a&gt; &lt;http://xmlns.com/foaf/0.1/knows&gt; _:BX2Dc2b3371X3A13cf8faaf53X3AX2D7fff .
+&lt;http://example/a&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Alice&quot; .
+&lt;http://example/a&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://xmlns.com/foaf/0.1/Person&gt; .
+_:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffe &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#rest&gt; _:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffd .
+_:BX2Dc2b3371X3A13cf8faaf53X3AX2D7ffe &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#first&gt; &lt;http://example/a&gt; .
+&lt;http://example/b&gt; &lt;http://xmlns.com/foaf/0.1/knows&gt; &lt;http://example/a&gt; .
+</code></pre>
+<p>&nbsp;</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+<th>Other names</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NTRIPLE</td>
+<td>NTRIPLE, NT, NTRIPLES_UTF8</td>
+</tr>
+<tr>
+<td>NQUADS</td>
+<td>NQUADS, NQ, NQUADS_UTF8</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>The main N-Triples and N-Quads writers follow RDF 1.1 and output using UTF-8.<br>
+For compatibility with old software, writers are provided that output
+in ASCII (using <code>\u</code> escape sequences for non-ASCI characters where necessary).</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NTRIPLES_ASCII</td>
+</tr>
+<tr>
+<td>NQUADS_ASCII</td>
+</tr>
+</tbody>
+</table>
+<h3 id="json-ld">JSON-LD</h3>
+<p>JSON-LD output is supported, in its various flavors
+(&ldquo;compacted&rdquo;, &ldquo;expanded&rdquo;, &ldquo;flattened&rdquo;, &ldquo;framed&rdquo;),
+by using one of the following RDFFormats:</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JSONLD_EXPAND_PRETTY</td>
+</tr>
+<tr>
+<td>JSONLD_EXPAND_FLAT</td>
+</tr>
+<tr>
+<td>JSONLD_COMPACT_PRETTY</td>
+</tr>
+<tr>
+<td>JSONLD_COMPACT_FLAT</td>
+</tr>
+<tr>
+<td>JSONLD_FLATTEN_PRETTY</td>
+</tr>
+<tr>
+<td>JSONLD_FLATTEN_FLAT</td>
+</tr>
+<tr>
+<td>JSONLD_FRAME_PRETTY</td>
+</tr>
+<tr>
+<td>JSONLD_FRAME_FLAT</td>
+</tr>
+</tbody>
+</table>
+<p>The default registration for <code>JSONLD</code> is <code>JSONLD_PRETTY</code>.
+<code>JSONLD_PRETTY</code> is identical to <code>JSONLD_COMPACT_PRETTY</code>.</p>
+<p>Output can be customized, passing more info to the writer by using the
+&ldquo;Context&rdquo; mechanism provided by Jena.  The same mechanism is used to
+pass the &ldquo;frame&rdquo; in the <code>JSONLD_FRAME_PRETTY</code> and <code>JSONLD_FRAME_FLAT</code>
+cases.</p>
+<p>What can be done, and how it can be, is explained in the
+<a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/Ex_WriteJsonLD.java">sample code</a>.</p>
+<h3 id="rdf-binary">RDF Binary</h3>
+<p><a href="rdf-binary.html">This is a binary encoding</a> using
+<a href="https://thrift.apache.org/">Apache Thrift</a> for RDF Graphs
+and RDF Datasets, as well as SPARQL Result Sets, and it provides faster parsing
+compared to the text-based standardised syntax such as N-triples, Turtle or RDF/XML.</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDFTHRIFT</td>
+</tr>
+<tr>
+<td>RDFTHRIFT_VALUES</td>
+</tr>
+</tbody>
+</table>
+<p><code>RDFTHRIFT_VALUES</code> is a variant where numeric values are written as values,
+not as lexical format and datatype.  See the
+<a href="http://afs.github.io/rdf-thrift">description of RDF Thrift</a>
+for dsicussion.</p>
+<h3 id="rdfxml">RDF/XML</h3>
+<p>RIOT supports output in RDF/XML. RIOT RDFFormats defaults to pretty printed RDF/XML,
+while the jena writer writer name defaults to a streaming plain output.</p>
+<table>
+<thead>
+<tr>
+<th>RDFFormat</th>
+<th>Other names</th>
+<th>Jena writer name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDFXML</td>
+<td>RDFXML_PRETTY, RDF_XML_ABBREV</td>
+<td>&ldquo;RDF/XML-ABBREV&rdquo;</td>
+</tr>
+<tr>
+<td>RDFXML_PLAIN</td>
+<td></td>
+<td>&ldquo;RDF/XML&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="examples">Examples</h2>
+<p>Example code may be found in <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/">jena-arq/src-examples</a>.</p>
+<h3 id="ways-to-write-a-model">Ways to write a model</h3>
+<p>The follow ways are different ways to write a model in Turtle:</p>
+<pre><code>    Model model =  ... ;
+
+    // Write a model in Turtle syntax, default style (pretty printed)
+    RDFDataMgr.write(System.out, model, Lang.TURTLE) ;
+    
+    // Wriet Turtle to the blocks variant
+    RDFDataMgr.write(System.out, model, RDFFormat.TURTLE_BLOCKS) ;
+    
+    // Write as Turtle via model.write
+    model.write(System.out, &quot;TTL&quot;) ;
+</code></pre>
+<h3 id="ways-to-write-a-dataset">Ways to write a dataset</h3>
+<p>The prefered style is to use <code>RDFDataMgr</code>:</p>
+<pre><code>Dataset ds = .... ;
+// Write as TriG
+RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
+
+// Write as N-Quads
+RDFDataMgr.write(System.out, dataset, Lang.NQUADS) ;
+</code></pre>
+<p>Additionally, a single model can be written in a dataset format - it becomes
+the default graph of the dataset.</p>
+<pre><code>Model m = 
+RDFDataMgr.write(System.out, m, Lang.TRIG) ;
+</code></pre>
+<p>might give:</p>
+<pre><code>@prefix :      &lt;http://example/&gt; .
+@prefix dc:    &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:   &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+
+{
+    :book   dc:author  ( :a :b ) .
+
+    :a      a           foaf:Person ;
+            foaf:knows  [ foaf:name  &quot;Bob&quot; ] ;
+            foaf:name   &quot;Alice&quot; .
+
+    :b      foaf:knows  :a .
+}
+</code></pre>
+<h3 id="adding-a-new-output-format">Adding a new output format</h3>
+<p>An complete example of adding a new output format is given in the example file:
+<a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_out3.java">RIOT Output example 3</a></p>
+<h2 id="notes">Notes</h2>
+<p>Using <code>OutputStream</code>s is strongly encouraged.  This allows the writers
+to manage the character encoding using UTF-8.  Using <code>java.io.Writer</code>
+does not allow this; on platforms such as MS Windows, the default
+configuration of a <code>Writer</code> is not suitable for Turtle because
+the character set is the platform default, and not UTF-8.
+The only use of writers that is useful is using <code>java.io.StringWriter</code>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

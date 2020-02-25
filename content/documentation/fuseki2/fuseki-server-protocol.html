@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Fuseki HTTP Administration Protocol</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-server-protocol.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Fuseki HTTP Administration Protocol</h1>
+            
+	<p>This page describes the HTTP Protocol used to control an Fuseki server via
+its administrative interface.  See &ldquo;<a href="admin.html">Fuseki Administration</a>&rdquo;
+for an overview of server administration.</p>
+<ul>
+<li><a href="#operations">Operations</a></li>
+<li><a href="#server-information">Server Information</a></li>
+<li><a href="#datasets-and-services">Datasets and Services</a>
+<ul>
+<li>Adding a Dataset and its Services</li>
+<li>Removing a Dataset</li>
+<li>Dormant and Active</li>
+</ul>
+</li>
+<li><a href="#remove-dataset">Removing a dataset</a></li>
+</ul>
+<p>All admin operations have URL paths starting <code>/$/</code> to avoid clashes with
+dataset names and this prefix is reserved for the Fuseki control functions.
+Further operations may be added within this naming scheme.</p>
+<h2 id="operations">Operations</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>URL pattern</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/ping</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/ping</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/server</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/server</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/datasets</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/datasets</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>DELETE</tt></td>
+<td><code>/$/datasets/*{name}*</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/datasets/*{name}*</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/datasets/*{name}*?state=offline</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/datasets/*{name}*?state=active</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/server/shutdown</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/stats</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/stats/*{name}*</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/backup/*{name}*</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/backups-list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/sleep</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/tasks</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/tasks/*{name}*</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ping">Ping</h2>
+<p>Pattern: <code>/$/ping</code></p>
+<p>The URL <code>/$/ping</code> is a guaranteed low cost point to test whether a server
+is running or not.  It returns no other information other than to respond to the
+request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) with a 200 response.</p>
+<p>Return: empty body</p>
+<h2 id="server-information">Server Information</h2>
+<p>Pattern: <code>/$/server</code></p>
+<p>The URL <code>/$/server</code> returns details about the server and it&rsquo;s current status in JSON.</p>
+<p><em>@@details of JSON format.</em></p>
+<h2 id="datasets-and-services">Datasets and Services</h2>
+<p>Pattern: <code>/$/datasets</code></p>
+<p><code>/$/datasets</code> is a container representing all datasets present in the server.
+<code>/$/datasets/*{name}*</code> names a specific dataset.  As a container, operations on items
+in the container, via <code>GET</code>, <code>POST</code> and <code>DELETE</code>, operate on specific dataset.</p>
+<h3 id="adding-a-dataset-and-its-services">Adding a Dataset and its Services.</h3>
+<blockquote>
+<p><em>@@ May add server-managed templates</em></p>
+</blockquote>
+<p>A dataset set can be added to a running server. There are several methods
+for doing this:</p>
+<ul>
+<li>Post the assembler file</li>
+<li>HTML Form upload the assembler file</li>
+<li>Use a built-in template (in-memory or persistent)</li>
+</ul>
+<p>All require HTTP <code>POST</code>.</p>
+<p>Changes to the server state are carried across restarts.</p>
+<p>For persistent datasets, for example <a href="/documentation/tdb">TDB</a>,
+the dataset is persists across restart.</p>
+<p>For in-memory datasets, the dataset is rebuilt from it&rsquo;s description
+(this may include loading data from a file) but any changes are lost.</p>
+<h4 id="templates">Templates</h4>
+<p>A short-cut form for some common set-ups is provided by <tt>POST</tt>ing with
+the following parameters (query string or HTML form):</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dbType</code></td>
+<td>Either <code>mem</code> or <code>tdb</code></td>
+</tr>
+<tr>
+<td><code>dbName</code></td>
+<td>URL path name</td>
+</tr>
+</tbody>
+</table>
+<p>The dataset name must not be already in-use.</p>
+<p>Datasets are created in director <code>databases/</code>.</p>
+<h4 id="assembler-example">Assembler example</h4>
+<p>The assembler description contains data and service.  It can be sent by posting the assembler RDF graph
+in any RDF format or by posting from an HTML form (the syntax must be Turtle).</p>
+<p>The assembler file is stored by the server will be used on restart or when making the dataset active again.</p>
+<blockquote>
+<p><em>@@</em></p>
+</blockquote>
+<h3 id="removing-a-dataset">Removing a Dataset</h3>
+<p>Note: <code>DELETE</code> means &ldquo;gone for ever&rdquo;.  The dataset name and the details of its
+configuration are completely deleted and can not be recovered.</p>
+<p>The data of a TDB dataset is not deleted.</p>
+<h3 id="active-and-offline">Active and Offline</h3>
+<p>A dataset is in one of two modes: &ldquo;active&rdquo;, meaning it is services request over HTTP
+(subject to configuration and security), or &ldquo;offline&rdquo;, meaning the configuration and name
+is known about by the server but the dataset is not attached to the server.  When &ldquo;offline&rdquo;,
+any persistent data can be manipulated outside the server.</p>
+<p>Datasets are initially &ldquo;active&rdquo;.  The transition from &ldquo;active&rdquo; to &ldquo;offline&rdquo; is graceful - all outstanding requests are completed.</p>
+<h2 id="statistics">Statistics</h2>
+<blockquote>
+<p><strong><code>/$/stats/*{name}*</code></strong></p>
+</blockquote>
+<p>Statistics can be obtained for each dataset or all datasets in a single response.
+<code>/$/stats</code> is  treated as a container for this information.</p>
+<blockquote>
+<p><em>@@ stats details</em>
+See <a href="fuseki-stats.html">Fuseki Statistics</a> for details of statistics kept by a Fuseki server.</p>
+</blockquote>
+<h3 id="backup">Backup</h3>
+<p>Pattern: <code>/$/backup/*{name}*</code></p>
+<p>This operation initiates a backup and returns a JSON object with the task Id in it.</p>
+<p>Backups are written to the server local directory &lsquo;backups&rsquo; as gzip-compressed N-Quads files.</p>
+<p>See <a href="#tasks">Tasks</a> for how to monitor a backups progress.</p>
+<p>Return: A task is allocated a identifier (usually, a number).</p>
+<pre><code>{ &quot;taskId&quot; : &quot;*{taskId}*&quot; }
+</code></pre><p>The task id can be used to construct a URL to get details of the task:</p>
+<pre><code>/$/tasks/*{taskId}*
+</code></pre><p>Pattern: <code>/$/backups-list</code></p>
+<p>Returns a list of all the files in the backup area of the server. This is
+useful for managing the files externally.</p>
+<p>The returned JSON object will have the form <code>{ backups: [ ... ] }</code> where the <code>[]</code> array is
+a list of file names.</p>
+<h2 id="tasks">Tasks</h2>
+<p>Some operations cause a background task to be executed, backup is an example.
+The result of such operations includes a json object with the task id and
+also a <code>Location:</code> header with the URL of the task created.</p>
+<p>The progress of the task can be monitored with HTTP GET operations:</p>
+<p>Pattern: <code>/$/tasks</code> – All asynchronous tasks.<br/>
+Pattern: <code>/$/tasks/*{taskId}*</code> – A particular task.</p>
+<p>The URL <code>/$/tasks</code> returns a description of all running and recently tasks. A finished task can be identified by having a &ldquo;finishPoint&rdquo; field.</p>
+<p>Each background task has an id.  The URL <code>/$/tasks/*{taskId}*</code> gets a description about one single task.</p>
+<p>Details of the last few completed tasks are retained, up to a fixed number. The records will eventually be removed as later tasks complete, and the task URL will then return 404.</p>
+<p>Pattern: <code>/$/tasks</code> ; example:</p>
+<pre><code>[ { 
+    &quot;finished&quot; : &quot;2014-05-28T12:52:51.860+01:00&quot; ,
+    &quot;started&quot; : &quot;2014-05-28T12:52:50.859+01:00&quot; ,
+    &quot;task&quot; : &quot;sleep&quot; ,
+    &quot;taskId&quot; : &quot;1&quot;
+  } ,
+  { 
+    &quot;finished&quot; : &quot;2014-05-28T12:53:24.718+01:00&quot; ,
+    &quot;started&quot; : &quot;2014-05-28T12:53:14.717+01:00&quot; ,
+    &quot;task&quot; : &quot;sleep&quot; ,
+    &quot;taskId&quot; : &quot;2&quot;
+  }
+]
+</code></pre><p>Pattern: <code>/$/tasks/1</code> : example:</p>
+<pre><code>[ { 
+    &quot;finished&quot; : &quot;2014-05-28T13:54:13.608+01:00&quot; ,
+    &quot;started&quot; : &quot;2014-05-28T13:54:03.607+01:00&quot; ,
+    &quot;task&quot; : &quot;backup&quot; ,
+    &quot;taskId&quot; : &quot;1&quot;
+  }
+]
+</code></pre><p>This is inside an array to make the format returned the same as <code>/$/tasks</code>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Fuseki File System Layout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-layout.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Fuseki File System Layout</h1>
+            
+	<p>There are two areas: the fixed files provided by the distribution and the
+changing files for the local deployment,including the default location
+for TDB databases.</p>
+<p>Two environment variables control the file system usage.
+Symbolic links can be used to create variations on the standard layout.</p>
+<p><code>FUSEKI_HOME</code> - this contains the fixed files from the distribution and
+is used for Unix service deployments.  When deployment as a WAR file,
+everything is in the WAR file itself.</p>
+<p><code>FUSEKI_BASE</code> - this contains the deployment files.</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Environment Variable</th>
+<th>Default Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service</td>
+<td><code>FUSEKI_HOME</code></td>
+<td><code>/usr/share/fuseki</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>FUSEKI_BASE</code></td>
+<td><code>/etc/fuseki</code></td>
+</tr>
+<tr>
+<td>Webapp</td>
+<td><code>FUSEKI_HOME</code></td>
+<td>N/A (Files in the Fuseki .war file)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>FUSEKI_BASE</code></td>
+<td><code>/etc/fuseki</code></td>
+</tr>
+<tr>
+<td>Standalone</td>
+<td><code>FUSEKI_HOME</code></td>
+<td>Current directory</td>
+</tr>
+<tr>
+<td></td>
+<td><code>FUSEKI_BASE</code></td>
+<td><code>${FUSEKI_HOME}/run/</code></td>
+</tr>
+</tbody>
+</table>
+<p>When run in a web application container (e.g. <a href="http://http://tomcat.apache.org/">Tomcat</a>,
+<a href="http://eclipse.org/jetty/">Jetty</a> or other webapp compliant server),
+<code>FUSEKI_BASE</code> will be <code>/etc/fuseki</code>.</p>
+<p>If <code>FUSEKI_BASE</code> is the same as <code>FUSEKI_HOME</code>, be careful when upgrading not to delete
+server deployment files and directories.</p>
+<h1 id="distribution-area----fuseki_home">Distribution area &ndash; <code>FUSEKI_HOME</code></h1>
+<table>
+<thead>
+<tr>
+<th>Directory or File</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fuseki</code></td>
+<td>Fuseki Service (Linux)</td>
+</tr>
+<tr>
+<td><code>fuseki-server</code></td>
+<td>Fuseki standalone command</td>
+</tr>
+<tr>
+<td><code>fuseki-server.bat</code></td>
+<td>Fuseki standalone command</td>
+</tr>
+<tr>
+<td><code>fuseki-server.jar</code></td>
+<td>The Fuseki Server binary</td>
+</tr>
+<tr>
+<td><code>fuseki.war</code></td>
+<td>The Fuseki Server as a WAR file</td>
+</tr>
+<tr>
+<td><code>bin/</code></td>
+<td>Helper scripts</td>
+</tr>
+<tr>
+<td><code>webapp/</code></td>
+<td>The webapp for the UI</td>
+</tr>
+</tbody>
+</table>
+<h1 id="runtime-area----fuseki_base">Runtime area &ndash; <code>FUSEKI_BASE</code></h1>
+<table>
+<thead>
+<tr>
+<th>Directory or File</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config.ttl</code></td>
+<td>Server configuration</td>
+</tr>
+<tr>
+<td><code>shiro.ini</code></td>
+<td>Apache Shiro configuration</td>
+</tr>
+<tr>
+<td><code>databases/</code></td>
+<td>TDB Databases</td>
+</tr>
+<tr>
+<td><code>backups/</code></td>
+<td>Write area for live backups</td>
+</tr>
+<tr>
+<td><code>configuration/</code></td>
+<td>Assembler files</td>
+</tr>
+<tr>
+<td><code>logs/</code></td>
+<td>Log file area</td>
+</tr>
+<tr>
+<td><code>system/</code></td>
+<td>System configuration database</td>
+</tr>
+<tr>
+<td><code>system_files/</code></td>
+<td>Uploaded data service descriptions (copies)</td>
+</tr>
+<tr>
+<td><code>templates/</code></td>
+<td>Templates for build-in configurations</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>system_files/</code> keeps a copy of any assemblers uploaded to
+configure the server. The master copy is kept in the system database.</p>
+<h1 id="resetting">Resetting</h1>
+<p>To reset the server, stop the server, and delete the system database in <code>system/</code>,
+the <code>system_files/</code> and any other unwanted deployment files,
+then restart the server.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

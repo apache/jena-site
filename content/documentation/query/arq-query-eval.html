@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - ARQ - Extending Query Execution</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/arq-query-eval.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">ARQ - Extending Query Execution</h1>
+            
+	<p>This page describes the mechanisms that can be used to extend and
+modify query execution within ARQ. Through these mechanisms, ARQ
+can be used to query different graph implementations and to provide
+different query evaluation and optimization strategies for
+particular circumstances. These mechanisms are used by
+<a href="../tdb">TDB</a> and <a href="../sdb/">SDB</a>.</p>
+<p>ARQ can be <a href="extension.html">extended in various ways</a> to
+incorporate custom code into a query.
+<a href="extension.html#filter-functions">Custom filter functions</a> and
+<a href="extension.html#property-functions">property functions</a> provide ways
+to add application specific code. The
+<a href="/documentation/query/text-query.html">free text search</a> capabilities, using Apache
+Lucene, are provided via a property function. Custom filter
+functions and property functions should be used where possible.</p>
+<p>Jena itself can be extended by providing a new implementation of
+the <code>Graph</code> interface. This can be used to encapsulate specific
+specialised storage and also for wrapping non-RDF sources to look
+like RDF. There is a common implementation framework provided by
+<code>GraphBase</code> so only one operation, the <code>find</code> method, needs to be
+written for a read-only data source. Basic find works well in many
+cases, and the whole Jena API will be able to use the extension. 
+For higher SPARQL performance, ARQ can be extended at the
+<a href="#graph-matching-and-a-custom-stagegenerator">basic graph matching</a> or
+<a href="#opexecutor">algebra level</a>.</p>
+<p>Applications writers who extend ARQ at the query execution level
+should be prepared to work with the source code for ARQ for
+specific details and for finding code to reuse. Some example can be
+found in the <code>src-examples</code> directory in the ARQ download.</p>
+<ul>
+<li><a href="#overview-of-arq-query-processing">Overview of ARQ Query processing</a></li>
+<li><a href="#the-main-query-engine">The Main Query Engine</a></li>
+<li><a href="#graph-matching-and-a-custom-stagegenerator">Graph matching and a custom StageGenerator</a></li>
+<li><a href="#opexecutor">OpExecutor</a></li>
+<li><a href="#quads">Quads</a></li>
+<li><a href="#mixed-graph-implementation-datasets">Mixed Graph Implementation Datasets</a></li>
+<li><a href="#custom-query-engines">Custom Query Engines</a></li>
+<li><a href="#algebra-extensions">Extend the algebra</a></li>
+</ul>
+<h2 id="overview-of-arq-query-processing">Overview of ARQ Query Processing</h2>
+<p>The sequence of actions performed by ARQ to perform a query are
+parsing, algebra generation, execution building, high-level
+optimization, low-level optimization and finally evaluation. It is
+not usual to modify the parsing step nor the conversion from the
+parse tree to the algebra form, which is a fixed algorithm defined
+by the SPARQL standard. Extensions can modify the algebra form by
+transforming it from one algebra expression to another, including
+introducing new operators. See also the documentation on
+<a href="algebra.html">working with the SPARQL algebra in ARQ</a> including
+building algebra expressions programmatically, rather than
+obtaining them from a query string.</p>
+<h3 id="parsing">Parsing</h3>
+<p>The parsing step turns a query string into a <code>Query</code> object. The
+class <code>Query</code> represents the abstract syntax tree (AST) for the
+query and provides methods to create the AST, primarily for use by
+the parser. The query object also provides methods to serialize the
+query to a string. Because this is from an AST, the string produced will be
+very close to the original query with the same syntactic elements,
+but without comments, and formatted with whitespace for
+readability. It is not usually the best way to build a query
+programmatically and the AST is not normally an extension point.</p>
+<p>The query object can be used many times. It is not modified once
+created, and in particular it is not modified by query execution.</p>
+<h3 id="algebra-generation">Algebra generation</h3>
+<p>ARQ generates the
+<a href="http://www.w3.org/TR/sparql11-query/#sparqlQuery">SPARQL algebra</a>
+expression for the query. After this a number of transformations
+can be applied (for example, identification of property functions)
+but the first step is the application of the algorithm in the
+SPARQL specification for translating a SPARQL query string, as held
+in a <code>Query</code> object into a SPARQL algebra expression. This includes
+the process of removing joins involving the identity pattern (the
+empty graph pattern).</p>
+<p>For example, the query:</p>
+<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?name ?mbox ?nick
+WHERE  { ?x foaf:name  ?name ;
+            foaf:mbox  ?mbox .
+         OPTIONAL { ?x  foaf:nick  ?nick }
+       }
+</code></pre>
+<p>becomes</p>
+<pre><code>(prefix ((foaf: &lt;http://xmlns.com/foaf/0.1/&gt;))
+  (project (?name ?mbox ?nick)
+    (leftjoin
+      (bgp
+        (triple ?x foaf:name ?name)
+        (triple ?x foaf:mbox ?mbox)
+      )
+      (bgp (triple ?x foaf:nick ?nick)
+      )
+    )))
+</code></pre>
+<p>using the <a href="../notes/sse.html">SSE syntax</a> to write out
+the internal data-structure for the algebra.</p>
+<p>The <a href="http://www.sparql.org/validator.html">online SPARQL validator</a>
+at <a href="http://sparql.org/">sparql.org</a> can be used to see the algebra
+expression for a SPARQL query. This validator is also included in
+<a href="../fuseki2/">Fuseki</a>.</p>
+<h3 id="high-level-optimization-and-transformations">High-Level Optimization and Transformations</h3>
+<p>There is a collection of transformations that can be applied to the
+algebra, such as replacing equality filters with a more efficient
+graph pattern and an assignment. When extending ARQ, a query
+processor for a custom storage layout can choose which
+optimizations are appropriate and can also provide its own algebra
+transformations.</p>
+<p>A transform is code that converts an algebra operation into other
+algebra operations. It is applied using the <code>Transformer</code> class:</p>
+<pre><code>Op op = ... ;
+Transform someTransform = ... ;
+op = Transformer.transform(someTransform, op) ;
+</code></pre>
+<p>The <code>Transformer</code> class applies the transform to each operation in
+the algebra expression tree. <code>Transform</code> itself is an interface,
+with one method signature for each operation type, returning a
+replacement for the operator instance it is called on.</p>
+<p>One such transformation is to turn a SPARQL algebra expression
+involving named graphs and triples into one using quads. This
+transformation is performed by a call to <code>Algebra.toQuadForm</code>.</p>
+<p>Transformations proceed from the bottom of the expression tree to
+the top. Algebra expressions are best treated as immutable so a
+change made in one part of the tree should result in a copy of the
+tree above it.  This is automated by the  <code>TransformCopy</code> class
+which is the commonly used base class for writing transforms. The
+other helper base class is <code>TransformBase,</code> which provides the
+identify operation (returns the node supplied) for each transform
+operation.</p>
+<p>Operations can be printed out in
+<a href="../notes/sse.html">SSE</a> syntax. The Java <code>toString</code>
+method is overridden to provide pretty printing and the static
+methods in <code>WriterOp</code> provide output to various output objects like
+<code>java.io.OutputStream</code>.</p>
+<h3 id="low-level-optimization-and-evaluation">Low-Level Optimization and Evaluation</h3>
+<p>The step of evaluating a query is the process of executing the
+algebra expression, as modified by any transformations applied, to
+yield a stream of pattern solutions. Low-level optimizations
+include choosing the order in which to evaluate basic graph
+patterns. These are the responsibility of the custom storage layer.
+Low-level optimization can be carried out dynamically as part of
+evaluation.</p>
+<p>Internally, ARQ uses iterators extensively. Where possible,
+evaluation of an operation is achieved by feeding the stream of
+results from the previous stage into the evaluation. A common
+pattern is to take each intermediate result one at a time (use
+<code>QueryIterRepeatApply</code> to be called for each binding) ,
+substituting the variables of pattern with those in the incoming
+binding, and evaluating to a query iterator of all results for this
+incoming row. The result can be the empty iterator (one that always
+returns false for <code>hasNext</code>). It is also common to not have to
+touch the incoming stream at all but merely to pass it to
+sub-operations.</p>
+<h3 id="query-engines-and-query-engine-factories">Query Engines and Query Engine Factories</h3>
+<p>The steps from algebra generation to query evaluation are carried
+out when a query is executed via the <code>QueryExecution.execSelect</code> or
+other <code>QueryExecution</code> exec operation. It is possible to carry out
+storage-specific operations when the query execution is created. A
+query engine works in conjunction with a <code>QueryExecution</code> created
+by the <code>QueryExecutionFactory</code> to provide the evaluation of a query
+pattern. <code>QueryExecutionBase</code> provides all the machinery for the
+different result types and does not need to be modified by
+extensions to query execution.</p>
+<p>ARQ provides three query engine factories; the main query engine
+factory, one for a reference query engine and one to remotely
+execute a query. SDB and TDB provide their own query engine
+factories which they register during sub-system initialization.
+Both extend the main query engine described below.</p>
+<p>The reference query engine is a direct top-down evaluation of the
+expression. Its purpose is to be simple so it can be easily
+verified and checked then its results used to check more
+complicated processing in the main engine and other
+implementations. All arguments to each operator are fully evaluated
+to produce intermediate in-memory tables then a simple
+implementation of the operator is called to calculate the results.
+It does not scale and does not perform any optimizations. It is
+intended to be clear and simple; it is not designed to be
+efficient.</p>
+<p>Query engines are chosen by referring to the registry of query
+engine factories.</p>
+<pre><code>public interface QueryEngineFactory
+{
+    public boolean accept(Query query, DatasetGraph dataset, Context context) ;
+    public Plan create(Query query, DatasetGraph dataset, Binding inputBinding, Context context) ;
+
+    public boolean accept(Op op, DatasetGraph dataset, Context context) ;
+    public Plan create(Op op, DatasetGraph dataset, Binding inputBinding, Context context) ;
+}
+</code></pre>
+<p>When the query execution factory is given a dataset and query, the
+query execution factory tries each registered engine factory in
+turn calling the <code>accept</code> method (for query or algebra depending on
+how it was presented). The registry is kept in reverse registration
+order - the most recently registered query engine factory is tried
+first. The first query engine factory to return true is chosen and
+no further engine factories are checked.</p>
+<p>When a query engine factory is chosen, the <code>create</code> method is
+called to return a <code>Plan</code> object for the execution. The main
+operation of the <code>Plan</code> interface is to get the <code>QueryIterator</code> for
+the query.</p>
+<p>See the example in
+<code>src-examples/arq.examples.engine.MyQueryEngine</code>.</p>
+<h2 id="the-main-query-engine">The Main Query Engine</h2>
+<p>The main query engine can execute any query. It contains a number
+of basic graph pattern matching implementations including one that
+uses the <code>Graph.find</code> operation so it can work with any
+implementation of the Jena Graph SPI. The main query engine works
+with general purpose datasets but not directly with quad stores; it
+evaluates patterns on each graph in turn. The main query engine
+includes optimizations for the standard Jena implementation of
+in-memory graphs.</p>
+<p>High-level optimization is performed by a sequence of
+transformations. This set of optimizations is evolving. A custom
+implementation of a query engine can reuse some or all of these
+transformations (see <code>Algebra.optimize</code> which is the set of
+transforms used by the main query engine).</p>
+<p>The main query engine is a streaming engine. It evaluates
+expressions as the client consumes each query solution. After
+preparing the execution by creating the initial conditions (a
+partial solution of one row and no bound variables or any initial
+bindings of variables), the main query engine calls <code>QC.execute</code>
+which is the algorithm to execute a query. Any extension that
+wished to reuse some of the main query engine by providing its own
+<code>OpExecutor</code> must call this method to evaluate a sub-operation.</p>
+<p><code>QC.execute</code> finds the currently active <code>OpExecutor</code> factory,
+creates an <code>OpExecutor</code> object and invokes it to evaluate one
+algebra operation.</p>
+<p>There are two points of extension for the main query engine:</p>
+<ul>
+<li>Stage generators, for evaluating basic graph patterns and
+reusing the rest of the engine.</li>
+<li><code>OpExecutor</code> to execute any algebra operator specially.</li>
+</ul>
+<p>The standard <code>OpExecutor</code> invokes the stage generator mechanism to
+match a basic graph pattern.</p>
+<h2 id="graph-matching-and-a-custom-stagegenerator">Graph matching and a custom StageGenerator</h2>
+<p>The correct point to hook into ARQ for just extending basic graph
+pattern matching (BGPs) is to provide a custom <code>StageGenerator</code>. 
+(To hook into filtered basic graph patterns, the extension will
+need to provide its own <code>OpExecutor</code> factory). The advantage of
+the <code>StageGenerator</code> mechanism, as compared to the more general
+<code>OpExecutor</code> described below, is that it more self-contained and
+requires less detail about the internal evaluation of the other
+SPARQL algebra operators.  This extension point corresponds to
+section 12.6
+&ldquo;<a href="http://www.w3.org/TR/sparql11-query/#sparqlBGPExtend">Extending SPARQL Basic Graph Matching</a>&quot;.</p>
+<p>Below is the default code to match a BGP from
+<code>OpExecutor.execute(OpBGP, QueryIterator)</code>. It merely calls fixed
+code in the <code>StageBuilder</code> class.The input is a stream of results
+from earlier stages. The execution must return a query iterator
+that is all the possible ways to match the basic graph pattern for
+each of the inputs in turn. Order of results does not matter. </p>
+<pre><code>protected QueryIterator execute(OpBGP opBGP, QueryIterator input)
+{
+    BasicPattern pattern = opBGP.getPattern() ;
+    return StageBuilder.execute(pattern, input, execCxt) ;
+}
+</code></pre>
+<p>The <code>StageBuilder</code> looks for the stage generator by accessing the
+context for the execution:</p>
+<pre><code>StageGenerator stageGenerator = (StageGenerator)context.get(ARQ.stageGenerator) ;
+</code></pre>
+<p>where the context is the global context and any query execution
+specific additions together with various execution control
+elements.</p>
+<p>A <code>StageGenerator</code> is an implementation of:</p>
+<pre><code>    public interface StageGenerator
+    {
+        public QueryIterator execute(BasicPattern pattern,
+                                     QueryIterator input,
+                                     ExecutionContext execCxt) ;
+    }
+</code></pre>
+<h3 id="setting-the-stage-generator">Setting the Stage Generator</h3>
+<p>An extension stage generator can be registered on a per-query
+execution basis or (more usually) in the global context.</p>
+<pre><code>    StageBuilder.setGenerator(Context, StageGenerator)
+</code></pre>
+<p>The global context can be obtained by a call to <code>ARQ.getContext()</code></p>
+<pre><code>    StageBuilder.setGenerator(ARQ.getContext(), myStageGenerator) ;
+</code></pre>
+<p>In order to allow an extensions to still permit other graphs to be
+used, stage generators are usually chained, with each new custom
+one passing the execution request up the chain if the request is
+not supported by this custom stage generator.</p>
+<pre><code>public class MyStageGenerator implements StageGenerator
+{
+    StageGenerator above = null ;
+
+    public MyStageGenerator (StageGenerator original)
+    { above = original ; }
+
+    @Override
+    public QueryIterator execute(BasicPattern pattern, QueryIterator input, ExecutionContext execCxt)
+    {
+        Graph g = execCxt.getActiveGraph() ;
+        // Test to see if this is a graph we support.
+        if ( ! ( g instanceof MySpecialGraphClass ) )
+            // Not us - bounce up the StageGenerator chain
+            return above.execute(pattern, input, execCxt) ;
+        MySpecialGraphClass graph = (MySpecialGraphClass )g ;
+        // Create a QueryIterator for this request
+     ...
+</code></pre>
+<p>This is registered by setting the global context (<code>StageBuilder</code>
+has a convenience operation to do this):</p>
+<pre><code>  // Get the standard one.
+  StageGenerator orig = (StageGenerator)ARQ.getContext().get(ARQ.stageGenerator) ;
+  // Create a new one
+  StageGenerator myStageGenerator= new MyStageGenerator(orig) ;
+  // Register it
+  StageBuilder.setGenerator(ARQ.getContext(), myStageGenerator) ;
+</code></pre>
+<p>Example: <code>src-examples/arq.examples.bgpmatching</code>.</p>
+<h2 id="opexecutor">OpExecutor</h2>
+<p>A <code>StageGenerator</code> provides matching for a basic graph pattern. If
+an extension wishes to take responsibility for more of the
+evaluation then it needs to work with <code>OpExecutor</code>. This includes
+evaluation of filtered basic graph patterns.</p>
+<p>An example query using a filter:</p>
+<pre><code>PREFIX  dc:   &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX  books: &lt;http://example.org/book/&gt;
+
+SELECT  *
+WHERE
+  { ?book  dc:title  ?title .
+    FILTER regex(?title, &quot;Paddington&quot;)
+  }
+</code></pre>
+<p> results in the algebra expression for the pattern:</p>
+<pre><code>    (filter (regex ?title &quot;Paddington&quot;)
+        (bgp (triple ?book dc:title ?title)
+        ))
+</code></pre>
+<p>showing that the filter is being applied to the results of a basic
+graph pattern matching.</p>
+<p>Note: this is not the way to provide custom filter operations.  See
+the documentation for
+<a href="extension.html#filter-functions">application-provided filter functions</a>.</p>
+<p>Each step of evaluation in the main query engine is performed by a
+<code>OpExecutor</code> and a new one is created from a factory at each step. 
+The factory is registered in the execution context. The
+implementation of a specialized <code>OpExecutor</code> can inherit from the
+standard one and override only those algebra operators it wishes to
+deal with, including inspecting the execution and choosing to
+pass up to the super-class based on the details of the
+operation.  From the query above, only regex filters might be
+specially handled.</p>
+<p>Registering an <code>OpExecutorFactory</code>:</p>
+<pre><code>OpExecutorFactory customExecutorFactory = new MyOpExecutorFactory(...) ;
+QC.setFactory(ARQ.getCOntext(), customExecutorFactory) ;
+</code></pre>
+<p><code>QC</code> is a point of indirection that chooses the execution process at
+each stage in a query so if the custom execution wishes to evaluate
+an algebra operation within another operation, it should call
+<code>QC.execute</code>. Be careful not to loop endlessly if the operation is
+itself handled by the custom evaluator. This can be done by
+swapping in a different <code>OpExecutorFactory</code>.</p>
+<pre><code>   // Execute an operation with a different OpExecution Factory
+
+   // New context.
+   ExecutionContext ec2 = new ExecutionContext(execCxt) ;
+   ec2.setExecutor(plainFactory) ;
+
+   QueryIterator qIter = QC.execute(op, input, ec2) ;
+
+   private static OpExecutorFactory plainFactory =
+      new OpExecutorFactory()
+      {
+         @Override
+         public OpExecutor create(ExecutionContext execCxt)
+         {
+             // The default OpExecutor of ARQ.
+             return new OpExecutor(execCxt) ;
+         }
+      } ;
+</code></pre>
+<h2 id="quads">Quads</h2>
+<p>If a custom extension provides named graphs, then it may be useful
+to execute the quad form of the query. This is done by writing a
+custom query engine and overriding <code>QueryEngineMain.modifyOp</code>:</p>
+<pre><code>  @Override
+  protected Op modifyOp(Op op)
+  {
+     // Cope with initial bindings.
+     op = Substitute.substitute(op, initialInput) ;
+     // Use standard optimizations.
+     op = super.modifyOp(op) ;
+     // Turn into quad form.
+     op = Algebra.toQuadForm(op) ;
+     return op ;
+  }
+</code></pre>
+<p>The extension may need to provide its own dataset implementation so
+that it can detect when queries are directed to its named graph
+storage. <a href="../tdb/">TDB</a> and <a href="../sdb/">SDB</a> are examples of this.</p>
+<h2 id="mixed-graph-implementation-datasets">Mixed Graph Implementation Datasets</h2>
+<p>The dataset implementation used in normal operation does not work
+on quads but instead can provide a dataset with a collection of
+graphs each from different implementation sub-systems. In-memory
+graphs can be mixed with database backed graphs as well as custom
+storage systems. Query execution proceeds per-graph so that an
+custom <code>OpExecutor</code> will need to test the graph to work with to
+make sure it is of the right class. The pattern in the
+<code>StageGenerator</code> extension point is an example of a design pattern in
+that situation.</p>
+<h2 id="custom-query-engines">Custom Query Engines</h2>
+<p>A custom query engine enables an extension to choose which datasets
+it wishes to handle. It also allows the extension to intercept
+query execution during the setup of the execution so it can modify
+the algebra expression, introduce its own algebra extensions,
+choose which high-level optimizations to apply and also transform
+to the expression into quad form. Execution can proceed with the
+normal algorithm or a custom <code>OpExecutor</code> or a custom Stage
+Generator or a combination of all three extension mechanism.</p>
+<p>Only a small, skeleton custom query engine is needed to intercept
+the initial setup. See the example in
+<code>src-examples/arq.examples.engine.MyQueryEngine</code>.</p>
+<p>While it is possible to replace the entire process of query
+evaluation, this is a substantial endeavour. <code>QueryExecutionBase</code>
+provides the machinery for result presentation (<code>SELECT</code>,
+<code>CONSTRUCT</code>, <code>DESCRIBE</code>, <code>ASK</code>), leaving the work of pattern
+evaluation to the custom query engine. <code>QueryExecutionFactory</code>
+assumes that <code>QueryExecutionBase</code> will be used.</p>
+<h2 id="algebra-extensions">Algebra Extensions</h2>
+<p>New operators can be added to the algebra using the <code>OpExt</code> class
+as the super-class of the new operator. They can be inserted into
+the expression to be evaluated using a custom query engine to
+intercept evaluation initialization.  When evaluation of a query
+requires the evaluation of a sub-class of <code>OpExt</code>, the <code>eval</code>
+method is called. SDB uses this to introduce an operator that is
+implemented in SQL.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

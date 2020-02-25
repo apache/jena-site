@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Adding Jena Permissions to Fuseki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/permissions/example.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Adding Jena Permissions to Fuseki</h1>
+            
+	<h2 id="overview">Overview</h2>
+<p>The goal of this document is to add Jena Permissions to a fuseki deployment to restrict access to graph data. This example will take the example application, deploy the data to a fuseki instance and add the Jena Permissions to achieve the same access restrictions that the example application has.</p>
+<p>To do this you will need a Fuseki installation, the Permissions Packages and a SecurityEvaluator implementation. For this example we will use the SecurityEvaluator from the permissions-example.</p>
+<h2 id="set-up">Set up</h2>
+<p>This example uses Fuseki 2.3.0 or higher, Permissions 3.1.0 or higher and Apache Commons Collections v4.</p>
+<p>Fuseki can be downloaded from:
+[https://repository.apache.org/content/repositories/releases/org/apache/jena/apache-jena-fuseki/]</p>
+<p>Jena Permissions jars can be downloaded from:
+[https://repository.apache.org/content/repositories/releases/org/apache/jena/jena-permissions/]</p>
+<ol>
+<li>
+<p>Download and unpack Fuseki. The directory that you unpack Fuseki into will be referred to as the <code>Fuseki Home</code> directory for the remainder of this document.</p>
+</li>
+<li>
+<p>Download the permissions jar and the associated permissions-example jar.</p>
+</li>
+<li>
+<p>Copy the permissions jar and the permissions-example jar into the Fuseki Home directory. For the rest of this document the permissions jar will be referred to as <code>permissions.jar</code> and the permissions-example.jar as <code>example.jar</code></p>
+</li>
+<li>
+<p>Download the Apache Commons Collections v4
+[http://commons.apache.org/proper/commons-collections/download_collections.cgi]
+Uncompress the <code>commons-collections*.jar</code> into the <code>Fuseki Home</code> directory.</p>
+</li>
+<li>
+<p>Add security jars to the startup script/batch file.</p>
+<ul>
+<li>
+<p>On *NIX edit fuseki-server script</p>
+<ol>
+<li>Comment out the line that reads <code>exec java  $JVM_ARGS -jar &quot;$JAR&quot; &quot;$@&quot;</code></li>
+<li>Uncomment the line that reads <code>##   APPJAR=MyCode.jar</code></li>
+<li>Uncomment the line that reads <code>##   java $JVM_ARGS -cp &quot;$JAR:$APPJAR&quot; org.apache.jena.fuseki.cmd.FusekiCmd &quot;$@&quot;</code></li>
+<li>change <code>MyCode.jar</code> to <code>permissions.jar:example.jar:commons-collections*.jar</code></li>
+</ol>
+</li>
+<li>
+<p>On Windows edit fuseki-server.bat file.</p>
+<ol>
+<li>Comment out the line that reads <code>java -Xmx1200M -jar fuseki-server.jar %*</code></li>
+<li>Uncomment the line that reads <code>@REM  java ... -cp fuseki-server.jar;MyCustomCode.jar org.apache.jena.fuseki.cmd.FusekiCmd %*</code></li>
+<li>Change <code>MyCustomCode.jar</code> to <code>permissions.jar;example.jar;commons-collections*.jar</code></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>Run the fuseki-server script or batch file.</p>
+</li>
+<li>
+<p>Stop the server.</p>
+</li>
+<li>
+<p>Extract the example configuration into the newly created <code>Fuseki Home/run</code> directory.
+From the example.jar archive:</p>
+<ul>
+<li>extract <code>/org/apache/jena/permissions/example/example.ttl</code> into the <code>Fuseki Home/run</code> directory</li>
+<li>extract <code>/org/apache/jena/permissions/example/fuseki/config.ttl</code> into the <code>Fuseki Home/run</code> directory</li>
+<li>extract <code>/org/apache/jena/permissions/example/fuseki/shiro.ini</code> into the <code>Fuseki Home/run</code> directory</li>
+</ul>
+</li>
+<li>
+<p>Run <code>fuseki-server –config=run/config.ttl</code> or <code>fuseki-server.bat –config=run/config.ttl</code></p>
+</li>
+</ol>
+<h2 id="review-of-configuration">Review of configuration</h2>
+<p>At this point the system is configured with the following logins:</p>
+<table>
+<tr><th>Login</th><th>password</th><th>Access to</th></tr>
+<tr><td>admin</td><td>admin</td><td>Everything</td></tr>
+<tr><td>alice</td><td>alice</td><td>Only messages to or from alice</td></tr>
+<tr><td>bob</td><td>bob</td><td>Only messages to or from bob</td></tr>
+<tr><td>chuck</td><td>chuck</td><td>Only messages to or from chuck</td></tr>
+<tr><td>darla</td><td>darla</td><td>Only messages to or from darla</td></tr>
+</table>
+<p>The messages graph is defined in the <code>run/example.ttl</code> file.</p>
+<p>The <code>run/shiro.ini</code> file lists the users and their passwords and configures Fuseki to require authentication to access to the graphs.</p>
+<p>The <code>run/config.ttl</code> file adds the permissions to the graph as follows by applying the
+<code>org.apache.jena.permissions.example.ShiroExampleEvaluator</code> security evaluator to the message
+graph.</p>
+<p>Define all the prefixes.</p>
+<pre><code>@prefix fuseki:  &lt;http://jena.apache.org/fuseki#&gt; .
+@prefix tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt; .
+@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
+@prefix perm:    &lt;http://apache.org/jena/permissions/Assembler#&gt; .
+@prefix my:     &lt;http://example.org/#&gt; .
+</code></pre>
+<p>Load the SecuredAssembler class from the permissions library and define the perm:Model as a subclass of ja:NamedModel.</p>
+<pre><code>[] ja:loadClass    &quot;org.apache.jena.permissions.SecuredAssembler&quot; .
+   perm:Model       rdfs:subClassOf  ja:NamedModel .
+</code></pre>
+<p>Define the base model that contains the unsecured data.  This can be any model type.  For our example we use an in memory model that reads the example.ttl file.</p>
+<pre><code>my:baseModel rdf:type ja:MemoryModel;
+    ja:content [ja:externalContent &lt;file:./example.ttl&gt;]
+    .
+</code></pre>
+<p>Define the secured model. This is where permissions is applied to the my:baseModel to create a model that has permission restrictions. Note that it is using the security evaluator implementation (sec:evaluatorImpl) called my:secEvaluator which we will define next.</p>
+<pre><code>my:securedModel rdf:type sec:Model ;
+    perm:baseModel my:baseModel ;
+    ja:modelName &quot;https://example.org/securedModel&quot; ;
+    perm:evaluatorImpl my:secEvaluator .
+</code></pre>
+<p>Define the security evaluator. This is where we use the example ShiroExampleEvaluator. For your production environment you will replace &ldquo;org.apache.jena.security.example.ShiroExampleEvaluator&rdquo; with your SecurityEvaluator implementation. Note that ShiroExampleEvaluator constructor takes a Model argument. We pass in the unsecured baseModel so that the evaluator can read it unencumbered. Your implementation of SecurityEvaluator may have different parameters to meet your specific needs.</p>
+<pre><code>my:secEvaluator rdf:type perm:Evaluator ;
+    perm:args [
+        rdf:_1 my:baseModel ;
+    ] ;
+    perm:evaluatorClass &quot;org.apache.jena.permissions.example.ShiroExampleEvaluator&quot; .
+</code></pre>
+<p>Define the dataset that we will use for in the server.  Note that in the example dataset only contains the single secured model, adding multiple models and missing secured and
+unsecured models is supported.</p>
+<pre><code>my:securedDataset rdf:type ja:RDFDataset ;
+    ja:defaultGraph my:securedModel .
+</code></pre>
+<p>Define the fuseki:Server.</p>
+<pre><code>my:fuseki rdf:type fuseki:Server ;
+    fuseki:services (
+        my:service1
+    ) .
+</code></pre>
+<p>Define the service for the fuseki:Service. Note that the fuseki:dataset served by this server is the secured dataset defined above.</p>
+<pre><code>my:service1 rdf:type fuseki:Service ;
+    rdfs:label                        &quot;My Secured Data Service&quot; ;
+    fuseki:name                       &quot;myAppFuseki&quot; ;       # http://host:port/myAppFuseki
+    fuseki:serviceQuery               &quot;query&quot; ;    # SPARQL query service
+    fuseki:serviceQuery               &quot;sparql&quot; ;   # SPARQL query service
+    fuseki:serviceUpdate              &quot;update&quot; ;   # SPARQL query service
+    fuseki:serviceUpload              &quot;upload&quot; ;   # Non-SPARQL upload service
+    fuseki:serviceReadWriteGraphStore &quot;data&quot; ;     # SPARQL Graph store protocol (read and write)
+    # A separate read-only graph store endpoint:
+    fuseki:serviceReadGraphStore      &quot;get&quot; ;      # SPARQL Graph store protocol (read only)
+    fuseki:dataset                    my:securedDataset ;
+.
+</code></pre>
+<h2 id="review-of-shiroexampleevaluator">Review of ShiroExampleEvaluator</h2>
+<p>The ShiroExampleEvaluator uses triple level permissions to limit access to the &ldquo;messages&rdquo; in the graph to only those people in the message is address to or from.
+It is connected to the Shiro system by the <code>getPrincipal()</code> implementation where it simply calls the Shiro SecurityUtils.getSubject() method to return the current
+shiro user.</p>
+<pre><code>/**
+ * Return the Shiro subject.  This is the subject that Shiro currently has logged in.
+ */
+@Override
+public Object getPrincipal() {
+    return SecurityUtils.getSubject();
+}
+</code></pre>
+<p>This example allows any action on a graph as is seen in the <code>evaluate(Object principal, Action action, Node graphIRI)</code> and <code>evaluateAny(Object principal, Set&lt;Action&gt; actions, Node graphIRI)</code> methods.  This is the first permissions check.  If you wish to restrict users from specific graphs this method should be recoded to perform the check.</p>
+<pre><code>/**
+ * We allow any action on the graph itself, so this is always true.
+ */
+@Override
+public boolean evaluate(Object principal, Action action, Node graphIRI) {
+    // we allow any action on a graph.
+    return true;
+}
+
+/**
+ * As per our design, users can access any graph.  If we were to implement rules that 
+ * restricted user access to specific graphs, those checks would be here and we would 
+ * return &lt;code&gt;false&lt;/code&gt; if they were not allowed to access the graph.  Note that this
+ * method is checking to see that the user may perform ANY of the actions in the set on the
+ * graph.
+ */
+@Override
+public boolean evaluateAny(Object principal, Set&lt;Action&gt; actions, Node graphIRI) {
+    return true;
+}
+</code></pre>
+<p>The other overridden methods are implemented using one of three (3) private methods that evaluate if the user should have access to the data based on our security design.
+To implement your security design you should understand what each of the methods checks.  See the <a href="../javadoc/permissions/org/apache/jena/permissions/SecurityEvaluator.html">SecurityEvaluator</a> javadocs and <a href="./evaluator.html">SecurityEvaluator implementation</a> notes.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

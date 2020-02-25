@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - TDB Architecture</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/tdb/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">TDB Architecture</h1>
+            
+	<p>This page gives an overview of the TDB architecture. Specific
+details refer to TDB 0.8.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#terminology">Terminology</a></li>
+<li><a href="#design">Design</a>
+<ul>
+<li><a href="#the-node-table">The Node Table</a></li>
+<li><a href="#triple-and-quad-indexes">Triple and Quad indexes</a></li>
+<li><a href="#prefixes-table">Prefixes Table</a></li>
+<li><a href="#tdb-btrees">TDB B+Trees</a></li>
+</ul>
+</li>
+<li><a href="#inline-values">Inline values</a></li>
+<li><a href="#query-processing">Query Processing</a></li>
+<li><a href="#caching-on-32-and-64-bit-java-systems">Caching on 32 and 64 bit Java systems</a></li>
+</ul>
+<h2 id="terminology">Terminology</h2>
+<p>Terms like &ldquo;table&rdquo; and &ldquo;index&rdquo; are used in this description. They
+don&rsquo;t directly correspond to concepts in SQL, For example, in SQL
+terms, there is no triple table; that can be seen as just having
+indexes for the table or, alternatively, there are 3 tables, each
+of which has a primary key and TDB manages the relationship between
+them.</p>
+<h2 id="design">Design</h2>
+<p>A dataset backed by TDB is stored in a single directory in the
+filing system. A dataset consists of</p>
+<ul>
+<li>The node table</li>
+<li>Triple and Quad indexes</li>
+<li>The prefixes table</li>
+</ul>
+<h3 id="the-node-table">The Node Table</h3>
+<p>The node table stores the representation of RDF terms (except for
+inlined value - see below). It provides two mappings from Node to
+NodeId and from NodeId to Node. This is sometimes called a
+dictionary.</p>
+<p>The Node to NodeId mapping is used during data loading and when
+converting constant terms in queries from their Jena Node
+representation to the TDB-specific internal ids.</p>
+<p>The NodeId to Node mapping is used to turn query results expressed
+as TDB NodeIds into the Jena Node representation and also during
+query processing when filters are applied if the whole node
+representation is needed for testing (e.g. regex).</p>
+<p>Node table implementations usually provide a large cache - the
+NodeId to Node mapping is heavily used in query processing yet the
+same NodeId can appear in many query results.</p>
+<p>NodeIds are 8 byte quantities. The Node to NodeId mapping is based
+on hash of the Node (a 128 bit MD5 hash - the length was found not
+to major performance factor).</p>
+<p>The default storage of the node table is a sequential access file
+for the NodeId to Node mapping and a B+Tree for the Node to NodeId
+mapping.</p>
+<h3 id="triple-and-quad-indexes">Triple and Quad indexes</h3>
+<p>Quads are used for named graphs, triples for the default graph.
+Triples are held as 3-tuples of NodeIds in triple indexes - quads
+as 4-tuples. Otherwise they are handled in the same manner.</p>
+<p>The triple table is 3 indexes - there is no distinguished triple
+table with secondary indexes. Instead, each index has all the
+information about a triple.</p>
+<p>The default storage of each indexes</p>
+<h3 id="prefixes-table">Prefixes Table</h3>
+<p>The prefixes table uses a node table and a index for GPU
+(Graph-&gt;Prefix-&gt;URI). It is usually small. It does not take part
+in query processing. It provides support for Jena&rsquo;s PrefixMappings
+used mainly for presentation and for serialisation of triples in
+<a href="http://www.w3.org/TR/REC-rdf-syntax/" title="http://www.w3.org/TR/REC-rdf-syntax/">RDF/XML</a>
+or
+<a href="http://www.w3.org/TeamSubmission/turtle/" title="http://www.w3.org/TeamSubmission/turtle/">Turtle</a>.</p>
+<h3 id="tdb-btrees">TDB B+Trees</h3>
+<p>Many of the persistent data structures in TDB use a custom
+implementation of threaded
+<a href="http://en.wikipedia.org/wiki/B+_tree" title="http://en.wikipedia.org/wiki/B%2B_tree">B+Trees</a>.
+The TDB implementation only provides for fixed length key and fixed
+length value. There is no use of the value part in triple indexes.</p>
+<p>The threaded nature means that long scans of indexes proceeds
+without needing to traverse the branches of the tree.</p>
+<p>See the description of index caching below.</p>
+<h2 id="inline-values">Inline values</h2>
+<p>Values of certain datatypes are held as part of the NodeId in the
+bottom 56 bits. The top 8 bits indicates the type - external NodeId
+or the value space.</p>
+<p>The value spaces handled are (TDB 0.8): xsd:decimal, xsd:integer,
+xsd:dateTime, xsd:date and xsd:boolean. Each has its own encoding
+to fit in 56 bits. If a node falls outside of the range of values
+that can be represented in the 56 bit encoding.</p>
+<p>The xsd:dateTime and xsd:date ranges cover about 8000 years from
+year zero with a precision down to 1 millisecond. Timezone
+information is retained to an accuracy of 15 minutes with special
+timezones for Z and for no explicit timezone.</p>
+<p>By storing the value, the exact lexical form is not recorded. The
+integers 01 and 1 will both be treated as the value 1.</p>
+<p>Derived XSD datatypes are held as their base type. The exact
+datatype is not retained; the value of the RDF term is.</p>
+<h2 id="query-processing">Query Processing</h2>
+<p>TDB uses the
+<a href="TODO">OpExecutor extension point of ARQ</a>.
+TDB provides low level optimization of basic graph patterns using a
+<a href="optimizer.html" title="TDB/Optimizer">statistics based optimizer</a>.</p>
+<h2 id="caching-on-32-and-64-bit-java-systems">Caching on 32 and 64 bit Java systems</h2>
+<p>TDB runs on both 32-bit and 64-bit Java Virtual Machines. The same
+file formats are used on both systems and database files can be
+transferred between architectures (no TDB system should be running
+for the database at the time of copy). What differs is the file
+access mechanism used.</p>
+<p>TDB is faster on a 64 bit JVM because more memory is available for
+file caching.</p>
+<p>The node table caches are always in the Java heap.</p>
+<p>The file access mechanism can be set explicitly, but this is not a
+good idea for production usage, only for experimentation - see the
+<a href="configuration.html#File_Access_Mode" title="TDB/Configuration">File Access mode option</a>.</p>
+<p>On 64-bit Java, TDB uses memory mapped files, accessed 8M segments,
+and the operating system handles caching between RAM and disk. The
+amount of RAM used for file caching increases and decreases as
+other application run on the machine. The fewer other programs
+running on the machine, the more RAM will be available for file
+caching. The mapped address space counts as part of the application
+processes memory usage but this space is not part of the Java
+heap.</p>
+<p>On a 32 bit JVM, this approach does not work because Java
+addressing is limited to about 1.5Gbytes (the exact figure is JVM
+specific and includes any memory mapped file usage) and this would
+limit the size of TDB datasets. Instead, TDB provides an in-heap
+LRU cache of B+Tree blocks. Applications should set the JVM heap to
+1G or above (within the JVM specific limit).</p>
+<p>On 32-bit Java, TDB uses its own file caching to enable large
+databases. 32-bit Java limits the address space of the JVM to about
+1.5Gbytes (the exact size is JVM-dependent), and this includes
+memory mapped files, even though they are not in the Java heap. The
+JVM heap size may need to be increased to make space for the disk
+caches used by TDB.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Reification HowTo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/reification.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Reification HowTo</h1>
+            
+	<h2 id="introduction">Introduction</h2>
+<p>This document describes the Jena API support for reification.
+it.  As always, consult the Javadoc for interface
+details.</p>
+<p>Reification in RDF and Jena is the ability to treat a <code>Statement</code>
+as a <code>Resource</code>, and hence to make assertions <em>about</em> that
+statement. A statement may be reified as many different resources,
+allowing different manifestations (&ldquo;statings&rdquo;) of that statement to
+be treated differently if required.</p>
+<p>RDF represents a reified statement as four statements with
+particular RDF properties and objects: the statement <code>(S, P, O)</code>,
+reified by resource <code>R</code>, is represented by:</p>
+<ul>
+<li><code>R rdf:type rdf:Statement</code></li>
+<li><code>R rdf:subject S</code></li>
+<li><code>R rdf:predicate P</code></li>
+<li><code>R rdf:object O</code></li>
+</ul>
+<p>We shall call these four such statements a <em>reification quad</em> and
+the components <em>quadlets</em>. Users of reification in Jena may, by
+default, simply manipulate reified statements as these quads.
+However, just as for <code>Bag</code>, <code>Seq</code>, <code>Alt</code> and <code>RDF lists</code> in
+ordinary models, or ontology classes and individuals in
+<code>OntModel</code>s, Jena has additional support for manipulating reified
+statements.</p>
+<p>The interface <code>ReifiedStatement</code> is used to represent a reified
+statement as a Jena <code>Resource</code> that has direct access to the
+statement it reifies. The method</p>
+<ul>
+<li><code>ReifiedStatement::getStatement()</code></li>
+</ul>
+<p>returns the <code>Statement</code> that the resource is reifying. All the
+other <code>Resource</code> methods, of course, may be applied to a
+<code>ReifiedStatement</code>.</p>
+<h2 id="converting-resources-to-reified-statements">Converting resources to reified statements</h2>
+<p>If a resource <code>R</code> is associated with a reified statement, but might
+not itself be a <code>ReifiedStatement</code> object, the conversion method
+<code>RDFNode::as(Class)</code> can be used to find (or create) a
+<code>ReifiedStatement</code>:</p>
+<ul>
+<li><code>(ReifiedStatement) R.as(ReifiedStatement.class)</code></li>
+</ul>
+<p>For example, a model that has been read in from an RDF/XML file may
+have reified statements: knowing the name of the resource allows a
+ReifiedStatement object to be constructed without knowing the
+statement itself.</p>
+<p>If there is no such associated reified statement, a
+<code>CannotReifyException</code> is thrown. To find out in advance if the
+conversion is possible, use the predicate
+<code>RDFNode::canAs(ReifiedStatement.class)</code>. (Jena only counts as &ldquo;an
+associated reified statement&rdquo; a resource with exactly one
+<code>rdf:subject</code>, <code>rdf:predicate</code>, and <code>rdf:object</code> which has
+<code>rdf:type rdf:Statement</code>. It can of course have <em>other</em>
+properties.)</p>
+<h2 id="testing-statements-for-reification">Testing statements for reification</h2>
+<p>You may wish to know if some <code>Statement</code> is reified. The methods
+<code>Statement::isReified()</code> and <code>Model::isReified(Statement)</code> return
+true if (and only if) the statement has been reified in the model.
+Note that the <code>Statement</code> method tests to see if the statement is
+reified in its own model, and the model method tests to see if the
+<code>Statement</code> is reified in <em>that</em> model; there is no test to see if
+a <code>Statement</code> is reified in any other models.</p>
+<h2 id="listing-reified-statements">Listing reified statements</h2>
+<p>Just as <code>listStatements</code> is used to find the statements present in
+some model, there are methods for finding the reified statements of
+a model. Each of them returns a <code>RSIterator</code> object, which is an
+iterator each of who&rsquo;s elements are <code>ReifiedStatement</code>s and for
+which the convenience method <code>nextRS()</code> will deliver a
+suitably-cast reified statement.</p>
+<ul>
+<li><code>Statement::listReifiedStatements()</code> - all the reifications of
+this statement in its model.</li>
+<li><code>Model::listReifiedStatements()</code> - all the reified statements
+in this model.</li>
+<li><code>Model::listReifiedStatements(Statement s)</code> - all the reified
+statements reifiying <code>s</code> in this model.</li>
+</ul>
+<h2 id="creating-reified-statements-directly">Creating reified statements directly</h2>
+<p>You do not have to create reified statements by asserting the
+quad into a <code>Model</code>; they can be created directly from their
+<code>Statement</code>s using one of the methods:</p>
+<ul>
+<li><code>Statement::createReifiedStatement()</code></li>
+<li><code>Statement::createReifiedStatement(String)</code></li>
+<li><code>Model::createReifiedStatement(Statement)</code></li>
+<li><code>Model::createReifiedStatement(String,Statement)</code></li>
+</ul>
+<p>Each of these returns a <code>ReifiedStatement</code> who&rsquo;s <code>getStatement()</code>
+method delivers the original statement (actually, a <code>.equals()</code>
+statement; it may not be the identical statement object). If the creation
+method passed in a (non-null) <code>String</code>, the <code>ReifiedStatement</code> is a
+named resource and that string is its URI. Otherwise it is a
+newly-minted bnode. The methods on <code>Statement</code> create a reified
+statement in that statements model; those on <code>Model</code> create a
+reified statement in that model.</p>
+<p>It is not permitted for two different (non-equals) statements to be
+reified onto the same resource. An attempt to do so will generate
+an <code>AlreadyReifiedException</code>.</p>
+<p>The additional method <code>Model::getAnyReifiedStatement(Statement)</code>
+returns some reification of the supplied <code>Statement</code>; an existing
+one if possible, otherwise a fresh one (reified by a fresh bnode).</p>
+<h2 id="removing-reified-statements">Removing reified statements</h2>
+<p>There are two methods which remove all the reifications of a
+<code>Statement</code> in some <code>Model</code>:</p>
+<ul>
+<li><code>Statement::removeReification()</code></li>
+<li><code>Model::removeAllReifications(Statement)</code></li>
+</ul>
+<p>All the reified statements in the model that reify the given
+statement are removed, whatever their reifying resource. To remove
+a particular reified statement only, use</p>
+<ul>
+<li><code>Model::removeReification(ReifiedStatement)</code></li>
+</ul>
+<h2 id="reification-styles">Reification styles</h2>
+<p>Prior to version 2.10.0 of Jena, there were 3 styles of reification,
+&ldquo;standard&rdquo;, &ldquo;minimal&rdquo; and &ldquo;convenient&rdquo;.  As of 2.10.0 and later, only
+what was previously the &ldquo;standard&rdquo; style is supported.</p>
+<p>The old documentation is <a href="reification_previous.html">still available</a>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

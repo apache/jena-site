@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Tutorial - Manipulando SPARQL usando ARQ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/manipulating_sparql_using_arq_pt.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Tutorial - Manipulando SPARQL usando ARQ</h1>
+            
+	<p>Quando você começa a trabalhar com SPARQL você rapidamente descobre que queries estáticas são restritivas.
+Talvez você queira mudar um valor, adicionar um filtro, alterar o limite, etc. Sendo do tipo impaciente,
+você começa a manipular a string da query e isso funciona. Mas o que dizer de little Bobby Tables?
+Além do mais, mesmo que você limpe ao máximo suas entradas, manipulação de strings é um processo
+tenso e erros de sintaxe esperam por você. Muito embora possa parecer mais difícil do que string munging,
+a API ARQ é sua amiga na longa jornada.</p>
+<p><em>Originalmente publicado em  <a href="http://researchrevealed.ilrt.bris.ac.uk/?p=35">Research Revealed project
+blog</a></em></p>
+<h2 id="inserindo-valores-comandos-simples-prontos">Inserindo valores (comandos simples prontos)</h2>
+<p>Vamos começar com algo simples. Suponha que nós queiramos restringir a query a seguir a uma pessoa (person) em particular:</p>
+<pre><code>   select * { ?person &lt;http://xmlns.com/foaf/0.1/name&gt; ?name }
+</code></pre>
+<p><code>String#replaceAll</code> deveria funcionar, mas existe um jeito mais seguro.
+<code>QueryExecutionFactory</code> em muitos casos, permite que você alimente uma  <code>QuerySolution</code>
+com a qual você pode prefixar valores.</p>
+<pre><code>   QuerySolutionMap initialBinding = new QuerySolutionMap();
+   initialBinding.add(&quot;name&quot;, personResource);
+   qe = QueryExecutionFactory.create(query, dataset, initialBinding);
+</code></pre>
+<p>Isto geralmente é muito mais simples do que a string equivalente desde que você não tenha usar aspas para
+citações. (Esteja ciente de que isto não funciona para
+<code>sparqlService</code>, o que é uma pena. Seria legal gastar algum tempo consertando isto.)</p>
+<h2 id="fazendo-uma-query-a-partir-do-zero">Fazendo uma Query a partir do zero</h2>
+<p>As limitações previamente mencionadas se devem ao fato de que prefixação na verdade não muda a query em nada,
+apenas a execução daquela query. Então, como nós realmente alteramos queries?</p>
+<p>ARQ provê duas maneiras de se trabalhar com queries: no nível de sintaxe  (<code>Query</code>
+and <code>Element</code>), ou no nível algébrico  (<code>Op</code>). A distinção entre eles fica claro com os filtros:</p>
+<pre><code>   SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }
+</code></pre>
+<p>Se você trabalha no nível de sintaxe, você irá descobrir que isso (em pseudo código) se parece com :</p>
+<pre><code>   (GROUP (PATTERN ( ?s &lt;http://example.com/val&gt; ?val )) (FILTER ( &lt; ?val 20 ) ))
+</code></pre>
+<p>Isto é, existe um grupo contendo um padrão triplo e um filtro, do mesmo jeito que você vê na query.
+A álgebra é diferente e nós podemos vê-la usando  <code>arq.qparse --print op</code></p>
+<pre><code>   $ java arq.qparse --print op 'SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }'
+   (base &lt;file:///...&gt;
+       (project (?s)
+           (filter (&lt; ?val 20)
+               (bgp (triple ?s &lt;http://example.com/val&gt; ?val)))))
+</code></pre>
+<p>Aqui o filtro contém o padrão, ao invés de se situar próximo a ele. Esta forma torna claro que a expressão
+está filtrando o padrão.</p>
+<p>Vamos criar esta query do zero usando ARQ. Nós começamos com algumas partes comuns: a tripla a ser comparada
+e a expressão a ser filtrada.</p>
+<pre><code>   // ?s ?p ?o .
+   Triple pattern =
+       Triple.create(Var.alloc(&quot;s&quot;), Var.alloc(&quot;p&quot;), Var.alloc(&quot;o&quot;));
+   // ( ?s &lt; 20 )
+   Expr e = new E_LessThan(new ExprVar(&quot;s&quot;), new NodeValueInteger(20));
+</code></pre>
+<p><code>Triple</code> deveria ser familiar de Jena.  <code>Var</code> é uma extensão de <code>Node</code>
+para variáveis. <code>Expr</code> é a interface raíz para expressões, aquelas coisas que aparecem em <code>FILTER</code> and <code>LET</code>.</p>
+<p>Primeiro, o caminho da sintaxe:</p>
+<pre><code>   ElementTriplesBlock block = new ElementTriplesBlock(); // Make a BGP
+   block.addTriple(pattern);                              // Add our pattern match
+   ElementFilter filter = new ElementFilter(e);           // Make a filter matching the expression
+   ElementGroup body = new ElementGroup();                // Group our pattern match and filter
+   body.addElement(block);
+   body.addElement(filter);
+
+   Query q = QueryFactory.make();
+   q.setQueryPattern(body);                               // Set the body of the query to our group
+   q.setQuerySelectType();                                // Make it a select query
+   q.addResultVar(&quot;s&quot;);                                   // Select ?s
+</code></pre>
+<p>Agora a álgebra:</p>
+<pre><code>   Op op;
+   BasicPattern pat = new BasicPattern();                 // Make a pattern
+   pat.add(pattern);                                      // Add our pattern match
+   op = new OpBGP(pat);                                   // Make a BGP from this pattern
+   op = OpFilter.filter(e, op);                           // Filter that pattern with our expression
+   op = new OpProject(op, Arrays.asList(Var.alloc(&quot;s&quot;))); // Reduce to just ?s
+   Query q = OpAsQuery.asQuery(op);                       // Convert to a query
+   q.setQuerySelectType();                                // Make is a select query
+</code></pre>
+<p>Note que o tipo da query  (<code>SELECT, CONSTRUCT, DESCRIBE, ASK</code>)não é parte da álgebra,
+e que nós temos que configurar isso na query (embora SELECT seja o padrão).  <code>FROM</code> e <code>FROM NAMED</code>
+estão igualmente ausentes.</p>
+<h2 id="navegando-e-aprendendo-visitors">Navegando e Aprendendo: Visitors</h2>
+<p>Você também pode olhar para a álgebra e a sintaxe usando vistors. Comece estendendo <code>OpVisitorBase</code>
+(<code>ElementVisitorBase</code>) que apaga a interface de modo que você pode se concentrar nas partes de interesse,
+então dê um passo a frente e use <code>OpWalker.walk(Op, OpVisitor)</code>
+(<code>ElementWalker.walk(Element, ElementVisitor)</code>). Isso funciona no esquema “bottom up” (de baixo para cima).</p>
+<p>Para algumas alterações, como manipulação de padrões triplos no local, visitors irão trabalhar bem.
+Eles provêm um jeito simples de manipular as partes certas da query e você pode alterar as BGPs backing
+padrões  tanto na álgebra quanto na sintaxe. Entretanto, mutações (mutation) não estão consistentemente
+disponíveis, não conte com elas.</p>
+<h2 id="transformando-a-álgebra">Transformando a Álgebra</h2>
+<p>A primeira vista, não há vantagens óbvias em usar a álgebra. O real poder fica claro com o uso de
+transformers (transformações), que lhe permitem reorganizar uma álgebra completamente. ARQ faz amplo
+uso de transformers para simplificar e aperfeiçoar execuções de query.</p>
+<p>Em Research Revealed (Pesquisa revelada, em tradução livre), eu escrevi algum código para pegar certo
+número de constraints (constantes) e produzir uma query. Havia várias formas de se fazer isto, mas o
+jeito que eu achei foi gerar ops de cada constraint e juntar o resultado.</p>
+<pre><code>   for (Constraint con: cons) {
+       op = OpJoin.create(op, consToOp(cons)); // join
+   }
+</code></pre>
+<p>O resultado foi uma bagunça incrivelmente correta, que é remotamente compreensível em apenas três condições:</p>
+<pre><code>   (join
+       (join
+           (filter (&lt; ?o0 20) (bgp (triple ?s &lt;urn:ex:prop0&gt; ?o0)))
+           (filter (&lt; ?o1 20) (bgp (triple ?s &lt;urn:ex:prop1&gt; ?o1))))
+       (filter (&lt; ?o2 20) (bgp (triple ?s &lt;urn:ex:prop2&gt; ?o2))))
+</code></pre>
+<p>Cada uma das constraints é um filtro e um bgp. Isso pode ser muito mais compreensível removendo os
+filtros e juntando (merging) os padrões triplos. Nós podemos fazer isso usando  <code>Transform</code>:</p>
+<pre><code>   class QueryCleaner extends TransformBase
+   {
+       @Override
+       public Op transform(OpJoin join, Op left, Op right) {
+           // Bail if not of the right form
+           if (!(left instanceof OpFilter &amp;&amp; right instanceof OpFilter)) return join;
+           OpFilter leftF = (OpFilter) left;
+           OpFilter rightF = (OpFilter) right;
+
+           // Add all of the triple matches to the LHS BGP
+           ((OpBGP) leftF.getSubOp()).getPattern().addAll(((OpBGP) rightF.getSubOp()).getPattern());
+           // Add the RHS filter to the LHS
+           leftF.getExprs().addAll(rightF.getExprs());
+           return leftF;
+       }
+   }
+   ...
+   op = Transformer.transform(new QueryCleaner(), op); // clean query
+</code></pre>
+<p>O código abaixo procura pelos  joins do formulário:</p>
+<pre><code>   (join
+       (filter (exp1) (bgp1))
+       (filter (exp2) (bgp2)))
+</code></pre>
+<p>E substitui ele com:</p>
+<pre><code>   (filter (exp1 &amp;&amp; exp2) (bgp1 &amp;&amp; bgp2))
+</code></pre>
+<p>Enquanto nós percorremos a query original, todos os joins são removidos e o resultado final é:</p>
+<pre><code>   (filter (exprlist (&lt; ?o0 20) (&lt; ?o1 20) (&lt; ?o2 20))
+       (bgp
+           (triple ?s &lt;urn:ex:prop0&gt; ?o0)
+           (triple ?s &lt;urn:ex:prop1&gt; ?o1)
+           (triple ?s &lt;urn:ex:prop2&gt; ?o2)
+   ))
+</code></pre>
+<p>Isto completa esta breve introdução. Existe muito mais em ARQ, claro, mas esperamos que você tenha tido um gostinho do que ele pode fazer.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

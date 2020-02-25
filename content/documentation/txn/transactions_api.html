@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Jena Transactions API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/breadcrumbs.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/txn/transactions_api.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs"></div>
+            <h1 class="title">Jena Transactions API</h1>
+            
+	<ul>
+<li><a href="#api-for-transactions">API for Transactions</a>
+<ul>
+<li><a href="#read-transactions">Read transactions</a></li>
+<li><a href="#write-transactions">Write transactions</a></li>
+<li><a href="#types-modes-promotion">Transaction promotion</a></li>
+</ul>
+</li>
+<li><a href="txn.html">Txn</a> - A higher level API to transactions</li>
+</ul>
+<h2 id="api-for-transactions">API for Transactions</h2>
+<p>This page describes the basic transaction API in Jena (3.1.0 and later).</p>
+<p>There is also a <a href="txn.html">higher-level API</a> useful in many situations
+but sometimes it is necessary to use the basic transaction API described here.</p>
+<h3 id="read-transactions">Read transactions</h3>
+<p>These are used for SPARQL queries and code using the Jena API
+actions that do not change the data.  The general pattern is:</p>
+<pre><code> dataset.begin(ReadWrite.READ) ;
+ try {
+   ...
+ } finally { dataset.end() ; }
+</code></pre>
+<p>The <code>dataset.end()</code> declares the end of the read transaction.  Applications may also call
+<code>dataset.commit()</code> or <code>dataset.abort()</code> which all have the same effect for a read transaction.</p>
+<p>This example has two queries - no updates between or during the queries will be seen by
+this code even if another thread commits changes in the lifetime of this transaction.</p>
+<pre><code> Dataset dataset = ... ;
+ dataset.begin(ReadWrite.READ) ;
+ try {
+     String qs1 = &quot;SELECT * {?s ?p ?o} LIMIT 10&quot; ;        
+     try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
+         ResultSet rs = qExec.execSelect() ;
+         ResultSetFormatter.out(rs) ;
+     }
+
+     String qs2 = &quot;SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10&quot; ;  
+     try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
+         rs = qExec.execSelect() ;
+         ResultSetFormatter.out(rs) ;
+     }
+ } finally { dataset.end() ; }
+</code></pre>
+<h3 id="write-transactions">Write transactions</h3>
+<p>These are used for SPARQL queries, SPARQL updates and any Jena API
+actions that modify the data.  Beware that large <code>model.read</code>
+operations to change a dataset may consume large amounts of temporary space.</p>
+<p>The general pattern is:</p>
+<pre><code> dataset.begin(ReadWrite.WRITE) ;
+ try {
+   ...
+   dataset.commit() ;
+ } finally {
+   dataset.end() ;
+ }
+</code></pre>
+<p>The  <code>dataset.end()</code> will abort the transaction is there was no call to
+<code>dataset.commit()</code> or <code>dataset.abort()</code> inside the write transaction.</p>
+<p>Once <code>dataset.commit()</code> or <code>dataset.abort()</code> is called, the application
+needs to start a new transaction to perform further operations on the
+dataset.</p>
+<pre><code> Dataset dataset = ... ;
+ dataset.begin(TxnType.WRITE) ;
+
+ try {
+     Model model = dataset.getDefaultModel() ;
+     // API calls to a model in the dataset
+
+     // Make some changes via the model ...
+     model.add( ... )
+
+     // A SPARQL query will see the new statement added.
+     try (QueryExecution qExec = QueryExecutionFactory.create(
+             &quot;SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10&quot;,
+           dataset)) {
+         ResultSet rs = qExec.execSelect() ;
+         ResultSetFormatter.out(rs) ;
+     }
+
+     // ... perform a SPARQL Update
+     GraphStore graphStore = GraphStoreFactory.create(dataset) ;
+     String sparqlUpdateString = StrUtils.strjoinNL(
+          &quot;PREFIX . &lt;http://example/&gt;&quot;,
+          &quot;INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }&quot;
+          ) ;
+
+     UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
+     UpdateProcessor proc = UpdateExecutionFactory.create(request, graphStore) ;
+     proc.execute() ;
+
+     // Finally, commit the transaction.
+     dataset.commit() ;
+     // Or call .abort()
+    } finally {
+        dataset.end() ;
+    }
+</code></pre>
+<h2 id="types-modes-promotion">Transaction Types, Modes and Promotion.</h2>
+<p>Transaction hava type (enum <code>TxnType</code>) and a mode (enum <code>ReadWrite</code>).
+<code>TxnType.READ</code> and <code>TxnType.Write</code> strart the transaction in
+that mode and it is fixed fro the transaction&rsquo;s lifetime. A <code>READ</code>
+trasnaction can never update the data of the transactional object it is
+acting on.</p>
+<p>Transactiosn can have type <code>TxnType.READ_PROMOTE</code> and
+<code>TxnType.READ_COMMITTED_PROMOTE</code>. These start in mode <code>READ</code> but can
+become mode <code>WRITE</code>, either implicitly by attempting an update, or
+explicitly by calling <code>promote</code>.</p>
+<p><code>READ_PROMOTE</code> only succeeds if no writer has made any changes since
+this transaction started. It gives full isolation.</p>
+<p><code>READ_COMMITTED_PROMOTE</code> always succeeds because it changes the view of
+the data to include any changes made up to that point (it is &ldquo;read
+committed&rdquo;). Applicationd should be aware that data they have read up
+until the point of promotion (the first call or <code>.promote</code> or first
+update made) may now be invalid. For this reason, <code>READ_PROMOTE</code> is preferred.</p>
+<p><code>begin()</code>, the method with no arguments, is equivalent to
+<code>begin(TxnType.READ_PROMOTE)</code>.</p>
+<h2 id="multi-threaded-use">Multi-threaded use</h2>
+<p>Each dataset object has one transaction active at a time per thread.
+A dataset object can be used by different threads, with independent transactions.</p>
+<p>The usual idiom within multi-threaded applications is to have
+one dataset, and so there is one transaction per thread.</p>
+<p>Either:</p>
+<pre><code> // Create a dataset and keep it globally.
+ static Dataset dataset = TDBFactory.createDataset(location) ;
+</code></pre>
+<p>Thread 1:</p>
+<pre><code> dataset.begin(TxnType.WRITE) ;
+ try {
+   ...
+   dataset.commit() ;
+ } finally { dataset.end() ; }
+</code></pre>
+<p>Thread 2:</p>
+<pre><code> dataset.begin(TxnType.READ) ;
+ try {
+   ...
+ } finally { dataset.end() ; }
+</code></pre>
+<p>It is possible (in TDB) to create different dataset objects to the same location.</p>
+<p>Thread 1:</p>
+<pre><code> Dataset dataset = TDBFactory.createDataset(location) ;
+ dataset.begin(TxnType.WRITE) ;
+ try {
+   ...
+   dataset.commit() ;
+ } finally { dataset.end() ; }
+</code></pre>
+<p>Thread 2:</p>
+<pre><code> Dataset dataset = TDBFactory.createDataset(location) ;
+ dataset.begin(TxnType.READ) ;
+ try {
+   ...
+ } finally { dataset.end() ; }
+</code></pre>
+<p>Each thread has a separate <code>dataset</code> object; these safely share the
+same storage and have independent transactions.</p>
+<h2 id="multi-jvm">Multi JVM</h2>
+<p>Multiple applications, running in multiple JVMs, using the same file
+databases is not supported and has a high risk of data corruption.  Once
+corrupted a database cannot be repaired and must be rebuilt from the
+original source data. Therefore there <strong>must</strong> be a single JVM
+controlling the database directory and files.  From 1.1.0 onwards TDB
+includes automatic prevention against multi-JVM which prevents this
+under most circumstances.</p>
+<p>Use our <a href="../fuseki2/">Fuseki</a> component to provide a
+database server for multiple applications. Fuseki supports
+<a href="http://www.w3.org/TR/sparql11-query/">SPARQL Query</a>,
+<a href="http://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the
+<a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store protocol</a>.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2020 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>
