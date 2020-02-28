@@ -1,0 +1,41 @@
+---
+title: TDB with 64-bit and 32-bit JVMs
+---
+
+TDB runs on both 32-bit and 64-bit Java Virtual Machines. The same
+file formats are used on both systems and database files can be
+transferred between architectures (no TDB system should be running
+for the database at the time of copy). The difference is that a
+different file access mechanism used.
+
+The file access mechanism can be set explicitly, but this is not a
+good idea for production usage, only for experimentation - see the
+[File Access mode option](configuration.html#file_access_mode).
+
+## 64-bit Java
+
+On 64-bit Java, TDB uses memory mapped files and the operating
+system handles much of the caching between RAM and disk. The amount
+of RAM used for file caching increases and decreases as other
+application run on the machine. The fewer other programs running on
+the machine, the more RAM will be available for file caching.
+
+TDB is faster on a 64 bit JVM because more memory is available for
+file caching.
+
+## 32-bit Java
+
+On 32-bit Java, TDB uses its own file caching to enable large
+databases. 32-bit Java limits the address space of the JVM to about
+1.5Gbytes (the exact size is JVM-dependent), and this includes
+memory mapped files, even though they are not in the Java heap. The
+JVM heap size may need to be increased to make space for the disk
+caches used by TDB.
+
+## Disk Format
+
+The on-disk file format is compatible between 32 and 64 bit systems
+and databases can be transferred between systems by file copy if the
+databases are not in use (no TDB or Fuseki instance is accessing them
+at the time).  Databases can not be copied while TDB is running, even
+if TDB is not actively processing a query or update.

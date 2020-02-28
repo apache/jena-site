@@ -1,0 +1,285 @@
+---
+title: A brief guide to Jena Eyeball
+---
+
+<b>This page is historical "for information only" - there is no Apache
+release of Eyeball and the code has not been updated for Jena3.  
+<br/>
+The [original source code is available](https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/).
+</b>
+
+So you've got Eyeball installed and you've run it on one of your
+files, and Eyeball doesn't like it. You're not sure why, or what to
+do about it. Here's what's going on.
+
+Eyeball inspects your model against a set of *schemas*. The default
+set of schemas includes RDF, RDFS, the XSD datatypes, and any
+models your model imports: you can add additional schemas from the
+command line or configuration file. Eyeball uses those schemas to
+work out what URIs count as "declared" in advance. It also checks
+URIs and literals for syntactic correctness and name space prefixes
+for being "sensible". Let's look at some of the messages you can
+get.
+
+## Unknown predicate reports
+
+You'll probably find several messages like this:
+    predicate not declared in any schema: somePredicateURI
+
+Eyeball treats the imported models, and (independently) the
+specified schemas, as single OntModels, and extracts those
+OntModels' properties. It includes the RDF and RDFS schemas.
+Anything used as a predicate that isn't one of those properties is
+reported.
+
+If you're using OWL, you can silence the "undeclared property"
+messages about OWL properties by adding to your Eyeball command
+line the option:
+    -assume owl
+
+Eyeball will read the OWL schema (it has a copy stashed away in the
+*mirror* directory) and add the declared properties to its known
+list. This works for any filename or URL you like, so long as
+there's RDF there and it has a suitable file suffix - *.n3* for N3
+or *.rdf* or *.owl* for RDF/XML - and for the built-in names *dc*
+(basic Dublin Core), *dcterms* (Dublin Core terms) and *dc-all*
+(both). So you can construct your own schemas, which declare your
+own domain-specific property declarations, and invoke Eyeball with
+
+    -assume owl *mySchemaFile.n3* *otherSchemaFile.rdf*
+
+You can give short names (like **dc** and **rdfs**) to your own
+schemas, or collections of schemas, using an Eyeball *config file*,
+but you'll have to see the [manual](eyeball-manual.html) to find out how.
+
+## Unknown class reports
+
+You may see messages like this:
+
+    class not declared in any schema: someClassURI
+
+Having read the previous section, you can probably work out what's
+going on: Eyeball reads the schemas (and imports) and extracts the
+declared OntClasses. Then anything used as a class that isn't one
+of those declared classes is reported..
+
+And that's exactly it. "Used as a class" means appearing as **C**
+or **D** in any statement of the form:
+
+    \_ rdf:type C
+    \_ rdfs:domain C
+    \_ rdfs:range C
+    C rdfs:subClassOf D
+
+## Suppressing inspectors
+
+It may be that you're not interested in the "unknown predicate" or
+"unknown class" reports until you've sorted out the URIs. Or maybe
+you don't care about them. In that case, you can switch them off.
+
+Eyeball's different checks are carried out by *inspector* classes.
+These classes are given short names by entries in Eyeball config
+files (which are RDF files written using N3; you can see the
+default config file by looking in Eyeball's `etc` directory for
+`eyeball2-config.n3`). By adding eg:
+
+    -exclude property class
+
+to the Eyeball command line, you can *exclude* the inspectors with
+those short names from the check. *property* is the short name for
+the "unknown property" inspector, and *class* is the short name for
+the "unknown class" inspector.
+
+## Namespace and URI reports
+
+Eyeball checks all the URIs in the model, including (if available)
+those used for namespaces. (And literals, but see below.) Here's an
+example:
+
+    bad namespace URI: "file:some-filename"
+        on prefix: "pqr"
+        for reason: file URI inappropriate for namespace
+
+A "bad namespace URI" means that Eyeball doesn't like the URI for a
+namespace in the model. The "on prefix" part of the report says
+what the namespace prefix is, and the "for reason" part gives the
+reason. In this case, we (the designer of Eyeball) feel that it is
+unwise to use file URIs - which tend to depend on internal details
+of your directory structure - for global concepts.
+A more usual reason is that the URI is syntactically illegal. Here
+are some possibilities:
+
+problem | explanation
+------- | -----------
+URI contains spaces | literal spaces are not legal in URIs. This usually arises from file URIs when the file has a space in its name. Spaces in URIs have to be encoded.
+URI has no scheme | The URI has no scheme at all. This usually happens when some relative URI hasn't been resolved properly, eg there's no xml base in an RDF/XML document.
+URI has an unrecognised scheme | The scheme part of the URI - the bit before the first colon - isn't recognised. Eyeball knows, by default, four schemes: **http**, **ftp**, **file**, and **urn**. This usually arises when a QName has "escaped" from somewhere, or from a typo. You can tell Eyeball about other schemes, if you need them.
+scheme should be lower-case | The scheme part of the URI contains uppercase letters. While this is not actually *wrong*, it is unconventional and pointless.
+URI doesn't fit pattern | Eyeball has some (weak) checks on the syntax of URIs in different schemes, expressed as patterns in its config files. If a URI doesn't match the pattern, Eyeball reports this problem. At the moment, you'll only get this report for a **urn** URI like *urn:x-hp:23487682347* where the URN id (the bit between the first and second colons, here *x-hp*) is illegal.
+URI syntax error | A catch-all error: Java couldn't make any sense of this URI at all.
+
+## Problems with literals
+
+Eyeball checks literals (using the *literal inspector*, whose short
+name is **literal** if you want to switch it off), but the checking
+is quite weak because it doesn't understand types at the moment.
+You can get two different classes of error.
+
+    bad language: someLanguageCode
+    on literal: theLiteralInQuestion
+
+Literals with language codes (things like **en-UK** or **de**) are
+checked to make sure that the language code conforms to the general
+syntax for language codes: alphanumeric words separated by hyphens,
+with the first containing no digits.
+
+(Later versions of Eyeball will likely allow you to specify *which*
+language codes you want to permit in your models. But we haven't
+got there yet.)
+
+    bad datatype URI: someURI
+    on literal: theLiteralInQuestion
+    for reason: theReason
+
+Similarly, literals with datatypes are checked to make sure that
+the type URI is legal. That's it for the moment: Eyeball doesn't
+try to find out if the URI really is a type URI, or if the spelling
+of the literal is OK for that type. But it spots the bad URIs. (The
+messages are the same as those that appear in the URI checking -
+above - for the very good reason that it's the same code doing the
+checking.)
+
+## Problematic prefixes
+
+Both RDF/XML and N3 allow (and RDF/XML requires) namespaces to be
+abbreviated by prefixes. Eyeball checks prefixes for two possible
+problems. The first:
+
+    non-standard namespace for prefix
+
+This arises when a "standard" prefix has been bound to a namespace
+URI which isn't its usual one. The "standard" prefixes are taken
+from Jena's `PrefixMapping.Extended` and are currently:
+
+    **rdf, rdfs, owl, xsd, rss, vcard**
+
+And the second:
+
+    Jena generated prefix found
+
+This arises when the model contains prefixes of the form `j.N`,
+where N is a number. These are generated by Jena when writing
+RDF/XML for URIs that must have a prefix (because they are used as
+types or predicates) but haven't been given one.
+
+If you're not bothered about inventing short prefixes for your
+namespaces, you can **-exclude** `jena-prefix` to suppress this
+inspection.
+
+## But how do I ...
+
+The reports described so far are part of Eyeball's default set of
+inspections. There are some other checks that it can do that are
+switched off by default, because they are expensive, initially
+overwhelming, or downright obscure. If you need to add these checks
+to your eyeballing, this is how to do it.
+
+### ... make sure everything is typed?
+
+Some applications (or a general notion of cleanliness) require that
+every individual in an RDF model has an explicit `rdf:type`. The
+Eyeball check for this isn't enabled by default, because lots of
+casual RDF use doesn't need it, and more sophisticated use has
+models with enough inference power to infer types.
+
+You can add the **all-typed** inspector to the inspectors that
+Eyeball will run by adding to the command line:
+
+    -inspectors defaultInspectors all-typed
+
+The **all-typed** inspector will generate a message
+
+    resource has no rdf:type
+
+for each resource in the model which is not the subject of an
+`rdf:type` statement.
+
+### ... check for type consistency?
+
+One easy mistake to make in RDF is to make an assertion - we'll
+call it **S P O** - about some subject **S** which is "of the wrong
+type", that is, not of whatever type **P**'s domain is. This isn't,
+in principle, an error, since RDF resources can have multiple
+types, and this just makes **S** have a type which is a subtype of
+both **P**'s domain and whatever type it was supposed to have.
+
+To spot this, and related problems, Eyeball has the
+**consistent-type** inspector. You can add it to the inspections in
+the same way as the **all-typed** inspector:
+
+    -inspectors defaultInspectors consistent-type
+
+It checks that every resource which has been given at least one
+type has a type which is a subtype of all its types, under an
+additional assumption:
+
+    Types in the type graph (the network of rdfs:subClassOf statements)
+    are disjoint (share no instances) unless the type graph says
+    they're not.
+
+For example, suppose that both **A** and **B** are subclasses of
+**Top**, and that there are no other subclass relationships. Then
+**consistent-types** assumes that there are (supposed to be) no
+resources which have both **A** and **B** as types. If it finds a
+resource **X** which *does* have both types, it generates a message
+like this:
+
+    no consistent type for: X
+    has associated type: A
+    has associated type: B
+    has associated type: Top
+
+It's up to you to disentangle the types and work out what went
+wrong.
+
+*Note*: this test requires that Eyeball do a significant amount of
+inference, to complete the type hierarchy and check the domains and
+ranges of properties. It's quite slow, which is one reason it isn't
+switched on by default.
+
+### ... check the right number of values for a property?
+
+You want to make sure that your data has the right properties for
+things of a certain type: say, that a book has at least one author
+(or editor), an album has at least one track, nobody in your
+organisation has more than ten managers, a Jena contrib has at
+least a `dc:creator`, a `dc:name`, and a `dc:description`. You
+write some OWL *cardinality constraints*:
+
+    my:Type rdfs:subClassOf [owl:onProperty my:track;
+    owl:minCardinality 1]
+
+Then you discover that, for wildly technical reasons, the OWL
+validation code in Jena doesn't think it's an error for some album
+to have no tracks (maybe there's a namespace error).
+You can enable Eyeball's *cardinality inspector* by adding
+
+    -inspectors cardinality
+
+to the command line. You'll now get a report item for every
+resource that has `rdf:type` your restricted type (`my:Type` above)
+but doesn't have the right (at least one) value for the property.
+It will look something like:
+
+    cardinality failure for: my:Instance
+        on type: my:Type
+        on property: my:track
+        cardinality range: [min: 1]
+        number of values: 0
+        values: {}
+
+If there are some values for the property - say you've supplied an
+`owl:maxCardinality` restriction and then gone over the top - they
+get listed inside the `values` curly braces.
+
+

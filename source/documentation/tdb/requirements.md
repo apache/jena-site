@@ -1,0 +1,20 @@
+---
+title: TDB Requirements
+---
+
+TDB can run on 32 bit or 64 bit JVMs. It adapts to the underlying
+architecture by choosing different file access mechanisms. 64 bit
+Java is preferred for large scale and production deployments. On 64
+bit Java, TDB uses memory mapped files.
+
+On 32 bit platforms, TDB uses in-heap caching of file data. In
+practice, the JVM heap size should be set to at least 1Gbyte. While
+there is no inherent scaling limits on the size of the database
+but, in practice, only one large dataset can be handled per TDB
+instance.
+
+The on-disk file format is compatible between 32 and 64 bit systems
+and databases can be transferred between systems by file copy if
+the databases are not in use (no TDB instance is accessing them at
+the time). Databases can not be copied while TDB is running, even
+if TDB is not actively processing a query or update.
