@@ -1,0 +1,71 @@
+#!/bin/bash
+
+## Copy of the script for the Jenakins job "Jena_Site"
+## https://builds.apache.org/job/Jena_Site
+
+## -------------------
+
+# Specify source and site branches
+SOURCE="master"
+SITE="asf-site"
+SOURCE_DIR=${PWD}
+
+git checkout ${SOURCE}
+git pull origin ${SOURCE}
+
+# Install Hugo
+TMP_HUGO_DIR="$(mktemp -d)"
+mkdir -p "${TMP_HUGO_DIR}/bin"
+cd "${TMP_HUGO_DIR}" || exit 1
+wget --no-verbose -O hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.66.0/hugo_extended_0.66.0_Linux-64bit.tar.gz
+tar xfzv hugo.tar.gz
+mv hugo "${TMP_HUGO_DIR}/bin/"
+export PATH="${TMP_HUGO_DIR}/bin:$PATH"
+
+# Get commit info
+cd "${SOURCE_DIR}" || exit 1
+LAST_SHA=( $(git log -n 1 --pretty=format:"%H") )
+
+# Create temporary directory
+TMP_DIR="$(mktemp -d)"
+OUT_DIR="${TMP_DIR}/content"
+mkdir -p "${OUT_DIR}"
+
+# Build the site  to our temporary folder
+hugo --destination "${OUT_DIR}"
+if [ $? = 0 ]; then
+  echo "Hugo build successful"
+else
+  echo "Hugo build failed"
+  exit 1
+fi
+
+# Switch to the SITE branch
+git checkout "${SITE}"
+git pull origin "${SITE}"
+
+# Remove the current contents of the SITE branch and replace them with the contents of the temp folder
+rm -rf "${SOURCE_DIR}/content"
+git rm -r --cached content/*
+mkdir -p "${SOURCE_DIR}/content"
+cp -rT "${TMP_DIR}"/* "${SOURCE_DIR}/content"
+
+# Commit the changes to the SITE branch
+COMMIT_MESSAGE="Updated site from ${SOURCE} (${LAST_SHA})"
+git add -A
+git commit -m "${COMMIT_MESSAGE}" | true
+
+# Delete the temporary folders
+rm -rf "${TMP_DIR}"
+rm -rf "${TMP_HUGO_DIR}"
+
+# Push the SITE to the server
+git push -u origin ${SITE}
+if [ $? = 0 ]; then
+  echo "Push ${SITE} successful"
+else
+  echo "Push ${SITE} failed"
+fi
+
+# Switch back to SOURCE branch
+git checkout "${SOURCE}"
