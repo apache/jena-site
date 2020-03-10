@@ -1,0 +1,26 @@
+{{ $.Scratch.Set "breadcrumb_path" "/" }}
+{{ $.Scratch.Set "url" (replace .Permalink ( printf "%s" .Site.BaseURL) "") }}
+
+{{ $latestChar := substr ($.Scratch.Get "url") (sub (len ($.Scratch.Get "url")) 1) }}
+{{ if eq $latestChar "/" }}
+    {{ $newUrl := substr ($.Scratch.Get "url") 0 (sub (len ($.Scratch.Get "url")) 1) }}
+    {{ $.Scratch.Set "url" $newUrl }}
+{{ end }}
+
+<ol class="breadcrumb">
+    {{ $splittedUrl := split ($.Scratch.Get "url") "/" }}
+    {{ range $index, $element := $splittedUrl }}
+        {{ $.Scratch.Add "breadcrumb_path" $element }}
+        {{ if ne $element "" }}
+            {{ if eq $index (sub (len $splittedUrl) 1) }}
+                <li class="active">{{ upper (replace (humanize .) ".html" "") }}</li>
+            {{ else }}
+                <li><a href='{{ $.Scratch.Get "breadcrumb_path" }}'>{{ upper (replace (humanize .) ".html" "") }}</a></li>
+            {{ end }}
+            {{ $.Scratch.Add "breadcrumb_path" "/" }}
+        {{ end }}
+    {{ end }}
+</ol>
+
+{{ $.Scratch.Delete "breadcrumb_path" }}
+{{ $.Scratch.Delete "url" }}
