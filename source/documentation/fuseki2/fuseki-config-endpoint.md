@@ -162,8 +162,8 @@ This section describes a few deployment patterns:
 
 The 2 SPARQL standard operations for a read-only dataset:
 
-   <#service> rdf:type fuseki:Service ;
-        fuseki:name     "ds-direct" ;
+    <#service> rdf:type fuseki:Service ;
+        fuseki:name     "ds-read-only" ;
         ## fuseki:name "" is optional.
         fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
         fuseki:endpoint [ fuseki:operation fuseki:gsp-r; ] ;
