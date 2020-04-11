@@ -13,7 +13,7 @@ input parsing performance using W3C Standards.
 
 Files ending in `.gz` are assumed to be gzip-compressed. Input and output
 to such files takes this into account, including looking for the other file
-extension.  `data.nt.gz` is a parsed as a gzip-compressed N-Triples file.
+extension.  `data.nt.gz` is parsed as a gzip-compressed N-Triples file.
 
 ## StreamRDF
 
@@ -61,14 +61,14 @@ directs the output of the parser to a `StreamRDF`.  For example:
     StreamRDF destination = ... 
     RDFDataMgr.parse(destination, "http://example/data.ttl") ;
 
-The above code reads the remote URL, with content negotiation, and send the
+The above code reads the remote URL, with content negotiation, and sends the
 triples to the `destination`.
 
 ## Writing data
 
 Not all RDF formats are suitable for writing as a stream.  Formats that
 provide pretty printing (for example the default `RDFFormat` for each of
-Turtle, TriG and RDF/XML) require analysis of the whole of a model in order
+Turtle, TriG and RDF/XML) require analysis of the entire model in order
 to determine nestable structures of blank nodes and for using specific
 syntax for RDF lists.
 
