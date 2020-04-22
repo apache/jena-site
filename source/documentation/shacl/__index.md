@@ -43,7 +43,7 @@ Fuseki has a new service operation `fuseki:serviceShacl`:
 </pre>
 
 This requires a "new style" endpoint declaration:  see
-"[Fuseki Endpoint Configuration](/documentation//fuseki2/fuseki-config-doc)".
+"[Fuseki Endpoint Configuration](https://jena.apache.org/documentation/fuseki2/fuseki-config-endpoint.html)".
 
 This is not installed into a dataset setup by default; a configuration file using
 `fuseki:serviceShacl` is necessary (or programmatic setup for Fuskei Main).
