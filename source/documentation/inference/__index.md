@@ -110,7 +110,7 @@ slug: index
 
 ### Generic reasoner API {#reasonerAPI}
 
-####Finding a reasoner
+#### Finding a reasoner
 <p>For each type of reasoner there is a factory class (which conforms to the interface
   <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/ReasonerFactory.html">ReasonerFactory</a></code>)
   an instance of which can be used to create instances of the associated
@@ -135,7 +135,7 @@ slug: index
   then the convenience methods <code>ModelFactory.createRDFSModel</code> can be
   used. </p>
 
-####Configuring a reasoner
+#### Configuring a reasoner
 <p>The behaviour of many of the reasoners can be configured. To allow arbitrary
   configuration information to be passed to reasoners we use RDF to encode the
   configuration details. The <code>ReasonerFactory.create</code> method can be
@@ -151,7 +151,7 @@ slug: index
   to set a boolean value one can use the strings &quot;true&quot; or &quot;false&quot;,
   or in Java use a Boolean object or in RDF use an instance of xsd:Boolean</p>
 
-####Applying a reasoner to data
+#### Applying a reasoner to data
 <p>Once you have an instance of a reasoner it can then be attached to a set of
   RDF data to create an inference model. This can either be done by putting all
   the RDF data into one Model or by separating into two components - schema and
@@ -167,7 +167,7 @@ slug: index
   the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
   methods, particularly <code>ModelFactory.createInfModel</code>. </p>
 
-####Accessing inferences
+#### Accessing inferences
 <p>Finally, having created a inference model then any API operations which access
   RDF statements will be able to access additional statements which are entailed
   from the bound data by means of the reasoner. Depending on the reasoner these
@@ -175,7 +175,7 @@ slug: index
   model is touched, may be dynamically recomputed each time or may be computed
   on-demand but cached.</p>
 
-####Reasoner description
+#### Reasoner description
 <p>The reasoners can be described using RDF metadata which can be searched to
   locate reasoners with appropriate properties. The calls <code>Reasoner.getCapabilities</code>
   and <code>Reasoner.supportsProperty</code> are used to access this descriptive
@@ -268,7 +268,7 @@ slug: index
   in updates to the underlying data model - the schema model will not be affected.</p>
 <p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
 
-###Operations on inference models {#operationsOnInferenceModels}
+### Operations on inference models {#operationsOnInferenceModels}
 <p>For many applications one simply creates a model incorporating some inference
   step, using the <code>ModelFactory</code> methods, and then just works within
   the standard Jena Model API to access the entailed statements. However, sometimes
@@ -342,7 +342,7 @@ slug: index
   ontology is both valid (logically consistent) and generated no warnings (such
   as inconsistent classes).</p>
 
-####<a name="extendedListStatements"></a>Extended list statements
+#### Extended list statements {#extendedListStatements}
 <p>The default API supports accessing all entailed information at the level of
   individual triples. This is surprisingly flexible but there are queries which
   cannot be easily supported this way. The first such is when the query needs
@@ -362,7 +362,7 @@ slug: index
   for some external reasoners, especially description logic reasoners, we anticipate
   restricted uses of this form of listStatement will be important.</p>
 
-####<a name="directRelations"></a>Direct and indirect relationships
+#### Direct and indirect relationships {#directRelations}
 <p>The second type of operation that is not obviously convenient at the triple
   level involves distinguishing between direct and indirect relationships. If
   a relation is transitive, for example rdfs:subClassOf, then we can define the
@@ -384,7 +384,7 @@ slug: index
   to use the <a href="../ontology/index.html">Ontology API</a> which hides the
   grubby details of these property aliases.</p>
 
-####<a name="derivations"></a>Derivations
+#### Derivations {#derivations}
 <p>It is sometimes useful to be able to trace where an inferred statement was
   generated from. This is achieved using the <code>InfModel.getDerivation(Statement)</code>
   method. This returns a iterator over a set <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/Derivation.html"><code>Derviation</code></a>
@@ -438,7 +438,7 @@ slug: index
         Fact (eg:C eg:p eg:D)</i>
 </pre>
 
-####<a name="rawAccess"></a>Accessing raw data and deductions
+#### Accessing raw data and deductions {#rawAccess}
 <p>From an <code>InfModel</code> it is easy to retrieve the original, unchanged,
   data over which the model has been computed using the <code>getRawModel()</code>
   call. This returns a model equivalent to the one used in the initial <code>bind</code>
@@ -448,7 +448,7 @@ slug: index
   statements in a concrete form and this set of deductions can be obtained separately
   by using the <code>getDeductionsModel()</code> call. </p>
 
-####<a name="processingControl"></a>Processing control
+#### Processing control {#processingControl}
 <p>Having bound a <code>Model</code> into an <code>InfModel</code> by using a
   <code>Reasoner</code> its content can still be changed by the normal <code>add</code>
   and <code>remove</code> calls to the <code>InfModel</code>. Any such change
@@ -476,7 +476,7 @@ slug: index
   been read to the end yet) then those will be aborted (the next hasNext() call
   will return false).</p>
 
-####<a name="tracing"></a>Tracing
+#### Tracing {#tracing}
 <p>When developing new reasoner configurations, especially new rule sets for the
   rule engines, it is sometimes useful to be able to trace the operations of the
   associated inference engine. Though, often this generates too much information
@@ -492,7 +492,7 @@ slug: index
   to make use of this see the full javadoc for the relevant InfGraph implementation.</p>
 <p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
 
-##<a name="rdfs"></a>The RDFS reasoner
+## The RDFS reasoner {#rdfs}
 <ol>
   <li><a href="#RDFSintro">RDFS reasoner - introduction and coverage</a></li>
   <li><a href="#RDFSconfiguration">RDFS Configuration</a></li>
@@ -500,7 +500,7 @@ slug: index
   <li><a href="#RDFSnotes">RDFS implementation and performance notes</a></li>
 </ol>
 
-###<a name="RDFSintro"></a>RDFS reasoner - intro and coverage
+### RDFS reasoner - intro and coverage {#RDFSintro}
 <p>Jena includes an RDFS reasoner (<code>RDFSRuleReasoner</code>) which supports
   almost all of the RDFS entailments described by the RDF Core working group [<a href="https://www.w3.org/TR/rdf-mt/">RDF
   Semantics</a>]. The only omissions are deliberate and are described below.</p>
@@ -531,7 +531,7 @@ slug: index
   and so this has been deliberately omitted from the reasoner. </p>
 <p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RDFSconfiguration"></a>RDFS configuration
+### RDFS configuration {#RDFSconfiguration}
 <p>The RDFSRuleReasoner can be configured to work at three different compliance
   levels: </p>
 <dl>
@@ -622,7 +622,7 @@ slug: index
 </table>
 <p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RDFSexamples"></a>RDFS Example
+### RDFS Example {#RDFSexamples}
 <p>As a complete worked example let us create a simple RDFS schema, some instance
   data and use an instance of the RDFS reasoner to query the two.</p>
 <p>We shall use a trivial schema:</p>
@@ -706,7 +706,7 @@ that is not compatible with 13</i></pre>
   it to be a datatyped literal which is compatible with xsd:integer.</p>
 <p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RDFSnotes"></a>RDFS implementation and performance notes
+### RDFS implementation and performance notes {#RDFSnotes}
 <p>The RDFSRuleReasoner is a hybrid implementation. The subproperty and subclass
   lattices are eagerly computed and stored in a compact in-memory form using the
   TransitiveReasoner (see below). The identification of which container membership
@@ -765,7 +765,7 @@ that is not compatible with 13</i></pre>
   database backends will be considered.</p>
 <p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
 
-##<a name="owl"></a>The OWL reasoner
+## The OWL reasoner {#owl}
 <ol>
   <li><a href="#OWLintro">OWL reasoner introduction</a></li>
   <li><a href="#OWLcoverage">OWL coverage</a></li>
@@ -783,7 +783,7 @@ configuration still leaves something to be desired and will the subject of futur
 <p>See also <a href="#OWLnotes">subsection 5</a> for notes on more specific limitations
   of the current implementation. </p>
 
-###<a name="OWLcoverage"></a>OWL coverage
+### OWL coverage {#OWLcoverage}
 <p>The Jena OWL reasoners could be described as instance-based reasoners. That
   is, they work by using rules to propagate the if- and only-if- implications of
   the OWL constructs on instance data. Reasoning about classes is done indirectly
@@ -1003,7 +1003,7 @@ configuration still leaves something to be desired and will the subject of futur
 </ul>
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="OWLconfiguration"></a>OWL Configuration
+### OWL Configuration {#OWLconfiguration}
 <p>This reasoner is accessed using <code>ModelFactory.createOntologyModel</code>
   with the prebuilt <a href="/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html"><code>OntModelSpec</code></a>
   <code>OWL_MEM_RULE_INF</code> or manually via <code>ReasonerRegistery.getOWLReasoner()</code>.</p>
@@ -1041,7 +1041,7 @@ configuration still leaves something to be desired and will the subject of futur
   - like that supported by the RDFS reasoner in the form of the level settings.</p>
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="OWLexamples"></a>OWL Example
+### OWL Example {#OWLexamples}
 <p>As an example of using the OWL inference support, consider the sample schema
   and data file in the data directory - <a href="data/owlDemoSchema.xml">owlDemoSchema.xml</a>
   and <a href="data/owlDemoData.xml">owlDemoData.xml</a>. </p>
@@ -1141,9 +1141,9 @@ Implicated node: eg:bigNameSpecialMB</i>
   and thus violate the FunctionProperty nature of <code>hasMotherBoard</code>.</p>
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="OWLnotes"></a>OWL notes and limitations
+### OWL notes and limitations {#OWLnotes}
 
-####Comprehension axioms
+#### Comprehension axioms
 <p>A critical implication of our variant of the instance-based approach is that
   the reasoner does not directly answer queries relating to dynamically introduced
   class expressions.</p>
@@ -1172,13 +1172,13 @@ class B = cardinality(P,1)</pre>
   avoid the comprehension requirements.<br>
 </p>
 
-####Prototypes
+#### Prototypes
 <p>As noted above the current OWL rule set introduces prototypical instances for
   each defined class. These prototypical instances used to be visible to queries.
   From release 2.1 they are used internally but should not longer be visible.
 </p>
 
-####Direct/indirect
+#### Direct/indirect
 <p>We noted <a href="#directRelations">above</a> that the Jena reasoners support
   a separation of direct and indirect relations for transitive properties such
   as subClassOf. The current implementation of the full and mini OWL reasoner
@@ -1187,7 +1187,7 @@ class B = cardinality(P,1)</pre>
 <p>This does not affect querying though the Ontology API, which works around this
   limitation. It only affects direct RDF accesses to the inference model.</p>
 
-####Performance
+#### Performance
 <p>The OWL reasoners use the rule engines for all inference. The full and mini
   configurations omit some of the performance tricks employed by the RDFS reasoner
   (notably the use of the custom transitive reasoner) making those OWL reasoner
@@ -1218,7 +1218,7 @@ class B = cardinality(P,1)</pre>
 
 <p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
 
-##<a name="transitive"></a>The transitive reasoner
+## The transitive reasoner {#transitive}
 <p>The TransitiveReasoner provides support for storing and traversing class and
   property lattices. This implements just the <i>transitive</i> and <i>symmetric</i>
   properties of <code>rdfs:subPropertyOf</code> and <code>rdfs:subClassOf</code>.
@@ -1235,7 +1235,7 @@ class B = cardinality(P,1)</pre>
 <p>It has no configuration options.</p>
 <p>[<a href="#index">Index</a>]</p>
 
-##<a name="rules"></a>The general purpose rule engine
+## The general purpose rule engine {#rules}
 <ol>
   <li><a href="#RULEoverview">Overview of the rule engine(s)</a></li>
   <li><a href="#RULEsyntax">Rule syntax and structure</a></li>
@@ -1250,7 +1250,7 @@ class B = cardinality(P,1)</pre>
   <li><a href="#RULEextensions">Extensions</a></li>
 </ol>
 
-###<a name="RULEoverview"></a>Overview of the rule engine(s)
+### Overview of the rule engine(s) {#RULEoverview}
 <p>Jena includes a general purpose rule-based reasoner which is used to implement
   both the RDFS and OWL reasoners but is also available for general use. This
   reasoner supports rule-based inference over RDF graphs and provides forward
@@ -1270,7 +1270,7 @@ class B = cardinality(P,1)</pre>
   for the RDFS and OWL implementations but is easily extensible.</p>
 <p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
 
-### <a name="RULEsyntax"></a>Rule syntax and structure
+### Rule syntax and structure {#RULEsyntax}
 <p>A rule for the rule-based reasoner is defined by a Java <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/Rule.html">Rule</a></code>
   object with a list of body terms (premises), a list of head terms (conclusions)
   and an optional name and optional direction. Each term or <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/ClauseEntry.html"><code>ClauseEntry</code></a>
@@ -1389,7 +1389,7 @@ a single extra rule is:
 
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-### <a name="RULEforward"></a>Forward chaining engine
+### Forward chaining engine {#RULEforward}
 <p>If the rule reasoner is configured to run in forward mode then only the forward
   chaining engine will be used. The first time the inference Model is queried
   (or when an explicit <code>prepare()</code> call is made, see <a href="#processingControl">above</a>)
@@ -1429,7 +1429,7 @@ a single extra rule is:
 
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RULEbackward"></a>Backward chaining engine
+### Backward chaining engine {#RULEbackward}
 <p>If the rule reasoner is run in backward chaining mode it uses a logic programming
   (LP) engine with a similar execution strategy to Prolog engines. When the inference
   Model is queried then the query is translated into a goal and the engine attempts
@@ -1497,7 +1497,7 @@ might be run in either backward or forward mode then they should be limited to a
 </p>
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RULEhybrid"></a>Hybrid rule engine
+### Hybrid rule engine {#RULEhybrid}
 <p>The rule reasoner has the option of employing both of the individual rule engines
   in conjunction. When run in this <i>hybrid</i> mode the data flows look something
   like this: </p>
@@ -1539,7 +1539,7 @@ might be run in either backward or forward mode then they should be limited to a
 
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RULEconfiguration"></a>GenericRuleReasoner configuration
+### GenericRuleReasoner configuration {#RULEconfiguration}
 <p>As with the other reasoners there are a set of parameters, identified by RDF
   properties, to control behaviour of the <code>GenericRuleReasoner</code>. These
   parameters can be set using the <code>Reasoner.setParameter</code> call or passed
@@ -1642,7 +1642,7 @@ Reasoner reasoner = new GenericRuleReasoner(rules);</pre>
 </table>
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-### <a name="RULEbuiltins"></a>Builtin primitives
+### Builtin primitives {#RULEbuiltins}
 <p>The procedural primitives which can be called by the rules are each implemented
   by a Java object stored in a registry. Additional primitives can be created
   and registered - see below for more details.</p>
@@ -1865,7 +1865,7 @@ do not "pollute" the inference results.</div>
 </table>
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-### <a name="RULEexamples"></a>Example
+### Example {#RULEexamples}
 <p>As a simple illustration suppose we wish to create a simple ontology language
   in which we can declare one property as being the concatenation of two others
   and to build a rule reasoner to implement this.</p>
@@ -1897,7 +1897,7 @@ while (list.hasNext()) {
  - [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/B]
  - [urn:x-hp:eg/A, urn:x-hp:eg/r, urn:x-hp:eg/C]</i></pre>
 
-####Example 2
+#### Example 2
 <p>As a second example, we'll look at ways to define a property as being both
   symmetric and transitive. Of course, this can be done directly in OWL but there
   are times when one might wish to do this outside of the full OWL rule set and,
@@ -1965,7 +1965,7 @@ while (i.hasNext()) {
 ] </pre>
 <p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RDFSPlusRules"></a>Combining RDFS/OWL with custom rules
+### Combining RDFS/OWL with custom rules {#RDFSPlusRules}
 <p>Sometimes one wishes to write generic inference rules but combine them
  with some RDFS or OWL inference. With the current Jena architecture limited forms of this
  is possible but you need to be aware of the limitations.</p>
@@ -2025,7 +2025,7 @@ while (i.hasNext()) {
 
 <p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RULEnotes"></a>Notes
+### Notes {#RULEnotes}
 <p>One final aspect of the general rule engine to mention is that of validation
   rules. We described earlier how reasoners can implement a <code>validate</code>
   call which returns a set of error reports and warnings about inconsistencies
@@ -2056,7 +2056,7 @@ while (i.hasNext()) {
   of this mechanism. </p>
 <p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
 
-###<a name="RULEextensions"></a>Extensions
+### Extensions {#RULEextensions}
 <p>There are several places at which the rule system can be extended by application
   code.</p>
 
@@ -2092,7 +2092,7 @@ while (i.hasNext()) {
   class for more details.</p>
 <p>[<a href="#index">Index</a>]</p>
 
-##<a name="extensions"></a>Extending the inference support
+## Extending the inference support {#extensions}
 <p>Apart from the extension points in the rule reasoner discussed above, the intention
   is that it should be possible to plug external inference engines into Jena.
   The core interfaces of <code>InfGraph</code> and <code>Reasoner</code> are kept
@@ -2104,7 +2104,7 @@ while (i.hasNext()) {
   example of how this extension can be done.</p>
 <p>[<a href="#index">Index</a>]</p>
 
-##<a name="futures"></a>Futures
+## Futures {#futures}
 <p>Contributions for the following areas would be very welcome:</p>
 <ul>
   <li>Develop a custom equality reasoner which can handle the &quot;owl:sameAs&quot;
@@ -2117,4 +2117,3 @@ while (i.hasNext()) {
     above and is the least likely to happen in the near future.</li>
 </ul>
 <p>[<a href="#index">Index</a>]</p>
-
