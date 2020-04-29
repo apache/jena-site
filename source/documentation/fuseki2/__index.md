@@ -121,8 +121,3 @@ Development builds (not a formal release):
 
 Source code mirrored to github:
 [https://github.com/apache/jena/tree/master/jena-fuseki2](https://github.com/apache/jena/tree/master/jena-fuseki2)
-
-## Fuseki 1
-
-Fuseki 1 is still available for legacy use. 
-[Documentation for Fuseki1](/documentation/serving_data/).

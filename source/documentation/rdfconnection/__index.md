@@ -163,8 +163,7 @@ For example: load two files:
 The file extension is used to determine the syntax.
 
 There is also a set of scripts to help do these operations from the command
-line with
-<a href="/documentation/fuseki2/soh.html">SOH</a>.
+line with [SOH](/documentation/fuseki2/soh.html).
 It is possible to write curl scripts as well.  The SPARQL Graph
 Store Protocol provides a standardised way to manage the data in a dataset.
 
