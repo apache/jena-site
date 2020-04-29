@@ -48,7 +48,7 @@ in the example above):
     conn.close() ;
 
 Jena also provides a separate
-[SPARQL over JDBC driver](//jena.staging.apache.org/documentation/jdbc/index.html)
+[SPARQL over JDBC driver](/documentation/jdbc/index.html)
 library.
 
 ## Transactions
@@ -126,7 +126,7 @@ and [example
 5](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java).
 
 There are many options, including setting HTTP headers for content types
-([javadoc](//jena.apache.org/documentation/javadoc/rdfconnection/index.html))
+([javadoc](/documentation/javadoc/rdfconnection/index.html))
 and providing detailed configuration with
 [Apache HttpComponents HttpClient](https://hc.apache.org/httpcomponents-client-ga/).
 
@@ -164,7 +164,7 @@ The file extension is used to determine the syntax.
 
 There is also a set of scripts to help do these operations from the command
 line with
-<a href="//jena.apache.org/documentation/fuseki2/soh.html">SOH</a>.
+<a href="/documentation/fuseki2/soh.html">SOH</a>.
 It is possible to write curl scripts as well.  The SPARQL Graph
 Store Protocol provides a standardised way to manage the data in a dataset.
 

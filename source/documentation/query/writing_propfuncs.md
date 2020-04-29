@@ -7,7 +7,7 @@ title: ARQ - Writing Property Functions
 See also [Writing Filter Functions](writing_functions.html).
 
 Applications can add SPARQL property functions to the query engine. This is done by first implementing the
- [`PropertyFunction`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunction.html)
+ [`PropertyFunction`](/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunction.html)
  interface, and then either registering that function or using the fake `java:` URI scheme to dynamically
  load the function.
 
@@ -18,7 +18,7 @@ Similar to SPARQL Filter Functions, a SPARQL Property Function is an extension p
  generate new bindings.
 
 Just like
- [org.apache.jena.sparql.function.Function](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/function/Function.html)
+ [org.apache.jena.sparql.function.Function](/documentation/javadoc/arq/org/apache/jena/sparql/function/Function.html)
  there are various utility classes provided to simplify the creation of a Property Function. The selection of
  one depends on the 'style' of the desired built-in. For example, `PFuncSimple` is expected to be the predicate
  of triple patterns `?such ex:as ?this`, where neither argument is an `rdf:list`, and either may be a variable.
@@ -44,8 +44,8 @@ Just like
 
 The choice of extension point determines the function signature that the developer will need to implement, and
  primarily determines whether some of the arguments will be 
- [`org.apache.jena.graph.Node`](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Node.html)s or 
- [`org.apache.jena.sparql.pfunction.PropFuncArg`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropFuncArg.html)s.
+ [`org.apache.jena.graph.Node`](/documentation/javadoc/jena/org/apache/jena/graph/Node.html)s or 
+ [`org.apache.jena.sparql.pfunction.PropFuncArg`](/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropFuncArg.html)s.
  In the latter case, the programmer can determine whether the argument is a list as well as how many
  arguments it consists of.
 
@@ -53,13 +53,13 @@ The choice of extension point determines the function signature that the develop
 **Registration**
 
 Every property function is associated with a particular 
- [`org.apache.jena.sparql.util.Context`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/util/Context.html).
+ [`org.apache.jena.sparql.util.Context`](/documentation/javadoc/arq/org/apache/jena/sparql/util/Context.html).
  This allows you to limit the availability of the function to be global or associated with a particular dataset.
  For example, a custom Property Function may expose an index which only has meaning with respect to some set
  of data.
 
 Assuming you have an implementation of
- [`org.apache.jena.sparql.pfunction.PropertyFunctionFactory`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html) 
+ [`org.apache.jena.sparql.pfunction.PropertyFunctionFactory`](/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html) 
  (shown later), you can register a function as follows:
 
 
@@ -76,7 +76,7 @@ The only difference between global and dataset-specific registration is where th
     PropertyFunctionRegistry.set(ds.getContext(), reg);
 
 Note that 
- [`org.apache.jena.sparql.pfunction.PropertyFunctionRegistry`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionRegistry.html)
+ [`org.apache.jena.sparql.pfunction.PropertyFunctionRegistry`](/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionRegistry.html)
  has other `put` methods that allow registration by passing a `Class` object, as well.
 
 **Implementation**
@@ -117,14 +117,14 @@ easy to support typical use cases.
 
 Of particular note:
 
-  - [`QueryIterNullIterator`](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterNullIterator.html) - to indicate that there are no valid solutions/bindings for the given values
-  - [`QueryIterSingleton`](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterSingleton.html) - to provide a single solution/binding for the given values
-  - [`QueryIterPlainWrapper`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterPlainWrapper.html) - to provide multiple solutions/bindings for the given values
+  - [`QueryIterNullIterator`](/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterNullIterator.html) - to indicate that there are no valid solutions/bindings for the given values
+  - [`QueryIterSingleton`](/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterSingleton.html) - to provide a single solution/binding for the given values
+  - [`QueryIterPlainWrapper`](/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterPlainWrapper.html) - to provide multiple solutions/bindings for the given values
 
 The second two cases require instances of `Binding` objects which can be obtained through static methods of
- [`BindingFactory`](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/binding/BindingFactory.html).
- Creation of `Binding` objects will also require references to [`Var`](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/core/Var.html)
- and [`NodeFactory`](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/NodeFactory.html)
+ [`BindingFactory`](/documentation/javadoc/arq/org/apache/jena/sparql/engine/binding/BindingFactory.html).
+ Creation of `Binding` objects will also require references to [`Var`](/documentation/javadoc/arq/org/apache/jena/sparql/core/Var.html)
+ and [`NodeFactory`](/documentation/javadoc/jena/org/apache/jena/graph/NodeFactory.html)
 
 Note that it can make a lot of sense to generate the `Iterator<Binding>` for `QueryIterPlainWrapper` by means of
  Jena's `ExtendedIterator`. This can allow domain-specific value to be easily mapped to `Binding` objects in

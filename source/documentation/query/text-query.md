@@ -44,7 +44,7 @@ structure of string literals rather than treating such literals as
 opaque items.  Unlike `FILTER`, an index can set the values of variables.
 Assuming appropriate [configuration](#configuration), the
 above query can use full text search via the
-[ARQ property function extension](https://jena.apache.org/documentation/query/extension.html#property-functions), `text:query`:
+[ARQ property function extension](/documentation/query/extension.html#property-functions), `text:query`:
 
     PREFIX   ex: <http://www.example.org/resources#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

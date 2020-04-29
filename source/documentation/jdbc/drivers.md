@@ -156,7 +156,7 @@ All of these may be specified multiple times to specify multiple graph URIs for 
 
 Then you have the `select-results-type` and `model-results-type` which are used to set the MIME
 type you'd prefer to have the driver retrieve SPARQL results from the remote endpoints in.  If used
-you must set them to formats that ARQ supports, the ARQ [WebContent](http://jena.staging.apache.org/documentation/javadoc/arq/org/apache/jena/riot/WebContent.html)
+you must set them to formats that ARQ supports, the ARQ [WebContent](/documentation/javadoc/arq/org/apache/jena/riot/WebContent.html)
 class has constants for the various supported formats.
 
 #### Authentication

@@ -4,8 +4,8 @@ title: Schemagen Maven
 
 # Schemagen-maven: generating Java source files from OWL and RDFS ontologies via Maven
 
-The [Apache Jena](http://jena.apache.org) command line tool
-[`schemagen`](http://jena.apache.org/documentation/tools/schemagen.html)
+The [Apache Jena](/) command line tool
+[`schemagen`](/documentation/tools/schemagen.html)
 provides an automated way of creating
 Java source code constants from ontology files in an RDF-based project. This
 can be very convenient, as it provides both a level of robustness that the
@@ -124,7 +124,7 @@ in `src/main/vocabs`:
 Options are, in general, given in the `<fileOptions>` section. A given
 `<source>` refers to one input source - one file - as named by the
 `<input>` name. The actual option names are taken from the RDF [config
-file property names](http://jena.apache.org/documentation/tools/schemagen.html),
+file property names](/documentation/tools/schemagen.html),
 omitting the namespace:
 
           <fileOptions>

@@ -9,7 +9,7 @@ language through examples but does not aim to be complete.
 If you are looking for a short introduction to SPARQL and Jena try
 [Search RDF data with SPARQL](http://www.ibm.com/developerworks/xml/library/j-sparql/).  If you are looking to execute SPARQL queries in code and already known SPARQL then you likely want to read the [ARQ Documentation][1] instead.
 
-[1]: https://jena.apache.org/documentation/query/index.html
+[1]: /documentation/query/index.html
 
 SPARQL is a
 [query language](http://www.w3.org/TR/sparql11-query/) and a

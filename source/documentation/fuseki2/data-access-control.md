@@ -6,7 +6,7 @@ Fuseki can provide access control at the level on the server, on datasets,
 on endpoints and also on specific graphs within a dataset. It also
 provides native https to protect data in-flight.
 
-[Fuseki Main](http://jena.apache.org/documentation/fuseki2/fuseki-main.html)
+[Fuseki Main](/documentation/fuseki2/fuseki-main.html)
 provides some common patterns of authentication.
 
 [Graph level Data Access Control](#graph-acl) provides control over the visibility of
@@ -15,7 +15,7 @@ the default graph. Currently, Graph level access control only applies to
 read-only datasets.
 
 Fuseki Full (Fuseki with the UI) can be used when
-[run in a web application server such as Tomcat](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-web-application)
+[run in a web application server such as Tomcat](/documentation/fuseki2/fuseki-run.html#fuseki-web-application)
 to provide authentication of the user.  See "[Fuseki Security](fuseki-security)" for configuring security over the whole of the Fuseki UI.
 
 ## Contents

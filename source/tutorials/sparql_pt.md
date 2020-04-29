@@ -7,7 +7,7 @@ O objetivo deste tutorial é dar um curso rápido sobre SPARQL. Esse tutorial co
 Se você estiver procurando uma pequena introdução a SPARQL e Jena, experimente 
 [Search RDF data with SPARQL](http://www.ibm.com/developerworks/xml/library/j-sparql/).  Se você quer executar consultas SPARQL e já sabe como ele funciona, então você deveria ler a [ARQ Documentation][1].
 
-[1]: http://jena.apache.org/documentation/query/index.html
+[1]: /documentation/query/index.html
 
 SPARQL é uma
 [linguagem de consulta](http://www.w3.org/TR/sparql11-query/) e um
