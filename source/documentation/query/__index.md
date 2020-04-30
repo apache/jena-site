@@ -3,7 +3,7 @@ title: ARQ - A SPARQL Processor for Jena
 slug: index
 ---
 
-ARQ is a query engine for [Jena](http://jena.apache.org) that
+ARQ is a query engine for [Jena](https://jena.apache.org/) that
 supports the
 [SPARQL RDF Query language](http://www.w3.org/TR/sparql11-query/).
 SPARQL is the query language developed by the W3C

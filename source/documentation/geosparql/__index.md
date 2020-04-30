@@ -113,7 +113,6 @@ To query a Model with GeoSPARQL or standard SPARQL:
         ResultSetFormatter.outputAsTSV(rs);
     }
 
-More information on SPARQL querying using Jena can be found on their website (https://jena.apache.org/tutorials/sparql.html).
 If your dataset needs to be separate from your application and accessed over HTTP then you probably need
 the [GeoSPARQL Fuseki project](geosparql-fuseki).
 The GeoSPARQL functionality needs to be setup in the application or Fuseki server where the dataset is located.
@@ -183,7 +182,7 @@ The following are implementation points that may be useful during usage.
 
 ### GeoSPARQL Schema
 An RDF/XML schema has been published for the GeoSPARQL v1.0 standard (v1.0.1 - http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf).
-This can be applied to Jena Models (https://jena.apache.org/documentation/inference/) to provide RDFS and OWL inferencing on a GeoSPARQL conforming dataset.
+This can be applied to Jena Models (see [the inference documentation](/documentation/inference/)) to provide RDFS and OWL inferencing on a GeoSPARQL conforming dataset.
 However, the published schema does not conform with the standard.
 
 The property `hasDefaultGeometry` is missing from the schema and instead the `defaultGeometry` property is stated.

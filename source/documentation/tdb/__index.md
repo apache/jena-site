@@ -3,12 +3,10 @@ title: TDB
 slug: index
 ---
 
-TDB is a component of
-[Jena](http://jena.apache.org/) for RDF storage
-and query.  It support the full range of Jena APIs.
-TDB can be used as a high performance RDF store on a single machine.
-This documentation describes the latest version, unless
-otherwise noted.
+TDB is a component of [Jena](https://jena.apache.org/) for RDF storage and
+query.  It support the full range of Jena APIs.  TDB can be used as a high
+performance RDF store on a single machine.  This documentation describes the
+latest version, unless otherwise noted.
 
 This is the documentation for the current standard version of TDB. 
 This is also called TDB1 to distinguish it from the next generation version

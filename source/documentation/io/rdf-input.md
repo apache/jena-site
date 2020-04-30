@@ -117,7 +117,7 @@ add data into an existing model or dataset.
 
 Detail control over the setup of the parsing process is provided by
 `RDFParser` which provides a builder pattern.  It has many options - see
-[the javadoc for all details](http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html).
+[the javadoc for all details](/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html).
 
 For example, to read Trig data, and set the error handler specially,
 

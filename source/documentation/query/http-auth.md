@@ -210,21 +210,21 @@ HTTP traces i.e. allow you to see the exact HTTP requests and responses which ca
 
 ARQ allows the user to configure HTTP behavior to use on a per-`SERVICE` basis, including authentication behavior such as is described above. This works via the ARQ context. See [Basic Federated Query][5] for more information on configuring this functionality.
 
-  [1]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html
-  [2]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html
-  [3]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ScopedAuthenticator.html
-  [4]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ServiceAuthenticator.html
+  [1]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html
+  [2]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html
+  [3]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ScopedAuthenticator.html
+  [4]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ServiceAuthenticator.html
   [5]: service.html
-  [6]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/FormsAuthenticator.html
+  [6]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/FormsAuthenticator.html
   [7]: https://httpd.apache.org/docs/2.4/mod/mod_auth_form.html
-  [8]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/PreemptiveBasicAuthenticator.html
-  [9]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html
-  [10]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/modify/UpdateProcessRemoteBase.html
-  [11]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/web/DatasetGraphAccessorHTTP.html
-  [12]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/DelegatingAuthenticator.html
-  [13]: http://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html
+  [8]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/PreemptiveBasicAuthenticator.html
+  [9]: /documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html
+  [10]: /documentation/javadoc/arq/org/apache/jena/sparql/modify/UpdateProcessRemoteBase.html
+  [11]: /documentation/javadoc/arq/org/apache/jena/web/DatasetGraphAccessorHTTP.html
+  [12]: /documentation/javadoc/arq/org/apache/jena/atlas/web/auth/DelegatingAuthenticator.html
+  [13]: /documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html
   [14]: http://hc.apache.org
   [15]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
   [16]: https://hc.apache.org/httpcomponents-client-ga/examples.html
   [17]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/protocol/HttpClientContext.html
-  [18]: https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/query/QueryExecutionFactory.html
+  [18]: /documentation/javadoc/arq/org/apache/jena/query/QueryExecutionFactory.html

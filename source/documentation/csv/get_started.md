@@ -4,7 +4,7 @@ title: CSV PropertyTable - Get Started
 
 ## Using CSV PropertyTable with Apache Maven
 
-See ["Using Jena with Apache Maven"](http://jena.apache.org/download/maven.html) for full details.
+See ["Using Jena with Apache Maven"](/download/maven.html) for full details.
 
     <dependency>
        <groupId>org.apache.jena</groupId>
@@ -14,7 +14,7 @@ See ["Using Jena with Apache Maven"](http://jena.apache.org/download/maven.html)
 
 ## Using CSV PropertyTable from Java through the API
 
-In order to switch on CSV PropertyTable, it's required to register `LangCSV` into [Jena RIOT](http://jena.apache.org/documentation/io/), through a simple method call:
+In order to switch on CSV PropertyTable, it's required to register `LangCSV` into [Jena RIOT](/documentation/io/), through a simple method call:
 
 	import org.apache.jena.propertytable.lang.CSV2RDF;
 	... 
@@ -58,7 +58,7 @@ You can read ".csv" files into Model following the standard RIOT usages:
     // Usage 2: Reading using RDFDataMgr
     Model model_2 = RDFDataMgr.loadModel("test.csv") ;
 
-For more information, see [Reading RDF in Apache Jena](http://jena.apache.org/documentation/io/rdf-input.html).
+For more information, see [Reading RDF in Apache Jena](/documentation/io/rdf-input.html).
 
 Note that, the requirements for the CSV files are listed in the documentation of [Design](design.html). CSV PropertyTable only supports **single-Value**, **regular-Shaped**, **table-headed** and **UTF-8-encoded** CSV files (**NOT** Microsoft Excel files).
 
@@ -76,7 +76,7 @@ It transforms the CSV `inputFile` into N-Triples. For example,
 The script reuses [Common framework for running RIOT parsers](../io/index.html),
 so that it also accepts the same arguments
 (type `"riot --help"` to get command line reminders) from 
-[RIOT Command line tools](https://jena.apache.org/documentation/io/#command-line-tools):
+[RIOT Command line tools](/documentation/io/#command-line-tools):
 
 -   `--validate`: Checking mode: same as `--strict --sink --check=true`
 -   `--check=true/false`: Run with checking of literals and IRIs either on or off.

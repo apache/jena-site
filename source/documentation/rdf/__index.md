@@ -162,7 +162,7 @@ are defined before use.
 **Note**
 
 Jena does not treat namespaces in a special way. A `Model` will remember any prefixes defined
-in the input RDF (see the [`PrefixMapping`](http://jena.apache.org/documentation/javadoc/jena/org/apache/jena/shared/PrefixMapping.html)
+in the input RDF (see the [`PrefixMapping`](/documentation/javadoc/jena/org/apache/jena/shared/PrefixMapping.html)
 interface; all Jena `Model` objects extend `PrefixMapping`), and the output writers which
 serialize a model to XML or Turtle will normally attempt to use prefixes to abbreviate URI's.
 However internally, a `Resource` URI is not separated into a namespace and local-name pair.
@@ -183,11 +183,11 @@ Package | Description | More information
 ------- | ----------- | ----------------
 oaj.jena.rdf.model  | The Jena core. Creating and manipulating RDF graphs. |
 oaj.riot            | Reading and Writing RDF. |
-oaj.jena.datatypes | Provides the core interfaces through which datatypes are described to Jena.| [Typed literals](http://jena.apache.org/documentation/notes/typed-literals.html)
-oaj.jena.ontology | Abstractions and convenience classes for accessing and manipulating ontologies represented in RDF. | [Ontology API](http://jena.apache.org/documentation/ontology/index.html)
+oaj.jena.datatypes | Provides the core interfaces through which datatypes are described to Jena.| [Typed literals](/documentation/notes/typed-literals.html)
+oaj.jena.ontology | Abstractions and convenience classes for accessing and manipulating ontologies represented in RDF. | [Ontology API](/documentation/ontology/index.html)
 oaj.jena.rdf.listeners  | Listening for changes to the statements in a model |
-oaj.jena.reasoner|  The reasoner subsystem is supports a range of inference engines which derive additional information from an RDF model | [Reasoner how-to](http://jena.apache.org/documentation/inference/index.html)
+oaj.jena.reasoner|  The reasoner subsystem is supports a range of inference engines which derive additional information from an RDF model | [Reasoner how-to](/documentation/inference/index.html)
 oaj.jena.shared | Common utility classes |
 oaj.jena.vocabulary | A package containing constant classes with predefined constant objects for classes and properties defined in well known vocabularies. |
 
-oaj.jena.xmloutput |   Writing RDF/XML. | [I/O index](http://jena.apache.org/documentation/io/index.html)
+oaj.jena.xmloutput |   Writing RDF/XML. | [I/O index](/documentation/io/index.html)

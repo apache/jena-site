@@ -5,11 +5,9 @@ title: "Fuseki: serving RDF data over HTTP"
 ## See the [Fuseki2 documentation](/documentation/fuseki2/).
 
 ----
-> This page covers Fuseki v1.
-> Fuseki1 is deprecated and has been retired. 
-> The last release of Jena with this module is Jena 3.9.0.
-> See [jena-fuseki1/README.md](https://github.com/apache/jena/tree/master/fuseki1).
-> This is the original documentation.
+> This page covers Fuseki v1.<br/>
+> Fuseki1 is deprecated and has been retired.<br/>
+> The last release of Jena with this module is Jena 3.9.0.<br/>
 ----
 
 Fuseki is a SPARQL server. It provides REST-style SPARQL HTTP Update, SPARQL Query,
@@ -47,7 +45,7 @@ The source code is available in the Apache Jena source release.
 
 This section provides a brief guide to getting up and running with
 a simple server installation. It uses the
-[SOH (SPARQL over HTTP)](../fuseki2/soh.html) scripts included in the
+[SOH (SPARQL over HTTP)](/documentation/fuseki2/soh.html) scripts included in the
 download.
 
 1.  [Download](/download/#jena-fuseki) the latest `jena-fuseki-*-distribution` 
@@ -218,7 +216,7 @@ accessed via the appropriate protocol at the following URLs:
 -   SPARQL update: `http://localhost:3030/ds/update`
 -   SPARQL HTTP update: `http://localhost:3030/ds/data`
 
-The [SPARQL Over HTTP](soh.html) scripts take care of naming
+The [SPARQL Over HTTP](/documentation/fuseki2/soh.html) scripts take care of naming
 and protocol details. For example, to load in a file `data.rdf`:
 
      s-put http://localhost:3030/ds/data default data.rdf
@@ -416,7 +414,7 @@ or making the default graph the union of all named graphs.
 working with SPARQL 1.1. SOH is server-independent and will work
 with any compliant SPARQL 1.1 system offering HTTP access.
 
-See the [SPARQL Over HTTP](soh.html) page.
+See the [SPARQL Over HTTP](/documentation/fuseki2/soh.html) page.
 
 ### Examples
 

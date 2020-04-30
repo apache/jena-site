@@ -160,7 +160,7 @@ See [ESRIs docs on spatial relations](http://edndoc.esri.com/arcsde/9.1/general_
 
 ## Spatial Dataset Assembler
 
-The usual way to describe an index is with a [Jena assembler description](http://jena.apache.org/documentation/assembler/index.html). Configurations can also be built with [code](#how-to-use-it-by-code). The assembler describes a "spatial dataset" which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for each.
+The usual way to describe an index is with a [Jena assembler description](/documentation/assembler/index.html). Configurations can also be built with [code](#how-to-use-it-by-code). The assembler describes a "spatial dataset" which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for each.
 
 A spatial index has an 
 [EntityDefinition](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)

@@ -33,8 +33,7 @@ persistent work area on-disk.
     java -jar jena-fuseki-server-$VER.jar --help
 
 The arguments are the same as the 
-[full UI server command line
-program](http://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
+[full UI server command line program](/documentation/fuseki2/fuseki-run.html#fuseki-standalone-server).
 There are no special environment variables.
 
 
@@ -98,7 +97,7 @@ is quite large and difficult to set manually.
 This dependency does not include a logging setting. Fuseki uses [slf4j](http://slf4j.org/).
 See section "[Logging](#logging)" for details.
 
-If the application wishes to use a dataset with a [text-index](http://jena.apache.org/documentation/query/text-query.html)
+If the application wishes to use a dataset with a [text-index](/documentation/query/text-query.html)
 then the application will also need to include jena-text in its dependencies.
 
 ## Logging {#logging}
@@ -136,7 +135,7 @@ and dependencies:
       <version>1.x.y</version>
     </dependency>
 
-See [Fuseki Logging](http://jena.apache.org/documentation/fuseki2/fuseki-logging.html).
+See [Fuseki Logging](/documentation/fuseki2/fuseki-logging.html).
 
 To silence logging from Java, try:
 
