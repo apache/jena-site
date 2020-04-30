@@ -91,7 +91,7 @@ slug: index
     tabled backward chaining and hybrid execution strategies are supported.</li>
 </ol>
 
-<p>[<a href="#index">index</a>]</p>
+<p>[<a href="#index">Index</a>]</p>
 
 ## The Inference API {#api}
 <ol>
@@ -180,7 +180,7 @@ slug: index
   locate reasoners with appropriate properties. The calls <code>Reasoner.getCapabilities</code>
   and <code>Reasoner.supportsProperty</code> are used to access this descriptive
   metadata.</p>
-<p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#api">API Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Some small examples {#generalExamples}
 <p>These initial examples are not designed to illustrate the power of the reasoners
@@ -266,7 +266,7 @@ slug: index
   will see the schema statements, the data statements and any statements entailed
   from the combination of the two. Any updates to the InfModel will be reflected
   in updates to the underlying data model - the schema model will not be affected.</p>
-<p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#api">API Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Operations on inference models {#operationsOnInferenceModels}
 <p>For many applications one simply creates a model incorporating some inference
@@ -490,7 +490,7 @@ slug: index
 <p>Dynamic tracing control is sometimes possible on the InfModel itself by retrieving
   its underlying InfGraph and calling <code>setTraceOn()</code> call. If you need
   to make use of this see the full javadoc for the relevant InfGraph implementation.</p>
-<p>[<a href="#api">API index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#api">API Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ## The RDFS reasoner {#rdfs}
 <ol>
@@ -529,7 +529,7 @@ slug: index
   the datatype of the literal. The value to applications of directly seeing the
   additional bNode triples, even in <i>virtual</i> triple form, is negligible
   and so this has been deliberately omitted from the reasoner. </p>
-<p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rdfs">RDFS Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### RDFS configuration {#RDFSconfiguration}
 <p>The RDFSRuleReasoner can be configured to work at three different compliance
@@ -620,7 +620,7 @@ slug: index
     </td>
   </tr>
 </table>
-<p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rdfs">RDFS Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### RDFS Example {#RDFSexamples}
 <p>As a complete worked example let us create a simple RDFS schema, some instance
@@ -704,7 +704,7 @@ Datatype[http://www.w3.org/2001/XMLSchema#integer -&gt; class java.math.BigInteg
 that is not compatible with 13</i></pre>
 <p>because the age was given using an RDF plain litera where as the schema requires
   it to be a datatyped literal which is compatible with xsd:integer.</p>
-<p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rdfs">RDFS Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### RDFS implementation and performance notes {#RDFSnotes}
 <p>The RDFSRuleReasoner is a hybrid implementation. The subproperty and subclass
@@ -763,7 +763,7 @@ that is not compatible with 13</i></pre>
   the absence of caching we would expect the performance to be poor. Future work
   on adapting the rule engines to exploit the capabilities of the more sophisticated
   database backends will be considered.</p>
-<p>[<a href="#rdfs">RDFS index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rdfs">RDFS Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ## The OWL reasoner {#owl}
 <ol>
@@ -1001,7 +1001,7 @@ configuration still leaves something to be desired and will the subject of futur
   <li>Too many literal-values for a DatatypeProperty restricted by a maxCardinality(N)
     restriction.</li>
 </ul>
-<p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#owl">OWL Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### OWL Configuration {#OWLconfiguration}
 <p>This reasoner is accessed using <code>ModelFactory.createOntologyModel</code>
@@ -1039,7 +1039,7 @@ configuration still leaves something to be desired and will the subject of futur
 <p>As we gain experience with the ways in which OWL is used and the capabilities
   of the rule-based approach we imagine useful subsets of functionality emerging
   - like that supported by the RDFS reasoner in the form of the level settings.</p>
-<p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#owl">OWL Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### OWL Example {#OWLexamples}
 <p>As an example of using the OWL inference support, consider the sample schema
@@ -1139,7 +1139,7 @@ Implicated node: eg:bigNameSpecialMB</i>
 <p>This is due to the two records for the <code>bigName42</code> configuration
   referencing two motherboards which are explicitly defined to be different resources
   and thus violate the FunctionProperty nature of <code>hasMotherBoard</code>.</p>
-<p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#owl">OWL Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### OWL notes and limitations {#OWLnotes}
 
@@ -1216,7 +1216,7 @@ class B = cardinality(P,1)</pre>
   and oversights. We intend that the reasoner should be sound (all inferred triples
   should be valid) but not complete. </p>
 
-<p>[<a href="#owl">OWL index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#owl">OWL Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ## The transitive reasoner {#transitive}
 <p>The TransitiveReasoner provides support for storing and traversing class and
@@ -1268,7 +1268,7 @@ class B = cardinality(P,1)</pre>
 <p>The rule reasoner can also be extended by registering new procedural primitives.
   The current release includes a starting set of primitives which are sufficient
   for the RDFS and OWL implementations but is easily extensible.</p>
-<p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Rule syntax and structure {#RULEsyntax}
 <p>A rule for the rule-based reasoner is defined by a Java <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/Rule.html">Rule</a></code>
@@ -1387,7 +1387,7 @@ a single extra rule is:
     [rule1: (?f pre:father ?a) (?u pre:brother ?f) -&gt; (?u pre:uncle ?a)]
 </p>
 
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Forward chaining engine {#RULEforward}
 <p>If the rule reasoner is configured to run in forward mode then only the forward
@@ -1427,7 +1427,7 @@ a single extra rule is:
   engine is likely to be eliminated in a future release once more tuning has been
   done to the default RETE engine.</p>
 
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Backward chaining engine {#RULEbackward}
 <p>If the rule reasoner is run in backward chaining mode it uses a logic programming
@@ -1495,7 +1495,7 @@ triple(s1, p1, o1) :- triple(sb1, pb1, ob1), ...
 <p>Note that backward rules can only have one consequent so that if writing rules that
 might be run in either backward or forward mode then they should be limited to a single consequent each.
 </p>
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Hybrid rule engine {#RULEhybrid}
 <p>The rule reasoner has the option of employing both of the individual rule engines
@@ -1537,7 +1537,7 @@ might be run in either backward or forward mode then they should be limited to a
   forward rules still work incrementally, including incrementally asserting or
   removing backward rules in response to the data changes.</p>
 
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### GenericRuleReasoner configuration {#RULEconfiguration}
 <p>As with the other reasoners there are a set of parameters, identified by RDF
@@ -1640,7 +1640,7 @@ Reasoner reasoner = new GenericRuleReasoner(rules);</pre>
     </td>
   </tr>
 </table>
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Builtin primitives {#RULEbuiltins}
 <p>The procedural primitives which can be called by the rules are each implemented
@@ -1863,7 +1863,7 @@ do not "pollute" the inference results.</div>
     </td>
   </tr>
 </table>
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Example {#RULEexamples}
 <p>As a simple illustration suppose we wish to create a simple ontology language
@@ -1963,7 +1963,7 @@ while (i.hasNext()) {
       [ (?X ?P ?Y) &lt;- (?Y ?P ?X) ]
       [ (?A ?P ?C) &lt;- (?A ?P ?B), (?B ?P ?C) ]
 ] </pre>
-<p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Combining RDFS/OWL with custom rules {#RDFSPlusRules}
 <p>Sometimes one wishes to write generic inference rules but combine them
@@ -2023,7 +2023,7 @@ while (i.hasNext()) {
 [rdfs9:  (?x rdfs:subClassOf ?y), (?a rdf:type ?x) -&gt; (?a rdf:type ?y)]
 </pre>
 
-<p>[<a href="#rules">rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Notes {#RULEnotes}
 <p>One final aspect of the general rule engine to mention is that of validation
@@ -2054,7 +2054,7 @@ while (i.hasNext()) {
 </p>
 <p>Future extensions will improve the formatting capabilities and flexibility
   of this mechanism. </p>
-<p>[<a href="#rules">Rule index</a>] [<a href="#index">main index</a>]</p>
+<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 
 ### Extensions {#RULEextensions}
 <p>There are several places at which the rule system can be extended by application
