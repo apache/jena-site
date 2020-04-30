@@ -1777,7 +1777,7 @@ Smith, we can say:
     Ontology ont = m.getOntology( baseURI );
     ont.addProperty( DCTerms.creator, "John Smith" );
 
-It is also possible to programatically add imports and other
+It is also possible to programmatically add imports and other
 meta-data to a model, for example:
 
     String base = ...; // the base URI of the ontology

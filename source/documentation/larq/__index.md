@@ -43,7 +43,7 @@ There are many ways to use Lucene, which can be set up to handle particular feat
 An index builder is a class to create a Lucene index from RDF data.
 
  * `IndexBuilderString`: This is the most commonly used index builder. It indexes plain literals (with or without language tags) and XSD strings and stores the complete literal. Optionally, a property can be supplied which restricts indexing to strings in statements using that property.
- * `IndexBuilderSubject`: Index the subject resource by a string literal, an store the subject resource, possibly restricted by a specified property.
+ * `IndexBuilderSubject`: Index the subject resource by a string literal, a store the subject resource, possibly restricted by a specified property.
 
 Lucene has many ways to create indexes and the index builder classes do not attempt to provide all possible Lucene features. Applications may need to extend or modify the standard index builders provided by LARQ.
 

@@ -114,7 +114,7 @@ will translate a SPARQL XML Result Set into a tabular text form.
 ### `arq.qexpr`
 
 Read and print an expression (something that can go in a `FILTER`
-clause). Indicates whether an evaluation exception occured.
+clause). Indicates whether an evaluation exception occurred.
 
 The `-v` argument prints the parsed expression.
 

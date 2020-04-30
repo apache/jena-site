@@ -25,7 +25,7 @@ The `EXISTS` and `NOT EXISTS` are now legal SPARQL 1.1 when used inside a `FILTE
 they may be used as bare graph patterns only when `Syntax.syntaxARQ` is used
 
 There is the `NOT EXISTS` operator which acts at the point in the query where it is
-written. It does not bind any variables but variables aready bound
+written. It does not bind any variables but variables already bound
 in the query will have their bound value.
 
     # Names of people who have not stated that they know anyone

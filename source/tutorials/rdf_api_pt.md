@@ -545,7 +545,7 @@ while (iter.hasNext()) {
 }</pre>
 
 
-<p>Todos esses métodos de consulta são acuçar sintático sobre o método primitivo de consulta <code>model.listStatements(Selector s)</code>. Esse método retorna um iterador sobre todas as sentenças no modelo 'selecionado' por <code>s</code>. A interface de selector foi feita para ser extensível, mas por hora, só há uma implementação dela, a classe  <code>SimpleSelector</code> do pacote <code>org.apache.jena.rdf.model</code>. Usar <code>SimpleSelector </code> é uma das raras ocasiões em Jena onde é necessário usar uma classe especifica em vez de uma interface. O construtor de <code>SimpleSelector</code> recebe três argumentos:</p>
+<p>Todos esses métodos de consulta são açúcar sintático sobre o método primitivo de consulta <code>model.listStatements(Selector s)</code>. Esse método retorna um iterador sobre todas as sentenças no modelo 'selecionado' por <code>s</code>. A interface de selector foi feita para ser extensível, mas por hora, só há uma implementação dela, a classe  <code>SimpleSelector</code> do pacote <code>org.apache.jena.rdf.model</code>. Usar <code>SimpleSelector </code> é uma das raras ocasiões em Jena onde é necessário usar uma classe especifica em vez de uma interface. O construtor de <code>SimpleSelector</code> recebe três argumentos:</p>
 
 
 <pre>Selector selector = new SimpleSelector(subject, predicate, object)</pre>
@@ -664,7 +664,7 @@ StmtIterator iter = model.listStatements(
 
 <h2 id="ch-Operations-on-Models">Operações em Modelos</h2>
 
-<p>Jena provê três operações para manipular modelos. Elas são operações comuns de conjunto: unão, intersecção e diferença.</p>
+<p>Jena provê três operações para manipular modelos. Elas são operações comuns de conjunto: união, intersecção e diferença.</p>
 
 <p>A união de dois modelos é a união do conjunto de sentenças que representa cada modelo. Esta é uma das operações chaves que RDF suporta. Isso permite que fontes de dados discrepantes sejam juntadas. Considere o seguintes modelos:</p>
 
@@ -909,6 +909,6 @@ web site</a>.</dd>
 <dd>é o recurso que é a fonte do arco num modelo RDF.</dd>
 
 <dt><a id="glos-Triple">Tripla</a></dt>
-<dd>é a estrutura contendo o sujeito, o predicato e o objeto. Outro termo para sentença.</dd>
+<dd>é a estrutura contendo o sujeito, o predicado e o objeto. Outro termo para sentença.</dd>
 
 </dl>

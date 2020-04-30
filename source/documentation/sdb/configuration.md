@@ -2,7 +2,7 @@
 title: SDB Configuration
 ---
 
-This page describe the configuration options available. These are
+This page describes the configuration options available. These are
 options for query processing, not for the database layout and
 storage, which is controlled by
 [store descriptions](store_description.html "SDB/Store Description").
@@ -18,7 +18,7 @@ storage, which is controlled by
 
 ## Setting Options
 
-Options can be set globally, through out the JVM, or on a per query
+Options can be set globally, throughout the JVM, or on a per query
 execution basis. SDB uses the same mechanism as
 [ARQ](http://jena.sf.net/ARQ "http://jena.sf.net/ARQ").
 

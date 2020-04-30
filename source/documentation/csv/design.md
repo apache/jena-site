@@ -41,7 +41,7 @@ Once a `PropertyTable` is built, tabular data within can be accessed by the API 
 `GraphPropertyTable` implements the [Graph](https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/Graph.java) interface (read-only) over a `PropertyTable`. 
 This is subclass from [GraphBase](https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/impl/GraphBase.java) and implements `find()`. 
 The `graphBaseFind()`(for matching a `Triple`) and `propertyTableBaseFind()`(for matching a whole `Row`) methods can choose the access route based on the find arguments.
-`GraphPropertyTable` holds/wraps an reference of the `PropertyTable` instance, so that such a `Graph` can be treated in a more table-like fashion.
+`GraphPropertyTable` holds/wraps a reference of the `PropertyTable` instance, so that such a `Graph` can be treated in a more table-like fashion.
 
 **Note:** Both `PropertyTable` and `GraphPropertyTable` are *NOT* restricted to CSV data.
 They are supposed to be compatible with any table-like data sources, such as relational databases, Microsoft Excel, etc.

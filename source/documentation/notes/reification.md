@@ -78,7 +78,7 @@ a `Statement` is reified in any other models.
 Just as `listStatements` is used to find the statements present in
 some model, there are methods for finding the reified statements of
 a model. Each of them returns a `RSIterator` object, which is an
-iterator each of who's elements are `ReifiedStatement`s and for
+iterator each of whose elements are `ReifiedStatement`s and for
 which the convenience method `nextRS()` will deliver a
 suitably-cast reified statement.
 -   `Statement::listReifiedStatements()` - all the reifications of
@@ -86,7 +86,7 @@ suitably-cast reified statement.
 -   `Model::listReifiedStatements()` - all the reified statements
     in this model.
 -   `Model::listReifiedStatements(Statement s)` - all the reified
-    statements reifiying `s` in this model.
+    statements reifying `s` in this model.
 
 ## Creating reified statements directly
 

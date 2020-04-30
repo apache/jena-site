@@ -309,7 +309,7 @@ Spatial/coordinate reference systems use a variety of measuring systems for defi
 These can be specified using a URI identifier, as either URL or URN, with conversion undertaken automatically as required.
 It should be noted that there is error inherent in spatial reference systems and some variation in values may occur between different systems.
 
-The following table gives some examples of units that are supported (additonal units can be added to the `UnitsRegistry` using the `javax.measure.Unit` API.
+The following table gives some examples of units that are supported (additional units can be added to the `UnitsRegistry` using the `javax.measure.Unit` API.
 These URI are all in the namespace `http://www.opengis.net/def/uom/OGC/1.0/` and here use the prefix `units`.
 
 URI | Description

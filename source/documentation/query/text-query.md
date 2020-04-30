@@ -1170,7 +1170,7 @@ you need to rebuild the index to ensure that the graph information is stored.
 
 ### Linguistic support with Lucene index
 
-Language tags associated with `rdfs:langStrings` occuring as literals in triples may
+Language tags associated with `rdfs:langStrings` occurring as literals in triples may
 be used to enhance indexing and queries. Sub-sections below detail different settings with the index, and use cases with SPARQL queries.
 
 #### Explicit Language Field in the Index 
@@ -1519,7 +1519,7 @@ The first situation arises when entering triples that include languages with mul
 
 There are several such languages of interest: Chinese, Tibetan, Sanskrit, Japanese and Korean. There are various Romanizations and ideographic variants.
 
-Encodings may not be normalized when inserting triples for a variety of reasons. A principle one is that the `rdf:langString` object often must be entered in the same encoding that it occurs in some physical text that is being catalogued. Another is that metadata may be imported from sources that use different encoding conventions and it is desireable to preserve the original form.
+Encodings may not be normalized when inserting triples for a variety of reasons. A principle one is that the `rdf:langString` object often must be entered in the same encoding that it occurs in some physical text that is being catalogued. Another is that metadata may be imported from sources that use different encoding conventions and it is desirable to preserve the original form.
 
 The second situation arises to provide simple support for phonetic or other forms of lossy search at the time that triples are indexed directly in the Lucene system.
 

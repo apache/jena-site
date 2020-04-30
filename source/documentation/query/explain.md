@@ -75,7 +75,7 @@ globally:
 
     ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
 
-and it may also be set on an individual query execution using it's local
+and it may also be set on an individual query execution using its local
 context.
 
      try(QueryExecution qExec = QueryExecutionFactory.create(...)) {

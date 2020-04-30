@@ -61,7 +61,7 @@ are available as part of the standard setup.
 * TriX
 * RDF Binary
 
-In addition, there are variants of Trutle, TriG for pretty printing, 
+In addition, there are variants of Turtle, TriG for pretty printing, 
 streamed output and flat output.  RDF/XML has variants for pretty printing 
 and plain output.  Jena RIOT uses `org.apache.jena.riot.RDFFormat` as a way
 to identify the language and variant to be written.  The class contains constants
@@ -157,7 +157,7 @@ Pretty printed formats:
 
 ### Streamed Block Formats
 
-Fully pretty printed formats can't not be streamed.  They require analysis
+Fully pretty printed formats can not be streamed.  They require analysis
 of all of the data to be written in order to choose the short forms.  This limits
 their use in fully scalable applications.
 
@@ -211,7 +211,7 @@ prefix names and short forms for literals. They write each triple or quad
 on a single line.
 
 The regularity of the output can be useful for text processing of data.  
-These formats do not offer more scalabilty than the stream forms.
+These formats do not offer more scalability than the stream forms.
 
 Example:
 
@@ -332,12 +332,12 @@ compared to the text-based standardised syntax such as N-triples, Turtle or RDF/
 `RDFTHRIFT_VALUES` is a variant where numeric values are written as values,
 not as lexical format and datatype.  See the 
 [description of RDF Thrift](http://afs.github.io/rdf-thrift)
-for dsicussion.
+for discussion.
 
 ### RDF/XML
 
 RIOT supports output in RDF/XML. RIOT RDFFormats defaults to pretty printed RDF/XML,
-while the jena writer writer name defaults to a streaming plain output.
+while the jena writer name defaults to a streaming plain output.
 
 | RDFFormat | Other names              | Jena writer name            |
 |-----------|--------------------------|-----------------------------|
@@ -365,7 +365,7 @@ The follow ways are different ways to write a model in Turtle:
 
 ### Ways to write a dataset
 
-The prefered style is to use `RDFDataMgr`:
+The preferred style is to use `RDFDataMgr`:
 
     Dataset ds = .... ;
     // Write as TriG
@@ -399,7 +399,7 @@ might give:
 
 ### Adding a new output format
 
-An complete example of adding a new output format is given in the example file: 
+A complete example of adding a new output format is given in the example file: 
 [RIOT Output example 3](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_out3.java)
 
 ## Notes

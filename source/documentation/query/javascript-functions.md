@@ -5,7 +5,7 @@ title: ARQ - JavaScript SPARQL Functions
 ARQ supports (Jena v3.7.0 onwards) writing 
 [custom SPARQL functions](https://www.w3.org/TR/sparql11-query/#extensionFunctions)
 in JavaScript. These functions can be used in FILTERs and for calculating
-values to assigb wiuth AS in BIND and SELECT expressions.
+values to assign with AS in BIND and SELECT expressions.
 
 XSD datatypes for strings, numbers and booleans are converted to the
 native JavaScript datatypes. RDFterms that do not fit easily into
@@ -15,7 +15,7 @@ JavaScript datatypes are handled with a object class `NV`.
 
 JavaScript is loaded from an external file using the context setting
 "http://jena.apache.org/ARQ#js-library". This can be written as
-`arq:js-library` for commands and Fuseki configuation files.
+`arq:js-library` for commands and Fuseki configuration files.
 
 Example:
 
@@ -43,13 +43,13 @@ decimal, float, double and all the derived types) and `xsd:boolean` are
 converted to JavaScript string, number and boolean respectively.
 
 SPARQL functions must return a value. When a function returns a value,
-it can be one of these JavaScript natbive datatypes, in which case the
+it can be one of these JavaScript native datatypes, in which case the
 reverse conversion is applied back to XSD datatypes.  For numbers, the
 conversion is back to `xsd:integer` (if it has no fractional part) or
 `xsd:double`.
 
 The JavaScript function can also create `NodeValue` (or `NV`) objects
-for other datatypes by calling Java from withint the JAavScript script
+for other datatypes by calling Java from within the JavaScript script
 engine of the Java runtime.
 
 URIs are passed as `NV` object and are available in JavaScript as a string.
@@ -117,7 +117,7 @@ server, for example:
 
     fuseki --set arq:js-library=functions.js --mem /ds
 
-or it can be specificied in the server coinfiguration file `config.ttl`:
+or it can be specifiid in the server configuration file `config.ttl`:
 
     PREFIX :        <#>
     PREFIX fuseki:  <http://jena.apache.org/fuseki#>

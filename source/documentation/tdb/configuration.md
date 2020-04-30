@@ -70,7 +70,7 @@ See [TDB/Datasets](datasets.html "TDB/Datasets").
 ## Logging Query Execution
 
 If the symbol "`tdb:logExec`" is set to "true", and also the logger
-`org.apache.jena.tdb.exec` is enabled fro level "info", then each
+`org.apache.jena.tdb.exec` is enabled from level "info", then each
 basic graph patterns is logged before execution. This pattern
 logged is after substitution of variable values and after
 optimization by the

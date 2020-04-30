@@ -11,7 +11,7 @@ results sent back (in RDF, or an
 [XML-based results format](http://www.w3.org/TR/rdf-sparql-XMLres/)
 or even a [JSON one](http://www.w3.org/TR/rdf-sparql-json-res/)).
 
-`SERVICE` is a feature of SPARQL 1.1 that allows an executing query to
+`SERVICE` is a feature of SPARQL 1.1 that allows an executing query
 to make a SPARQL protocol to another SPARQL endpoint.
 
 ## Syntax

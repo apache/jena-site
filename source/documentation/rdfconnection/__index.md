@@ -177,7 +177,7 @@ provided).
 
 GSP operations work on while models and datasets. When used on a remote connection,
 the result of a GSP operation is a separate copy of the remote RDF data.  When working
-with local connections, 3 isolations modes are available:
+with local connections, 3 isolation modes are available:
 
 * Copy &ndash; the models and datasets returned are independent copies.
 Updates are made to the return copy only. This is most like

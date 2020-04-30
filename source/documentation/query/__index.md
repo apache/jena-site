@@ -86,7 +86,7 @@ ARQ supports the W3C standard SPARQL Update language.
 
 - [Fuseki](../fuseki2/index.html) - Server implementation of the SPARQL protocol.
 - [TDB - A SPARQL database for Jena](../tdb), a pure Java persistence layer for large graphs, high performance applications and embedded use.
-- [RDFConenction](../rdfconnection), a unified API for SPARQL Query, Update and Graph Store Protocol.
+- [RDFConnection](../rdfconnection), a unified API for SPARQL Query, Update and Graph Store Protocol.
 
 ## W3C Documents
 

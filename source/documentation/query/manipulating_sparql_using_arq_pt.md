@@ -100,7 +100,7 @@ estão igualmente ausentes.
 
 ## Navegando e Aprendendo: Visitors
 
-Você também pode olhar para a álgebra e a sintaxe usando vistors. Comece estendendo `OpVisitorBase` 
+Você também pode olhar para a álgebra e a sintaxe usando visitors. Comece estendendo `OpVisitorBase` 
 (`ElementVisitorBase`) que apaga a interface de modo que você pode se concentrar nas partes de interesse, 
 então dê um passo a frente e use `OpWalker.walk(Op, OpVisitor)`
 (`ElementWalker.walk(Element, ElementVisitor)`). Isso funciona no esquema “bottom up” (de baixo para cima).

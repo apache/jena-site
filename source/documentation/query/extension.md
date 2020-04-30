@@ -164,7 +164,7 @@ resource (not literals) identified by the `DESCRIBE` query.
 
 URIs from with scheme name "\_" (which is illegal) are created as
 blank node labels for directly accessing a blank node in the
-queried graph or dataset. This are constant terms in the query -
+queried graph or dataset. These are constant terms in the query -
 not unnamed variables. Do not confuse these with the standard
 qname-like notation for blank nodes in queries. This is not
 portable - use with care.

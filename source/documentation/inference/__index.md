@@ -387,7 +387,7 @@ slug: index
 #### Derivations {#derivations}
 <p>It is sometimes useful to be able to trace where an inferred statement was
   generated from. This is achieved using the <code>InfModel.getDerivation(Statement)</code>
-  method. This returns a iterator over a set <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/Derivation.html"><code>Derviation</code></a>
+  method. This returns a iterator over a set <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/Derivation.html"><code>Derivation</code></a>
   objects through which a brief description of the source of the derivation can
   be obtained. Typically understanding this involves tracing the sources for other
   statements which were used in this derivation and the <code>Derivation.PrintTrace</code>
@@ -395,7 +395,7 @@ slug: index
 <p>The general form of the Derivation objects is quite abstract but in the case
   of the rule-based reasoners they have a more detailed internal structure that
   can be accessed - see <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/RuleDerivation.html">RuleDerivation</a></code>.</p>
-<p>Derviation information is rather expensive to compute and store. For this reason,
+<p>Derivation information is rather expensive to compute and store. For this reason,
   it is not recorded by default and <code>InfModel.serDerivationLogging(true)</code>
   must be used to enable derivations to be recorded. This should be called before
   any queries are made to the inference model.</p>
@@ -505,7 +505,7 @@ slug: index
   almost all of the RDFS entailments described by the RDF Core working group [<a href="https://www.w3.org/TR/rdf-mt/">RDF
   Semantics</a>]. The only omissions are deliberate and are described below.</p>
 <p>This reasoner is accessed using <code>ModelFactory.createRDFSModel</code> or
-  manually via <code>ReasonerRegistery.getRDFSReasoner()</code>.</p>
+  manually via <code>ReasonerRegistry.getRDFSReasoner()</code>.</p>
 <p>During the preview phases of Jena experimental RDFS reasoners were released,
   some of which are still included in the code base for now but applications should
   not rely on their stability or continued existence.</p>
@@ -702,7 +702,7 @@ if (validity.isValid()) {
  - Error (dtRange): Property urn:x-hp:eg/age has a typed range
 Datatype[http://www.w3.org/2001/XMLSchema#integer -&gt; class java.math.BigInteger]
 that is not compatible with 13</i></pre>
-<p>because the age was given using an RDF plain litera where as the schema requires
+<p>because the age was given using an RDF plain literal where as the schema requires
   it to be a datatyped literal which is compatible with xsd:integer.</p>
 <p>[<a href="#rdfs">RDFS Index</a>] [<a href="#index">Main Index</a>]</p>
 
@@ -919,7 +919,7 @@ configuration still leaves something to be desired and will the subject of futur
   </tr>
   <tr>
     <td width="36%">
-      <div align="left">owl:SymmeticProperty, owl:TransitiveProperty</div>
+      <div align="left">owl:SymmetricProperty, owl:TransitiveProperty</div>
     </td>
     <td width="16%">all</td>
     <td width="48%">
@@ -1212,7 +1212,7 @@ class B = cardinality(P,1)</pre>
 ####Incompleteness
 <p>The rule based approach cannot offer a complete solution for OWL/Lite, let
   alone the OWL/Full fragment corresponding to the OWL/Lite constructs. In addition
-  the current implementation is still under development and may well have ommissions
+  the current implementation is still under development and may well have omissions
   and oversights. We intend that the reasoner should be sound (all inferred triples
   should be valid) but not complete. </p>
 

@@ -94,9 +94,9 @@ If the syntax is not as the file extension, a language can be declared:
 
 ### Example 2 : Using the RDFDataMgr
 
-In versions of Jena priot to 2.10.0, the `FileManager` provided some of
+In versions of Jena prior to 2.10.0, the `FileManager` provided some of
 this functionality. It was more basic, and not properly web enabled.
-The API `RDFDataMgr` superceeds the `FileManager`.
+The API `RDFDataMgr` supercedes the `FileManager`.
 
  `RDFDataMgr "load*" operations create an
 in-memory container (model, or dataset as appropriate); "read" operations
@@ -264,6 +264,6 @@ See [RIOT example 4](https://github.com/apache/jena/tree/master/jena-arq/src-exa
 
 ### Add a new language
 
-The set of languages is not fixed. A new languages, 
+The set of languages is not fixed. A new language, 
 together with a parser, can be added to RIOT as shown in
 [RIOT example 5](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_5.java)

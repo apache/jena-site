@@ -12,13 +12,13 @@ statement-level operations do not require additional joins. The
 [SDB layout](database_layouts.html "SDB/Database Layouts") is
 normalised so that the triple table is narrower and uses integers
 for RDF nodes, then does do joins to get the node representation.
-This optimizers for longer patterns, not API operations.
+These optimizers for longer patterns, not API operations.
 
 These figures were taken July 2007.
 
 As with any performance figures, these should be taken merely as a
 guide. The shape of the data, the hardware details, choice of
-database, and it's configuration (particularly amount of memory
+database, and its configuration (particularly amount of memory
 used), as well as the queries themselves all greatly contribute to
 the execution costs.
 

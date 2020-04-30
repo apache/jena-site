@@ -19,7 +19,7 @@ Se um URI é fornecido, o padrão vai ser casado contra o grafo no dataset com e
 então clausula `GRAPH` falhará ao tentar casar.  
 
 Se uma variável é dada, todos os grafos nomeados (não o grafo padrão) 
-são testados. A variavel pode ser usada em outro lugar, então, durante a execução, esse valor 
+são testados. A variável pode ser usada em outro lugar, então, durante a execução, esse valor 
 já é conhecido para a solução, somente o grafo nomeado é testado.
 
 ### Dados de exemplo
@@ -178,7 +178,7 @@ Pode haver mais de uma clausula `FROM` e o grafo padrão é resultado da leitura
 Isto é o merge de RDF de grafos individuais.
 
 Não se confunda com o fato de um grafo padrão ser descrito por uma ou mais URL na clausula `FROM`. 
-Esse é o lugar de onde o dado é lito, não o nome do grafo. 
+Esse é o lugar de onde o dado é lido, não o nome do grafo. 
 Como muitas clausulas FROM podem ser fornecidas, o dado pode ser lido de vários lugares, 
 mas nenhum deles se torna o nome do grafo.
 

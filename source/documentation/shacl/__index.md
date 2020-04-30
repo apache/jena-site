@@ -46,12 +46,12 @@ This requires a "new style" endpoint declaration:  see
 "[Fuseki Endpoint Configuration](/documentation/fuseki2/fuseki-config-endpoint.html)".
 
 This is not installed into a dataset setup by default; a configuration file using
-`fuseki:serviceShacl` is necessary (or programmatic setup for Fuskei Main).
+`fuseki:serviceShacl` is necessary (or programmatic setup for Fuseki Main).
 
 The service accepts a shapes graph posted as RDF to <tt>/<i>ds</i>/shacl</tt> with
 content negotiation.
 
-There is an graph argument, `?graph=`, that specifies the graph to validate. It
+There is a graph argument, `?graph=`, that specifies the graph to validate. It
 is the URI of a named graph, `default` for the unnamed, default graph (and
 this is the assumed value of `?graph` if not present), or `union` for union of
 all named graphs in the dataset.

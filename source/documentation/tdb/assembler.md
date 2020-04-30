@@ -10,7 +10,7 @@ dataset and model descriptions, for example.
 
 SPARQL queries operate over an
 [RDF dataset](http://www.w3.org/TR/sparql11-query/#rdfDataset "http://www.w3.org/TR/rdf-sparql-query/#rdfDataset"),
-which is a unnamed, default graph and zero or more named graphs.
+which is an unnamed, default graph and zero or more named graphs.
 
 Having the description in a file means that the data that the
 application is going to work on can be changed without changing the

@@ -58,7 +58,7 @@ If this command fails then `JENA_HOME` is not correctly set, please ensure you h
 
 Windows users may experience problems if trying to run the tools when their `JENA_HOME` path contains spaces in it, there are two workarounds for this:
 
- 1. Move your Jena install to a path without spaces
+ 1. Move your Jena installation to a path without spaces
  1. Grab the latest scripts from [master][1] where they have been fixed to safely handle this.  Future releases will include this fix and resolve this issue
 
 [1]: https://github.com/apache/jena/tree/master/apache-jena/bat/
