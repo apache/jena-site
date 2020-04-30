@@ -223,7 +223,7 @@ and protocol details. For example, to load in a file `data.rdf`:
 
 ## Fuseki Server and TDB
 
-Fuseki include a built-in version of TDB. Run the server with the
+Fuseki includes a built-in version of TDB. Run the server with the
 `--desc` argument
 
     fuseki-server --desc tdb.ttl /ds

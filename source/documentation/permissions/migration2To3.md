@@ -29,7 +29,7 @@ All exceptions are runtime exceptions and so do not have to be explicitly caught
 
 * Addition of org.apache.jena.shared.OperationDeniedException. This exception is a child of the _JenaException_ and is the root of all operation denied states whether through process errors or through permissions violations.
 
-* Addition of org.apache.jena.shared.PermissionDeniedException. This exception is a child of the _OperationDeniedException_ and is the root of all operations denied through permission violations. These can be because the object was staticly prohibited from performing an operation (e.g. a read-only graph) or due to the Jena Permissions layer.
+* Addition of org.apache.jena.shared.PermissionDeniedException. This exception is a child of the _OperationDeniedException_ and is the root of all operations denied through permission violations. These can be because the object was statically prohibited from performing an operation (e.g. a read-only graph) or due to the Jena Permissions layer.
 
 * Addition of org.apache.jena.shared.AddDeniedException. This exception is a child of _PermissionDeniedException_ and used to indicate that an attempt was made to add to an unmodifiable object. It may be thrown by read-only graphs or by the permission layer when a create restriction is violated.
 

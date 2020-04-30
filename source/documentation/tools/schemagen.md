@@ -28,7 +28,7 @@ Table 1: schemagen options
 
 Command line option | RDF config file property | Meaning
 ------------------- | ------------------------ | -------
-`-a <uri>` | `sgen:namespace` | The namespace URI for the vocabulary. Names with this URI as prefix are automatically included in the generated vocabulary. If not specified, the base URI of the ontology is used as a default (butnote that some ontology documents don't define a base URI).
+`-a <uri>` | `sgen:namespace` | The namespace URI for the vocabulary. Names with this URI as prefix are automatically included in the generated vocabulary. If not specified, the base URI of the ontology is used as a default (but note that some ontology documents don't define a base URI).
 `-c <filename>`<br />`-c <url>` | | Specify an alternative config file.
 `--classdec <string>` | `sgen:classdec` | Additional decoration for class header (such as `implements`)
 `--classnamesuffix <string>` | `sgen:classnamesuffix` | Option for adding a suffix to the generated class name, e.g. "Vocab".
@@ -80,7 +80,7 @@ constants, such as:
         public static final Resource A_CLASS = new ResourceImpl( "http://example.org/schemas#a-class" );
 
 When these constants are defined manually, it is tedious and
-error-prone to maintain them in synch with the source ontology
+error-prone to maintain them in sync with the source ontology
 file. Schemagen automates the production of Java constants that
 correspond to terms in an ontology document. By automating the step
 from source vocabulary to Java constants, a source of error and
@@ -323,7 +323,7 @@ options) to configure the tool. If a file name or URL is given with
 error.
 
 Schemagen will assume the language encoding of the
-configuration file is implied by the filename/ULRL suffix: ".n3"
+configuration file is implied by the filename/URL suffix: ".n3"
 means N3, ".nt" means NTRIPLES, ".rdf" and ".owl" mean "RDF/XML".
 By default it assumes RDF/XML.
 

@@ -127,7 +127,7 @@ results needs to be take:
 
 The functions `Txn.execute` and `Txn.calculate` start `READ_PROMOTE`
 transactions which start in "read" mode but convert to "write" mode if
-needed.  For details of transaction promtion see the
+needed.  For details of transaction promotion see the
 c[section in the transaction API documentation](transactions_api.html#types-modes-promotion).
 
 ## Working with RDF Models

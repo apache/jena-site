@@ -29,5 +29,5 @@ sections.
 * [Permissions](./permissions/) - a permissions wrapper around Jena RDF implementation
 * [JDBC](./jdbc/) - a SPARQL over JDBC driver framework
 * [Tools](./tools/) - various command-line tools and utilities to help developers manage RDF data and other aspects of Jena
-* [QueryBuilder](./extras/querybuilder/) - Classes to simplify the programatic building of varous query and update statements.
+* [QueryBuilder](./extras/querybuilder/) - Classes to simplify the programmatic building of various query and update statements.
 * [Extras](./extras/) - various modules that provide utilities and larger packages that make Apache Jena development or usage easier but that do not fall within the standard Jena framework.

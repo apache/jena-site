@@ -79,7 +79,7 @@ Portanto, se filtrarmos por idades maiores que 24 na parte opcional, nós ainda 
 
 Idade não incluída para  "Becky Smith"  porque é menor que 24.
 	
-Se a condição do filtro é movida para a parte opcional, então isso pode influenciar no número de soluções, mas deve ser necessário fazer um filtro mais complicado para permitir que a varíavel `age` seja não limitada ([q-opt4.rq](sparql_data/q-opt4.rq)).
+Se a condição do filtro é movida para a parte opcional, então isso pode influenciar no número de soluções, mas deve ser necessário fazer um filtro mais complicado para permitir que a variável `age` seja não limitada ([q-opt4.rq](sparql_data/q-opt4.rq)).
 
     PREFIX info:        <http://somewhere/peopleInfo#>
     PREFIX vcard:      <http://www.w3.org/2001/vcard-rdf/3.0#>
@@ -92,7 +92,7 @@ Se a condição do filtro é movida para a parte opcional, então isso pode infl
         FILTER ( !bound(?age) || ?age > 24 )
     }
 
-Se a solução tiver uma varíavel `age`, então ela deve ser maior que 24. Isso também pode ser não limitado. Agora há 3 soluções:
+Se a solução tiver uma variável `age`, então ela deve ser maior que 24. Isso também pode ser não limitado. Agora há 3 soluções:
 
     -----------------------
     | name          | age |
@@ -107,7 +107,7 @@ Avaliar uma expressão que tem variáveis não limitadas onde uma variável limi
 
 ## OPCIONAIS e consultas dependentes de ordem
 
-Uma coisa a se ter cuidado ao usar a mesma varíavel em duas ou mais clausulas opcionais (e não em alguma padrão básico também):
+Uma coisa a se ter cuidado ao usar a mesma variável em duas ou mais cláusulas opcionais (e não em algum padrão básico também):
 
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     PREFIX vCard: <http://www.w3.org/2001/vcard-rdf/3.0#>

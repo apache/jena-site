@@ -70,7 +70,7 @@ directory.  It is initialised the first time Fuseki runs, including a
 intended as a starting point.  It restricts use of the admin UI to the
 local machine.
 
-## Fuseki as Configuable and Embeddable SPARQL Server {#fuseki-main}
+## Fuseki as Configurable and Embeddable SPARQL Server {#fuseki-main}
 
 Fuseki can be run from inside an Java application to provide SPARQL
 services to application data. The application can continue to access and

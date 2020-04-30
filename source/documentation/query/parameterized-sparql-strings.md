@@ -150,7 +150,7 @@ For example we could add an `ORDER BY` clause to our earlier example like so:
     pss.append("ORDER BY ?s");
 
 Be aware that the basic `append()` methods append the given value as-is without any special formatting applied, if you
-wanted to use the value being appended as a constant in the SPARQL query the you should use the appropriate `appendLiteral()`,
+wanted to use the value being appended as a constant in the SPARQL query then you should use the appropriate `appendLiteral()`,
 `appendIri()` or `appendNode()` method e.g.
 
     // Add a LIMIT clause
@@ -183,4 +183,3 @@ Therefore we <strong>strongly</strong> recommend that users concerned about SPAR
 their own validation on provided parameters and test their use of this class themselves prior to its use in any security
 conscious deployment. We also recommend that users do not use easily  guess-able variable names for their parameters
 as these can allow a chained injection attack though generally speaking the code should prevent these.
- 

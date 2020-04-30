@@ -17,7 +17,7 @@ These were previously ARQ extensions but are now legal SPARQL 1.1
 
 ## IF
 
-The `IF` form evaluates it's first argument to get a boolean
+The `IF` form evaluates its first argument to get a boolean
 result, then evaluates and return the value of the second if the
 boolean result is true, and the third argument if it is false.
 
@@ -30,7 +30,7 @@ Examples:
 
 ## COALESCE
 
-The `COALESCE`form returns the first argument of it's argument list
+The `COALESCE`form returns the first argument of its argument list
 that is bound.
 
     # Suppose ?y is bound to "y" and ?z to "z" but ?x is not.

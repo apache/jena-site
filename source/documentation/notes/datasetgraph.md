@@ -188,7 +188,7 @@ implementation throwing exceptions nor JVM or machine crash (if any
 persistence). It still needs MRSW to archive isolation.
 
 Read-committed needs synchronization safe datastructures -including
-co-ordinated changes to several place at once (ConcurrentHashMap isn't
+co-ordinated changes to several places at once (ConcurrentHashMap isn't
 enough - need to update 2 or more ConcurrentHashMaps together).
 
 ### TDB

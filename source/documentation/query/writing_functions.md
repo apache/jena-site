@@ -32,11 +32,11 @@ functions that access unevaluated arguments are the logical 'or'
 and logical 'and' operations that back `||` and `&&` are special
 forms to allow for the special exception handling rules.
 
-Normally, function should be a pure evaluation based on it's
+Normally, function should be a pure evaluation based on its
 argument. It should not access a graph nor return different values
 for the same arguments (to allow expression optimization). Usually,
 these requirements can be better met with a
-[property function](library-propfunc.html). Functions can't bind a
+[property function](library-propfunc.html). Functions can't bind
 variables; this would be done in a
 [property function](library-propfunc.html) as well.
 
@@ -54,7 +54,7 @@ Example: (this is the max function in the standard ARQ library):
 The function takes two arguments and returns a single value. The
 class NodeValue represents values and supports value-based
 operations. NodeValue value support includes the XSD datatypes,
-xsd:decimal and all it's subtypes like xsd:integer and xsd:byte,
+xsd:decimal and all its subtypes like xsd:integer and xsd:byte,
 xsd';double, xsd:float, xsd:boolean, xsd:dateTime and xsd:date.
 Literals with language tags are also treated as values in
 additional "value spaces" determined by the language tag without

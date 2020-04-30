@@ -119,8 +119,8 @@ credentials for different services as appropriate.  Similarly to the simple auth
 not sent unless the service requests them.
 
 Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example
-if you define credentialsfor `http://example.org` then these are used for any request that requires authentication under that URI 
-e.g. `http://example.org/some/path`.  However if you had also defined credentials for `http://example.org/some/path` then these would be 
+if you define credentials for `http://example.org` then these are used for any request that requires authentication under that URI 
+e.g. `http://example.org/some/path`.  However, if you had also defined credentials for `http://example.org/some/path` then these would be 
 used in favor of those for `http://example.org`
 
 #### ServiceAuthenticator

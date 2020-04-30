@@ -10,7 +10,7 @@ slug: index
 
 # Overview
 
-Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions.  The Query Builder module is a extra package and is found in the `jena-querybuilder` jar. 
+Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions.  The Query Builder module is an extra package and is found in the `jena-querybuilder` jar. 
 
 Each of the builders has a series of methods to define the query.  Each method returns the builder for easy chaining.  The  example:
 
@@ -121,7 +121,7 @@ The where clauses could be built inline as:
 In addition to making it easier to build valid queries the QueryBuilder has a clone method.
 Using this a developer can create as "Template" query and add to it as necessary.
 
-for example using the above query as the "template" the this code:
+For example using the above query as the "template" with this code:
 
 
     SelectBuilder sb2 = sb.clone();

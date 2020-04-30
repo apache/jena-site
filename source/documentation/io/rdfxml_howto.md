@@ -479,7 +479,7 @@ method. This changes the properties for writing RDF/XML.
 - *parent*<br />
   relative path beginning in `"../"`
 - *grandparent*<br />
-  relative path begining in `"../../"`
+  relative path beginning in `"../../"`
 
 The default value is "same-document, absolute, relative, parent".
 To switch off relative URIs use the value "". Relative URIs of any

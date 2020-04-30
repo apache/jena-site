@@ -162,7 +162,7 @@ that illegal datatypes are semantic but not syntactic errors.
 
 However, both of these behaviours can mean that simple common
 errors (such as mis-spelling the xsd namespace) may go unnoticed
-untill very late on. To overcome this we have hidden some global
+until very late on. To overcome this we have hidden some global
 switches that allow you to force Jena to report such syntactic
 errors earlier. These are static Boolean parameters:
 
