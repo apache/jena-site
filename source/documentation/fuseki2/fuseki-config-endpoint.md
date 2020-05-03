@@ -79,7 +79,7 @@ the default. The first example is the same as:
         fuseki:dataset      <#dataset> .
 
 
-The standard set of service installed by runing the server from the command line
+The standard set of service installed by running the server from the command line
 without a configuration file is:
 
     <#service1> rdf:type fuseki:Service ;
@@ -121,7 +121,7 @@ without a configuration file is:
 | `fuseki:upload` | HTML form file upload |
 | `fuseki:no-op`  | An operation that causes a 400 or 404 error |
 
-New operations can be added by programmtic setup in [Fuseki Main](/documentation/fuseki2/fuseki-main).
+New operations can be added by programmatic setup in [Fuseki Main](/documentation/fuseki2/fuseki-main).
 
 ## Dispatch
 
@@ -147,7 +147,7 @@ Quads operations have no query string and a have a `Content-Type` for a data in
 a RDF triples or quads syntax.
 
 So, for example "GET /dataset" is a request to get all the triples and quads in the
-datset. The syntax for the response is determined by content negotiation,
+dataset. The syntax for the response is determined by content negotiation,
 defaulting to `text/trig`.
 
 Custom services usually use a named endpoint.  Custom operations

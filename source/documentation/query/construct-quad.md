@@ -113,7 +113,7 @@ Jena [Fuseki](/documentation/fuseki2/index.html) is also empowered with Construc
 function. No more additional configuration is required to switch it on.
 Because
 [QueryEngineHTTP](/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html)
-is just an implementation of QueryExecution, there's no much difference
+is just an implementation of QueryExecution, there's not much difference
 for the client users to manipulate the programming API described in the
 previous sections, e.g.
 

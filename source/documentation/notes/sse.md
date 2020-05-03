@@ -336,7 +336,7 @@ IRIs and literals are the same.: to produce Turtle (outline):
 4.  Put a dot at the end of the file.
 
 The result is an RDF model using only the properties `rdf:first` and
-`rdf:rest` so it records the data structure, but not what hthe data
+`rdf:rest` so it records the data structure, but not what the data
 structure represents.
 
 ## SSE Files

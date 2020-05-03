@@ -17,7 +17,7 @@ faster.
      sdbload file
      sdbconfig --index
 
-For a large bulk load into an new store, just format it, and not
+For a large bulk load into a new store, just format it, and not
 create the indexes, do the load and then recreating the indexes can
 be noticeably faster.
 

@@ -16,7 +16,7 @@ To check the exact registrations for a specific version, see
 in the source code for that version.
 
 The supported datatypes (including those required by SPARQL 1.1), including
-full operator support, are the XSD atomic datatypes excpt for XML-related
+full operator support, are the XSD atomic datatypes except for XML-related
 ones.  Sequences are not supported.
 
 `xsd:string`, `xsd:boolean`, 

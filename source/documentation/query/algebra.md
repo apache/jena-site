@@ -62,7 +62,7 @@ specification moves filter expressions around).
 ## Directly reading and writing algebra expression
 
 The SSE class is a collection of functions to parse SSE expressions
-for the SPARQ algebra but also RDF terms, filter expressions and
+for the SPARQL algebra but also RDF terms, filter expressions and
 even dataset and graphs.
 
     Op op = SSE.parseOp("(bgp (?s ?p ?o))") ;    // Read a string

@@ -123,19 +123,19 @@ details.  This section is a brief summary of some relevant options:
 | `--anyauth`     |  | Use server nominated authentication scheme            |
 | `--basic`       |  | Use HTTP basic auth                                   |
 | `--digest`      |  | Use HTTP digest auth                                  |
-| `-k`, `--insecure` |  | Don't check HTTPS certifcate.<br/> This allows for self-signed or expired certificates, or ones with the wrong host name. |
+| `-k`, `--insecure` |  | Don't check HTTPS certificate.<br/> This allows for self-signed or expired certificates, or ones with the wrong host name. |
 
 ### Using `wget`
 
 See the [wget documentation](https://www.gnu.org/software/wget/manual/wget.html) for full
-details.  This section is a breif summary of some relevant options:
+details.  This section is a brief summary of some relevant options:
 
 | wget argument  | Value |--|
 |----------------|-------|--|
 | `--http-user`  | user name | Set the user.
 | `--http-password` | password |  Set the password (visible to all on the local machine) |
 |   | | `wget` uses users/password from `.wgetrc` or `.netrc` by default. |
-| `--no-check-certificate` | |  Don't check HTTPS certifcate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name. |
+| `--no-check-certificate` | |  Don't check HTTPS certificate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name. |
 
 ## Access Control Lists {#acl}
 
@@ -154,7 +154,7 @@ ACLs are provided by the `ja:allowedUsers` property
 ### Format of `ja:allowedUsers` {#alloweduser}
 
 The list of users allowed access can be an RDF list or repeated use of
-the property or a mixture. The different seting are combined into one ACL.
+the property or a mixture. The different settings are combined into one ACL.
 
      fuseki:allowedUsers    "user1", "user2", "user3";
      fuseki:allowedUsers    "user3";

@@ -108,13 +108,13 @@ dataset.
 
 ## Transaction Types, Modes and Promotion. {#types-modes-promotion}
 
-Transaction hava type (enum `TxnType`) and a mode (enum `ReadWrite`).
-`TxnType.READ` and `TxnType.Write` strart the transaction in
-that mode and it is fixed fro the transaction's lifetime. A `READ`
-trasnaction can never update the data of the transactional object it is
+Transaction have type (enum `TxnType`) and a mode (enum `ReadWrite`).
+`TxnType.READ` and `TxnType.Write` start the transaction in
+that mode and it is fixed from the transaction's lifetime. A `READ`
+transaction can never update the data of the transactional object it is
 acting on.
 
-Transactiosn can have type `TxnType.READ_PROMOTE` and
+Transactions can have type `TxnType.READ_PROMOTE` and
 `TxnType.READ_COMMITTED_PROMOTE`. These start in mode `READ` but can
 become mode `WRITE`, either implicitly by attempting an update, or
 explicitly by calling `promote`.
@@ -124,7 +124,7 @@ this transaction started. It gives full isolation.
 
 `READ_COMMITTED_PROMOTE` always succeeds because it changes the view of
 the data to include any changes made up to that point (it is "read
-committed"). Applicationd should be aware that data they have read up
+committed"). Applications should be aware that data they have read up
 until the point of promotion (the first call or `.promote` or first
 update made) may now be invalid. For this reason, `READ_PROMOTE` is preferred.
 

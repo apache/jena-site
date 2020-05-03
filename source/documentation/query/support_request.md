@@ -35,7 +35,7 @@ If you are getting unexpected results, show the results you expect
 as well as what you actually get.
 
 If you are getting no results, or less than you expected, try
-cutting parts out of the query until something chnages.
+cutting parts out of the query until something changes.
 
 There are various formatters for result sets included in ARQ. 
 Print your results in text form if possible. There is a

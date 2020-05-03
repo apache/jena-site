@@ -9,7 +9,7 @@ The project uses the GeoSPARQL implementation from the [GeoSPARQL Jena project](
 Currently, there is no GUI interface as provided in the Fuseki distribution.
 
 A subset of the EPSG spatial/coordinate reference systems are included by default from the Apache SIS project (http://sis.apache.org).
-The full EPSG dataset is not distributed due to the the EPSG terms of use being incompatible with the Apache Licence.
+The full EPSG dataset is not distributed due to the EPSG terms of use being incompatible with the Apache Licence.
 Several options are available to include the EPSG dataset by setting the `SIS_DATA` environment variable (http://sis.apache.org/epsg.html).
 
 It is expected that at least one Geometry Literal or Geo Predicate is present in a dataset.
@@ -17,7 +17,7 @@ A spatial index is created and new data cannot be added to the index once built.
 The spatial index can optionally be stored for future usage and needs to removed from a TDB folder if the index is to rebuilt.
 
 ## Getting Started
-GeoSPARQL Fuskei can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line.
+GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line.
 SPARQL queries directly on Jena Datasets and Models can be done using
 the [GeoSPARQL Jena project](index).
 

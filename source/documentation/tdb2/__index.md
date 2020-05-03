@@ -4,7 +4,7 @@ slug: index
 ---
 
 TDB2 is a component of [Apache Jena](https://jena.apache.org) for RDF storage
-and query.  It support the full range of Jena APIs.  TDB2 can be used as a high
+and query.  It supports the full range of Jena APIs.  TDB2 can be used as a high
 performance RDF store on a single machine.  TDB2 can be used with Apache Jena
 Fuseki.
 
