@@ -135,12 +135,19 @@ An in-memory dataset, with data in the default graph taken from a local file.
 
 An inference reasoner can be layered on top of a dataset as defined above. The type of reasoner must be selected carefully and should not include more reasoning than is required by the application, as extensive reasoning can be detrimental to performance.
 
-    <#datasetWithReasoning> rdf:type      ja:InfModel;
-         ja:reasoner [ ja:reasonerURL <http://example/someReasonerURLHere> ];
-         ja:baseModel <#baseDataset>;
+You have to build up layers of dataset, inference model, and graph.
+
+    <#dataset> rdf:type ja:RDFDataset;
+         ja:defaultGraph <#inferenceModel>
          .
-    <#baseDataset> rdf:type tdb:DatasetTDB;  # for example.
-         # etc etc
+         
+    <#inferenceModel> rdf:type      ja:InfModel;
+         ja:reasoner [ ja:reasonerURL <http://example/someReasonerURLHere> ];
+         ja:baseModel <#baseModel>;
+         .
+    <#baseModel> rdf:type tdb:GraphTDB2;  # for example.
+         tdb2:location "/some/path/to/store/data/to";
+         # etc
          .
 
 
