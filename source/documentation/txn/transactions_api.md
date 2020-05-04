@@ -108,13 +108,13 @@ dataset.
 
 ## Transaction Types, Modes and Promotion. {#types-modes-promotion}
 
-Transaction have type (enum `TxnType`) and a mode (enum `ReadWrite`).
+Transaction have a type (enum `TxnType`) and a mode (enum `ReadWrite`).
 `TxnType.READ` and `TxnType.Write` start the transaction in
-that mode and it is fixed from the transaction's lifetime. A `READ`
+that mode and the mode is fixed for the transaction's lifetime. A `READ`
 transaction can never update the data of the transactional object it is
 acting on.
 
-Transactions can have type `TxnType.READ_PROMOTE` and
+Transactions can have type `TxnType.READ_PROMOTE` or
 `TxnType.READ_COMMITTED_PROMOTE`. These start in mode `READ` but can
 become mode `WRITE`, either implicitly by attempting an update, or
 explicitly by calling `promote`.
