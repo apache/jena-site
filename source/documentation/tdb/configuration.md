@@ -102,7 +102,7 @@ Configuration Symbols
 
 Symbol | Java Constant | Effect | Default
 ------ | ------------- | ------ | -------
-`tdb:logExec` | `TDB.symLogExec` | Log execution of BGPs. Set to "true" to enable. Must also enable the logger "org.apache.jena.tdb.exec". e.g. log4j.properties `log4j.logger.org.apache.jena.tdb.exec=INFO` | unset
+`tdb:logExec` | `TDB.symLogExec` | Log execution of BGPs. Set to "true" to enable. Must also enable the logger "org.apache.jena.tdb.exec". | unset
 `tdb:unionDefaultGraph` | `TDB.symUnionDefaultGraph` | Query patterns on the default graph match against the union of the named graphs. | unset
 `tdb:fileMode` | `SystemTDB.fileMode` | Force use of memory mapped files (`"mapped"`) or direct file caching (`"direct"`). See discussion of TDB on 32 or 64 bit hardware, especially limitations of memory mapped files on 32 bit Java. | Set by the system based on 32 or 64 bit java.
 

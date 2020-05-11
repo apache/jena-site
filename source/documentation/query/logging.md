@@ -4,8 +4,8 @@ title: ARQ - Logging
 
 ARQ uses
 [SLF4j](http://slf4j.org/)
-as the API and ships with
-[Log4J](http://logging.apache.org/log4j/) as a deployment
+as the logging API and the query and RIOT commands use
+[Log4J2](http://logging.apache.org/log4j/2.x/) as a deployment
 system.  You can use Java 1.4 logging instead.
 
 ARQ does not output any logging messages at level INFO in normal
@@ -26,43 +26,51 @@ the web application and the system directories as this can cause
 separate logging systems to be created (this may not matter).
 
 The ARQ and RIOT command line utilities look for a file
-"log4j.properties" in the current directory to control logging during
-command execution.
+"log4j2.properties" in the current directory to control logging during
+command execution. There is also a built-in configuration so no
+configuration work is required.
+
 
 Logger Names | Name | Constant | Logger | Use
 ------------ | ---- | -------- | ------ | ---
 `org.apache.jena.arq.info` | `ARQ.logInfoName` | `ARQ.getLoggerInfo()` | General information
 `org.apache.jena.arq.exec` | `ARQ.logExecName` | `ARQ.getLoggerExec()` | Execution information
 
-There is some code to cover simple situations. See the [log4j
-documentation](http://logging.apache.org/log4j/1.2/manual.html)
-for full details of log4j.
-
 The reading of `log4j.properties` from the current directory is achieved
-by a call to `org.apache.jena.atlas.logging.Log.setlog4j()`.
+by a call to `org.apache.jena.atlas.logging.Log.setlog4j2()`.
 
-Example log4j.properties file:
+Example `log4j2.properties` file:
 
-    log4j.rootLogger=INFO, stdlog
+```
+status = error
+name = PropertiesConfig
+filters = threshold
 
-    log4j.appender.stdlog=org.apache.log4j.ConsoleAppender
-    ## log4j.appender.stdlog.target=System.err
-    log4j.appender.stdlog.layout=org.apache.log4j.PatternLayout
-    log4j.appender.stdlog.layout.ConversionPattern=%d{HH:mm:ss} %-5p %-25c{1} :: %m%n
+filter.threshold.type = ThresholdFilter
+filter.threshold.level = INFO
 
-    # Execution logging
-    log4j.logger.org.apache.jena.arq.info=INFO
-    log4j.logger.org.apache.jena.arq.exec=INFO
+appender.console.type = Console
+appender.console.name = STDOUT
+appender.console.layout.type = PatternLayout
+appender.console.layout.pattern = %d{HH:mm:ss} %-5p %-15c{1} :: %m%n
 
-    # Other
-    log4j.logger.org.apache.jena=WARN
-    log4j.logger.org.apache.jena=WARN
+rootLogger.level                  = INFO
+rootLogger.appenderRef.stdout.ref = STDOUT
 
+logger.jena.name  = org.apache.jena
+logger.jena.level = INFO
+
+logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
+
+logger.arq-info.name  = org.apache.jena.arq.exec
+logger.arq-info.level = INFO
+
+logger.riot.name  = org.apache.jena.riot
+logger.riot.level = INFO
+```
 A [Fuseki](../serving/data/index.html)
 server output can include [ARQ execution logging](explain.html "ARQ/Explain").
-
-Note: ARQ performs some direct control of logging in the test suite and
-depends on log4j to compile.
 
 ## Execution Logging
 
@@ -74,10 +82,11 @@ Explanatory messages are controlled by the `Explain.InfoLevel` level in
 the execution context.
 
 The logger used is called `org.apache.jena.arq.exec`. Message are sent
-at level "info". So for log4j, the following can be set in the
-log4j.properties file:
+at level "info". So for log4j2, the following can be set in the
+log4j2.properties file:
 
-    log4j.logger.org.apache.jena.arq.exec=INFO
+    logger.arq-exec.name  = org.apache.jena.arq.exec
+    logger.arq-exec.level = INFO
 
 The context setting is for key (Java constant) `ARQ.symLogExec`. To set
 globally:

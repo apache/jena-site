@@ -65,10 +65,11 @@ query execution speeds but the order of operations logged will be
 correct.
 
 The logger used is called `org.apache.jena.arq.exec`. Message are sent
-at level "info". So for log4j, the following can be set in the
-log4j.properties file:
+at level "info". So for log4j2, the following can be set in the
+`log4j2.properties` file:
 
-    log4j.logger.org.apache.jena.arq.exec=INFO
+    logger.arq-exec.name  = org.apache.jena.arq.exec
+    logger.arq-exec.level = INFO
 
 The context setting is for key (Java constant) `ARQ.symLogExec`. To set
 globally:
