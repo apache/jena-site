@@ -274,8 +274,11 @@ graph of data.</p>
 </code></pre>
 <h4 id="tdb2">TDB2</h4>
 <pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB2 ;
-    tdb:location &quot;/some/path&quot; ;
-    # this can also have unionDefaultGraph, etc.
+    tdb:location &quot;DB2&quot; ;
+    # Query timeout on this dataset (1s, 1000 milliseconds)
+    ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;1000&quot; ] ;
+    # Make the default graph be the union of all named graphs.
+    ## tdb:unionDefaultGraph true ;
      .
 </code></pre>
 <h4 id="inference">Inference</h4>
@@ -294,11 +297,13 @@ graph of data.</p>
      # etc
      .
 </code></pre>
+<p>where <code>http://example/someReasonerURLHere</code> is one of the URLs below.</p>
 <h5 id="possible-reasoners">Possible reasoners:</h5>
+<p>Details are in <a href="/documentation/inference/">the main documentation for inference</a>.</p>
 <ul>
 <li>
 <p><strong>Generic Rule Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/GenericRuleReasoner</code></p>
-<p>The specific rule set and mode configuration can be set either be method calls to the created reasoner or though parameters in the configuration Model.</p>
+<p>The specific rule set and mode configuration can be set through parameters in the configuration Model.</p>
 </li>
 <li>
 <p><strong>Transitive Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/TransitiveReasoner</code></p>
