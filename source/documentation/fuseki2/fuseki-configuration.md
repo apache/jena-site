@@ -127,8 +127,11 @@ An in-memory dataset, with data in the default graph taken from a local file.
 #### TDB2
 
     <#dataset> rdf:type      tdb:DatasetTDB2 ;
-        tdb:location "/some/path" ;
-        # this can also have unionDefaultGraph, etc.
+        tdb:location "DB2" ;
+        # Query timeout on this dataset (1s, 1000 milliseconds)
+        ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
+        # Make the default graph be the union of all named graphs.
+        ## tdb:unionDefaultGraph true ;
          .
 
 #### Inference
@@ -150,12 +153,15 @@ You have to build up layers of dataset, inference model, and graph.
          # etc
          .
 
+where `http://example/someReasonerURLHere` is one of the URLs below.
 
 ##### Possible reasoners:
 
+Details are in [the main documentation for inference](/documentation/inference/).
+
 * **Generic Rule Reasoner**: `http://jena.hpl.hp.com/2003/GenericRuleReasoner`
   
-  The specific rule set and mode configuration can be set either be method calls to the created reasoner or though parameters in the configuration Model.
+  The specific rule set and mode configuration can be set through parameters in the configuration Model.
   
 * **Transitive Reasoner**: `http://jena.hpl.hp.com/2003/TransitiveReasoner`
   
