@@ -272,10 +272,69 @@ graph of data.</p>
     ## tdb:unionDefaultGraph true ;
      .
 </code></pre>
+<h4 id="tdb2">TDB2</h4>
+<pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB2 ;
+    tdb:location &quot;/some/path&quot; ;
+    # this can also have unionDefaultGraph, etc.
+     .
+</code></pre>
 <h4 id="inference">Inference</h4>
-<blockquote>
-<p>@@</p>
-</blockquote>
+<p>An inference reasoner can be layered on top of a dataset as defined above. The type of reasoner must be selected carefully and should not include more reasoning than is required by the application, as extensive reasoning can be detrimental to performance.</p>
+<p>You have to build up layers of dataset, inference model, and graph.</p>
+<pre><code>&lt;#dataset&gt; rdf:type ja:RDFDataset;
+     ja:defaultGraph &lt;#inferenceModel&gt;
+     .
+     
+&lt;#inferenceModel&gt; rdf:type      ja:InfModel;
+     ja:reasoner [ ja:reasonerURL &lt;http://example/someReasonerURLHere&gt; ];
+     ja:baseModel &lt;#baseModel&gt;;
+     .
+&lt;#baseModel&gt; rdf:type tdb:GraphTDB2;  # for example.
+     tdb2:location &quot;/some/path/to/store/data/to&quot;;
+     # etc
+     .
+</code></pre>
+<h5 id="possible-reasoners">Possible reasoners:</h5>
+<ul>
+<li>
+<p><strong>Generic Rule Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/GenericRuleReasoner</code></p>
+<p>The specific rule set and mode configuration can be set either be method calls to the created reasoner or though parameters in the configuration Model.</p>
+</li>
+<li>
+<p><strong>Transitive Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/TransitiveReasoner</code></p>
+<p>A simple &ldquo;reasoner&rdquo; used to help with API development.</p>
+<p>This reasoner caches a transitive closure of the subClass and subProperty graphs. The generated infGraph allows both the direct and closed versions of these properties to be retrieved. The cache is built when the tbox is bound in but if the final data graph contains additional subProperty/subClass declarations then the cache has to be rebuilt.</p>
+<p>The triples in the tbox (if present) will also be included in any query. Any of tbox or data graph are allowed to be null.</p>
+</li>
+<li>
+<p><strong>RDFS Rule Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner</code></p>
+<p>A full implementation of RDFS reasoning using a hybrid rule system, together with optimized subclass/subproperty closure using the transitive graph caches. Implements the container membership property rules using an optional data scanning hook. Implements datatype range validation.</p>
+</li>
+<li>
+<p><strong>Full OWL Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/OWLFBRuleReasoner</code></p>
+<p>A hybrid forward/backward implementation of the OWL closure rules.</p>
+</li>
+<li>
+<p><strong>Mini OWL Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/OWLMiniFBRuleReasoner</code></p>
+<p>Key limitations over the normal OWL configuration are:</p>
+<ul>
+<li>omits the someValuesFrom =&gt; bNode entailments</li>
+<li>avoids any guard clauses which would break the find() contract</li>
+<li>omits inheritance of range implications for XSD datatype ranges</li>
+</ul>
+</li>
+<li>
+<p><strong>Micro OWL Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/OWLMicroFBRuleReasoner</code></p>
+<p>This only supports:</p>
+<ul>
+<li>RDFS entailments</li>
+<li>basic OWL axioms like ObjectProperty subClassOf Property</li>
+<li>intersectionOf, equivalentClass and forward implication of unionOf sufficient for traversal of explicit class hierarchies</li>
+<li>Property axioms (inverseOf, SymmetricProperty, TransitiveProperty, equivalentProperty)</li>
+</ul>
+<p>There is some experimental support for the cheaper class restriction handlingly which should not be relied on at this point.</p>
+</li>
+</ul>
 <h2 id="server-configuration">Server Configuration</h2>
 <p>If you need to load additional classes, or set global parameters, then these go in
 <code>FUSEKI_BASE/config.ttl</code>.</p>
