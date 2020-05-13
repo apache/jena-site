@@ -124,9 +124,71 @@ An in-memory dataset, with data in the default graph taken from a local file.
         ## tdb:unionDefaultGraph true ;
          .
 
+#### TDB2
+
+    <#dataset> rdf:type      tdb:DatasetTDB2 ;
+        tdb:location "/some/path" ;
+        # this can also have unionDefaultGraph, etc.
+         .
+
 #### Inference
 
-> @@
+An inference reasoner can be layered on top of a dataset as defined above. The type of reasoner must be selected carefully and should not include more reasoning than is required by the application, as extensive reasoning can be detrimental to performance.
+
+You have to build up layers of dataset, inference model, and graph.
+
+    <#dataset> rdf:type ja:RDFDataset;
+         ja:defaultGraph <#inferenceModel>
+         .
+         
+    <#inferenceModel> rdf:type      ja:InfModel;
+         ja:reasoner [ ja:reasonerURL <http://example/someReasonerURLHere> ];
+         ja:baseModel <#baseModel>;
+         .
+    <#baseModel> rdf:type tdb:GraphTDB2;  # for example.
+         tdb2:location "/some/path/to/store/data/to";
+         # etc
+         .
+
+
+##### Possible reasoners:
+
+* **Generic Rule Reasoner**: `http://jena.hpl.hp.com/2003/GenericRuleReasoner`
+  
+  The specific rule set and mode configuration can be set either be method calls to the created reasoner or though parameters in the configuration Model.
+  
+* **Transitive Reasoner**: `http://jena.hpl.hp.com/2003/TransitiveReasoner`
+  
+  A simple "reasoner" used to help with API development.
+  
+  This reasoner caches a transitive closure of the subClass and subProperty graphs. The generated infGraph allows both the direct and closed versions of these properties to be retrieved. The cache is built when the tbox is bound in but if the final data graph contains additional subProperty/subClass declarations then the cache has to be rebuilt.
+
+  The triples in the tbox (if present) will also be included in any query. Any of tbox or data graph are allowed to be null.
+
+ * **RDFS Rule Reasoner**: `http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner`
+
+   A full implementation of RDFS reasoning using a hybrid rule system, together with optimized subclass/subproperty closure using the transitive graph caches. Implements the container membership property rules using an optional data scanning hook. Implements datatype range validation.
+
+ * **Full OWL Reasoner**: `http://jena.hpl.hp.com/2003/OWLFBRuleReasoner`
+   
+   A hybrid forward/backward implementation of the OWL closure rules.
+
+ * **Mini OWL Reasoner**: `http://jena.hpl.hp.com/2003/OWLMiniFBRuleReasoner`
+   
+   Key limitations over the normal OWL configuration are:
+   * omits the someValuesFrom => bNode entailments
+   * avoids any guard clauses which would break the find() contract
+   * omits inheritance of range implications for XSD datatype ranges
+
+ * **Micro OWL Reasoner**: `http://jena.hpl.hp.com/2003/OWLMicroFBRuleReasoner`
+ 
+   This only supports:
+   * RDFS entailments
+   * basic OWL axioms like ObjectProperty subClassOf Property
+   * intersectionOf, equivalentClass and forward implication of unionOf sufficient for traversal of explicit class hierarchies
+   * Property axioms (inverseOf, SymmetricProperty, TransitiveProperty, equivalentProperty)
+
+   There is some experimental support for the cheaper class restriction handlingly which should not be relied on at this point.
 
 ## Server Configuration
 
