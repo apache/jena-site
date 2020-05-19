@@ -103,7 +103,7 @@ then the application will also need to include jena-text in its dependencies.
 ## Logging {#logging}
 
 The application must set the logging provided for [slf4j](http://slf4j.org/).
-Apache jena provides helpers for the JDK-provided java logging and for Apache Log4j v1.
+Apache Jena provides helpers for the JDK-provided java logging and for Apache Log4j v2.
 
 Using the JDK-provided java logging:
 
@@ -117,22 +117,16 @@ and a dependency of:
       <version>1.x.y</version>
     </dependency>
 
-For Apache log4j: - this is how the full Fuseki server sets its logging:
+For Apache Log4j2: - this is how the full Fuseki server sets its logging:
 
     FusekiLogging.setLogging();
 
-and dependencies:
+and dependency:
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.x.y</version>
-    </dependency>
-
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.x.y</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.13.1</version> <!-- Many versions work -->  
     </dependency>
 
 See [Fuseki Logging](/documentation/fuseki2/fuseki-logging.html).

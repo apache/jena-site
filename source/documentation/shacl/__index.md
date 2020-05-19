@@ -30,7 +30,7 @@ which writes out a text format.
 
 ## Integration with Apache Jena Fuseki
 
-Fuseki has a new service operation `fuseki:serviceShacl`:
+Fuseki has a new service operation `fuseki:shacl`:
 
 <pre>
 &lt;#serviceInMemoryShacl&gt; rdf:type fuseki:Service ;
@@ -46,7 +46,11 @@ This requires a "new style" endpoint declaration:  see
 "[Fuseki Endpoint Configuration](/documentation/fuseki2/fuseki-config-endpoint.html)".
 
 This is not installed into a dataset setup by default; a configuration file using
-`fuseki:serviceShacl` is necessary (or programmatic setup for Fuseki Main).
+```
+fuseki:endpoint [ fuseki:operation fuseki:shacl ;
+                  fuseki:name "shacl" ];
+```
+is necessary (or programmatic setup for Fuseki Main).
 
 The service accepts a shapes graph posted as RDF to <tt>/<i>ds</i>/shacl</tt> with
 content negotiation.
@@ -66,7 +70,7 @@ Validate with shapes in `fu-shapes.ttl` and get back a validation report:
 
     curl -XPOST --data-binary @fu-shapes.ttl  \  
          --header 'Content-type: text/turtle' \  
-         'http://localhost:3030/ds/shacl?graph-default'
+         'http://localhost:3030/ds/shacl?graph=default'
 
 ## API
 

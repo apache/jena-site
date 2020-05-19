@@ -12,6 +12,11 @@ directories. There are ancillary scripts in the directories that
 the main commands need - see [the tools page](../tools/index.html)
 for setup details.
 
+The commands look for file `log4j2.properties` in the current directory, as well
+as the usual log4j2 initialization with property `log4j.configurationFile` and
+looking for classpath resource `log4j2.properties`; there is a default setup of
+log4j2 built-in.
+
 -   [`arq.query`](#arqquery) is the main query driver.
 
 -   [`arq.qparse`](#arqqparse) : parse and print a

@@ -134,7 +134,7 @@ For example, to read Trig data, and set the error handler specially,
 ## Logging
 
 The parsers log to a logger called `org.apache.jena.riot`.  To avoid `WARN`
-messages, set this in log4j.properties to `ERROR`.
+messages, set this to `ERROR` in the logging system of the application.
 
 ## StreamManager and LocationMapper
     
@@ -225,7 +225,7 @@ The base URI for reading models will be the original URI, not the alternative lo
 
 ### Debugging
 
-Using log4j, set the logging level of the classes:
+Set the logging level of the classes:
 
 * org.apache.jena.riot.stream.StreamManager
 * org.apache.jena.riot.stream.LocationMapper

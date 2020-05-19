@@ -110,15 +110,15 @@ original URI, not the alternative location.
 
 ### Debugging
 
-Using log4j, set the logging level of the classes:
-    org.apache.jena.util.FileManager=ALL
-    org.apache.jena.util.LocationManager=ALL
+If log4j2, set the logging level of the classes:
+
+    logger.filemanager.name        = org.apache.jena.util.FileManager
+    logger.filemanager.level       = ALL
+    logger.location-manager.name   = org.apache.jena.util.LocationManager
+    logger.location-manager.level  = ALL
 
 ### See also
 
 Javadoc:
-[FileManager](/documentation/javadoc/jena/org/apache/jena/util/FileManager.html)
-[LocationMapper](/documentation/javadoc/jena/org/apache/jena/util/LocationMapper.html)
-
-
-
+* [FileManager](/documentation/javadoc/jena/org/apache/jena/util/FileManager.html)
+* [LocationMapper](/documentation/javadoc/jena/org/apache/jena/util/LocationMapper.html)
