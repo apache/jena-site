@@ -187,7 +187,7 @@ Group tests.</p>
 <pre>shacl p <i>FILE</i></pre>
 <p>which writes out a text format.</p>
 <h2 id="integration-with-apache-jena-fuseki">Integration with Apache Jena Fuseki</h2>
-<p>Fuseki has a new service operation <code>fuseki:serviceShacl</code>:</p>
+<p>Fuseki has a new service operation <code>fuseki:shacl</code>:</p>
 <pre>
 &lt;#serviceInMemoryShacl&gt; rdf:type fuseki:Service ;
     rdfs:label                   "Dataset with SHACL validation" ;
@@ -199,8 +199,10 @@ Group tests.</p>
 </pre>
 <p>This requires a &ldquo;new style&rdquo; endpoint declaration:  see
 &ldquo;<a href="/documentation/fuseki2/fuseki-config-endpoint.html">Fuseki Endpoint Configuration</a>&quot;.</p>
-<p>This is not installed into a dataset setup by default; a configuration file using
-<code>fuseki:serviceShacl</code> is necessary (or programmatic setup for Fuseki Main).</p>
+<p>This is not installed into a dataset setup by default; a configuration file using</p>
+<pre><code>fuseki:endpoint [ fuseki:operation fuseki:shacl ;
+                  fuseki:name &quot;shacl&quot; ];
+</code></pre><p>is necessary (or programmatic setup for Fuseki Main).</p>
 <p>The service accepts a shapes graph posted as RDF to <tt>/<i>ds</i>/shacl</tt> with
 content negotiation.</p>
 <p>There is a graph argument, <code>?graph=</code>, that specifies the graph to validate. It
@@ -215,7 +217,7 @@ all named graphs in the dataset.</p>
 <p>Validate with shapes in <code>fu-shapes.ttl</code> and get back a validation report:</p>
 <pre><code>curl -XPOST --data-binary @fu-shapes.ttl  \  
      --header 'Content-type: text/turtle' \  
-     'http://localhost:3030/ds/shacl?graph-default'
+     'http://localhost:3030/ds/shacl?graph=default'
 </code></pre>
 <h2 id="api">API</h2>
 <p>The package <code>org.apache.jena.shacl</code> has the main classes.</p>

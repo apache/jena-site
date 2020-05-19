@@ -176,10 +176,9 @@
             <h1 class="title">Fuseki Logging</h1>
             
 	<p>Fuseki logs operation details and also provides a standard NCSA request log.</p>
-<p>Logging is via <a href="http://slf4j.org/">slj4j</a> over
-<a href="http://logging.apache.org/log4j/">Apache Log4J</a>.
-Logging output is controlled via log4j.</p>
-<h2 id="server-logs">Server Logs</h2>
+<p>Logging is via <a href="http://slf4j.org/">SLF4J</a> over
+<a href="http://logging.apache.org/log4j/2.x/">Apache Log4J2</a>, or by
+the Tomcat configuration if running the WAR file.</p>
 <table>
 <thead>
 <tr>
@@ -214,7 +213,7 @@ Logging output is controlled via log4j.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="ncsa-request-log">NCSA request Log.</h2>
+<h2 id="ncsa-request-log">NCSA request Log</h2>
 <p>This log is in NCSA extended/combined log format.<br>
 Many web log analysers can process this format.</p>
 <p>This log is normally off.</p>
@@ -222,24 +221,24 @@ Many web log analysers can process this format.</p>
 (e.g. <a href="http://tomcat.apache.org/">Apache Tomcat</a>), the webapp container
 or reverse proxy will log access requests anyway.</p>
 <h2 id="setting-logging">Setting logging</h2>
-<p>The Fuseki engine looks for the log4j configuration as follows:</p>
+<p>The Fuseki engine looks for the log4j2 configuration as follows:</p>
 <ul>
-<li>Use system property <code>log4j.configuration</code> if defined (as usual for log4j).</li>
-<li>Use <code>file:log4j.properties</code> (current directory) if it exists</li>
-<li>Use file <code>log4j.properties</code> is the directory defined by <code>FUSEKI_BASE</code></li>
-<li>Use java resource <code>log4j.properties</code> on the classpath.</li>
-<li>Use java resource <code>org/apache/jena/fuseki/log4j.properties</code> on the classpath.</li>
+<li>Use system property <code>log4j2.configurationFile</code> if defined (<a href="https://logging.apache.org/log4j/2.x/manual/configuration.html">as usual for log4j2</a>).</li>
+<li>Use <code>file:log4j2.properties</code> (current directory) if it exists</li>
+<li>Use file <code>log4j2.properties</code> is the directory defined by <code>FUSEKI_BASE</code></li>
+<li>Use java resource <code>log4j2.properties</code> on the classpath.</li>
+<li>Use java resource <code>org/apache/jena/fuseki/log4j2.properties</code> on the classpath.</li>
 <li>Use a built-in configuration.</li>
 </ul>
 <p>The last step is a fallback to catch the case where Fuseki has been repackaged
 into a new WAR file and <code>org/apache/jena/fuseki/log4j.properties</code> omitted, or run from
 the base jar.  It is better to include <code>org/apache/jena/fuseki/log4j.properties</code>.</p>
-<p>The preferred customization is to use a custom <code>log4j.properties</code> file in
+<p>The preferred customization is to use a custom <code>log4j2.properties</code> file in
 <code>FUSEKI_BASE</code>.  For the WAR file, <code>FUSEKI_BASE</code> defaults to <code>/etc/fuseki</code>
 on Linux.  For the standalone server, <code>FUSEKI_BASE</code> defaults to directory
 <code>run/</code> within the directory where the server is run.</p>
 <h2 id="default-setting">Default setting</h2>
-<p>The <a href="https://github.com/apache/jena/blob/master/jena-fuseki2/jena-fuseki-core/src/main/resources/org/apache/jena/fuseki/log4j.properties">default log4j.properties</a>.</p>
+<p>The <a href="https://github.com/apache/jena/blob/master/jena-fuseki2/apache-jena-fuseki/log4j2.properties">default log4j2.properties</a>.</p>
 <h2 id="logrotate">Logrotate</h2>
 <p>Below is an example logrotate(1) configuration (to go in <code>/etc/logrotate.d</code>)
 assuming the log file has been put in <code>/etc/fuseki/logs/fuseki.log</code>.</p>

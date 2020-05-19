@@ -211,6 +211,10 @@ properties.</p>
 </li>
 <li><a href="#writing-rules">Writing Rules</a></li>
 </ul>
+<p>The commands look for file <code>log4j2.properties</code> in the current directory, as well
+as the usual log4j2 initialization with property <code>log4j.configurationFile</code> and
+looking for classpath resource <code>log4j2.properties</code>; there is a default setup of
+log4j2 built-in.</p>
 <h2 id="quickstart">Quickstart</h2>
 <p>This section provides a practical how-to.</p>
 <ol>
@@ -268,19 +272,19 @@ constituent pieces and placed separately.</p>
 <p>TDB can optionally log query execution details. This is controlled
 by two setting: the logging level and a context setting. Having two
 setting means it is possible to log some queries and not others.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are
-sent at level &ldquo;info&rdquo;. So for log4j, the following can be set in the
-log4j.properties file:</p>
+<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Messages are
+sent at level &ldquo;INFO&rdquo;. So for log4j2, the following can be set in the
+log4j2.properties file:</p>
 <pre><code># Execution logging
-log4j.logger.org.apache.jena.arq.info=WARN
-log4j.logger.org.apache.jena.arq.exec=WARN
-</code></pre>
-<p>In versions of TDB before 0.8.7, this is:</p>
-<pre><code>log4j.logger.org.apache.jena.tdb.exec=INFO
+logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
+
+logger.arq-info.name  = org.apache.jena.arq.exec
+logger.arq-info.level = INFO
 </code></pre>
 <p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To
 set globally:</p>
-<pre><code>TDB.getContext().set(ARQ.symLogExec,true) ;
+<pre><code>ARQ.getContext().set(ARQ.symLogExec,true) ;
 </code></pre>
 <p>and it may also be set on an individual query execution using it&rsquo;s
 local context.</p>
@@ -289,13 +293,9 @@ local context.</p>
     ResultSet rs = qExec.execSelect() ;
  }
 </code></pre>
-<p>Use <code>TDB.symLogExec</code> for versions prior to 0.8.8.</p>
 <p>On the command line:</p>
-<pre><code> tdbquery --set tdb:logExec=true --file queryfile
+<pre><code> tdbquery --set arq:logExec=true --file queryfile
 </code></pre>
-<p>TDB version 0.8.3 provides more fine-grained logging controls.
-Instead of &ldquo;true&rdquo;, which sets all levels, the following can be
-used:</p>
 <h2 id="explanation-levels">Explanation Levels</h2>
 <table>
 <thead>
@@ -339,16 +339,32 @@ dataset is touched.</p>
 </code></pre>
 <p>and increase the logging levels, in order to output more information about
 the query execution.</p>
-<pre><code># log4j.properties
+<pre><code># log4j2.properties
 log4j.rootLogger=INFO, stdlog
 log4j.appender.stdlog=org.apache.log4j.ConsoleAppender
 log4j.appender.stdlog.layout=org.apache.log4j.PatternLayout
 log4j.appender.stdlog.layout.ConversionPattern=%d{HH:mm:ss} %-5p %-25c{1} :: %m%n
+
+status = error
+name = PropertiesConfig
+filters = threshold
+filter.threshold.type = ThresholdFilter
+filter.threshold.level = INFO
+
+appender.console.type = Console
+appender.console.name = STDOUT
+appender.console.layout.type = PatternLayout
+appender.console.layout.pattern = %d{HH:mm:ss} %-5p %-15c{1} :: %m%n
+
+rootLogger.level                  = INFO
+rootLogger.appenderRef.stdout.ref = STDOUT
+
 # the query execution logger
-log4j.logger.org.apache.jena.arq.exec=INFO
+
+# Execution logging
+logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
 </code></pre>
-<p>It is important to create a <code>log4j.logger.org.apache.jena.arq.exec</code> logger,
-as otherwise the command won&rsquo;t output the query execution details.</p>
 <p>The command output will be similar to this one.</p>
 <pre><code>00:05:20 INFO  exec                      :: QUERY
   SELECT  *

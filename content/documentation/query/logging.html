@@ -177,8 +177,8 @@
             
 	<p>ARQ uses
 <a href="http://slf4j.org/">SLF4j</a>
-as the API and ships with
-<a href="http://logging.apache.org/log4j/">Log4J</a> as a deployment
+as the logging API and the query and RIOT commands use
+<a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> as a deployment
 system.  You can use Java 1.4 logging instead.</p>
 <p>ARQ does not output any logging messages at level INFO in normal
 operation. The code uses level TRACE and DEBUG.  Running with
@@ -195,8 +195,9 @@ loading arrangements, be careful about loading from jars in both
 the web application and the system directories as this can cause
 separate logging systems to be created (this may not matter).</p>
 <p>The ARQ and RIOT command line utilities look for a file
-&ldquo;log4j.properties&rdquo; in the current directory to control logging during
-command execution.</p>
+&ldquo;log4j2.properties&rdquo; in the current directory to control logging during
+command execution. There is also a built-in configuration so no
+configuration work is required.</p>
 <table>
 <thead>
 <tr>
@@ -224,31 +225,37 @@ command execution.</p>
 </tr>
 </tbody>
 </table>
-<p>There is some code to cover simple situations. See the <a href="http://logging.apache.org/log4j/1.2/manual.html">log4j
-documentation</a>
-for full details of log4j.</p>
 <p>The reading of <code>log4j.properties</code> from the current directory is achieved
-by a call to <code>org.apache.jena.atlas.logging.Log.setlog4j()</code>.</p>
-<p>Example log4j.properties file:</p>
-<pre><code>log4j.rootLogger=INFO, stdlog
+by a call to <code>org.apache.jena.atlas.logging.Log.setlog4j2()</code>.</p>
+<p>Example <code>log4j2.properties</code> file:</p>
+<pre><code>status = error
+name = PropertiesConfig
+filters = threshold
 
-log4j.appender.stdlog=org.apache.log4j.ConsoleAppender
-## log4j.appender.stdlog.target=System.err
-log4j.appender.stdlog.layout=org.apache.log4j.PatternLayout
-log4j.appender.stdlog.layout.ConversionPattern=%d{HH:mm:ss} %-5p %-25c{1} :: %m%n
+filter.threshold.type = ThresholdFilter
+filter.threshold.level = INFO
 
-# Execution logging
-log4j.logger.org.apache.jena.arq.info=INFO
-log4j.logger.org.apache.jena.arq.exec=INFO
+appender.console.type = Console
+appender.console.name = STDOUT
+appender.console.layout.type = PatternLayout
+appender.console.layout.pattern = %d{HH:mm:ss} %-5p %-15c{1} :: %m%n
 
-# Other
-log4j.logger.org.apache.jena=WARN
-log4j.logger.org.apache.jena=WARN
-</code></pre>
-<p>A <a href="../serving/data/index.html">Fuseki</a>
+rootLogger.level                  = INFO
+rootLogger.appenderRef.stdout.ref = STDOUT
+
+logger.jena.name  = org.apache.jena
+logger.jena.level = INFO
+
+logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
+
+logger.arq-info.name  = org.apache.jena.arq.exec
+logger.arq-info.level = INFO
+
+logger.riot.name  = org.apache.jena.riot
+logger.riot.level = INFO
+</code></pre><p>A <a href="../serving/data/index.html">Fuseki</a>
 server output can include <a href="explain.html" title="ARQ/Explain">ARQ execution logging</a>.</p>
-<p>Note: ARQ performs some direct control of logging in the test suite and
-depends on log4j to compile.</p>
 <h2 id="execution-logging">Execution Logging</h2>
 <p>ARQ can log query and update execution details globally or for an
 individual operations. This adds another level of control on top of the
@@ -256,9 +263,10 @@ logger level controls.</p>
 <p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
 the execution context.</p>
 <p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j, the following can be set in the
-log4j.properties file:</p>
-<pre><code>log4j.logger.org.apache.jena.arq.exec=INFO
+at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
+log4j2.properties file:</p>
+<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
 </code></pre>
 <p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
 globally:</p>
