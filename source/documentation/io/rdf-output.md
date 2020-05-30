@@ -357,7 +357,7 @@ The follow ways are different ways to write a model in Turtle:
         // Write a model in Turtle syntax, default style (pretty printed)
         RDFDataMgr.write(System.out, model, Lang.TURTLE) ;
         
-        // Wriet Turtle to the blocks variant
+        // Write Turtle to the blocks variant
         RDFDataMgr.write(System.out, model, RDFFormat.TURTLE_BLOCKS) ;
         
         // Write as Turtle via model.write
