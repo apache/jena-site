@@ -16,6 +16,7 @@ title: TDB FAQs
 -   [I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?](#no-lock-warning)
 -   [Why can't I delete a dataset (MS Windows/64 bit)?](#windows-dataset-delete)
 -   [What is the *Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database* error?](#tdb2-lock)
+-   [My question isn't answered here?](#not-answered)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -208,3 +209,7 @@ line tools to use TDB2 code/arguments as appropriate.
 
 For example if [Using TDB2 with Fuseki](../tdb2/tdb2_fuseki.html) you would need to use
 the `--tdb2` option.
+
+## My question isn't answered here? {#not-answered}
+
+If your question isn't answered here please get in touch with the project, please check out the [Ask](../help_and_support/index.html) page for ways to ask for further help.
