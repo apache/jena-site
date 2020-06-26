@@ -7,6 +7,7 @@ title: TDB FAQs
 -   [Does TDB support Transactions?](#transactions)
 -   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
 -   [What is the *Impossibly Large Object* exception?](#impossibly-large-object)
+-   [What are the *ObjectFile.read()* and *ObjectFileStorage.read()* errors?](#object-file-errors)
 -   [What is the difference between `tdbloader` and `tdbloader2`?](#tdbloader-vs-tdbloader2)
 -   [How large a Java heap size should I use for TDB?](#java-heap)
 -   [Does Fuseki/TDB have a memory leak?](#fuseki-tdb-memory-leak)
@@ -66,6 +67,14 @@ will need to be rebuilt from the original source data, this is why we **strongly
 [transactions](tdb_transactions.html) since this protects your dataset against corruption.
 
 To resolve this problem you **must** rebuild your database from the original source data, a corrupted database **cannot** be repaired.
+
+## What are the *ObjectFile.read()* and *ObjectFileStorage.read()* errors? {#object-file-errors}
+
+These errors are closely related to the above *Impossibly Large Object* exception, they also indicate corruption to your TDB database.
+
+As noted above to resolve this problem you **must** rebuild your database from the original source data, a corrupted database **cannot** 
+be repaired. This is why we **strongly** recommend you use [transactions](tdb_transactions.html) since this protects your dataset against 
+corruption.
 
 <a name="tdbloader-vs-tdbloader2"></a>
 ## What is the different between `tdbloader` and `tdbloader2`?
