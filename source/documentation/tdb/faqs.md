@@ -212,4 +212,4 @@ the `--tdb2` option.
 
 ## My question isn't answered here? {#not-answered}
 
-If your question isn't answered here please get in touch with the project, please check out the [Ask](../help_and_support/index.html) page for ways to ask for further help.
+If your question isn't answered here please get in touch with the project, please check out the [Ask](../../help_and_support/index.html) page for ways to ask for further help.
