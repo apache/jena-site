@@ -28,7 +28,7 @@ functionality and remain within SPARQL. ARQ has a
 can
 [write and register their own property functions](writing_propfuncs.html).
 
-The [free text support in ARQ](/documentation/larq/) is provided by
+The [free text support in ARQ](/documentation/query/text-query.html/) is provided by
 [Lucene](http://lucene.apache.org/java/docs/index.html), using
 property functions.
 

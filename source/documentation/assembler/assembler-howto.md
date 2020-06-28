@@ -65,7 +65,7 @@ We can construct our example model from the specification like this
 (you may need to tweak the filename to make this work in your
 environment):
 
-    Model spec = FileManager.get().loadModel( "examples.ttl" );
+    Model spec = RDFDataMgr.loadModel( "examples.ttl" );
     Resource root = spec.createResource( spec.expandPrefix( "eg:opening-example" ) );
     Model m = Assembler.general.openModel( root );
 
@@ -417,35 +417,35 @@ The `OntModelSpec` property value is a resource, interpreted as an
 OntModelSpec description based on its name and the value of the
 appropriate properties:
 
--   `ja:likeBuiltinSpec`: The value of this optional unique
+* `ja:likeBuiltinSpec`: The value of this optional unique
     property must be a JA resource whose local name is the same as the
     name of an OntModelSpec constant (as in the simple case above).
     This is the basis for the OntModelSpec constructed from this
     specification. If absent, then `OWL_MEM_RDFS_INF` is used. To build
     an OntModelSpec with no inference, use eg
     `ja:likeBuiltinSpec ja:OWL_MEM`.
--   `ja:importSource`: The value of this optional unique property
+* `ja:importSource`: The value of this optional unique property
     is a `ModelSource` description which describes where imports are
     obtained from. A `ModelSource` is usually of class `ja:ModelSource`.
--   `ja:documentManager`: This value of this optional unique
+* `ja:documentManager`: This value of this optional unique
     property is a DocumentManager specification. If absent, the default
     document manager is used.
--   `ja:reasonerFactory`: The value of this optional unique
+* `ja:reasonerFactory`: The value of this optional unique
     property is the ReasonerFactory resource which will be used to
     construct this OntModelSpec's reasoner. A `reasonerFactory`
     specification is the same as an InfModel's `reasoner` specification
     (the different properties are required for technical reasons).
--   `ja:reasonerURL`: as a special case of `reasonerFactory`, a
+* `ja:reasonerURL`: as a special case of `reasonerFactory`, a
     reasoner may be specified by giving its URL as the object of the
     optional unique `reasonerURL` property. It is not permitted to
     supply both a `reasonerURL` and `reasonerFactory` properties.
--   `ja:ontLanguage`: The value of this optional unique property is
+* `ja:ontLanguage`: The value of this optional unique property is
     one of the values in the `ProfileRegistry` class which identifies
     the ontology language of this `OntModelSpec`:
-    -   OWL: http://www.w3.org/2002/07/owl\#
-    -   OWL DL: http://www.w3.org/TR/owl-features/\#term_OWLDL
-    -   OWL Lite: http://www.w3.org/TR/owl-features/\#term_OWLLite
-    -   RDFS: http://www.w3.org/2000/01/rdf-schema\#
+    * OWL: http://www.w3.org/2002/07/owl\#
+    * OWL DL: http://www.w3.org/TR/owl-features/\#term_OWLDL
+    * OWL Lite: http://www.w3.org/TR/owl-features/\#term_OWLLite
+    *  RDFS: http://www.w3.org/2000/01/rdf-schema\#
 
 Any unspecified properties have default values, normally taken from
 those of `OntModelSpec.OWL_MEM_RDFS_INF`. However, if the
@@ -641,10 +641,10 @@ excessive and redundant RDF. (It does not use the usual Jena
 reasoners because this limited once-off reasoning has been faster.)
 The inference steps are:
 
--   add all the classes from the JA schema.
--   do subclass closure over all the classes.
--   do domain and range inference.
--   do simple intersection inference: if X is an instance of
+* add all the classes from the JA schema.
+* do subclass closure over all the classes.
+* do domain and range inference.
+* do simple intersection inference: if X is an instance of
     *intersection A B C ...*, then X is an instance of A, B, C ... (and
     their supertypes).
 

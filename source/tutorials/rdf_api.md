@@ -295,8 +295,8 @@ argument.</p>
 
 
 <pre>// now write the model in XML form to a file
-model.write(System.out);</pre>
-
+model.write(System.out);
+</pre>
 
 <p>The output should look something like this:</p>
 
@@ -314,9 +314,8 @@ model.write(System.out);</pre>
     &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
   &lt;/rdf:Description&gt;
 &lt;/rdf:RDF&gt;</pre>
-
-
-<p></p>
+<p>
+</p>
 
 <p>The RDF specifications specify how to represent RDF as XML. The RDF
 XML syntax is quite complex.  The reader is referred to the <a
@@ -354,14 +353,13 @@ correctly.  It gives a URI to each blank node, making it no longer blank.</p>
 <p>Jena has an extensible interface which allows new writers for different
 serialization languages for RDF to be easily plugged in.  The above call
 invoked the standard 'dumb' writer.  Jena also includes a more sophisticated
-RDF/XML writer which can be invoked by specifying another argument to the
-<code>write()</code> method call:</p>
+RDF/XML writer which can be invoked by using
+<code>RDFDataMgr.write</code> function call:</p>
 
 
-<pre>// now write the model in XML form to a file
-model.write(System.out, "RDF/XML-ABBREV");
+<pre>// now write the model in a pretty form
+RDFDataMgr.write(System.out, model, Lang.RDFXML);
 </pre>
-
 
 <p>This writer, the so called PrettyWriter, takes advantage of features of
 the RDF/XML abbreviated syntax to write a Model more compactly.  It is also
@@ -371,10 +369,9 @@ acceptable.  To write large files and preserve blank nodes, write in
 N-Triples format:</p>
 
 
-<pre>// now write the model in N-TRIPLES form to a file
-model.write(System.out, "N-TRIPLES");
+<pre>// now write the model in N-TRIPLES form
+RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 </pre>
-
 
 <p>This will produce output similar to that of tutorial 3 which conforms to
 the N-Triples specification.</p>
@@ -392,8 +389,8 @@ run, the input file must be in the current directory.</em></p>
  // create an empty model
  Model model = ModelFactory.createDefaultModel();
 
- // use the FileManager to find the input file
- InputStream in = FileManager.get().open( inputFileName );
+ // use the RDFDataMgr to find the input file
+ InputStream in = RDFDataMgr.open( inputFileName );
 if (in == null) {
     throw new IllegalArgumentException(
                                  "File: " + inputFileName + " not found");

@@ -38,19 +38,19 @@ do not need to read them in sequence, though later sections may
 refer to concepts and techniques introduced in earlier sections.
 The sections are:
 
-  - [General concepts](#general-concepts)
-  - [Running example: the ESWC ontology](#running-example-the-eswc-ontology)
-  - [Creating ontology models](#creating-ontology-models)
-  - [Compound ontology documents and imports processing](#compound-ontology-documents-and-imports-processing)
-  - [The generic ontology type: OntResource](#the-generic-ontology-type-ontresource)
-  - [Ontology classes and basic class expressions](#ontology-classes-and-basic-class-expressions)
-  - [Ontology properties](#ontology-properties)
-  - [More complex class expressions](#more-complex-class-expressions)
-  - [Instances or individuals](#instances-or-individuals)
-  - [Ontology meta-data](#ontology-meta-data)
-  - [Ontology inference: overview](#ontology-inference-overview)
-  - [Working with persistent ontologies](#working-with-persistent-ontologies)
-  - [Experimental ontology tools](#experimental-ontology-tools)
+- [General concepts](#general-concepts)
+- [Running example: the ESWC ontology](#running-example-the-eswc-ontology)
+- [Creating ontology models](#creating-ontology-models)
+- [Compound ontology documents and imports processing](#compound-ontology-documents-and-imports-processing)
+- [The generic ontology type: OntResource](#the-generic-ontology-type-ontresource)
+- [Ontology classes and basic class expressions](#ontology-classes-and-basic-class-expressions)
+- [Ontology properties](#ontology-properties)
+- [More complex class expressions](#more-complex-class-expressions)
+- [Instances or individuals](#instances-or-individuals)
+- [Ontology meta-data](#ontology-meta-data)
+- [Ontology inference: overview](#ontology-inference-overview)
+- [Working with persistent ontologies](#working-with-persistent-ontologies)
+- [Experimental ontology tools](#experimental-ontology-tools)
 
 ### Further assistance
 

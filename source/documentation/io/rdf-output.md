@@ -51,15 +51,15 @@ being written and the variant of that syntax.
 The RIOT writer architecture is extensible.  The following languages
 are available as part of the standard setup.
 
-* Turtle
-* N-Triples
-* NQuads
-* TriG
-* JSON-LD
-* RDF/XML
-* RDF/JSON
-* TriX
-* RDF Binary
+- Turtle
+- N-Triples
+- NQuads
+- TriG
+- JSON-LD
+- RDF/XML
+- RDF/JSON
+- TriX
+- RDF Binary
 
 In addition, there are variants of Turtle, TriG for pretty printing, 
 streamed output and flat output.  RDF/XML has variants for pretty printing 
@@ -69,8 +69,8 @@ for the standard supported formats.
 
 Note:
 
-* RDF/JSON is not JSON-LD. See the [description of RDF/JSON](rdf-json.html).
-* N3 is treated as Turtle for output.
+- RDF/JSON is not JSON-LD. See the [description of RDF/JSON](rdf-json.html).
+- N3 is treated as Turtle for output.
 
 ## `RDFFormat`s and Jena syntax names {#jena_model_write_formats}
 
