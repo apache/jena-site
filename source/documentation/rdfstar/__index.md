@@ -70,6 +70,17 @@ is a prefix for `<http://jena.apache.org/ARQ/function#>`.
 | `afn:triple(?s, ?p, ?o)` | Create a triple term from s/p/o                    |
 | `afn:isTriple(?t)`       | Return true if the argument value is a triple term |
 
+### SPARQL Property Functions related to triple terms
+
+`apf:` is a prefix for `<http://jena.apache.org/ARQ/property#>`.
+
+| Property Function | Description |
+| -------- | ----------- |
+| `<< s p o >> apf:find t` . | Match the triple term. Any `s`, `p`, `o`, and `t` can be RDF terms or variables.|
+
+`apf:find` will result in all the variables being are set accorind to the match,
+If `t` is a variable, `?t`, it is bound to a triple term for the match of `<<s p o>>`.
+
 ### SPARQL results
 
 The syntaxes for SPARQL results from a SELECT query, `application/sparql-results+json`,
