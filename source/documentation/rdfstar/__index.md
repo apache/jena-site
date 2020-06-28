@@ -18,19 +18,16 @@ Triple terms can be in the subject or object position.
 
 Jena provides support for RDF\* and the related SPARQL\*.
 
-Support for RDF* is experimentation in Jena 3.15.0 (released May 2020):
-
 * Turtle, N-Triples, TriG and N-Quads extended for Triple Terms syntax.  There is no output in RDF/XML.
 * SPARQL extended with Triple Term syntax for graph matching (in code, use `Syntax.syntaxARQ`).
 * SPARQL Result formats for JSON and XML extended to support Triple Terms in results.
-* Support in memory-based storage (graphs and datasets).
 * Support in the Model API.
 
 All this is active by default in Fuseki.
 
-This support is experimental and subject to change. The aim is to follow the definition of RDF* as well as emerging _de facto_ consensus in other implementations.
+The aim is to follow the definition of RDF* as well as emerging _de facto_ consensus in other implementations.
 
-Later releases will extend support to persistent storage in [TDB1](/documentation/tdb) and [TDB2](/documentation/tdb2/).
+Storage in databases [TDB1](/documentation/tdb) and [TDB2](/documentation/tdb2/) is supported as of Jena 3.16.0.
 
 ## RDF\*
 
