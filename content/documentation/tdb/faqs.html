@@ -180,6 +180,7 @@
 <li><a href="#transactions">Does TDB support Transactions?</a></li>
 <li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
 <li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
+<li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
 <li><a href="#tdbloader-vs-tdbloader2">What is the difference between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
 <li><a href="#java-heap">How large a Java heap size should I use for TDB?</a></li>
 <li><a href="#fuseki-tdb-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
@@ -187,6 +188,8 @@
 <li><a href="#lock-exception">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
 <li><a href="#no-lock-warning">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
 <li><a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a></li>
+<li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
+<li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
 </ul>
 <p><a name="transactions"></a></p>
 <h2 id="does-tdb-support-transactions">Does TDB support transactions?</h2>
@@ -226,6 +229,11 @@ database has this problem e.g.</p>
 will need to be rebuilt from the original source data, this is why we <strong>strongly</strong> recommend you use
 <a href="tdb_transactions.html">transactions</a> since this protects your dataset against corruption.</p>
 <p>To resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database <strong>cannot</strong> be repaired.</p>
+<h2 id="object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</h2>
+<p>These errors are closely related to the above <em>Impossibly Large Object</em> exception, they also indicate corruption to your TDB database.</p>
+<p>As noted above to resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database <strong>cannot</strong>
+be repaired. This is why we <strong>strongly</strong> recommend you use <a href="tdb_transactions.html">transactions</a> since this protects your dataset against
+corruption.</p>
 <p><a name="tdbloader-vs-tdbloader2"></a></p>
 <h2 id="what-is-the-different-between-tdbloader-and-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</h2>
 <p><code>tdbloader</code> and <code>tdbloader2</code> differ in how they build databases.</p>
@@ -314,6 +322,20 @@ RAM, trading off against requests by other applications.  But it also means
 the database files are not properly deleted until the JVM exits.  A new
 dataset can not be created in the same location (directory on disk).</p>
 <p>The workaround is to use a different location.</p>
+<h2 id="tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</h2>
+<p>As described elsewhere in this FAQ (see <a href="#lock-exception">Lock Exceptions</a>
+and <a href="#no-lock-warning">No Lock Warning</a>) TDB uses a lock file to ensure that multiple
+JVMs don&rsquo;t try to use the same TDB database simultaneously as this can lead to
+data corruption.  However with the introduction of <a href="../tdb2/">TDB2</a> there are now two
+versions of TDB, TDB2 also uses a lock file however it uses a slightly different
+format for that file.</p>
+<p>This error means that you have tried to open a <a href="../tdb2/">TDB2</a> database as a TDB1
+database which is not permitted.  Please adjust your usage of Jena libraries or command
+line tools to use TDB2 code/arguments as appropriate.</p>
+<p>For example if <a href="../tdb2/tdb2_fuseki.html">Using TDB2 with Fuseki</a> you would need to use
+the <code>--tdb2</code> option.</p>
+<h2 id="not-answered">My question isn&rsquo;t answered here?</h2>
+<p>If your question isn&rsquo;t answered here please get in touch with the project, please check out the <a href="../../help_and_support/index.html">Ask</a> page for ways to ask for further help.</p>
 
 
         </div>
