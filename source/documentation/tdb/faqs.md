@@ -7,6 +7,7 @@ title: TDB FAQs
 -   [Does TDB support Transactions?](#transactions)
 -   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
 -   [What is the *Impossibly Large Object* exception?](#impossibly-large-object)
+-   [What are the *ObjectFile.read()* and *ObjectFileStorage.read()* errors?](#object-file-errors)
 -   [What is the difference between `tdbloader` and `tdbloader2`?](#tdbloader-vs-tdbloader2)
 -   [How large a Java heap size should I use for TDB?](#java-heap)
 -   [Does Fuseki/TDB have a memory leak?](#fuseki-tdb-memory-leak)
@@ -14,6 +15,8 @@ title: TDB FAQs
 -   [Why do I get the exception *Can't open database at location /path/to/db as it is already locked by the process with PID 1234* when trying to open a TDB database?](#lock-exception)
 -   [I see a warning that *Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred* in my logs?](#no-lock-warning)
 -   [Why can't I delete a dataset (MS Windows/64 bit)?](#windows-dataset-delete)
+-   [What is the *Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database* error?](#tdb2-lock)
+-   [My question isn't answered here?](#not-answered)
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -65,6 +68,14 @@ will need to be rebuilt from the original source data, this is why we **strongly
 [transactions](tdb_transactions.html) since this protects your dataset against corruption.
 
 To resolve this problem you **must** rebuild your database from the original source data, a corrupted database **cannot** be repaired.
+
+## What are the *ObjectFile.read()* and *ObjectFileStorage.read()* errors? {#object-file-errors}
+
+These errors are closely related to the above *Impossibly Large Object* exception, they also indicate corruption to your TDB database.
+
+As noted above to resolve this problem you **must** rebuild your database from the original source data, a corrupted database **cannot** 
+be repaired. This is why we **strongly** recommend you use [transactions](tdb_transactions.html) since this protects your dataset against 
+corruption.
 
 <a name="tdbloader-vs-tdbloader2"></a>
 ## What is the different between `tdbloader` and `tdbloader2`?
@@ -182,3 +193,23 @@ the database files are not properly deleted until the JVM exits.  A new
 dataset can not be created in the same location (directory on disk).
 
 The workaround is to use a different location.
+
+##  What is the *Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database* error? {#tdb2-lock}
+
+As described elsewhere in this FAQ (see [Lock Exceptions](#lock-exception) 
+and [No Lock Warning](#no-lock-warning)) TDB uses a lock file to ensure that multiple 
+JVMs don't try to use the same TDB database simultaneously as this can lead to 
+data corruption.  However with the introduction of [TDB2](../tdb2/) there are now two
+versions of TDB, TDB2 also uses a lock file however it uses a slightly different
+format for that file.
+
+This error means that you have tried to open a [TDB2](../tdb2/) database as a TDB1 
+database which is not permitted.  Please adjust your usage of Jena libraries or command
+line tools to use TDB2 code/arguments as appropriate.
+
+For example if [Using TDB2 with Fuseki](../tdb2/tdb2_fuseki.html) you would need to use
+the `--tdb2` option.
+
+## My question isn't answered here? {#not-answered}
+
+If your question isn't answered here please get in touch with the project, please check out the [Ask](../../help_and_support/index.html) page for ways to ask for further help.
