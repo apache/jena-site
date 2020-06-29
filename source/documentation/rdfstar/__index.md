@@ -75,7 +75,7 @@ is a prefix for `<http://jena.apache.org/ARQ/function#>`.
 | -------- | ----------- |
 | `<< s p o >> apf:find t` . | Match the triple term. Any `s`, `p`, `o`, and `t` can be RDF terms or variables.|
 
-`apf:find` will result in all the variables being are set accorind to the match,
+`apf:find` will result in all the variables being set according to the match,
 If `t` is a variable, `?t`, it is bound to a triple term for the match of `<<s p o>>`.
 
 ### SPARQL results

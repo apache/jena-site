@@ -82,7 +82,7 @@ The following is a suggested Apache httpd .htaccess file:
 
 ### Example 1 : Using the RDFDataMgr {#using-rdfdatamgr}
 
-`RDFDataMgr` provide operations to load, read and write models and datasets.
+`RDFDataMgr` provides operations to load, read and write models and datasets.
 
 `RDFDataMgr` "load" operations create an
 in-memory container (model, or dataset as appropriate); "read" operations
@@ -101,7 +101,7 @@ add data into an existing model or dataset.
 
 ### Example 2 : Common usage {#model-usage}
 
-The original Jena Model API operation for reade and write provide another way to the same machinery:
+The original Jena Model API operation for `read` and `write` provide another way to the same machinery:
 
     Model model = ModelFactory.createDefaultModel() ;
     model.read("data.ttl") ;
@@ -151,10 +151,10 @@ InputStreams.  The `StreamManager` can be set using the `RDFParser` builder:
             .source("data.ttl")
             .parse(...);
 
-It can also be set in the chosen based on the `Context` object for the
+It can also be set in a `Context` object given the the RDFParser for the
 operation, but normally this defaults to the global `Context` available via
 `Context.get()`.  The constant `SysRIOT.sysStreamManager`, which is
-`http://jena.apache.org/riot/streamManager` is used.
+`http://jena.apache.org/riot/streamManager`, is used.
 
 Specialized StreamManagers can be configured with specific locators for
 data:

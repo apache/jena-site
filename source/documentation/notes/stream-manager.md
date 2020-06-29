@@ -4,7 +4,7 @@ title: The Jena StreamManager and LocationMapper
 
 The StreamManager is a utility to find and read files into models.
 There is a standard global StreamManager and applications may also
-define specific ones by constructing addition StreamManagers.
+define specific ones by constructing additional StreamManagers.
 
 The LocationMapper provides alternative locations for RDF data.
 
@@ -74,9 +74,9 @@ following files, in order:
 - `location-mapping.ttl`
 - `location-mapping.rdf`
 - `etc/location-mapping.rdf`
-- `etc/location-mapping.ttl`"
+- `etc/location-mapping.ttl`
 
-This is a specified as a path - note the path separator is always
+This is specified as a path - note the path separator is always
 the character ';' regardless of operating system because URLs
 contain ':'.
 

@@ -9,7 +9,7 @@ Application code is welcome to also use this mechanism. This
 must be done with care. Java initialization can lead to
 visibility of uninitialized data.
 
-The standard initialization sequence is<br/>
+The standard initialization sequence is  
 Core -> RIOT -> ARQ -> TDB -> other (SDB, jena text, jena spatial)
 
 The sequence from core to TDB should be executed before application
@@ -45,7 +45,7 @@ The levels used by Jena are:
 
 ## The Initialization Process
 
-The process followed by `JenaSystem.init()` is to obtain an instance of 
+The process followed by `JenaSystem.init()` is to obtain an instance of
 `JenaSubsystemRegistry`, ask it to `load()` initialization code, then call
 that code in an order based on declared level. The order of invocation
 of different initialization code within the same level is undefined
@@ -86,7 +86,7 @@ that initialization code is discovered.
 
 An application can change the `JenaSubsystemRegistry` instance.
 This must be done before any Jena code is called anywhere
-in the current JVM. 
+in the current JVM.
 
     // Example alternative registry.
     JenaSubsystemRegistry r = new JenaSubsystemRegistryBasic() {
@@ -122,4 +122,3 @@ trying to switch the context class loader may fix the initialization process.
     } finally {
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
-
