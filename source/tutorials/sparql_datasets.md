@@ -205,12 +205,6 @@ graph is given the name *url* and the data is read from that
 location. Multiple `FROM NAMED` clauses cause multiple graphs to be
 added to the dataset.
 
-Note that graphs are loaded with the Jena FileManager which
-includes the ability to provide alternative locations for files.
-For example, the query may have `FROM NAMED <http://example/data>`,
-and the data actually be read from `file:local.rdf`. The name of
-the graph will be <http://example/data\> as in the query.
-
 For example, the query to find all the triples in both default
 graph and named graphs could be written as
 ([q-ds-5.rq](sparql_data/q-ds-5.rq)):

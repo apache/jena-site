@@ -185,10 +185,6 @@ mas nenhum deles se torna o nome do grafo.
 `FROM NAMED <i>url</i>` é usado para identificar o grafo nomeado. Ao grafo é dado a url e o dado é lido daquela localização.
  Múltiplas clausulas `FROM NAMED` causam em muitos grafos para serem adicionados ao dataset.
 
-Observe que os grafos são carregados com Jena FileManager que inclui a habilidade de prover localizações alternativas 
-para os arquivos. Por exemplo, a consulta pode ter  `FROM NAMED <http://example/data>`,
-e o dado ser lido de `file:local.rdf`. O nome do grafo vai ser <http://example/data\> como na consulta.
-
 Por exemplo, a consulta para buscar todas as triplas em ambos o grafo padrão e os grafos nomeados poderia ser escrita como
 ([q-ds-5.rq](sparql_data/q-ds-5.rq)):
 

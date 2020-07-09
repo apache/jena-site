@@ -107,3 +107,11 @@ Example
 [`Shacl02_validateTransaction`](https://github.com/apache/jena/tree/master/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl02_validateTransaction.java)
 shows how to update a graph only if, after the changes, the graph is validated
 according to the shapes provided.
+
+## SHACL Compact Syntax
+
+Jena can read [SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/). The file extensions are `.shc` and `.shaclc` and a registered language constant is `SHACLC.langShacl`.
+
+    RDFDataMgr.load("shapes.shc");
+
+    RDFDataMgr.read("file:compactShapes", SHACLC.langShacl);

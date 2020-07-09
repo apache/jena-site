@@ -236,17 +236,17 @@ model.write(System.out);</pre>
 <p>Há um erro nesse RDF XML: ele não representa exatamente o modelo que criamos. Foi dado uma URI ao blank node do modelo. Ele não é mais um blank node portanto. A sintaxe RDF/XML não é capaz de representar todos os modelos RDF; por exemplo, ela não pode representar um blank node que é o objeto de duas sentenças. O escritor que usamos para escrever este RDF/XML não é capaz de escrever corretamente o subconjunto de modelos que podem ser escritos corretamente. Ele dá uma URI a cada blank node, tornando-o não mais blank.</p>
 
 <p>Jena possui uma interface extensível que permite novos escritores para diferentes linguagens de serialização RDF. Jena possuem também um escritor RDF/XML mais sofisticado que pode ser invocado ao especificar outro argumento à chamada de método 
-<code>write()</code>:</p>
+<code>RDFDataMgr.write</code>:</p>
 
-<pre>// now write the model in XML form to a file
-model.write(System.out, "RDF/XML-ABBREV");
- </pre>
+<pre>// now write the model in a pretty form
+RDFDataMgr.write(System.out, model, Lang.RDFXML);
+</pre>
 
 <p>Este escritor, chamado também de PrettyWriter, ganha vantagem ao usar as particularidades da sintaxe abreviada de RDF/XML ao criar um modelo mais compacto. Ele também é capaz de preservar os blank nodes onde é possível. Entretanto, não é recomendável para escrever modelos muito grandes, já que sua desempenho deixa a desejar. Para escrever grandes arquivos e preservar os blank nodes, escreva no formato de N-Triplas:</p>
 
 
 <pre>// now write the model in XML form to a file
-model.write(System.out, "N-TRIPLE");
+RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 </pre>
 
 
@@ -261,8 +261,8 @@ model.write(System.out, "N-TRIPLE");
 // create an empty model
 Model model = ModelFactory.createDefaultModel();
 
-// use the FileManager to find the input file
-InputStream in = FileManager.get().open( inputFileName );
+// use the RDFDataMgr to find the input file
+InputStream in = RDFDataMgr.open( inputFileName );
 if (in == null) {
     throw new IllegalArgumentException(
                                  "File: " + inputFileName + " not found");

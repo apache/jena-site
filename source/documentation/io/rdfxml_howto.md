@@ -9,19 +9,19 @@ advanced features within the RDF/XML I/O subsystem.
 
 ## Contents
 
--   [Quick Introduction](#quick-introduction)
--   [RDF/XML, RDF/XML-ABBREV](#rdfxml-rdfxml-abbrev)
--   [Character Encoding Issues](#character-encoding-issues)
-    -   [Encodings Supported in Jena 2.2 and later](#encodings-supported-in-jena-22-and-later)
--   [When to Use Reader and Writer?](#when-to-use-reader-and-writer)
--   [Introduction to Advanced Jena I/O](#introduction-to-advanced-jena-io)
--   [Advanced RDF/XML Input](#advanced-rdfxml-input)
-    -   [ARP properties](#arp-properties)
-    -   [Interrupting ARP](#interrupting-arp)
--   [Advanced RDF/XML Output](#advanced-rdfxml-output)
--   [Conformance](#conformance)
--   [Faster RDF/XML I/O](#faster-rdfxml-io)
--   [Details of ARP, the Jena RDF/XML parser](arp.html)
+- [Quick Introduction](#quick-introduction)
+- [RDF/XML, RDF/XML-ABBREV](#rdfxml-rdfxml-abbrev)
+- [Character Encoding Issues](#character-encoding-issues)
+  - [Encodings Supported in Jena 2.2 and later](#encodings-supported-in-jena-22-and-later)
+- [When to Use Reader and Writer?](#when-to-use-reader-and-writer)
+- [Introduction to Advanced Jena I/O](#introduction-to-advanced-jena-io)
+- [Advanced RDF/XML Input](#advanced-rdfxml-input)
+  - [ARP properties](#arp-properties)
+  - [Interrupting ARP](#interrupting-arp)
+- [Advanced RDF/XML Output](#advanced-rdfxml-output)
+- [Conformance](#conformance)
+- [Faster RDF/XML I/O](#faster-rdfxml-io)
+- [Details of ARP, the Jena RDF/XML parser](arp.html)
 
 ## Quick Introduction
 
@@ -444,28 +444,30 @@ on any `Model`. It is then configured using the
 method. This changes the properties for writing RDF/XML.
 
 ### Properties to Control RDF/XML Output
+
+
 <table>
 <tr><th>Property Name</th><th>Description</th><th>Value class</th><th>Legal Values</th></tr>
 <tr>
-<td>`xmlbase`</td>
+<td><tt>xmlbase</tt></td>
 <td>The value to be included for an xml:base attribute on the root element in the file.</td>
-<td>`String`</td>
+<td><tt>String</tt></td>
 <td>A URI string, or null (default)</td>
 </tr>
 <tr>
-<td>`longId`</td>
+<td><tt>longId</tt></td>
 <td>Whether to use long or short id's for anon resources. Short id's are easier to read and are the default, but can run out of memory on very large models.</td>
-<td>`String` or `Boolean`</td>
-<td>`"true"`, `"false"` (default)</td>
+<td><tt>String</tt> or <tt>Boolean</tt></td>
+<td><tt>"true"</tt>, <tt>"false"</tt> (default)</td>
 </tr>
 <tr>
-<td>`allowBadURIs`</td>
+<td><tt>allowBadURIs</tt></td>
 <td>URIs in the graph are, by default, checked prior to serialization.</td>
-<td>`String` or `Boolean`</td>
-<td>`"true"`, `"false"` (default)</td>
+<td><tt>String</tt> or <tt>Boolean</tt></td>
+<td><tt>"true"</tt>, <tt>"false"</tt> (default)</td>
 </tr>
 <tr>
-<td>`relativeURIs`</td>
+<td><tt>relativeURIs</tt></td>
 <td>What sort of relative URIs should be used. A comma separated list of options:
 
 - *same-document*<br />
@@ -489,7 +491,7 @@ has been specified.</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>`showXmlDeclaration`</td>
+<td><tt>showXmlDeclaration</tt></td>
 <td>
 If true, an XML Declaration is included in the output, if false no XML declaration is included.
 The default behaviour only gives an XML Declaration when asked to write to an `OutputStreamWriter`
@@ -501,11 +503,11 @@ XML declaration. To ensure that the encoding attribute is shown in the XML decla
 - Or set this option to false, and write the declaration to an `OutputStream` before calling
     `write(Model,OutputStream,String)`.
 </td>
-<td>`true`, `"true"`, `false`, `"false"` or `"default"`</td>
+<td><tt>true</tt>, <tt>"true"</tt>, <tt>false</tt>, <tt>"false"</tt> or <tt>"default"</tt></td>
 <td>can be true, false or "default" (null)</td>
 </tr>
 <tr>
-<td>`showDoctypeDeclaration`</td>
+<td><tt>showDoctypeDeclaration</tt></td>
 <td>
 If true, an XML Doctype declaration is included in the output. This
 declaration includes a `!ENTITY` declaration for each prefix mapping
@@ -513,23 +515,23 @@ in the model, and any attribute value that starts with the URI of
 that mapping is written as starting with the corresponding entity
 invocation.
 </td>
-<td>`String` or `Boolean`</td>
-<td>`true`, `false`, `"true"`, `"false"`</td>
+<td><tt>String</tt> or <tt>Boolean</tt></td>
+<td><tt>true</tt>, <tt>false</tt>, <tt>"true"</tt>, <tt>"false"</tt></td>
 </tr>
 <tr>
-<td>`tab`</td>
+<td><tt>tab</tt></td>
 <td>The number of spaces with which to indent XML child elements.</td>
-<td>`String` or `Integer`</td>
+<td><tt>String</tt> or <tt>Integer</tt></td>
 <td>positive integer "2" is the default</td>
 </tr>
 <tr>
-<td>`attributeQuoteChar`</td>
+<td><tt>attributeQuoteChar</tt></td>
 <td>How to write XML attributes.</td>
-<td>`String`</td>
-<td>`"\""` or `"'"`</td>
+<td><tt>String</tt></td>
+<td><tt>"\""</tt> or <tt>"'"</tt></td>
 </tr>
 <tr>
-<td>`blockRules`</td>
+<td><tt>blockRules</tt></td>
 <td>
 A list of `Resource` or a `String` being a comma separated list of
 fragment IDs from [http://www.w3.org/TR/rdf-syntax-grammar](http://www.w3.org/TR/rdf-syntax-grammar)
@@ -563,23 +565,23 @@ is blocked. For the basic writer (RDF/XML) only
 has any effect, since none of the other rules are implemented by
 that writer.
 </td>
-<td>`Resource[]` or `String`</td>
+<td><tt>Resource[]</tt> or <tt>String</tt></td>
 <td></td>
 </tr>
 <tr> 
-<td>`prettyTypes`</td>
+<td><tt>prettyTypes</tt></td>
 <td>
 Only for the RDF/XML-ABBREV writer. This is a list of the types of
 the principal objects in the model. The writer will tend to create
 RDF/XML with resources of these types at the top level.
 </td>
 <td>
-`Resource[]`
+<tt>Resource[]</tt>
 </td>
 <td></td>
 </tr>
 </table>
- 
+
 As an example,
 
     RDFWriter w = m.getWriter("RDF/XML-ABBREV");
