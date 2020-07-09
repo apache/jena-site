@@ -178,17 +178,15 @@ a way for one triple to refer to another triple. Another resource about RDF* is
 </span></code></pre></div><p>The part <code>&lt;&lt; :john foaf:name &quot;John Smith&quot; &gt;&gt;</code> is a triple term and refers to the triple with subject <code>:john</code>, property <code>foaf:name</code> and object <code>&quot;John Smith&quot;</code>.</p>
 <p>Triple terms can be in the subject or object position.</p>
 <p>Jena provides support for RDF* and the related SPARQL*.</p>
-<p>Support for RDF* is experimentation in Jena 3.15.0 (released May 2020):</p>
 <ul>
 <li>Turtle, N-Triples, TriG and N-Quads extended for Triple Terms syntax.  There is no output in RDF/XML.</li>
 <li>SPARQL extended with Triple Term syntax for graph matching (in code, use <code>Syntax.syntaxARQ</code>).</li>
 <li>SPARQL Result formats for JSON and XML extended to support Triple Terms in results.</li>
-<li>Support in memory-based storage (graphs and datasets).</li>
 <li>Support in the Model API.</li>
 </ul>
 <p>All this is active by default in Fuseki.</p>
-<p>This support is experimental and subject to change. The aim is to follow the definition of RDF* as well as emerging _de facto_ consensus in other implementations.</p>
-<p>Later releases will extend support to persistent storage in <a href="/documentation/tdb">TDB1</a> and <a href="/documentation/tdb2/">TDB2</a>.</p>
+<p>The aim is to follow the definition of RDF* as well as emerging _de facto_ consensus in other implementations.</p>
+<p>Storage in databases <a href="/documentation/tdb">TDB1</a> and <a href="/documentation/tdb2/">TDB2</a> is supported as of Jena 3.16.0.</p>
 <h2 id="rdf">RDF*</h2>
 <p>RDF* syntax for triple terms is added to the parsers for Turtle, N-Triples, TriG and N-Quads.</p>
 <p>Datasets may have graphs that have triple terms that refer to triples anywhere, not just in the same graph.</p>
@@ -235,6 +233,24 @@ is a prefix for <code>&lt;http://jena.apache.org/ARQ/function#&gt;</code>.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="sparql-property-functions-related-to-triple-terms">SPARQL Property Functions related to triple terms</h3>
+<p><code>apf:</code> is a prefix for <code>&lt;http://jena.apache.org/ARQ/property#&gt;</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Property Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;&lt; s p o &gt;&gt; apf:find t</code> .</td>
+<td>Match the triple term. Any <code>s</code>, <code>p</code>, <code>o</code>, and <code>t</code> can be RDF terms or variables.</td>
+</tr>
+</tbody>
+</table>
+<p><code>apf:find</code> will result in all the variables being set according to the match,
+If <code>t</code> is a variable, <code>?t</code>, it is bound to a triple term for the match of <code>&lt;&lt;s p o&gt;&gt;</code>.</p>
 <h3 id="sparql-results">SPARQL results</h3>
 <p>The syntaxes for SPARQL results from a SELECT query, <code>application/sparql-results+json</code>,
 <code>application/sparql-results+xml</code> are extended to include triple terms:</p>

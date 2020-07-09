@@ -435,7 +435,7 @@ InfModel inf = ModelFactory.createInfModel(boundReasoner, data);
   which can be used for programmatic handling of the violations.</p>
 <p>For example, to check a data set and list any problems one could do something
   like:</p>
-<pre><code>Model data = FileManager.get().loadModel(fname);
+<pre><code>Model data = RDFDataMgr.loadModel(fname);
 InfModel infmodel = ModelFactory.createRDFSModel(data);
 ValidityReport validity = infmodel.validate();
 if (validity.isValid()) {
@@ -772,8 +772,8 @@ Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(config);
 <p>Then the following code fragment can be used to read files containing these
   definitions, create an inference model and query it for information on the <code>rdf:type</code>
   of <code>colin</code> and the <code>rdf:type</code> of <code>Person</code>:</p>
-<pre><code>Model schema = FileManager.get().loadModel(&quot;file:data/rdfsDemoSchema.rdf&quot;);
-Model data = FileManager.get().loadModel(&quot;file:data/rdfsDemoData.rdf&quot;);
+<pre><code>Model schema = RDFDataMgr.loadModel(&quot;file:data/rdfsDemoSchema.rdf&quot;);
+Model data = RDFDataMgr.loadModel(&quot;file:data/rdfsDemoData.rdf&quot;);
 InfModel infmodel = ModelFactory.createRDFSModel(schema, data);
 
 Resource colin = infmodel.getResource(&quot;urn:x-hp:eg/colin&quot;);
@@ -1163,8 +1163,8 @@ configuration still leaves something to be desired and will the subject of futur
   and &quot;<code>bigName42</code>&quot;.</p>
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
   and then apply that to the demo data to obtain an inference model, as follows:</p>
-<pre><code>Model schema = FileManager.get().loadModel(&quot;file:data/owlDemoSchema.owl&quot;);
-Model data = FileManager.get().loadModel(&quot;file:data/owlDemoData.rdf&quot;);
+<pre><code>Model schema = RDFDataMgr.loadModel(&quot;file:data/owlDemoSchema.owl&quot;);
+Model data = RDFDataMgr.loadModel(&quot;file:data/owlDemoData.rdf&quot;);
 Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
 reasoner = reasoner.bindSchema(schema);
 InfModel infmodel = ModelFactory.createInfModel(reasoner, data);
@@ -1988,7 +1988,7 @@ configuration.addProperty(ReasonerVocabulary.PROPruleSet,  &ldquo;data/demo.rule
 <p>// Create an instance of such a reasoner
 Reasoner reasoner = GenericRuleReasonerFactory.theInstance().create(configuration);</p>
 <p>// Load test data
-Model data = FileManager.get().loadModel(&ldquo;file:data/demoData.rdf&rdquo;);
+Model data = RDFDataMgr.loadModel(&ldquo;file:data/demoData.rdf&rdquo;);
 InfModel infmodel = ModelFactory.createInfModel(reasoner, data);</p>
 <p>// Query for all things related to &ldquo;a&rdquo; by &ldquo;p&rdquo;
 Property p = data.getProperty(demoURI, &ldquo;p&rdquo;);
@@ -2059,7 +2059,7 @@ System.out.println(&rdquo; - &quot; + PrintUtil.print(i.nextStatement()));
  should be forward, all the inferences which need all of the results of the RDFS/OWL rules
  should be backward. Note that the RDFS and OWL rulesets assume certain settings
  for the GenericRuleReasoner so a typical configuration is:</p>
-<pre><code>Model data = FileManager.get().loadModel(&quot;file:data.n3&quot;);
+<pre><code>Model data = RDFDataMgr.loadModel(&quot;file:data.n3&quot;);
 List rules = Rule.rulesFromURL(&quot;myrules.rules&quot;);
 
 GenericRuleReasoner reasoner = new GenericRuleReasoner(rules);

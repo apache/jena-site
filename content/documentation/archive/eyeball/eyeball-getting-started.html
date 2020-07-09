@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - The Jena FileManager and LocationMapper</title>
+    <title>Apache Jena - Eyeball - checking RDF/OWL for common problems</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/notes/file-manager.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/archive/eyeball/eyeball-getting-started.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -153,7 +153,7 @@
         
         
             
-                <li><a href='/documentation/notes'>NOTES</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -161,7 +161,15 @@
         
         
             
-                <li class="active">FILE MANAGER</li>
+                <li><a href='/documentation/archive/eyeball'>EYEBALL</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">EYEBALL GETTING STARTED</li>
             
             
         
@@ -173,112 +181,51 @@
 
                 
             </div>
-            <h1 class="title">The Jena FileManager and LocationMapper</h1>
+            <h1 class="title">Eyeball - checking RDF/OWL for common problems</h1>
             
-	<p>The FileManager is a utility to find and read files into models.
-There is a standard global FileManager and applications may also
-define specific ones by constructing addition FileManagers.</p>
-<p>The LocationMapper provides alternative locations for RDF data.</p>
-<h2 id="the-file-manager">The File Manager</h2>
-<p>Files are named by a string, according to the conventions of their
-storage system. Typically this is by URI. There are a number of
-storage system adapters provided:</p>
+	<p>Eyeball is a Jena-based tool for checking RDF models (including OWL)
+for common problems. It is user-extensible using plugins.</p>
+<p><b>This page is historical &ldquo;for information only&rdquo; - there is no Apache
+release of Eyeball and the code has not been updated for Jena3.<br>
+<br/>
+The <a href="https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/">original source code is available</a>.
+</b></p>
+<h2 id="documentation-index">Documentation index</h2>
 <ul>
-<li>File locator (with own current directory)</li>
-<li>URL locator</li>
-<li>Class loader locator</li>
-<li>Zip file locator</li>
+<li>The <a href="eyeball-guide.html">brief guide</a>.</li>
+<li>The <a href="eyeball-manual.html">manual</a>.</li>
+<li>The <a href="#todo/documentation/javadoc/eyeball/index.html">JavaDoc</a>.</li>
 </ul>
-<p>The global file manager has a file location, a URL locator and a
-class loader (tried in that order).
-A FileManager can have an associated LocationMapper that transforms
-names before use. This means local copies of documents can be used
-transparently to the rest of the application.</p>
-<p>There are two categories of operations: loadModel, readModel. Load
-operations fetch and parse the data into a new memory model. Read
-operations fetch and parse the data into an existing model. For
-more complex ways to create a new model see
-<a href="../assembler/index.html">the Assembler documentation</a>.</p>
-<p>Each FileManager has an optional in-memory cache of models. When
-on, loading models will look in the cache first and return a cached
-model if possible. This cached model is not copied - updates <em>will</em>
-change the cached version. The default is that cache is off.</p>
-<p>In fetching and parsing a file, the file manager will attempt to
-guess the serialization format, if not explicitly supplied. This is
-by name extension:</p>
-<ul>
-<li><code>.rdf</code> and <code>.owl</code> : RDF/XML</li>
-<li><code>.n3</code> : N3</li>
-<li><code>.nt</code> : N-Triples</li>
-<li>Anything else: RDF/XML</li>
-</ul>
-<h2 id="the-locationmapper-configuration-file">The LocationMapper configuration file</h2>
-<p>This example uses the RDF subset of
-<a href="http://www.w3.org/2000/10/swap/Primer">N3</a>. Jena has an RDF reader
-and RDF writer for N3. This is nearly the same as
-<a href="http://www.ilrt.bris.ac.uk/discovery/2004/01/turtle/">Turtle</a> but
-allowing international characters and some restrictions due to N3.</p>
-<p>Location mapping files are RDF - they may be written in RDF/XML, N3
-(file suffix <code>.n3</code>) or N-Triples (file suffix <code>.nt</code>). The default
-is RDF/XML unless one of these suffices is found.</p>
-<pre><code>@prefix lm: &lt;http://jena.hpl.hp.com/2004/08/location-mapping#&gt; .
-
-[] lm:mapping
-   [ lm:name &quot;file:foo.n3&quot; ;     lm:altName &quot;file:etc/foo.n3&quot; ] ,
-   [ lm:prefix &quot;file:etc/&quot; ;     lm:altPrefix &quot;file:ETC/&quot; ] ,
-   [ lm:name &quot;file:etc/foo.n3&quot; ; lm:altName &quot;file:DIR/foo.n3&quot; ]
-   .
+<h2 id="getting-the-eyeball-release">Getting the Eyeball release</h2>
+<!--Please see the [downloads page](/download/index.cgi) for details.-->
+<h2 id="installation">Installation</h2>
+<p>Eyeball needs to be compiled from source.</p>
+<p>If you have Ant installed, run the Eyeball test suite:</p>
+<pre><code>ant test
 </code></pre>
-<p>There are two types of location mapping: exact match renaming and
-prefix renaming. When trying to find an alternative location, a
-LocationMapper first tries for an exact match; if none is found,
-the LocationMapper will search for the longest matching prefix. If
-two are the same length, there is no guarantee on order tried;
-there is no implied order in a location mapper configuration file
-(it sets up two hash tables).</p>
-<p>In the example above, <code>file:etc/foo.n3</code> becomes <code>file:DIR/foo.n3</code>
-because that is an exact match. The prefix match of file:/etc/ is
-ignored.</p>
-<p>All string tests are done case sensitively because the primary use
-is for URLs.</p>
-<p>Notes:</p>
-<ul>
-<li>Property values are not URIs, but strings. This is a system
-feature, not an RDF feature. Prefix mapping is name rewriting;
-alternate names are not treated as equivalent resources in the rest
-of Jena. While application writers are encouraged to use URIs to
-identify files, this is not always possible.</li>
-<li>There is no check to see if the alternative system resource is
-equivalent to the original.</li>
-</ul>
-<p>A LocationMapper finds its configuration file by looking for the
-following files, in order:</p>
-<ul>
-<li><code>file:location-mapping.rdf</code></li>
-<li><code>file:location-mapping.n3</code></li>
-<li><code>file:etc/location-mapping.rdf</code></li>
-<li><code>file:etc/location-mapping.n3</code></li>
-</ul>
-<p>This is a specified as a path - note the path separator is always
-the character &lsquo;;&rsquo; regardless of operating system because URLs
-contain &lsquo;:'.</p>
-<p>Applications can also set mappings programmatically. No
-configuration file is necessary.</p>
-<p>The base URI for reading models with the FileManager will be the
-original URI, not the alternative location.</p>
-<h3 id="debugging">Debugging</h3>
-<p>If log4j2, set the logging level of the classes:</p>
-<pre><code>logger.filemanager.name        = org.apache.jena.util.FileManager
-logger.filemanager.level       = ALL
-logger.location-manager.name   = org.apache.jena.util.LocationManager
-logger.location-manager.level  = ALL
+<p>Ensure all the jars in the Eyeball <code>lib</code> directory are on your
+classpath.</p>
+<h2 id="using-eyeball-with-apache-maven">Using Eyeball with Apache Maven</h2>
+<p>TODO</p>
+<h2 id="trying-it-out">Trying it out</h2>
+<p>Pick one of your RDF files; we&rsquo;ll call it FOO for now. Run the
+command-line command</p>
+<pre><code>java jena.eyeball -check FOO
 </code></pre>
-<h3 id="see-also">See also</h3>
-<p>Javadoc:</p>
-<ul>
-<li><a href="/documentation/javadoc/jena/org/apache/jena/util/FileManager.html">FileManager</a></li>
-<li><a href="/documentation/javadoc/jena/org/apache/jena/util/LocationMapper.html">LocationMapper</a></li>
-</ul>
+<p>You will likely get a whole bunch of messages about your RDF. The
+messages are supposed to be self-explanatory, so you may be able to
+go ahead and fix some problems straight away. If you get a Java
+error about <strong>NoClassDefFoundError</strong>, you&rsquo;ve forgotten to set the
+classpath up or use the <em>-cp myClassPath</em> option to Java.</p>
+<p>You may also want to try the experimental GUI, see below.</p>
+<p>If the messages aren&rsquo;t self-explanatory, or you want more details,
+please consult the <a href="eyeball-guide.html">guide</a>.</p>
+<h2 id="experimental-eyeball-gui">Experimental Eyeball GUI</h2>
+<p>Eyeball includes a simple GUI tool which will allow multiple files to be
+checked at once and multiple schemas to be assumed. It will also allow you
+to select which inspectors are used.</p>
+<p>To start the GUI, use the following (assuming your classpath is set up, as above):
+java jena.eyeballGUI</p>
 
 
         </div>

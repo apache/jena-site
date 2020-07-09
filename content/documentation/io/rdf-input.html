@@ -175,16 +175,15 @@
             </div>
             <h1 class="title">Reading RDF in Apache Jena</h1>
             
-	<p>This page details the setup of RDF I/O technology (RIOT) for input
-introduced in Jena 2.10.</p>
+	<p>This page details the setup of RDF I/O technology (RIOT) for Apache Jena.</p>
 <p>See <a href="rdf-output.html">Writing RDF</a> for details of the RIOT Writer system.</p>
 <ul>
 <li><a href="#api">API</a>
 <ul>
 <li><a href="#determining-the-rdf-syntax">Determining the RDF syntax</a></li>
-<li><a href="#example-1-common-usage">Example 1 : Common usage</a></li>
-<li><a href="#example-2-using-the-rdfdatamgr">Example 2 : Using the RDFDataMgr</a></li>
-<li><a href="#example-3-using-rdfparser">Example 3 : Using RDFParser</a></li>
+<li><a href="#using-rdfdatamgr">Example 1 : Using the RDFDataMgr</a></li>
+<li><a href="#model-usage">Example 2 : Model usage</a></li>
+<li><a href="#using-rdfparser">Example 3 : Using RDFParser</a></li>
 </ul>
 </li>
 <li><a href="#logging">Logging</a></li>
@@ -318,19 +317,9 @@ AddType  application/n-quads     .nq
 AddType  application/trix+xml    .trix
 AddType  application/rdf+thrift  .trdf
 </code></pre>
-<h3 id="example-1--common-usage">Example 1 : Common usage</h3>
-<p>In this example, a file in the current directory is read as Turtle.</p>
-<pre><code>Model model = ModelFactory.createDefaultModel() ;
-model.read(&quot;data.ttl&quot;) ;
-</code></pre>
-<p>If the syntax is not as the file extension, a language can be declared:</p>
-<pre><code>model.read(&quot;data.foo&quot;, &quot;TURTLE&quot;) ;
-</code></pre>
-<h3 id="example-2--using-the-rdfdatamgr">Example 2 : Using the RDFDataMgr</h3>
-<p>In versions of Jena prior to 2.10.0, the <code>FileManager</code> provided some of
-this functionality. It was more basic, and not properly web enabled.
-The API <code>RDFDataMgr</code> supercedes the <code>FileManager</code>.</p>
-<p>`RDFDataMgr &ldquo;load*&rdquo; operations create an
+<h3 id="using-rdfdatamgr">Example 1 : Using the RDFDataMgr</h3>
+<p><code>RDFDataMgr</code> provides operations to load, read and write models and datasets.</p>
+<p><code>RDFDataMgr</code> &ldquo;load&rdquo; operations create an
 in-memory container (model, or dataset as appropriate); &ldquo;read&rdquo; operations
 add data into an existing model or dataset.</p>
 <pre><code>// Create a model and read into it from file 
@@ -344,8 +333,16 @@ Dataset dataset = RDFDataMgr.loadDataset(&quot;data.trig&quot;) ;
 // Read into an existing Model
 RDFDataMgr.read(model, &quot;data2.ttl&quot;) ;
 </code></pre>
-<h3 id="example-3--using-rdfparser">Example 3 : Using RDFParser</h3>
-<p>Detail control over the setup of the parsing process is provided by
+<h3 id="model-usage">Example 2 : Common usage</h3>
+<p>The original Jena Model API operation for <code>read</code> and <code>write</code> provide another way to the same machinery:</p>
+<pre><code>Model model = ModelFactory.createDefaultModel() ;
+model.read(&quot;data.ttl&quot;) ;
+</code></pre>
+<p>If the syntax is not as the file extension, a language can be declared:</p>
+<pre><code>model.read(&quot;data.foo&quot;, &quot;TURTLE&quot;) ;
+</code></pre>
+<h3 id="using-rdfparser">Example 3 : Using RDFParser</h3>
+<p>Detailed control over the setup of the parsing process is provided by
 <code>RDFParser</code> which provides a builder pattern.  It has many options - see
 <a href="/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html">the javadoc for all details</a>.</p>
 <p>For example, to read Trig data, and set the error handler specially,</p>
@@ -363,13 +360,24 @@ RDFDataMgr.read(model, &quot;data2.ttl&quot;) ;
 <p>The parsers log to a logger called <code>org.apache.jena.riot</code>.  To avoid <code>WARN</code>
 messages, set this to <code>ERROR</code> in the logging system of the application.</p>
 <h2 id="streammanager-and-locationmapper">StreamManager and LocationMapper</h2>
+<p>Operations to read RDF data can be redirected to local copies and to other URLs.
+This is useful to provide local copies of remote resources.</p>
 <p>By default, the <code>RDFDataMgr</code> uses the global <code>StreamManager</code> to open typed
-InputStreams.  This is available to applications via <code>RDFDataMgr.open</code> as well as directly
-using a <code>StreamManager</code>.</p>
-<p>The <code>StreamManager</code> is chosen based on the <code>Context</code> object for the
+InputStreams.  The <code>StreamManager</code> can be set using the <code>RDFParser</code> builder:</p>
+<pre><code>    // Create a copy of the global default StreamManager.
+    StreamManager sm = StreamManager.get().clone();
+    // Add directory &quot;/tmp&quot; as a place to look for files
+    sm.addLocator(new LocatorFile(&quot;/tmp&quot;));
+
+    RDFParser.create()
+        .streamManager(sm)
+        .source(&quot;data.ttl&quot;)
+        .parse(...);
+</code></pre>
+<p>It can also be set in a <code>Context</code> object given the the RDFParser for the
 operation, but normally this defaults to the global <code>Context</code> available via
-<code>Context.get()</code>.  The constant <code>RDFDataMgr.streamManagerSymbol</code>, which is
-<code>http://jena.apache.org/riot/streamManager</code> is used.</p>
+<code>Context.get()</code>.  The constant <code>SysRIOT.sysStreamManager</code>, which is
+<code>http://jena.apache.org/riot/streamManager</code>, is used.</p>
 <p>Specialized StreamManagers can be configured with specific locators for
 data:</p>
 <ul>
@@ -384,7 +392,7 @@ files.  The default configuration used for the global <code>StreamManager</code>
 a file access class, where the current directory is that of the java
 process, a URL accessor for reading from the web, and a
 class loader-based accessor.  Different setups can be built and used
-either as the global set up,</p>
+either as the global set up, or on a per request basis.</p>
 <p>There is also a <code>LocationMapper</code> for rewriting file names and URLs before
 use to allow placing known names in different places (e.g. having local
 copies of import http resources).</p>
@@ -435,12 +443,6 @@ contain &lsquo;:'.</p>
 <p>Applications can also set mappings programmatically. No
 configuration file is necessary.</p>
 <p>The base URI for reading models will be the original URI, not the alternative location.</p>
-<h3 id="debugging">Debugging</h3>
-<p>Set the logging level of the classes:</p>
-<ul>
-<li>org.apache.jena.riot.stream.StreamManager</li>
-<li>org.apache.jena.riot.stream.LocationMapper</li>
-</ul>
 <h2 id="advanced-examples">Advanced examples</h2>
 <p>Example code may be found in <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/">jena-arq/src-examples</a>.</p>
 <h3 id="iterating-over-parser-output">Iterating over parser output</h3>
