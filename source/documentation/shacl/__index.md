@@ -110,8 +110,11 @@ according to the shapes provided.
 
 ## SHACL Compact Syntax
 
-Jena can read [SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/). The file extensions are `.shc` and `.shaclc` and a registered language constant is `SHACLC.langShacl`.
+Jena can read 
+[SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/).
+The file extensions are `.shc` and `.shaclc` and there is a registered language
+constant `Lang.SHACLC`.
 
     RDFDataMgr.load("shapes.shc");
 
-    RDFDataMgr.read("file:compactShapes", SHACLC.langShacl);
+    RDFDataMgr.read("file:compactShapes", Lang.SHACLC);
