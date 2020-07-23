@@ -364,13 +364,15 @@ If only the query string is required, the surrounding `( )` _may be_ omitted.
 | score             | (optional) The score for the match. |
 | literal           | (optional) The matched object literal. |
 | graph URI         | (optional) The graph URI of the triple. |
+| property URI      | (optional) The property URI of the matched triple |
 
 The results include the _subject URI_; the _score_ assigned by the
 text search engine; and the entire matched _literal_ (if the index has
 been [configured to store literal values](#text-dataset-assembler)).
 The _subject URI_ may be a variable, e.g., `?s`, or a _URI_. In the
 latter case the search is restricted to triples with the specified
-subject. The _score_, _literal_ and _graph URI_ **must** be variables.
+subject. The _score_, _literal_, _graph URI_, and _property URI_ **must** be variables.
+The _property URI_ is meaningful when two or more properties are used in the query.
 
 ### Query strings
 
