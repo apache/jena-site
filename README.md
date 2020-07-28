@@ -44,7 +44,7 @@ work, execute `hugo server -D` to continuously generate and serve the website on
 
 ## Building and publishing the website
 
-The ASF Jenkins [Jena_Site job](https://builds.apache.org/job/Jena_Site/) is
+The ASF Jenkins [Jena_Site job](https://ci-builds.apache.org/job/Jena_Site/) is
 used for generating the website and committing the generated site to the
 `asf-site` branch.
 
@@ -53,3 +53,27 @@ the release process.
 
 [gitpubsub](https://www.apache.org/dev/gitpubsub.html) is used to publish the
 site, using the content from the `asf-site` and `javadoc` branches.
+
+## ASF Jenkins job
+
+The `Jenkinsfile` was contributed in https://github.com/apache/jena-site/pull/17
+(July 2020).
+
+Steps to do to setup the Jenkins job:
+
+* Create a new multibranch pipeline (e.g. 'Jena_Site').
+
+* Branch source -> git
+
+* Set the gitbox url -> `https://gitbox.apache.org/repos/asf/jena-site.git` and use
+the jenkins (master pub key) credentials.
+
+* In the 'Scan Multibranch Pipeline Triggers' check the 'Periodically if not
+otherwise run' checkbox and enter a sane value (e.g. 15 minutes). This is needed
+because webhooks are not delivered to ci-builds (yet - 2020-07-28).
+
+* Save the job and click the 'Scan Multibranch Pipeline Now' button to trigger an
+initial scan. A first run may also happen as the SCM polls.
+
+It is at this point that it gets the label `git-websites` so the first job may
+have run on the wrong node.
