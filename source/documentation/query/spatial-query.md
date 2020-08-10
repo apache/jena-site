@@ -4,7 +4,7 @@ title: Spatial searches with SPARQL
 
 This module was first released with Jena 2.11.0.
 
-It is planned to retire this modukle in favour of a [GeoSPARQL
+It is planned to retire this module in favour of a [GeoSPARQL
 implementation](https://github.com/galbiston/geosparql-jena).
 
 This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query.

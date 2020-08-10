@@ -117,7 +117,7 @@ server, for example:
 
     fuseki --set arq:js-library=functions.js --mem /ds
 
-or it can be specifiid in the server configuration file `config.ttl`:
+or it can be specified in the server configuration file `config.ttl`:
 
     PREFIX :        <#>
     PREFIX fuseki:  <http://jena.apache.org/fuseki#>

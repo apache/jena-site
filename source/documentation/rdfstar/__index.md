@@ -117,7 +117,7 @@ and similarly in `application/sparql-results+xml`:
 RDF* triple terms are treated as `Resource` to preserve the typed Model API.
 They occur in the subject and object positions.
 
-A `Resource` contains a `Statement` object if the underlying RDF term is a RDF* triple term.
+A `Resource` contains a `Statement` object if the underlying RDF term is an RDF* triple term.
 
 New methods include:
 
