@@ -22,7 +22,7 @@ This is the source code for the website of [Apache Jena](https://jena.apache.org
 
 ## Repository structure
 
-This repository uses 3 branches for buiding the website.
+This repository uses 3 branches for building the website.
 - The `master` branch, which contains all the sources for the website.
 - The `asf-site` branch, which contains the generated website being used for the actual website.
 - The `javadoc` branch, which has the javadoc to be published at 
@@ -48,7 +48,7 @@ The ASF Jenkins [Jena_Site job](https://ci-builds.apache.org/job/Jena_Site/) is
 used for generating the website and committing the generated site to the
 `asf-site` branch.
 
-Separately, javadoc for a release is commited into the `javadoc` branch during
+Separately, javadoc for a release is committed into the `javadoc` branch during
 the release process.
 
 [gitpubsub](https://www.apache.org/dev/gitpubsub.html) is used to publish the

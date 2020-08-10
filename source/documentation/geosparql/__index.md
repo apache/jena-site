@@ -31,7 +31,7 @@ Indexing and caching of spatial objects and relations is performed _on-demand_ d
 Therefore, set-up delays should be minimal.
 
 Benchmarking of the implementation against Strabon and Parliament has found it to be comparable or quicker.
-The benchmarking used was the Geographica query and dataset (http://geographica.di.uoa.gr/).
+The benchmarking used was the Geographical query and dataset (http://geographica.di.uoa.gr/).
 Publication of the benchmarking results are forthcoming.
 
 ## Additional Features
