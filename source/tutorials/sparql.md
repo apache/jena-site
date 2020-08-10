@@ -42,7 +42,7 @@ information, in the form of a set of bindings or an RDF graph.
 -   The
     [SPARQL query language definition document](http://www.w3.org/TR/sparql11-query/)
     itself contains many examples.
--   [Search RDF data with SPARQL](http://www.ibm.com/developerworks/xml/library/j-sparql/)
+-   [Search RDF data with SPARQL](https://developer.ibm.com/articles/j-sparql/)
     (by Phil McCarthy) - article published on IBM developer works about
     SPARQL and Jena.
 -   [SPARQL reference card](http://www.dajobe.org/2005/04-sparql/)
