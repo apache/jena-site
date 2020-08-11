@@ -1,16 +1,18 @@
 ---
-title: Apache Jena Shacl
+title: Apache Jena SHACL
 slug: index
 ---
 
-jena-shacl is an implementation of the 
+`jena-shacl` is an implementation of the 
 W3C [Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/).
 It implements SHACL Core and SHACL SPARQL Constraints.
+It also provides a reader and writer for 
+[SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/).
 
 ## Command line
 
 The command `shacl` introduces shacl operations; it takes a sub-command
-argument. 
+argument.
 
 To validate:
 
@@ -18,15 +20,20 @@ To validate:
 <pre>shacl v -s <i>SHAPES.ttl</i> -d <i>DATA.ttl</i></pre>
 
 The shapes and data files can be the same; the `--shapes` is optional and
-default to the same as `--data`.  This includes running individual W3C Working
+defaults to the same as `--data`.  This includes running individual W3C Working
 Group tests.
 
-To parse a file
+To parse a file:
 
 <pre>shacl parse <i>FILE</i></pre>
 <pre>shacl p <i>FILE</i></pre>
 
 which writes out a text format.
+
+<pre>shacl p <i>--out=FMT</i> <i>FILE</i></pre>
+
+writes out in `text`(`t`), `compact`(`c`), `rdf`(`r`) formats. Multiple formats can be given,
+separated by "," and format `all` outputs all 3 formats.
 
 ## Integration with Apache Jena Fuseki
 
@@ -59,6 +66,8 @@ There is a graph argument, `?graph=`, that specifies the graph to validate. It
 is the URI of a named graph, `default` for the unnamed, default graph (and
 this is the assumed value of `?graph` if not present), or `union` for union of
 all named graphs in the dataset.
+
+Further, an argument <tt>target=<i>uri</i></tt> validates a specific node in the data.
 
 Upload data in file `fu-data.ttl`:
 
@@ -110,11 +119,22 @@ according to the shapes provided.
 
 ## SHACL Compact Syntax
 
-Jena can read 
-[SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/).
-The file extensions are `.shc` and `.shaclc` and there is a registered language
+Apache Jena supports
+[SHACL Compact Syntax (SHACL-C)](https://w3c.github.io/shacl/shacl-compact-syntax/)
+for both reading and writing.
+
+The file extensions for SHACL-C are `.shc` and `.shaclc` and there is a registered language
 constant `Lang.SHACLC`.
 
     RDFDataMgr.load("shapes.shc");
 
     RDFDataMgr.read("file:compactShapes", Lang.SHACLC);
+
+    RDFDataMgr.write(System.out, shapesGraph, Lang.SHACLC);
+
+SHACL-C is managed by the SHACL Community Group. It does not cover all possible shapes.
+When outputting SHACL-C, SHACL shapes not expressible in SHACL-C will cause an
+exception and data in the RDF graph that is not relevant will not be output. In
+other words, SHACL-C is a lossy format for RDF.
+
+The Jena SHACL-C writer will output any valid SHACL-C document.
