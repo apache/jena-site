@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Apache Jena Shacl</title>
+    <title>Apache Jena - Apache Jena SHACL</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -168,11 +168,13 @@
 
                 
             </div>
-            <h1 class="title">Apache Jena Shacl</h1>
+            <h1 class="title">Apache Jena SHACL</h1>
             
-	<p>jena-shacl is an implementation of the
+	<p><code>jena-shacl</code> is an implementation of the
 W3C <a href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a>.
-It implements SHACL Core and SHACL SPARQL Constraints.</p>
+It implements SHACL Core and SHACL SPARQL Constraints.
+It also provides a reader and writer for
+<a href="https://w3c.github.io/shacl/shacl-compact-syntax/">SHACL Compact Syntax</a>.</p>
 <h2 id="command-line">Command line</h2>
 <p>The command <code>shacl</code> introduces shacl operations; it takes a sub-command
 argument.</p>
@@ -180,12 +182,15 @@ argument.</p>
 <pre>shacl validate --shapes <i>SHAPES.ttl</i> --data <i>DATA.ttl</i></pre>
 <pre>shacl v -s <i>SHAPES.ttl</i> -d <i>DATA.ttl</i></pre>
 <p>The shapes and data files can be the same; the <code>--shapes</code> is optional and
-default to the same as <code>--data</code>.  This includes running individual W3C Working
+defaults to the same as <code>--data</code>.  This includes running individual W3C Working
 Group tests.</p>
-<p>To parse a file</p>
+<p>To parse a file:</p>
 <pre>shacl parse <i>FILE</i></pre>
 <pre>shacl p <i>FILE</i></pre>
 <p>which writes out a text format.</p>
+<pre>shacl p <i>--out=FMT</i> <i>FILE</i></pre>
+<p>writes out in <code>text</code>(<code>t</code>), <code>compact</code>(<code>c</code>), <code>rdf</code>(<code>r</code>) formats. Multiple formats can be given,
+separated by &ldquo;,&rdquo; and format <code>all</code> outputs all 3 formats.</p>
 <h2 id="integration-with-apache-jena-fuseki">Integration with Apache Jena Fuseki</h2>
 <p>Fuseki has a new service operation <code>fuseki:shacl</code>:</p>
 <pre>
@@ -209,6 +214,7 @@ content negotiation.</p>
 is the URI of a named graph, <code>default</code> for the unnamed, default graph (and
 this is the assumed value of <code>?graph</code> if not present), or <code>union</code> for union of
 all named graphs in the dataset.</p>
+<p>Further, an argument <tt>target=<i>uri</i></tt> validates a specific node in the data.</p>
 <p>Upload data in file <code>fu-data.ttl</code>:</p>
 <pre><code>curl -XPOST --data-binary @fu-data.ttl    \  
      --header 'Content-type: text/turtle' \  
@@ -250,14 +256,22 @@ shows validation and printing of the validation report in a text form and in RDF
 shows how to update a graph only if, after the changes, the graph is validated
 according to the shapes provided.</p>
 <h2 id="shacl-compact-syntax">SHACL Compact Syntax</h2>
-<p>Jena can read
-<a href="https://w3c.github.io/shacl/shacl-compact-syntax/">SHACL Compact Syntax</a>.
-The file extensions are <code>.shc</code> and <code>.shaclc</code> and there is a registered language
+<p>Apache Jena supports
+<a href="https://w3c.github.io/shacl/shacl-compact-syntax/">SHACL Compact Syntax (SHACL-C)</a>
+for both reading and writing.</p>
+<p>The file extensions for SHACL-C are <code>.shc</code> and <code>.shaclc</code> and there is a registered language
 constant <code>Lang.SHACLC</code>.</p>
 <pre><code>RDFDataMgr.load(&quot;shapes.shc&quot;);
 
 RDFDataMgr.read(&quot;file:compactShapes&quot;, Lang.SHACLC);
+
+RDFDataMgr.write(System.out, shapesGraph, Lang.SHACLC);
 </code></pre>
+<p>SHACL-C is managed by the SHACL Community Group. It does not cover all possible shapes.
+When outputting SHACL-C, SHACL shapes not expressible in SHACL-C will cause an
+exception and data in the RDF graph that is not relevant will not be output. In
+other words, SHACL-C is a lossy format for RDF.</p>
+<p>The Jena SHACL-C writer will output any valid SHACL-C document.</p>
 
 
         </div>
