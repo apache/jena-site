@@ -50,8 +50,9 @@ download.
 
 1.  [Download](/download/#jena-fuseki) the latest `jena-fuseki-*-distribution` 
 2.  Unpack the downloaded file with `unzip` or `tar zxfv`
-3.  (Linux) `chmod +x fuseki-server s-*`
-4.  Run a server
+3.  Move into the newly-created `apache-jena-fuseki-*` directory
+4.  (Linux) `chmod +x fuseki-server bin/s-*`
+5.  Run a server
 
      ./fuseki-server --update --mem /ds
 
