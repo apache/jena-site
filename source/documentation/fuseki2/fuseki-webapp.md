@@ -1,48 +1,71 @@
 ---
-title: Running Fuseki
+title: Running Fuseki with UI
 ---
 
-Fuseki can be run in a number of ways:
+Fuseki/UI can be run in a number of ways:
 
 * [As a standalone server](#fuseki-standalone-server)
 * [As a service](#fuseki-service) run by the operation system, for example, started when the machine
 * [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty
 boots.
-* [As a configurable SPARQL server](#fuseki-main)
-* [As a deployment and development standalone server](#fuseki-server)
+
+Fuseki is also packaged as a plain server ["Fuseki Main"](fuseki-main.html)
+with no UI for use as a configurable SPARQL server, for [building as a Docker
+container](fuseki-docker.html), and as a deployment and development standalone
+server.
+
+Both packaging used the same configuration file format, and in standalone server
+mode, the same command line arguments.
 
 See "[Fuseki Configuration](fuseki-configuration.html)" for information on
-how to provide datasets and configure services.
+how to provide datasets and configure services using the configuration file.
 
 ## Fuseki as a Standalone Server {#fuseki-standalone-server}
 
 This is running Fuseki from the command line.
 
-    fuseki-server [--mem | --loc=DIR] [[--update] /NAME]
-
-    fuseki-server --config=CONFIG
+To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:
 
 where `/NAME` is the dataset publishing name at this server in URI space.
 
+TDB1 database:
+
+    fuseki-server [--loc=DIR] [[--update] /NAME]
+
 The argument `--tdb2` puts the command line handling into "TDB2 mode".
 A dataset created with `--loc` is a TDB2 dataset.
+TDB2 database:
+
+    fuseki-server --tdb2 [--loc=DIR] [[--update] /NAME]
+
+In-memory, non-peristent database (always updatable):
+
+    fuseki-server --mem /NAME
+
+Load a file at start and provide it read-only:
+
+    fuseki-server --file=MyData.ttl /NAME
+
+where "MyData.ttl" can be any RDF format, both triples or quads. 
+
+Administrative functions are only available from "localhost".
 
 See `fuseki-server --help` for details of more arguments.
 
-`FUSEKI_BASE`, the runtime area for the server instance, defaults to the
-`run/` directory of the current directory.
+## Layout
 
-Fuseki v2 supports the same style of configuration file as Fuseki v1 but it
-is better to separate the data service definitions from the server
-configuration with one definition per file in `FUSEKI_BASE/configuration`;
-see "[Fuseki Configuration](fuseki-configuration.html)".
+When run from the command line, the server creates its work area in the
+directory named by environment variable `FUSEKI_BASE`. When run from the
+command line, this defaults to the current directory.
+
+[Fuseki layout](fuseki-layout.html)
 
 If you get the error message `Can't find jarfile to run` then you either
 need to put a copy of `fuseki-server.jar` in the current directory or set
 the environment variable `FUSEKI_HOME` to point to an unpacked Fuseki
 distribution.
 
-Unlike Fuseki v1, starting with no dataset and no configuration is possible.
+Starting with no dataset and no configuration is possible.
 Datasets can be added from the admin UI to a running server.
 
 ## Fuseki as a Service {#fuseki-service}
@@ -69,29 +92,3 @@ directory.  It is initialised the first time Fuseki runs, including a
 [Apache Shiro](http://shiro.apache.org/) security file but this is only
 intended as a starting point.  It restricts use of the admin UI to the
 local machine.
-
-## Fuseki as Configurable and Embeddable SPARQL Server {#fuseki-main}
-
-Fuseki can be run from inside an Java application to provide SPARQL
-services to application data. The application can continue to access and
-update the datasets served by the server.
-
-Basic example:
-
-    Dataset ds = ...
-    FusekiServer server = FusekiServer.create()
-      .add("/dataset", ds)
-      .build() ;
-    server.start() ;
-
-See the [full documentation](fuseki-main.html) for details of
-configuration and working with data shared with the
-[Fuseki main server](fuseki-main.html) instance.
-
-## Fuseki-Server (no UI) {#fuseki-server}
-
-The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
-the [Fuseki "main" server](fuseki-main.html) server that runs from 
-the command line.  Unlike the full Fuseki server, it is only configured
-from the command line and has no persistent work area on-disk. 
-It has full SPARQL and all storage options.

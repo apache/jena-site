@@ -23,7 +23,7 @@ This page describes how to achieve certain common tasks in the most direct way p
 2. Run `fuseki-server --loc=DATABASE /name`
 3. In a browser, go to `http://localhost:3030//query.html`
 
-More details on running Fuseki can be found [nearby](fuseki-run.html),
+More details on running Fuseki can be found [nearby](fuseki-webapp.html),
 including running as an operating system service and in a web app or
 servlet container such as [Apache Tomcat](http://tomcat.apache.org/) or
 [Jetty](http://eclipse.org/jetty).

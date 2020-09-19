@@ -9,7 +9,6 @@ Logging is via [SLF4J](http://slf4j.org/) over
 the Tomcat configuration if running the WAR file.
 
 
-
 | Full Log name                   | Usage |
 |---------------                  |-------|
 | org.apache.jena.fuseki.Server   | General Server Messages              |
@@ -25,6 +24,7 @@ This log is in NCSA extended/combined log format.
 Many web log analysers can process this format.
 
 This log is normally off.
+The logger name is `org.apache.jena.fuseki.Request`.
 
 When run as a WAR file inside a webapp container 
 (e.g. [Apache Tomcat](http://tomcat.apache.org/)), the webapp container
@@ -36,7 +36,7 @@ The Fuseki engine looks for the log4j2 configuration as follows:
 
 * Use system property `log4j2.configurationFile` if defined ([as usual for log4j2](https://logging.apache.org/log4j/2.x/manual/configuration.html)).
 * Use `file:log4j2.properties` (current directory) if it exists
-* Use file `log4j2.properties` is the directory defined by `FUSEKI_BASE`
+* Use file `log4j2.properties` in the directory defined by `FUSEKI_BASE` (webapp)
 * Use java resource `log4j2.properties` on the classpath.
 * Use java resource `org/apache/jena/fuseki/log4j2.properties` on the classpath.
 * Use a built-in configuration.
@@ -45,10 +45,14 @@ The last step is a fallback to catch the case where Fuseki has been repackaged
 into a new WAR file and `org/apache/jena/fuseki/log4j.properties` omitted, or run from
 the base jar.  It is better to include `org/apache/jena/fuseki/log4j.properties`.
 
-The preferred customization is to use a custom `log4j2.properties` file in
-`FUSEKI_BASE`.  For the WAR file, `FUSEKI_BASE` defaults to `/etc/fuseki`
-on Linux.  For the standalone server, `FUSEKI_BASE` defaults to directory
-`run/` within the directory where the server is run.
+The preferred customization is to use a custom `log4j2.properties` file in the
+directory where Fuseki Main is run.
+
+For the war file packaging, the `log4j2.properties` should go in `FUSEKI_BASE`
+which defaults to `/etc/fuseki` on Linux.
+
+For the standalone webapp server, `FUSEKI_BASE` defaults to directory `run/`
+within the directory where the server is run.
 
 ## Default setting
 
@@ -59,7 +63,7 @@ The [default log4j2.properties](https://github.com/apache/jena/blob/master/jena-
 Below is an example logrotate(1) configuration (to go in `/etc/logrotate.d`)
 assuming the log file has been put in `/etc/fuseki/logs/fuseki.log`.
 
-It rotates the logs once a month, compresses logs on rotation and keeps them for 6 months.
+It rotates the logs once a month, compresses logs on rotation, and keeps them for 6 months.
 
 It uses `copytruncate`.  This may lead to at most one broken log file line.
 

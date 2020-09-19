@@ -5,36 +5,39 @@ slug: index
 
 Apache Jena Fuseki is a SPARQL server.  It can run as a operating system
 service, as a Java web application (WAR file), and as a standalone server.
-It provides security (using [Apache Shiro](https://shiro.apache.org/)) and
-has a user interface for server monitoring and administration.
 
-It provides the SPARQL 1.1
-[protocols for query and update](http://www.w3.org/TR/sparql11-protocol/)
+Fuseki comes in in two forms, a single system "webapp", combined with a UI
+for admin and query, and as "main", a server suitable to run as part of a larger
+deployment, including [with Docker](fuseki-main.html#docker) or running embedded.
+Both forms use the same core protocol engine and [same configuration file
+format](fuseki-configuration.html).
+
+Fuseki provides the
+SPARQL 1.1 [protocols for query and update](http://www.w3.org/TR/sparql11-protocol/)
 as well as the
 [SPARQL Graph Store protocol](http://www.w3.org/TR/sparql11-http-rdf-update/).
 
 Fuseki is tightly integrated with [TDB](../tdb/index.html) to provide a robust,
 transactional persistent storage layer, and incorporates
 [Jena text query](../query/text-query.html).
-It can be used to provide the protocol engine for other RDF query and
-storage systems.
 
 ## Contents
 
-- [Download](#download-fuseki)
+- [Download with UI](#download-fuseki)
 - [Getting Started](#getting-started-with-fuseki)
-- [Security](fuseki-security.html)
-- [Running Fuseki](fuseki-run.html)
-    - [As a standalone server with UI](fuseki-run.html#fuseki-standalone-server)
-    - [As a service](fuseki-run.html#fuseki-service)
-    - [As a web application](fuseki-run.html#fuseki-web-application)
-    - [As an standalone SPARQL server](fuseki-main.html)
-    - [As an embedded SPARQL server](fuseki-main.html)
-- Architecture
-    - [Server URI scheme : services and datasets](fuseki-data-services.html)
-    - [Server Admin Protocol](fuseki-server-protocol.html)
+- [Running Fuseki with UI](fuseki-webapp.html)
+    - [As a standalone server with UI](fuseki-webapp.html#fuseki-standalone-server)
+    - [As a service](fuseki-webapp.html#fuseki-service)
+    - [As a web application](fuseki-webapp.html#fuseki-web-application)
+    - [Security](fuseki-security.html) with [Apache Shiro](https://shiro.apache.org/)
+- [Running Fuseki Server](fuseki-main.html)
+    - [Setup](fuseki-main.html#setup)
+    - [As a Docker container](fuseki-main#fuseki-docker)
+    - [As an embedded SPARQL server](fuseki-embedded.html)
+    - [Security and data access control](fuseki-data-access-control.html)
 - [Fuseki Configuration](fuseki-configuration.html)
 - [Logging](fuseki-logging.html)
+- [Server Statistics and Metrics](fuseki-server-info.html)
 - [How to Contribute](#how-to-contribute)
 - Client access
     - [Use from Java](../rdfconnection)
@@ -45,7 +48,7 @@ The Jena users mailing is the place to get help with Fuseki.
 
 [Email support lists](/help_and_support/#email-support-lists)
 
-## Download Fuseki
+## Download Fuseki with UI
 
 Releases of Apache Jena Fuseki can be downloaded from one of the mirror sites:
 
@@ -57,20 +60,14 @@ preference to any older versions.
 
 **Fuseki download files**
 
-Filename | Description
---------- | -----------
-`fuseki-*VER*.distribution.zip` | Fuseki download, includes everything.
-`fuseki-*VER*-server.jar`  | Fuseki server, as an executable jar.
-`fuseki-*VER*-server.war`  | Fuseki server, as a web application archive (.war) file.
+| Filename | Description |
+|---------|-------------|
+|`apache-jena-fuseki-*VER*.zip` | Fuseki with UI download |
+|`[jena-fuseki-server](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server) | The Fuseki Main packaging |
 
-    <dependency>
-       <groupId>org.apache.jena</groupId>
-       <artifactId>jena-fuseki-war</artifactId>
-       <type>war</type>
-       <version>X.Y.Z</version>
-    </dependency>
+`apache-jena-fuseki-*VER*.zip` contains both a war file and an executable jar.
 
-and for [Fuseki Main](fuseki-main):
+Fuskei Main is also available as a Maven artifact:
 
     <dependency>
        <groupId>org.apache.jena</groupId>
@@ -99,7 +96,7 @@ This includes packaged builds of Fuseki.
 The [quick start](fuseki-quick-start.html) section serves as a basic
 guide to getting a Fuseki server running on your local machine.  
 
-See [all the ways to run Fuseki](fuseki-run.html) for complete coverage of all the
+See [all the ways to run Fuseki](fuseki-webapp.html) for complete coverage of all the
 deployment methods for Fuseki.
 
 ## How to Contribute
@@ -119,5 +116,5 @@ The development codebase is available from git.
 Development builds (not a formal release):
 [SNAPSHOT](https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-fuseki/)
 
-Source code mirrored to github:
+Source code:
 [https://github.com/apache/jena/tree/master/jena-fuseki2](https://github.com/apache/jena/tree/master/jena-fuseki2)

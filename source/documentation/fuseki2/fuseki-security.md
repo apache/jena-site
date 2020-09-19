@@ -2,7 +2,7 @@
 title: Security in Fuseki2
 ---
 
-Fuseki2 provides security by using  [Apache Shiro](http://shiro.apache.org/).
+Fuseki2 webapp provides security by using  [Apache Shiro](http://shiro.apache.org/).
 This is controlled by the configuration file `shiro.ini` located at
 `$FUSEKI_BASE/shiro.ini`. If not found, the server initializes with a default
 configuration. This can then be replaced or edited as required. An existing file
@@ -88,6 +88,3 @@ It adds a `[users]` section and changes the `/$/**` line in `[urls]`
     /$/** = authcBasic,user[admin]
     # Everything else
     /**=anon
-    
-
-
