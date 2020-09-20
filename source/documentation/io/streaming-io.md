@@ -45,7 +45,7 @@ and also parser events for prefix settings and base URI declarations.
 There are utilities to help:
 
 * [`StreamRDFLib`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDFLib.html) &ndash; create `StreamRDF` objects
-* [`StreamOps`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamOps.html) &ndash; helpers for sending RDF data to `StreamRDF` objects
+* [`StreamRDFOps`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamOps.html) &ndash; helpers for sending RDF data to `StreamRDF` objects
 
 ## Reading data
 
