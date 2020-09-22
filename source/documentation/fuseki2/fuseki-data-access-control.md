@@ -7,16 +7,19 @@ on endpoints and also on specific graphs within a dataset. It also
 provides native https to protect data in-flight.
 
 [Fuseki Main](/documentation/fuseki2/fuseki-main.html)
-provides some common patterns of authentication.
-
-[Graph level Data Access Control](#graph-acl) provides control over the visibility of
+provides some common patterns of authentication and also 
+[Graph level Data Access Control](#graph-acl) to provide control over the visibility of
 graphs within a dataset, including the union graph of a dataset and
 the default graph. Currently, Graph level access control only applies to
 read-only datasets.
 
-Fuseki Full (Fuseki with the UI) can be used when
-[run in a web application server such as Tomcat](/documentation/fuseki2/fuseki-run.html#fuseki-web-application)
-to provide authentication of the user.  See "[Fuseki Security](fuseki-security)" for configuring security over the whole of the Fuseki UI.
+Fuseki Full (Fuseki with the UI) can be used when [run in a web application
+server such as
+Tomcat](/documentation/fuseki2/fuseki-webapp.html#fuseki-web-application) to
+provide authentication of the user.  See "[Fuseki Security](fuseki-security)"
+for configuring security over the whole of the Fuseki UI.
+
+This page applies to Fuseki Main.
 
 ## Contents
 
@@ -35,13 +38,12 @@ to provide authentication of the user.  See "[Fuseki Security](fuseki-security)"
 
 ## HTTPS
 
-This section applies to Fuseki Main.
 HTTPS support is configured from the fuseki server command line.
 
 | Server Argument |    |  |
-|----------|----|--|
-| <tt>--https=<i>SETUP</i></tt>         | Name of file for certificate details.   | |
-| <tt>--httpsPort=<i>PORT</i></tt>     | The port for https   | Default: 3043 |
+| ----------------|----|--|
+| <tt>--https=<i>SETUP</i></tt>       | Name of file for certificate details.   | |
+| <tt>--httpsPort=<i>PORT</i></tt>    | The port for https   | Default: 3043 |
 
 The `--https` argument names a file in JSON which includes the name of
 the certificate file and password for the certificate.
@@ -75,8 +77,6 @@ for [generating certificates](http://www.eclipse.org/jetty/documentation/current
 
 ## Authentication
 
-This section applies to Fuseki Main.
-
 [Authentication](https://en.wikipedia.org/wiki/Authentication),
 is establishing the identity of the principal (user or program) accessing the
 system. Fuseki Main provides users/password setup and HTTP authentication,
@@ -85,7 +85,7 @@ system. Fuseki Main provides users/password setup and HTTP authentication,
 
 These should be [used with HTTPS](#https).
 
-| Server Argument  |  |  |
+| Server Argument  |     |     |
 |------------------|-----|-----|
 | <tt>--passwd=<i>FILE</i></tt>  | Password file | |
 | <tt>--auth=</tt>               | "basic" or "digest"   | Default is "digest" |
@@ -132,10 +132,10 @@ details.  This section is a brief summary of some relevant options:
 
 | wget argument  | Value |--|
 |----------------|-------|--|
-| `--http-user`  | user name | Set the user.
-| `--http-password` | password |  Set the password (visible to all on the local machine) |
-|   | | `wget` uses users/password from `.wgetrc` or `.netrc` by default. |
-| `--no-check-certificate` | |  Don't check HTTPS certificate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name. |
+| `--http-user`     | user name | Set the user. |
+| `--http-password` | password  |  Set the password (visible to all on the local machine) |
+|                   |           |  `wget` uses users/password from `.wgetrc` or `.netrc` by default. |
+| `--no-check-certificate` |    |  Don't check HTTPS certificate.<br/> This allows for self-signed or expired, certificates or ones with the wrong host name. |
 
 ## Access Control Lists {#acl}
 
@@ -205,14 +205,19 @@ levels must allow the user access.
         <b>fuseki:allowedUsers             "user1", "user3";</b>
 
         ## Choice of operations.
-        fuseki:serviceQuery             "query" ;
-        fuseki:serviceQuery             "sparql" ;
-        fuseki:serviceReadGraphStore    "get" ;
 
-        fuseki:serviceUpdate            "update" ;
-        fuseki:serviceUpload            "upload" ;
-        fuseki:serviceReadWriteGraphStore "data" ;
-
+        fuseki:endpoint [ 
+            fuseki:operation fuseki:query ;
+            fuseki:name "sparql" 
+        ];
+        fuseki:endpoint [
+            fuseki:operation fuseki:update ;
+            fuseki:name "sparql"
+        ] ;
+        fuseki:endpoint [
+            fuseki:operation fuseki:gsp-r ;
+            fuseki:name "get"
+        ] ;
         fuseki:dataset                  &lt;#base_dataset&gt;;
         .
 </pre>
@@ -223,10 +228,16 @@ An access control list can be applied to an individual endpoint.
 Again, any  other "allowedUsers" configuration, service-wide, or
 server-wide) also applies.
 
-        fuseki:serviceQuery  [ fuseki:name "query" ;
-                               fuseki:allowedUsers "user1", "user2"] ;
-        fuseki:serviceUpdate [ fuseki:name "update" ;
-                               fuseki:allowedUsers "user1"] ;
+         fuseki:endpoint [ 
+            fuseki:operation fuseki:query ;
+            fuseki:name "query" ;
+            fuseki:allowedUsers "user1", "user2" ;
+        ];
+        fuseki:endpoint [
+            fuseki:operation fuseki:update ;
+            fuseki:name "update" ;
+            fuseki:allowedUsers "user1"
+        ] ;
 
 Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 <em>user2</em> can use SPARQL query.
@@ -247,13 +258,13 @@ Graph ACLs are defined in a [Graph Security Registry](#graph-security-registry) 
     &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
         rdfs:label                      "Graph-level access controlled dataset" ;
         fuseki:name                     "db-graph-acl" ;
-        ## Read-only operations.
-        fuseki:serviceQuery             "query" ;
-        fuseki:serviceQuery             "sparql" ;
-        fuseki:serviceReadGraphStore    "get" ;
+        ## Read-only operations on the dataset URL.
+        fuseki:endpoint [ fuseki:operation fuseki:query ] ;
+        fuseki:endpoint [ fuseki:operation fuseki:gsp_r ] ;
         fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
         .
 
+    # Define access on the dataset.
     &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
         access:registry   &lt;#securityRegistry&gt; ;
         access:dataset    &lt;#tdb_dataset_shared&gt; ;

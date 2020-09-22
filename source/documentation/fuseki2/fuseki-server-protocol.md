@@ -137,7 +137,7 @@ Statistics can be obtained for each dataset or all datasets in a single response
 `/$/stats` is  treated as a container for this information.
 
 > _@@ stats details_
-> See [Fuseki Statistics](fuseki-stats.html) for details of statistics kept by a Fuseki server.
+> See [Fuseki Server Information](fuseki-server-info.html) for details of statistics kept by a Fuseki server.
 
 ### Backup 
 Pattern: `/$/backup/*{name}*`
