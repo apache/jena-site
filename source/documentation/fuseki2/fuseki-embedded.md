@@ -1,5 +1,5 @@
 ---
-title: Fuseki : Emdedded Server
+title: "Fuseki : Emdedded Server"
 ---
 
 Fuseki can be run within a larger JVM application as an embedded triplestore.

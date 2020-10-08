@@ -1,5 +1,5 @@
 ---
-title: Fuseki : Main Server
+title: "Fuseki : Main Server"
 ---
 
 Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.
