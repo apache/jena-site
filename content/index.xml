@@ -122,9 +122,8 @@ To use it you will first need to build it from source or download the relevant M
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/fuseki2/</guid>
-      <description>Apache Jena Fuseki is a SPARQL server. It can run as a operating system service, as a Java web application (WAR file), and as a standalone server. It provides security (using Apache Shiro) and has a user interface for server monitoring and administration.
-It provides the SPARQL 1.1 protocols for query and update as well as the SPARQL Graph Store protocol.
-Fuseki is tightly integrated with TDB to provide a robust, transactional persistent storage layer, and incorporates Jena text query.</description>
+      <description>Apache Jena Fuseki is a SPARQL server. It can run as a operating system service, as a Java web application (WAR file), and as a standalone server.
+Fuseki comes in in two forms, a single system &amp;ldquo;webapp&amp;rdquo;, combined with a UI for admin and query, and as &amp;ldquo;main&amp;rdquo;, a server suitable to run as part of a larger deployment, including with Docker or running embedded. Both forms use the same core protocol engine and same configuration file format.</description>
     </item>
     
     <item>
@@ -624,13 +623,12 @@ import org.apache.jena.propertytable.lang.CSV2RDF; ... CSV2RDF.init() ;  It&amp;
     
     <item>
       <title>Data Access Control for Fuseki</title>
-      <link>https://jena.apache.org/documentation/fuseki2/data-access-control.html</link>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-data-access-control.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/fuseki2/data-access-control.html</guid>
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-data-access-control.html</guid>
       <description>Fuseki can provide access control at the level on the server, on datasets, on endpoints and also on specific graphs within a dataset. It also provides native https to protect data in-flight.
-Fuseki Main provides some common patterns of authentication.
-Graph level Data Access Control provides control over the visibility of graphs within a dataset, including the union graph of a dataset and the default graph. Currently, Graph level access control only applies to read-only datasets.</description>
+Fuseki Main provides some common patterns of authentication and also Graph level Data Access Control to provide control over the visibility of graphs within a dataset, including the union graph of a dataset and the default graph. Currently, Graph level access control only applies to read-only datasets.</description>
     </item>
     
     <item>
@@ -696,18 +694,27 @@ ARQ also provides an implementation the Leviathan Function Library.</description
     </item>
     
     <item>
-      <title>Fuseki : Data Services</title>
-      <link>https://jena.apache.org/documentation/fuseki2/fuseki-data-services.html</link>
+      <title>Fuseki : Docker Tools</title>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-docker.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-data-services.html</guid>
-      <description>Fuseki provides a number of &amp;ldquo;data services&amp;rdquo; - each data service is an RDF datasets and a configurable set of endpoints for various operations such as SPARQL query, SPARQL update and file upload.
-URI scheme. Datasets and services Admin
-SPARQL Protocol Query update GSP including direct naming for GSP
-in addition:
-Dataset as a set of quads.
-  @@ Just rough notes : out-of-date and inconsistent
- Naming The naming style for application operations is:</description>
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-docker.html</guid>
+      <description>The jena-fuseki-docker package contains a Dockerfile, docker-compose file, and helper scripts to create a docker container for Apache Jena Fuseki.
+The docker container is based on Fuseki main for running a SPARQL server.
+There is no UI - all configuration is by command line and all usage by via the network protocols.
+Databases can be mounted outside the docker container so they are preserved when the container terminates.
+This build system allows the user to customize the docker image.</description>
+    </item>
+    
+    <item>
+      <title>Fuseki : Emdedded Server</title>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-embedded.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-embedded.html</guid>
+      <description>Fuseki can be run within a larger JVM application as an embedded triplestore.
+ Dependencies and Setup Logging Building a Server Examples  The application can safely access and modify the data published by the server if it does so inside a transaction using an appropriate storage choice. DatasetFactory.createTxnMem() is a good choice for in-memory use; TDB is a good choice for a persistent database.
+To build and start the server:</description>
     </item>
     
     <item>
@@ -718,19 +725,29 @@ Dataset as a set of quads.
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-main.html</guid>
       <description>Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.
 Fuseki can be run in the background by an application as an embedded server. The application can safely work with the dataset directly from java while having Fuseki provide SPARQL access over HTTP. An embedded server is useful for adding functionality around a triple store and also for development and testing.
- Running as a deployment or development server Application Use Dependencies and Setup Logging Building a Server Examples  The main server does not depend on any files on disk (other than for databases provided by the application), and does not provide the Fuseki UI or admins functions to create dataset via HTTP.</description>
+ Running as a deployment or development server Running from Docker Running as an embedded server  Dependencies and Setup Logging Building a Server Examples    The main server does not depend on any files on disk (other than for databases provided by the application), and does not provide the Fuseki UI or admins functions to create dataset via HTTP.</description>
     </item>
     
     <item>
-      <title>Fuseki Configuration - New Syntax</title>
+      <title>Fuseki Data Service Configuration Syntax</title>
       <link>https://jena.apache.org/documentation/fuseki2/fuseki-config-endpoint.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-config-endpoint.html</guid>
-      <description>Apache Jena 3.13.0 introduces a new syntax for the facilities of a Fuseki service.
-The previous syntax is still valid.
-The new syntax enables more configuration options:
- setting the context on a per-endpoint basis having multiple operations at the service access point, switching based on operation type a more general structure for adding custom services  Syntax Here is an example of a server configuration that provides one operation, SPARQL query, and then only on the dataset URL.</description>
+      <description>A data service provides a number of operations on a dataset. These can be explicitly named endpoints or operations at the URL of the dataset. New operations can be configured in; these typically have their own named endpoints.
+Syntax Here is an example of a server configuration that provides one operation, SPARQL query, and then only on the dataset URL.
+PREFIX : &amp;lt;#&amp;gt; PREFIX fuseki: &amp;lt;http://jena.apache.org/fuseki#&amp;gt; PREFIX rdf: &amp;lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&amp;gt; [] rdf:type fuseki:Server .</description>
+    </item>
+    
+    <item>
+      <title>Fuseki Data Service Configuration Syntax - Old Style</title>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-old-config-endpoint.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-old-config-endpoint.html</guid>
+      <description>This page describes the original Fuseki2 server configuration syntax.
+Example:
+## Updatable dataset. &amp;lt;#service1&amp;gt; rdf:type fuseki:Service ; fuseki:name &amp;quot;ds&amp;quot; ; # http://host:port/ds fuseki:serviceQuery &amp;quot;sparql&amp;quot; ; # SPARQL query service fuseki:serviceQuery &amp;quot;query&amp;quot; ; # SPARQL query service (alt name) fuseki:serviceUpdate &amp;quot;update&amp;quot; ; # SPARQL update service fuseki:serviceUpload &amp;quot;upload&amp;quot; ; # Non-SPARQL upload service fuseki:serviceReadWriteGraphStore &amp;quot;data&amp;quot; ; # SPARQL Graph Store Protocol (read and write) fuseki:serviceReadGraphStore &amp;quot;get&amp;quot; ; # SPARQL Graph Store Protocol (read only) fuseki:dataset &amp;lt;#dataset&amp;gt; ; .</description>
     </item>
     
     <item>
@@ -781,20 +798,21 @@ Running with Apache Tomcat and loading a file.  Unpack the distribution. Copy th
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-configuration.html</guid>
-      <description>Configuration consists of defining the data services (data and actions available on the data) together with configuring the server. Explicitly configuring the server is often unnecessary.
+      <description>A Fuseki server is configured by defining the data services (data and actions available on the data). There is also server configuration although this is often unnecessary.
 The data services configuration can come from:
+For Fuseki Full (webapp with UI):
  The directory FUSEKI_BASE/configuration/ with one data service assembler per file (includes endpoint details and the dataset description.) The system database. This includes uploaded assembler files. It also keeps the state of each data service (whether it&amp;rsquo;s active or offline).</description>
     </item>
     
     <item>
-      <title>Fuseki: Service Statistics</title>
-      <link>https://jena.apache.org/documentation/fuseki2/fuseki-stats.html</link>
+      <title>Fuseki: Server Information</title>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-server-info.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-stats.html</guid>
-      <description>A Fuseki server keeps detailed statistics for each dataset and each service of a dataset keeps counters as to the number of incoming requests, number of successful requests, number of bad requests (i.e client errors), and number of failing requests (i.e. server errors). Statistics are returned as JSON. They are also available via JMX.
-Structure of the Statistics Report SPARQL Protocol Service Query and Update
-SPARQL Graph Store Protocol inc extensions - dataset HTTP verbs.</description>
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-server-info.html</guid>
+      <description>A Fuseki server keeps detailed statistics for each dataset and each service of a dataset keeps counters as to the number of incoming requests, number of successful requests, number of bad requests (i.e client errors), and number of failing requests (i.e. server errors).
+Statistics are available in JSON and in Prometheus format. The Prometheus data includes both database and JVM metrics.
+Endpoints The following servers endpoints are available. They are present in Fuseki/UI; they need to be enabled with Fuseki/main, either on the command line or in the server configuration file with a boolean setting.</description>
     </item>
     
     <item>
@@ -1417,14 +1435,13 @@ Patch Guidelines When reviewing contributed patches to Jena the committers are g
     </item>
     
     <item>
-      <title>Running Fuseki</title>
-      <link>https://jena.apache.org/documentation/fuseki2/fuseki-run.html</link>
+      <title>Running Fuseki with UI</title>
+      <link>https://jena.apache.org/documentation/fuseki2/fuseki-webapp.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-run.html</guid>
-      <description>Fuseki can be run in a number of ways:
- As a standalone server As a service run by the operation system, for example, started when the machine As a Web Application inside a container such as Apache Tomcat or Jetty boots. As a configurable SPARQL server As a deployment and development standalone server  See &amp;ldquo;Fuseki Configuration&amp;rdquo; for information on how to provide datasets and configure services.
-Fuseki as a Standalone Server This is running Fuseki from the command line.</description>
+      <guid>https://jena.apache.org/documentation/fuseki2/fuseki-webapp.html</guid>
+      <description>Fuseki/UI can be run in a number of ways:
+ As a standalone server As a service run by the operation system, for example, started when the machine As a Web Application inside a container such as Apache Tomcat or Jetty boots.  Fuseki is also packaged as a plain server &amp;ldquo;Fuseki Main&amp;rdquo; with no UI for use as a configurable SPARQL server, for building as a Docker container, and as a deployment and development standalone server.</description>
     </item>
     
     <item>
@@ -1632,8 +1649,8 @@ Contents   Scripts
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-security.html</guid>
-      <description>Fuseki2 provides security by using Apache Shiro. This is controlled by the configuration file shiro.ini located at $FUSEKI_BASE/shiro.ini. If not found, the server initializes with a default configuration. This can then be replaced or edited as required. An existing file is never overwritten by the server.
-In its default configuration, SPARQL endpoints are open to the public but administrative functions are limited to localhost. One can access it via http://localhost:.../.... Or the according IPv4 or IPv6 address, for example 127.</description>
+      <description>Fuseki2 webapp provides security by using Apache Shiro. This is controlled by the configuration file shiro.ini located at $FUSEKI_BASE/shiro.ini. If not found, the server initializes with a default configuration. This can then be replaced or edited as required. An existing file is never overwritten by the server.
+In its default configuration, SPARQL endpoints are open to the public but administrative functions are limited to localhost. One can access it via http://localhost:.</description>
     </item>
     
     <item>

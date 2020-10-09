@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki Configuration - New Syntax</title>
+    <title>Apache Jena - Fuseki Data Service Configuration Syntax</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -173,17 +173,11 @@
 
                 
             </div>
-            <h1 class="title">Fuseki Configuration - New Syntax</h1>
+            <h1 class="title">Fuseki Data Service Configuration Syntax</h1>
             
-	<p>Apache Jena 3.13.0 introduces a new syntax for the facilities of a Fuseki service.</p>
-<p>The <a href="fuseki-configuration.html">previous syntax</a> is still valid.</p>
-<p>The new syntax enables more configuration options:</p>
-<ul>
-<li>setting the context on a per-endpoint basis</li>
-<li>having multiple operations at the service access point, switching based on
-operation type</li>
-<li>a more general structure for adding custom services</li>
-</ul>
+	<p>A data service provides a number of operations on a dataset. These can be
+explicitly named endpoints or operations at the URL of the dataset.  New
+operations can be configured in; these typically have their own named endpoints.</p>
 <h2 id="syntax">Syntax</h2>
 <p>Here is an example of a server configuration that provides one operation, SPARQL
 query, and then only on the dataset URL.</p>
@@ -204,13 +198,11 @@ PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
     ja:data &quot;data.trig&quot; .
 </code></pre>
 <p>This is invoked with a URL of the form
-<tt>http://<i>host:port</i>/dataset?query=&hellip;</tt>
-which is a SPARQl query request sent to the dataset URL.</p>
-<p>The new syntax is the <code>fuseki:endpoint</code>.</p>
+<tt>http://<i>host:port</i>/dataset?query=...</tt>
+which is a SPARQL query request sent to the dataset URL.</p>
 <p>The property <code>fuseki:endpoint</code> describes the operation available. No name is
 given so the operation is available at the URL of the dataset.</p>
-<p><code>fuseki:dataset</code> names the dataset to be used with this data service. The syntax
-and options are unchanged from the <a href="fuseki-configuration.html">previous syntax</a>.</p>
+<p><code>fuseki:dataset</code> names the dataset to be used with this data service.</p>
 <p>In this second example:</p>
 <pre><code>&lt;#service&gt; rdf:type fuseki:Service ;
     fuseki:name          &quot;dataset&quot; ;
@@ -221,7 +213,7 @@ and options are unchanged from the <a href="fuseki-configuration.html">previous 
     fuseki:dataset       &lt;#dataset&gt; .
 </code></pre>
 <p>the endpoint has a name. The URL to invoke the operation is now:</p>
-<p><tt>http://<i>host:port</i>/dataset/sparql?query=&hellip;</tt></p>
+<p><tt>http://<i>host:port</i>/dataset/sparql?query=...</tt></p>
 <p>and is similar to older form:</p>
 <pre><code>&lt;#service&gt; rdf:type fuseki:Service ;
     fuseki:name          &quot;dataset&quot; ;
@@ -238,37 +230,19 @@ the default. The first example is the same as:</p>
     ] ;
     fuseki:dataset      &lt;#dataset&gt; .
 </code></pre>
-<p>The standard set of service installed by running the server from the command line
-without a configuration file is:</p>
-<pre><code>&lt;#service1&gt; rdf:type fuseki:Service ;
-    fuseki:name &quot;dataset&quot; ;
-    fuseki:endpoint [ 
-        fuseki:operation fuseki:query ;
-        fuseki:name &quot;sparql&quot; 
-    ];
-    fuseki:endpoint [
-        fuseki:operation fuseki:query ;
-        fuseki:name &quot;query&quot; 
-    ] ;
-    fuseki:endpoint [
-        fuseki:operation fuseki:update ;
-        fuseki:name      &quot;update&quot;
-    ] ;
-    fuseki:endpoint [
-        fuseki:operation fuseki:gsp-r ;
-        fuseki:name &quot;get&quot;
-    ] ;
-    fuseki:endpoint [ 
-        fuseki:operation fuseki:gsp-rw ; 
-        fuseki:name &quot;data&quot;
-    ] ; 
-    fuseki:endpoint [ 
-        fuseki:operation fuseki:upload ;
-        fuseki:name &quot;upload&quot;
-    ] ; 
-    fuseki:dataset ...
-</code></pre>
+<h3 id="original-configuration-syntax">Original Configuration Syntax</h3>
+<p>The syntax described on this page was introduced in Apache Jena 3.13.0.</p>
+<p>The <a href="fuseki-old-config-endpoint.html">previous syntax</a> is still valid.</p>
+<p>The new syntax enables more configuration options and gives more control of server functionality:</p>
+<ul>
+<li>setting the context on a per-endpoint basis</li>
+<li>having multiple operations at the service access point, switching based on
+operation type</li>
+<li>a more general structure for adding custom services</li>
+<li>adding custom extensions to a Fuseki server</li>
+</ul>
 <h2 id="operations">Operations</h2>
+<p>The following operations are provided:</p>
 <table>
 <thead>
 <tr>
@@ -303,6 +277,53 @@ without a configuration file is:</p>
 </tr>
 </tbody>
 </table>
+<p>Custom extensions can be added (see <a href="fuseki-main.html#build">Programmatic configuration</a> of the Fuseki server). To be able to uniquely identify the operation, these are usually</p>
+<pre><code>    fuseki:endpoint     [ 
+        fuseki:operation fuseki:shacl ;
+        fuseki:name      &quot;shacl&quot; ;
+    ] ;
+</code></pre>
+<p>See the section <a href="/documentation/shacl/#integration-with-apache-jena-fuseki">&ldquo;Integration with Apache Jena Fuseki&rdquo;</a> for details of the SHACL support. While this operation is part of the standard Fuseki distribution, this operation is added during system initialization, using the custom operation support.</p>
+<h3 id="command-line-equivalents">Command Line Equivalents</h3>
+<p>The standard set of service installed by running the server from the command line
+without a configuration file is for a read-only:</p>
+<pre><code>&lt;#service1&gt; rdf:type fuseki:Service ;
+    fuseki:name &quot;dataset&quot; ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ];
+    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name &quot;sparql&quot; ];
+    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name &quot;query&quot; ];
+
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-r ; ];
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-r ; fuseki:name &quot;get&quot; ];
+    fuseki:dataset ...
+</code></pre>
+<p>which supports requests such as:</p>
+<pre><code>http://&lt;i&gt;host:port&lt;/i&gt;/dataset?query=...
+
+http://&lt;i&gt;host:port&lt;/i&gt;/dataset/sparql?query=...
+
+http://&lt;i&gt;host:port&lt;/i&gt;/dataset?default
+
+http://&lt;i&gt;host:port&lt;/i&gt;/dataset/get?default
+</code></pre>
+<p>and for an updatable dataset (command line <code>--mem</code> for an in-memory dataset;
+or with TDB storage, with <code>--update</code>):</p>
+<pre><code>&lt;#service1&gt; rdf:type fuseki:Service ;
+    fuseki:name &quot;dataset&quot; ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ;];
+    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name &quot;sparql&quot; ];
+    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name &quot;query&quot; ];
+
+    fuseki:endpoint [ fuseki:operation fuseki:update ; ];
+    fuseki:endpoint [ fuseki:operation fuseki:update ; fuseki:name &quot;update&quot; ];
+
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-r ; fuseki:name &quot;get&quot; ];
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-rw ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-rw ; fuseki:name &quot;data&quot; ];
+    fuseki:endpoint [ fuseki:operation fuseki:upload ; fuseki:name &quot;upload&quot; ]
+    fuseki:dataset ...
+</code></pre>
+<p>which adds requests that can change the data.</p>
 <p>New operations can be added by programmatic setup in <a href="/documentation/fuseki2/fuseki-main">Fuseki Main</a>.</p>
 <h2 id="dispatch">Dispatch</h2>
 <p>&ldquo;Dispatch&rdquo; is the process of routing a HTTP request to a specific operation
@@ -325,7 +346,7 @@ dataset. The syntax for the response is determined by content negotiation,
 defaulting to <code>text/trig</code>.</p>
 <p>Custom services usually use a named endpoint.  Custom operations
 can specific a content type that they handle, which must be unique for the
-operation, and they can not provide a query string signature for dispatch.</p>
+operation. They can not provide a query string signature for dispatch.</p>
 <h2 id="common-cases">Common Cases</h2>
 <p>This section describes a few deployment patterns:</p>
 <h4 id="case-1-read-only-dataset">Case 1: Read-only Dataset</h4>
@@ -339,7 +360,7 @@ operation, and they can not provide a query string signature for dispatch.</p>
 </code></pre>
 <p>This is good for publishing data.</p>
 <h4 id="case-2-dataset-level-operation">Case 2: Dataset level operation.</h4>
-<p>The 3 SPARQL standard operations for a read-write dataset:</p>
+<p>The 3 SPARQL standard operations for a read-write dataset, request are sent to <tt>http://<i>host:port</i>/dataset</tt>. There are no named endpoint services.</p>
 <pre><code>&lt;#service&gt; rdf:type fuseki:Service ;
     fuseki:name     &quot;ds-rw&quot; ;
     ## fuseki:name &quot;&quot; is optional.
@@ -361,6 +382,21 @@ operation, and they can not provide a query string signature for dispatch.</p>
 </code></pre>
 <p>The operation on this dataset can only be accessed as &ldquo;/ds-named/sparql&rdquo;,
 &ldquo;/ds-named/update&rdquo; etc, not as &ldquo;/ds-named&rdquo;.</p>
+<h4 id="case-4-named-endpoints-with-query-of-the-dataset">Case 4: Named endpoints with query of the dataset.</h4>
+<pre><code>&lt;#service1&gt; rdf:type fuseki:Service ;
+    
+    fuseki:name     &quot;ds&quot; ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:query;  fuseki:name &quot;sparql&quot;  ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:query;  fuseki:name &quot;query&quot;   ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:update; fuseki:name &quot;update&quot;  ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:upload; fuseki:name &quot;upload&quot;  ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp_r;  fuseki:name &quot;get&quot;     ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp_rw; fuseki:name &quot;data&quot;    ] ;
+    fuseki:dataset  &lt;#dataset&gt; .
+</code></pre>
+<p>The operations on this dataset are accessed as &ldquo;/ds/sparql&rdquo;,
+&ldquo;/ds/update&rdquo; etc. In addition, &ldquo;/ds?query=&rdquo; provided SPARQL query.</p>
 <h2 id="quad-extensions">Quad extensions</h2>
 <p>The GSP (SPARQL Graph Store Protocol) operations provide the HTTP operations of
 GET, POST, PUT and DELETE for specific graphs in the RDF dataset. The SPARQL GSP
@@ -372,7 +408,8 @@ GET, POST, PUT (not DELETE, that would be the dataset itself),
 and the request or response is one of the syntaxes for datasets
 (TriG, N-Quads, JSON-LD, TriX).</p>
 <p>Fuseki also provides [/documentation/io/rdf-binary.html](RDF Binary) for triples and quads.</p>
-<p>The quads extension applies when there is no <code>?default</code> or <code>?graph</code>.</p>
+<p>The quads extension applies when there is no <code>?default</code> or <code>?graph</code>.
+<code>GET</code> fetches the dataset in quads format, and <code>PUT</code> and <code>POST</code> take quads format data (N-Quads and Trig).</p>
 <h2 id="context">Context</h2>
 <p>Each operation execution is given a &ldquo;context&rdquo; - a set of name-value pairs.
 Internally, this is used for system registries, for the fixed &ldquo;current time&rdquo; for
@@ -404,7 +441,7 @@ the default graph.</p>
 <p>Query timeout is set for any use of the dataset with first result in 10
 seconds, and complete results in 30 seconds.</p>
 <h2 id="security">Security</h2>
-<p>The page <a href="/documentation/fuseki2/data-access-control">Data Access Control for Fuseki</a>
+<p>The page <a href="./fuseki-data-access-control.html">Data Access Control for Fuseki</a>
 covers the</p>
 <p>For endpoints, the permitted users are part of the endpoint description.</p>
 <pre><code>fuseki:endpoint [ 
@@ -413,12 +450,6 @@ covers the</p>
     fuseki:allowedUsers &quot;user1&quot;, &quot;user2&quot;
 ] ;
 </code></pre>
-<h2 id="legacy-behaviour">Legacy Behaviour</h2>
-<p>For compatibility with the older configuration behaviour, the Fuseki dispatch
-code includes an additional dispatch option.</p>
-<p>If a request is made on the dataset (no service name in the request URL), then
-the dispatcher classifies the operation and looks for a named endpoint for that
-operation of any name. If one is found, that is used.</p>
 
 
         </div>

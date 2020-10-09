@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki : Main Server</title>
+    <title>Apache Jena - Running Fuseki with UI</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-main.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-webapp.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -161,7 +161,7 @@
         
         
             
-                <li class="active">FUSEKI MAIN</li>
+                <li class="active">FUSEKI WEBAPP</li>
             
             
         
@@ -173,63 +173,73 @@
 
                 
             </div>
-            <h1 class="title">Fuseki : Main Server</h1>
+            <h1 class="title">Running Fuseki with UI</h1>
             
-	<p>Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.</p>
-<p>Fuseki can be run in the background by an application as an embedded server.  The
-application can safely work with the dataset directly from java while having Fuseki
-provide SPARQL access over HTTP.  An embedded server is useful for
-adding functionality around a triple store and also for development and testing.</p>
+	<p>Fuseki/UI can be run in a number of ways:</p>
 <ul>
-<li><a href="#fuseki-server">Running as a deployment or development server</a></li>
-<li><a href="#fuseki-docker">Running from Docker</a></li>
-<li><a href="fuseki-embedded.html">Running as an embedded server</a>
-<ul>
-<li><a href="fuseki-embedded.html#dependencies">Dependencies and Setup</a></li>
-<li><a href="fuseki-embedded.html#logging">Logging</a></li>
-<li><a href="fuseki-embedded.html#build">Building a Server</a></li>
-<li><a href="fuseki-embedded.html#examples">Examples</a></li>
+<li><a href="#fuseki-standalone-server">As a standalone server</a></li>
+<li><a href="#fuseki-service">As a service</a> run by the operation system, for example, started when the machine</li>
+<li><a href="#fuseki-web-application">As a Web Application</a> inside a container such as Apache Tomcat or Jetty
+boots.</li>
 </ul>
-</li>
-</ul>
-<p>The main server does not depend on any files on disk (other than for
-databases provided by the application), and does not provide the Fuseki
-UI or admins functions to create dataset via HTTP.</p>
-<p>See also <a href="./fuseki-data-access-control.html">Data Access Control for Fuseki</a>.</p>
-<h2 id="fuseki-server">Running as a configured deployment or development server</h2>
-<p>The artifact <code>org.apache.jena:jena-fuseki-server</code> is a packaging of
-the &ldquo;main&rdquo; server that runs from the command line.  Unlike the UI
-Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk.</p>
-<pre><code>java -jar jena-fuseki-server-$VER.jar --help
+<p>Fuseki is also packaged as a plain server <a href="fuseki-main.html">&ldquo;Fuseki Main&rdquo;</a>
+with no UI for use as a configurable SPARQL server, for <a href="fuseki-docker.html">building as a Docker
+container</a>, and as a deployment and development standalone
+server.</p>
+<p>Both packaging used the same configuration file format, and in standalone server
+mode, the same command line arguments.</p>
+<p>See &ldquo;<a href="fuseki-configuration.html">Fuseki Configuration</a>&rdquo; for information on
+how to provide datasets and configure services using the configuration file.</p>
+<h2 id="fuseki-standalone-server">Fuseki as a Standalone Server</h2>
+<p>This is running Fuseki from the command line.</p>
+<p>To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:</p>
+<p>where <code>/NAME</code> is the dataset publishing name at this server in URI space.</p>
+<p>TDB1 database:</p>
+<pre><code>fuseki-server [--loc=DIR] [[--update] /NAME]
 </code></pre>
-<p>The arguments are the same as the
-<a href="/documentation/fuseki2/fuseki-webapp.html#fuseki-standalone-server">full UI server command line program</a>.
-There are no special environment variables.</p>
-<p>The entry point is <code>org.apache.jena.fuseki.main.cmds.FusekiMainCmd</code> so
-the server can also be run as:</p>
-<pre><code>java -cp jena-fuseki-server-$VER.jar:...OtherJars... \
-    org.apache.jena.fuseki.main.cmds.FusekiMainCmd ARGS
+<p>The argument <code>--tdb2</code> puts the command line handling into &ldquo;TDB2 mode&rdquo;.
+A dataset created with <code>--loc</code> is a TDB2 dataset.
+TDB2 database:</p>
+<pre><code>fuseki-server --tdb2 [--loc=DIR] [[--update] /NAME]
 </code></pre>
-<h2 id="fuseki-docker">Docker</h2>
-<p>A kit to build a container with docker or docker compose</p>
-<pre><code>https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-docker/
+<p>In-memory, non-peristent database (always updatable):</p>
+<pre><code>fuseki-server --mem /NAME
 </code></pre>
-<p>Note: take care that databases are on mounted volumes if they are to persist
-after the container is removed.</p>
-<p>See the <a href="fuseki-docker.html">Fuseki docker tools page</a> for details.</p>
-<h2 id="running-as-an-embedded-server">Running as an embedded server</h2>
-<p>Fuseki can be run from inside an Java application to provide SPARQL
-services to application data. The application can continue to access and
-update the datasets served by the server.</p>
-<p>To build and start the server:</p>
-<pre><code>Dataset ds = ...
-FusekiServer server = FusekiServer.create()
-  .add(&quot;/dataset&quot;, ds)
-  .build() ;
-server.start() ;
+<p>Load a file at start and provide it read-only:</p>
+<pre><code>fuseki-server --file=MyData.ttl /NAME
 </code></pre>
-<p>See <a href="fuseki-embedded.html">Fuseki embedded documentation</a> for details and examples.</p>
+<p>where &ldquo;MyData.ttl&rdquo; can be any RDF format, both triples or quads.</p>
+<p>Administrative functions are only available from &ldquo;localhost&rdquo;.</p>
+<p>See <code>fuseki-server --help</code> for details of more arguments.</p>
+<h2 id="layout">Layout</h2>
+<p>When run from the command line, the server creates its work area in the
+directory named by environment variable <code>FUSEKI_BASE</code>. When run from the
+command line, this defaults to the current directory.</p>
+<p><a href="fuseki-layout.html">Fuseki layout</a></p>
+<p>If you get the error message <code>Can't find jarfile to run</code> then you either
+need to put a copy of <code>fuseki-server.jar</code> in the current directory or set
+the environment variable <code>FUSEKI_HOME</code> to point to an unpacked Fuseki
+distribution.</p>
+<p>Starting with no dataset and no configuration is possible.
+Datasets can be added from the admin UI to a running server.</p>
+<h2 id="fuseki-service">Fuseki as a Service</h2>
+<p>Fuseki can run as an operating system service, started when the server
+machine boots.  The script <code>fuseki</code> is a Linux <code>init.d</code> with the common
+secondary arguments of <code>start</code> and <code>stop</code>.</p>
+<p>Process arguments are read from <code>/etc/default/fuseki</code> including
+<code>FUSEKI_HOME</code> and <code>FUSEKI_BASE</code>.  <code>FUSEKI_HOME</code> should be the directory
+where the distribution was unpacked.</p>
+<h2 id="fuseki-web-application">Fuseki as a Web Application</h2>
+<p>Fuseki can run from a
+<a href="http://en.wikipedia.org/wiki/WAR_%28file_format%29">WAR</a> file.  Fuseki
+requires at least support for the Servlet 3.0 API (e.g. Apache Tomcat 7 or
+Jetty 8) as well as Java8.</p>
+<p><code>FUSEKI_HOME</code> is not applicable.</p>
+<p><code>FUSEKI_BASE</code> defaults to <code>/etc/fuseki</code> which must be a writeable
+directory.  It is initialised the first time Fuseki runs, including a
+<a href="http://shiro.apache.org/">Apache Shiro</a> security file but this is only
+intended as a starting point.  It restricts use of the admin UI to the
+local machine.</p>
 
 
         </div>

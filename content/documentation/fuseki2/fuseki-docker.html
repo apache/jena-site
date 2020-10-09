@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki : Main Server</title>
+    <title>Apache Jena - Fuseki : Docker Tools</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-main.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-docker.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -161,7 +161,7 @@
         
         
             
-                <li class="active">FUSEKI MAIN</li>
+                <li class="active">FUSEKI DOCKER</li>
             
             
         
@@ -173,63 +173,107 @@
 
                 
             </div>
-            <h1 class="title">Fuseki : Main Server</h1>
+            <h1 class="title">Fuseki : Docker Tools</h1>
             
-	<p>Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.</p>
-<p>Fuseki can be run in the background by an application as an embedded server.  The
-application can safely work with the dataset directly from java while having Fuseki
-provide SPARQL access over HTTP.  An embedded server is useful for
-adding functionality around a triple store and also for development and testing.</p>
+	<p>The <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-docker/">jena-fuseki-docker package</a>
+contains a Dockerfile, docker-compose file, and helper scripts to
+create a docker container for Apache Jena Fuseki.</p>
+<p>The docker container is based on
+<a href="https://jena.apache.org/documentation/fuseki2/fuseki-main">Fuseki main</a>
+for running a SPARQL server.</p>
+<p>There is no UI - all configuration is by command line and all usage by via the
+network protocols.</p>
+<p>Databases can be mounted outside the docker container so they are preserved when
+the container terminates.</p>
+<p>This build system allows the user to customize the docker image.</p>
+<p>The docker build downloads the server binary from
+<a href="https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server/">Maven central</a>,
+checking the download against the SHA1 checksum.</p>
+<h2 id="database">Database</h2>
+<p>There is a volume mapping &ldquo;./databases&rdquo; in the current directory into the server.
+This can be used to contain databases outside, but accessible to, the container
+that do not get deleted when the container exits.</p>
+<p>See examples below.</p>
+<h2 id="build">Build</h2>
+<p>Choose the version number of Apache Jena release you wish to use. This toolkit
+defaults to the version of the overall Jena release it was part of. It is best
+to use the release of this set of tools from the same release of the desired
+server.</p>
+<pre><code>docker-compose build --build-arg JENA_VERSION=3.16.0
+</code></pre>
+<p>Note the build command must provide the version number.</p>
+<h2 id="test-run">Test Run</h2>
+<p><code>docker-compose run</code> cam be used to test the build from the previous section.</p>
+<p>Examples:</p>
+<p>Start Fuseki with an in-memory, updatable dataset at http://<i>host</i>:3030/ds</p>
+<pre><code>docker-compose run --rm --service-ports fuseki --mem /ds
+</code></pre>
+<p>Load a TDB2 database, and expose, read-only, via docker:</p>
+<pre><code>mkdir -p databases/DB2
+tdb2.tdbloader --loc databases/DB2 MyData.ttl
+# Publish read-only
+docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --loc databases/DB2 /ds
+</code></pre>
+<p>To allow update on the database, add <code>--update</code>. Updates are persisted.</p>
+<pre><code>docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --update --loc databases/DB2 /ds
+</code></pre>
+<p>See
+<a href="https://jena.apache.org/documentation/fuseki2/fuseki-configuration.html">fuseki-configuration</a>
+for more information on command line arguments.</p>
+<p>To use <code>docker-compose up</code>, edit the <code>docker-compose.yaml</code> to set the Fuseki
+command line arguments appropriately.</p>
+<h2 id="layout">Layout</h2>
+<p>The default layout in the container is:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/opt/java-minimal</td>
+<td>A reduced size Java runtime</td>
+</tr>
+<tr>
+<td>/fuseki</td>
+<td>The Fuseki installation</td>
+</tr>
+<tr>
+<td>/fuseki/log4j2.properties</td>
+<td>Logging configuration</td>
+</tr>
+<tr>
+<td>/fuseki/databases/</td>
+<td>Directory for a volume for persistent databases</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setting-jvm-arguments">Setting JVM arguments</h2>
+<p>Use <code>JAVA_OPTIONS</code>:</p>
+<pre><code>docker-compose run --service-ports --rm -e JAVA_OPTIONS=&quot;-Xmx1048m -Xms1048m&quot; --name MyServer fuseki --mem /ds
+</code></pre>
+<h2 id="docker-commands">Docker Commands</h2>
+<p>If you prefer to use <code>docker</code> directly:</p>
+<p>Build:</p>
+<pre><code>docker build --force-rm --build-arg JENA_VERSION=3.16.0 -t fuseki .
+</code></pre>
+<p>Run:</p>
+<pre><code>docker run -i --rm -p &quot;3030:3030&quot; --name MyServer -t fuseki --mem /ds
+</code></pre>
+<p>With databases on a bind mount to host filesystem directory:</p>
+<pre><code>MNT=&quot;--mount type=bind,src=$PWD/databases,dst=/fuseki/databases&quot;
+docker run -i --rm -p &quot;3030:3030&quot; $MNT --name MyServer -t fuseki --tdb2 --update --loc databases/DB2 /ds
+</code></pre>
+<h2 id="version-specific-notes">Version specific notes:</h2>
 <ul>
-<li><a href="#fuseki-server">Running as a deployment or development server</a></li>
-<li><a href="#fuseki-docker">Running from Docker</a></li>
-<li><a href="fuseki-embedded.html">Running as an embedded server</a>
-<ul>
-<li><a href="fuseki-embedded.html#dependencies">Dependencies and Setup</a></li>
-<li><a href="fuseki-embedded.html#logging">Logging</a></li>
-<li><a href="fuseki-embedded.html#build">Building a Server</a></li>
-<li><a href="fuseki-embedded.html#examples">Examples</a></li>
+<li>Versions of Jena up to 3.14.0 use Log4j1 for logging. The docker will build will ignore
+the log4j2.properties file</li>
+<li>Version 3.15.0: When run, a warning will be emitted.<br>
+<code>WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.</code><br>
+This can be ignored.</li>
 </ul>
-</li>
-</ul>
-<p>The main server does not depend on any files on disk (other than for
-databases provided by the application), and does not provide the Fuseki
-UI or admins functions to create dataset via HTTP.</p>
-<p>See also <a href="./fuseki-data-access-control.html">Data Access Control for Fuseki</a>.</p>
-<h2 id="fuseki-server">Running as a configured deployment or development server</h2>
-<p>The artifact <code>org.apache.jena:jena-fuseki-server</code> is a packaging of
-the &ldquo;main&rdquo; server that runs from the command line.  Unlike the UI
-Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk.</p>
-<pre><code>java -jar jena-fuseki-server-$VER.jar --help
-</code></pre>
-<p>The arguments are the same as the
-<a href="/documentation/fuseki2/fuseki-webapp.html#fuseki-standalone-server">full UI server command line program</a>.
-There are no special environment variables.</p>
-<p>The entry point is <code>org.apache.jena.fuseki.main.cmds.FusekiMainCmd</code> so
-the server can also be run as:</p>
-<pre><code>java -cp jena-fuseki-server-$VER.jar:...OtherJars... \
-    org.apache.jena.fuseki.main.cmds.FusekiMainCmd ARGS
-</code></pre>
-<h2 id="fuseki-docker">Docker</h2>
-<p>A kit to build a container with docker or docker compose</p>
-<pre><code>https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-docker/
-</code></pre>
-<p>Note: take care that databases are on mounted volumes if they are to persist
-after the container is removed.</p>
-<p>See the <a href="fuseki-docker.html">Fuseki docker tools page</a> for details.</p>
-<h2 id="running-as-an-embedded-server">Running as an embedded server</h2>
-<p>Fuseki can be run from inside an Java application to provide SPARQL
-services to application data. The application can continue to access and
-update the datasets served by the server.</p>
-<p>To build and start the server:</p>
-<pre><code>Dataset ds = ...
-FusekiServer server = FusekiServer.create()
-  .add(&quot;/dataset&quot;, ds)
-  .build() ;
-server.start() ;
-</code></pre>
-<p>See <a href="fuseki-embedded.html">Fuseki embedded documentation</a> for details and examples.</p>
 
 
         </div>

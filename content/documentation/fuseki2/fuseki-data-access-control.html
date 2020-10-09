@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/data-access-control.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/fuseki2/fuseki-data-access-control.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -161,7 +161,7 @@
         
         
             
-                <li class="active">DATA ACCESS CONTROL</li>
+                <li class="active">FUSEKI DATA ACCESS CONTROL</li>
             
             
         
@@ -179,14 +179,17 @@
 on endpoints and also on specific graphs within a dataset. It also
 provides native https to protect data in-flight.</p>
 <p><a href="/documentation/fuseki2/fuseki-main.html">Fuseki Main</a>
-provides some common patterns of authentication.</p>
-<p><a href="#graph-acl">Graph level Data Access Control</a> provides control over the visibility of
+provides some common patterns of authentication and also
+<a href="#graph-acl">Graph level Data Access Control</a> to provide control over the visibility of
 graphs within a dataset, including the union graph of a dataset and
 the default graph. Currently, Graph level access control only applies to
 read-only datasets.</p>
-<p>Fuseki Full (Fuseki with the UI) can be used when
-<a href="/documentation/fuseki2/fuseki-run.html#fuseki-web-application">run in a web application server such as Tomcat</a>
-to provide authentication of the user.  See &ldquo;<a href="fuseki-security">Fuseki Security</a>&rdquo; for configuring security over the whole of the Fuseki UI.</p>
+<p>Fuseki Full (Fuseki with the UI) can be used when <a href="/documentation/fuseki2/fuseki-webapp.html#fuseki-web-application">run in a web application
+server such as
+Tomcat</a> to
+provide authentication of the user.  See &ldquo;<a href="fuseki-security">Fuseki Security</a>&rdquo;
+for configuring security over the whole of the Fuseki UI.</p>
+<p>This page applies to Fuseki Main.</p>
 <h2 id="contents">Contents</h2>
 <ul>
 <li><a href="#https">HTTPS</a></li>
@@ -212,8 +215,7 @@ to provide authentication of the user.  See &ldquo;<a href="fuseki-security">Fus
 <li><a href="#jetty-configuration">Configuring Jetty directly</a></li>
 </ul>
 <h2 id="https">HTTPS</h2>
-<p>This section applies to Fuseki Main.
-HTTPS support is configured from the fuseki server command line.</p>
+<p>HTTPS support is configured from the fuseki server command line.</p>
 <table>
 <thead>
 <tr>
@@ -257,7 +259,6 @@ host name of the Fuseki server to the client system. A signed certificate provid
 <p>For information on creating a certificate, see the Jetty documentation
 for <a href="http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html#generating-key-pairs-and-certificates">generating certificates</a>.</p>
 <h2 id="authentication">Authentication</h2>
-<p>This section applies to Fuseki Main.</p>
 <p><a href="https://en.wikipedia.org/wiki/Authentication">Authentication</a>,
 is establishing the identity of the principal (user or program) accessing the
 system. Fuseki Main provides users/password setup and HTTP authentication,
@@ -430,14 +431,19 @@ levels must allow the user access.</p>
         <b>fuseki:allowedUsers             "user1", "user3";</b>
 
         ## Choice of operations.
-        fuseki:serviceQuery             "query" ;
-        fuseki:serviceQuery             "sparql" ;
-        fuseki:serviceReadGraphStore    "get" ;
 
-        fuseki:serviceUpdate            "update" ;
-        fuseki:serviceUpload            "upload" ;
-        fuseki:serviceReadWriteGraphStore "data" ;
-
+        fuseki:endpoint [ 
+            fuseki:operation fuseki:query ;
+            fuseki:name "sparql" 
+        ];
+        fuseki:endpoint [
+            fuseki:operation fuseki:update ;
+            fuseki:name "sparql"
+        ] ;
+        fuseki:endpoint [
+            fuseki:operation fuseki:gsp-r ;
+            fuseki:name "get"
+        ] ;
         fuseki:dataset                  &lt;#base_dataset&gt;;
         .
 </pre>
@@ -445,10 +451,16 @@ levels must allow the user access.</p>
 <p>An access control list can be applied to an individual endpoint.
 Again, any  other &ldquo;allowedUsers&rdquo; configuration, service-wide, or
 server-wide) also applies.</p>
-<pre><code>    fuseki:serviceQuery  [ fuseki:name &quot;query&quot; ;
-                           fuseki:allowedUsers &quot;user1&quot;, &quot;user2&quot;] ;
-    fuseki:serviceUpdate [ fuseki:name &quot;update&quot; ;
-                           fuseki:allowedUsers &quot;user1&quot;] ;
+<pre><code>     fuseki:endpoint [ 
+        fuseki:operation fuseki:query ;
+        fuseki:name &quot;query&quot; ;
+        fuseki:allowedUsers &quot;user1&quot;, &quot;user2&quot; ;
+    ];
+    fuseki:endpoint [
+        fuseki:operation fuseki:update ;
+        fuseki:name &quot;update&quot; ;
+        fuseki:allowedUsers &quot;user1&quot;
+    ] ;
 </code></pre>
 <p>Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 <em>user2</em> can use SPARQL query.</p>
@@ -465,13 +477,13 @@ implementation for the service.</p>
     &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
         rdfs:label                      "Graph-level access controlled dataset" ;
         fuseki:name                     "db-graph-acl" ;
-        ## Read-only operations.
-        fuseki:serviceQuery             "query" ;
-        fuseki:serviceQuery             "sparql" ;
-        fuseki:serviceReadGraphStore    "get" ;
+        ## Read-only operations on the dataset URL.
+        fuseki:endpoint [ fuseki:operation fuseki:query ] ;
+        fuseki:endpoint [ fuseki:operation fuseki:gsp_r ] ;
         fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
         .
 
+    # Define access on the dataset.
     &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
         access:registry   &lt;#securityRegistry&gt; ;
         access:dataset    &lt;#tdb_dataset_shared&gt; ;

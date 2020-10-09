@@ -175,18 +175,30 @@
             </div>
             <h1 class="title">Fuseki: Configuring Fuseki</h1>
             
-	<p>Configuration consists of defining the data services (data and actions available on the data) together with configuring the server.  Explicitly configuring the server is often unnecessary.</p>
+	<p>A Fuseki server is configured by defining the data services (data and actions available on the data). There is also server configuration although this is often unnecessary.</p>
 <p>The data services configuration can come from:</p>
+<p>For Fuseki Full (webapp with UI):</p>
 <ol>
 <li>The directory <code>FUSEKI_BASE/configuration/</code> with one data service assembler per file (includes endpoint details and the dataset description.)</li>
 <li>The system database. This includes uploaded assembler files.  It also keeps the state of each data service (whether it&rsquo;s active or offline).</li>
-<li>The service configuration file.  For compatibility, the service configuration file can also have data services. <a href="#relationship-to-fuseki-1-configuration">See below</a>.</li>
+<li>The server configuration file <code>config.ttl</code>.  For compatibility, the server configuration file can also have data services.</li>
 <li>The command line, if not running as a web application from a .war file.</li>
 </ol>
 <p><code>FUSEKI_BASE</code> is the location of the <a href="./fuseki-layout.html">Fuseki run area</a>.</p>
-<h2 id="data-service-assembler">Data Service assembler</h2>
-<p>See <a href="fuseki-data-services.html">Fuseki Data Services</a> for the architecture of data services.</p>
-<p>See <a href="fuseki-security.html">Fuseki Security</a> for more information on security.</p>
+<p>For <a href="fuseki-main.html">Fuseki Main</a>:</p>
+<ol>
+<li>The command line, using <code>--conf</code> to provide a configuration file.</li>
+<li>The command line, using arguments (e.g. <code>--mem /ds</code> or <code>--tdb2 --loc DB2 /ds</code>).</li>
+<li><a href="fuseki-main.html#build">Programmatic configuration</a> of the server.</li>
+</ol>
+<p>See <a href="fuseki-security.html">Fuseki Security</a> for more information on security configuration.</p>
+<h2 id="examples">Examples</h2>
+<p>Example server configuration files can be found at <a href="https://github.com/apache/jena/tree/master/jena-fuseki2/examples">jena-fuseki2/examples</a>.</p>
+<h2 id="security-and-access-control">Security and Access Control</h2>
+<p>Access Control can be configured on any of the server, data service or dataset.
+<a href="fuseki-data-access-control.html">Fuseki Data Access Control</a>.</p>
+<p>Separately, Fuseki Full has request based security filtering provided by Apache Shiro:
+<a href="fuseki-security.html">Fuseki Full Security</a></p>
 <h2 id="fuseki-configuration-file">Fuseki Configuration File</h2>
 <p>A Fuseki server can be set up using a configuration file. The
 command-line arguments for publishing a single dataset are a short
@@ -199,12 +211,13 @@ number of endpoints over a dataset.</p>
 split to allow for commentary.</p>
 <h3 id="prefix-declarations">Prefix declarations</h3>
 <p>Some useful prefix declarations:</p>
-<pre><code>@prefix fuseki:  &lt;http://jena.apache.org/fuseki#&gt; .
-@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt; .
-@prefix ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
-@prefix :        &lt;#&gt; .
+<pre><code>PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX tdb1:    &lt;http://jena.hpl.hp.com/2008/tdb#&gt;
+PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;
+PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX :        &lt;#&gt;
 </code></pre>
 <h3 id="assembler-initialization">Assembler Initialization</h3>
 <p>All datasets are described by
@@ -220,39 +233,108 @@ objects.</p>
 </ul>
 <p>This example offers SPARQL Query, SPARQL Update and SPARQL Graph
 Store protocol, as well as file upload.</p>
-<p>Note: As of Jena 3.13.0,
-<a href="fuseki-config-endpoint.html">an additional, more expressive configuration for endpoints</a>
-is available.</p>
+<p>See <a href="fuseki-config-endpoint.html">Data Service Configuration Syntax</a> for the complete details of the endpoint configuration description. Here, we show some examples.</p>
+<p>The <a href="fuseki-old-config-endpoint.html">original configuration</a> syntax, using, for example, <code>fuseki:serviceQuery</code>, is still supported.</p>
 <p>The base name is <code>/ds</code>.</p>
-<pre><code>## Updateable in-memory dataset.
+<pre><code>## Updatable in-memory dataset.
 
 &lt;#service1&gt; rdf:type fuseki:Service ;
-    fuseki:name                       &quot;ds&quot; ;       # http://host:port/ds
-    fuseki:serviceQuery               &quot;sparql&quot; ;   # SPARQL query service
-    fuseki:serviceQuery               &quot;query&quot; ;    # SPARQL query service (alt name)
-    fuseki:serviceUpdate              &quot;update&quot; ;   # SPARQL update service
-    fuseki:serviceUpload              &quot;upload&quot; ;   # Non-SPARQL upload service
-    fuseki:serviceReadWriteGraphStore &quot;data&quot; ;     # SPARQL Graph store protocol (read and write)
-    # A separate read-only graph store endpoint:
-    fuseki:serviceReadGraphStore      &quot;get&quot; ;      # SPARQL Graph store protocol (read only)
-    fuseki:dataset                   &lt;#dataset&gt; ;
+    fuseki:name   &quot;ds&quot; ;       # http://host:port/ds
+    fuseki:endpoint [ 
+         # SPARQL query service
+        fuseki:operation fuseki:query ; 
+        fuseki:name &quot;sparql&quot;
+    ] ;
+    fuseki:endpoint [ 
+         # SPARQL query service (alt name)
+        fuseki:operation fuseki:query ; 
+        fuseki:name &quot;query&quot; 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL update service
+        fuseki:operation fuseki:update ; 
+        fuseki:name &quot;update&quot; 
+    ] ;
+
+    fuseki:endpoint [ 
+         # HTML file upload service
+        fuseki:operation fuseki:update ; 
+        fuseki:name &quot;update&quot; 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL Graph Store Protocol (read)
+        fuseki:operation fuseki:gsp_r ; 
+        fuseki:name &quot;get&quot; 
+    ] ;
+    fuseki:endpoint [ 
+        # SPARQL Graph Store Protcol (read and write)
+        fuseki:operation fuseki:gsp_rw ; 
+        fuseki:name &quot;data&quot; 
+    ] ;
+
+    fuseki:dataset  &lt;#dataset&gt; ;
     .
 </code></pre>
 <p><code>&lt;#dataset&gt;</code> refers to a dataset description in the same file.</p>
+<p>HTTP requests will include the service name: <tt>http://<i>host:port</i>/ds/sparql?query=...</tt>.</p>
 <h3 id="read-only-service">Read-only service</h3>
 <p>This example offers only read-only endpoints (SPARQL Query and HTTP GET
-SPARQl Graph Store protocol).</p>
+SPARQL Graph Store protocol).</p>
 <p>This service offers read-only access to a dataset with a single
 graph of data.</p>
 <pre><code>&lt;#service2&gt; rdf:type fuseki:Service ;
-    fuseki:name                     &quot;/ds-ro&quot; ;   # http://host:port/ds-ro
-    fuseki:serviceQuery             &quot;query&quot; ;    # SPARQL query service
-    fuseki:serviceReadGraphStore    &quot;data&quot; ;     # SPARQL Graph store protocol (read only)
+    fuseki:name      &quot;/ds-ro&quot; ;   # http://host:port/ds-ro
+    fuseki:endpoint  [ fuseki:operation fuseki:query ; fuseki:name &quot;sparql&quot; ];
+    fuseki:endpoint  [ fuseki:operation fuseki:query ; fuseki:name &quot;query&quot; ];
+    fuseki:endpoint  [ fuseki:operation fuseki:gsp_r ; fuseki:name &quot;data&quot; ];
     fuseki:dataset           &lt;#dataset&gt; ;
     .
 </code></pre>
-<h3 id="dataset">Dataset</h3>
-<h4 id="in-memory">In-memory</h4>
+<h3 id="data-services-on-the-dataset">Data services on the dataset</h3>
+<p>The standard SPARQL operations can also be defined on the dataset URL with no secondary service name:</p>
+<p>&lt;#service2&gt; rdf:type fuseki:Service ;
+fuseki:name     &ldquo;/dataset&rdquo; ;
+fuseki:endpoint  [ fuseki:operation fuseki:query ];
+fuseki:endpoint  [ fuseki:operation fuseki:gsp_r ];
+fuseki:dataset  &lt;#dataset&gt; ;
+.</p>
+<p>HTTP requests use the URL of the dataset.</p>
+<ul>
+<li>SPARQL Query: <tt>http://<i>host:port</i>/dataset?query=...</tt></li>
+<li>Fetch the default graph
+(<a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a>):
+<tt>http://<i>host:port</i>/dataset?default</tt></li>
+</ul>
+<h2 id="server-configuration">Server Configuration</h2>
+<p>If you need to load additional classes, or set global parameters, then these go in
+<code>FUSEKI_BASE/config.ttl</code>.</p>
+<p>Additional classes can not be loaded if running as a <code>.war</code> file.  You will
+need to create a custom <code>.war</code> file consisting of the contents of the Fuseki
+web application and the additional classes</p>
+<p>The server section is optional.</p>
+<p>If absent, fuseki configuration is performed
+by searching the configuration file for the type <code>fuseki:Service</code>.</p>
+<h3 id="server-section">Server Section</h3>
+<pre><code>[] rdf:type fuseki:Server ;
+   # Server-wide context parameters can be given here.
+   # For example, to set query timeouts: on a server-wide basis:
+   # Format 1: &quot;1000&quot; -- 1 second timeout
+   # Format 2: &quot;10000,60000&quot; -- 10s timeout to first result, then 60s timeout to for rest of query.
+   # See java doc for ARQ.queryTimeout
+   # ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;10000&quot; ] ;
+
+   # Load custom code (rarely needed)
+   # ja:loadClass &quot;your.code.Class&quot; ;
+
+   # Explicitly choose which services to add to the server.
+   # If absent, include all descriptions of type `fuseki:Service`.
+   # fuseki:services (&lt;#service1&gt; &lt;#service2&gt;)
+   .
+</code></pre>
+<h2 id="datasets">Datasets</h2>
+<h3 id="in-memory">In-memory</h3>
 <p>An in-memory dataset, with data in the default graph taken from a local file.</p>
 <pre><code>&lt;#books&gt;    rdf:type ja:RDFDataset ;
     rdfs:label &quot;Books&quot; ;
@@ -263,7 +345,7 @@ graph of data.</p>
       ] ;
     .
 </code></pre>
-<h4 id="tdb">TDB</h4>
+<h3 id="tdb">TDB</h3>
 <pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
     tdb:location &quot;DB&quot; ;
     # Query timeout on this dataset (1s, 1000 milliseconds)
@@ -272,7 +354,7 @@ graph of data.</p>
     ## tdb:unionDefaultGraph true ;
      .
 </code></pre>
-<h4 id="tdb2">TDB2</h4>
+<h3 id="tdb2">TDB2</h3>
 <pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB2 ;
     tdb:location &quot;DB2&quot; ;
     # Query timeout on this dataset (1s, 1000 milliseconds)
@@ -281,7 +363,7 @@ graph of data.</p>
     ## tdb:unionDefaultGraph true ;
      .
 </code></pre>
-<h4 id="inference">Inference</h4>
+<h3 id="inference">Inference</h3>
 <p>An inference reasoner can be layered on top of a dataset as defined above. The type of reasoner must be selected carefully and should not include more reasoning than is required by the application, as extensive reasoning can be detrimental to performance.</p>
 <p>You have to build up layers of dataset, inference model, and graph.</p>
 <pre><code>&lt;#dataset&gt; rdf:type ja:RDFDataset;
@@ -298,7 +380,7 @@ graph of data.</p>
      .
 </code></pre>
 <p>where <code>http://example/someReasonerURLHere</code> is one of the URLs below.</p>
-<h5 id="possible-reasoners">Possible reasoners:</h5>
+<h4 id="possible-reasoners">Possible reasoners:</h4>
 <p>Details are in <a href="/documentation/inference/">the main documentation for inference</a>.</p>
 <ul>
 <li>
@@ -310,8 +392,6 @@ graph of data.</p>
 <p>A simple &ldquo;reasoner&rdquo; used to help with API development.</p>
 <p>This reasoner caches a transitive closure of the subClass and subProperty graphs. The generated infGraph allows both the direct and closed versions of these properties to be retrieved. The cache is built when the tbox is bound in but if the final data graph contains additional subProperty/subClass declarations then the cache has to be rebuilt.</p>
 <p>The triples in the tbox (if present) will also be included in any query. Any of tbox or data graph are allowed to be null.</p>
-</li>
-<li>
 <p><strong>RDFS Rule Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner</code></p>
 <p>A full implementation of RDFS reasoning using a hybrid rule system, together with optimized subclass/subproperty closure using the transitive graph caches. Implements the container membership property rules using an optional data scanning hook. Implements datatype range validation.</p>
 </li>
@@ -330,6 +410,8 @@ graph of data.</p>
 </li>
 <li>
 <p><strong>Micro OWL Reasoner</strong>: <code>http://jena.hpl.hp.com/2003/OWLMicroFBRuleReasoner</code></p>
+</li>
+</ul>
 <p>This only supports:</p>
 <ul>
 <li>RDFS entailments</li>
@@ -337,34 +419,7 @@ graph of data.</p>
 <li>intersectionOf, equivalentClass and forward implication of unionOf sufficient for traversal of explicit class hierarchies</li>
 <li>Property axioms (inverseOf, SymmetricProperty, TransitiveProperty, equivalentProperty)</li>
 </ul>
-<p>There is some experimental support for the cheaper class restriction handlingly which should not be relied on at this point.</p>
-</li>
-</ul>
-<h2 id="server-configuration">Server Configuration</h2>
-<p>If you need to load additional classes, or set global parameters, then these go in
-<code>FUSEKI_BASE/config.ttl</code>.</p>
-<p>Additional classes can not be loaded if running as a <code>.war</code> file.  You will
-need to create a custom <code>.war</code> file consisting of the contents of the Fuseki
-web application and the additional classes</p>
-<h3 id="server-section">Server Section</h3>
-<pre><code>[] rdf:type fuseki:Server ;
-   # Server-wide context parameters can be given here.
-   # For example, to set query timeouts: on a server-wide basis:
-   # Format 1: &quot;1000&quot; -- 1 second timeout
-   # Format 2: &quot;10000,60000&quot; -- 10s timeout to first result, then 60s timeout to for rest of query.
-   # See java doc for ARQ.queryTimeout
-   # ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;10000&quot; ] ;
-
-   # Load custom code (rarely needed)
-   # ja:loadClass &quot;your.code.Class&quot; ;
-   .
-</code></pre>
-<h2 id="compatibility-with-fuseki-1-configuration">Compatibility with Fuseki 1 configuration</h2>
-<p>Configurations from Fuseki 1, where all dataset and server setup is in a
-single configuration file, will still work.  It is less flexible
-(you can&rsquo;t restart these services after stopping them in a running server)
-and user should plan to migrate to the <a href="./fuseki-layout.html">new layout</a>.</p>
-<p>To convert a Fuseki 1 configuration setup to Fuseki 2 style, move each data service assembler and put in its own file under <code>FUSEKI_BASE/configuration/</code></p>
+<p>There is some experimental support for the cheaper class restriction handling which should not be relied on at this point.</p>
 
 
         </div>
