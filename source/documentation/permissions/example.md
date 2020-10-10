@@ -13,10 +13,10 @@ To do this you will need a Fuseki installation, the Permissions Packages and a S
 This example uses Fuseki 2.3.0 or higher, Permissions 3.1.0 or higher and Apache Commons Collections v4.
 
 Fuseki can be downloaded from:
-[https://repository.apache.org/content/repositories/releases/org/apache/jena/apache-jena-fuseki/]
+<https://repository.apache.org/content/repositories/releases/org/apache/jena/apache-jena-fuseki/>
 
 Jena Permissions jars can be downloaded from:
-[https://repository.apache.org/content/repositories/releases/org/apache/jena/jena-permissions/]
+<https://repository.apache.org/content/repositories/releases/org/apache/jena/jena-permissions/>
 
 1. Download and unpack Fuseki. The directory that you unpack Fuseki into will be referred to as the `Fuseki Home` directory for the remainder of this document.
 
@@ -24,8 +24,7 @@ Jena Permissions jars can be downloaded from:
 
 3. Copy the permissions jar and the permissions-example jar into the Fuseki Home directory. For the rest of this document the permissions jar will be referred to as `permissions.jar` and the permissions-example.jar as `example.jar`
 
-4. Download the Apache Commons Collections v4
-[http://commons.apache.org/proper/commons-collections/download_collections.cgi]
+4. Download the [Apache Commons Collections v4](http://commons.apache.org/proper/commons-collections/download_collections.cgi).
 Uncompress the `commons-collections*.jar` into the `Fuseki Home` directory.
 
 5. Add security jars to the startup script/batch file.
