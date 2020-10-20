@@ -140,7 +140,7 @@ The server accepts updates to modify the dataset. Default: false
     --tdb, -t
 
 An existing or new TDB folder used for the dataset. Default set to memory dataset.
-If accessing a dataset for the first time with GeoSPARQL then consider the `--inference`, `--default_geometry` and `--validate` options. These operations may add additional statements to the dataset.
+If accessing a dataset for the first time with GeoSPARQL then consider the `--inference`, `--default_geometry` and `--validate` options. These operations may add additional statements to the dataset. TDB1 Dataset will be used by default, use `-t <folder_path> -t2` options for TDB2 Dataset. 
 
 ### 6) Load RDF file into dataset
 
