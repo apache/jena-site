@@ -68,7 +68,7 @@ Symbol | Usage | Default
 `srv:queryTimeout` | Set timeouts | none
 `srv:queryCompression` | Enable use of deflation and GZip | true
 `srv:queryClient` | Enable use of a specific client | none
-`srv:queryContext` | Per-endpoint configuration | none
+`srv:serviceContext` | Per-endpoint configuration | none
 
 #### `srv:queryTimeout`
 
@@ -89,9 +89,13 @@ Provides a slot for a specific [HttpClient][1] for use with a specific `SERVICE`
 
 #### `srv:serviceContext`
 
-As documented above.
+Provides a mechanism to override system context settings on a per URI basis.
 
-[ARQ documentation index](index.html)
+The value is a `Map<String,Context>` where the map key is the URI of the service endpoint, and the `Context` is a set of values to override the default values.
+
+If a context is provided for the URI, the system context is copied and the
+context for the URI is used to set specific values.  This ensures that any URI
+specific settings will be used.
 
 [1]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
 
