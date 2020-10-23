@@ -61,8 +61,6 @@ The `SERVICE` operation in a SPARQL query may be configured via the Context. The
 
 The prefix  `srv:` is the IRI `<http://jena.hpl.hp.com/Service#>`.
 
-### Configuration from Jena version 3.1.1
-
 Symbol | Usage | Default
 ------ | ----- | -------
 `srv:queryTimeout` | Set timeouts | none
@@ -73,7 +71,6 @@ Symbol | Usage | Default
 #### `srv:queryTimeout`
 
 As documented above.
-
 
 #### `srv:queryCompression`
 
@@ -98,66 +95,3 @@ context for the URI is used to set specific values.  This ensures that any URI
 specific settings will be used.
 
 [1]: https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html
-
-### Configuration for Jena version 3.0.0 through 3.1.0
-
-Symbol | Usage
------- | -----
-`srv:queryTimeout` | Set timeouts 
-`srv:queryGzip` | Enable use of GZip
-`srv:queryDeflate` | Enable use of deflate
-`srv:queryAuthUser` | Basic authentication
-`srv:queryAuthPwd` |  Basic authentication
-`srv:queryContext` | Per-endpoint configuration
-
-#### `srv:queryTimeout`
-
-Set the connect and read timeouts for the query.
-
-If a timeout occurs a QueryExceptionHTTP is thrown.  The cause of that exception will be a java.net.SocketTimeoutException.
-
-Number: number of milliseconds for connect timeout.
-
-String: number of milliseconds for connect timeout.  If string is of the form “X,Y” the first number is the number of milliseconds for the connect timeout and the seconds is the number of milliseconds for the read timeout.
-
-Connect timeout =0
-read timeout = 0
-
-Values of 0 indicate no timeout and service operation will wait until the remote server responds.
-
-#### `srv:queryGzip`
-
-Sets the allow Gzip flag.
-
-Boolean: True indicates that gzip compressed data is acceptable.
-false
-
-#### `srv:queryDeflate`
-
-Sets the allow Deflate flag.
-
-Boolean: True indicates that deflate compression is acceptable
-False
-
-#### `srv:queryAuthUser`
-
-Sets the user id for basic auth.
-
-String: The user id to log in with
-
-If null or null length no user id is sent.
-
-#### `srv:queryAuthPwd`
-
-Sets the password for basic auth.
-
-String: The password to log in with.
-
-If null or null length no password is sent.
-
-#### `srv:serviceContext`
-Provides a mechanism to override system context settings on a per URI basis.
-
-The value is a `Map<String,Context>` where the map key is the URI of the service endpoint, and the `Context` is a set of values to override the default values.
-
-If a context is provided for the URI the system context is copied and the URI specific values are then copied in.  This ensures that any URI specific settings will be used.
