@@ -344,6 +344,7 @@ MultiGeometry | Point, LineString, Curve, Polygon, Surface
 The `jena-spatial` module contains several SPARQL functions for querying datasets using the WGS84 Geo predicates for latitude (`http://www.w3.org/2003/01/geo/wgs84_pos#lat`) and longitude (`http://www.w3.org/2003/01/geo/wgs84_pos#long`).
 These `jena-spatial` functions are supported for both Geo predicates and Geometry Literals, i.e. a GeoSPARQL dataset.
 Additional SPARQL filter functions have been provided to convert Geo predicate properties into WKT strings and calculate Great Circle and Euclidean distances.
+The `jena-spatial`functions require setting up a Spatial Index for the target Dataset, e.g. `GeoSPARQLConfig.setupSpatialIndex(dataset);`, see Spatial Index section.
 
 ### Supported Features
 The Geo predicate form of spatial representation is restricted to only 'Point' shapes in the WGS84 spatial/coordinate reference system.
