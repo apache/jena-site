@@ -35,6 +35,7 @@ transactional persistent storage layer, and incorporates
     - [As a Docker container](fuseki-main#fuseki-docker)
     - [As an embedded SPARQL server](fuseki-embedded.html)
     - [Security and data access control](fuseki-data-access-control.html)
+    - [Fuseki Sever Protocol (REST API)](fuseki-server-protocol.html)
 - [Fuseki Configuration](fuseki-configuration.html)
 - [Logging](fuseki-logging.html)
 - [Server Statistics and Metrics](fuseki-server-info.html)
