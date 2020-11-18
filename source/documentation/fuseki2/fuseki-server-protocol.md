@@ -42,6 +42,7 @@ Further operations may be added within this naming scheme.
 ||
 | <tt>POST</tt>   | `/$/backup/*{name}*`   |             |
 | <tt>GET</tt>    | `/$/backups-list`      |             |
+| <tt>POST</tt>   | `/$/compact/*{name}*`  |             |
 | <tt>POST</tt>   | `/$/sleep`             |             |
 ||
 | <tt>GET</tt>    | `/$/tasks`            |               | 
@@ -165,6 +166,17 @@ useful for managing the files externally.
 The returned JSON object will have the form `{ backups: [ ... ] }` where the `[]` array is
 a list of file names.
 
+### Compact
+Pattern: `/$/compact/*{name}*`
+
+This operations initiates a database compaction task and returns a JSON object with the task Id in it.
+
+Compaction **ONLY** applies to TDB2 datasets, see [TDB2 Database Administration](../tdb2/tdb2_admin.html#compaction)
+for more details of this operation.
+
+You can monitor the status of the task via the Tasks portion of the API.  A successful compaction will have 
+the `finishPoint` field set and `success` field set to `true`.
+
 ## Tasks
 Some operations cause a background task to be executed, backup is an example.
 The result of such operations includes a json object with the task id and
@@ -175,7 +187,7 @@ The progress of the task can be monitored with HTTP GET operations:
 Pattern: `/$/tasks` &ndash; All asynchronous tasks.<br/>
 Pattern: `/$/tasks/*{taskId}*` &ndash; A particular task.
 
-The URL `/$/tasks` returns a description of all running and recently tasks. A finished task can be identified by having a "finishPoint" field.
+The URL `/$/tasks` returns a description of all running and recently tasks. A finished task can be identified by having a `finishPoint` and `success` fields.
 
 Each background task has an id.  The URL `/$/tasks/*{taskId}*` gets a description about one single task.
 
@@ -187,13 +199,15 @@ Pattern: `/$/tasks` ; example:
     "finished" : "2014-05-28T12:52:51.860+01:00" ,
     "started" : "2014-05-28T12:52:50.859+01:00" ,
     "task" : "sleep" ,
-    "taskId" : "1"
+    "taskId" : "1" ,
+    "success" : true
   } ,
   { 
     "finished" : "2014-05-28T12:53:24.718+01:00" ,
     "started" : "2014-05-28T12:53:14.717+01:00" ,
     "task" : "sleep" ,
-    "taskId" : "2"
+    "taskId" : "2" ,
+    "success" : true
   }
 ]
 ```
@@ -203,7 +217,8 @@ Pattern: `/$/tasks/1` : example:
     "finished" : "2014-05-28T13:54:13.608+01:00" ,
     "started" : "2014-05-28T13:54:03.607+01:00" ,
     "task" : "backup" ,
-    "taskId" : "1"
+    "taskId" : "1" ,
+    "success" : false
   }
 ]
 ```
