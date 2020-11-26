@@ -44,32 +44,32 @@ This distribution contains the APIs, SPARQL engine, the TDB native RDF database 
 
 The binary distribution may be downloaded at:
 
-<a href="[preferred]jena/binaries/apache-jena-3.16.0.tar.gz">apache-jena-3.16.0.tar.gz</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.16.0.tar.gz.sha512">SHA512</a>, 
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.16.0.tar.gz.asc">PGP</a>)
+<a href="[preferred]jena/binaries/apache-jena-3.17.0.tar.gz">apache-jena-3.17.0.tar.gz</a>
+(<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.tar.gz.sha512">SHA512</a>, 
+<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.tar.gz.asc">PGP</a>)
 
-<a href="[preferred]jena/binaries/apache-jena-3.16.0.zip">apache-jena-3.16.0.zip</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.16.0.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.16.0.zip.asc">PGP</a>)
+<a href="[preferred]jena/binaries/apache-jena-3.17.0.zip">apache-jena-3.17.0.zip</a>
+(<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.zip.sha512">SHA512</a>,
+<a href="https://downloads.apache.org/jena/binaries/apache-jena-3.17.0.zip.asc">PGP</a>)
 
 The source distribution, which includes the source for Fuseki and all modules in the release, may be downloaded at:
 
-<a href="[preferred]jena/source/jena-3.16.0-source-release.zip">jena-3.16.0-source-release.zip</a>
-(<a href="https://downloads.apache.org/jena/source/jena-3.16.0-source-release.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/source/jena-3.16.0-source-release.zip.asc">PGP</a>)
+<a href="[preferred]jena/source/jena-3.17.0-source-release.zip">jena-3.17.0-source-release.zip</a>
+(<a href="https://downloads.apache.org/jena/source/jena-3.17.0-source-release.zip.sha512">SHA512</a>,
+<a href="https://downloads.apache.org/jena/source/jena-3.17.0-source-release.zip.asc">PGP</a>)
 
 ### Apache Jena Fuseki
 
 The binary distribution of Fuseki2 (this includes both the standalone and
 WAR file packaging) may be downloaded at:
 
-<a href="[preferred]jena/binaries/apache-jena-fuseki-3.16.0.tar.gz">apache-jena-fuseki-3.16.0.tar.gz</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.16.0.tar.gz.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.16.0.tar.gz.asc">PGP</a>)
+<a href="[preferred]jena/binaries/apache-jena-fuseki-3.17.0.tar.gz">apache-jena-fuseki-3.17.0.tar.gz</a>
+(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.17.0.tar.gz.sha512">SHA512</a>,
+<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.17.0.tar.gz.asc">PGP</a>)
 
-<a href="[preferred]jena/binaries/apache-jena-fuseki-3.16.0.zip">apache-jena-fuseki-3.16.0.zip</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.16.0.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.16.0.zip.asc">PGP</a>)
+<a href="[preferred]jena/binaries/apache-jena-fuseki-3.17.0.zip">apache-jena-fuseki-3.17.0.zip</a>
+(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.17.0.zip.sha512">SHA512</a>,
+<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-3.17.0.zip.asc">PGP</a>)
 
 ### Individual Modules
 
