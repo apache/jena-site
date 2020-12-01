@@ -32,11 +32,10 @@ or reverse proxy will log access requests anyway.
 
 ## Setting logging
 
-The Fuseki engine looks for the log4j2 configuration as follows:
+The Fuseki Main engine looks for the log4j2 configuration as follows:
 
 * Use system property `log4j2.configurationFile` if defined ([as usual for log4j2](https://logging.apache.org/log4j/2.x/manual/configuration.html)).
 * Use `file:log4j2.properties` (current directory) if it exists
-* Use file `log4j2.properties` in the directory defined by `FUSEKI_BASE` (webapp)
 * Use java resource `log4j2.properties` on the classpath.
 * Use java resource `org/apache/jena/fuseki/log4j2.properties` on the classpath.
 * Use a built-in configuration.
