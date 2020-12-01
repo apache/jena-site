@@ -184,5 +184,9 @@ See the example jar for another implementation example.
         public Principal getPrincipal() {
             return principal;
         }
-
+        
+        @Override
+        public boolean isPrincipalAuthenticated(Object principal) {
+            return principal != null;
+        }
     }
