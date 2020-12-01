@@ -92,3 +92,7 @@ directory.  It is initialised the first time Fuseki runs, including a
 [Apache Shiro](http://shiro.apache.org/) security file but this is only
 intended as a starting point.  It restricts use of the admin UI to the
 local machine.
+
+When deploying as a web application a more fully featured Admin API is
+made available and described on the 
+[Fuseki Server Protocol (REST API)](fuseki-server-protocol.html) page.
