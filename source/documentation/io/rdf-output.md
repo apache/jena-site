@@ -14,6 +14,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
   - [Pretty Printed Languages](#pretty-printed-languages)
   - [Streamed Block Formats](#streamed-block-formats)
   - [Line printed formats](#line-printed-formats)
+  - [Turtle and Trig format options](#opt-turtle-trig)
   - [N-Triples and N-Quads](#n-triples-and-n-quads)
   - [JSON-LD](#json-ld)
   - [RDF Binary](#rdf-thrift)
@@ -24,7 +25,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
 See [Advanced RDF/XML Output](rdfxml_howto.html#advanced-rdfxml-output) 
 for details of the Jena RDF/XML writer.
 
-## API
+## API {#api}
 
 There are two ways to write RDF data using Apache Jena RIOT, 
 either via the `RDFDataMgr` 
@@ -43,7 +44,7 @@ names Jena has supported before RIOT.
 
 Many variations of these methods exist.  See the full javadoc for details.
 
-## `RDFFormat`
+## `RDFFormat` {#rdfformat}
 
 Output using RIOT depends on the format, which involves both the language (syntax)
 being written and the variant of that syntax. 
@@ -204,7 +205,7 @@ Formats:
 | TURTLE_BLOCKS  |
 | TRIG_BLOCKS    |
 
-### Line printed formats
+### Line printed formats {#line-printed-formats}
 
 There are writers for Turtle and Trig that use the abbreviated formats for
 prefix names and short forms for literals. They write each triple or quad
@@ -240,7 +241,58 @@ but always writes one complete triple on one line (no use of `;`).
 | TURTLE_FLAT |
 | TRIG_FLAT   |
 
-### N-Triples and N-Quads
+### Turtle and Trig format options {#opt-turtle-trig}
+
+Some context settings affect the output of Turtle and TriG writers. Unless
+otherwise noted, the setting applies to both Turtle and TriG.
+
+| Context setting | Cmd line | Values |
+|-----------------|----------|--|
+| RIOT.symTurtleDirectiveStyle | "ttl:directiveStyle" | "sparql", "rdf11", "at", "n3" |
+| RIOT.symTurtleOmitBase       | "ttl:omitBase"       | "true", "false" |
+
+<p>&nbsp;</p>
+
+| Directive Style | Effect |
+|------------------|-------|
+| "sparql", "rdf11"    | Use `PREFIX` and `BASE` in output.   |
+| "at", "n3"           | Use `@prefix` and `@base` in output. |
+| unset                | Use `@prefix` and `@base` in output. |
+
+<p>&nbsp;</b>
+
+#### Format Option Usage
+
+##### _Setting directive style_
+```
+    riot --set ttl:directiveStyle=sparql --pretty Turtle file1.rdf file2.nt ...
+```
+and in code:
+```
+  RDFWriter.create()
+     .set(RIOT.symTurtleDirectiveStyle, "sparql")
+     .lang(Lang.TTL)
+     .source(model)
+     .output(System.out);
+```
+##### _Base URI_
+
+Output can be written with relative URIs and no base. Note: such output is not
+portable; its meaning depends on the base URI at the time of reading.
+
+Turtle and Trig can be written with relative URIs by
+setting the base URI for writing and switching off output of the base URI.
+
+```
+  RDFWriter.create()
+     .base("http://host/someBase")
+     .set(RIOT.symTurtleOmitBase, true)
+     .lang(Lang.TTL)
+     .source(model)
+     .output(System.out);
+```
+
+### N-Triples and N-Quads {#n-triples-and-n-quads}
 
 These provide the formats that are fastest to write, 
 and data of any size can be output.  They do not use any
@@ -289,7 +341,7 @@ in ASCII (using `\u` escape sequences for non-ASCI characters where necessary).
 | NTRIPLES_ASCII  |
 | NQUADS_ASCII    |
 
-### JSON-LD
+### JSON-LD {#json-ld}
 
 JSON-LD output is supported, in its various flavors 
 ("compacted", "expanded", "flattened", "framed"), 
@@ -317,7 +369,7 @@ cases.
 What can be done, and how it can be, is explained in the 
 [sample code](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/Ex_WriteJsonLD.java).
 
-### RDF Binary
+### RDF Binary {#rdf-thrift}
 
 [This is a binary encoding](rdf-binary.html) using 
 [Apache Thrift](https://thrift.apache.org/) for RDF Graphs
@@ -334,7 +386,7 @@ not as lexical format and datatype.  See the
 [description of RDF Thrift](http://afs.github.io/rdf-thrift)
 for discussion.
 
-### RDF/XML
+### RDF/XML {#rdfxml}
 
 RIOT supports output in RDF/XML. RIOT RDFFormats defaults to pretty printed RDF/XML,
 while the jena writer name defaults to a streaming plain output.
@@ -344,7 +396,7 @@ while the jena writer name defaults to a streaming plain output.
 | RDFXML    | RDFXML_PRETTY, RDF_XML_ABBREV | "RDF/XML-ABBREV" |
 | RDFXML_PLAIN |                            | "RDF/XML"        |
 
-## Examples
+## Examples {#examples}
 
 Example code may be found in [jena-arq/src-examples](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/).
 
@@ -402,7 +454,7 @@ might give:
 A complete example of adding a new output format is given in the example file: 
 [RIOT Output example 3](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_out3.java)
 
-## Notes
+## Notes {#notes}
 
 Using `OutputStream`s is strongly encouraged.  This allows the writers
 to manage the character encoding using UTF-8.  Using `java.io.Writer` 
