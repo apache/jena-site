@@ -305,6 +305,11 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
+<td><code>/$/compact/*{name}*</code></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
 <td><code>/$/sleep</code></td>
 <td></td>
 </tr>
@@ -421,6 +426,13 @@ See <a href="fuseki-server-info.html">Fuseki Server Information</a> for details 
 useful for managing the files externally.</p>
 <p>The returned JSON object will have the form <code>{ backups: [ ... ] }</code> where the <code>[]</code> array is
 a list of file names.</p>
+<h3 id="compact">Compact</h3>
+<p>Pattern: <code>/$/compact/*{name}*</code></p>
+<p>This operations initiates a database compaction task and returns a JSON object with the task Id in it.</p>
+<p>Compaction <strong>ONLY</strong> applies to TDB2 datasets, see <a href="../tdb2/tdb2_admin.html#compaction">TDB2 Database Administration</a>
+for more details of this operation.</p>
+<p>You can monitor the status of the task via the Tasks portion of the API.  A successful compaction will have
+the <code>finishPoint</code> field set and <code>success</code> field set to <code>true</code>.</p>
 <h2 id="tasks">Tasks</h2>
 <p>Some operations cause a background task to be executed, backup is an example.
 The result of such operations includes a json object with the task id and
@@ -428,7 +440,7 @@ also a <code>Location:</code> header with the URL of the task created.</p>
 <p>The progress of the task can be monitored with HTTP GET operations:</p>
 <p>Pattern: <code>/$/tasks</code> – All asynchronous tasks.<br/>
 Pattern: <code>/$/tasks/*{taskId}*</code> – A particular task.</p>
-<p>The URL <code>/$/tasks</code> returns a description of all running and recently tasks. A finished task can be identified by having a &ldquo;finishPoint&rdquo; field.</p>
+<p>The URL <code>/$/tasks</code> returns a description of all running and recently tasks. A finished task can be identified by having a <code>finishPoint</code> and <code>success</code> fields.</p>
 <p>Each background task has an id.  The URL <code>/$/tasks/*{taskId}*</code> gets a description about one single task.</p>
 <p>Details of the last few completed tasks are retained, up to a fixed number. The records will eventually be removed as later tasks complete, and the task URL will then return 404.</p>
 <p>Pattern: <code>/$/tasks</code> ; example:</p>
@@ -436,13 +448,15 @@ Pattern: <code>/$/tasks/*{taskId}*</code> – A particular task.</p>
     &quot;finished&quot; : &quot;2014-05-28T12:52:51.860+01:00&quot; ,
     &quot;started&quot; : &quot;2014-05-28T12:52:50.859+01:00&quot; ,
     &quot;task&quot; : &quot;sleep&quot; ,
-    &quot;taskId&quot; : &quot;1&quot;
+    &quot;taskId&quot; : &quot;1&quot; ,
+    &quot;success&quot; : true
   } ,
   { 
     &quot;finished&quot; : &quot;2014-05-28T12:53:24.718+01:00&quot; ,
     &quot;started&quot; : &quot;2014-05-28T12:53:14.717+01:00&quot; ,
     &quot;task&quot; : &quot;sleep&quot; ,
-    &quot;taskId&quot; : &quot;2&quot;
+    &quot;taskId&quot; : &quot;2&quot; ,
+    &quot;success&quot; : true
   }
 ]
 </code></pre><p>Pattern: <code>/$/tasks/1</code> : example:</p>
@@ -450,7 +464,8 @@ Pattern: <code>/$/tasks/*{taskId}*</code> – A particular task.</p>
     &quot;finished&quot; : &quot;2014-05-28T13:54:13.608+01:00&quot; ,
     &quot;started&quot; : &quot;2014-05-28T13:54:03.607+01:00&quot; ,
     &quot;task&quot; : &quot;backup&quot; ,
-    &quot;taskId&quot; : &quot;1&quot;
+    &quot;taskId&quot; : &quot;1&quot; ,
+    &quot;success&quot; : false
   }
 ]
 </code></pre><p>This is inside an array to make the format returned the same as <code>/$/tasks</code>.</p>

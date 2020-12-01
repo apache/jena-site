@@ -243,7 +243,34 @@ local machine.</p>
 <p>When deploying as a web application a more fully featured Admin API is
 made available and described on the
 <a href="fuseki-server-protocol.html">Fuseki Server Protocol (REST API)</a> page.</p>
-
+<h2 id="configuring-logging">Configuring logging</h2>
+<p>When running from a WAR file in a webapp container such as Apache Tomcat, the
+logging configuration comes from the file <code>log4j2.properties</code> in the root of the
+unpacked war file, e.g. <code>/var/lib/tomcat9/webapps/fuseki/log4j2.properties</code>.</p>
+<p>The name of the file is taken from <code>web.xml</code>:</p>
+<p><context-param>
+<param-name>log4jConfiguration</param-name>
+<param-value>log4j2.properties</param-value>
+</context-param></p>
+<p>Thsi only applies when running in a webapp container. When run from the command
+line, the server looks for <code>log4j2.properties</code> in the current directory and if
+not found, uses a built-in configuration.</p>
+<p>This logging goes to the standard output.</p>
+<h2 id="fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</h2>
+<p><code>systemd</code> may be set to sandbox Tomcat9. The file area <code>/etc/fuseki</code> will not
+be writable to Fuseki. To enable this area, add <code>ReadWritePaths=/etc/fuseki/</code> to
+the file <code>/etc/systemd/system/tomcat9.service.d/override.conf</code>,
+creating the file if necessary.</p>
+<p><code>systemd</code> also captures standard out and routes it to the system journal:</p>
+<pre><code>  journalctl -u tomcat9
+</code></pre><p>To direct the output to the traditional location of
+/var/log/tomcat9/catalina.out use the <code>StandardOutput</code> setting in <code>override.conf</code>:</p>
+<pre><code>    [Service]
+   
+    # Allow access to the Fuseki area
+    ReadWritePaths=/etc/fuseki/
+    StandardOutput=file:/var/log/tomcat9/catalina.out
+</code></pre>
 
         </div>
     </div>

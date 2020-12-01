@@ -187,6 +187,7 @@
 <li><a href="#pretty-printed-languages">Pretty Printed Languages</a></li>
 <li><a href="#streamed-block-formats">Streamed Block Formats</a></li>
 <li><a href="#line-printed-formats">Line printed formats</a></li>
+<li><a href="#opt-turtle-trig">Turtle and Trig format options</a></li>
 <li><a href="#n-triples-and-n-quads">N-Triples and N-Quads</a></li>
 <li><a href="#json-ld">JSON-LD</a></li>
 <li><a href="#rdf-thrift">RDF Binary</a></li>
@@ -493,7 +494,75 @@ _:b1 rdf:first :a .
 </tr>
 </tbody>
 </table>
-<h3 id="n-triples-and-n-quads">N-Triples and N-Quads</h3>
+<h3 id="opt-turtle-trig">Turtle and Trig format options</h3>
+<p>Some context settings affect the output of Turtle and TriG writers. Unless
+otherwise noted, the setting applies to both Turtle and TriG.</p>
+<table>
+<thead>
+<tr>
+<th>Context setting</th>
+<th>Cmd line</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RIOT.symTurtleDirectiveStyle</td>
+<td>&ldquo;ttl:directiveStyle&rdquo;</td>
+<td>&ldquo;sparql&rdquo;, &ldquo;rdf11&rdquo;, &ldquo;at&rdquo;, &ldquo;n3&rdquo;</td>
+</tr>
+<tr>
+<td>RIOT.symTurtleOmitBase</td>
+<td>&ldquo;ttl:omitBase&rdquo;</td>
+<td>&ldquo;true&rdquo;, &ldquo;false&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table>
+<thead>
+<tr>
+<th>Directive Style</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;sparql&rdquo;, &ldquo;rdf11&rdquo;</td>
+<td>Use <code>PREFIX</code> and <code>BASE</code> in output.</td>
+</tr>
+<tr>
+<td>&ldquo;at&rdquo;, &ldquo;n3&rdquo;</td>
+<td>Use <code>@prefix</code> and <code>@base</code> in output.</td>
+</tr>
+<tr>
+<td>unset</td>
+<td>Use <code>@prefix</code> and <code>@base</code> in output.</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</b>
+<h4 id="format-option-usage">Format Option Usage</h4>
+<h5 id="_setting-directive-style_"><em>Setting directive style</em></h5>
+<pre><code>    riot --set ttl:directiveStyle=sparql --pretty Turtle file1.rdf file2.nt ...
+</code></pre><p>and in code:</p>
+<pre><code>  RDFWriter.create()
+     .set(RIOT.symTurtleDirectiveStyle, &quot;sparql&quot;)
+     .lang(Lang.TTL)
+     .source(model)
+     .output(System.out);
+</code></pre><h5 id="_base-uri_"><em>Base URI</em></h5>
+<p>Output can be written with relative URIs and no base. Note: such output is not
+portable; its meaning depends on the base URI at the time of reading.</p>
+<p>Turtle and Trig can be written with relative URIs by
+setting the base URI for writing and switching off output of the base URI.</p>
+<pre><code>  RDFWriter.create()
+     .base(&quot;http://host/someBase&quot;)
+     .set(RIOT.symTurtleOmitBase, true)
+     .lang(Lang.TTL)
+     .source(model)
+     .output(System.out);
+</code></pre><h3 id="n-triples-and-n-quads">N-Triples and N-Quads</h3>
 <p>These provide the formats that are fastest to write,
 and data of any size can be output.  They do not use any
 internal state and formats always stream without limitation.</p>
@@ -601,7 +670,7 @@ pass the &ldquo;frame&rdquo; in the <code>JSONLD_FRAME_PRETTY</code> and <code>J
 cases.</p>
 <p>What can be done, and how it can be, is explained in the
 <a href="https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/Ex_WriteJsonLD.java">sample code</a>.</p>
-<h3 id="rdf-binary">RDF Binary</h3>
+<h3 id="rdf-thrift">RDF Binary</h3>
 <p><a href="rdf-binary.html">This is a binary encoding</a> using
 <a href="https://thrift.apache.org/">Apache Thrift</a> for RDF Graphs
 and RDF Datasets, as well as SPARQL Result Sets, and it provides faster parsing
