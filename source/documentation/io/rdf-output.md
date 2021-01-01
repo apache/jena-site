@@ -429,7 +429,7 @@ The preferred style is to use `RDFDataMgr`:
 Additionally, a single model can be written in a dataset format - it becomes
 the default graph of the dataset.
     
-    Model m = 
+    Model m = ... ;
     RDFDataMgr.write(System.out, m, Lang.TRIG) ;
 
 might give:
@@ -452,7 +452,7 @@ might give:
 ### Adding a new output format
 
 A complete example of adding a new output format is given in the example file: 
-[RIOT Output example 3](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_out3.java)
+[RIOT Output example 7](https://github.com/apache/jena/blob/master/jena-arq/src-examples/arq/examples/riot/ExRIOT7_AddNewWriter.java).
 
 ## Notes {#notes}
 
