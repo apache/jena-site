@@ -110,7 +110,7 @@ The name of the file is taken from `web.xml`:
     <param-value>log4j2.properties</param-value>
   </context-param>
 
-Thsi only applies when running in a webapp container. When run from the command
+This only applies when running in a webapp container. When run from the command
 line, the server looks for `log4j2.properties` in the current directory and if
 not found, uses a built-in configuration.
 
