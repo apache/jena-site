@@ -5,9 +5,8 @@ title: Running Fuseki with UI
 Fuseki/UI can be run in a number of ways:
 
 * [As a standalone server](#fuseki-standalone-server)
-* [As a service](#fuseki-service) run by the operation system, for example, started when the machine
-* [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty
-boots.
+* [As a service](#fuseki-service) run by the operation system, for example, started when the machine boots
+* [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty.
 
 Fuseki is also packaged as a plain server ["Fuseki Main"](fuseki-main.html)
 with no UI for use as a configurable SPARQL server, for [building as a Docker
