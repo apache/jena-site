@@ -51,7 +51,7 @@ The first section declares the prefixes used later:
 
 then there is the description of the TDB dataset itself:
 
-    <#graph> rdf:type tdb:DatasetTDB ;
+    <#dataset> rdf:type tdb:DatasetTDB ;
         tdb:location "DB" ;
 
 The property `tdb:location` gives the file name as a string. It is
