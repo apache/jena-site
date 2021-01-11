@@ -24,7 +24,7 @@ This has 4 solutions, one for each VCARD name property triples in
 the data source
 
     ----------------------------------------------------
-    | x                                | name          |
+    | x                                | fname         |
     ====================================================
     | <http://somewhere/RebeccaSmith/> | "Becky Smith" |
     | <http://somewhere/SarahJones/>   | "Sarah Jones" |
