@@ -104,7 +104,7 @@ the following parameters (query string or HTML form):
 
 The dataset name must not be already in-use.
 
-Datasets are created in director `databases/`.
+Datasets are created in directory `databases/`.
 
 #### Assembler example
 
