@@ -5,10 +5,10 @@ slug: index
 
 An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
 
-An [integration with Fuseki](geosparql-fuseki) is available.
+An [integration with Fuseki](geosparql-fuseki) is available but attention should be paid to the contents of this page to understand supported features.
 
 ## Features
-This implementation follows the 11-052r4 OGC GeoSPARQL standard (http://www.opengeospatial.org/standards/geosparql).
+This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql).
 The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.
 
 It implements the six Conformance Classes described in the GeoSPARQL document:
@@ -28,11 +28,10 @@ and registering with Jena's `org.apache.jena.datatypes.TypeMapper`.
 All three spatial relation families are supported: _Simple Feature_, _Egenhofer_ and _RCC8_.
 
 Indexing and caching of spatial objects and relations is performed _on-demand_ during query execution.
-Therefore, set-up delays should be minimal.
+Therefore, set-up delays should be minimal. Spatial indexing is available based on the _STRtree_ from the JTS library. The _STRtree_ is readonly once built and contributions of a _QuadTree_ implementation are welcome.
 
 Benchmarking of the implementation against Strabon and Parliament has found it to be comparable or quicker.
 The benchmarking used was the Geographical query and dataset (http://geographica.di.uoa.gr/).
-Publication of the benchmarking results are forthcoming.
 
 ## Additional Features
 The following additional features are also provided:
