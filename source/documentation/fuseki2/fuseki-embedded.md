@@ -104,7 +104,7 @@ port for Fuseki running as a standalone server or as a webapp application.
 Create a server on port 3330, that provides the default set of endpoints for an RDF
 dataset that can be updated via HTTP.
 
-    DatasetGraph ds = DatasetFactory.createTxnMem() ;
+    Dataset ds = DatasetFactory.createTxnMem() ;
     FusekiServer server = FusekiServer.create()
         .add("/ds", ds)
         .build() ;
