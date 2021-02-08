@@ -131,7 +131,7 @@ set that is read-only over HTTP. The application can still update the dataset.
 
     Dataset ds = ... ;
     FusekiServer server = FusekiServer.create()
-        .setPort(3332)
+        .port(3332)
         .add("/ds", ds, true)
         .build() ;
     server.start() ;
@@ -154,7 +154,7 @@ Different combinations of services and endpoint names can be given using a `Data
     dataService.addEndpoint(OperationName.Update, "");
 
     FusekiServer server = FusekiServer.create()
-       .setPort(3332)
+       .port(3332)
        .add("/data", dataService)
        .build() ;
     server.start() ;
