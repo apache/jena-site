@@ -277,7 +277,7 @@ Graph ACLs are defined in a [Graph Security Registry](#graph-security-registry) 
         . . .
 </pre>
 
-All dataset storage types are supported. TDB1 and TBD2 have special implementations for handling graph access control.
+All dataset storage types are supported. TDB1 and TDB2 have special implementations for handling graph access control.
 
 ### Graph Security Registry {#graph-security-registry}
 
