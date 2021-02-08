@@ -253,7 +253,7 @@ production of data to run ahead of your consumption of data which may result in 
 The only complication is that you need to ensure that the thread feeding the `PipedRDFStream` and the consumer of the iterator are on different threads
 as otherwise you can run into a deadlock situation where one is waiting on data from the other which is never started.
 
-See [RIOT example 6](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_6.java)
+See [RIOT example 6](https://github.com/apache/jena/blob/main/jena-arq/src-examples/arq/examples/riot/ExRIOT6_AddNewReader.java)
 which shows an example usage including a simple way to push the parser onto a different thread to avoid the possible deadlock.
 
 ### Filter the output of parsing
@@ -262,10 +262,10 @@ When working with very large files, it can be useful to
 process the stream of triples or quads produced
 by the parser so as to work in a streaming fashion.
 
-See [RIOT example 4](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_4.java)
+See [RIOT example 4](https://github.com/apache/jena/blob/main/jena-arq/src-examples/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java)
 
 ### Add a new language
 
 The set of languages is not fixed. A new language, 
 together with a parser, can be added to RIOT as shown in
-[RIOT example 5](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT_5.java)
+[RIOT example 5](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)
