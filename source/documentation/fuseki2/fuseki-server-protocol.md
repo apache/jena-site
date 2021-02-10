@@ -3,8 +3,7 @@ title: Fuseki HTTP Administration Protocol
 ---
 
 This page describes the HTTP Protocol used to control an Fuseki server via
-its administrative interface.  See "[Fuseki Administration](admin.html)"
-for an overview of server administration.
+its administrative interface.
 
 * [Operations](#operations)
 * [Server Information](#server-information)
