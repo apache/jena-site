@@ -33,7 +33,7 @@ the `PREFIX` declaration.
 All code loading is performed via the `MappedLoader` class. Before
 actually loading the code, the mapped loader applies any
 transformation of URIs. For example, the ARQ function library has a
-namespace of `<http://jena.hpl.hp.com/ARQ/function#>` and resides
+namespace of `<http://jena.apache.org/ARQ/function#>` and resides
 in the Java package org.apache.jena.sparql.function.library. The
 mapped loader includes a partial rewrite rule turning http URLs
 starting with that namespace into java: URIs using the package

@@ -15,7 +15,9 @@ Applications can also [provide their own property functions](writing_propfuncs.h
 
 ## Property Function Library
 
-Prefix `apf:` which is `<http://jena.hpl.hp.com/ARQ/property#>`.
+The prefix `apf` is `<http://jena.apache.org/ARQ/property#>`.
+(The old prefix of `<http://jena.hpl.hp.com/ARQ/property#>` continues to
+work. Applications are encouraged to switch.)
 
 Direct loading using a URI prefix of
 `<java:org.apache.jena.sparql.pfunction.library.>` (note the final
