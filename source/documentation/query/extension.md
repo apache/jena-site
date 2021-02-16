@@ -52,9 +52,9 @@ access the queried dataset.
 ### Dynamically Loaded Functions
 
 The ARQ function library uses this mechanism.  The namespace of the
-ARQ function library is <`http://jena.hpl.hp.com/ARQ/function#>`.
+ARQ function library is `<http://jena.apache.org/ARQ/function#>`.
 
-    PREFIX afn: <http://jena.hpl.hp.com/ARQ/function#>
+    PREFIX afn: <http://jena.apache.org/ARQ/function#>
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     SELECT ?v { 
         ?x dc:date ?date . 
@@ -87,7 +87,7 @@ be query variable). They may take a list for subject or object.
 One common case is for access to collections (RDF lists) or
 containers (rdf:Bag, rdf:Seq, rdf:Alt).
 
-    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>
+    PREFIX list: <http://jena.apache.org/ARQ/list#>
     SELECT ?member { 
         ?x :p ?list .     # Some way to find the list 
         ?list list:member ?member .
@@ -95,7 +95,7 @@ containers (rdf:Bag, rdf:Seq, rdf:Alt).
 
 which can also be written:
 
-    PREFIX list: <http://jena.hpl.hp.com/ARQ/list#>
+    PREFIX list: <http://jena.apache.org/ARQ/list#>
     SELECT ?member { 
         ?x :p [ list:member ?member ] 
     }

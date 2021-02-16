@@ -33,7 +33,7 @@ page.
 ### Function Library
 
 The prefix `afn` is `<http://jena.apache.org/ARQ/function#>`.
-(the old prefix of `<http://jena.hpl.hp.com/ARQ/function#>` continues to
+(The old prefix of `<http://jena.hpl.hp.com/ARQ/function#>` continues to
 work. Applications are encouraged to switch.)
 
 Direct loading using a URI prefix of
