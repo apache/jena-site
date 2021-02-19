@@ -23,11 +23,11 @@ This is the source code for the website of [Apache Jena](https://jena.apache.org
 ## Repository structure
 
 This repository uses 3 branches for building the website.
-- The `master` branch, which contains all the sources for the website.
+- The `main` branch, which contains all the sources for the website.
 - The `asf-site` branch, which contains the generated website being used for the actual website.
 - The `javadoc` branch, which has the javadoc to be published at 
 
-When contributing patches, please create pull requests for the `master` branch.
+When contributing patches, please create pull requests for the `main` branch.
 
 ## Content Management System
 
