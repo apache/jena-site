@@ -6,8 +6,8 @@ title: CSV PropertyTable - Design
 
 The architecture of CSV PropertyTable mainly involves 2 components:
 
--    [PropertyTable](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/PropertyTable.java)
--    [GraphPropertyTable](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphPropertyTable.java)
+-    [PropertyTable](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/PropertyTable.java)
+-    [GraphPropertyTable](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphPropertyTable.java)
 
 ![Picture of architecture of jena-csv](jena-csv-architecture.png "Architecture of jena-csv")
 
@@ -23,9 +23,9 @@ With special storage, a PropertyTable
 -    can guarantee access orders
 
 More explicitly, `PropertyTable` is designed to be a table of RDF terms, or 
-[Nodes](https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/Node.java) in Jena. 
-Each [Column](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/Column.java) of the `PropertyTable` has an unique columnKey `Node` of the predicate (or p for short).
-Each [Row](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/Row.java) of the `PropertyTable` has an unique rowKey `Node` of the subject (or s for short).
+[Nodes](https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/Node.java) in Jena. 
+Each [Column](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/Column.java) of the `PropertyTable` has an unique columnKey `Node` of the predicate (or p for short).
+Each [Row](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/Row.java) of the `PropertyTable` has an unique rowKey `Node` of the subject (or s for short).
 You can use `getColumn()` to get the `Column` by its columnKey `Node` of the predicate, while `getRow()` for `Row`.
 
 A `PropertyTable` should be constructed in this workflow (in order):
@@ -38,8 +38,8 @@ Once a `PropertyTable` is built, tabular data within can be accessed by the API 
 
 ## GraphPropertyTable
 
-`GraphPropertyTable` implements the [Graph](https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/Graph.java) interface (read-only) over a `PropertyTable`. 
-This is subclass from [GraphBase](https://github.com/apache/jena/tree/master/jena-core/src/main/java/org/apache/jena/graph/impl/GraphBase.java) and implements `find()`. 
+`GraphPropertyTable` implements the [Graph](https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/Graph.java) interface (read-only) over a `PropertyTable`. 
+This is subclass from [GraphBase](https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/impl/GraphBase.java) and implements `find()`. 
 The `graphBaseFind()`(for matching a `Triple`) and `propertyTableBaseFind()`(for matching a whole `Row`) methods can choose the access route based on the find arguments.
 `GraphPropertyTable` holds/wraps a reference of the `PropertyTable` instance, so that such a `Graph` can be treated in a more table-like fashion.
 
@@ -48,7 +48,7 @@ They are supposed to be compatible with any table-like data sources, such as rel
 
 ## GraphCSV
 
-[GraphCSV](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphCSV.java) is a sub class of GraphPropertyTable aiming at CSV data.
+[GraphCSV](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphCSV.java) is a sub class of GraphPropertyTable aiming at CSV data.
 Its constructor takes a CSV file path as the parameter, parse the file using a CSV Parser, and makes a `PropertyTable` through `PropertyTableBuilder`.
 
 For CSV to RDF mapping, we establish some basic principles:

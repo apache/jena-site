@@ -117,7 +117,7 @@ Development builds (not a formal release):
 [SNAPSHOT](https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-fuseki/)
 
 Source code:
-[https://github.com/apache/jena/tree/master/jena-fuseki2](https://github.com/apache/jena/tree/master/jena-fuseki2)
+[https://github.com/apache/jena/tree/main/jena-fuseki2](https://github.com/apache/jena/tree/main/jena-fuseki2)
 
 The Fuseki module are under "jena-fuseki2/":
 

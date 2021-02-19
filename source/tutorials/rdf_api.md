@@ -133,7 +133,7 @@ Dublin Core and OWL.</p>
 
 <p>The working code for this example can be found in the /src-examples directory of
 the Jena distribution as 
-<a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial01.java">tutorial
+<a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial01.java">tutorial
 1</a>.
 As an exercise, take this code and modify it to create a simple VCARD for
 yourself.</p>
@@ -190,7 +190,7 @@ Resource johnSmith
 
 
 <p>The working code for this example can be found as <a
-href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a> in the /src-examples directory
+href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a> in the /src-examples directory
 of the Jena distribution.</p>
 
 <h2><a id="ch-Statements">Statements</a></h2>
@@ -224,7 +224,7 @@ methods to the subject, predicate and object of a statement.</p>
 
 <p>Now we will use that interface to extend tutorial2 to list all the
 statements created and print them out.  The complete code for this can be
-found in <a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial03.java">tutorial 3</a>.</p>
+found in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial03.java">tutorial 3</a>.</p>
 
 
 <pre>// list the statements in the Model
@@ -288,7 +288,7 @@ N-Triples writer built in.</p>
 used to save an RDF model to a file and later read it back in again.</p>
 
 <p>Tutorial 3 created a model and wrote it out in triple form. <a
-href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial04.java">Tutorial 4</a> modifies tutorial 3 to write the
+href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial04.java">Tutorial 4</a> modifies tutorial 3 to write the
 model in RDF XML form to the standard output stream. The code again, is
 very simple: <code>model.write</code> can take an <code>OutputStream</code>
 argument.</p>
@@ -378,7 +378,7 @@ the N-Triples specification.</p>
 
 <h2><a id="ch-Reading-RDF">Reading RDF</a></h2>
 
-<p><a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstrates reading the
+<p><a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstrates reading the
 statements recorded in RDF XML form into a model. With this tutorial,
 we have provided <a href="sparql_data/vc-db-1.rdf">a small database of vcards in RDF/XML form</a>.  The following
 code will read it in and write it out. <em>Note that for this application to
@@ -407,7 +407,7 @@ model.write(System.out);
 <p>The second argument to the <code>read()</code> method call is the URI which will
 be used for resolving relative URI's.  As there are no relative URI
 references in the test file, it is allowed to be empty. When run, <a
-href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> will produce XML output which
+href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> will produce XML output which
 looks like:</p>
 
 
@@ -722,7 +722,7 @@ while (iter.hasNext()) {
 }</pre>
 
 
-<p>This code can be found in <a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial06.java"> tutorial 6</a>.
+<p>This code can be found in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial06.java"> tutorial 6</a>.
 The statement iterator <code>iter</code> produces each and every statement
 with subject <code>vcard</code> and predicate <code>VCARD.NICKNAME</code>,
 so looping over it allows us to fetch each statement by using
@@ -820,7 +820,7 @@ is equivalent to
 
 <p>
 The following code, which can be found in full in <a
-href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial07.java">tutorial 7</a> lists the full names on all the
+href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial07.java">tutorial 7</a> lists the full names on all the
 vcards in the database.</p>
 
 
@@ -875,7 +875,7 @@ predicate and object arguments takes place before the
 <code>selects(...)</code> method is called, so the extra test will only be
 applied to matching statements.</p>
 
-<p>The full code can be found in <a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial08.java">tutorial
+<p>The full code can be found in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial08.java">tutorial
 8</a> and produces output like this:</p>
 
 
@@ -935,7 +935,7 @@ one and the duplicate <code>vcard:FN</code> arc is dropped to produce:</p>
 <img alt="figure 6" src="figures/fig6.png" width="540" height="240"></p>
 
 <p>Lets look at the code to do this (the full code is in <a
-href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) and see what happens.</p>
+href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) and see what happens.</p>
 
 
 <pre>// read the RDF/XML files
@@ -1092,7 +1092,7 @@ if (iter2.hasNext()) {
   Becky Smith</pre>
 
 
-<p>Executable example code can be found in <a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial10.java">
+<p>Executable example code can be found in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial10.java">
 tutorial 10</a>, which glues together the fragments above into a complete
 example.</p>
 
@@ -1119,7 +1119,7 @@ Model is written as RDF/XML a special construction using a
 parseType='Literal' attribute is used to represent it.</p>
 
 <p>In Jena, these attributes of a literal may be set when the literal is
-constructed, e.g. in <a href="https://github.com/apache/jena/tree/master/jena-core/src-examples/jena/examples/rdf/Tutorial11.java">tutorial 11</a>:</p>
+constructed, e.g. in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial11.java">tutorial 11</a>:</p>
 
 
 <pre>// create the resource

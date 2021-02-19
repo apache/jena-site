@@ -11,7 +11,7 @@ See the examples in the ARQ `src-examples/` directory of the ARQ
 distribution, particularly `arq.examples.AlgebraExec`.
 
 * [src-examples at gitbox.apache.org](https://gitbox.apache.org/repos/asf?p=jena.git;a=tree;f=jena-arq/src-examples/arq/examples)
-* [src-examples at github.com](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples)
+* [src-examples at github.com](https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples)
 
 See also [ARQ - SPARQL Algebra](algebra.html)
 

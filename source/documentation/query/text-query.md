@@ -68,7 +68,7 @@ machine, or [Elasticsearch](https://www.elastic.co/) for a large scale
 enterprise search application where the full text engine is potentially
 distributed across separate machines.
 
-This [example code](https://github.com/apache/jena/tree/master/jena-text/src/main/java/examples/)
+This [example code](https://github.com/apache/jena/tree/main/jena-text/src/main/java/examples/)
 illustrates creating an in-memory dataset with a Lucene index.
 
 ## Table of Contents

@@ -90,11 +90,11 @@ The package `org.apache.jena.shacl` has the main classes.
 
 ## API Examples
 
-https://github.com/apache/jena/tree/master/jena-shacl/src/main/java/org/apache/jena/shacl/examples
+https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples
 
 Example
 [`Shacl01_validateGraph`](
-https://github.com/apache/jena/tree/master/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl01_validateGraph.java)
+https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl01_validateGraph.java)
 shows validation and printing of the validation report in a text form and in RDF:
 
     public static void main(String ...args) {
@@ -113,7 +113,7 @@ shows validation and printing of the validation report in a text form and in RDF
     }
 
 Example
-[`Shacl02_validateTransaction`](https://github.com/apache/jena/tree/master/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl02_validateTransaction.java)
+[`Shacl02_validateTransaction`](https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl02_validateTransaction.java)
 shows how to update a graph only if, after the changes, the graph is validated
 according to the shapes provided.
 

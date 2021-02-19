@@ -25,7 +25,7 @@ See [Fuseki Security](fuseki-security.html) for more information on security con
 
 ## Examples
 
-Example server configuration files can be found at [jena-fuseki2/examples](https://github.com/apache/jena/tree/master/jena-fuseki2/examples).
+Example server configuration files can be found at [jena-fuseki2/examples](https://github.com/apache/jena/tree/main/jena-fuseki2/examples).
 
 ## Security and Access Control
 

@@ -182,4 +182,4 @@ for a read transaction takes the form:
         txn.end() ;
     }  
 
-See [`Txn.java`](https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/query/Txn.java) for full details.
+See [`Txn.java`](https://github.com/apache/jena/blob/main/jena-arq/src/main/java/org/apache/jena/query/Txn.java) for full details.
