@@ -90,12 +90,6 @@ structuring Jena development.
     <td>Jena as an OSGi bundle</td>
   </tr>
   <tr>
-    <td><code>jena-sdb</code></td>
-    <td><code>jar</code></td>
-    <td>SDB (SQL based triple store). SDB should only be used when there is an absolute requirement on
-      using SQL. TDB is to be preferred.</td>
-  </tr>
-  <tr>
     <td><code>jena</code></td>
     <td></td>
     <td>The formal released source-released for each Jena release. This is not a maven-runnable set of binary files</td>
@@ -110,11 +104,6 @@ structuring Jena development.
     <td><code>jar</code></td>
     <td>A utility package to simplify the building of ARQ queries in code.
     </td>
-  </tr>
-  <tr>
-    <td><code>jena-elephas</code></td>
-    <td><code>pom</code></td>
-    <td>A collection of tools for working with RDF on the Hadoop platform</td>
   </tr>
   <tr>
     <td><code>jena-fuseki-main</code></td>
