@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Using Jena with Apache Maven</title>
+    <title>Apache Jena - SDB - persistent triple stores using relational databases</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/download/maven.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/sdb/sdb_index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -145,7 +145,7 @@
         
         
             
-                <li><a href='/download'>DOWNLOAD</a></li>
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
             
             
         
@@ -153,7 +153,15 @@
         
         
             
-                <li class="active">MAVEN</li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">SDB INDEX</li>
             
             
         
@@ -165,144 +173,69 @@
 
                 
             </div>
-            <h1 class="title">Using Jena with Apache Maven</h1>
+            <h1 class="title">SDB - persistent triple stores using relational databases</h1>
             
-	<p><a href="http://maven.apache.org">Apache Maven</a> is a tool to help Java projects manage
-their dependencies on library code, such as Jena. By declaring a dependency on
-the core of Jena in your project&rsquo;s <code>pom.xml</code> file, you will get the
-consistent set of library files that Jena depends on automatically added too.</p>
-<p>This page assumes you have Maven installed on your computer. If this is not the case,
-please read and follow <a href="http://maven.apache.org/download.html#Installation">these instructions</a>.</p>
-<h3 id="repositories">Repositories</h3>
-<p>Released maven artifacts are mirrored to the central maven repositories.
-This can take a few days.</p>
-<p>Development snapshots are available as well.<br>
-<a href="https://repository.apache.org/content/repositories/snapshots/">https://repository.apache.org/content/repositories/snapshots/</a></p>
-<p>Stable Jena releases are automatically mirrored by the central Maven
-repositories, so there will normally be no need to add any extra
-repositories to your <code>pom.xml</code> or <code>settings.xml</code>.</p>
-<h3 id="specifying-jena-as-a-dependency">Specifying Jena as a dependency</h3>
-<p>This is how to specify in your pom.xml file the dependency
-on a version of Jena:</p>
-<pre><code>  &lt;dependency&gt;
-    &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-    &lt;artifactId&gt;apache-jena-libs&lt;/artifactId&gt;
-    &lt;type&gt;pom&lt;/type&gt;
-    &lt;version&gt;X.Y.Z&lt;/version&gt;
-  &lt;/dependency&gt;
-</code></pre>
-<p>This will transitively resolve all the dependencies for you: <code>jena-core</code>,
-<code>jena-arq</code>, <code>jena-tdb</code> and <code>jena-iri</code> and their dependencies.</p>
-<p>Note the use of <code>&lt;type&gt;pom&lt;/type&gt;</code> above.  This does not work
-in all tools. An alternative is to depend on <code>jena-tdb</code>, which will pull
-in the other artifacts.</p>
-<pre><code>  &lt;dependency&gt;
-    &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-    &lt;artifactId&gt;jena-tdb&lt;/artifactId&gt;
-    &lt;version&gt;a.b.c&lt;/version&gt;
-  &lt;/dependency&gt;
-</code></pre>
-<p>Other modules need to be added separately, for example:</p>
-<pre><code>  &lt;dependency&gt;
-    &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-    &lt;artifactId&gt;jena-text&lt;/artifactId&gt;
-    &lt;version&gt;x.y.z&lt;/version&gt;
-  &lt;/dependency&gt;
-</code></pre>
-<p>Please check for the latest versions.</p>
-<h3 id="major-artifacts">Major Artifacts</h3>
-<p>Jena provides a number of maven artifacts as delivery points.<br>
-There are also a number of maven artifacts used as part of
-structuring Jena development.</p>
-<table>
-  <tr>
-    <th>Artifact ID</th>
-    <th>Packaging (&lt;type&gt;)</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>apache-jena-libs</code></td>
-    <td><code>pom</code></td>
-    <td>A POM artifact that may be referenced to pull in all the standard Jena Libraries (Core, ARQ, IRI, and TDB) with a single dependency.</td>
-  </tr>
-  <tr>
-    <td><code>apache-jena</code></td>
-    <td><code>pom</code></td>
-    <td>The binary distribution</td>
-  </tr>
-  <tr>
-    <td><code>apache-jena-fuseki</code></td>
-    <td><code>pom</code></td>
-    <td>Fuseki2 distribution</td>
-  </tr>
-  <tr>
-    <td><code>apache-jena-osgi</code></td>
-    <td><code>pom</code></td>
-    <td>Jena as an OSGi bundle</td>
-  </tr>
-  <tr>
-    <td><code>jena</code></td>
-    <td></td>
-    <td>The formal released source-released for each Jena release. This is not a maven-runnable set of binary files</td>
-  </tr>
-  <tr>
-    <td><code>jena-text</code></td>
-    <td><code>jar</code></td>
-    <td>SPARQL Text Search. Included in Fuseki.</td>
-  </tr>
-  <tr>
-    <td><code>jena-querybuilder</code></td>
-    <td><code>jar</code></td>
-    <td>A utility package to simplify the building of ARQ queries in code.
-    </td>
-  </tr>
-  <tr>
-    <td><code>jena-fuseki-main</code></td>
-    <td><code>war</code></td>
-    <td>Fuseki packaged for embedding in an application.</td>
-  </tr>
-  <tr>
-    <td><code>jena-permissions</code></td>
-    <td><code>jar</code></td>
-    <td>Security wrapper around Jena RDF implementation.</td>
-  </tr>
-  <tr>
-    <td><code>jena-jdbc-driver-bundle</code></td>
-    <td><code>jar</code></td>
-    <td>A collection of JDBC drivers</td>
-  </tr>
-</table>
-<p>There are also a number of artifacts used in development.
-The full list can be seen by browsing Maven</p>
-<p><a href="http://central.maven.org/maven2/org/apache/jena/">Released Jena artifacts</a></p>
-<p>(This includes historic artifacts which are no longer active.)</p>
-<p>You can run <code>mvn dependency:tree</code> to print the dependency
-tree.</p>
-<h3 id="specifying-dependencies-on-snapshots">Specifying dependencies on SNAPSHOTs</h3>
-<p>If you want to depend on Jena development snapshots, e.g. to get access
-to recent bug fixes, you should add the following to your <code>pom.xml</code>:</p>
-<pre><code>  &lt;repository&gt;
-    &lt;id&gt;apache-repo-snapshots&lt;/id&gt;
-    &lt;url&gt;https://repository.apache.org/content/repositories/snapshots/&lt;/url&gt;
-    &lt;releases&gt;
-      &lt;enabled&gt;false&lt;/enabled&gt;
-    &lt;/releases&gt;
-    &lt;snapshots&gt;
-      &lt;enabled&gt;true&lt;/enabled&gt;
-    &lt;/snapshots&gt;
-  &lt;/repository&gt;
-</code></pre>
-<h3 id="build-and-install-artifacts-in-your-local-maven-repository">Build and install artifacts in your local Maven repository</h3>
-<p>If you want you can checkout the Jena sources, build the artifacts and
-install them in your local Maven repository, then you simply checkout the source
-tree and build with maven
-<code>mvn install</code>. This assumes you have Maven and Git installed:</p>
-<pre><code>git clone https://github.com/apache/jena/
-cd jena
-mvn clean install
-</code></pre>
-<p>Each of the modules can be built on its own but they
-require the current snapshots and Jena parent POM to be installed.</p>
+	<p>SDB uses an SQL database for the storage and query of RDF data.
+Many databases are supported, both Open Source and proprietary.</p>
+<p>An SDB store can be accessed and managed with the provided command
+line scripts and via the Jena API.</p>
+<blockquote>
+<i>
+Use of SDB for new applications is not recommended.
+</i>
+</blockquote>
+<p><i>This component is &ldquo;maintenance only&rdquo;.</i></p>
+<p><i><a href="../tdb/index.html">TDB</a> is faster, more scalable and better supported
+than SDB.</i></p>
+<h2 id="status">Status</h2>
+<p>As of June 2013 the Jena developers agreed to treat SDB as
+being only maintained where possible.
+See <a href="http://mail-archives.apache.org/mod_mbox/jena-users/201306.mbox/%3c51B1A7FB.4070601@apache.org%3e">Future of SDB</a> thread on the mailing list.</p>
+<p>The developers intend to continue releasing SDB alongside other Jena
+components but it is not actively developed.  None of the developers
+use it within their organizations.</p>
+<p>SDB may be revived as a fully supported component if members of the
+community come forward to develop it.  The Jena team strongly recommends
+the use of <a href="../tdb/">TDB</a> instead of SDB for all new development due to
+TDBs substantially better performance and scalability.</p>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="installation.html">SDB Installation</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="commands.html">Command line utilities</a></li>
+<li><a href="store_description.html">Store Description format</a></li>
+<li><a href="dataset_description.html">Dataset And Model Descriptions</a></li>
+<li><a href="javaapi.html">Use from Java</a></li>
+<li><a href="configuration.html">Specialized configuration</a></li>
+<li><a href="database_layouts.html">Database Layouts</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="fuseki_integration.html">Fuseki Integration</a></li>
+<li><a href="databases_supported.html">Databases supported</a></li>
+</ul>
+<h2 id="downloads">Downloads</h2>
+<p>SDB is distributed from the Apache Jena project. See the
+<a href="/download/index.cgi">downloads page</a> for details.</p>
+<h2 id="support">Support</h2>
+<p><a href="/help_and_support">Support and questions</a></p>
+<h2 id="details">Details</h2>
+<ul>
+<li><a href="loading_data.html">Loading data</a></li>
+<li><a href="loading_performance.html">Loading performance</a></li>
+<li><a href="query_performance.html">Query performance</a></li>
+</ul>
+<h2 id="database-notes">Database Notes</h2>
+<p>List of <a href="databases_supported.html">databases supported</a></p>
+<p>Notes:</p>
+<ul>
+<li><a href="db_notes.html#postgresql">PostgreSQL notes</a></li>
+<li><a href="db_notes.html#mysql">MySQL notes</a></li>
+<li>Oracle notes</li>
+<li><a href="db_notes.html#ms_sql">Microsoft SQL Server notes</a></li>
+<li><a href="db_notes.html#db2">DB2 notes</a></li>
+<li><a href="db_notes.html#derby">Derby notes</a></li>
+<li>HSQLDB notes</li>
+<li>H2 notes</li>
+</ul>
 
 
         </div>
