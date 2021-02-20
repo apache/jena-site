@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/csv/implementation.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/csv/implementation.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -204,8 +204,8 @@
 </tr>
 </tbody>
 </table>
-<p>By default, [PropertyTableArrayImpl]((<a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java">https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java</a>) is used as the <code>PropertyTable</code> implementation held by <code>GraphCSV</code>.
-If you want to switch to <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableHashMapImpl.java">PropertyTableHashMapImpl</a>, just use the static method of <code>GraphCSV.createHashMapImpl()</code> to replace the default <code>new GraphCSV()</code> way.
+<p>By default, [PropertyTableArrayImpl]((<a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java">https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java</a>) is used as the <code>PropertyTable</code> implementation held by <code>GraphCSV</code>.
+If you want to switch to <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableHashMapImpl.java">PropertyTableHashMapImpl</a>, just use the static method of <code>GraphCSV.createHashMapImpl()</code> to replace the default <code>new GraphCSV()</code> way.
 Here is an example:</p>
 <pre><code>Model model_csv_array_impl = ModelFactory.createModelForGraph(new GraphCSV(file)); // PropertyTableArrayImpl
 Model model_csv_hashmap_impl = ModelFactory.createModelForGraph(GraphCSV.createHashMapImpl(file)); // PropertyTableHashMapImpl
@@ -221,10 +221,10 @@ The following query pattern can be transformed into a <code>Row</code> querying,
 <p>It&rsquo;s made by using the extension point of <code>StageGenerator</code>, because it&rsquo;s now just concerned with <code>BasicPattern</code>.
 The detailed workflow goes in this way:</p>
 <ol>
-<li>Split the incoming <code>BasicPattern</code> by subjects, (i.e. it becomes multiple sub BasicPatterns grouped by the same subjects. (see <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTable.java">QueryIterPropertyTable</a> )</li>
-<li>For each sub <code>BasicPattern</code>, if the <code>Triple</code> size within is greater than 1 (i.e. at least 2 <code>Triples</code>), it&rsquo;s turned into a <code>Row</code> querying, and processed by <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTableRow.java">QueryIterPropertyTableRow</a>, else if it contains only 1 <code>Triple</code>, it goes for the traditional <code>Triple</code> querying by <code>graph.graphBaseFind()</code></li>
+<li>Split the incoming <code>BasicPattern</code> by subjects, (i.e. it becomes multiple sub BasicPatterns grouped by the same subjects. (see <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTable.java">QueryIterPropertyTable</a> )</li>
+<li>For each sub <code>BasicPattern</code>, if the <code>Triple</code> size within is greater than 1 (i.e. at least 2 <code>Triples</code>), it&rsquo;s turned into a <code>Row</code> querying, and processed by <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTableRow.java">QueryIterPropertyTableRow</a>, else if it contains only 1 <code>Triple</code>, it goes for the traditional <code>Triple</code> querying by <code>graph.graphBaseFind()</code></li>
 </ol>
-<p>In order to turn on this optimization, we need to register the <a href="https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/impl/StageGeneratorPropertyTable.java">StageGeneratorPropertyTable</a> into ARQ context, before performing SPARQL querying:</p>
+<p>In order to turn on this optimization, we need to register the <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/StageGeneratorPropertyTable.java">StageGeneratorPropertyTable</a> into ARQ context, before performing SPARQL querying:</p>
 <pre><code>StageGenerator orig = (StageGenerator)ARQ.getContext().get(ARQ.stageGenerator) ;
 StageGenerator stageGenerator = new StageGeneratorPropertyTable(orig) ;
 StageBuilder.setGenerator(ARQ.getContext(), stageGenerator) ;

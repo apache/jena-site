@@ -118,7 +118,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/master/source/documentation/query/spatial-query.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/spatial-query.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -184,7 +184,7 @@ Spatial indexes are additional information for accessing the RDF graph.</p>
 <p>The spatial index can be either <a href="http://lucene.apache.org/core">Apache Lucene</a> for a
 same-machine spatial index, or <a href="http://lucene.apache.org/solr/">Apache Solr</a>
 for a large scale enterprise search application.</p>
-<p>Some example code is <a href="https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/examples/">available here</a>.</p>
+<p>Some example code is <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/examples/">available here</a>.</p>
 <p><em>Illustration</em></p>
 <p>This query makes a spatial query for the places within 10 kilometres of Bristol UK (which as latitude/longitude of 51.46, 2.6).</p>
 <pre><code>PREFIX spatial: &lt;http://jena.apache.org/spatial#&gt;
@@ -257,7 +257,7 @@ airports:EGBB_Fake_In_Box rdf:type airports_sc:LargeAirport ;
 which is under LGPL licence. jena-spatial <strong>does not</strong> make a hard dependency on JTS. In other words,
 if an end user just uses the feature of 1), there&rsquo;s no need to depend on JTS (i.e. nothing needs to be done). If he wants 2),
 he can make it by setting the <code>SpatialContextFactory</code> of
-<a href="https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
 to <code>JtsSpatialContextFactory</code>, which is an optional choice. In this way, the JTS libs should be in the classpath. Here&rsquo;s the sample code:</p>
 <pre><code>import org.apache.jena.query.spatial.EntityDefinition
 ...
@@ -271,7 +271,7 @@ entDef.setSpatialContextFactory(&quot;com.spatial4j.core.context.jts.JtsSpatialC
 <p>However, there may be more predicates for other data sources for both 1) and 2).
 jena-spatial provides an interface for consuming all kinds of custom geo predicates.
 You can simply add predicates to let jena-spatial recognize them using
-<a href="https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>:</p>
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>:</p>
 <pre><code>import org.apache.jena.query.spatial.EntityDefinition
 ...
 
@@ -286,7 +286,7 @@ entDef.addSpatialPredicatePair(lat_1, long_1) ;
 Resource wkt_1 = ResourceFactory.createResource(&quot;http://localhost/jena_example/#wkt_1&quot;);
 entDef.addWKTPredicate( wkt_1 );
 </code></pre>
-<p>See more supported <a href="https://github.com/apache/jena/tree/master/jena-spatial/src/test/resources/geoarq-data-1.ttl">geo data examples</a></p>
+<p>See more supported <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/geoarq-data-1.ttl">geo data examples</a></p>
 <h3 id="load-geo-data-into-spatial-dataset">Load Geo Data into Spatial Dataset</h3>
 <pre><code>spatialDataset.begin(ReadWrite.WRITE);
 try {
@@ -342,7 +342,7 @@ try {
 <h2 id="spatial-dataset-assembler">Spatial Dataset Assembler</h2>
 <p>The usual way to describe an index is with a <a href="/documentation/assembler/index.html">Jena assembler description</a>. Configurations can also be built with <a href="#how-to-use-it-by-code">code</a>. The assembler describes a &ldquo;spatial dataset&rdquo; which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for each.</p>
 <p>A spatial index has an
-<a href="https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
 which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. &ldquo;entityField&rdquo;) and its geo information (e.g. latitude/longitude as &ldquo;geoField&rdquo;), and the custom geo predicates.</p>
 <p>For common RDF spatial query, only &ldquo;entityField&rdquo; and &ldquo;geoField&rdquo; are required with the <a href="#builtin-geo-predicates">builtin geo predicates</a> working well. More complex setups, with multiple <a href="#custom-geo-predicates">custom geo predicates</a> besides the two fields are possible.
 You also optionally use JtsSpatialContextFactory to support indexing WKT literals.</p>
@@ -400,7 +400,7 @@ PREFIX spatial: &lt;http://jena.apache.org/spatial#&gt;
 <h2 id="working-with-solr">Working with Solr</h2>
 <p>Besides Lucene, jena-spatial can work with Solr for spatial query, powered by <a href="http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4">Lucene / Solr 4 Spatial</a> and <a href="http://wiki.apache.org/solr/Solrj">Solrj</a>.</p>
 <p>It&rsquo;s required to add the field definitions for &ldquo;entityField&rdquo; and &ldquo;geoField&rdquo; respectively in <code>schema.xml</code> of Solr.
-The names of the fields in <a href="https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a> should be in accordance with those in <code>schema.xml</code>.
+The names of the fields in <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a> should be in accordance with those in <code>schema.xml</code>.
 Here is an example defining the names of &ldquo;entityField&rdquo; as &ldquo;uri&rdquo; and &ldquo;geoField&rdquo; as &ldquo;geo&rdquo;:</p>
 <pre><code>&lt;field name=&quot;uri&quot; type=&quot;string&quot; indexed=&quot;true&quot; stored=&quot;true&quot; required=&quot;true&quot; multiValued=&quot;false&quot; /&gt; 
 &lt;field name=&quot;geo&quot;  type=&quot;location_rpt&quot;  indexed=&quot;true&quot; stored=&quot;true&quot;  multiValued=&quot;true&quot; /&gt; 
@@ -415,8 +415,8 @@ Here is an example defining the names of &ldquo;entityField&rdquo; as &ldquo;uri
 </code></pre>
 <p>The above is the least required configuration to run jena-spatial in Solr.
 For more information about the configuration, please check the <a href="http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4">Lucene / Solr 4 Spatial</a> documentation.</p>
-<p>There are also some demonstrations of the usage of Solr in the <a href="https://github.com/apache/jena/tree/master/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr">unit tests</a> of jena-spatial.
-They use a <code>EmbeddedSolrServer</code>with a <code>SOLR_HOME</code> sample <a href="https://github.com/apache/jena/tree/master/jena-spatial/src/test/resources/SolrHome">here</a>.</p>
+<p>There are also some demonstrations of the usage of Solr in the <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr">unit tests</a> of jena-spatial.
+They use a <code>EmbeddedSolrServer</code>with a <code>SOLR_HOME</code> sample <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/SolrHome">here</a>.</p>
 <h2 id="working-with-fuseki">Working with Fuseki</h2>
 <p>The Fuseki configuration simply points to the spatial dataset as the fuseki:dataset of the service.</p>
 <pre><code>&lt;#service_spatial_tdb&gt; rdf:type fuseki:Service ;
