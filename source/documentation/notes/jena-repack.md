@@ -39,7 +39,7 @@ This is an extract from the POM:
         </transformers>
 
 See
-[jena-fuseki2/jena-fuseki-server/pom.xml](https://github.com/apache/jena/blob/master/jena-fuseki2/jena-fuseki-server/pom.xml)
+[jena-fuseki2/jena-fuseki-server/pom.xml](https://github.com/apache/jena/blob/main/jena-fuseki2/jena-fuseki-server/pom.xml)
 for the complete shade plugin setup used by Fuseki.
 
 If doing manually, create a single file in your application jar the

@@ -121,9 +121,9 @@ At its simplest, it is:
 which uses default settings used by `RDFConenctionFactory.connect`.
 
 See [example
-4](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample4.java)
+4](https://github.com/apache/jena/blob/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample4.java)
 and [example
-5](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java).
+5](https://github.com/apache/jena/blob/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample5.java).
 
 There are many options, including setting HTTP headers for content types
 ([javadoc](/documentation/javadoc/rdfconnection/index.html))
@@ -142,7 +142,7 @@ which uses settings tuned to Fuseki, including round-trip handling of
 blank nodes.
 
 See [example
-6](https://github.com/apache/jena/blob/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample6.java).
+6](https://github.com/apache/jena/blob/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples/RDFConnectionExample6.java).
 
 ## Graph Store Protocol
 
@@ -249,5 +249,5 @@ operations are visible to the called code.
 
 ## Examples
 
-* for simple usage examples see <a href="https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/master/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a>.
-* for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/master/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a>.
+* for simple usage examples see <a href="https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a>.
+* for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a>.

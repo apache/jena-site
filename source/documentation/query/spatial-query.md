@@ -15,7 +15,7 @@ The spatial index can be either [Apache Lucene](http://lucene.apache.org/core) f
 same-machine spatial index, or [Apache Solr](http://lucene.apache.org/solr/)
 for a large scale enterprise search application.
 
-Some example code is [available here](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/examples/).
+Some example code is [available here](https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/examples/).
 
 *Illustration*
 
@@ -95,7 +95,7 @@ For 2) WKT, DBPedia uses `geo:geometry`, while Linked Geo Data adopts `ogc:asWKT
 which is under LGPL licence. jena-spatial **does not** make a hard dependency on JTS. In other words,
 if an end user just uses the feature of 1), there's no need to depend on JTS (i.e. nothing needs to be done). If he wants 2),
 he can make it by setting the `SpatialContextFactory` of 
-[EntityDefinition](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)
+[EntityDefinition](https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)
 to `JtsSpatialContextFactory`, which is an optional choice. In this way, the JTS libs should be in the classpath. Here's the sample code: 
 
     import org.apache.jena.query.spatial.EntityDefinition
@@ -111,7 +111,7 @@ to `JtsSpatialContextFactory`, which is an optional choice. In this way, the JTS
 However, there may be more predicates for other data sources for both 1) and 2).
 jena-spatial provides an interface for consuming all kinds of custom geo predicates.
 You can simply add predicates to let jena-spatial recognize them using 
-[EntityDefinition](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java):
+[EntityDefinition](https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java):
 
     import org.apache.jena.query.spatial.EntityDefinition
     ...
@@ -127,7 +127,7 @@ You can simply add predicates to let jena-spatial recognize them using
     Resource wkt_1 = ResourceFactory.createResource("http://localhost/jena_example/#wkt_1");
     entDef.addWKTPredicate( wkt_1 );
 
-See more supported [geo data examples](https://github.com/apache/jena/tree/master/jena-spatial/src/test/resources/geoarq-data-1.ttl)
+See more supported [geo data examples](https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/geoarq-data-1.ttl)
 
 ### Load Geo Data into Spatial Dataset
 
@@ -163,7 +163,7 @@ See [ESRIs docs on spatial relations](http://edndoc.esri.com/arcsde/9.1/general_
 The usual way to describe an index is with a [Jena assembler description](/documentation/assembler/index.html). Configurations can also be built with [code](#how-to-use-it-by-code). The assembler describes a "spatial dataset" which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for each.
 
 A spatial index has an 
-[EntityDefinition](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)
+[EntityDefinition](https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java)
 which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. "entityField") and its geo information (e.g. latitude/longitude as "geoField"), and the custom geo predicates.
 
 For common RDF spatial query, only "entityField" and "geoField" are required with the [builtin geo predicates](#builtin-geo-predicates) working well. More complex setups, with multiple [custom geo predicates](#custom-geo-predicates) besides the two fields are possible.
@@ -229,7 +229,7 @@ Key here is that the assembler contains two dataset definitions, one for the spa
 Besides Lucene, jena-spatial can work with Solr for spatial query, powered by [Lucene / Solr 4 Spatial](http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4) and [Solrj](http://wiki.apache.org/solr/Solrj).
 
 It's required to add the field definitions for "entityField" and "geoField" respectively in `schema.xml` of Solr.
-The names of the fields in [EntityDefinition](https://github.com/apache/jena/tree/master/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) should be in accordance with those in `schema.xml`.
+The names of the fields in [EntityDefinition](https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java) should be in accordance with those in `schema.xml`.
 Here is an example defining the names of "entityField" as "uri" and "geoField" as "geo":
 
     <field name="uri" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
@@ -248,8 +248,8 @@ Additionally, in `solrconfig.xml`, there should be 2 `requestHandlers` defined f
 The above is the least required configuration to run jena-spatial in Solr.
 For more information about the configuration, please check the [Lucene / Solr 4 Spatial](http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4) documentation.
  
-There are also some demonstrations of the usage of Solr in the [unit tests](https://github.com/apache/jena/tree/master/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr) of jena-spatial.
-They use a `EmbeddedSolrServer`with a `SOLR_HOME` sample [here](https://github.com/apache/jena/tree/master/jena-spatial/src/test/resources/SolrHome).
+There are also some demonstrations of the usage of Solr in the [unit tests](https://github.com/apache/jena/tree/main/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr) of jena-spatial.
+They use a `EmbeddedSolrServer`with a `SOLR_HOME` sample [here](https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/SolrHome).
 
 ## Working with Fuseki
 

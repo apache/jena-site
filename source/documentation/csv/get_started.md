@@ -26,7 +26,7 @@ Once registered, CSV PropertyTable provides 2 ways for the users to play with (i
 
 ### GraphCSV
 
-[GraphCSV](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/org/apache/jena/propertytable/graph/GraphCSV.java) wrappers a CSV file as a Graph, which makes a Model for SPARQL query:
+[GraphCSV](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/graph/GraphCSV.java) wrappers a CSV file as a Graph, which makes a Model for SPARQL query:
 
     Model model = ModelFactory.createModelForGraph(new GraphCSV("data.csv")) ;
     QueryExecution qExec = QueryExecutionFactory.create(query, model) ;
@@ -42,7 +42,7 @@ or for multiple CSV files and/or other RDF data:
     dataset.addNamedModel("http://example/other", other) ;
     ... normal SPARQL execution ...
 
-You can also find the full examples from [GraphCSVTest](https://github.com/apache/jena/tree/master/jena-csv/src/test/java/org/apache/jena/propertytable/graph/GraphCSVTest.java).
+You can also find the full examples from [GraphCSVTest](https://github.com/apache/jena/tree/main/jena-csv/src/test/java/org/apache/jena/propertytable/graph/GraphCSVTest.java).
 
 In short, for Jena ARQ, a CSV table is actually a Graph (i.e. GraphCSV), without any differences from other types of Graphs when using it from the Jena ARQ API.
 
@@ -64,7 +64,7 @@ Note that, the requirements for the CSV files are listed in the documentation of
 
 ## Command Line Tool
 
-[csv2rdf](https://github.com/apache/jena/tree/master/jena-csv/src/main/java/riotcmd/csv2rdf.java) is a tool for direct transforming from CSV to the formatted RDF syntax of N-Triples.
+[csv2rdf](https://github.com/apache/jena/tree/main/jena-csv/src/main/java/riotcmd/csv2rdf.java) is a tool for direct transforming from CSV to the formatted RDF syntax of N-Triples.
 The script calls the `csv2rdf` java program in the `riotcmd` package in this way:
 
     java -cp ... riotcmdx.csv2rdf inputFile ...

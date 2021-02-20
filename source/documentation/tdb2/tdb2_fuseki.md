@@ -49,7 +49,7 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
         .
 </pre>
 
-This example is available in [config-tdb2.ttl](https://github.com/apache/jena/blob/master/jena-fuseki2/examples/config-tdb2.ttl)
+This example is available in [config-tdb2.ttl](https://github.com/apache/jena/blob/main/jena-fuseki2/examples/config-tdb2.ttl)
 
 The key difference is the declared `rdf:type` of the dataset.
 

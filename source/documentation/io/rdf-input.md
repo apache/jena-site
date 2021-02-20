@@ -234,7 +234,7 @@ The base URI for reading models will be the original URI, not the alternative lo
 
 ## Advanced examples
 
-Example code may be found in [jena-arq/src-examples](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/).
+Example code may be found in [jena-arq/src-examples](https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples/riot/).
 
 ### Iterating over parser output
 
@@ -243,8 +243,8 @@ this is useful when you don't want to go to the trouble of writing a full sink i
 logic in normal iterator style.
 
 To do this you use one of the subclasses of
-[PipedRDFIterator](https://github.com/apache/jena/tree/master/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFIterator.java?view=markup)
-in conjunction with a [PipedRDFStream](https://github.com/apache/jena/tree/master/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFStream.java?view=markup).
+[PipedRDFIterator](https://github.com/apache/jena/tree/main/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFIterator.java?view=markup)
+in conjunction with a [PipedRDFStream](https://github.com/apache/jena/tree/main/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFStream.java?view=markup).
 
 This `PipedRDFStream` provides an implementation of `StreamRDF` which allows it to consume parser output and this is consumed by
 the `PipedRDFIterator` implementation.  This has some advantages over a direct `StreamRDF` implementation since it allows the parser
@@ -268,4 +268,4 @@ See [RIOT example 4](https://github.com/apache/jena/blob/main/jena-arq/src-examp
 
 The set of languages is not fixed. A new language, 
 together with a parser, can be added to RIOT as shown in
-[RIOT example 5](https://github.com/apache/jena/tree/master/jena-arq/src-examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)
+[RIOT example 5](https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)

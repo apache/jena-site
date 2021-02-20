@@ -25,7 +25,7 @@ Functions in involving sequences are not supported.
 
 See [XSD Support](xsd-support.html) for details of datatypes and functions
 currently supported.  To check the exact current registrations, see
-<tt>[function/StandardFunctions.java](https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java)</tt>.
+<tt>[function/StandardFunctions.java](https://github.com/apache/jena/blob/main/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java)</tt>.
 
 See also the [property functions](library-propfunc.html) library
 page.

@@ -12,7 +12,7 @@ XPath and XQuery function namespace).
 The prefix `math` is `<http://www.w3.org/2005/xpath-functions/math#>`
 
 To check the exact registrations for a specific version, see
-<tt>[function/StandardFunctions.java](https://github.com/apache/jena/blob/master/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java)</tt>
+<tt>[function/StandardFunctions.java](https://github.com/apache/jena/blob/main/jena-arq/src/main/java/org/apache/jena/sparql/function/StandardFunctions.java)</tt>
 in the source code for that version.
 
 The supported datatypes (including those required by SPARQL 1.1), including

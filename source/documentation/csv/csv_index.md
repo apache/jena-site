@@ -5,7 +5,7 @@ title: CSV PropertyTable
 ----
 > This page covers the jena-csv module which has been retired.
 > The last release of Jena with this module is Jena 3.9.0.
-> See [jena-csv/README.md](https://github.com/apache/jena/tree/master/jena-csv).
+> See [jena-csv/README.md](https://github.com/apache/jena/tree/main/jena-csv).
 > This is the original documentation.
 ----
 

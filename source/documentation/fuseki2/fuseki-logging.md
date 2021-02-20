@@ -55,7 +55,7 @@ within the directory where the server is run.
 
 ## Default setting
 
-The [default log4j2.properties](https://github.com/apache/jena/blob/master/jena-fuseki2/apache-jena-fuseki/log4j2.properties).
+The [default log4j2.properties](https://github.com/apache/jena/blob/main/jena-fuseki2/apache-jena-fuseki/log4j2.properties).
 
 ## Logrotate
 
