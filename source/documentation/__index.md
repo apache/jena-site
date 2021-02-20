@@ -22,9 +22,8 @@ sections.
 * [RDF Connection](./rdfconnection/) - a SPARQL API for local datasets and remote services
 * [SHACL](./shacl) - SHACL processor for Jena
 * [Javadoc](./javadoc/) - JavaDoc generated from the Jena source
-* [Text Search](./query/text-query.html) - enhanced indexes using Lucene or Solr for more efficient searching of text literals in Jena models and datasets.
+* [Text Search](./query/text-query.html) - enhanced indexes using Lucene for more efficient searching of text literals in Jena models and datasets.
 * [GeoSPARQL](./geosparql/) - support for GeoSPARQL
-* [Elephas](./hadoop) - working with RDF data on Apache Hadoop.
 * [How-To's](./notes/) - various topic-specific how-to documents
 * [Permissions](./permissions/) - a permissions wrapper around Jena RDF implementation
 * [JDBC](./jdbc/) - a SPARQL over JDBC driver framework

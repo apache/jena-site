@@ -14,4 +14,3 @@ title: Jena JavaDoc
 - [GeoSPARQL](javadoc/geosparql/index.html)
 - [Security Permissions JavaDoc](javadoc/permissions/index.html)
 - [JDBC JavaDoc](javadoc/jdbc/index.html)
-- [Elephas](javadoc_elephas.html)

@@ -3,9 +3,9 @@ title: Jena Full Text Search
 ---
 
 This extension to ARQ combines SPARQL and full text search via
-[Lucene](https://lucene.apache.org) or
-[ElasticSearch](https://www.elastic.co) (built on
-Lucene). It gives applications the ability to perform indexed full text
+[Lucene](https://lucene.apache.org).
+[ElasticSearch](https://www.elastic.co) 
+It gives applications the ability to perform indexed full text
 searches within SPARQL queries. Here is a version compatibility table:
 
 | &nbsp;Jena&nbsp; | &nbsp;Lucene&nbsp; |  &nbsp;Solr&nbsp; | &nbsp;ElasticSearch&nbsp; |
@@ -13,7 +13,7 @@ searches within SPARQL queries. Here is a version compatibility table:
 | upto 3.2.0       | 5.x or 6.x         | 5.x or 6.x        | not supported  |
 | 3.3.0 - 3.9.0    | 6.4.x              | not supported     | 5.2.2 - 5.2.13 |
 | 3.10.0           | 7.4.0              | not supported     | 6.4.2          |
-| 3.15.0           | 7.7.x              | not supported     | 6.8.6          |
+| 3.15.0 - 3.17.0  | 7.7.x              | not supported     | 6.8.6          |
 | 4.0.0            | 8.8.x              | not supported     | not supported  |
 
 SPARQL allows the use of 
