@@ -31,7 +31,7 @@ Indexing and caching of spatial objects and relations is performed _on-demand_ d
 Therefore, set-up delays should be minimal. Spatial indexing is available based on the _STRtree_ from the JTS library. The _STRtree_ is readonly once built and contributions of a _QuadTree_ implementation are welcome.
 
 Benchmarking of the implementation against Strabon and Parliament has found it to be comparable or quicker.
-The benchmarking used was the Geographical query and dataset (http://geographica.di.uoa.gr/).
+The benchmarking used was the Geographical query and dataset (<http://geographica.di.uoa.gr/>).
 
 ## Additional Features
 The following additional features are also provided:
@@ -40,7 +40,7 @@ The following additional features are also provided:
 * Conversion between EPSG spatial/coordinate reference systems is applied automatically. Therefore, mixed datasets or querying can be applied. This is reliance upon local installation of Apache SIS EPSG dataset, see __Key Dependencies__.
 * Units of measure are automatically converted to the appropriate units for the coordinate reference system.
 * Geometry, transformation and spatial relation results are stored in persistent and configurable time-limited caches to improve response times and reduce recalculations.
-* Dataset conversion between serialisations and spatial/coordinate reference systems. Tabular data can also be loaded, see RDF Tables project (https://github.com/galbiston/rdf-tables).
+* Dataset conversion between serialisations and spatial/coordinate reference systems. Tabular data can also be loaded, see RDF Tables project (<https://github.com/galbiston/rdf-tables>).
 * Functions to test Geometry properties directly on Geometry Literals have been included for convenience.
 
 ## Getting Started
