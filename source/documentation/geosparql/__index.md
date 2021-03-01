@@ -153,7 +153,7 @@ The OGC GeoSPARQL standard supports representing and querying geospatial data on
 GeoSPARQL defines a vocabulary for representing geospatial data in RDF, and it defines an extension to the SPARQL query language for processing geospatial data.
 In addition, GeoSPARQL is designed to accommodate systems based on qualitative spatial reasoning and systems based on quantitative spatial computations.
 
-The GeoSPARQL standard is based upon the OGC Simple Features standard (http://www.opengeospatial.org/standards/sfa) used in relational databases.
+The GeoSPARQL standard is based upon the OGC Simple Features standard (<http://www.opengeospatial.org/standards/sfa>) used in relational databases.
 Modifications and enhancements have been made for usage with RDF and SPARQL.
 The Simple Features standard, and by extension GeoSPARQL, simplify calculations to Euclidean planer geometry.
 Therefore, datasets using a geographic spatial/coordinate reference system, which are based on latitude and longitude on an ellipsoid, e.g. WGS84, will have minor error introduced.
@@ -166,7 +166,7 @@ The library is an implementation of GeoAPI 3.0 interfaces and can be used for de
 
 A subset of the EPSG spatial/coordinate reference systems are included by default.
 The full EPSG dataset is not distributed due to the EPSG terms of use being incompatible with the Apache Licence.
-Several options are available to include the EPSG dataset by setting the `SIS_DATA` environment variable (http://sis.apache.org/epsg.html).
+Several options are available to include the EPSG dataset by setting the `SIS_DATA` environment variable (<http://sis.apache.org/epsg.html>).
 
 An embedded EPSG dataset can be included in a Gradle application by adding the following dependency to `build.gradle`:
 
@@ -180,7 +180,7 @@ The JTS Topology Suite is a Java library for creating and manipulating vector ge
 The following are implementation points that may be useful during usage.
 
 ### GeoSPARQL Schema
-An RDF/XML schema has been published for the GeoSPARQL v1.0 standard (v1.0.1 - http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf).
+An RDF/XML schema has been published for the GeoSPARQL v1.0 standard (v1.0.1 - <http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf>).
 This can be applied to Jena Models (see [the inference documentation](/documentation/inference/)) to provide RDFS and OWL inferencing on a GeoSPARQL conforming dataset.
 However, the published schema does not conform with the standard.
 
@@ -456,7 +456,7 @@ The `geof:isValid` filter function and `geo:isValid` property for a Geometry res
 
 ## Future Work
 
-* Implementing GeoJSON as a `GeometryLiteral` serialisation (https://tools.ietf.org/html/rfc7946).
+* Implementing GeoJSON as a `GeometryLiteral` serialisation (<https://tools.ietf.org/html/rfc7946>).
 
 ## Contributors
 The following individuals have made contributions to this project:
