@@ -8,7 +8,7 @@ An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
 An [integration with Fuseki](geosparql-fuseki) is available but attention should be paid to the contents of this page to understand supported features.
 
 ## Features
-This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql).
+This implementation follows the 11-052r4 OGC GeoSPARQL standard (<https://www.ogc.org/standards/geosparql>).
 The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.
 
 It implements the six Conformance Classes described in the GeoSPARQL document:
