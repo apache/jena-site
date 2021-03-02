@@ -1,6 +1,9 @@
 ---
 title: Apache Jena Fuseki
 slug: index
+aliases:
+    - /documentation/serving_data
+    - /documentation/serving_data/index.html
 ---
 
 Apache Jena Fuseki is a SPARQL server.  It can run as a operating system
