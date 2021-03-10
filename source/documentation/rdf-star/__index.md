@@ -5,8 +5,10 @@ aliases:
     - /docimentation/rdfstar/
     - /documentation/rdfstar/index.html
 ---
+
 [RDF-star](https://w3c.github.io/rdf-star/) is an extension to RDF that provides
-a way for one triple to refer to another triple. Another resource about RDF\* is
+a way for one triple to refer to another triple. RDF\* is the name of the
+original work which is described in
 [Olaf Hartig's blog entry](https://blog.liu.se/olafhartig/2019/01/10/position-statement-rdf-star-and-sparql-star/).
 
 Example:
@@ -21,8 +23,9 @@ Triple terms can be in the subject or object position.
 
 Jena provides support for RDF-star and the related SPARQL-star.
 
-* Turtle, N-Triples, TriG and N-Quads extended for Triple Terms syntax.  There is no output in RDF/XML.
-* SPARQL extended with Triple Term syntax for graph matching (in code, use `Syntax.syntaxARQ`).
+* Turtle, N-Triples, TriG and N-Quads extended for Triple Terms syntax,
+  input and output.  There is no output in RDF/XML.
+* SPARQL extended with Triple Term syntax for graph matching
 * SPARQL Result formats for JSON and XML extended to support Triple Terms in results.
 * Support in the Model API.
 
@@ -30,7 +33,8 @@ All this is active by default in Fuseki.
 
 The aim is to follow the definition of the [RDF-star community](https://w3c.github.io/rdf-star/).
 
-Storage in databases [TDB1](/documentation/tdb) and [TDB2](/documentation/tdb2/) is supported as of Jena 3.16.0.
+Storage in databases [TDB1](/documentation/tdb) and [TDB2](/documentation/tdb2/)
+as well as in-memory databases is supported.
 
 ## RDF-star
 
@@ -57,18 +61,32 @@ WHERE {
 }
 ```
 
+Use in expressions:
+
+```sparql
+SELECT ?t {
+   ?s ?p ?o 
+   BIND(<< ?s ?p ?o>> AS ?t)
+}
+```
+```sparql
+SELECT (<< ?s ?p ?o>> AS ?t) {
+   ?s ?p ?o 
+}
+```
+
 ### SPARQL Functions related to embedded triples
 
 These functions cause an expression error if passed the wrong type of arguments. `afn:`
 is a prefix for `<http://jena.apache.org/ARQ/function#>`.
 
-| Keyword            | Function                 | Description |
-|--------------------| ------------------------ | ------------ |
-| TRIPLE(?s, ?p, ?o) | `afn:triple(?s, ?p, ?o)` | Create an embedded triple from s/p/o                    |
-| isTRIPLE(?t)       | `afn:isTriple(?t)`       | Return true if the argument value is an embedded triple |
-| SUBJECT(?t)        | `afn:subject(?t)`        | Return the subject of the embedded triple              |
-| PREDICATE(?t)      | `afn:predicate(?t)`      | Return the predicate (property) of the embedded triple |
-| OBJECT(?t)         | `afn:object(?t)`         | Return the object of the embedded triple               |
+| Function             | Description |
+|----------------------|------------------------ |
+| `TRIPLE(?s, ?p, ?o)` | Create an embedded triple from s/p/o                    |
+| `isTRIPLE(?t)`       | Return true if the argument value is an embedded triple |
+| `SUBJECT(?t)`        | Return the subject of the embedded triple               |
+| `PREDICATE(?t)`      | Return the predicate (property) of the embedded triple  |
+| `OBJECT(?t)`         | Return the object of the embedded triple                |
 
 ### SPARQL results
 
@@ -109,7 +127,7 @@ and similarly in `application/sparql-results+xml`:
 RDF-star embedded triples are treated as `Resource` to preserve the typed Model API.
 They occur in the subject and object positions.
 
-A `Resource` contains a `Statement` object if the underlying RDF term is an RDF* embedded triple.
+A `Resource` contains a `Statement` object if the underlying RDF term is an RDF-star embedded triple.
 
 New methods include:
 
