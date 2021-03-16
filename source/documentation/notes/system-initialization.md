@@ -10,7 +10,7 @@ must be done with care. Java initialization can lead to
 visibility of uninitialized data.
 
 The standard initialization sequence is  
-Core -> RIOT -> ARQ -> TDB -> other (SDB, jena text, jena spatial)
+Core -> RIOT -> ARQ -> TDB -> other (including jena text)
 
 The sequence from core to TDB should be executed before application
 components. See below for how to control the order.
