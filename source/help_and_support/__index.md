@@ -25,6 +25,8 @@ list, please send an email to: <a href="mailto:dev-subscribe@jena.apache.org">
 to subscribe with. This list is a good place to discuss the development of the Jena
 platform itself, including patches you want to submit.
 
+To unsubscribe from a mailing list, send email to `LIST-unsubscribe@jena.apache.org`.
+
 Full details of Apache mailing lists: [http://www.apache.org/foundation/mailinglists.html](http://www.apache.org/foundation/mailinglists.html).
 
 ## Other channels

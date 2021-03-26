@@ -11,10 +11,9 @@ Fuseki/UI can be run in a number of ways:
 Fuseki is also packaged as a plain server ["Fuseki Main"](fuseki-main.html)
 with no UI for use as a configurable SPARQL server, for [building as a Docker
 container](fuseki-docker.html), and as a deployment and development standalone
-server.
+server. It supports the arguments used by the standalone server. 
 
-Both packaging used the same configuration file format, and in standalone server
-mode, the same command line arguments.
+The configuration file is the same format for all forms of the Fuseki server.
 
 See "[Fuseki Configuration](fuseki-configuration.html)" for information on
 how to provide datasets and configure services using the configuration file.
