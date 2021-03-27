@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"examples.text"},{"l":"org.apache.jena.query.text"},{"l":"org.apache.jena.query.text.analyzer"},{"l":"org.apache.jena.query.text.assembler"},{"l":"org.apache.jena.query.text.changes"},{"l":"org.apache.jena.query.text.cmd"},{"l":"org.apache.jena.query.text.filter"}]

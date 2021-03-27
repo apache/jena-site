@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.apache.jena.arq.querybuilder"},{"l":"org.apache.jena.arq.querybuilder.clauses"},{"l":"org.apache.jena.arq.querybuilder.handlers"},{"l":"org.apache.jena.arq.querybuilder.rewriters"},{"l":"org.apache.jena.arq.querybuilder.updatebuilder"}]
