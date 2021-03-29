@@ -19,6 +19,8 @@ Further operations may be added within this naming scheme.
 
 ## Operations
 
+Replace `{name}` with a dataset name: e.g. `/$/backup/myDataset`.
+
 | Method          |  URL pattern           | Description   |
 |-----------------|------------------------|---------------|
 ||
@@ -27,25 +29,25 @@ Further operations may be added within this naming scheme.
 | <tt>GET</tt>    | `/$/server`            |               | 
 | <tt>POST</tt>   | `/$/server`            |               | 
 ||
-| <tt>POST</tt>   | `/$/datasets`         |               | 
-| <tt>GET</tt>    | `/$/datasets`         |               |
-| <tt>DELETE</tt> | `/$/datasets/*{name}*` |               |
-| <tt>GET</tt>    | `/$/datasets/*{name}*` |               |
-| <tt>POST</tt>   | `/$/datasets/*{name}*?state=offline` |               |
-| <tt>POST</tt>   | `/$/datasets/*{name}*?state=active`  |               |
+| <tt>POST</tt>   | `/$/datasets`          |               | 
+| <tt>GET</tt>    | `/$/datasets`          |               |
+| <tt>DELETE</tt> | `/$/datasets/{name}`   |               |
+| <tt>GET</tt>    | `/$/datasets/{name}`   |               |
+| <tt>POST</tt>   | `/$/datasets/{name}?state=offline` |               |
+| <tt>POST</tt>   | `/$/datasets/{name}?state=active`  |               |
 ||
 | <tt>POST</tt>   | `/$/server/shutdown`   | Not yet implemented  | 
 ||
-| <tt>GET</tt>    | `/$/stats`            |               | 
-| <tt>GET</tt>    | `/$/stats/*{name}*`    |               |
+| <tt>GET</tt>    | `/$/stats`             |               | 
+| <tt>GET</tt>    | `/$/stats/{name}`      |               |
 ||
-| <tt>POST</tt>   | `/$/backup/*{name}*`   |             |
-| <tt>GET</tt>    | `/$/backups-list`      |             |
-| <tt>POST</tt>   | `/$/compact/*{name}*`  |             |
-| <tt>POST</tt>   | `/$/sleep`             |             |
+| <tt>POST</tt>   | `/$/backup/{name}`     |               |
+| <tt>GET</tt>    | `/$/backups-list`      |               |
+| <tt>POST</tt>   | `/$/compact/{name}`    |               |
+| <tt>POST</tt>   | `/$/sleep`             |               |
 ||
-| <tt>GET</tt>    | `/$/tasks`            |               | 
-| <tt>GET</tt>    | `/$/tasks/*{name}*`    |               |
+| <tt>GET</tt>    | `/$/tasks`             |               | 
+| <tt>GET</tt>    | `/$/tasks/{name}`      |               |
 
 ## Ping
 Pattern: `/$/ping`
@@ -67,7 +69,7 @@ _@@details of JSON format._
 Pattern: `/$/datasets`
 
 `/$/datasets` is a container representing all datasets present in the server. 
-`/$/datasets/*{name}*` names a specific dataset.  As a container, operations on items
+`/$/datasets/{name}` names a specific dataset.  As a container, operations on items
 in the container, via `GET`, `POST` and `DELETE`, operate on specific dataset.
 
 ### Adding a Dataset and its Services.
@@ -131,7 +133,7 @@ any persistent data can be manipulated outside the server.
 Datasets are initially "active".  The transition from "active" to "offline" is graceful - all outstanding requests are completed.
 
 ## Statistics
-> **`/$/stats/*{name}*`**
+> **`/$/stats/{name}`**
 
 Statistics can be obtained for each dataset or all datasets in a single response.
 `/$/stats` is  treated as a container for this information.
@@ -140,7 +142,7 @@ Statistics can be obtained for each dataset or all datasets in a single response
 > See [Fuseki Server Information](fuseki-server-info.html) for details of statistics kept by a Fuseki server.
 
 ### Backup 
-Pattern: `/$/backup/*{name}*`
+Pattern: `/$/backup/{name}`
 
 This operation initiates a backup and returns a JSON object with the task Id in it.
 
@@ -150,11 +152,11 @@ See [Tasks](#tasks) for how to monitor a backups progress.
 
 Return: A task is allocated a identifier (usually, a number).
 ```
-{ "taskId" : "*{taskId}*" }
+{ "taskId" : "{taskId}" }
 ```
 The task id can be used to construct a URL to get details of the task:
 ```
-/$/tasks/*{taskId}*
+/$/tasks/{taskId}
 ```
 
 Pattern: `/$/backups-list`
@@ -166,7 +168,7 @@ The returned JSON object will have the form `{ backups: [ ... ] }` where the `[]
 a list of file names.
 
 ### Compact
-Pattern: `/$/compact/*{name}*`
+Pattern: `/$/compact/{name}`
 
 This operations initiates a database compaction task and returns a JSON object with the task Id in it.
 
@@ -184,11 +186,11 @@ also a `Location:` header with the URL of the task created.
 The progress of the task can be monitored with HTTP GET operations:
 
 Pattern: `/$/tasks` &ndash; All asynchronous tasks.<br/>
-Pattern: `/$/tasks/*{taskId}*` &ndash; A particular task.
+Pattern: `/$/tasks/{taskId}` &ndash; A particular task.
 
 The URL `/$/tasks` returns a description of all running and recently tasks. A finished task can be identified by having a `finishPoint` and `success` fields.
 
-Each background task has an id.  The URL `/$/tasks/*{taskId}*` gets a description about one single task.
+Each background task has an id.  The URL `/$/tasks/{taskId}` gets a description about one single task.
 
 Details of the last few completed tasks are retained, up to a fixed number. The records will eventually be removed as later tasks complete, and the task URL will then return 404.
 
