@@ -157,7 +157,7 @@ It implements the six Conformance Classes described in the GeoSPARQL document:</
       <description>Jena has a simple initialization sequence that is used to setup components available at runtime.
 Application code is welcome to also use this mechanism. This must be done with care. Java initialization can lead to visibility of uninitialized data.
 The standard initialization sequence is
-Core -&amp;gt; RIOT -&amp;gt; ARQ -&amp;gt; TDB -&amp;gt; other (SDB, jena text, jena spatial)
+Core -&amp;gt; RIOT -&amp;gt; ARQ -&amp;gt; TDB -&amp;gt; other (including jena text)
 The sequence from core to TDB should be executed before application components. See below for how to control the order.</description>
     </item>
     
@@ -177,8 +177,8 @@ The sequence from core to TDB should be executed before application components. 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/download/</guid>
-      <description>Jena is packaged as downloads which contain the most commonly used portions of the systems:
- apache-jena – contains the APIs, SPARQL engine, the TDB native RDF database and command line tools apache-jena-fuseki – the Jena SPARQL server  Jena requires Java8.
+      <description>Apache Jena is packaged as downloads which contain the most commonly used portions of the systems:
+ apache-jena – contains the APIs, SPARQL engine, the TDB native RDF database and command line tools apache-jena-fuseki – the Jena SPARQL server  Jena4 requires Java 11.
 Download Mirrors [if-any logo] [end] The currently selected mirror is [preferred]. If you encounter a problem with this mirror, please select another mirror. If all mirrors are failing, there are backup mirrors (at the end of the mirrors list) that should be available.</description>
     </item>
     
@@ -844,16 +844,6 @@ Endpoints The following servers endpoints are available. They are present in Fus
   Fuseki is a SPARQL server. It provides REST-style SPARQL HTTP Update, SPARQL Query, and SPARQL Update using the SPARQL protocol over HTTP.
 The relevant SPARQL standards are:
  SPARQL 1.1 Query SPARQL 1.1 Update SPARQL 1.1 Protocol SPARQL 1.1 Graph Store HTTP Protocol  Contents  Download Getting Started Security Logging Server URI scheme Running a Fuseki Server Fuseki Configuration File SPARQL Over HTTP Use from Java Development System  Download Fuseki1 Binaries for Fuseki1 are available from the maven repositories.</description>
-    </item>
-    
-    <item>
-      <title>Fuseki: serving RDF data over HTTP</title>
-      <link>https://jena.apache.org/documentation/serving_data/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://jena.apache.org/documentation/serving_data/</guid>
-      <description>See the Fuseki2 documentation.   This page covers Fuseki1. Fuseki1 is deprecated and has been retired. Fuseki2 is current.  The last release of Jena with this module is Jena 3.9.0. The original documentation.
-  </description>
     </item>
     
     <item>
@@ -1791,14 +1781,24 @@ PREFIX info: &amp;lt;http://somewhere/peopleInfo#&amp;gt; PREFIX vcard: &amp;lt;
     
     <item>
       <title>Spatial searches with SPARQL</title>
+      <link>https://jena.apache.org/documentation/query/spatial-query-doc.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/query/spatial-query-doc.html</guid>
+      <description>This module was first released with Jena 2.11.0. It was last released in Jena 3.12.0.
+Jena provides a a GeoSPARQL implementation.
+ This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query. It gives applications the ability to perform simple spatial searches within SPARQL queries. Spatial indexes are additional information for accessing the RDF graph.
+The spatial index can be either Apache Lucene for a same-machine spatial index, or Apache Solr for a large scale enterprise search application.</description>
+    </item>
+    
+    <item>
+      <title>Spatial searches with SPARQL</title>
       <link>https://jena.apache.org/documentation/query/spatial-query.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/query/spatial-query.html</guid>
-      <description>This module was first released with Jena 2.11.0.
-It is planned to retire this module in favour of a GeoSPARQL implementation.
-This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query. It gives applications the ability to perform simple spatial searches within SPARQL queries. Spatial indexes are additional information for accessing the RDF graph.
-The spatial index can be either Apache Lucene for a same-machine spatial index, or Apache Solr for a large scale enterprise search application.</description>
+      <description>  The Jena Spatial module has been retired. The last release of Jena with jena-spatial was Jena 3.12.0. See jena-spatial/README.md. The original documentation is here
+  </description>
     </item>
     
     <item>
@@ -1830,16 +1830,15 @@ The supported datatypes (including those required by SPARQL 1.1), including full
     </item>
     
     <item>
-      <title>Support of RDF*</title>
-      <link>https://jena.apache.org/documentation/rdfstar/</link>
+      <title>Support of RDF-star</title>
+      <link>https://jena.apache.org/documentation/rdf-star/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/rdfstar/</guid>
-      <description>RDF* is an extension to RDF that provides a way for one triple to refer to another triple. Another resource about RDF* is Olaf Hartig&amp;rsquo;s blog entry.
+      <guid>https://jena.apache.org/documentation/rdf-star/</guid>
+      <description>RDF-star is an extension to RDF that provides a way for one triple to refer to another triple. RDF* is the name of the original work which is described in Olaf Hartig&amp;rsquo;s blog entry.
 Example:
-&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is a triple term and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
-Triple terms can be in the subject or object position.
-Jena provides support for RDF* and the related SPARQL*.</description>
+&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is an embedded triple and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
+Triple terms can be in the subject or object position.</description>
     </item>
     
     <item>

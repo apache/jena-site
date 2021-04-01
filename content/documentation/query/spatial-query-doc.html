@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Spatial searches with SPARQL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/spatial-query-doc.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/query'>QUERY</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">SPATIAL QUERY DOC</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">Spatial searches with SPARQL</h1>
+            
+	<p>This module was first released with Jena 2.11.0.
+It was last released in Jena 3.12.0.</p>
+<p>Jena provides a  a <a href="../geosparql/">GeoSPARQL implementation</a>.</p>
+<hr>
+<p>This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query.
+It gives applications the ability to perform simple spatial searches within SPARQL queries.
+Spatial indexes are additional information for accessing the RDF graph.</p>
+<p>The spatial index can be either <a href="http://lucene.apache.org/core">Apache Lucene</a> for a
+same-machine spatial index, or <a href="http://lucene.apache.org/solr/">Apache Solr</a>
+for a large scale enterprise search application.</p>
+<p>Some example code is <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/examples/">available here</a>.</p>
+<p><em>Illustration</em></p>
+<p>This query makes a spatial query for the places within 10 kilometres of Bristol UK (which as latitude/longitude of 51.46, 2.6).</p>
+<pre><code>PREFIX spatial: &lt;http://jena.apache.org/spatial#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?placeName
+{
+    ?place spatial:nearby (51.46 2.6 10 'km') .
+    ?place rdfs:label ?placeName
+}
+</code></pre>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#how-to-use-it-by-code">How to Use it by Code</a>
+<ul>
+<li><a href="#create-spatial-dataset">Create Spatial Dataset</a></li>
+<li><a href="#supported-geo-data-for-indexing-and-querying">Supported Geo Data for Indexing and Querying</a>
+<ul>
+<li><a href="#builtin-geo-predicates">Builtin Geo Predicates</a></li>
+<li><a href="#custom-geo-predicates">Custom Geo Predicates</a></li>
+</ul>
+</li>
+<li><a href="#load-geo-data-into-spatial-dataset">Load Geo Data into Spatial Dataset</a></li>
+</ul>
+</li>
+<li><a href="#property-function-library">Property Function Library</a></li>
+<li><a href="#spatial-dataset-assembler">Spatial Dataset Assembler</a></li>
+<li><a href="#working-with-solr">Working with Solr</a></li>
+<li><a href="#working-with-fuseki">Working with Fuseki</a></li>
+<li><a href="#building-a-spatial-index">Building a Spatial Index</a></li>
+</ul>
+<h2 id="how-to-use-it-by-code">How to Use it by Code</h2>
+<h3 id="create-spatial-dataset">Create Spatial Dataset</h3>
+<pre><code>import org.apache.jena.query.spatial.EntityDefinition
+...
+// In Lucene, &quot;entityField&quot; stores the uri of the subject (e.g. a place), 
+// while &quot;geoField&quot; holds the indexed geo data (e.g. latitude/longitude).
+// Using fields &quot;uri&quot; and &quot;geo&quot;:
+EntityDefinition entDef = new EntityDefinition(&quot;uri&quot;, &quot;geo&quot;); 
+
+// index in File system (or use an in-memory one)
+Directory dir = FSDirectory.open(indexDir); 
+
+// The baseDataset can be an in-memory or TDB/SDB file based one which contains the geo data. Join together into a dataset.
+Dataset spatialDataset = SpatialDatasetFactory.createLucene(baseDataset, dir, entDef); 
+...
+</code></pre>
+<h3 id="supported-geo-data-for-indexing-and-querying">Supported Geo Data for Indexing and Querying</h3>
+<h4 id="builtin-geo-predicates">Builtin Geo Predicates</h4>
+<p>There are mainly 2 types of RDF representation of geo data, which are both supported by jena-spatial:</p>
+<p><strong>1) Latitude/Longitude Format (in gonames, DBPedia and Linked Geo Data)</strong></p>
+<pre><code>PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+:EGBB rdf:type :LargeAirport ;
+    geo:lat &quot;52.4539&quot;^^xsd:float ;
+    geo:long &quot;-1.74803&quot;^^xsd:float .
+:EGBB_String rdf:type :LargeAirport ;
+    geo:lat &quot;52.4539&quot; ;
+    geo:long &quot;-1.74803&quot; .
+</code></pre>
+<p><strong>2) Well Known Text (WKT) Literal (in DBPedia and Linked Geo Data)</strong></p>
+<pre><code>PREFIX ogc: &lt;http://www.opengis.net/ont/geosparql#&gt;
+:node1000032677 a :Geometry ;
+    ogc:asWKT &quot;POINT(7.338818000000001 51.4433324)&quot;^^ogc:wktLiteral .
+airports:EGBB_Fake_In_Box rdf:type airports_sc:LargeAirport ;
+    ogc:asWKT &quot;Polygon ((-2.0 51.2, 1.0 51.2, 1.0 51.8, -2.0 51.8, -2.0 51.2))&quot;^^wkt:wktLiteral.
+</code></pre>
+<p>For 2) WKT, DBPedia uses <code>geo:geometry</code>, while Linked Geo Data adopts <code>ogc:asWKT</code> and <code>geo:geometry</code>.</p>
+<p><strong>The builtin predicates that can be automatically processed by jena-spatial include: 1) <code>geo:lat</code>, <code>geo:long</code>; 2) <code>geo:geometry</code>, <code>ogc:asWKT</code>.</strong></p>
+<p><strong>Important note</strong> In order to read geo data in 2) WKT literal format, jena-spatial uses <a href="http://tsusiatsoftware.net/jts/main.html">JTS Topology Suite</a>,
+which is under LGPL licence. jena-spatial <strong>does not</strong> make a hard dependency on JTS. In other words,
+if an end user just uses the feature of 1), there&rsquo;s no need to depend on JTS (i.e. nothing needs to be done). If he wants 2),
+he can make it by setting the <code>SpatialContextFactory</code> of
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
+to <code>JtsSpatialContextFactory</code>, which is an optional choice. In this way, the JTS libs should be in the classpath. Here&rsquo;s the sample code:</p>
+<pre><code>import org.apache.jena.query.spatial.EntityDefinition
+...
+EntityDefinition entDef = new EntityDefinition(&quot;uri&quot;, &quot;geo&quot;);
+
+// use JtsSpatialContextFactory to support 2) WKT literals (optional)
+entDef.setSpatialContextFactory(&quot;com.spatial4j.core.context.jts.JtsSpatialContextFactory&quot;);
+...
+</code></pre>
+<h4 id="custom-geo-predicates">Custom Geo Predicates</h4>
+<p>However, there may be more predicates for other data sources for both 1) and 2).
+jena-spatial provides an interface for consuming all kinds of custom geo predicates.
+You can simply add predicates to let jena-spatial recognize them using
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>:</p>
+<pre><code>import org.apache.jena.query.spatial.EntityDefinition
+...
+
+EntityDefinition entDef = new EntityDefinition(&quot;uri&quot;&quot;, &quot;geo&quot;);
+
+// custom geo predicates for 1) Latitude/Longitude Format
+Resource lat_1 = ResourceFactory.createResource(&quot;http://localhost/jena_example/#latitude_1&quot;) ;
+Resource long_1 ResourceFactory.createResource(&quot;http://localhost/jena_example/#longitude_1&quot;) ;
+entDef.addSpatialPredicatePair(lat_1, long_1) ;
+
+// custom geo predicates for Well Known Text (WKT) Literal
+Resource wkt_1 = ResourceFactory.createResource(&quot;http://localhost/jena_example/#wkt_1&quot;);
+entDef.addWKTPredicate( wkt_1 );
+</code></pre>
+<p>See more supported <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/geoarq-data-1.ttl">geo data examples</a></p>
+<h3 id="load-geo-data-into-spatial-dataset">Load Geo Data into Spatial Dataset</h3>
+<pre><code>spatialDataset.begin(ReadWrite.WRITE);
+try {
+    Model m = spatialDataset.getDefaultModel();
+    RDFDataMgr.read(m, file);
+    spatialDataset.commit();
+} finally {
+    spatialDataset.end();
+}
+</code></pre>
+<p>Now the spatial dataset is ready for spatial query.</p>
+<h2 id="property-function-library">Property Function Library</h2>
+<p>The prefix spatial is <code>&lt;http://jena.apache.org/spatial#&gt;</code>.</p>
+<table>
+<thead>
+<tr>
+<th> Property name </th>
+<th> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*?place* **spatial:nearby** *(latitude, longitude, radius [, units, limit])*<br>*?place* **spatial:withinCircle** *(latitude, longitude, radius [, units, limit])*</td>
+<td>Query for the <em>?place</em> within the <em>radius</em> distance of the location of <em>(latitude, longitude)</em>. The distance <em>units</em> can be: &ldquo;kilometres&rdquo;/&ldquo;km&rdquo;, &ldquo;miles&rdquo;/&ldquo;mi&rdquo;, &ldquo;metres&rdquo;/&ldquo;m&rdquo;, &ldquo;centimetres&rdquo;/&ldquo;cm&rdquo;, &ldquo;millimetres&rdquo;/&ldquo;mm&rdquo; or &ldquo;degrees&rdquo;/&ldquo;de&rdquo;, which are delivered as the optional strings (the default value is &ldquo;kilometres&rdquo;). <em>limit</em> is an optional integer parameter for the limit of the query results (if <em>limit</em>&lt;0, return all query results).</td>
+</tr>
+<tr>
+<td>*?place* **spatial:withinBox** *(latitude_min, longitude_min, latitude_max, longitude_max [, limit])*</td>
+<td>Query for the <em>?place</em> within the box area of <em>(latitude_min, longitude_min, latitude_max, longitude_max)</em>.</td>
+</tr>
+<tr>
+<td>*?place* **spatial:intersectBox** *(latitude_min, longitude_min, latitude_max, longitude_max [, limit])*</td>
+<td>Query for the <em>?place</em> intersecting the box area of <em>(latitude_min, longitude_min, latitude_max, longitude_max)</em>.</td>
+</tr>
+<tr>
+<td>*?place* **spatial:north** *(latitude, longitude [, limit])*</td>
+<td>Query for the <em>?place</em> northing the location of <em>(latitude, longitude)</em>.</td>
+</tr>
+<tr>
+<td>*?place* **spatial:south** *(latitude, longitude [, limit])*</td>
+<td>Query for the <em>?place</em> southing the location of <em>(latitude, longitude)</em>.</td>
+</tr>
+<tr>
+<td>*?place* **spatial:west** *(latitude, longitude [, limit])*</td>
+<td>Query for the <em>?place</em> westing the location of <em>(latitude, longitude)</em>.</td>
+</tr>
+<tr>
+<td>*?place* **spatial:east** *(latitude, longitude [, limit])*</td>
+<td>Query for the <em>?place</em> easting the location of <em>(latitude, longitude)</em>.</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="http://edndoc.esri.com/arcsde/9.1/general_topics/understand_spatial_relations.htm">ESRIs docs on spatial relations</a></p>
+<h2 id="spatial-dataset-assembler">Spatial Dataset Assembler</h2>
+<p>The usual way to describe an index is with a <a href="/documentation/assembler/index.html">Jena assembler description</a>. Configurations can also be built with <a href="#how-to-use-it-by-code">code</a>. The assembler describes a &ldquo;spatial dataset&rdquo; which has an underlying RDF dataset and a spatial index. The spatial index describes the spatial index technology (Lucene or Solr) and the details needed for each.</p>
+<p>A spatial index has an
+<a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a>
+which defines the properties to index, the name of the lucene/solr field used for storing the URI itself (e.g. &ldquo;entityField&rdquo;) and its geo information (e.g. latitude/longitude as &ldquo;geoField&rdquo;), and the custom geo predicates.</p>
+<p>For common RDF spatial query, only &ldquo;entityField&rdquo; and &ldquo;geoField&rdquo; are required with the <a href="#builtin-geo-predicates">builtin geo predicates</a> working well. More complex setups, with multiple <a href="#custom-geo-predicates">custom geo predicates</a> besides the two fields are possible.
+You also optionally use JtsSpatialContextFactory to support indexing WKT literals.</p>
+<p>Once setup this way, any data added to the spatial dataset is automatically indexed as well.</p>
+<p>The following is an example of a TDB dataset with a spatial index.</p>
+<pre><code>## Example of a TDB dataset and spatial index
+
+PREFIX :        &lt;http://localhost/jena_example/#&gt;
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt;
+PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX spatial: &lt;http://jena.apache.org/spatial#&gt;
+
+## ---------------------------------------------------------------
+## This URI must be fixed - it's used to assemble the spatial dataset.
+
+:spatial_dataset rdf:type     spatial:SpatialDataset ;
+    spatial:dataset   &lt;#dataset&gt; ;
+    ##spatial:index   &lt;#indexSolr&gt; ;
+    spatial:index     &lt;#indexLucene&gt; ;
+    .
+
+&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
+    tdb:location &quot;--mem--&quot; ;
+    tdb:unionDefaultGraph true ;
+    .
+
+&lt;#indexLucene&gt; a spatial:SpatialIndexLucene ;
+    #spatial:directory &lt;file:Lucene&gt; ;
+    spatial:directory &quot;mem&quot; ;
+    spatial:definition &lt;#definition&gt; ;
+    .
+
+&lt;#definition&gt; a spatial:EntityDefinition ;
+    spatial:entityField      &quot;uri&quot; ;
+    spatial:geoField     &quot;geo&quot; ;
+    # custom geo predicates for 1) Latitude/Longitude Format
+    spatial:hasSpatialPredicatePairs (
+         [ spatial:latitude :latitude_1 ; spatial:longitude :longitude_1 ]
+         [ spatial:latitude :latitude_2 ; spatial:longitude :longitude_2 ]
+         ) ;
+    # custom geo predicates for 2) Well Known Text (WKT) Literal
+    spatial:hasWKTPredicates (:wkt_1 :wkt_2) ;
+    # custom SpatialContextFactory for 2) Well Known Text (WKT) Literal
+    spatial:spatialContextFactory
+         &quot;com.spatial4j.core.context.jts.JtsSpatialContextFactory&quot;
+    .
+</code></pre>
+<p>then use code such as:</p>
+<pre><code>Dataset spatialDataset = DatasetFactory.assemble( &quot;spatial-config.ttl&quot;, 
+    &quot;http://localhost/jena_example/#spatial_dataset&quot;) ;
+</code></pre>
+<p>Key here is that the assembler contains two dataset definitions, one for the spatial dataset, one for the base data. Therefore, the application needs to identify the text dataset by its URI &lsquo;http://localhost/jena_example/#spatial_dataset&rsquo;.</p>
+<h2 id="working-with-solr">Working with Solr</h2>
+<p>Besides Lucene, jena-spatial can work with Solr for spatial query, powered by <a href="http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4">Lucene / Solr 4 Spatial</a> and <a href="http://wiki.apache.org/solr/Solrj">Solrj</a>.</p>
+<p>It&rsquo;s required to add the field definitions for &ldquo;entityField&rdquo; and &ldquo;geoField&rdquo; respectively in <code>schema.xml</code> of Solr.
+The names of the fields in <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/main/java/org/apache/jena/query/spatial/EntityDefinition.java">EntityDefinition</a> should be in accordance with those in <code>schema.xml</code>.
+Here is an example defining the names of &ldquo;entityField&rdquo; as &ldquo;uri&rdquo; and &ldquo;geoField&rdquo; as &ldquo;geo&rdquo;:</p>
+<pre><code>&lt;field name=&quot;uri&quot; type=&quot;string&quot; indexed=&quot;true&quot; stored=&quot;true&quot; required=&quot;true&quot; multiValued=&quot;false&quot; /&gt; 
+&lt;field name=&quot;geo&quot;  type=&quot;location_rpt&quot;  indexed=&quot;true&quot; stored=&quot;true&quot;  multiValued=&quot;true&quot; /&gt; 
+</code></pre>
+<p>The fieldType of &ldquo;entityField&rdquo; is <code>string</code>, while that of &ldquo;geoField&rdquo; is <code>location_rpt</code>:</p>
+<pre><code>&lt;fieldType name=&quot;string&quot; class=&quot;solr.StrField&quot; sortMissingLast=&quot;true&quot; /&gt;
+&lt;fieldType name=&quot;location_rpt&quot; class=&quot;solr.SpatialRecursivePrefixTreeFieldType&quot; geo=&quot;true&quot; distErrPct=&quot;0.025&quot; maxDistErr=&quot;0.000009&quot; units=&quot;degrees&quot; /&gt;
+</code></pre>
+<p>Additionally, in <code>solrconfig.xml</code>, there should be 2 <code>requestHandlers</code> defined for querying and updating the spatial data and the index.</p>
+<pre><code>&lt;requestHandler name=&quot;/select&quot; class=&quot;solr.SearchHandler&quot;&gt;&lt;/requestHandler&gt;
+&lt;requestHandler name=&quot;/update&quot; class=&quot;solr.UpdateRequestHandler&quot;&gt;&lt;/requestHandler&gt;
+</code></pre>
+<p>The above is the least required configuration to run jena-spatial in Solr.
+For more information about the configuration, please check the <a href="http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4">Lucene / Solr 4 Spatial</a> documentation.</p>
+<p>There are also some demonstrations of the usage of Solr in the <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/java/org/apache/jena/query/spatial/pfunction/solr">unit tests</a> of jena-spatial.
+They use a <code>EmbeddedSolrServer</code>with a <code>SOLR_HOME</code> sample <a href="https://github.com/apache/jena/tree/main/jena-spatial/src/test/resources/SolrHome">here</a>.</p>
+<h2 id="working-with-fuseki">Working with Fuseki</h2>
+<p>The Fuseki configuration simply points to the spatial dataset as the fuseki:dataset of the service.</p>
+<pre><code>&lt;#service_spatial_tdb&gt; rdf:type fuseki:Service ;
+    rdfs:label                      &quot;TDB/spatial service&quot; ;
+    fuseki:name                     &quot;ds&quot; ;
+    fuseki:serviceQuery             &quot;query&quot; ;
+    fuseki:serviceQuery             &quot;sparql&quot; ;
+    fuseki:serviceUpdate            &quot;update&quot; ;
+    fuseki:serviceUpload            &quot;upload&quot; ;
+    fuseki:serviceReadGraphStore    &quot;get&quot; ;
+    fuseki:serviceReadWriteGraphStore    &quot;data&quot; ;
+    fuseki:dataset                  :spatial_dataset ;
+</code></pre>
+<h2 id="building-a-spatial-index">Building a Spatial Index</h2>
+<p>When working at scale, or when preparing a published, read-only, SPARQL service, creating the index by loading the spatial dataset is impractical. The index and the dataset can be built using command line tools in two steps: first load the RDF data, second create an index from the existing RDF dataset.</p>
+<p>Build the TDB dataset:</p>
+<pre><code>java -cp $FUSEKI_HOME/fuseki-server.jar tdb.tdbloader --tdb=assembler_file data_file
+</code></pre>
+<p>using the copy of TDB included with Fuseki. Alternatively, use one of the TDB utilities tdbloader or tdbloader2:</p>
+<pre><code>$JENA_HOME/bin/tdbloader --loc=directory  data_file
+</code></pre>
+<p>then build the spatial index with the jena.spatialindexer:</p>
+<pre><code>java -cp jena-spatial.jar jena.spatialindexer --desc=assembler_file
+</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2021 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

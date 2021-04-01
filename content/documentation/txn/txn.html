@@ -64,7 +64,7 @@
                         <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
                         <li><a href="/documentation/query/text-query.html">Text Search</a></li>
                         <li><a href="/documentation/shacl/index.html">SHACL</a></li>
-                        <li><a href="/documentation/rdfstar/index.html">RDF*</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
                         <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
                         <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
                         <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
@@ -197,9 +197,22 @@ try {
     dataset.end() ;
 }
 </code></pre>
-<p><code>Txn</code> simplifies writing transaction handling by wrapping application code,
-contained in a Java lambda expression or a Java Runnable object, in the correct entry
-and exit code for a transaction, eliminating coding errors.</p>
+<p>This can be simplified by wrapping application code, contained in a Java lambda
+expression or a Java Runnable object, and calling a method of the daatset or
+other transactional object.  This wil apply the correct entry and exit code for
+a transaction, eliminating coding errors.</p>
+<p>This is also available via transactional objects such as <code>Dataset</code>.</p>
+<p>The pattern is:</p>
+<pre><code>Dataset dataset = ...
+dataset.executeRead(()-&gt; {
+    . . .
+}) ;
+</code></pre>
+<p>and</p>
+<pre><code>dataset.executeWrite(()-&gt; {
+    . . .
+}) ;
+</code></pre>
 <p>The form is:</p>
 <pre><code>Txn.executeRead(ds, ()-&gt; {
     . . .
@@ -210,12 +223,14 @@ and exit code for a transaction, eliminating coding errors.</p>
     . . .
 }) ;
 </code></pre>
+<p>is also avilable (<code>Txn</code> is the implementation of this machinary). Using Txn is
+this way is necessary for Jena3.</p>
 <h2 id="usage">Usage</h2>
 <p>This first example shows how to write a SPARQL query .</p>
-<pre><code>Dataset ds = ... ;
+<pre><code>Dataset dataset = ... ;
 Query query = ... ;
-Txn.executeRead(ds, ()-&gt; {
-    try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+dataset.executeRead(()-&gt; {
+    try(QueryExecution qExec = QueryExecutionFactory.create(query, dataset)) {
         ResultSetFormatter.out(qExec.execSelect()) ;
     }
 }) ;
@@ -224,45 +239,45 @@ Txn.executeRead(ds, ()-&gt; {
 <code>QueryExecution</code> inside a read transaction.</p>
 <p>Writing to a file is a read-action (it does not update the RDF data, the
 writer needs to read the dataset or model):</p>
-<pre><code>Dataset ds = ... ;
-Txn.executeRead(ds, ()-&gt; {
-    RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
+<pre><code>Dataset dataset = ... ;
+dataset.executeRead(()-&gt; {
+    RDFDataMgr.write(System.out, dataset, Lang.TRIG) ;
 }) ;
 </code></pre>
 <p>whereas reading data into an RDF dataset needs to be a write transaction
 (the dataset or model is changed).</p>
-<pre><code>Dataset ds = ... ;
-Txn.executeWrite(ds, ()-&gt; {
-    RDFDataMgr.read(ds, &quot;data.ttl&quot;) ;
+<pre><code>Dataset dataset = ... ;
+dataset.executeWrite(()-&gt; {
+    RDFDataMgr.read(&quot;data.ttl&quot;) ;
 }) ;
 </code></pre>
 <p>Applications are not limited to a single operation inside a transaction. It
 can involve multiple applications read operations, such as making several
 queries:</p>
-<pre><code>Dataset ds = ... ;
+<pre><code>Dataset dataset = ... ;
 Query query1 = ... ;
 Query query2 = ... ;
-Txn.executeRead(ds, ()-&gt; {
-     try(QueryExecution qExec1 = QueryExecutionFactory.create(query1, ds)) {
+dataset.executeRead(()-&gt; {
+     try(QueryExecution qExec1 = QueryExecutionFactory.create(query1, dataset)) {
          ...
      }
-     try(QueryExecution qExec2 = QueryExecutionFactory.create(query2, ds)) {
+     try(QueryExecution qExec2 = QueryExecutionFactory.create(query2, dataset)) {
          ...
      }
 }) ;
 </code></pre>
-<p>A <code>Txn.calculateRead</code> block can return a result but only with the condition
+<p>A <code>calculateRead</code> block can return a result but only with the condition
 that what is returned does not touch the data again unless it uses a new
 transaction.</p>
 <p>This includes returning a result set or returning a model from a dataset.</p>
 <p><code>ResultSets</code> by default stream - each time <code>hasNext</code> or <code>next</code> is
 called, new data might be read from the RDF dataset.  A copy of the
 results needs to be take:</p>
-<pre><code>Dataset ds = ... ;
+<pre><code>Dataset dataset = ... ;
 Query query = ... ;
-List&lt;String&gt; results = Txn.calculateRead(ds, ()-&gt; {
+List&lt;String&gt; results = dataset.calculateRead(()-&gt; {
      List&lt;String&gt; accumulator = new ArrayList&lt;&gt;() ;
-     try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+     try(QueryExecution qExec = QueryExecutionFactory.create(query, dataset)) {
          qExec.execSelect().forEachRemaining((row)-&gt;{
              String strThisRow = row.getLiteral(&quot;variable&quot;).getLexicalForm() ;
              accumulator.add(strThisRow) ;
@@ -272,39 +287,41 @@ List&lt;String&gt; results = Txn.calculateRead(ds, ()-&gt; {
 }) ;
 // use &quot;results&quot;
 
-Dataset ds = ... ;
+Dataset dataset = ... ;
 Query query = ... ;
-ResultSet List&lt;String&gt; resultSet = Txn.calculateRead(ds, ()-&gt; {
+ResultSet List&lt;String&gt; resultSet = dataset.calculateRead(()-&gt; {
      List&lt;String&gt; accumulator = new ArrayList&lt;&gt;() ;
-     try(QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+     try(QueryExecution qExec = QueryExecutionFactory.create(query, dataset)) {
          return ResultSetFactory.copyResults(qExec.execSelect()) ;
      }
 }) ;
 // use &quot;resultSet&quot;
 </code></pre>
-<p>The functions <code>Txn.execute</code> and <code>Txn.calculate</code> start <code>READ_PROMOTE</code>
+<p>The functions <code>execute</code> and <code>calculate</code> start <code>READ_PROMOTE</code>
 transactions which start in &ldquo;read&rdquo; mode but convert to &ldquo;write&rdquo; mode if
 needed.  For details of transaction promotion see the
-c<a href="transactions_api.html#types-modes-promotion">section in the transaction API documentation</a>.</p>
+<a href="transactions_api.html#types-modes-promotion">section in the transaction API documentation</a>.</p>
 <h2 id="working-with-rdf-models">Working with RDF Models</h2>
 <p>The unit of transaction is the dataset.  Model in datasets are just views of that dataset.
 Model should not be passed out of a transaction because they are still attached to the
 dataset.</p>
 <h2 id="autocommit-and-transaction-continuation">Autocommit and Transaction continuation</h2>
-<p>If there is a transaction already started for the thread, the <code>Txn.execute...</code> will be performed as part of
+<p>If there is a transaction already started for the thread, then
+<code>execute...</code> or <code>calculate...</code> will be performed as part of
 the transaction and that transaction is not terminated.  If there is not transaction already started,
-a transaction is wrapped around the <code>Txn.execute...</code> action.</p>
+a transaction is wrapped around the <code>execute...</code> or <code>calculate...</code> action.</p>
 <pre><code>Dataset dataset = ...
 // Main transaction.
 dataset.begin(ReadWrite.WRITE) ;
 try {
   ...
   // Part of the transaction above.
-  Txn.executeRead(dataset, () -&gt; ...) ;
+  dataset.executeRead(() -&gt; ...) ;
   ...
   // Part of the transaction above - no commit/abort
-  Txn.executeWrite(dataset, () -&gt; ...) ;
+  dataset.executeWrite(() -&gt; ...) ;
 
+  // Outer transaction
   dataset.commit() ;
 } finally { dataset.end() ; }
 </code></pre>

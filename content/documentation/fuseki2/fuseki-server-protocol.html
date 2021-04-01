@@ -64,7 +64,7 @@
                         <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
                         <li><a href="/documentation/query/text-query.html">Text Search</a></li>
                         <li><a href="/documentation/shacl/index.html">SHACL</a></li>
-                        <li><a href="/documentation/rdfstar/index.html">RDF*</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
                         <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
                         <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
                         <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
@@ -193,6 +193,7 @@ its administrative interface.</p>
 dataset names and this prefix is reserved for the Fuseki control functions.
 Further operations may be added within this naming scheme.</p>
 <h2 id="operations">Operations</h2>
+<p>Replace <code>{name}</code> with a dataset name: e.g. <code>/$/backup/myDataset</code>.</p>
 <table>
 <thead>
 <tr>
@@ -244,22 +245,22 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>DELETE</tt></td>
-<td><code>/$/datasets/*{name}*</code></td>
+<td><code>/$/datasets/{name}</code></td>
 <td></td>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
-<td><code>/$/datasets/*{name}*</code></td>
+<td><code>/$/datasets/{name}</code></td>
 <td></td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
-<td><code>/$/datasets/*{name}*?state=offline</code></td>
+<td><code>/$/datasets/{name}?state=offline</code></td>
 <td></td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
-<td><code>/$/datasets/*{name}*?state=active</code></td>
+<td><code>/$/datasets/{name}?state=active</code></td>
 <td></td>
 </tr>
 <tr>
@@ -284,7 +285,7 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
-<td><code>/$/stats/*{name}*</code></td>
+<td><code>/$/stats/{name}</code></td>
 <td></td>
 </tr>
 <tr>
@@ -294,7 +295,7 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
-<td><code>/$/backup/*{name}*</code></td>
+<td><code>/$/backup/{name}</code></td>
 <td></td>
 </tr>
 <tr>
@@ -304,7 +305,7 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
-<td><code>/$/compact/*{name}*</code></td>
+<td><code>/$/compact/{name}</code></td>
 <td></td>
 </tr>
 <tr>
@@ -324,7 +325,7 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
-<td><code>/$/tasks/*{name}*</code></td>
+<td><code>/$/tasks/{name}</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -342,7 +343,7 @@ request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) w
 <h2 id="datasets-and-services">Datasets and Services</h2>
 <p>Pattern: <code>/$/datasets</code></p>
 <p><code>/$/datasets</code> is a container representing all datasets present in the server.
-<code>/$/datasets/*{name}*</code> names a specific dataset.  As a container, operations on items
+<code>/$/datasets/{name}</code> names a specific dataset.  As a container, operations on items
 in the container, via <code>GET</code>, <code>POST</code> and <code>DELETE</code>, operate on specific dataset.</p>
 <h3 id="adding-a-dataset-and-its-services">Adding a Dataset and its Services.</h3>
 <blockquote>
@@ -403,7 +404,7 @@ any persistent data can be manipulated outside the server.</p>
 <p>Datasets are initially &ldquo;active&rdquo;.  The transition from &ldquo;active&rdquo; to &ldquo;offline&rdquo; is graceful - all outstanding requests are completed.</p>
 <h2 id="statistics">Statistics</h2>
 <blockquote>
-<p><strong><code>/$/stats/*{name}*</code></strong></p>
+<p><strong><code>/$/stats/{name}</code></strong></p>
 </blockquote>
 <p>Statistics can be obtained for each dataset or all datasets in a single response.
 <code>/$/stats</code> is  treated as a container for this information.</p>
@@ -412,21 +413,21 @@ any persistent data can be manipulated outside the server.</p>
 See <a href="fuseki-server-info.html">Fuseki Server Information</a> for details of statistics kept by a Fuseki server.</p>
 </blockquote>
 <h3 id="backup">Backup</h3>
-<p>Pattern: <code>/$/backup/*{name}*</code></p>
+<p>Pattern: <code>/$/backup/{name}</code></p>
 <p>This operation initiates a backup and returns a JSON object with the task Id in it.</p>
 <p>Backups are written to the server local directory &lsquo;backups&rsquo; as gzip-compressed N-Quads files.</p>
 <p>See <a href="#tasks">Tasks</a> for how to monitor a backups progress.</p>
 <p>Return: A task is allocated a identifier (usually, a number).</p>
-<pre><code>{ &quot;taskId&quot; : &quot;*{taskId}*&quot; }
+<pre><code>{ &quot;taskId&quot; : &quot;{taskId}&quot; }
 </code></pre><p>The task id can be used to construct a URL to get details of the task:</p>
-<pre><code>/$/tasks/*{taskId}*
+<pre><code>/$/tasks/{taskId}
 </code></pre><p>Pattern: <code>/$/backups-list</code></p>
 <p>Returns a list of all the files in the backup area of the server. This is
 useful for managing the files externally.</p>
 <p>The returned JSON object will have the form <code>{ backups: [ ... ] }</code> where the <code>[]</code> array is
 a list of file names.</p>
 <h3 id="compact">Compact</h3>
-<p>Pattern: <code>/$/compact/*{name}*</code></p>
+<p>Pattern: <code>/$/compact/{name}</code></p>
 <p>This operations initiates a database compaction task and returns a JSON object with the task Id in it.</p>
 <p>Compaction <strong>ONLY</strong> applies to TDB2 datasets, see <a href="../tdb2/tdb2_admin.html#compaction">TDB2 Database Administration</a>
 for more details of this operation.</p>
@@ -438,9 +439,9 @@ The result of such operations includes a json object with the task id and
 also a <code>Location:</code> header with the URL of the task created.</p>
 <p>The progress of the task can be monitored with HTTP GET operations:</p>
 <p>Pattern: <code>/$/tasks</code> – All asynchronous tasks.<br/>
-Pattern: <code>/$/tasks/*{taskId}*</code> – A particular task.</p>
+Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
 <p>The URL <code>/$/tasks</code> returns a description of all running and recently tasks. A finished task can be identified by having a <code>finishPoint</code> and <code>success</code> fields.</p>
-<p>Each background task has an id.  The URL <code>/$/tasks/*{taskId}*</code> gets a description about one single task.</p>
+<p>Each background task has an id.  The URL <code>/$/tasks/{taskId}</code> gets a description about one single task.</p>
 <p>Details of the last few completed tasks are retained, up to a fixed number. The records will eventually be removed as later tasks complete, and the task URL will then return 404.</p>
 <p>Pattern: <code>/$/tasks</code> ; example:</p>
 <pre><code>[ { 
