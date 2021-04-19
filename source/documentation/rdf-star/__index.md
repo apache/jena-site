@@ -2,7 +2,7 @@
 title: Support of RDF-star
 slug: index
 aliases:
-    - /docimentation/rdfstar/
+    - /documentation/rdfstar/
     - /documentation/rdfstar/index.html
 ---
 
