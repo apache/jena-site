@@ -571,7 +571,7 @@ slug: index
                       .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, "simple");
     Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(config);
 
-####Summary of parameters
+#### Summary of parameters
 <table width="90%" border="1" cellspacing="0" cellpadding="0">
   <tr>
     <td width="22%"><b>Parameter</b></td>
@@ -1209,7 +1209,7 @@ class B = cardinality(P,1)</pre>
   of rule use and a substantial slow down - the OWL axioms that the reasoner can
   handle are already built in and don't need to be redeclared.</p>
 
-####Incompleteness
+#### Incompleteness
 <p>The rule based approach cannot offer a complete solution for OWL/Lite, let
   alone the OWL/Full fragment corresponding to the OWL/Lite constructs. In addition
   the current implementation is still under development and may well have omissions
