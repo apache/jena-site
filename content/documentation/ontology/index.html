@@ -1309,13 +1309,40 @@ super-class for representing ontology properties in Java is
 Again, using the pattern of add, set, get, list, has, and remove
 methods, we can access the following attributes of an
 <code>OntProperty</code>:</p>
-<p>Attribute | Meaning
-subProperty | A sub property of this property; i.e. a property which is declared to be a <code>subPropertyOf</code> this property. If p is a sub property of q, and we know that <code>A p B</code> is true, we can infer that <code>A q B</code> is also true.
-superProperty | A super property of this property, i.e. a property that this property is a <code>subPropertyOf</code>
-domain | Denotes the class or classes that form the domain of this property. Multiple domain values are interpreted as a conjunction. The domain denotes the class of value the property maps from.
-range | Denotes the class or classes that form the range of this property. Multiple range values are interpreted as a conjunction. The range denotes the class of values the property maps to.
-equivalentProperty | Denotes a property that is the same as this property.
-inverse | Denotes a property that is the inverse of this property. Thus if q is the inverse of p, and we know that <code>A q B</code>, then we can infer that <code>B p A</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>subProperty</td>
+<td>A sub property of this property; i.e. a property which is declared to be a <code>subPropertyOf</code> this property. If p is a sub property of q, and we know that <code>A p B</code> is true, we can infer that <code>A q B</code> is also true.</td>
+</tr>
+<tr>
+<td>superProperty</td>
+<td>A super property of this property, i.e. a property that this property is a <code>subPropertyOf</code></td>
+</tr>
+<tr>
+<td>domain</td>
+<td>Denotes the class or classes that form the domain of this property. Multiple domain values are interpreted as a conjunction. The domain denotes the class of value the property maps from.</td>
+</tr>
+<tr>
+<td>range</td>
+<td>Denotes the class or classes that form the range of this property. Multiple range values are interpreted as a conjunction. The range denotes the class of values the property maps to.</td>
+</tr>
+<tr>
+<td>equivalentProperty</td>
+<td>Denotes a property that is the same as this property.</td>
+</tr>
+<tr>
+<td>inverse</td>
+<td>Denotes a property that is the inverse of this property. Thus if q is the inverse of p, and we know that <code>A q B</code>, then we can infer that <code>B p A</code>.</td>
+</tr>
+</tbody>
+</table>
 <p>In the example ontology, the property <code>hasProgramme</code> has a domain
 of <code>OrganizedEvent</code>, a range of <code>Programme</code> and the human-readable label &ldquo;has programme&rdquo;.
 We can reconstruct this definition in an
@@ -1461,13 +1488,40 @@ fur, and birds in feathers. Thus the property <code>hasCovering</code> is in
 one case restricted to have the value <code>fur</code>, in the other to have
 the value <code>feathers</code>. This is a <em>has value restriction</em>. Six
 restriction types are currently defined by OWL:</p>
-<p>Restriction type | Meaning
-has value | The restricted property has exactly the given value.
-all values from | All values of the restricted property, if it has any, are members of the given class.
-some values from | The property has at least one value which is a member of the given class.
-cardinality | The property has exactly <em>n</em> values, for some positive integer n.
-min cardinality | The property has at least <em>n</em> values, for some positive integer n.
-max cardinality | The property has at most <em>n</em> values, for some positive integer n.</p>
+<table>
+<thead>
+<tr>
+<th>Restriction type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>has value</td>
+<td>The restricted property has exactly the given value.</td>
+</tr>
+<tr>
+<td>all values from</td>
+<td>All values of the restricted property, if it has any, are members of the given class.</td>
+</tr>
+<tr>
+<td>some values from</td>
+<td>The property has at least one value which is a member of the given class.</td>
+</tr>
+<tr>
+<td>cardinality</td>
+<td>The property has exactly <em>n</em> values, for some positive integer n.</td>
+</tr>
+<tr>
+<td>min cardinality</td>
+<td>The property has at least <em>n</em> values, for some positive integer n.</td>
+</tr>
+<tr>
+<td>max cardinality</td>
+<td>The property has at most <em>n</em> values, for some positive integer n.</td>
+</tr>
+</tbody>
+</table>
 <p>Note that, at present, the Jena
 ontology API has only limited support for OWL2&rsquo;s qualified
 cardinality restrictions (i.e. <code>cardinalityQ</code>, <code>minCardinalityQ</code>
@@ -1632,7 +1686,7 @@ is even more compact:</p>
 <p>Although lists are defined in the generic RDF model in Jena, they
 are extensively used by the ontology API so we mention them here.
 Full details of the methods defined are in the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html"><code>RDFList javadoc</code></a>.</p>
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html"><code>RDFList</code> javadoc</a>.</p>
 <p>Various means of constructing lists are defined in
 <a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html"><code>Model</code></a>, as
 variants on <code>createList</code>. For example, we can construct a list of
@@ -1683,7 +1737,6 @@ the XML declaration:</p>
       &lt;owl:onProperty rdf:resource=&quot;#hasLocation&quot;/&gt;
       &lt;owl:hasValue rdf:resource=&quot;#united_kingdom&quot;/&gt;
     &lt;/owl:Restriction&gt;
-  &lt;/owl:intersectionOf&gt;
     &lt;owl:Restriction&gt;
       &lt;owl:onProperty rdf:resource=&quot;#hasPart&quot;/&gt;
       &lt;owl:someValuesFrom rdf:resource=&quot;#IndustryTrack&quot;/&gt;
@@ -1740,7 +1793,7 @@ therefore do not accept a list of operands.</p>
 <h3 id="enumerated-classes">Enumerated classes</h3>
 <p>The final type class expression allows by OWL is the enumerated
 class. Recall that a class is a set of individuals. Often, we want
-to define the members of the <em>implicitly</em>: for example, &ldquo;the class
+to define the members of the class <em>implicitly</em>: for example, &ldquo;the class
 of UK conferences&rdquo;. Sometimes it is convenient to define a class
 <em>explicitly</em>, by stating the individuals the class contains. An
 <a href="/documentation/javadoc/jena/org/apache/jena/ontology/EnumeratedClass.html">enumerated class</a>
