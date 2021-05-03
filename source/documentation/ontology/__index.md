@@ -1077,6 +1077,7 @@ methods, we can access the following attributes of an
 `OntProperty`:
 
 Attribute | Meaning
+--------- | -------
 subProperty | A sub property of this property; i.e. a property which is declared to be a `subPropertyOf` this property. If p is a sub property of q, and we know that `A p B` is true, we can infer that `A q B` is also true.
 superProperty | A super property of this property, i.e. a property that this property is a `subPropertyOf`
 domain | Denotes the class or classes that form the domain of this property. Multiple domain values are interpreted as a conjunction. The domain denotes the class of value the property maps from.
@@ -1249,6 +1250,7 @@ the value `feathers`. This is a *has value restriction*. Six
 restriction types are currently defined by OWL:
 
 Restriction type | Meaning
+---------------- | -------
 has value | The restricted property has exactly the given value.
 all values from | All values of the restricted property, if it has any, are members of the given class.
 some values from | The property has at least one value which is a member of the given class.
@@ -1437,7 +1439,7 @@ is even more compact:
 Although lists are defined in the generic RDF model in Jena, they
 are extensively used by the ontology API so we mention them here.
 Full details of the methods defined are in the
-[`RDFList javadoc`](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html).
+[`RDFList` javadoc](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html).
 
 Various means of constructing lists are defined in
 [`Model`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html), as
@@ -1496,7 +1498,6 @@ the XML declaration:
           <owl:onProperty rdf:resource="#hasLocation"/>
           <owl:hasValue rdf:resource="#united_kingdom"/>
         </owl:Restriction>
-      </owl:intersectionOf>
         <owl:Restriction>
           <owl:onProperty rdf:resource="#hasPart"/>
           <owl:someValuesFrom rdf:resource="#IndustryTrack"/>
@@ -1558,7 +1559,7 @@ therefore do not accept a list of operands.
 
 The final type class expression allows by OWL is the enumerated
 class. Recall that a class is a set of individuals. Often, we want
-to define the members of the *implicitly*: for example, "the class
+to define the members of the class *implicitly*: for example, "the class
 of UK conferences". Sometimes it is convenient to define a class
 *explicitly*, by stating the individuals the class contains. An
 [enumerated class](/documentation/javadoc/jena/org/apache/jena/ontology/EnumeratedClass.html)
