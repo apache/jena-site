@@ -61,6 +61,8 @@ The file extensions understood are:
 
 `.n3` is supported but only as a synonym for Turtle.
 
+The [TriX](trix.html) support is for the core TriX format.
+
 In addition, if the extension is `.gz` the file is assumed to be gzip
 compressed. The file name is examined for an inner extension. For
 example, `.nt.gz` is gzip compressed N-Triples.
