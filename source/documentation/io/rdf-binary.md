@@ -27,6 +27,10 @@ This pages gives the details of RDF Binary encoding in [Apache Thrift](http://th
 
 RDF Thrift uses the Thrift compact protocol.
 
+Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Thrift/BinaryRDF.thrift)
+
+### RDF terms
+
     struct RDF_IRI {
     1: required string iri
     }
@@ -40,6 +44,7 @@ RDF Thrift uses the Thrift compact protocol.
     1: required string lex
     2: optional string datatype
     3: optional string langtag
+    4: optional RDF_PrefixName dtPrefix ;
     }
     
     struct RDF_Decimal {
@@ -76,6 +81,8 @@ RDF Thrift uses the Thrift compact protocol.
     6: RDF_ANY          any
     7: RDF_UNDEF        undefined
     8: RDF_REPEAT       repeat
+    9: RDF_Triple       tripleTerm  # RDF-star
+
     # Value forms of literals.
     10: i64             valInteger
     11: double          valDouble
