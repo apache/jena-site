@@ -146,11 +146,59 @@ more optional clauses (and not in some basic pattern as well):
 
 If the first optional binds `?name` and `?x` to some values, the
 second `OPTIONAL` is an attempt to match the ground triples (`?x`
-and `<kbd>?name</kbd>` have values). If the first optional did not
+and `?name` have values). If the first optional did not
 match the optional part, then the second one is an attempt to match
 its triple with two variables.
 
- 
+With an example set of data in which every combination of values exist:
+
+```xml
+<rdf:RDF
+  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+  xmlns:vCard='http://www.w3.org/2001/vcard-rdf/3.0#'
+  xmlns:info='http://somewhere/peopleInfo#'
+  xmlns:foaf='http://xmlns.com/foaf/0.1/'
+   >
+
+  <!-- both vCard:FN and foaf:name have values, and the values are the same -->
+  <foaf:Person rdf:about="http://somewhere/JohnSmith">
+    <vCard:FN>John Smith</vCard:FN>
+    <foaf:name>John Smith</foaf:name>
+  </foaf:Person>
+
+  <!-- both vCard:FN and foaf:name have values, but the values are not the same -->
+  <foaf:Person rdf:about="http://somewhere/RebeccaSmith">
+    <vCard:FN>Becky Smith</vCard:FN>
+    <foaf:name>Rebecca Smith</foaf:name>
+  </foaf:Person>
+
+  <!-- only vCard:FN has values -->
+  <foaf:Person rdf:about="http://somewhere/SarahJones">
+    <vCard:FN>Sarah Jones</vCard:FN>
+  </foaf:Person>
+
+  <!-- only foaf:name has values -->
+  <foaf:Person rdf:about="http://somewhere/MattJones">
+    <foaf:name>Matthew Jones</foaf:name>
+  </foaf:Person>
+
+  <!-- neither vCard:FN nor foaf:name have values -->
+  <foaf:Person rdf:about="http://somewhere/AdamJones" />
+
+</rdf:RDF>
+```
+
+Executing the above query will yield these solutions:
+
+    -------------------
+    | name            |
+    ===================
+    | "John Smith"    |
+    | "Matthew Jones" |
+    | "Sarah Jones"   |
+    |                 |
+    | "Rebecca Smith" |
+    -------------------
 
 [Next: union queries](sparql_union.html)
 
