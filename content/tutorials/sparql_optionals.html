@@ -295,10 +295,54 @@ WHERE
 </code></pre>
 <p>If the first optional binds <code>?name</code> and <code>?x</code> to some values, the
 second <code>OPTIONAL</code> is an attempt to match the ground triples (<code>?x</code>
-and <code>&lt;kbd&gt;?name&lt;/kbd&gt;</code> have values). If the first optional did not
+and <code>?name</code> have values). If the first optional did not
 match the optional part, then the second one is an attempt to match
 its triple with two variables.</p>
-<p> </p>
+<p>With an example set of data in which every combination of values exist:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+  <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>
+  <span style="color:#b44">xmlns:vCard=</span><span style="color:#b44">&#39;http://www.w3.org/2001/vcard-rdf/3.0#&#39;</span>
+  <span style="color:#b44">xmlns:info=</span><span style="color:#b44">&#39;http://somewhere/peopleInfo#&#39;</span>
+  <span style="color:#b44">xmlns:foaf=</span><span style="color:#b44">&#39;http://xmlns.com/foaf/0.1/&#39;</span>
+   <span style="color:#008000;font-weight:bold">&gt;</span>
+
+  <span style="color:#080;font-style:italic">&lt;!-- both vCard:FN and foaf:name have values, and the values are the same --&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;foaf:Person</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/JohnSmith&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;vCard:FN&gt;</span>John Smith<span style="color:#008000;font-weight:bold">&lt;/vCard:FN&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;foaf:name&gt;</span>John Smith<span style="color:#008000;font-weight:bold">&lt;/foaf:name&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;/foaf:Person&gt;</span>
+
+  <span style="color:#080;font-style:italic">&lt;!-- both vCard:FN and foaf:name have values, but the values are not the same --&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;foaf:Person</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/RebeccaSmith&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;vCard:FN&gt;</span>Becky Smith<span style="color:#008000;font-weight:bold">&lt;/vCard:FN&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;foaf:name&gt;</span>Rebecca Smith<span style="color:#008000;font-weight:bold">&lt;/foaf:name&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;/foaf:Person&gt;</span>
+
+  <span style="color:#080;font-style:italic">&lt;!-- only vCard:FN has values --&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;foaf:Person</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/SarahJones&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;vCard:FN&gt;</span>Sarah Jones<span style="color:#008000;font-weight:bold">&lt;/vCard:FN&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;/foaf:Person&gt;</span>
+
+  <span style="color:#080;font-style:italic">&lt;!-- only foaf:name has values --&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;foaf:Person</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/MattJones&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;foaf:name&gt;</span>Matthew Jones<span style="color:#008000;font-weight:bold">&lt;/foaf:name&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;/foaf:Person&gt;</span>
+
+  <span style="color:#080;font-style:italic">&lt;!-- neither vCard:FN nor foaf:name have values --&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;foaf:Person</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/AdamJones&#34;</span> <span style="color:#008000;font-weight:bold">/&gt;</span>
+
+<span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</code></pre></div><p>Executing the above query will yield these solutions:</p>
+<pre><code>-------------------
+| name            |
+===================
+| &quot;John Smith&quot;    |
+| &quot;Matthew Jones&quot; |
+| &quot;Sarah Jones&quot;   |
+|                 |
+| &quot;Rebecca Smith&quot; |
+-------------------
+</code></pre>
 <p><a href="sparql_union.html">Next: union queries</a></p>
 
 
