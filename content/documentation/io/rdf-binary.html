@@ -198,15 +198,20 @@ wide-used binary encoding layer with a large number of language bindings.</p>
 1: required string iri
 }
 
+# A prefix name (abbrev for an IRI)
+struct RDF_PrefixName {
+1: required string prefix ;
+2: required string localName ;
+}
+
 struct RDF_BNode {
 1: required string label
 }
 
-# Literals, in full form.
 struct RDF_Literal {
-1: required string lex
-2: optional string datatype
-3: optional string langtag
+1: required string  lex ;
+2: optional string  langtag ;
+3: optional string  datatype ;
 4: optional RDF_PrefixName dtPrefix ;
 }
 
@@ -216,7 +221,7 @@ struct RDF_Decimal {
 }
 
 struct RDF_VAR {
-1: required string name
+1: required string name ;
 }
 
 struct RDF_ANY { }
@@ -224,16 +229,6 @@ struct RDF_ANY { }
 struct RDF_UNDEF { }
 
 struct RDF_REPEAT { }
-
-struct RDF_PrefixDecl {
-1: required string prefix ;
-2: required string uri ;
-}
-
-struct RDF_PrefixName {
-1: required string prefix ;
-2: required string localName ;
-}
 
 union RDF_Term {
 1: RDF_IRI          iri
@@ -266,15 +261,20 @@ struct RDF_Quad {
 4: optional RDF_Term G
 }
 
-union RDF_StreamRow {
+struct RDF_PrefixDecl {
+1: required string prefix ;
+2: required string uri ;
+}
+</code></pre>
+<h2 id="encoding-graphs-datasets">Thrift encoding of RDF Graphs and RDF Datasets</h2>
+<pre><code>union RDF_StreamRow {
 1: RDF_PrefixDecl   prefixDecl
 2: RDF_Triple       triple
 3: RDF_Quad         quad
 }
 </code></pre>
-<h2 id="encoding-graphs-datasets">Thrift encoding of RDF Graphs and RDF Datasets</h2>
-<p>RDF Graphs are encoded as a stream of <code>RDF_Triple</code>.</p>
-<p>RDF Datasets are encoded as a stream of <code>RDF_Triple</code> and <code>RDF-Quad</code>.</p>
+<p>RDF Graphs are encoded as a stream of <code>RDF_Triple</code> and <code>RDF_PrefixDecl</code>.</p>
+<p>RDF Datasets are encoded as a stream of <code>RDF_Triple</code>, <code>RDF-Quad</code> and <code>RDF_PrefixDecl</code>.</p>
 <h2 id="encoding-result-sets">Thrift encoding of SPARQL Result Sets</h2>
 <p>A SPARQL Result Set is encoded as a list of variables (the header), then
 a stream of rows (the results).</p>
