@@ -35,15 +35,20 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     1: required string iri
     }
     
+    # A prefix name (abbrev for an IRI)
+    struct RDF_PrefixName {
+    1: required string prefix ;
+    2: required string localName ;
+    }
+    
     struct RDF_BNode {
     1: required string label
     }
     
-    # Literals, in full form.
     struct RDF_Literal {
-    1: required string lex
-    2: optional string datatype
-    3: optional string langtag
+    1: required string  lex ;
+    2: optional string  langtag ;
+    3: optional string  datatype ;
     4: optional RDF_PrefixName dtPrefix ;
     }
     
@@ -53,7 +58,7 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     }
     
     struct RDF_VAR {
-    1: required string name
+    1: required string name ;
     }
     
     struct RDF_ANY { }
@@ -61,16 +66,6 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     struct RDF_UNDEF { }
     
     struct RDF_REPEAT { }
-    
-    struct RDF_PrefixDecl {
-    1: required string prefix ;
-    2: required string uri ;
-    }
-    
-    struct RDF_PrefixName {
-    1: required string prefix ;
-    2: required string localName ;
-    }
     
     union RDF_Term {
     1: RDF_IRI          iri
@@ -82,7 +77,7 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     7: RDF_UNDEF        undefined
     8: RDF_REPEAT       repeat
     9: RDF_Triple       tripleTerm  # RDF-star
-
+    
     # Value forms of literals.
     10: i64             valInteger
     11: double          valDouble
@@ -104,18 +99,22 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     4: optional RDF_Term G
     }
     
+    struct RDF_PrefixDecl {
+    1: required string prefix ;
+    2: required string uri ;
+    }
+
+ ## Thrift encoding of RDF Graphs and RDF Datasets {#encoding-graphs-datasets}
+
     union RDF_StreamRow {
     1: RDF_PrefixDecl   prefixDecl
     2: RDF_Triple       triple
     3: RDF_Quad         quad
     }
-    
-## Thrift encoding of RDF Graphs and RDF Datasets {#encoding-graphs-datasets}
 
-RDF Graphs are encoded as a stream of `RDF_Triple`.
+RDF Graphs are encoded as a stream of `RDF_Triple` and `RDF_PrefixDecl`.
 
-RDF Datasets are encoded as a stream of `RDF_Triple` and `RDF-Quad`.
-
+RDF Datasets are encoded as a stream of `RDF_Triple`, `RDF-Quad` and `RDF_PrefixDecl`.
 
 ## Thrift encoding of SPARQL Result Sets {#encoding-result-sets}
 
