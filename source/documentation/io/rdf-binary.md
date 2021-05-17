@@ -84,7 +84,7 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     12: RDF_Decimal     valDecimal
     }
 
-## Thrift encoding of Triples, Quads and rows. {#encoding-tuples}
+### Thrift encoding of Triples, Quads and rows. {#encoding-tuples}
 
     struct RDF_Triple {
     1: required RDF_Term S
@@ -104,7 +104,7 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     2: required string uri ;
     }
 
- ## Thrift encoding of RDF Graphs and RDF Datasets {#encoding-graphs-datasets}
+### Thrift encoding of RDF Graphs and RDF Datasets {#encoding-graphs-datasets}
 
     union RDF_StreamRow {
     1: RDF_PrefixDecl   prefixDecl
@@ -116,7 +116,7 @@ RDF Graphs are encoded as a stream of `RDF_Triple` and `RDF_PrefixDecl`.
 
 RDF Datasets are encoded as a stream of `RDF_Triple`, `RDF-Quad` and `RDF_PrefixDecl`.
 
-## Thrift encoding of SPARQL Result Sets {#encoding-result-sets}
+### Thrift encoding of SPARQL Result Sets {#encoding-result-sets}
 
 A SPARQL Result Set is encoded as a list of variables (the header), then
 a stream of rows (the results).
