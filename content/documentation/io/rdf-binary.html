@@ -192,6 +192,8 @@ wide-used binary encoding layer with a large number of language bindings.</p>
 <p>This pages gives the details of RDF Binary encoding in <a href="http://thrift.apache.org/">Apache Thrift</a>.</p>
 <h2 id="encoding-terms">Thrift encoding of RDF Terms</h2>
 <p>RDF Thrift uses the Thrift compact protocol.</p>
+<p>Source: <a href="https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Thrift/BinaryRDF.thrift">BinaryRDF.thrift</a></p>
+<h3 id="rdf-terms">RDF terms</h3>
 <pre><code>struct RDF_IRI {
 1: required string iri
 }
@@ -205,6 +207,7 @@ struct RDF_Literal {
 1: required string lex
 2: optional string datatype
 3: optional string langtag
+4: optional RDF_PrefixName dtPrefix ;
 }
 
 struct RDF_Decimal {
@@ -241,6 +244,8 @@ union RDF_Term {
 6: RDF_ANY          any
 7: RDF_UNDEF        undefined
 8: RDF_REPEAT       repeat
+9: RDF_Triple       tripleTerm  # RDF-star
+
 # Value forms of literals.
 10: i64             valInteger
 11: double          valDouble
