@@ -8,6 +8,8 @@ The SecurityEvaluator interface defines the access control operations. It provid
 
 **NOTE** The permissions system caches intermediate results and will only call the evaluator if the answer is not already in the cache. There is little or no advantage to implementing caching in the SecurityEvaluator itself.
 
+**NOTE** In earlier versions ReadDeniedException was thrown whenever read permissions were not granted.  The current version defines a `isHardReadError` method that defines what action should be taken.  **The default implementation has changed**.  See Configuration Methods section below for information.
+
 ### Actions
 
 Principals may perform Create, Read, Update or Delete operations on secured resources. These operations are defined in the `Action` enum in the SecurityEvaluator interface.
@@ -54,6 +56,13 @@ Determine if the user is allowed to update the "from" triple to the "to" triple.
     public Object getPrincipal() throws AuthenticationRequiredException;
 Return the current principal or null if there is no current principal.
 
+### Configuration Methods
+
+The evaluator has one configuration method. 
+
+    public default boolean isHardReadError()
+This method determines how the system will deal with read denied restrictions when attempting to create iterators, counts, or perform existential checks.   If set `true` the system will throw a `ReadDeniedException`.  This is the action that was perfomed in Jena version 3 and earlier.  If set `false`, the default,  methods that return iterators return empty iterators, methods that perform existential checks return `false`, and methods that return counts return 0 (zero).
+
 ## Sample Implementation
 
 This sample is for a graph that contains a set of messages, access to the messages are limited to
@@ -67,13 +76,13 @@ See the example jar for another implementation example.
 <!-- language: lang-java -->
 
     public class ExampleEvaluator implements SecurityEvaluator {
-
+    
         private Principal principal;
         private Model model;
         private RDFNode msgType = ResourceFactory.createResource( "http://example.com/msg" );
         private Property pTo = ResourceFactory.createProperty( "http://example.com/to" );
         private Property pFrom = ResourceFactory.createProperty( "http://example.com/from" );
-
+    
         /**
          *
          * @param model The graph we are going to evaluate against.
@@ -82,13 +91,13 @@ See the example jar for another implementation example.
         {
             this.model = model;
         }
-
+    
         @Override
         public boolean evaluate(Object principal, Action action, Node graphIRI) {
             // we allow any action on a graph.
             return true;
         }
-
+    
         // not that in this implementation all permission checks flow through
         // this method. We can do this because we have a simple permissions
         // requirement. A more complex set of permissions requirement would
@@ -104,7 +113,7 @@ See the example jar for another implementation example.
             {
                 throw new AuthenticationRequiredException();
             }
-
+    
             // a message is only available to sender or recipient
             if (r.hasProperty( RDF.type, msgType ))
             {
@@ -113,7 +122,7 @@ See the example jar for another implementation example.
             }
             return true;
         }
-
+    
         // evaluate a node.
         private boolean evaluate( Object principal, Node node )
         {
@@ -122,55 +131,55 @@ See the example jar for another implementation example.
                 // to be explicitly checked.
                 return false;
             }
-
+    
             // if the node is a URI or a blank node evaluate it as a resource.
             if (node.isURI() || node.isBlank()) {
-			     Resource r = model.getRDFNode( node ).asResource();
-			     return evaluate( principal, r );
-		     }
-
+    		     Resource r = model.getRDFNode( node ).asResource();
+    		     return evaluate( principal, r );
+    	     }
+    
             return true;
         }
-
+    
         // evaluate the triple by evaluating the subject, predicate and object.
         private boolean evaluate( Object principal, Triple triple ) {
             return evaluate( principal, triple.getSubject()) &&
                     evaluate( principal, triple.getObject()) &&
                     evaluate( principal, triple.getPredicate());
         }
-
+    
         @Override
         public boolean evaluate(Object principal, Action action, Node graphIRI, Triple triple) {
             return evaluate( principal, triple );
         }
-
+    
         @Override
         public boolean evaluate(Object principal, Set<Action> actions, Node graphIRI) {
             return true;
         }
-
+    
         @Override
         public boolean evaluate(Object principal, Set<Action> actions, Node graphIRI,
                 Triple triple) {
             return evaluate( principal, triple );
         }
-
+    
         @Override
         public boolean evaluateAny(Object principal, Set<Action> actions, Node graphIRI) {
             return true;
         }
-
+    
         @Override
         public boolean evaluateAny(Object principal, Set<Action> actions, Node graphIRI,
                 Triple triple) {
             return evaluate( principal, triple );
         }
-
+    
         @Override
         public boolean evaluateUpdate(Object principal, Node graphIRI, Triple from, Triple to) {
             return evaluate( principal, from ) && evaluate( principal, to );
         }
-
+    
         public void setPrincipal( String userName )
         {
             if (userName == null)
@@ -179,7 +188,7 @@ See the example jar for another implementation example.
             }
             principal = new BasicUserPrincipal( userName );
         }
-
+    
         @Override
         public Principal getPrincipal() {
             return principal;
