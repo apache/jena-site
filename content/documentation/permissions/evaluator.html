@@ -178,6 +178,7 @@
 	<h2 id="overview">Overview</h2>
 <p>The SecurityEvaluator interface defines the access control operations. It provides the interface between the authentication (answers the question: &ldquo;who are you?&quot;) and the authorization (answers the question: &ldquo;what can you do?&quot;), as such it provides access to the current principal (user). The javadocs contain detailed requirements for implementations of the SecurityEvaluator interface, short notes are provided below.</p>
 <p><strong>NOTE</strong> The permissions system caches intermediate results and will only call the evaluator if the answer is not already in the cache. There is little or no advantage to implementing caching in the SecurityEvaluator itself.</p>
+<p><strong>NOTE</strong> In earlier versions ReadDeniedException was thrown whenever read permissions were not granted.  The current version defines a <code>isHardReadError</code> method that defines what action should be taken.  <strong>The default implementation has changed</strong>.  See Configuration Methods section below for information.</p>
 <h3 id="actions">Actions</h3>
 <p>Principals may perform Create, Read, Update or Delete operations on secured resources. These operations are defined in the <code>Action</code> enum in the SecurityEvaluator interface.</p>
 <h3 id="node">Node</h3>
@@ -213,6 +214,11 @@
 <pre><code>public Object getPrincipal() throws AuthenticationRequiredException;
 </code></pre>
 <p>Return the current principal or null if there is no current principal.</p>
+<h3 id="configuration-methods">Configuration Methods</h3>
+<p>The evaluator has one configuration method.</p>
+<pre><code>public default boolean isHardReadError()
+</code></pre>
+<p>This method determines how the system will deal with read denied restrictions when attempting to create iterators, counts, or perform existential checks.   If set <code>true</code> the system will throw a <code>ReadDeniedException</code>.  This is the action that was perfomed in Jena version 3 and earlier.  If set <code>false</code>, the default,  methods that return iterators return empty iterators, methods that perform existential checks return <code>false</code>, and methods that return counts return 0 (zero).</p>
 <h2 id="sample-implementation">Sample Implementation</h2>
 <p>This sample is for a graph that contains a set of messages, access to the messages are limited to
 principals that the messages are to or from. Any triple that is not a message is not affected. This
