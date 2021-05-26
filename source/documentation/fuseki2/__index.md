@@ -66,7 +66,7 @@ preference to any older versions.
 | Filename | Description |
 |---------|-------------|
 |`apache-jena-fuseki-*VER*.zip` | Fuseki with UI download |
-|`[jena-fuseki-server](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server)` | The Fuseki Main packaging |
+|[`jena-fuseki-server`](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server) | The Fuseki Main packaging |
 
 `apache-jena-fuseki-*VER*.zip` contains both a war file and an executable jar.
 
