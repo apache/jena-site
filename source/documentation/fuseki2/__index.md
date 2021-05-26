@@ -57,7 +57,7 @@ Releases of Apache Jena Fuseki can be downloaded from one of the mirror sites:
 
 [Jena Downloads](/download)
 
-and previous releases are available from [the archive](http://archive.apache.org/dist/jena/).
+and previous releases are available from [the archive](https://archive.apache.org/dist/jena/).
 We strongly recommend that users use the latest official Apache releases of Jena Fuseki in
 preference to any older versions.
 
@@ -66,7 +66,7 @@ preference to any older versions.
 | Filename | Description |
 |---------|-------------|
 |`apache-jena-fuseki-*VER*.zip` | Fuseki with UI download |
-|`[jena-fuseki-server](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server) | The Fuseki Main packaging |
+|`[jena-fuseki-server](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server)` | The Fuseki Main packaging |
 
 `apache-jena-fuseki-*VER*.zip` contains both a war file and an executable jar.
 
@@ -85,7 +85,7 @@ possible users use the latest official Apache releases of Jena in
 preference to using any older versions of Jena.
 
 Previous Apache Jena releases can be found in the Apache archive area
-at [http://archive.apache.org/dist/jena](http://archive.apache.org/dist/jena/)
+at [https://archive.apache.org/dist/jena](http://archive.apache.org/dist/jena/)
 
 ### Development Builds
 
