@@ -217,6 +217,92 @@ a variety of tasks in developing Jena-based applications.</p>
 <li>Move your Jena installation to a path without spaces</li>
 <li>Grab the latest scripts from <a href="https://github.com/apache/jena/tree/main/apache-jena/bat/">main</a> where they have been fixed to safely handle this.  Future releases will include this fix and resolve this issue</li>
 </ol>
+<h3 id="command-line-tools-quick-reference">Command Line Tools Quick Reference</h3>
+<h4 id="riot-and-related">riot and Related</h4>
+<p>See <a href="https://jena.apache.org/documentation/io/">Reading and Writing RDF in Apache Jena</a> for more information.</p>
+<ul>
+<li>
+<p><strong><code>riot</code></strong>: parse RDF data, guessing the syntax from the file extension. Assumes that standard input is N-Quads/N-Triples unless
+you tell it otherwise with the <code>--syntax</code> parameter. <code>riot</code> can also do RDFS <a href="https://jena.apache.org/documentation/inference/">inferencing</a>, count triples, convert serializations,
+validate syntax, concatenate datasets, and more.</p>
+</li>
+<li>
+<p><strong><code>turtle</code></strong>, <strong><code>ntriples</code></strong>, <strong><code>nquads</code></strong>, <strong><code>trig</code></strong>, <strong><code>rdfxml</code></strong>: specialized versions of <code>riot</code> that assume that the input is in the named serialization.</p>
+</li>
+<li>
+<p><strong><code>rdfparse</code></strong>: parse an RDF/XML document, for which you can usually just use <code>riot</code>, but this can also pull triples out of <code>rdf:RDF</code> elements
+embedded at arbitrary places in an XML document if you need to deal with those.</p>
+</li>
+</ul>
+<h4 id="sparql-queries-on-local-files-and-endpoints">SPARQL Queries on Local Files and Endpoints</h4>
+<p>See <a href="https://jena.apache.org/documentation/query/cmds.html">ARQ - Command Line Applications</a> for more about these.</p>
+<ul>
+<li>
+<p><strong><code>arq</code></strong> and <strong><code>sparql</code></strong>: run a query in a file named as a command line parameter on a dataset in one or more files named as command line parameters.</p>
+</li>
+<li>
+<p><strong><code>qparse</code></strong>: parse a query, report on any problems, and output a pretty-printed version of the query.</p>
+</li>
+<li>
+<p><strong><code>uparse</code></strong>: do the same thing as <code>qparse</code> but for update requests.</p>
+</li>
+<li>
+<p><strong><code>rsparql</code></strong>: send a local query to a SPARQL endpoint specified with a URL, giving you the same choice of output formats
+that <code>arq</code> does.</p>
+</li>
+<li>
+<p><strong><code>rupdate</code></strong>: send a local update query to a SPARQL endpoint specified with a URL, assuming that is accepting updates from you.</p>
+</li>
+</ul>
+<h4 id="querying-and-manipulating-fuseki-datasets">Querying and Manipulating Fuseki Datasets</h4>
+<p>The following utilities let you work with data stored using a local
+<a href="https://jena.apache.org/documentation/fuseki2/">Fuseki</a> triplestore. They can
+be useful for automating queries and updates of data stored there. Each
+requires an <a href="https://jena.apache.org/documentation/assembler/assembler-howto.html">assembler file</a>
+pointing at a dataset as a parameter; Fuseki creates these for you.</p>
+<p>For each pair of utilities shown, the first is used with data stored using the TDB format and the
+second with data stored using the newer and more efficient TDB2 format.</p>
+<p>The <a href="https://jena.apache.org/documentation/tdb/">TDB</a> and <a href="https://jena.apache.org/documentation/tdb2/tdb2_cmds.html">TDB2 - Command Line Tools</a>
+pages describe these further.</p>
+<ul>
+<li>
+<p><strong><code>tdbquery</code></strong>, <strong><code>tdb2.tdbquery</code></strong>: query a dataset that has been stored with Fuseki.</p>
+</li>
+<li>
+<p><strong><code>tdbdump</code></strong>, <strong><code>tdb2.tdbdump</code></strong>: dump the contents of a Fuseki dataset to standard out.</p>
+</li>
+<li>
+<p><strong><code>tdbupdate</code></strong>, <strong><code>tdb2.tdbupdate</code></strong>: run an update request against a Fuseki dataset.</p>
+</li>
+<li>
+<p><strong><code>tdbloader</code></strong>, <strong><code>tdb2.tdbloader</code></strong>: load a data from a file into a Fuseki dataset.</p>
+</li>
+<li>
+<p><strong><code>tdbstats</code></strong>, <strong><code>tdb2.tdbstats</code></strong>: output a short report of information about a Fuseki dataset.</p>
+</li>
+<li>
+<p><strong><code>tdbbackup</code></strong>, <strong><code>tdb2.tdbbackup</code></strong>: create a gzipped copy of the Fuseki dataset&rsquo;s triples.</p>
+</li>
+<li>
+<p><strong><code>tdbcompact</code></strong>, <strong><code>tdb2.tdbcompact</code></strong>: reduce the size of the Fuseki dataset.</p>
+</li>
+</ul>
+<h4 id="other-handy-command-line-tools">Other Handy Command Line Tools</h4>
+<ul>
+<li>
+<p><strong><code>shacl</code></strong>: validate a dataset against a set of shapes and constraints described in a
+file that conforms to the W3C <a href="https://www.w3.org/TR/shacl/">SHACL</a> standard.
+Jena&rsquo;s <a href="https://jena.apache.org/documentation/shacl/">SHACL</a> page has more on this utility.</p>
+</li>
+<li>
+<p><strong><code>rdfdiff</code></strong>: compare the triples in two datasets, regardless of their serializations, and list
+which are different between the two datasets. (Modeled on the UNIX <code>diff</code> utility.)</p>
+</li>
+<li>
+<p><strong><code>iri</code></strong>: Parse a IRI and tell you about it, with errors and warnings. Good for
+checking for issues like proper escaping.</p>
+</li>
+</ul>
 
 
         </div>
