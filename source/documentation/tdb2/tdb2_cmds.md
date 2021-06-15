@@ -62,6 +62,18 @@ and the notes below are only initial guidance. The default choice is
 a reasonable starting point. Closing all applications to release their
 memory and not use CPU improves the loading process performance.
 
+Loading very large datasets (like Wikidata) with tdb2.tdbloader may
+sometimes on linux configurations fail with errors like:
+
+    Native memory allocation (mmap) failed to map 65536 bytes for
+    committing reserved memory.
+
+This can be avoided by adding a larger value to the `vm.max_map_count`
+option. The command `sudo sysctl -w vm.max_map_count=262144` updates
+the value for your current session, or you can persist the change by
+editing the value in `/etc/sysctl.conf` or in `/etc/sysctl.d/*` override
+files if available.
+
 ### Loader options
 
 The choice of loader is given by the optional `--loader` argument.
