@@ -1,8 +1,10 @@
-= Apache Jena website
+# Apache Jena website
 
-The `asf-site` branch is only used for storing the generated static website.
-From this branch, the Jena website is being served.
+The `asf-staging` branch is only used for storing the generated static website for previewing proposed changes to the website.
 
-The javadoc is on a separate branch `javadoc`.
+The preview site is at https://jena.staged.apache.org
 
-When submitting patches, apply them to the master branch instead of the asf-site branch.
+The javadoc is stored on a separate branch `javadoc` but is also included into the staging site.
+
+When submitting patches, apply them to the `main` branch instead of the asf-site branch.  Any PR based on a branch off of `main`
+will automatically be built and staged here.
