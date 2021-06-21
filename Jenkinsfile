@@ -25,7 +25,7 @@ pipeline {
     environment {
         HUGO_VERSION = '0.66.0'
         DEPLOY_BRANCH = 'asf-site'
-        STAGING_BRANCH = 'staging'
+        STAGING_BRANCH = 'asf-staging'
     }
 
     stages {
