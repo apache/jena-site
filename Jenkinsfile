@@ -69,6 +69,7 @@ pipeline {
                  } 
             }
             steps {
+                script {
                     // Checkout branch with generated content
                     sh """
                         git checkout ${STAGING_BRANCH}
@@ -92,6 +93,7 @@ pipeline {
                     
                     // Push the generated content for deployment
                     sh "git push -u origin ${STAGING_BRANCH}"
+                }
             }
         }
         stage('Deploy') {
