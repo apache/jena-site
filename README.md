@@ -22,12 +22,51 @@ This is the source code for the website of [Apache Jena](https://jena.apache.org
 
 ## Repository structure
 
-This repository uses 3 branches for building the website.
+This repository uses 3 branches for building the published website.
+
 - The `main` branch, which contains all the sources for the website.
 - The `asf-site` branch, which contains the generated website being used for the actual website.
-- The `javadoc` branch, which has the javadoc to be published at 
+- The `javadoc` branch, which has the javadoc to be published as part of the main website under `documentation/javadoc/`
 
 When contributing patches, please create pull requests for the `main` branch.
+
+Additionally the repository also has a `staging` branch that can be used to preview website changes
+prior to publishing them to the main website.  Any branch other than `main` that has a `Jenkinsfile` 
+present in it will automatically be staged at https://jena.staged.apache.org, the Javadoc from the
+`javadoc` branch is also automatically staged into this staging site.
+
+### Creating a custom staging site
+
+For larger website updates it may be useful to create a custom staging branch, you can do this as
+follows:
+
+Firstly create a branch from `staging` i.e.
+
+```
+> git checkout staging
+> git pull
+> git checkout -B new-feature-staging
+```
+
+Edit `.asf.yaml` on `new-feature-staging`, change the `profile` field to a name for your feature e.g. `foo`
+and edit the `whoami` field to match the branch name i.e. `new-feature-staging`. Commit this change and push 
+your new branch, you should shortly be able to see your custom staging site at `https://jena-foo.staged.apache.org`
+where `foo` should be replaced with whatever value you put in the `profile` field.
+
+You can then branch from `main` as normal e.g. 
+
+```
+> git checkout main
+> git pull
+> git checkout -B new-feature
+```
+Edit `Jenkinsfile` on this branch to change the `STAGING_BRANCH` variable to the custom staging branch you 
+created previously e.g. `new-feature-staging`, commit this change and push your new branch.  Any further 
+changes to the `new-feature` branch will automatically be published to your custom staging site.
+
+When you are ready to submit this as a pull request to `main` please ensure you change `STAGING_BRANCH` back 
+to its original value `staging`.  Finally once your changes have merge you should delete the `new-feature-staging` 
+branch to remove the custom staged site.
 
 ## Content Management System
 
