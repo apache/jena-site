@@ -22,6 +22,7 @@ sections.
 * [TDB2](./tdb2) - a fast persistent triple store that stores directly to disk
 * [TDB](./tdb/) - Original TDB database
 * [SHACL](./shacl) - SHACL processor for Jena
+* [ShEx](./shex) - ShEx processor for Jena
 * [Text Search](./query/text-query.html) - enhanced indexes using Lucene for more efficient searching of text literals in Jena models and datasets.
 * [GeoSPARQL](./geosparql/) - support for GeoSPARQL
 * [Permissions](./permissions/) - a permissions wrapper around Jena RDF implementation
