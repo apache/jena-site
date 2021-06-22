@@ -2,10 +2,12 @@
 title: ARQ - Assignment
 ---
 
-ARQ includes support for an explicit assignment of variables.
+ARQ includes support for a logical assignment of variables. If the variable is
+already bound, it acts like a filter, otherwise the value is assignment.
+This makes it position independent.
 
 This involves is syntactic extension and is available is the query
-is parsed with language `Syntax.syntaxARQ`.
+is parsed with language `Syntax.syntaxARQ` (which is the default).
 
 See also [SELECT expressions](select_expr.html) which is also a
 form of assignment.
