@@ -70,6 +70,10 @@ Feature of ARQ that go beyond SPARQL syntax. The default query
 language is standard SPARQL. These features require the query to be
 parsed with an explicit declaration of `Syntax.syntaxARQ`.
 
+-   [RDF-star](https://w3c.github.io/rdf-star/)
+-   Operators and functions
+    `[MOD](https://www.w3.org/TR/xpath-functions/#func-numeric-mod)`
+    and `[IDIV](https://www.w3.org/TR/xpath-functions/#func-numeric-integer-divide)` for modulus and integer division.
 -   [LET variable assignment](assignment.html)
 -   [Order results using a Collation](collation.html)
 -   [Construct Quad](construct-quad.html)
