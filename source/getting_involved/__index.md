@@ -20,15 +20,15 @@ Please see the [Reviewing Contributions](reviewing_contributions.html) page for 
 
 #### Improving the Website
 
-You can also help us improve the documentation on this website by making use of the Apache CMS which drives the website.
+You can also help us improve the documentation on this website via Pull Request.
 
-Please see [I'm not a committer on $project, which uses the CMS.  Can I still use the
-CMS?](http://www.apache.org/dev/cmsref#non-committer) for guidance on how to do this.  This process allows you to suggest 
-improvements to the project website as patches (because everything at Apache lives in SVN) and helps the wider community. 
-Contributions to documentation are always welcome and considered just as valuable as code contributions.
+The website source lives in an Apache git repository at [https://gitbox.apache.org/repos/asf/jena-site.git].  There is also a full read-write mirror on
+GitHub, see [jena-site on GitHub](https://github.com/apache/jena-site):
 
-You can click the <span class="glyphicon glyphicon-pencil"></span>*Improve this Page* button (top-right) on any page to instantly open the web based CMS editor.  If prompted you 
-will need to use the username `anonymous` and a blank password to log in. Use the *[Diff]* and *[Mail Email]* links to submit your proposed changes to the Apache Jena committers.
+    git clone https://github.com/apache/jena-site.git
+    cd jena-site
+
+You can then make a branch, prepare your changes and submit a pull request.  Please see the `README.md` in that repository for more details.
 
 ### SNAPSHOTs
 
@@ -49,14 +49,12 @@ If you have problems with any of our SNAPSHOTs, [let us know](/help_and_support/
 You can check the state of each Jena development builds
 on the [Apache Jenkins continuous integration server](https://builds.apache.org/pview/?match=Jena_.*).
 
-
-
 ### Git repository
 
 You can find the Jena source code in the Apache git repository: 
-[https://git-wip-us.apache.org/repos/asf/jena.git](https://git-wip-us.apache.org/repos/asf/jena.git)
+[https://gitbox.apache.org/repos/asf/jena.git](https://gitbox.apache.org/repos/asf/jena.git)
 
-There is also a read-only mirror of [Jena on GitHub](https://github.com/apache/jena):
+There is also a full read-write mirror of [Jena on GitHub](https://github.com/apache/jena):
 
     git clone https://github.com/apache/jena.git
     cd jena

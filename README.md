@@ -22,12 +22,18 @@ This is the source code for the website of [Apache Jena](https://jena.apache.org
 
 ## Repository structure
 
-This repository uses 3 branches for building the website.
+This repository uses 3 branches for building the published website.
+
 - The `main` branch, which contains all the sources for the website.
 - The `asf-site` branch, which contains the generated website being used for the actual website.
-- The `javadoc` branch, which has the javadoc to be published at 
+- The `javadoc` branch, which has the javadoc to be published as part of the main website under `documentation/javadoc/`
 
 When contributing patches, please create pull requests for the `main` branch.
+
+Additionally the repository also has a `asf-staging` branch that can be used to preview website changes
+prior to publishing them to the main website.  Any branch other than `main` that has a `Jenkinsfile` 
+present in it will automatically be staged at https://jena.staged.apache.org, the Javadoc from the
+`javadoc` branch is also automatically staged into this staging site.
 
 ## Content Management System
 
