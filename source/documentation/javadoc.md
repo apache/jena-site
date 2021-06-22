@@ -11,6 +11,7 @@ title: Jena JavaDoc
   - [Fuseki2 Main](javadoc/fuseki2-main/index.html)
 - [Text search](javadoc/text/index.html)
 - [SHACL](javadoc/shacl/index.html)
+- [ShEx](javadoc/shex/index.html)
 - [GeoSPARQL](javadoc/geosparql/index.html)
 - [Security Permissions JavaDoc](javadoc/permissions/index.html)
 - [JDBC JavaDoc](javadoc/jdbc/index.html)

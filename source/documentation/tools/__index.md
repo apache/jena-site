@@ -129,6 +129,10 @@ pages describe these further.
 file that conforms to the W3C [SHACL](https://www.w3.org/TR/shacl/) standard. 
 Jena's [SHACL](https://jena.apache.org/documentation/shacl/) page has more on this utility.
 
+- **`shex`**: validate data using [ShEx](https://shex.io/) from the
+[W3C Shape Expressions Community Group](https://www.w3.org/community/shex/).
+Jena's [ShEx](https://jena.apache.org/documentation/shex/) page has more on this utility.
+
 - **`rdfdiff`**: compare the triples in two datasets, regardless of their serializations, and list 
 which are different between the two datasets. (Modeled on the UNIX `diff` utility.)
 
