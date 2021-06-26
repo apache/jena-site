@@ -22,8 +22,10 @@ Please see the [Reviewing Contributions](reviewing_contributions.html) page for 
 
 You can also help us improve the documentation on this website via Pull Request.
 
-The website source lives in an Apache git repository at [https://gitbox.apache.org/repos/asf/jena-site.git].  There is also a full read-write mirror on
-GitHub, see [jena-site on GitHub](https://github.com/apache/jena-site):
+The website source lives in an Apache git repository at [gitbox.apache.org repo
+jena-site](https://gitbox.apache.org/repos/asf/jena-site.git). There is also a
+full read-write mirror on GitHub, see 
+[jena-site on GitHub](https://github.com/apache/jena-site):
 
     git clone https://github.com/apache/jena-site.git
     cd jena-site
