@@ -6,8 +6,10 @@ slug: index
 `jena-shacl` is an implementation of the 
 W3C [Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/).
 It implements SHACL Core and SHACL SPARQL Constraints.
-It also provides a reader and writer for 
-[SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/).
+
+In addition, it provides:
+* [SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/)
+* [SPARQL-based targets](https://w3c.github.io/shacl/shacl-af/#SPARQLTarget)
 
 ## Command line
 
@@ -138,3 +140,12 @@ exception and data in the RDF graph that is not relevant will not be output. In
 other words, SHACL-C is a lossy format for RDF.
 
 The Jena SHACL-C writer will output any valid SHACL-C document.
+
+Extensions:
+
+* The `constraint` grammar rule allows a shape reference to a node shape.
+* The `propertyParam` grammar rule provides "group", "order", "name",
+  "description" and "defaultValue" to align with `nodeParam`.
+* The `nodeParam` grammar rule supports "targetClass" (normally written 
+  with the shorthand `->`) as well as the defined
+  "targetNode", "targetObjectsOf", "targetSubjectsOf"
