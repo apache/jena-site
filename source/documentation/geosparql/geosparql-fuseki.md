@@ -5,21 +5,39 @@ title: GeoSPARQL Fuseki
 This application provides a HTTP server compliant with the GeoSPARQL standard.
 It uses the embedded server Fuseki and provides additional parameters for dataset loading.
 
-The project uses the GeoSPARQL implementation from the [GeoSPARQL Jena project](index).
-Currently, there is no GUI interface as provided in the Fuseki distribution.
+The project uses the GeoSPARQL implementation from the [GeoSPARQL Jena module](index), which includes a range of functions in addition to those from the GeoSPARQL standard.
+
+Currently, **there is no GUI interface** as provided in the Fuseki distribution.
+
+The intended usage is to specify a TDB folder (either TDB1 or TDB2, created if required) for persistent storage of the dataset. File loading, inferencing and data conversion operations can also be specified to load and manipulate data into the dataset. When the server is restarted these conversion operations are not required again (as they have been stored in the dataset) unless there are relevant changes. The TDB dataset can also be prepared and manipulated programatically using the Jena API.
+
+Updates can be made to the dataset while the Fuseki server is running. However, these changes will not be applied to inferencing and spatial indexes until the server restarts (any default or specified spatial index file must not exists to trigger building). This is due to the current implementation of RDFS inferencing in Jena (and is required in any Fuseki server with inferencing) and the selected spatial index.
 
 A subset of the EPSG spatial/coordinate reference systems are included by default from the Apache SIS project (http://sis.apache.org).
 The full EPSG dataset is not distributed due to the EPSG terms of use being incompatible with the Apache Licence.
 Several options are available to include the EPSG dataset by setting the `SIS_DATA` environment variable (http://sis.apache.org/epsg.html).
 
-It is expected that at least one Geometry Literal or Geo Predicate is present in a dataset.
+It is expected that at least one Geometry Literal or Geo Predicate is present in a dataset (otherwise a standard Fuseki server can be used).
 A spatial index is created and new data cannot be added to the index once built.
 The spatial index can optionally be stored for future usage and needs to removed from a TDB folder if the index is to rebuilt.
+
+## Clarifications on GeoSPARQL
+
+### Geographic Markup Language (GML)
+GeoSPARQL refers to the Geographic Markup Language (GML) as one format for `GeometryLiterals`. This does not mean that GML is part of the GeoSPARQL standard. Instead a subset of geometry encodings from the GML standards are permitted (specifically the `GML 2.0 Simple Features Profile (10-100r3)` is supported by GeoSPARQL Jena). The expected encoding of data is in RDF triples and can be loaded from any RDF file format supported by Apache Jena. Conversion of GML to RDF is out of scope of the GeopSARQL standard and Apache Jena.
+
+### Geo Predicates Lat/Lon
+Historically, geopsatial data has frequently been encoded as Latitude/Longitude coordinates in the WGS84 coordinate reference system. The GeoSPARQL standard specifically chooses not to adopt this approach and instead uses the more versatile `GeomtryLiteral`, which permits multiple encoding formats that support multiple coordinate reference systems and geometry shapes. Therefore, Lat/Lon Geo Predicates are not part of the GeoSPARQL standard. However, GeoSPARQL Jena provides two methods to support users with geo predicates in their geosptail data.
+
+- 1) Conversion of Geo Predicates to the GeoSPARQL data structure (encoding the Lat/Lon as a Point geometry).
+- 2) Spatial extension which provides property and filter functions accepting Lat/Lon arguments.
+
+The Spatial extension functions (documented in the [GeoSPARQL Jena module](index)) support triples in either GeoSPARQL data structure or Geo Predicates. Therefore, converting a dataset to GeoSPARQL will not lose functionality. By converting to the GeoSPARQL data structure, datasets can include a broader range of geospatial data.
 
 ## Getting Started
 GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line.
 SPARQL queries directly on Jena Datasets and Models can be done using
-the [GeoSPARQL Jena project](index).
+the [GeoSPARQL Jena module](index).
 
     <dependency>
       <groupId>org.apache.jena</groupId>
@@ -139,7 +157,7 @@ The server accepts updates to modify the dataset. Default: false
 
     --tdb, -t
 
-An existing or new TDB folder used for the dataset. Default set to memory dataset.
+An existing or new TDB folder used to persist the dataset. Default set to memory dataset.
 If accessing a dataset for the first time with GeoSPARQL then consider the `--inference`, `--default_geometry` and `--validate` options. These operations may add additional statements to the dataset. TDB1 Dataset will be used by default, use `-t <folder_path> -t2` options for TDB2 Dataset. 
 
 ### 6) Load RDF file into dataset
@@ -150,6 +168,8 @@ Comma separated list of [RDF file path#graph name&RDF format] to load into datas
 e.g. `test.rdf#test&xml,test2.rdf` will load _test.rdf_ file into _test_ graph as _RDF/XML_ and _test2.rdf_ into _default_ graph as _TTL_.
 
 Consider the `--inference`, `--default_geometry` and `--validate` options. These operations may add additional statements to the dataset.
+
+The combination of specifying `-t` TDB folder and `-rf` loading RDF file will store the triples in the persistent TDB dataset. Therefore, loading the RDF file would only be required once.
 
 ### 7) Load Tabular file into dataset
 
@@ -162,17 +182,23 @@ See RDF Tables project (https://github.com/galbiston/rdf-tables) for more detail
 
 Consider the `--inference`, `--default_geometry` and `--validate` options. These operations may add additional statements to the dataset.
 
+The combination of specifying `-t` TDB folder and `-tf` loading tabular file will store the triples in the persistent TDB dataset. Therefore, loading the tabular file would only be required once.
+
 ### 8) GeoSPARQL RDFS inference
 
     --inference, -i
 
 Enable GeoSPARQL RDFS schema and inferencing (class and property hierarchy). Inferences will be applied to the dataset. Updates to dataset may require server restart. Default: false
 
+The combination of specifying `-t` TDB folder and `-i` GeoSPARQL RDFS inference will store the triples in the persistent TDB dataset. Therefore, the GeoSPARL RDFS inference option would only be required when there is a change to the dataset.
+
 ### 9) Apply hasDefaultGeometry
 
     --default_geometry, -dg
 
 Apply hasDefaultGeometry to single Feature hasGeometry Geometry statements. Additional properties will be added to the dataset. Default: false
+
+The combination of specifying `-t` TDB folder and `-dg` apply hasDefaultGeometry will modify the triples in the persistent TDB dataset. Therefore, applying hasDefaultGeometry would only be required when there is a change to the dataset.
 
 ### 10) Validate Geometry Literals
 
@@ -186,11 +212,15 @@ Validate that the Geometry Literals in the dataset are valid. Default: false
 
 Convert Geo predicates in the data to Geometry with WKT WGS84 Point GeometryLiteral. Default: false
 
+The combination of specifying `-t` TDB folder and `-c` convert Geo predicates will modify the triples in the persistent TDB dataset. Therefore, converting the Geo predicates would only be required once.
+
 ### 12)  Remove Geo predicates
 
     --remove_geo, -rg
 
-Remove Geo predicates in the data after combining to Geometry.
+Remove Geo predicates in the data after combining to Geometry. Default: false
+
+The combination of specifying `-t` TDB folder and `-rg` remove Geo predicates will modify the triples in the persistent TDB dataset. Therefore, removing the Geo predicates would only be required once.
 
 ### 13) Query Rewrite enabled
 
@@ -221,7 +251,7 @@ List of Index item expiry in milliseconds: [Geometry Literal, Geometry Transform
 
     --spatial_index, -si
 
-File to load or store the spatial index. Default to "spatial.index" in TDB folder if using TDB and not set. Otherwise spatial index is not stored.
+File to load or store the spatial index. Default to "spatial.index" in TDB folder if using TDB option and this option is not set. Otherwise spatial index is not stored and rebuilt at start up. The spatial index file must not exist for the index to be built (e.g. following changes to the dataset).
 
 ### 18) Properties File
 Supply the above parameters as a file:
