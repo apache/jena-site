@@ -1,5 +1,5 @@
 ---
-title: Jena documentation overview
+title: Apache Jena documentation overview
 slug: index
 ---
 
