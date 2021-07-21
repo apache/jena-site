@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki File System Layout</title>
+    <title>Apache Jena - Apache Jena SPARQL APIs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-layout.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sparql-apis/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -136,6 +136,9 @@
 
 
 
+
+    
+    
 
 
 <ol class="breadcrumb">
@@ -155,15 +158,7 @@
         
         
             
-                <li><a href='/documentation/fuseki2'>FUSEKI2</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="active">FUSEKI LAYOUT</li>
+                <li class="active">SPARQL APIS</li>
             
             
         
@@ -175,155 +170,247 @@
 
                 
             </div>
-            <h1 class="title">Fuseki File System Layout</h1>
+            <h1 class="title">Apache Jena SPARQL APIs</h1>
             
-	<p>There are two areas: the fixed files provided by the distribution and the
-changing files for the local deployment,including the default location
-for TDB databases.</p>
-<p>Two environment variables control the file system usage.
-Symbolic links can be used to create variations on the standard layout.</p>
-<p><code>FUSEKI_HOME</code> - this contains the fixed files from the distribution and
-is used for Unix service deployments.  When deployment as a WAR file,
-everything is in the WAR file itself.</p>
-<p><code>FUSEKI_BASE</code> - this contains the deployment files.</p>
+	<p>TOC</p>
+<h2 id="overview">Overview</h2>
+<p>The SPARQL specifications provide
+<a href="https://www.w3.org/TR/sparql11-query/">query</a>,
+<a href="https://www.w3.org/TR/sparql11-update/">update</a> and the
+<a href="https://www.w3.org/TR/sparql11-http-rdf-update/">graph store protocol</a> (GSP).</p>
+<p>Jena provides a single interface, <a href="../rdfconnection"><code>RDFConnection</code></a> for working
+with local and remote RDF data using these protools in a unified way for local
+and remote data.</p>
+<p>HTTP Authentication is provides for remte operations.</p>
+<p>Applications can also use the different parts, such as query directly when they
+want additional control.</p>
+<p>The GPI, also called the &ldquo;Graph SPI&rdquo; - this is the lower level interface that
+implements generalized RDF (i.e. a triple is any three nodes, including ones
+like variables, and subsystem extension nodes).</p>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Environment Variable</th>
-<th>Default Setting</th>
+<th>API</th>
+<th>GPI</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Service</td>
-<td><code>FUSEKI_HOME</code></td>
-<td><code>/usr/share/fuseki</code></td>
+<td><code>Dataset</code></td>
+<td><code>DatasetGraph</code></td>
 </tr>
 <tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
+<td><code>Model</code></td>
+<td><code>Graph</code></td>
 </tr>
 <tr>
-<td>Webapp</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>N/A (Files in the Fuseki .war file)</td>
+<td><code>Statement</code></td>
+<td><code>Triple</code></td>
 </tr>
 <tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
+<td><code>Resource</code></td>
+<td><code>Node</code></td>
 </tr>
 <tr>
-<td>Standalone</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>Current directory</td>
+<td><code>Literal</code></td>
+<td><code>Node</code></td>
 </tr>
 <tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>${FUSEKI_HOME}/run/</code></td>
+<td><code>String</code></td>
+<td><code>Var</code></td>
 </tr>
 </tbody>
 </table>
-<p>When run in a web application container (e.g. <a href="http://http://tomcat.apache.org/">Tomcat</a>,
-<a href="http://eclipse.org/jetty/">Jetty</a> or other webapp compliant server),
-<code>FUSEKI_BASE</code> will be <code>/etc/fuseki</code>.</p>
-<p>If <code>FUSEKI_BASE</code> is the same as <code>FUSEKI_HOME</code>, be careful when upgrading not to delete
-server deployment files and directories.</p>
-<h1 id="distribution-area----fuseki_home">Distribution area &ndash; <code>FUSEKI_HOME</code></h1>
+<p>For SPARQL,</p>
 <table>
 <thead>
 <tr>
-<th>Directory or File</th>
-<th>Usage</th>
+<th>API</th>
+<th>GPI</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>fuseki</code></td>
-<td>Fuseki Service (Linux)</td>
+<td><code>RDFConnection</code></td>
+<td><code>RDFLink</code></td>
 </tr>
 <tr>
-<td><code>fuseki-server</code></td>
-<td>Fuseki standalone command</td>
+<td><code>QueryExecution</code></td>
+<td><code>QueryExec</code></td>
 </tr>
 <tr>
-<td><code>fuseki-server.bat</code></td>
-<td>Fuseki standalone command</td>
+<td><code>UpdateExecution</code></td>
+<td><code>UpdateExec</code></td>
 </tr>
 <tr>
-<td><code>fuseki-server.jar</code></td>
-<td>The Fuseki Server binary</td>
+<td><code>ResultSet</code></td>
+<td><code>RowSet</code></td>
 </tr>
 <tr>
-<td><code>fuseki.war</code></td>
-<td>The Fuseki Server as a WAR file</td>
+<td></td>
+<td><code>GSP</code></td>
 </tr>
 <tr>
-<td><code>bin/</code></td>
-<td>Helper scripts</td>
-</tr>
-<tr>
-<td><code>webapp/</code></td>
-<td>The webapp for the UI</td>
+<td></td>
+<td><code>SERVICE</code></td>
 </tr>
 </tbody>
 </table>
-<h1 id="runtime-area----fuseki_base">Runtime area &ndash; <code>FUSEKI_BASE</code></h1>
-<table>
-<thead>
-<tr>
-<th>Directory or File</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>config.ttl</code></td>
-<td>Server configuration</td>
-</tr>
-<tr>
-<td><code>shiro.ini</code></td>
-<td>Apache Shiro configuration</td>
-</tr>
-<tr>
-<td><code>databases/</code></td>
-<td>TDB Databases</td>
-</tr>
-<tr>
-<td><code>backups/</code></td>
-<td>Write area for live backups</td>
-</tr>
-<tr>
-<td><code>configuration/</code></td>
-<td>Assembler files</td>
-</tr>
-<tr>
-<td><code>logs/</code></td>
-<td>Log file area</td>
-</tr>
-<tr>
-<td><code>system/</code></td>
-<td>System configuration database</td>
-</tr>
-<tr>
-<td><code>system_files/</code></td>
-<td>Uploaded data service descriptions (copies)</td>
-</tr>
-<tr>
-<td><code>templates/</code></td>
-<td>Templates for build-in configurations</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>system_files/</code> keeps a copy of any assemblers uploaded to
-configure the server. The master copy is kept in the system database.</p>
-<h1 id="resetting">Resetting</h1>
-<p>To reset the server, stop the server, and delete the system database in <code>system/</code>,
-the <code>system_files/</code> and any other unwanted deployment files,
-then restart the server.</p>
+<p>The GPI version is the main machinery working at the storage and network level,
+and the API version is an adapter to convert to the Model API and related
+classes.</p>
+<p>This documentation describes the API classes - the GPI companion classes are the
+same style, sometimes with slightly changed naming.</p>
+<p><code>UpdateProcessor</code> is a legacy name for <code>UpdateExecution</code></p>
+<p><code>GSP</code> provides the SPARQL Graph Store Protocol, incliding extensions for sending
+and receiving datasets, rather than graphs.</p>
+<h2 id="changes-from-jena-410-to-jena-40">Changes from Jena 4.1.0 to Jena 4.?.0</h2>
+<ul>
+<li>
+<p>Execution object have a companion builder.
+This is especially important of HTTP
+as there a lot of configuration options that may be needed.</p>
+</li>
+<li>
+<p>HTTP usage provided by the JDK <code>java.net.http</code> package, with challenage
+authentication provides on top by Jena. See below.</p>
+</li>
+<li>
+<p>Authentication support is uniformly appied to query, update GSP and SPARQL <code>SERVICE</code>.</p>
+</li>
+<li>
+<p>HTTP/2 support (Fuseki to follow unless done and tested in time).</p>
+</li>
+<li>
+<p>Remove Apache HttpClient usage</p>
+<ul>
+<li>When using this for authentication, applciation code chnages wil be
+necessary.</li>
+</ul>
+</li>
+<li>
+<p>Deprecate modfying <code>QueryExecution</code> after it is built.
+This is still supported for local <code>QueryExecution</code>.</p>
+</li>
+<li>
+<p>Parameterization for remote queries</p>
+</li>
+<li>
+<p><code>HttpOp</code> is split into <code>HttpRDF</code> for GET/POST/PUT/DELETE of graphs and
+datasets and new <code>HttpOp</code> for packaged up common patterns of HTTP usage.</p>
+</li>
+<li>
+<p>DatasetAccessors will be removed.</p>
+</li>
+<li>
+<p>GSP - support for dataset operations as well as graphs (also supported by Fuseki).</p>
+</li>
+</ul>
+<h2 id="ttrdfconnectiontt"><tt>RDFConnection</tt></h2>
+<p><a href="../rdfconnection/">RDFConnection</a></p>
+<pre><code>example with builder.
+</code></pre><pre><code>example with factory
+</code></pre><h2 id="query-execution">Query Execution</h2>
+<p>Factory Examples</p>
+<p>Builder Examples</p>
+<pre><code>try ( QueryExecution qExec = QueryExecution.create()
+                                 .dataset(dataset)
+                                 .query(query)
+                                 .build() ) {
+    ResultSet resulrs = qExec.execSelect();
+    ... use results ...
+}
+</code></pre><pre><code>try ( QueryExecution qExec = QueryExecutionHTTP.create()
+                                 .service(&quot;http:// ....&quot;)
+                                 .query(query)
+                                 .build() ) {
+    ResultSet resulrs = qExec.execSelect();
+    ... use results ...
+}
+</code></pre><pre><code>// JDK
+HttpClient httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(10))
+                .followRedirects(Redirect.NORMAL)
+                .build();
+try ( QueryExecution qExec = QueryExecutionHTTP.create()
+                                 .service(&quot;http:// ....&quot;)
+                                 .httpClient(httpClient)
+                                 .query(query)
+                                 .sendMode(QuerySendMode.asPost)
+                                 .timeout(30, TimeUnit.SECONDS)
+                                 .build() ) {
+    ResultSet resulrs = qExec.execSelect();
+    ... use results ...
+}
+</code></pre><p>There is only one timeout setting for HTTP query execution. The &ldquo;time to
+connect&rdquo; is handled by the JDK <code>HttpClient</code>. Timeouts for local execution are
+&ldquo;time to first result&rdquo; and &ldquo;time to all results&rdquo; as before.</p>
+<h2 id="ttgsptt"><tt>GSP</tt></h2>
+<pre><code>  Graph graph = GSP.request(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
+</code></pre><pre><code>  Graph graph = ... ; 
+  GSP.request(&quot;http://fuseki/dataset&quot;).graphName(&quot;http;//data/myGraph&quot;).POST(graph);
+</code></pre><pre><code>  DatasetGraph dataset = GSP.request(&quot;http://fuseki/dataset&quot;).getDataset();
+</code></pre><h2 id="customization-of-http-requests">Customization of HTTP requests</h2>
+<p>@@</p>
+<p>Params (e.g. apikey)</p>
+<p>ARQ.httpRequestModifer</p>
+<h2 id="ttservicett"><tt>SERVICE</tt></h2>
+<p>@@
+<a href="../query/service.html">Old documentation </a> - passing parameters has changed.</p>
+<h2 id="misc">Misc</h2>
+<p>Request modifiers
+Params</p>
+<h3 id="arqhttprequestmodifer">ARQ.httpRequestModifer</h3>
+<h2 id="authentication">Authentication</h2>
+<p>For any use of users-password information, and especially HTTP basic
+authentication, information is visible in the HTTP headers. Using HTTPS is
+necessary to avoid snoppping.  Digest authentication is also stronger over HTTPS
+because it protects againats man-in-the-middle attacks.</p>
+<p>4 kinds:</p>
+<ol>
+<li>Basic authentication</li>
+<li>Challenge-Basic authentication</li>
+<li>Challenge-Digest authentication</li>
+<li>URL userinfo (<code>users:passwrd@host.net</code>)</li>
+</ol>
+<p>Basic authentication occurs where the app provides the users and password
+information to the JDK <code>HttpClient</code> and that information is always used when
+sending HTTP requests with that <code>HttpClient</code>. It does not require an initial
+request-challenge-resend to initiate. This is provided natively by the <code>java.net.http</code>
+JDK code. See <code>HttpClient.newBuilder().authenticate(...)</code>.</p>
+<p>Challenge based authentication, for &ldquo;basic&rdquo; or &ldquo;disgest&rdquo;, are provided by Jena.
+The challenge happens on the first contact with the remote endpoint and the
+server returns a 401 response with an HTTP header saying which style of
+authentication is required. There is a registry of users name and password for
+endpoints which is consulted and the appropriate
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization"><code>Authorization:</code></a>
+header is generated then the request resent. If no registration matches, the 401
+is passed back to the application as an exception.</p>
+<p>Because it is a challenge response to an request, the first request must be
+repeated, first to trigger the challenge and then again with the HTTP
+authentication information.  To make this auotmatic, the first request must not be a streaming
+request (the stream is not repeatable). All HTTP request generated by Jena are reapeatible.</p>
+<p>While Jena supports user information in URLs using the URI <code>userinfo</code> part foa
+URI, this is inherently unsafe because the password is in-clear in the SPARQL
+query.</p>
+<h3 id="jdk-httpclientauthenticator">JDK HttpClient.authenticator</h3>
+<h3 id="challenge-registration">Challenge registration</h3>
+<p><code>AuthEnv</code></p>
+<h3 id="ttservicett-1"><tt>SERVICE</tt></h3>
+<p>The previous authentication mecanism work with SPARQL queries using <code>SERVICE</code>.</p>
+<p>Params.</p>
+<p>Disable.</p>
+<p>1/ HttpClient</p>
+<p>2/ ?? ARQ.httpRequestModifer</p>
+<p>3/ (digest and basic)
+Register username/password
+Including presetting (basic) authentication into the local system</p>
+<p>4/ Modifiers (not auth)</p>
+<p>Old still supported:
+source/documentation/query/http-auth.md</p>
+<h2 id="heading">@@</h2>
+<p>Links:</p>
+<p>source/documentation/query/__index.md</p>
 
 
         </div>

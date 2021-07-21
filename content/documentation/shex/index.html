@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki File System Layout</title>
+    <title>Apache Jena - Apache Jena ShEx</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-layout.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/shex/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -136,6 +136,9 @@
 
 
 
+
+    
+    
 
 
 <ol class="breadcrumb">
@@ -155,15 +158,7 @@
         
         
             
-                <li><a href='/documentation/fuseki2'>FUSEKI2</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="active">FUSEKI LAYOUT</li>
+                <li class="active">SHEX</li>
             
             
         
@@ -175,156 +170,72 @@
 
                 
             </div>
-            <h1 class="title">Fuseki File System Layout</h1>
+            <h1 class="title">Apache Jena ShEx</h1>
             
-	<p>There are two areas: the fixed files provided by the distribution and the
-changing files for the local deployment,including the default location
-for TDB databases.</p>
-<p>Two environment variables control the file system usage.
-Symbolic links can be used to create variations on the standard layout.</p>
-<p><code>FUSEKI_HOME</code> - this contains the fixed files from the distribution and
-is used for Unix service deployments.  When deployment as a WAR file,
-everything is in the WAR file itself.</p>
-<p><code>FUSEKI_BASE</code> - this contains the deployment files.</p>
-<table>
-<thead>
-<tr>
-<th>Mode</th>
-<th>Environment Variable</th>
-<th>Default Setting</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Service</td>
-<td><code>FUSEKI_HOME</code></td>
-<td><code>/usr/share/fuseki</code></td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
-</tr>
-<tr>
-<td>Webapp</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>N/A (Files in the Fuseki .war file)</td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
-</tr>
-<tr>
-<td>Standalone</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>Current directory</td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>${FUSEKI_HOME}/run/</code></td>
-</tr>
-</tbody>
-</table>
-<p>When run in a web application container (e.g. <a href="http://http://tomcat.apache.org/">Tomcat</a>,
-<a href="http://eclipse.org/jetty/">Jetty</a> or other webapp compliant server),
-<code>FUSEKI_BASE</code> will be <code>/etc/fuseki</code>.</p>
-<p>If <code>FUSEKI_BASE</code> is the same as <code>FUSEKI_HOME</code>, be careful when upgrading not to delete
-server deployment files and directories.</p>
-<h1 id="distribution-area----fuseki_home">Distribution area &ndash; <code>FUSEKI_HOME</code></h1>
-<table>
-<thead>
-<tr>
-<th>Directory or File</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>fuseki</code></td>
-<td>Fuseki Service (Linux)</td>
-</tr>
-<tr>
-<td><code>fuseki-server</code></td>
-<td>Fuseki standalone command</td>
-</tr>
-<tr>
-<td><code>fuseki-server.bat</code></td>
-<td>Fuseki standalone command</td>
-</tr>
-<tr>
-<td><code>fuseki-server.jar</code></td>
-<td>The Fuseki Server binary</td>
-</tr>
-<tr>
-<td><code>fuseki.war</code></td>
-<td>The Fuseki Server as a WAR file</td>
-</tr>
-<tr>
-<td><code>bin/</code></td>
-<td>Helper scripts</td>
-</tr>
-<tr>
-<td><code>webapp/</code></td>
-<td>The webapp for the UI</td>
-</tr>
-</tbody>
-</table>
-<h1 id="runtime-area----fuseki_base">Runtime area &ndash; <code>FUSEKI_BASE</code></h1>
-<table>
-<thead>
-<tr>
-<th>Directory or File</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>config.ttl</code></td>
-<td>Server configuration</td>
-</tr>
-<tr>
-<td><code>shiro.ini</code></td>
-<td>Apache Shiro configuration</td>
-</tr>
-<tr>
-<td><code>databases/</code></td>
-<td>TDB Databases</td>
-</tr>
-<tr>
-<td><code>backups/</code></td>
-<td>Write area for live backups</td>
-</tr>
-<tr>
-<td><code>configuration/</code></td>
-<td>Assembler files</td>
-</tr>
-<tr>
-<td><code>logs/</code></td>
-<td>Log file area</td>
-</tr>
-<tr>
-<td><code>system/</code></td>
-<td>System configuration database</td>
-</tr>
-<tr>
-<td><code>system_files/</code></td>
-<td>Uploaded data service descriptions (copies)</td>
-</tr>
-<tr>
-<td><code>templates/</code></td>
-<td>Templates for build-in configurations</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>system_files/</code> keeps a copy of any assemblers uploaded to
-configure the server. The master copy is kept in the system database.</p>
-<h1 id="resetting">Resetting</h1>
-<p>To reset the server, stop the server, and delete the system database in <code>system/</code>,
-the <code>system_files/</code> and any other unwanted deployment files,
-then restart the server.</p>
+	<p><code>jena-shex</code> is an implementation of the
+<a href="https://shex.io">ShEx (Shape Expressions)</a> language.</p>
+<p>
+<i>This implementation is experimental, starting with Jena 4.2.0.
+Please send usage reports and experience to </i>
+<tt>users@jena.apache.org</tt>.
+</p>
+<h2 id="status">Status</h2>
+<p><code>jena-shex</code> reads ShExC (the compact syntax) files.</p>
+<p>Not currently supported:</p>
+<ul>
+<li>semantic actions</li>
+<li><code>EXTERNAL</code></li>
+</ul>
+<p>Blank node label validation is meaningless in Jena because a blank node label is
+scoped to the file, and not retained after the file has been read.</p>
+<h2 id="command-line">Command line</h2>
+<p>The command <code>shex</code> introduces shacl operations; it takes a sub-command
+argument.</p>
+<p>To validate:</p>
+<pre>shex validate --schema SCHEMA.shex --map MAP.shexmap --data DATA.ttl</pre>
+<pre>shex v -s SCHEMA.shex -m MAp.shexmap -d data.ttl</pre>
+<p>To parse a file:</p>
+<pre>shex parse <i>FILE</i></pre>
+<pre>shex p <i>FILE</i></pre>
+<p>which writes out the parser results in a text format.</p>
+<!--
+<pre>shex p <i>--out=FMT</i> <i>FILE</i></pre>
+writes out in `text`(`t`), `compact`(`c`), `rdf`(`r`) formats. Multiple formats
+can be given, separated by "," and format `all` outputs all 3 formats.
+-->
+<h2 id="api">API</h2>
+<p>The package <code>org.apache.jena.shex</code> has the main classes.</p>
+<ul>
+<li><code>Shex</code> for reading ShEx related formats.</li>
+<li><code>ShexValidation</code> for validation.</li>
+</ul>
+<h2 id="api-examples">API Examples</h2>
+<p>Examples:</p>
+<p><a href="https://github.com/apache/jena/tree/main/jena-shex/src/main/java/org/apache/jena/shex/examples/">https://github.com/apache/jena/tree/main/jena-shex/src/main/java/org/apache/jena/shex/examples/</a></p>
+<pre><code>    public static void main(String ...args) {
+        String SHAPES     = &quot;examples/schema.shex&quot;;
+        String SHAPES_MAP = &quot;examples/shape-map.shexmap&quot;;
+        String DATA       = &quot;examples/data.ttl&quot;;
 
+        System.out.println(&quot;Read data&quot;);
+        Graph dataGraph = RDFDataMgr.loadGraph(DATA);
+
+        System.out.println(&quot;Read schema&quot;);
+        ShexSchema shapes = Shex.readSchema(SHAPES);
+
+        // Shapes map.
+        System.out.println(&quot;Read shapes map&quot;);
+        ShexMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
+
+        // ShexReport
+        System.out.println(&quot;Validate&quot;);
+        ShexReport report = ShexValidator.get().validate(dataGraph, shapes, shapeMap);
+
+        System.out.println();
+        // Print report.
+        ShexLib.printReport(report);
+    }
+</code></pre>
 
         </div>
     </div>
