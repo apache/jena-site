@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Reading and Writing RDF in Apache Jena</title>
+    <title>Apache Jena - Reading JSON-LD 1.1</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/io/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/io/json-ld-11.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -136,9 +136,6 @@
 
 
 
-
-    
-    
 
 
 <ol class="breadcrumb">
@@ -158,7 +155,15 @@
         
         
             
-                <li class="active">IO</li>
+                <li><a href='/documentation/io'>IO</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">JSON LD 11</li>
             
             
         
@@ -170,135 +175,67 @@
 
                 
             </div>
-            <h1 class="title">Reading and Writing RDF in Apache Jena</h1>
+            <h1 class="title">Reading JSON-LD 1.1</h1>
             
-	<p>This page details the setup of RDF I/O technology (RIOT).</p>
-<ul>
-<li><a href="#formats">Formats</a></li>
-<li><a href="#command-line-tools">Commands</a></li>
-<li><a href="rdf-input.html">Reading RDF in Jena</a></li>
-<li><a href="rdf-output.html">Writing RDF in Jena</a></li>
-<li><a href="streaming-io.html">Working with RDF Streams</a></li>
-<li><a href="rdfxml_howto.html">Additional details on working with RDF/XML</a></li>
-</ul>
-<h2 id="formats">Formats</h2>
-<p>The following RDF formats are supported by Jena. In addition, other syntaxes
-can be integrated into both the parser and writer registries.</p>
-<ul>
-<li>Turtle</li>
-<li>RDF/XML</li>
-<li>N-Triples</li>
-<li>JSON-LD</li>
-<li>RDF/JSON</li>
-<li>TriG</li>
-<li>N-Quads</li>
-<li>TriX</li>
-<li>RDF Binary</li>
-</ul>
-<p>RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.
-See the <a href="rdf-json.html">description of RDF/JSON</a>.</p>
-<p>See &ldquo;<a href="json-ld-11.html">Reading JSON-LD 1.1</a>&rdquo; for additional setup and use for
-reading JSON-LD 1.1. JSON-LD 1.0 is the current default in Jena.</p>
-<p>RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
-for fast parsing.  See <a href="rdf-binary.html">RDF Binary using Apache Thrift</a>.</p>
-<h2 id="command-line-tools">Command line tools</h2>
-<p>There are scripts in Jena download to run these commands.</p>
-<ul>
-<li><code>riot</code> - parse, guessing the syntax from the file extension.
-Assumes N-Quads/N-Triples from stdin.</li>
-<li><code>turtle</code>, <code>ntriples</code>, <code>nquads</code>, <code>trig</code>, <code>rdfxml</code> - parse a particular language</li>
-</ul>
-<p>These can be called directly as Java programs:</p>
-<p>The file extensions understood are:</p>
-<table>
-<thead>
-<tr>
-<th> Extension </th>
-<th>  Language </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>.ttl</code></td>
-<td>Turtle</td>
-</tr>
-<tr>
-<td><code>.nt</code></td>
-<td>N-Triples</td>
-</tr>
-<tr>
-<td><code>.nq</code></td>
-<td>N-Quads</td>
-</tr>
-<tr>
-<td><code>.trig</code></td>
-<td>TriG</td>
-</tr>
-<tr>
-<td><code>.rdf</code></td>
-<td>RDF/XML</td>
-</tr>
-<tr>
-<td><code>.owl</code></td>
-<td>RDF/XML</td>
-</tr>
-<tr>
-<td><code>.jsonld</code></td>
-<td>JSON-LD</td>
-</tr>
-<tr>
-<td><code>.trdf</code></td>
-<td>RDF Thrift</td>
-</tr>
-<tr>
-<td><code>.rt</code></td>
-<td>RDF Thrift</td>
-</tr>
-<tr>
-<td><code>.rj</code></td>
-<td>RDF/JSON</td>
-</tr>
-<tr>
-<td><code>.trix</code></td>
-<td>TriX</td>
-</tr>
-</tbody>
-</table>
-<p><code>.n3</code> is supported but only as a synonym for Turtle.</p>
-<p>The <a href="trix.html">TriX</a> support is for the core TriX format.</p>
-<p>In addition, if the extension is <code>.gz</code> the file is assumed to be gzip
-compressed. The file name is examined for an inner extension. For
-example, <code>.nt.gz</code> is gzip compressed N-Triples.</p>
-<p>These scripts call java programs in the <code>riotcmd</code> package. For example:</p>
-<pre><code>java -cp ... riotcmd.riot file.ttl
-</code></pre>
-<p>This can be a mixture of files in different syntaxes when file extensions
-are used to determine the file syntax type.</p>
-<p>The scripts all accept the same arguments (type <code>&quot;riot --help&quot;</code> to
-get command line reminders):</p>
-<ul>
-<li><code>--syntax=NAME</code>; Explicitly set the input syntax for all files.</li>
-<li><code>--validate</code>: Checking mode: same as <code>--strict --sink --check=true</code>.</li>
-<li><code>--check=true/false</code>: Run with checking of literals and IRIs either on or off.</li>
-<li><code>--time</code>: Output timing information.</li>
-<li><code>--sink</code>: No output.</li>
-<li><code>--output=FORMAT</code>: Output in a given syntax (streaming if possible).</li>
-<li><code>--formatted=FORMAT</code>: Output in a given syntax, using pretty printing.</li>
-<li><code>--stream=FORMAT</code>: Output in a given syntax, streaming (not all syntaxes can be streamed).</li>
-</ul>
-<p>To aid in checking for errors in UTF8-encoded files, there is a
-utility which reads a file of bytes as UTF8 and checks the encoding.</p>
-<ul>
-<li><code>utf8</code> &ndash; read bytes as UTF8</li>
-</ul>
-<h2 id="inference">Inference</h2>
-<p>RIOT support creation of inferred triples during the parsing
-process:</p>
-<pre><code>riotcmd.infer --rdfs VOCAB FILE FILE ...
-</code></pre>
-<p>Output will contain the base data and triples inferred based on
-RDF subclass, subproperty, domain and range declarations.</p>
+	<p>See &ldquo;<a href="./rdf-input.html">Reading RDF</a>&rdquo; for details of Jena&rsquo;s support JSON-LD v1.0
+using the
+<a href="https://github.com/jsonld-java/jsonld-java">jsonld-java project</a>
+for both reading and writing. This is the principle support for JSON-LD.</p>
+<p>This page details support for reading JSON-LD 1.1 using
+<a href="https://github.com/filip26/titanium-json-ld/">Titanium JSON-LD</a>.</p>
+<p>While Titanium is licensed under the Apache License, it has a dependency on
+the Eclipse Jakarta JSON Processing API, which is licensed under the Eclipse
+Public License 2.0.</p>
+<h2 id="additional-dependencies">Additional Dependencies</h2>
+<p>The Titanium engine and a JSON Processing implementation needs to be added to the application:</p>
+<pre><code>      &lt;dependency&gt;
+        &lt;!-- Apache License --&gt;
+        &lt;groupId&gt;com.apicatalog&lt;/groupId&gt;
+        &lt;artifactId&gt;titanium-json-ld&lt;/artifactId&gt;
+        &lt;version&gt;1.1.0&lt;/version&gt;
+      &lt;/dependency&gt;
 
+      &lt;!-- Eclipse Public License 2.0 --&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.glassfish&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.json&lt;/artifactId&gt;
+        &lt;version&gt;2.0.0&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;!-- Optional - use if another JSON Processing implementation is used --&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.json&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.json-api&lt;/artifactId&gt;
+        &lt;version&gt;2.0.1&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;!-- An implementation of JSON Processing --&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.glassfish&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.json&lt;/artifactId&gt;
+        &lt;version&gt;2.0.1&lt;/version&gt;
+      &lt;/dependency&gt;
+</code></pre><p>Gradle:</p>
+<pre><code>compile group: 'com.apicatalog', name: 'titanium-json-ld', version: '1.1.0'
+compile group: 'jakarta.json',   name: 'jakarta.json-api', version: '2.0.1'
+compile group: 'org.glassfish',  name: 'jakarta.json',     version: '2.0.1'
+</code></pre><p>Please check the version of Titanium and its dependency on Jakarta JSON Processing.</p>
+<p>Failure to add these dependencies will result in <code>UnsupportedOperationException</code></p>
+<pre><code>Need both titanium-json-ld (1.1.0 or later) and org.glassfish:jakarta on the classpath
+</code></pre><h2 id="usage">Usage</h2>
+<p>Jena currently (from version 4.2.0) offers both JSON-LD 1.0 and also JSON-LD 1.1.</p>
+<p>The file extension for JSONLD 1.1 is <code>.jsonld11</code>.</p>
+<p>If not reading from a file with this file extension, the application needs to
+force the language choice to be JSON-LD 1.1 with
+<a href="https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html"><code>RDFParser</code></a>
+using <code>forceLang(Lang.JSONLD11)</code>:</p>
+<pre><code>RDFParser.source(...)
+    .forceLang(Lang.JSONLD11)
+    ...
+    .build()
+</code></pre><p>or short-cut form:</p>
+<pre><code>RDFParser.source(URL or InputStream)
+    .forceLang(Lang.JSONLD11)
+    .parse(dataset);
+</code></pre>
 
         </div>
     </div>
