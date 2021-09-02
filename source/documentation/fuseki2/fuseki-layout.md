@@ -59,7 +59,7 @@ server deployment files and directories.
 
 
 The `system_files/` keeps a copy of any assemblers uploaded to
-configure the server. The master copy is kept in the system database.
+configure the server. The primary copy is kept in the system database.
 
 # Resetting
 

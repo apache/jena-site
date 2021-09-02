@@ -72,7 +72,7 @@ Steps to do to setup the Jenkins job:
 * Branch source -> git
 
 * Set the gitbox url -> `https://gitbox.apache.org/repos/asf/jena-site.git` and use
-the jenkins (master pub key) credentials.
+the jenkins (pub key) credentials.
 
 * In the 'Scan Multibranch Pipeline Triggers' check the 'Periodically if not
 otherwise run' checkbox and enter a sane value (e.g. 15 minutes). This is needed

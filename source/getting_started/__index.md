@@ -45,6 +45,3 @@ The interaction between the different APIs:
 ![Jena architecture overview](/images/jena-architecture.png "Jena architecture overview")
 
 <h2><img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Other resources</h2>
-
-Finally, Jena committer Paolo Castagna has listed some [example programs](https://github.com/castagna/jena-examples)
-using Jena on his GitHub site.
