@@ -44,7 +44,7 @@ Note that many examples of using Jena tools typically use the Linux style invoca
 
 ### Common Issues with Running the Tools
 
-If you receive errors stating that a class is not found then it is most likely that `JENA_HOME` is not set correctly.  As a quick sanity check you can try the following to see if it is set appropriately:
+If you receive errors stating that a class is not found then it is most likely that `JENA_HOME` is not set correctly.  As a quick check you can try the following to see if it is set appropriately:
 
 **On Linux / Mac**
 

@@ -156,7 +156,7 @@ the basic vocabulary, and RDFS is perfectly well suited to this.
 Note also that we can both describe classes, in general terms, and we
 can describe particular *instances* of those classes. So there may
 be a particular individual Fred who is a Fish (i.e. has
-`rdf:type Fish`), and who has two eyes. His companion Freda, a
+`rdf:type Fish`), and who has two eyes. Their companion Freda, a
 [Mexican Tetra](http://en.wikipedia.org/wiki/Mexican_tetra), or
 blind cave fish, has no eyes. One use of an ontology is to allow us
 to fill-in missing information about individuals. Thus, though it
