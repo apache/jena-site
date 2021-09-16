@@ -8,9 +8,10 @@ This page describes how to achieve certain common tasks in the most direct way p
 
 1. Unpack the distribution.
 2. Copy the WAR file into the Apache tomcat webapp directory, under the name 'fuseki'
-3. In a browser, go to `[http://localhost:8080/fuseki/](http://localhost:8080/fuseki)` (details such as port number depend on the Tomcat setup).
-4. Click on "Add one", choose "in-memory", choose a name for the URL for the dataset.
-5. Go to "add data" and load the file (single graph).
+3. If the user under which Apache tomcat is running does not have write access to `/etc`, then please make sure to set the environment variable FUSEKI_BASE, whereas the value should be a directory where the user running Apache tomcat is able to write to.
+4. In a browser, go to `[http://localhost:8080/fuseki/](http://localhost:8080/fuseki)` (details such as port number depend on the Tomcat setup).
+5. Click on "Add one", choose "in-memory", choose a name for the URL for the dataset.
+6. Go to "add data" and load the file (single graph).
 
 ## Publish an RDF file as a SPARQL endpoint.
 
