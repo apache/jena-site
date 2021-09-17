@@ -10,6 +10,10 @@ Apache Jena is packaged as downloads which contain the most commonly used portio
 
 Jena4 requires Java 11.
 
+Jena jars are [available from Maven](maven.html).
+
+You may [verify the authenticity of artifacts](https://www.apache.org/info/verification.html) below by using the [PGP KEYS](https://downloads.apache.org/jena/KEYS) file.
+
 ## Download Mirrors
 
 <p>[if-any logo]
@@ -36,40 +40,31 @@ Other mirrors: <select name="Preferred">
 <input type="submit" value="Change" />
 </form>
 
-You may also consult the [complete list of mirrors](http://www.apache.org/mirrors/)
+You may also consult the [complete list of mirrors](https://www.apache.org/mirrors/)
 
-### Apache Jena
+### Apache Jena Distibutions
 
-This distribution contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
+The binary distribution of Fuseki (this includes both the standalone and
+WAR file packaging):
 
-The binary distribution may be downloaded at:
+| Jena Fuseki  | SHA512 | Signature |
+| ------------ | :----: | :-------: |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.2.0.tar.gz">apache-jena-fuseki-4.2.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.2.0.zip">apache-jena-fuseki-4.2.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.zip.asc) |
 
-<a href="[preferred]jena/binaries/apache-jena-4.2.0.tar.gz">apache-jena-4.2.0.tar.gz</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.tar.gz.sha512">SHA512</a>, 
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.tar.gz.asc">PGP</a>)
+<p>&nbsp;</p>
+Source release: this forms the official release of Apache Jena. All binaries artifacts and maven binaries correspond to this source.
 
-<a href="[preferred]jena/binaries/apache-jena-4.2.0.zip">apache-jena-4.2.0.zip</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.zip.asc">PGP</a>)
+| Apache Jena Release | SHA512 | Signature |
+| ------------ | :----: | :-------: |
+|<a href="[preferred]jena/source/jena-4.2.0-source-release.zip">jena-4.2.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.asc) |
 
-The source distribution, which includes the source for Fuseki and all modules in the release, may be downloaded at:
+The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
-<a href="[preferred]jena/source/jena-4.2.0-source-release.zip">jena-4.2.0-source-release.zip</a>
-(<a href="https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.asc">PGP</a>)
-
-### Apache Jena Fuseki
-
-The binary distribution of Fuseki2 (this includes both the standalone and
-WAR file packaging) may be downloaded at:
-
-<a href="[preferred]jena/binaries/apache-jena-fuseki-4.2.0.tar.gz">apache-jena-fuseki-4.2.0.tar.gz</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.asc">PGP</a>)
-
-<a href="[preferred]jena/binaries/apache-jena-fuseki-4.2.0.zip">apache-jena-fuseki-4.2.0.zip</a>
-(<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.zip.sha512">SHA512</a>,
-<a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.zip.asc">PGP</a>)
+| Jena libraries | SHA512 | Signature |
+| ------------ | :----: | :-------: |
+|<a href="[preferred]jena/binaries/apache-jena-4.2.0.tar.gz">apache-jena-4.2.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-4.2.0.zip">apache-jena-4.2.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.2.0.zip.asc) |
 
 ### Individual Modules
 
@@ -94,7 +89,7 @@ The development codebase is available from git.
 
 [https://gitbox.apache.org/repos/asf?p=jena.git](https://gitbox.apache.org/repos/asf?p=jena.git)
 
-This is mirrored on github:
+This is also avilable on github:
 
 [https://github.com/apache/jena](https://github.com/apache/jena)
 
@@ -105,4 +100,4 @@ possible users use the latest official Apache releases of Jena in
 preference to using any older versions of Jena.
 
 Previous Apache Jena releases can be found in the Apache archive area
-at [http://archive.apache.org/dist/jena](http://archive.apache.org/dist/jena/)
+at [https://archive.apache.org/dist/jena](https://archive.apache.org/dist/jena/).
