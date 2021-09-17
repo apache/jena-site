@@ -13,7 +13,6 @@ please read and follow [these instructions](http://maven.apache.org/download.htm
 ### Repositories
 
 Released maven artifacts are mirrored to the central maven repositories.
-This can take a few days.
 
 Development snapshots are available as well.  
 [https://repository.apache.org/content/repositories/snapshots/](https://repository.apache.org/content/repositories/snapshots/)
@@ -37,15 +36,7 @@ on a version of Jena:
 This will transitively resolve all the dependencies for you: `jena-core`,
 `jena-arq`, `jena-tdb` and `jena-iri` and their dependencies.  
 
-Note the use of `<type>pom</type>` above.  This does not work
-in all tools. An alternative is to depend on `jena-tdb`, which will pull
-in the other artifacts.
-
-      <dependency>
-        <groupId>org.apache.jena</groupId>
-        <artifactId>jena-tdb</artifactId>
-        <version>a.b.c</version>
-      </dependency>
+Note the use of `<type>pom</type>` above.
 
 Other modules need to be added separately, for example:
 
@@ -85,14 +76,14 @@ structuring Jena development.
     <td>Fuseki2 distribution</td>
   </tr>
   <tr>
-    <td><code>apache-jena-osgi</code></td>
-    <td><code>pom</code></td>
-    <td>Jena as an OSGi bundle</td>
-  </tr>
-  <tr>
     <td><code>jena</code></td>
     <td></td>
     <td>The formal released source-released for each Jena release. This is not a maven-runnable set of binary files</td>
+  </tr>
+  <tr>
+    <td><code>jena-fuseki-main</code></td>
+    <td><code>war</code></td>
+    <td>Fuseki packaged for standalone and embedded use.<td>
   </tr>
   <tr>
     <td><code>jena-text</code></td>
@@ -100,15 +91,20 @@ structuring Jena development.
     <td>SPARQL Text Search. Included in Fuseki.</td>
   </tr>
   <tr>
+    <td><code>jena-shacl</code></td>
+    <td><code>jar</code></td>
+    <td>SHACL engine for Jena.</td>
+  </tr>
+  <tr>
+    <td><code>jena-shex</code></td>
+    <td><code>jar</code></td>
+    <td>ShEx engine for Jena.</td>
+  </tr>
+  <tr>
     <td><code>jena-querybuilder</code></td>
     <td><code>jar</code></td>
     <td>A utility package to simplify the building of ARQ queries in code.
     </td>
-  </tr>
-  <tr>
-    <td><code>jena-fuseki-main</code></td>
-    <td><code>war</code></td>
-    <td>Fuseki packaged for embedding in an application.</td>
   </tr>
   <tr>
     <td><code>jena-permissions</code></td>
@@ -125,7 +121,7 @@ structuring Jena development.
 There are also a number of artifacts used in development.
 The full list can be seen by browsing Maven 
 
-[Released Jena artifacts](http://central.maven.org/maven2/org/apache/jena/)
+[Released Jena artifacts](https://repo1.maven.org/maven2/org/apache/jena/)
 
 (This includes historic artifacts which are no longer active.)
 
@@ -134,8 +130,9 @@ tree.
 
 ### Specifying dependencies on SNAPSHOTs
 
-If you want to depend on Jena development snapshots, e.g. to get access
-to recent bug fixes, you should add the following to your <code>pom.xml</code>:
+If you want to depend on Jena development snapshots and help with Jena
+development, e.g. to get access to recent bug fixes for testing, you
+should add the following to your <code>pom.xml</code>:
 
       <repository>
         <id>apache-repo-snapshots</id>
