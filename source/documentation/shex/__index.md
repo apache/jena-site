@@ -25,7 +25,7 @@ scoped to the file, and not retained after the file has been read.
 
 ## Command line
 
-The command `shex` introduces shacl operations; it takes a sub-command
+The command `shex` introduces shex operations; it takes a sub-command
 argument.
 
 To validate:
