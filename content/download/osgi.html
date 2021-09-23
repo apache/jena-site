@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Fuseki File System Layout</title>
+    <title>Apache Jena - Using Jena with OSGi</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-layout.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/download/osgi.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -147,7 +147,7 @@
         
         
             
-                <li><a href='/documentation'>DOCUMENTATION</a></li>
+                <li><a href='/download'>DOWNLOAD</a></li>
             
             
         
@@ -155,15 +155,7 @@
         
         
             
-                <li><a href='/documentation/fuseki2'>FUSEKI2</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="active">FUSEKI LAYOUT</li>
+                <li class="active">OSGI</li>
             
             
         
@@ -175,156 +167,9 @@
 
                 
             </div>
-            <h1 class="title">Fuseki File System Layout</h1>
+            <h1 class="title">Using Jena with OSGi</h1>
             
-	<p>There are two areas: the fixed files provided by the distribution and the
-changing files for the local deployment,including the default location
-for TDB databases.</p>
-<p>Two environment variables control the file system usage.
-Symbolic links can be used to create variations on the standard layout.</p>
-<p><code>FUSEKI_HOME</code> - this contains the fixed files from the distribution and
-is used for Unix service deployments.  When deployment as a WAR file,
-everything is in the WAR file itself.</p>
-<p><code>FUSEKI_BASE</code> - this contains the deployment files.</p>
-<table>
-<thead>
-<tr>
-<th>Mode</th>
-<th>Environment Variable</th>
-<th>Default Setting</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Service</td>
-<td><code>FUSEKI_HOME</code></td>
-<td><code>/usr/share/fuseki</code></td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
-</tr>
-<tr>
-<td>Webapp</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>N/A (Files in the Fuseki .war file)</td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>/etc/fuseki</code></td>
-</tr>
-<tr>
-<td>Standalone</td>
-<td><code>FUSEKI_HOME</code></td>
-<td>Current directory</td>
-</tr>
-<tr>
-<td></td>
-<td><code>FUSEKI_BASE</code></td>
-<td><code>${FUSEKI_HOME}/run/</code></td>
-</tr>
-</tbody>
-</table>
-<p>When run in a web application container (e.g. <a href="http://http://tomcat.apache.org/">Tomcat</a>,
-<a href="http://eclipse.org/jetty/">Jetty</a> or other webapp compliant server),
-<code>FUSEKI_BASE</code> will be <code>/etc/fuseki</code>.</p>
-<p>If <code>FUSEKI_BASE</code> is the same as <code>FUSEKI_HOME</code>, be careful when upgrading not to delete
-server deployment files and directories.</p>
-<h1 id="distribution-area----fuseki_home">Distribution area &ndash; <code>FUSEKI_HOME</code></h1>
-<table>
-<thead>
-<tr>
-<th>Directory or File</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>fuseki</code></td>
-<td>Fuseki Service (Linux)</td>
-</tr>
-<tr>
-<td><code>fuseki-server</code></td>
-<td>Fuseki standalone command</td>
-</tr>
-<tr>
-<td><code>fuseki-server.bat</code></td>
-<td>Fuseki standalone command</td>
-</tr>
-<tr>
-<td><code>fuseki-server.jar</code></td>
-<td>The Fuseki Server binary</td>
-</tr>
-<tr>
-<td><code>fuseki.war</code></td>
-<td>The Fuseki Server as a WAR file</td>
-</tr>
-<tr>
-<td><code>bin/</code></td>
-<td>Helper scripts</td>
-</tr>
-<tr>
-<td><code>webapp/</code></td>
-<td>The webapp for the UI</td>
-</tr>
-</tbody>
-</table>
-<h1 id="runtime-area----fuseki_base">Runtime area &ndash; <code>FUSEKI_BASE</code></h1>
-<table>
-<thead>
-<tr>
-<th>Directory or File</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>config.ttl</code></td>
-<td>Server configuration</td>
-</tr>
-<tr>
-<td><code>shiro.ini</code></td>
-<td>Apache Shiro configuration</td>
-</tr>
-<tr>
-<td><code>databases/</code></td>
-<td>TDB Databases</td>
-</tr>
-<tr>
-<td><code>backups/</code></td>
-<td>Write area for live backups</td>
-</tr>
-<tr>
-<td><code>configuration/</code></td>
-<td>Assembler files</td>
-</tr>
-<tr>
-<td><code>logs/</code></td>
-<td>Log file area</td>
-</tr>
-<tr>
-<td><code>system/</code></td>
-<td>System configuration database</td>
-</tr>
-<tr>
-<td><code>system_files/</code></td>
-<td>Uploaded data service descriptions (copies)</td>
-</tr>
-<tr>
-<td><code>templates/</code></td>
-<td>Templates for build-in configurations</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>system_files/</code> keeps a copy of any assemblers uploaded to
-configure the server. The master copy is kept in the system database.</p>
-<h1 id="resetting">Resetting</h1>
-<p>To reset the server, stop the server, and delete the system database in <code>system/</code>,
-the <code>system_files/</code> and any other unwanted deployment files,
-then restart the server.</p>
-
+	
 
         </div>
     </div>

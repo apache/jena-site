@@ -176,7 +176,8 @@ consistent set of library files that Jena depends on automatically added too.</p
 <p>This page assumes you have Maven installed on your computer. If this is not the case,
 please read and follow <a href="http://maven.apache.org/download.html#Installation">these instructions</a>.</p>
 <h3 id="repositories">Repositories</h3>
-<p>Released maven artifacts are mirrored to the central maven repositories.</p>
+<p>Released maven artifacts are mirrored to the central maven repositories.
+This can take a few days.</p>
 <p>Development snapshots are available as well.<br>
 <a href="https://repository.apache.org/content/repositories/snapshots/">https://repository.apache.org/content/repositories/snapshots/</a></p>
 <p>Stable Jena releases are automatically mirrored by the central Maven
@@ -194,7 +195,15 @@ on a version of Jena:</p>
 </code></pre>
 <p>This will transitively resolve all the dependencies for you: <code>jena-core</code>,
 <code>jena-arq</code>, <code>jena-tdb</code> and <code>jena-iri</code> and their dependencies.</p>
-<p>Note the use of <code>&lt;type&gt;pom&lt;/type&gt;</code> above.</p>
+<p>Note the use of <code>&lt;type&gt;pom&lt;/type&gt;</code> above.  This does not work
+in all tools. An alternative is to depend on <code>jena-tdb</code>, which will pull
+in the other artifacts.</p>
+<pre><code>  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+    &lt;artifactId&gt;jena-tdb&lt;/artifactId&gt;
+    &lt;version&gt;a.b.c&lt;/version&gt;
+  &lt;/dependency&gt;
+</code></pre>
 <p>Other modules need to be added separately, for example:</p>
 <pre><code>  &lt;dependency&gt;
     &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
@@ -229,14 +238,14 @@ structuring Jena development.</p>
     <td>Fuseki2 distribution</td>
   </tr>
   <tr>
+    <td><code>apache-jena-osgi</code></td>
+    <td><code>pom</code></td>
+    <td>Jena as an OSGi bundle</td>
+  </tr>
+  <tr>
     <td><code>jena</code></td>
     <td></td>
     <td>The formal released source-released for each Jena release. This is not a maven-runnable set of binary files</td>
-  </tr>
-  <tr>
-    <td><code>jena-fuseki-main</code></td>
-    <td><code>war</code></td>
-    <td>Fuseki packaged for standalone and embedded use.<td>
   </tr>
   <tr>
     <td><code>jena-text</code></td>
@@ -244,20 +253,15 @@ structuring Jena development.</p>
     <td>SPARQL Text Search. Included in Fuseki.</td>
   </tr>
   <tr>
-    <td><code>jena-shacl</code></td>
-    <td><code>jar</code></td>
-    <td>SHACL engine for Jena.</td>
-  </tr>
-  <tr>
-    <td><code>jena-shex</code></td>
-    <td><code>jar</code></td>
-    <td>ShEx engine for Jena.</td>
-  </tr>
-  <tr>
     <td><code>jena-querybuilder</code></td>
     <td><code>jar</code></td>
     <td>A utility package to simplify the building of ARQ queries in code.
     </td>
+  </tr>
+  <tr>
+    <td><code>jena-fuseki-main</code></td>
+    <td><code>war</code></td>
+    <td>Fuseki packaged for embedding in an application.</td>
   </tr>
   <tr>
     <td><code>jena-permissions</code></td>
@@ -272,14 +276,13 @@ structuring Jena development.</p>
 </table>
 <p>There are also a number of artifacts used in development.
 The full list can be seen by browsing Maven</p>
-<p><a href="https://repo1.maven.org/maven2/org/apache/jena/">Released Jena artifacts</a></p>
+<p><a href="http://central.maven.org/maven2/org/apache/jena/">Released Jena artifacts</a></p>
 <p>(This includes historic artifacts which are no longer active.)</p>
 <p>You can run <code>mvn dependency:tree</code> to print the dependency
 tree.</p>
 <h3 id="specifying-dependencies-on-snapshots">Specifying dependencies on SNAPSHOTs</h3>
-<p>If you want to depend on Jena development snapshots and help with Jena
-development, e.g. to get access to recent bug fixes for testing, you
-should add the following to your <code>pom.xml</code>:</p>
+<p>If you want to depend on Jena development snapshots, e.g. to get access
+to recent bug fixes, you should add the following to your <code>pom.xml</code>:</p>
 <pre><code>  &lt;repository&gt;
     &lt;id&gt;apache-repo-snapshots&lt;/id&gt;
     &lt;url&gt;https://repository.apache.org/content/repositories/snapshots/&lt;/url&gt;
