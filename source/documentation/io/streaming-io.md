@@ -7,8 +7,8 @@ fashion. Streaming can be used for manipulating RDF at scale.  Jena
 provides high performance readers and writers for all standard RDF formats,
 and it can be extended with custom formats.
 
-The [RDF Binary using Apache Thrift](rdf-binary.html) provides the highest
-input parsing performance.  N-Triples/N-Quads provide the highest
+The [RDF Binary](rdf-binary.html) provides the highest
+input parsing performance. N-Triples/N-Quads provide the highest
 input parsing performance using W3C Standards.
 
 Files ending in `.gz` are assumed to be gzip-compressed. Input and output
@@ -105,3 +105,4 @@ N-Triples and N-Quads are always written as a stream.
 | `RDFFormat.NQUADS_ASCII`   |                  |
 | `RDFFormat.TRIX`           | `Lang.TRIX`      |
 | `RDFFormat.RDF_THRIFT`     | `Lang.RDFTHRIFT` |
+| `RDFFormat.RDF_PROTO`      | `Lang.RDFPROTO`  |
