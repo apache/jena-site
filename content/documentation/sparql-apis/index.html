@@ -172,18 +172,12 @@
             </div>
             <h1 class="title">Apache Jena SPARQL APIs</h1>
             
-	<p>TOC</p>
+	<p>Jump to &ldquo;<a href="#changes">Changes</a>&quot;.</p>
 <h2 id="overview">Overview</h2>
 <p>The SPARQL specifications provide
 <a href="https://www.w3.org/TR/sparql11-query/">query</a>,
 <a href="https://www.w3.org/TR/sparql11-update/">update</a> and the
 <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">graph store protocol</a> (GSP).</p>
-<p>Jena provides a single interface, <a href="../rdfconnection"><code>RDFConnection</code></a> for working
-with local and remote RDF data using these protocols in a unified way for local
-and remote data.</p>
-<p>HTTP Authentication is provided for remote operations.</p>
-<p>Alternatively, applications can also use the various execution engines through <code>QueryExecution</code>, <code>UpdateExecution</code> and <code>ModelStore</code>.</p>
-<p>All the main implementations work at &ldquo;Graph SPI&rdquo; (GPI) level and an application may wish to work with this lower level interface that implements generalized RDF (i.e. a triple is any three nodes, including ones like variables, and subsystem extension nodes).</p>
 <p>For working with RDF data:</p>
 <table>
 <thead>
@@ -254,6 +248,17 @@ and remote data.</p>
 </tr>
 </tbody>
 </table>
+<p>Jena provides a single interface, <a href="../rdfconnection"><code>RDFConnection</code></a> for
+working with local and remote RDF data using these protocols in a unified way.
+This is most useful for remote data because the setup to connect is more
+complicated and can be done once and reused.</p>
+<p>HTTP Authentication is provided for remote operations.</p>
+<p>Applications can also use the various execution engines through
+<code>QueryExecution</code>, <code>UpdateExecution</code> and <code>ModelStore</code>.</p>
+<p>All the main implementations work at &ldquo;Graph SPI&rdquo; (GPI) level and an application
+may wish to work with this lower level interface that implements generalized RDF
+(i.e. a triple is any three nodes, including ones like variables, and subsystem
+extension nodes).</p>
 <p>The GPI version is the main machinery working at the storage and network level,
 and the API version is an adapter to convert to the Model API and related
 classes.</p>
@@ -262,23 +267,30 @@ same style, sometimes with slightly changed naming.</p>
 <p><code>UpdateProcessor</code> is a legacy name for <code>UpdateExecution</code></p>
 <p><code>GSP</code> provides the SPARQL Graph Store Protocol, including extensions for sending
 and receiving datasets, rather than individual graphs.</p>
-<p>Both API and GPI provide builders for detailed setup, particularly for remote usage over HTTP and HTTPS where detailed control of the HTTP requests is sometimes necessary to work with other triple stores.</p>
-<p>HTTP authentication support is provided, supporting both basic and digest authentication in challenge-response scenarios.</p>
-<p>Factory style functions for many common usage patterns are retained in <code>QueryExecutionFactory</code>, <code>UpdateExecutionFactory</code>.</p>
-<h2 id="changes-from-jena-420-to-jena-430">Changes from Jena 4.2.0 to Jena 4.3.0</h2>
+<p>Both API and GPI provide builders for detailed setup, particularly for remote
+usage over HTTP and HTTPS where detailed control of the HTTP requests is
+sometimes necessary to work with other triple stores.</p>
+<p>HTTP authentication support is provided, supporting both basic and digest
+authentication in challenge-response scenarios.</p>
+<p>Factory style functions for many common usage patterns are retained in
+<code>QueryExecutionFactory</code>, <code>UpdateExecutionFactory</code>.</p>
+<h2 id="changes">Changes from Jena 4.2.0 to Jena 4.3.0</h2>
 <ul>
 <li>
-<p>Execution objects have a companion builder. This is especially important of HTTP as there many configuration options that may be needed. Local use is still covered by the existing <code>QueryExecutionFactory</code> as well as the new <code>QueryExecutionBuilder</code>.</p>
+<p>Execution objects have a companion builder. This is especially important of
+HTTP as there many configuration options that may be needed. Local use is
+still covered by the existing <code>QueryExecutionFactory</code> as well as the new
+<code>QueryExecutionBuilder</code>.</p>
 </li>
 <li>
 <p>HTTP usage provided by the JDK <code>java.net.http</code> package, with challenge-based
-authentication provides on top by Jena. <a href="#auth">See below</a>.</p>
+authentication provided on top by Jena. <a href="#auth">See below</a>.</p>
 </li>
 <li>
-<p>Authentication support is uniformly applied to query, update GSP and SPARQL <code>SERVICE</code>.</p>
+<p>Authentication support is uniformly applied to query, update, GSP and <code>SERVICE</code>.</p>
 </li>
 <li>
-<p>HTTP/2 support (Fuseki to follow unless done and tested in time).</p>
+<p>HTTP/2 support</p>
 </li>
 <li>
 <p>Remove Apache HttpClient usage</p>
@@ -288,18 +300,19 @@ necessary.</li>
 </ul>
 </li>
 <li>
-<p>Deprecate modifying <code>QueryExecution</code> after it is built.
-This is still supported for local <code>QueryExecution</code>.</p>
+<p>Deprecate modifying <code>QueryExecution</code> after it is built.</p>
 </li>
 <li>
-<p>Parameterization for remote queries</p>
+<p>Parameterization for remote queries.
+Parameterization - replacing variables by values before sending
+a query - makes the query into a template. The same applies to updates.</p>
 </li>
 <li>
 <p><code>HttpOp</code> is split into <code>HttpRDF</code> for GET/POST/PUT/DELETE of graphs and
 datasets and new <code>HttpOp</code> for packaged-up common patterns of HTTP usage.</p>
 </li>
 <li>
-<p>DatasetAccessors will be removed.</p>
+<p>DatasetAccessors removed.</p>
 </li>
 <li>
 <p>GSP - support for dataset operations as well as graphs (also supported by Fuseki).</p>
@@ -307,16 +320,23 @@ datasets and new <code>HttpOp</code> for packaged-up common patterns of HTTP usa
 </ul>
 <h2 id="ttrdfconnectiontt"><tt>RDFConnection</tt></h2>
 <p><a href="../rdfconnection/">RDFConnection</a></p>
-<pre><code>example with builder.
-</code></pre><pre><code>example with factory
+<pre><code>    try ( RDFConnection conn = RDFConnectionRemote.service(dataURL).build()) {
+        conn.update(&quot;INSERT DATA{}&quot;);
+        conn.queryAsk(&quot;ASK{}&quot;);
+    }
+</code></pre><p>or the less flexible:</p>
+<pre><code>    try ( RDFConnection conn = RDFConnectionFactory.connect(dataURL) ) {
+        conn.update(&quot;INSERT DATA{}&quot;);
+        conn.queryAsk(&quot;ASK{}&quot;);
+    }
 </code></pre><h2 id="query-execution">Query Execution</h2>
 <p>Factory Examples</p>
-<pre><code>Dataset dataset = ...
-Query query = ...
-try ( QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ) {
-     ResultSet results = qExec.execSelect();
-    ... use results ...
-}
+<pre><code>  Dataset dataset = ...
+  Query query = ...
+  try ( QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ) {
+       ResultSet results = qExec.execSelect();
+       ... use results ...
+  }
 </code></pre><p>Builder Examples
 Builders are reusable and modifiable after a &ldquo;build&rdquo; operation.</p>
 <pre><code>Dataset dataset = ...
@@ -328,13 +348,15 @@ try ( QueryExecution qExec = QueryExecution.create()
     ResultSet results = qExec.execSelect();
     ... use results ...
 }
-</code></pre><pre><code>try ( QueryExecution qExec = QueryExecutionHTTP.service(&quot;http://....&quot;)
+</code></pre><p>and remote calls:</p>
+<pre><code>try ( QueryExecution qExec = QueryExecutionHTTP.service(&quot;http://....&quot;)
                                  .query(query)
                                  .build() ) {
     ResultSet results = qExec.execSelect();
     ... use results ...
 }
-</code></pre><pre><code>// JDK HttpClient
+</code></pre><p>More complex setup:</p>
+<pre><code>// JDK HttpClient
 HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))  // Timeout to connect
                 .followRedirects(Redirect.NORMAL)
@@ -352,37 +374,19 @@ try ( QueryExecution qExec = QueryExecutionHTTP.create()
 </code></pre><p>There is only one timeout setting for HTTP query execution. The &ldquo;time to
 connect&rdquo; is handled by the JDK <code>HttpClient</code>. Timeouts for local execution are
 &ldquo;time to first result&rdquo; and &ldquo;time to all results&rdquo; as before.</p>
-<h2 id="ttgsptt"><tt>GSP</tt></h2>
-<p><tt>ModelStore</tt></p>
-<pre><code>  Graph graph = GSP.serbvice(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
+<h2 id="ttmodelstorett-and-ttgsptt"><tt>ModelStore</tt> and <tt>GSP</tt></h2>
+<pre><code>   Model model = ModelStore.service(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
+</code></pre><pre><code>   Graph graph = GSP.service(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
 </code></pre><pre><code>  Graph graph = ... ; 
   GSP.request(&quot;http://fuseki/dataset&quot;).graphName(&quot;http;//data/myGraph&quot;).POST(graph);
 </code></pre><pre><code>  DatasetGraph dataset = GSP.request(&quot;http://fuseki/dataset&quot;).getDataset();
-</code></pre><h2 id="environment">Environment</h2>
-<p>AuthEnv - passwordRegistry , authModifiers
-RegistryHttpClient</p>
-<h2 id="customization-of-http-requests">Customization of HTTP requests</h2>
-<p>@@</p>
-<p>Params (e.g. apikey)</p>
-<p>ARQ.httpRequestModifer</p>
-<h2 id="queryexecution">QueryExecution</h2>
-<h2 id="updateexecution">UpdateExecution</h2>
-<h2 id="ttservicett"><tt>SERVICE</tt></h2>
+</code></pre><h2 id="ttservicett"><tt>SERVICE</tt></h2>
 <p>@@
 <a href="../query/service.html">Old documentation </a> - passing parameters has changed.</p>
-<h2 id="misc">Misc</h2>
-<p>###Params</p>
-<h3 id="service-configuration">SERVICE configuration</h3>
+<h2 id="service-configuration">SERVICE configuration</h2>
 <p>See below for more on HTTP authentication with <code>SERVICE</code>.</p>
-<p>@@</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#080;font-style:italic">//Symbol                Usage           Default
-</span><span style="color:#080;font-style:italic"></span> <span style="color:#080;font-style:italic">//[ ] srv:queryTimeout      Set timeouts -- There is only one time out now.
-</span><span style="color:#080;font-style:italic"></span> <span style="color:#080;font-style:italic">//[ ] srv:queryCompression  Enable use of deflate and GZip -- unsupported (didn&#39;t work!)
-</span><span style="color:#080;font-style:italic"></span> <span style="color:#080;font-style:italic">//[ ] srv:queryClient       Enable use of a specific client -- unsupported
-</span><span style="color:#080;font-style:italic"></span> <span style="color:#080;font-style:italic">//[ ] srv:serviceContext    Per-endpoint configuration -- Legacy
-</span><span style="color:#080;font-style:italic"></span> <span style="color:#080;font-style:italic">// + srv:serviceAllowed
-</span></code></pre></div><p>Old names</p>
-<p>@@check</p>
+<p>The configuration of <code>SERVICE</code> operations has changed in Jena 4.3.0 and the
+paramter names have changed.</p>
 <table>
 <thead>
 <tr>
@@ -395,7 +399,7 @@ RegistryHttpClient</p>
 <tr>
 <td><code>arq:httpServiceAllowed</code></td>
 <td><code>ARQ.httpServiceAllowed</code></td>
-<td>Yes or No</td>
+<td>False to disable</td>
 </tr>
 <tr>
 <td><code>arq:serviceParams</code></td>
@@ -409,8 +413,8 @@ RegistryHttpClient</p>
 </tr>
 <tr>
 <td><code>arq:httpQueryClient</code></td>
-<td><code>ARQ.httpQueryTimeout</code></td>
-<td>Set the java.net.http.HttpClient</td>
+<td><code>ARQ.httpQueryCient</code></td>
+<td>An <code>java.net.http.HttpClient</code> object</td>
 </tr>
 <tr>
 <td><code>arq:httpQueryCompression</code></td>
@@ -420,7 +424,10 @@ RegistryHttpClient</p>
 </tbody>
 </table>
 <p>where <code>arq:</code> is prefix for <code>&lt;http://jena.apache.org/ARQ#&gt;</code>.</p>
-<h3 id="arqhttprequestmodifier">ARQ.httpRequestModifier</h3>
+<p>The timeout is now only for the overall request and manged by the HTTP client
+code.</p>
+<p>Compression of responses is not currently supported.</p>
+<h2 id="httpRequestModifer">ARQ.httpRequestModifier </h2>
 <p>There is a mechanism to modify HTTP requests to specific endpoints or to a collection of endpoints with the same prefix.</p>
 <p>For example, to add a header <code>X-Tracker</code> to each request:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    AtomicLong counter <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> AtomicLong<span style="color:#666">(</span>0<span style="color:#666">);</span>
@@ -430,7 +437,10 @@ RegistryHttpClient</p>
         headers<span style="color:#666">.</span><span style="color:#b44">put</span><span style="color:#666">(</span><span style="color:#b44">&#34;X-Tracker&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Call=&#34;</span><span style="color:#666">+</span>x<span style="color:#666">);</span>
     <span style="color:#666">};</span>
     RegistryRequestModifier<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">addPrefix</span><span style="color:#666">(</span>serverURL<span style="color:#666">,</span> modifier<span style="color:#666">);</span>
-</code></pre></div><h2 id="auth">Authentication</h2>
+</code></pre></div><p>The <code>RegistryRequestModifier</code> registry is checked on each HTTP operation. It
+maps URLs or prefix of URLs to a function of interface <code>HttpRequestModifier</code>
+which has access to the headers and the query string parameters of the request.</p>
+<h2 id="auth">Authentication</h2>
 <p>For any use of users-password information, and especially HTTP basic
 authentication, information is visible in the HTTP headers. Using HTTPS is
 necessary to avoid snooping.  Digest authentication is also stronger over HTTPS
@@ -493,8 +503,7 @@ Link to</p>
 <p><code>AuthEnv</code> maintains a registry of credentials and also a registry of which service URLs
 the credentials should be used. It supports registration of endpoint prefixes so that one
 registration will apply to all URLs starting with a common root.</p>
-<p>The main function is <code>AuthEnv.get().registerUsernamePassword</code>.
-a</p>
+<p>The main function is <code>AuthEnv.get().registerUsernamePassword</code>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#080;font-style:italic">// Application setup code 
 </span><span style="color:#080;font-style:italic"></span>   AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span><span style="color:#b44">&#34;username&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#666">...</span>
@@ -514,7 +523,25 @@ have the authentication header added and there is no challenge round-trip.</p>
 the registry is consulted and authetication applied.</p>
 <p>In addition, if the SERVICE URL has a username as the <code>userinfo</code> (that is, <code>https://users@some.host/...</code>),
 that user name is used to look in the authentication registry.</p>
-<p>If the <code>userinfo</code> is of the form &ldquo;username:password&rdquo; then the information as given in the URL is used.</p>
+<p>If the <code>userinfo</code> is of the form &ldquo;username:password&rdquo; then the information as given in the URL is
+used.</p>
+<pre><code>        AuthEnv.get().registerUsernamePassword(URI.create(&quot;http://host/sparql&quot;), &quot;u&quot;, &quot;p&quot;);
+
+        // Registration applies to SERVICE.
+        Query query = QueryFactory.create(&quot;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&quot;);
+        try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
+            System.out.println(&quot;Call using SERVICE...&quot;);
+            ResultSet rs = qExec.execSelect();
+            ResultSetFormatter.out(rs);
+        }
+</code></pre><h2 id="environment">Environment</h2>
+<p><code>AuthEnv</code> - passwordRegistry , authModifiers
+<code>RegistryHttpClient</code></p>
+<h2 id="customization-of-http-requests">Customization of HTTP requests</h2>
+<p>@@</p>
+<p>Params (e.g. apikey) and header : <a href="#httpRequestModifer">ARQ.httpRequestModifer</a>.</p>
+<h2 id="queryexecution">QueryExecution</h2>
+<h2 id="updateexecution">UpdateExecution</h2>
 
 
         </div>
