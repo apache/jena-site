@@ -134,22 +134,21 @@ Note that it can make a lot of sense to generate the `Iterator<Binding>` for `Qu
 
 Additional operations on the current, or another, Graph can be achieved through the Execution Context.
 Once retrieved the Graph can be operated upon directly, queried or wrapped in a Model, if preferred.
-New Triples or Graphs can therefore be created as part of the Property Function. 
 
-      //Retrieve current Graph.
+      // Retrieve current Graph.
       Graph graph = execCxt.getActiveGraph();
       
-      //Wrap Graph in a Model.
+      // Wrap Graph in a Model.
       Model model = ModelFactory.createModelForGraph(graph);
 
-      //Retrieve DatasetGraph of current Graph.
+Access another graph:
+
+      // Retrieve DatasetGraph of current Graph.
       DatasetGraph datasetGraph = execCxt.getDataset();
 
-      //Retrieve a different Graph in the Dataset.
+      // Retrieve a different Graph in the Dataset.
       Node otherGraphNode = NodeFactory.createURI("http://example.org/otherGraph");
       Graph otherGraph = datasetGraph.getNamedGraph(otherGraphNode);
 
-      //Create a new Graph in the Dataset, or overwrite an existing Named Graph.
-      Graph newGraph = ...
-      //Add data to the newGraph as retaining empty Graphs is implementation dependent.
-      datasetGraph.addGraph(otherGraphNode, newGraph);
+      // Access the other graph
+      ExtendedIterator<Triple> iter = otherGraph.find(...);
