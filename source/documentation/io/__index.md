@@ -34,7 +34,7 @@ See "[Reading JSON-LD 1.1](json-ld-11.html)" for additional setup and use for
 reading JSON-LD 1.1. JSON-LD 1.0 is the current default in Jena.
 
 RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
-for fast parsing.  See [RDF Binary using Apache Thrift](rdf-binary.html).
+for fast parsing.  See [RDF Binary](rdf-binary.html).
 
 ## Command line tools
 
@@ -49,18 +49,20 @@ These can be called directly as Java programs:
 The file extensions understood are:
 
 | &nbsp;Extension&nbsp; |&nbsp; Language&nbsp; |
-|-----------|------------|
-| `.ttl`    | Turtle     |
-| `.nt`     | N-Triples  |
-| `.nq`     | N-Quads    |
-| `.trig`   | TriG       |
-| `.rdf`    | RDF/XML    |
-| `.owl`    | RDF/XML    |
-| `.jsonld` | JSON-LD    |
-| `.trdf`   | RDF Thrift |
-| `.rt`     | RDF Thrift |
-| `.rj`     | RDF/JSON   |
-| `.trix`   | TriX       |
+|-----------|--------------|
+| `.ttl`    | Turtle       |
+| `.nt`     | N-Triples    |
+| `.nq`     | N-Quads      |
+| `.trig`   | TriG         |
+| `.rdf`    | RDF/XML      |
+| `.owl`    | RDF/XML      |
+| `.jsonld` | JSON-LD      |
+| `.trdf`   | RDF Thrift   |
+| `.rt`     | RDF Thrift   |
+| `.rpb     | RDF Protobuf |
+| `.pbrdf`  | RDF Protobuf |
+| `.rj`     | RDF/JSON     |
+| `.trix`   | TriX         |
 
 `.n3` is supported but only as a synonym for Turtle.
 

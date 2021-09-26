@@ -17,7 +17,7 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
   - [Turtle and Trig format options](#opt-turtle-trig)
   - [N-Triples and N-Quads](#n-triples-and-n-quads)
   - [JSON-LD](#json-ld)
-  - [RDF Binary](#rdf-thrift)
+  - [RDF Binary](#rdf-binary)
   - [RDF/XML](#rdfxml)
 - [Examples](#examples)
 - [Notes](#notes)
@@ -110,9 +110,10 @@ an `RDFFormat` internally.  The normal writers are:
 | RDFXML            | RDF/XML, pretty printed |
 | RDFJSON           |                         |
 | TRIX              |                         |
-| RDFTHRFT          | RDF Thrift              |
+| RDFTHRFT          | RDF Binary Thrift       |
+| RDFPROTO          | RDF Binary Protobuf     |
 
-Pretty printed RDF/XML is also known as RDF/XML-ABBREV
+Pretty printed RDF/XML is also known as RDF/XML-ABBREV.
 
 ### Pretty Printed Languages
 
@@ -369,21 +370,25 @@ cases.
 What can be done, and how it can be, is explained in the 
 [sample code](https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples/riot/Ex_WriteJsonLD.java).
 
-### RDF Binary {#rdf-thrift}
+### RDF Binary {#rdf-binary}
 
 [This is a binary encoding](rdf-binary.html) using 
-[Apache Thrift](https://thrift.apache.org/) for RDF Graphs
+[Apache Thrift](https://thrift.apache.org/) or 
+[Google Protocol Buffers](https://developers.google.com/protocol-buffers)
+for RDF Graphs
 and RDF Datasets, as well as SPARQL Result Sets, and it provides faster parsing
 compared to the text-based standardised syntax such as N-triples, Turtle or RDF/XML.
 
-| RDFFormat        |
-|------------------|
-| RDFTHRIFT        |
-| RDFTHRIFT_VALUES |
+| RDFFormat         |
+|-------------------|
+| RDF_THRIFT        |
+| RDF_THRIFT_VALUES |
+| RDF_PROTO         |
+| RDF_PROTO_VALUES  |
 
-`RDFTHRIFT_VALUES` is a variant where numeric values are written as values,
+`RDF_THRIFT_VALUES` and `RDF_PROTO_VALUES` are variants where numeric values are written as values,
 not as lexical format and datatype.  See the 
-[description of RDF Thrift](http://afs.github.io/rdf-thrift)
+[description of RDF Binary](https://rdf-binary.html).
 for discussion.
 
 ### RDF/XML {#rdfxml}

@@ -67,18 +67,18 @@ as:
 
 The following is a suggested Apache httpd .htaccess file:
 
-    AddType  text/turtle             .ttl
-    AddType  application/rdf+xml     .rdf
-    AddType  application/n-triples   .nt
+    AddType  text/turtle               .ttl
+    AddType  application/rdf+xml       .rdf
+    AddType  application/n-triples     .nt
 
-    AddType  application/ld+json     .jsonld
-    AddType  application/owl+xml     .owl
+    AddType  application/ld+json       .jsonld
 
-    AddType  text/trig               .trig
-    AddType  application/n-quads     .nq
+    AddType  text/trig                 .trig
+    AddType  application/n-quads       .nq
 
-    AddType  application/trix+xml    .trix
-    AddType  application/rdf+thrift  .trdf
+    AddType  application/trix+xml      .trix
+    AddType  application/rdf+thrift    .rt
+    AddType  application/rdf+protobuf  .rpb
 
 ### Example 1 : Using the RDFDataMgr {#using-rdfdatamgr}
 
