@@ -68,7 +68,6 @@
                         <li><a href="/documentation/shex/index.html">ShEx</a></li>
                         <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
                         <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
-                        <li><a href="/documentation/hadoop/index.html">Elephas - tools for RDF on Hadoop</a></li>
                         <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
                         <li><a href="/documentation/permissions/index.html">Permissions</a></li>
                         <li><a href="/documentation/assembler/index.html">Assembler</a></li>
@@ -178,7 +177,9 @@
             <h1 class="title">RDF Binary using Apache Thrift</h1>
             
 	<p>&ldquo;RDF Binary&rdquo; is a efficient format for RDF and RDF-related data using
-<a href="https://thrift.apache.org/">Apache Thrift</a> as the binary encoding.</p>
+<a href="https://thrift.apache.org/">Apache Thrift</a>
+or  <a href="https://developers.google.com/protocol-buffers">Google Protocol Buffers</a>
+as the binary data encoding.</p>
 <p>The W3C standard RDF syntaxes are text or XML based.  These incur costs in
 parsing; the most human-readable formats also incur high costs to write, and
 have limited scalability due to the need to analyse the data for pretty
@@ -188,11 +189,12 @@ costs of text-base formats.  &ldquo;RDF Binary&rdquo; defines basic encoding for
 terms, then builds data formats for RDF graphs, RDF datasets, and for
 SPARQL result sets.  This gives a basis for high-performance linked data
 systems.</p>
-<p><a href="https://thrift.apache.org/">Apache Thrift</a> provides an efficient,
-wide-used binary encoding layer with a large number of language bindings.</p>
+<p><a href="https://thrift.apache.org/">Thrift</a> and
+<a href="https://developers.google.com/protocol-buffers">Protobuf</a> provides efficient,
+widely-used, binary encoding layers each with a large number of language
+bindings.</p>
 <p>For more details of <a href="http://afs.github.io/rdf-thrift">RDF Thrift</a>.</p>
-<p>This pages gives the details of RDF Binary encoding in <a href="http://thrift.apache.org/">Apache Thrift</a>.</p>
-<h2 id="encoding-terms">Thrift encoding of RDF Terms</h2>
+<h2 id="encoding-terms-thrift">Thrift encoding of RDF Terms</h2>
 <p>RDF Thrift uses the Thrift compact protocol.</p>
 <p>Source: <a href="https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Thrift/BinaryRDF.thrift">BinaryRDF.thrift</a></p>
 <h3 id="rdf-terms">RDF terms</h3>
@@ -249,7 +251,7 @@ union RDF_Term {
 12: RDF_Decimal     valDecimal
 }
 </code></pre>
-<h3 id="encoding-tuples">Thrift encoding of Triples, Quads and rows.</h3>
+<h3 id="encoding-thrift-tuples">Thrift encoding of Triples, Quads and rows.</h3>
 <pre><code>struct RDF_Triple {
 1: required RDF_Term S
 2: required RDF_Term P
@@ -268,7 +270,7 @@ struct RDF_PrefixDecl {
 2: required string uri ;
 }
 </code></pre>
-<h3 id="encoding-graphs-datasets">Thrift encoding of RDF Graphs and RDF Datasets</h3>
+<h3 id="encoding-thrift-graphs-datasets">Thrift encoding of RDF Graphs and RDF Datasets</h3>
 <pre><code>union RDF_StreamRow {
 1: RDF_PrefixDecl   prefixDecl
 2: RDF_Triple       triple
@@ -277,7 +279,7 @@ struct RDF_PrefixDecl {
 </code></pre>
 <p>RDF Graphs are encoded as a stream of <code>RDF_Triple</code> and <code>RDF_PrefixDecl</code>.</p>
 <p>RDF Datasets are encoded as a stream of <code>RDF_Triple</code>, <code>RDF-Quad</code> and <code>RDF_PrefixDecl</code>.</p>
-<h3 id="encoding-result-sets">Thrift encoding of SPARQL Result Sets</h3>
+<h3 id="encoding-thrift-result-sets">Thrift encoding of SPARQL Result Sets</h3>
 <p>A SPARQL Result Set is encoded as a list of variables (the header), then
 a stream of rows (the results).</p>
 <pre><code>struct RDF_VarTuple {
@@ -288,7 +290,140 @@ struct RDF_DataTuple {
 1: list&lt;RDF_Term&gt; row
 }
 </code></pre>
+<h2 id="encoding-terms-protobuf">Protobuf encoding of RDF Terms</h2>
+<p>The Protobuf schema is simialr.</p>
+<p>Source:
+<a href="https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Protobuf/binary-rdf.proto">binary-rdf.proto</a></p>
+<p>Streaming isused to allow for abitrary size graphs. Therefore the steram items
+(<code>RDF_StreamRow</code> below) are written with an initial length (<code>writeDelimitedTo</code>
+in the Java API).</p>
+<p>See
+<a href="https://developers.google.com/protocol-buffers/docs/techniques#streaming">Protobuf Techniques Streaming</a>.</p>
+<pre><code>syntax = &quot;proto3&quot;;
 
+option java_package         = &quot;org.apache.jena.riot.protobuf.wire&quot; ;
+
+// Prefer one file with static inner classes.
+option java_outer_classname = &quot;PB_RDF&quot; ;
+// Optimize for speed (default)
+option optimize_for = SPEED ;
+
+//option java_multiple_files = true;
+// ==== RDF Term Definitions 
+
+message RDF_IRI {
+  string iri = 1 ;
+} 
+ 
+// A prefix name (abbrev for an IRI)
+message RDF_PrefixName {
+  string prefix = 1 ;
+  string localName = 2 ;
+} 
+
+message RDF_BNode {
+  string label = 1 ;
+  // 2 * fixed64
+} 
+
+// Common abbreviations for datatypes and other URIs?
+// union with additional values. 
+
+message RDF_Literal {
+  string lex = 1 ;
+  oneof literalKind {
+    bool simple = 9 ;
+    string langtag = 2 ;
+    string datatype = 3 ;
+    RDF_PrefixName dtPrefix = 4 ;
+  }
+}
+
+message RDF_Decimal {
+  sint64  value = 1 ;
+  sint32  scale = 2 ;
+}
+
+message RDF_Var {
+  string name = 1 ;
+}
+
+message RDF_ANY { }
+
+message RDF_UNDEF { }
+
+message RDF_REPEAT { }
+
+message RDF_Term {
+  oneof term {
+    RDF_IRI        iri        = 1 ;
+    RDF_BNode      bnode      = 2 ;
+    RDF_Literal    literal    = 3 ;
+    RDF_PrefixName prefixName = 4 ;
+    RDF_Var        variable   = 5 ;
+    RDF_Triple     tripleTerm = 6 ;
+    RDF_ANY        any        = 7 ;
+    RDF_UNDEF      undefined  = 8 ;
+    RDF_REPEAT     repeat     = 9 ;
+    
+    // Value forms of literals.
+    sint64         valInteger = 20 ;
+    double         valDouble  = 21 ;
+    RDF_Decimal    valDecimal = 22 ;
+  }
+}
+
+// === StreamRDF items 
+
+message RDF_Triple {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+}
+
+message RDF_Quad {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+  RDF_Term G = 4 ;
+}
+
+// Prefix declaration
+message RDF_PrefixDecl {
+  string prefix = 1;
+  string uri    = 2 ;
+}
+
+// StreamRDF
+message RDF_StreamRow {
+  oneof row {
+    RDF_PrefixDecl   prefixDecl  = 1 ;
+    RDF_Triple       triple      = 2 ;
+    RDF_Quad         quad        = 3 ;
+    RDF_IRI          base        = 4 ;
+  }
+}
+
+message RDF_Stream {
+  repeated RDF_StreamRow row = 1 ;
+}
+
+// ==== SPARQL Result Sets
+
+message RDF_VarTuple {
+  repeated RDF_Var vars = 1 ;
+}
+
+message RDF_DataTuple {
+  repeated RDF_Term row = 1 ;
+}
+
+// ==== RDF Graph
+
+message RDF_Graph {
+  repeated RDF_Triple triple = 1 ;
+}
+</code></pre>
 
         </div>
     </div>
