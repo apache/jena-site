@@ -251,7 +251,9 @@
 working with local and remote RDF data using these protocols in a unified way.
 This is most useful for remote data because the setup to connect is more
 complicated and can be done once and reused.</p>
-<p>HTTP Authentication is provided for remote operations.</p>
+<p>HTTP authentication support is provided, supporting both basic and digest
+authentication in challenge-response scenarios. Most authentication setup is
+abstracted away from the particualr HTTP client library Jena is using.</p>
 <p>Applications can also use the various execution engines through
 <code>QueryExecution</code>, <code>UpdateExecution</code> and <code>ModelStore</code>.</p>
 <p>All the main implementations work at &ldquo;Graph SPI&rdquo; (GPI) level and an application
@@ -261,18 +263,15 @@ extension nodes).</p>
 <p>The GPI version is the main machinery working at the storage and network level,
 and the API version is an adapter to convert to the Model API and related
 classes.</p>
-<p>This documentation describes the API classes - the GPI companion classes are the
-same style, sometimes with slightly changed naming.</p>
 <p><code>UpdateProcessor</code> is a legacy name for <code>UpdateExecution</code></p>
 <p><code>GSP</code> provides the SPARQL Graph Store Protocol, including extensions for sending
 and receiving datasets, rather than individual graphs.</p>
 <p>Both API and GPI provide builders for detailed setup, particularly for remote
 usage over HTTP and HTTPS where detailed control of the HTTP requests is
 sometimes necessary to work with other triple stores.</p>
-<p>HTTP authentication support is provided, supporting both basic and digest
-authentication in challenge-response scenarios.</p>
 <p>Factory style functions for many common usage patterns are retained in
-<code>QueryExecutionFactory</code>, <code>UpdateExecutionFactory</code>.</p>
+<code>QueryExecutionFactory</code>, <code>UpdateExecutionFactory</code>. Note that any methods that
+involved Apache HttpClient objects have been removed.</p>
 <h2 id="changes">Changes from Jena 4.2.0 to Jena 4.3.0</h2>
 <ul>
 <li>
@@ -304,17 +303,27 @@ necessary.</li>
 <li>
 <p>Parameterization for remote queries.
 Parameterization - replacing variables by values before sending
-a query - makes the query into a template. The same applies to updates.</p>
+a query - makes the query into a template. The same applies to updates.
+This is also provided uniformly for local queries and should be used in
+preference to the local-only &ldquo;initial binding&rdquo; approach which is
+similarly but not identical.</p>
 </li>
 <li>
-<p><code>HttpOp</code> is split into <code>HttpRDF</code> for GET/POST/PUT/DELETE of graphs and
-datasets and new <code>HttpOp</code> for packaged-up common patterns of HTTP usage.</p>
+<p><code>HttpOp</code>, using <code>java.net.http.HttpClient</code>, is split into <code>HttpRDF</code> for
+GET/POST/PUT/DELETE of graphs and datasets and new <code>HttpOp</code> for packaged-up
+common patterns of HTTP usage.</p>
 </li>
 <li>
-<p>DatasetAccessors removed.</p>
+<p>The previous <code>HttpOp</code> is available as <code>HttpOp1</code> and Apache HttpClient is still
+a dependency. Eventually, `HttpOp`` and dependecy on  Apache HttpClient will be removed.</p>
 </li>
 <li>
 <p>GSP - support for dataset operations as well as graphs (also supported by Fuseki).</p>
+</li>
+<li>
+<p><code>DatasetAccessor</code>s removed - previously these were deprecated. <code>GSP</code> and
+<code>ModelStore</code> are the replacement for remote operations. <code>RDFConnection</code> and
+<code>RDFLink</code> provide APIs.</p>
 </li>
 </ul>
 <h2 id="ttrdfconnectiontt"><tt>RDFConnection</tt></h2>
@@ -370,7 +379,7 @@ try ( QueryExecution qExec = QueryExecutionHTTP.create()
     ResultSet results = qExec.execSelect();
     ... use results ...
 }
-</code></pre><p>There is only one timeout setting for HTTP query execution. The &ldquo;time to
+</code></pre><p>There is only one timeout setting for eacho HTTP query execution. The &ldquo;time to
 connect&rdquo; is handled by the JDK <code>HttpClient</code>. Timeouts for local execution are
 &ldquo;time to first result&rdquo; and &ldquo;time to all results&rdquo; as before.</p>
 <h2 id="ttmodelstorett-and-ttgsptt"><tt>ModelStore</tt> and <tt>GSP</tt></h2>
@@ -380,8 +389,8 @@ connect&rdquo; is handled by the JDK <code>HttpClient</code>. Timeouts for local
   GSP.request(&quot;http://fuseki/dataset&quot;).graphName(&quot;http;//data/myGraph&quot;).POST(graph);
 </code></pre><pre><code>  DatasetGraph dataset = GSP.request(&quot;http://fuseki/dataset&quot;).getDataset();
 </code></pre><h2 id="ttservicett"><tt>SERVICE</tt></h2>
-<p>@@
-<a href="../query/service.html">Old documentation </a> - passing parameters has changed.</p>
+<p><a href="../query/service.html">Old documentation </a> - configuration, especially for
+authentication, has changed.</p>
 <h2 id="service-configuration">SERVICE configuration</h2>
 <p>See below for more on HTTP authentication with <code>SERVICE</code>.</p>
 <p>The configuration of <code>SERVICE</code> operations has changed in Jena 4.3.0 and the
@@ -426,16 +435,18 @@ paramter names have changed.</p>
 <p>The timeout is now only for the overall request and manged by the HTTP client
 code.</p>
 <p>Compression of responses is not currently supported.</p>
-<h2 id="httpRequestModifer">ARQ.httpRequestModifier </h2>
-<p>There is a mechanism to modify HTTP requests to specific endpoints or to a collection of endpoints with the same prefix.</p>
-<p>For example, to add a header <code>X-Tracker</code> to each request:</p>
+<h2 id="customization-of-http-requests">Customization of HTTP requests</h2>
+<p>There is a mechanism to modify HTTP requests to specific endpoints or to a
+collection of endpoints with the same prefix.</p>
+<p>For example, to add a header <code>X-Tracker</code> to each request to a particular server:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    AtomicLong counter <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> AtomicLong<span style="color:#666">(</span>0<span style="color:#666">);</span>
 
     HttpRequestModifier modifier <span style="color:#666">=</span> <span style="color:#666">(</span>params<span style="color:#666">,</span> headers<span style="color:#666">)-&gt;{</span>
         <span style="color:#0b0;font-weight:bold">long</span> x <span style="color:#666">=</span> counter<span style="color:#666">.</span><span style="color:#b44">incrementAndGet</span><span style="color:#666">();</span>
         headers<span style="color:#666">.</span><span style="color:#b44">put</span><span style="color:#666">(</span><span style="color:#b44">&#34;X-Tracker&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Call=&#34;</span><span style="color:#666">+</span>x<span style="color:#666">);</span>
     <span style="color:#666">};</span>
-    RegistryRequestModifier<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">addPrefix</span><span style="color:#666">(</span>serverURL<span style="color:#666">,</span> modifier<span style="color:#666">);</span>
+    <span style="color:#080;font-style:italic">// serverURL is the HTTP URL for the server or part of the server HTTP space.
+</span><span style="color:#080;font-style:italic"></span>    RegistryRequestModifier<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">addPrefix</span><span style="color:#666">(</span>serverURL<span style="color:#666">,</span> modifier<span style="color:#666">);</span>
 </code></pre></div><p>The <code>RegistryRequestModifier</code> registry is checked on each HTTP operation. It
 maps URLs or prefix of URLs to a function of interface <code>HttpRequestModifier</code>
 which has access to the headers and the query string parameters of the request.</p>
@@ -452,7 +463,7 @@ because it protects against man-in-the-middle attacks.</p>
 <li>URL user (that is, <code>user@host.net</code> in the URL)</li>
 <li>URL user and password in the URL (that is, <code>user:password@host.net</code> in the URL)</li>
 </ol>
-<p>Basic authentication occurs where the app provides the users and password
+<p>Basic authentication occurs where the app provides the user and password
 information to the JDK <code>HttpClient</code> and that information is always used when
 sending HTTP requests with that <code>HttpClient</code>. It does not require an initial
 request-challenge-resend to initiate. This is provided natively by the <code>java.net.http</code>
@@ -473,31 +484,37 @@ repeatable.</p>
 <p>The URL can contain a <code>userinfo</code> part, either the <code>users@host</code> form, or the <code>user:password@host</code> form.
 If just the user is given, the authentication environment is consulted for registered users-password information. If user and password is given, the details as given are used. This latter form is not recommended and should only be used if necessary because the password is in-clear in the SPARQL
 query.</p>
-<p>Move page: <a href="/documentation/query/http-auth">/documentation/query/http-auth</a>
-Link to</p>
 <h3 id="jdk-httpclientauthenticator">JDK HttpClient.authenticator</h3>
-<p>The java platform provides basic authentication.</p>
-<p>This is not challenge based - any request sent using a <code>HttpClient</code> configured with an authenticator will include the authentication details. (Caution- - including sending username/password to the wrong site!).</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Basic or Digest - determined when the challenge happens.
+</span><span style="color:#080;font-style:italic"></span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataURL<span style="color:#666">),</span> <span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
+    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+    <span style="color:#666">}</span>
+</code></pre></div><p>alternatively, the java platform provides basic authentication.
+This is not challenge based - any request sent using a <code>HttpClient</code> configured
+with an authenticator will include the authentication details.
+(Caution - including sending username/password to the wrong site!).
+Digest authentication must use <code>AuthEnv.get().registerUsernamePassword</code>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    Authenticator authenticator <span style="color:#666">=</span> AuthLib<span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span><span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
     HttpClient httpClient <span style="color:#666">=</span> HttpClient<span style="color:#666">.</span><span style="color:#b44">newBuilder</span><span style="color:#666">()</span>
-            <span style="color:#666">.</span><span style="color:#b44">connectTimeout</span><span style="color:#666">(</span>Duration<span style="color:#666">.</span><span style="color:#b44">ofSeconds</span><span style="color:#666">(</span>10<span style="color:#666">))</span>
             <span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span>authenticator<span style="color:#666">)</span>
             <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">();</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#080;font-style:italic">// Use with RDFConnection      
-</span><span style="color:#080;font-style:italic"></span>        <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-            conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
-        <span style="color:#666">}</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#080;font-style:italic">// Use with QueryExecution
-</span><span style="color:#080;font-style:italic"></span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;HttpClient + QueryExecutionHTTP&#34;</span><span style="color:#666">);</span>
-        <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-            qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-        <span style="color:#666">}</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Use with RDFConnection      
+</span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
+    <span style="color:#666">}</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+    <span style="color:#666">}</span>
 </code></pre></div><h3 id="challenge-registration">Challenge registration</h3>
 <p><code>AuthEnv</code> maintains a registry of credentials and also a registry of which service URLs
 the credentials should be used. It supports registration of endpoint prefixes so that one
@@ -536,11 +553,6 @@ used.</p>
 </code></pre><h2 id="environment">Environment</h2>
 <p><code>AuthEnv</code> - passwordRegistry , authModifiers
 <code>RegistryHttpClient</code></p>
-<h2 id="customization-of-http-requests">Customization of HTTP requests</h2>
-<p>@@</p>
-<p>Params (e.g. apikey) and header : <a href="#httpRequestModifer">ARQ.httpRequestModifer</a>.</p>
-<h2 id="queryexecution">QueryExecution</h2>
-<h2 id="updateexecution">UpdateExecution</h2>
 
 
         </div>
