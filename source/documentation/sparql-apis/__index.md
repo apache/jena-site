@@ -294,37 +294,48 @@ query.
 
 ### JDK HttpClient.authenticator
 
-The java platform provides basic authentication.
 
-This is not challenge based - any request sent using a `HttpClient` configured with an authenticator will include the authentication details. (Caution- - including sending username/password to the wrong site!).
+```java
+    // Basic or Digest - determined when the challenge happens.
+    AuthEnv.get().registerUsernamePassword(URI.create(dataURL), "user", "password");
+    try ( QueryExecution qExec = QueryExecutionHTTP.service(dataURL)
+            .endpoint(dataURL)
+            .queryString("ASK{}")
+            .build()) {
+        qExec.execAsk();
+    }
+```
+
+alternatively, the java platform provides basic authentication. 
+This is not challenge based - any request sent using a `HttpClient` configured 
+with an authenticator will include the authentication details. 
+(Caution - including sending username/password to the wrong site!).
+Digest authentication must use `AuthEnv.get().registerUsernamePassword`.
 
 ```java
     Authenticator authenticator = AuthLib.authenticator("user", "password");
     HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(10))
             .authenticator(authenticator)
             .build();
 ```
 
 ```java
-        // Use with RDFConnection      
-        try ( RDFConnection conn = RDFConnectionRemote.service(dataURL)
-                .httpClient(httpClient)
-                .build()) {
-            conn.queryAsk("ASK{}");
-        }
+    // Use with RDFConnection      
+    try ( RDFConnection conn = RDFConnectionRemote.service(dataURL)
+            .httpClient(httpClient)
+            .build()) {
+        conn.queryAsk("ASK{}");
+    }
 ```
 
 ```java
-        // Use with QueryExecution
-        System.out.println("HttpClient + QueryExecutionHTTP");
-        try ( QueryExecution qExec = QueryExecutionHTTP.service(dataURL)
-                .httpClient(httpClient)
-                .endpoint(dataURL)
-                .queryString("ASK{}")
-                .build()) {
-            qExec.execAsk();
-        }
+    try ( QueryExecution qExec = QueryExecutionHTTP.service(dataURL)
+            .httpClient(httpClient)
+            .endpoint(dataURL)
+            .queryString("ASK{}")
+            .build()) {
+        qExec.execAsk();
+    }
 ```
 
 ### Challenge registration
