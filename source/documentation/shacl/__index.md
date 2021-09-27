@@ -42,7 +42,7 @@ separated by "," and format `all` outputs all 3 formats.
 Fuseki has a new service operation `fuseki:shacl`:
 
 <pre>
-&lt;#serviceInMemoryShacl&gt; rdf:type fuseki:Service ;
+&lt;#serviceWithShacl&gt; rdf:type fuseki:Service ;
     rdfs:label                   "Dataset with SHACL validation" ;
     fuseki:name                  "<i>ds</i>" ;
     fuseki:serviceReadWriteGraphStore "" ;

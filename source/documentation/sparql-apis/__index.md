@@ -354,7 +354,6 @@ The main function is `AuthEnv.get().registerUsernamePassword`.
 ```java
    ...
    try ( QueryExecution qExec = QueryExecutionHTTP.service(dataURL)
-        // No httpClient
         .endpoint(dataURL)
         .queryString("ASK{}")
         .build()) {
@@ -379,15 +378,14 @@ If the `userinfo` is of the form "username:password" then the information as giv
 used.
 
 ```
-        AuthEnv.get().registerUsernamePassword(URI.create("http://host/sparql"), "u", "p");
-
-        // Registration applies to SERVICE.
-        Query query = QueryFactory.create("SELECT * { SERVICE <http://host/sparql> { ?s ?p ?o } }");
-        try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
-            System.out.println("Call using SERVICE...");
-            ResultSet rs = qExec.execSelect();
-            ResultSetFormatter.out(rs);
-        }
+    AuthEnv.get().registerUsernamePassword(URI.create("http://host/sparql"), "u", "p");
+     // Registration applies to SERVICE.
+    Query query = QueryFactory.create("SELECT * { SERVICE <http://host/sparql> { ?s ?p ?o } }");
+    try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
+        System.out.println("Call using SERVICE...");
+        ResultSet rs = qExec.execSelect();
+        ResultSetFormatter.out(rs);
+    }
 ```
 
 ## Environment
