@@ -485,28 +485,36 @@ repeatable.</p>
 If just the user is given, the authentication environment is consulted for registered users-password information. If user and password is given, the details as given are used. This latter form is not recommended and should only be used if necessary because the password is in-clear in the SPARQL
 query.</p>
 <h3 id="jdk-httpclientauthenticator">JDK HttpClient.authenticator</h3>
-<p>The java platform provides basic authentication.</p>
-<p>This is not challenge based - any request sent using a <code>HttpClient</code> configured with an authenticator will include the authentication details. (Caution- - including sending username/password to the wrong site!).</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Basic or Digest - determined when the challenge happens.
+</span><span style="color:#080;font-style:italic"></span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataURL<span style="color:#666">),</span> <span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
+    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+    <span style="color:#666">}</span>
+</code></pre></div><p>alternatively, the java platform provides basic authentication.
+This is not challenge based - any request sent using a <code>HttpClient</code> configured
+with an authenticator will include the authentication details.
+(Caution - including sending username/password to the wrong site!).
+Digest authentication must use <code>AuthEnv.get().registerUsernamePassword</code>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    Authenticator authenticator <span style="color:#666">=</span> AuthLib<span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span><span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
     HttpClient httpClient <span style="color:#666">=</span> HttpClient<span style="color:#666">.</span><span style="color:#b44">newBuilder</span><span style="color:#666">()</span>
-            <span style="color:#666">.</span><span style="color:#b44">connectTimeout</span><span style="color:#666">(</span>Duration<span style="color:#666">.</span><span style="color:#b44">ofSeconds</span><span style="color:#666">(</span>10<span style="color:#666">))</span>
             <span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span>authenticator<span style="color:#666">)</span>
             <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">();</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#080;font-style:italic">// Use with RDFConnection      
-</span><span style="color:#080;font-style:italic"></span>        <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-            conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
-        <span style="color:#666">}</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#080;font-style:italic">// Use with QueryExecution
-</span><span style="color:#080;font-style:italic"></span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;HttpClient + QueryExecutionHTTP&#34;</span><span style="color:#666">);</span>
-        <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-                <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-            qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-        <span style="color:#666">}</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Use with RDFConnection      
+</span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
+    <span style="color:#666">}</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+    <span style="color:#666">}</span>
 </code></pre></div><h3 id="challenge-registration">Challenge registration</h3>
 <p><code>AuthEnv</code> maintains a registry of credentials and also a registry of which service URLs
 the credentials should be used. It supports registration of endpoint prefixes so that one
