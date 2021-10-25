@@ -19,6 +19,7 @@ You may [verify the authenticity of artifacts](https://www.apache.org/info/verif
 The binary distribution of Fuseki (this includes both the standalone and
 WAR file packaging):
 
+
 | Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
 | <a href="https://dlcdn.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz">apache-jena-fuseki-4.2.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.2.0.tar.gz.asc) |
@@ -31,6 +32,7 @@ Source release: this forms the official release of Apache Jena. All binaries art
 | ------------ | :----: | :-------: |
 |<a href="https://dlcdn.apache.org/jena/source/jena-4.2.0-source-release.zip">jena-4.2.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.asc) |
 
+<p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
 | Jena libraries | SHA512 | Signature |
@@ -61,7 +63,7 @@ The development codebase is available from git.
 
 [https://gitbox.apache.org/repos/asf?p=jena.git](https://gitbox.apache.org/repos/asf?p=jena.git)
 
-This is also avilable on github:
+This is also available on github:
 
 [https://github.com/apache/jena](https://github.com/apache/jena)
 
