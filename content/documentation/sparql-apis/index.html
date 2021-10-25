@@ -524,8 +524,7 @@ registration will apply to all URLs starting with a common root.</p>
 </span><span style="color:#080;font-style:italic"></span>   AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span><span style="color:#b44">&#34;username&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#666">...</span>
    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-        <span style="color:#080;font-style:italic">// No httpClient
-</span><span style="color:#080;font-style:italic"></span>        <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+        <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
         <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
         <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
@@ -541,15 +540,14 @@ the registry is consulted and authetication applied.</p>
 that user name is used to look in the authentication registry.</p>
 <p>If the <code>userinfo</code> is of the form &ldquo;username:password&rdquo; then the information as given in the URL is
 used.</p>
-<pre><code>        AuthEnv.get().registerUsernamePassword(URI.create(&quot;http://host/sparql&quot;), &quot;u&quot;, &quot;p&quot;);
-
-        // Registration applies to SERVICE.
-        Query query = QueryFactory.create(&quot;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&quot;);
-        try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
-            System.out.println(&quot;Call using SERVICE...&quot;);
-            ResultSet rs = qExec.execSelect();
-            ResultSetFormatter.out(rs);
-        }
+<pre><code>    AuthEnv.get().registerUsernamePassword(URI.create(&quot;http://host/sparql&quot;), &quot;u&quot;, &quot;p&quot;);
+     // Registration applies to SERVICE.
+    Query query = QueryFactory.create(&quot;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&quot;);
+    try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
+        System.out.println(&quot;Call using SERVICE...&quot;);
+        ResultSet rs = qExec.execSelect();
+        ResultSetFormatter.out(rs);
+    }
 </code></pre><h2 id="environment">Environment</h2>
 <p><code>AuthEnv</code> - passwordRegistry , authModifiers
 <code>RegistryHttpClient</code></p>
