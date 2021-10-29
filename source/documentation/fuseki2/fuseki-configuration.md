@@ -188,9 +188,6 @@ by searching the configuration file for the type `fuseki:Service`.
        # See java doc for ARQ.queryTimeout
        # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
 
-       # Load custom code (rarely needed)
-       # ja:loadClass "your.code.Class" ;
-
        # Explicitly choose which services to add to the server.
        # If absent, include all descriptions of type `fuseki:Service`.
        # fuseki:services (<#service1> <#service2>)
