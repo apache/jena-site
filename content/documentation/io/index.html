@@ -276,6 +276,12 @@ Assumes N-Quads/N-Triples from stdin.</li>
 <p>In addition, if the extension is <code>.gz</code> the file is assumed to be gzip
 compressed. The file name is examined for an inner extension. For
 example, <code>.nt.gz</code> is gzip compressed N-Triples.</p>
+<p>Jena does not support all possible compression formats itself, only
+GZip, BZip2 and Snappy are supported directly.  If you want to use an
+alternative compression format you can do so by piping the output of the
+relevant decompression utility into one of Jena&rsquo;s commands e.g.</p>
+<pre><code>zstd -d &lt; FILE.nq.zst | riot --syntax NQ ...
+</code></pre>
 <p>These scripts call java programs in the <code>riotcmd</code> package. For example:</p>
 <pre><code>java -cp ... riotcmd.riot file.ttl
 </code></pre>
