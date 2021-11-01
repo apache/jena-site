@@ -72,6 +72,13 @@ In addition, if the extension is `.gz` the file is assumed to be gzip
 compressed. The file name is examined for an inner extension. For
 example, `.nt.gz` is gzip compressed N-Triples.
 
+Jena does not support all possible compression formats itself, only
+GZip and BZip2 are supported directly.  If you want to use an 
+alternative compression format you can do so by piping the output of the
+relevant decompression utility into one of Jena's commands e.g.
+
+    zstd -d < FILE.nq.zst | riot --syntax NQ ...
+
 These scripts call java programs in the `riotcmd` package. For example:
 
     java -cp ... riotcmd.riot file.ttl

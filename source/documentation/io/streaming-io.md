@@ -15,6 +15,15 @@ Files ending in `.gz` are assumed to be gzip-compressed. Input and output
 to such files takes this into account, including looking for the other file
 extension.  `data.nt.gz` is parsed as a gzip-compressed N-Triples file.
 
+Jena does not support all possible compression formats itself, only
+GZip and BZip2 are supported directly.  If you want to use an 
+alternative compression format you can do so by adding suitable dependencies
+into your project and passing an appropriate `InputStream`/`OutputStream` 
+implementation to Jena code e.g.
+
+    InputStream input =  new ZstdCompressorInputStream(....);
+    RDFParser.source(input).lang(Lang.NQ).parse(graph);
+
 ## StreamRDF
 
 The central abstraction is 
