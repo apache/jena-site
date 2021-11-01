@@ -42,7 +42,7 @@ Other mirrors: <select name="Preferred">
 
 You may also consult the [complete list of mirrors](https://www.apache.org/mirrors/)
 
-### Apache Jena Distibutions
+### Apache Jena Distributions
 
 The binary distribution of Fuseki (this includes both the standalone and
 WAR file packaging):
