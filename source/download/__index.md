@@ -2,7 +2,6 @@
 title: Apache Jena Releases
 slug: index
 ---
-
 Apache Jena is packaged as downloads which contain the most commonly used portions of the systems:
 
 - **apache-jena** &ndash; contains the APIs, SPARQL engine, the TDB native RDF database and command line tools
@@ -14,35 +13,7 @@ Jena jars are [available from Maven](maven.html).
 
 You may [verify the authenticity of artifacts](https://www.apache.org/info/verification.html) below by using the [PGP KEYS](https://downloads.apache.org/jena/KEYS) file.
 
-## Download Mirrors
-
-<p>[if-any logo]
-<a href="[link]">
-  <img align="right" src="[logo]" border="0" />
-</a>[end]
-The currently selected mirror is <b>[preferred]</b>.  If you encounter a problem with this mirror, please select another mirror.  If all
-mirrors are failing, there are <i>backup</i> mirrors (at the end of the mirrors list) that should be available.</p>
-
-<form action="[location]" method="get" id="SelectMirror">
-Other mirrors: <select name="Preferred">
-[if-any http]
-  [for http]<option value="[http]">[http]</option>[end]
-[end]
-
-[if-any ftp]
-  [for ftp]<option value="[ftp]">[ftp]</option>[end]
-[end]
-[if-any backup]
-  [for backup]<option value="[backup]">[backup]
-  (backup)</option>[end]
-[end]
-</select>
-<input type="submit" value="Change" />
-</form>
-
-You may also consult the [complete list of mirrors](https://www.apache.org/mirrors/)
-
-### Apache Jena Distibutions
+### Apache Jena Distributions
 
 The binary distribution of Fuseki (this includes both the standalone and
 WAR file packaging):
@@ -59,6 +30,7 @@ Source release: this forms the official release of Apache Jena. All binaries art
 | ------------ | :----: | :-------: |
 |<a href="[preferred]jena/source/jena-4.2.0-source-release.zip">jena-4.2.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.2.0-source-release.zip.asc) |
 
+<p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
 | Jena libraries | SHA512 | Signature |
@@ -89,7 +61,7 @@ The development codebase is available from git.
 
 [https://gitbox.apache.org/repos/asf?p=jena.git](https://gitbox.apache.org/repos/asf?p=jena.git)
 
-This is also avilable on github:
+This is also available on github:
 
 [https://github.com/apache/jena](https://github.com/apache/jena)
 
@@ -101,3 +73,31 @@ preference to using any older versions of Jena.
 
 Previous Apache Jena releases can be found in the Apache archive area
 at [https://archive.apache.org/dist/jena](https://archive.apache.org/dist/jena/).
+
+## Download Mirrors
+
+<p>[if-any logo]
+<a href="[link]">
+  <img align="right" src="[logo]" border="0" />
+</a>[end]
+The currently selected mirror is <b>[preferred]</b>.  If you encounter a problem with this mirror, please select another mirror.  If all
+mirrors are failing, there are <i>backup</i> mirrors (at the end of the mirrors list) that should be available.</p>
+
+<form action="[location]" method="get" id="SelectMirror">
+Other mirrors: <select name="Preferred">
+[if-any http]
+  [for http]<option value="[http]">[http]</option>[end]
+[end]
+
+[if-any ftp]
+  [for ftp]<option value="[ftp]">[ftp]</option>[end]
+[end]
+[if-any backup]
+  [for backup]<option value="[backup]">[backup]
+  (backup)</option>[end]
+[end]
+</select>
+<input type="submit" value="Change" />
+</form>
+
+You may also consult the [complete list of mirrors](https://www.apache.org/mirrors/)
