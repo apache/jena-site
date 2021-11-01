@@ -73,7 +73,7 @@ compressed. The file name is examined for an inner extension. For
 example, `.nt.gz` is gzip compressed N-Triples.
 
 Jena does not support all possible compression formats itself, only
-GZip, BZip2 and Snappy are supported directly.  If you want to use an 
+GZip and BZip2 are supported directly.  If you want to use an 
 alternative compression format you can do so by piping the output of the
 relevant decompression utility into one of Jena's commands e.g.
 
