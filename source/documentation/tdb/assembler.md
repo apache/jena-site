@@ -97,7 +97,7 @@ A particular named graph in the dataset at a location can be
 assembled with:
 
     <#graphNamed> rdf:type tdb:GraphTDB ;
-        tdb:dataset <#dataset> .
+        tdb:dataset <#dataset> ;
         tdb:graphName <http://example/graph1> ;
         .
 
