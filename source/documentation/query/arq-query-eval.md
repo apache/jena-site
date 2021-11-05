@@ -7,7 +7,7 @@ modify query execution within ARQ. Through these mechanisms, ARQ
 can be used to query different graph implementations and to provide
 different query evaluation and optimization strategies for
 particular circumstances. These mechanisms are used by
-[TDB](../tdb) and [SDB](../sdb/).
+[TDB](../tdb).
 
 ARQ can be [extended in various ways](extension.html) to
 incorporate custom code into a query.
@@ -190,7 +190,7 @@ extensions to query execution.
 
 ARQ provides three query engine factories; the main query engine
 factory, one for a reference query engine and one to remotely
-execute a query. SDB and TDB provide their own query engine
+execute a query. TDB provides its own query engine
 factories which they register during sub-system initialization.
 Both extend the main query engine described below.
 
@@ -457,7 +457,7 @@ custom query engine and overriding `QueryEngineMain.modifyOp`:
 
 The extension may need to provide its own dataset implementation so
 that it can detect when queries are directed to its named graph
-storage. [TDB](../tdb/) and [SDB](../sdb/) are examples of this.
+storage. [TDB](../tdb/) are examples of this.
 
 ## Mixed Graph Implementation Datasets
 
@@ -500,5 +500,4 @@ as the super-class of the new operator. They can be inserted into
 the expression to be evaluated using a custom query engine to
 intercept evaluation initialization.  When evaluation of a query
 requires the evaluation of a sub-class of `OpExt`, the `eval`
-method is called. SDB uses this to introduce an operator that is
-implemented in SQL.
+method is called.
