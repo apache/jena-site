@@ -96,8 +96,7 @@ globally:
 and it may also be set on an individual query execution using its local
 context.
 
-     try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-        qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
+     try(QueryExecution qExec = QueryExecution.create()... .set(ARQ.symLogExec, Explain.InfoLevel.ALL).build) {
         ...
      }
 

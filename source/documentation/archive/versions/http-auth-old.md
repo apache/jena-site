@@ -1,5 +1,9 @@
 ---
-title: HTTP Authentication in ARQ
+title: HTTP Authentication in ARQ (Superseded)
+---
+
+<i>Documentation for HTTP Authentication (Jena3.1.1 to Jena 4.2.0) using Apache Commons HttpClient.</i>
+
 ---
 
 After [Jena 3.1.0](#http-authentication-from-jena-311), Jena exposes the underlying HTTP Commons functionality to support a range of authentication mechanisms as well as [other HTTP configuration][16]. From [Jena 3.0.0 through Jena 3.1.0](#http-authentication-from-jena-300-through-310) there is a Jena-specific framework that provides a uniform mechanism for HTTP authentication. This documentation is therefore divided into two sections. The first explains how to use HTTP Commons code, and the second explains the older Jena-specific functionality.

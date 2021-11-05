@@ -5,8 +5,7 @@ title: ARQ - Querying Remote SPARQL Services
 SPARQL is a
 [query language](http://www.w3.org/TR/sparql11-query/) and a
 [remote access protocol](http://www.w3.org/2001/sw/DataAccess/proto-wd/).
-The remote access protocol can be used with plain HTTP or over
-[SOAP](http://www.w3.org/TR/soap12-part0/).
+The remote access protocol runs over HTTP.
 
 See [Fuseki](../fuseki2/index.html) for an implementation of the
 SPARQL protocol over HTTP. Fuseki uses ARQ to provide SPARQL 
@@ -16,12 +15,9 @@ ARQ includes a query engine capable of using the HTTP version.
 
 ## From your application
 
-The `QueryExecutionFactory` has methods for creating a
-`QueryExecution` object for remote use.
-`QueryExecutionFactory.sparqlService`
-
-These methods build a query execution object that uses the query
-engine in `org.apache.jena.sparql.engine.http`.
+The `QueryExecutionHTTP` has methods for creating a
+`QueryExecution` object for remote use. There are various
+HTTP specific settings; the default should work in most cases.
 
 The remote request is made when the `execSelect`, `execConstruct`,
 `execDescribe` or `execAsk` method is called.
@@ -43,7 +39,7 @@ sending.
 
 ## Authentication
 
-ARQ provides a flexible API for authenticating against remote services, see the [HTTP Authentication](http-auth.html) documentation for more details.
+ARQ provides a flexible API for authenticating against remote services, see the [HTTP Authentication](../sparql-apis/http-auth.html) documentation for more details.
 
 ## Firewalls and Proxies
 

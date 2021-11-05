@@ -34,7 +34,7 @@ or read the dataset and see any updates made by remote systems:
     // Read transaction.
     Txn.execRead(dsg, ()->{
     Dataset ds = DatasetFactory.wrap(dsg) ;
-    try (QueryExecution qExec = QueryExecutionFactory.create("SELECT * { ?s  ?o}", ds) ) {
+    try (QueryExecution qExec = QueryExecution.create("SELECT * { ?s  ?o}", ds) ) {
         ResultSet rs = qExec.execSelect() ;
         ResultSetFormatter.out(rs) ;
       }

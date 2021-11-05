@@ -119,7 +119,7 @@ previous sections, e.g.
 
     String queryString = " CONSTRUCT { GRAPH <http://example/ns#g1> {?s ?p ?o} } WHERE {?s ?p ?o}" ;
     Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-    try ( QueryExecution qExec = QueryExecutionFactory.sparqlService(serviceQuery, query) ) { // serviceQuery is the URL of the remote service
+    try ( QueryExecution qExec = QueryExecution.service(serviceQuery).query(query).build() ) { // serviceQuery is the URL of the remote service
         Iterator<Quad> result = qExec.execConstructQuads();
         ...
     }

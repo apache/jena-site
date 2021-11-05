@@ -95,13 +95,13 @@ The `dataset.end()` declares the end of the read transaction.  Applications may 
      dataset.begin(ReadWrite.READ) ;
      String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
 
-     try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
+     try(QueryExecution qExec = QueryExecution.dataset(dataset).query(qs1).build() ) {
          ResultSet rs = qExec.execSelect() ;
          ResultSetFormatter.out(rs) ;
      } 
 
      String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
-     try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
+     try(QueryExecution qExec = QueryExecution.dataset(dataset).query(qs2).build() ) {
          rs = qExec.execSelect() ;
          ResultSetFormatter.out(rs) ;
      }
@@ -140,23 +140,21 @@ dataset.
          model.add( ... )
 
          // A SPARQL query will see the new statement added.
-         try (QueryExecution qExec = QueryExecutionFactory.create(
-                 "SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10", 
-               dataset)) {
+         try (QueryExecution qExec = QueryExecution.dataset(dataset)
+                 .query("SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10")
+                 .build() ) {
              ResultSet rs = qExec.execSelect() ;
              ResultSetFormatter.out(rs) ;
          }
 
          // ... perform a SPARQL Update
-         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
          String sparqlUpdateString = StrUtils.strjoinNL(
               "PREFIX . <http://example/>",
               "INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }"
               ) ;
 
          UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
-         UpdateProcessor proc = UpdateExecutionFactory.create(request, graphStore) ;
-         proc.execute() ;
+         UpdateExecution.dataset(dataset).update(request).execute();
             
          // Finally, commit the transaction. 
          dataset.commit() ;
