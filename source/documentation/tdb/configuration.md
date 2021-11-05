@@ -40,10 +40,10 @@ Setting globally:
 
 Per query execution:
 
-     try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-         qExec.getContext().set(symbol, value) ;
-         ...
-     }
+    try(QueryExecution qExec = QueryExecution.dataset(dataset)
+                .query(query).set(ARQ.symLogExec,true).build() ) {
+         ....
+    }
 
 Setting for a query execution happens before any query compilation
 or setup happens. Creation of a query execution object does not

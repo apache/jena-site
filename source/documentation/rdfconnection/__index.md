@@ -24,7 +24,7 @@ passing styles, as well the more basic sequence of methods calls.
 For example: using `try-resources` to manage the connection, and perform two operations, one to load
 some data, and one to make a query can be written as:
 
-    try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    try ( RDFConnection conn = RDFConnection.connect(...) ) {
         conn.load("data.ttl") ;
         conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs)->
            Resource subject = qs.getResource("s") ;
@@ -35,7 +35,7 @@ some data, and one to make a query can be written as:
 This could have been written as (approximately -- the error handling is better
 in the example above):
 
-    RDFConnection conn = RDFConnectionFactory.connect(...)
+    RDFConnection conn = RDFConnection.connect(...)
     conn.load("data.ttl") ;
     QueryExecution qExec = conn.query("SELECT DISTINCT ?s { ?s ?p ?o }") ;
     ResultSet rs = qExec.execSelect() ;
@@ -46,10 +46,6 @@ in the example above):
     }
     qExec.close() ;
     conn.close() ;
-
-Jena also provides a separate
-[SPARQL over JDBC driver](/documentation/jdbc/index.html)
-library.
 
 ## Transactions
 
@@ -62,7 +58,7 @@ to excessive overhead.
 The `Txn` class provides a Java8-style transaction API.  Transactions are
 code passed in the `Txn` library that handles the transaction lifecycle.
 
-    try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    try ( RDFConnection conn = RDFConnection.connect(...) ) {
         Txn.execWrite(conn, ()-> {
             conn.load("data1.ttl") ;
             conn.load("data2.ttl") ;
@@ -75,7 +71,7 @@ code passed in the `Txn` library that handles the transaction lifecycle.
 
 The traditional style of explicit `begin`, `commit`, `abort` is also available.
 
-    try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    try ( RDFConnection conn = RDFConnection.connect(...) ) {
         conn.begin(ReadWrite.WRITE) ;
         try {
             conn.load("data1.ttl") ;
@@ -155,7 +151,7 @@ add more RDF data into a graph, and delete a graph from a dataset.
 
 For example: load two files:
 
-    try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+    try ( RDFConnection conn = RDFConnection.connect(...) ) {
         conn.load("data1.ttl") ;
         conn.load("data2.nt") ;
       }
@@ -195,16 +191,16 @@ in this mode.
 ## Query Usage
 
 `RDFConnection` provides methods for each of the SPARQL query forms (`SELECT`,
-`CONSTRUCT`, `DESCRIBE`, `ASK`) as well as a way to get the lower level
-`QueryExecution` for specialized configuration.
+`CONSTRUCT`, `DESCRIBE`, `ASK`) as well as a way to get the
+`QueryExecution` for specialized configuration. When creating an 
+`QueryExecution` explicitly, care should be taken to close it.
 
-When creating an `QueryExecution` explicitly, care should be taken to close
-it. If the application wishes to capture the result set from a SELECT query and
+If the application wishes to capture the result set from a SELECT query and
 retain it across the lifetime of the transaction or `QueryExecution`, then
 the application should create a copy which is not attached to any external system
 with `ResultSetFactory.copyResults`.
 
-      try ( RDFConnection conn = RDFConnectionFactory.connect("foo") ) {
+      try ( RDFConnection conn = RDFConnection.connect("https://...") ) {
           ResultSet safeCopy =
               Txn.execReadReturn(conn, ()-> {
                   // Process results by row:
@@ -221,7 +217,7 @@ with `ResultSetFactory.copyResults`.
 
 SPARQL Update operations can be performed and mixed with other operations.
 
-      try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
+      try ( RDFConnection conn = RDFConnection.connect(...) ) {
           Txn.execWrite(conn, ()-> {
              conn.update("DELETE DATA { ... }" ) ;
              conn.load("data.ttl") ;

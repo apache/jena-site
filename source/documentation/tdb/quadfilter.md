@@ -67,8 +67,10 @@ under the symbol `SystemTDB.symTupleFilter` then execute the query as normal.
         Dataset ds = ... ;
         Filter<Tuple<NodeId>> filter = createFilter(ds) ;
         Query query = ... ;
-        try (QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
-            qExec.getContext().set(SystemTDB.symTupleFilter, filter) ;
+        try (QueryExecution qExec = QueryExecution.dataset(ds)
+                .query(query)
+                .set(SystemTDB.symTupleFilter, filter)
+                .build() ) {}
             ResultSet rs = qExec.execSelect() ;
             ...
         }

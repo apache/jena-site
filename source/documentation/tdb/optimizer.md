@@ -112,13 +112,15 @@ set globally:
 
     ARQ.getContext().set(ARQ.symLogExec,true) ;
 
-and it may also be set on an individual query execution using it's
+and it may also be set on an individual query execution using its
 local context.
 
-     try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-        qExec.getContext().set(ARQ.symLogExec,true) ;
+    try(QueryExecution qExec = QueryExecution.dataset(dataset)
+              .query(query)
+              .set(ARQ.symLogExec,true)
+              .build() ) {
         ResultSet rs = qExec.execSelect() ;
-     }
+    }
 
 On the command line:
 

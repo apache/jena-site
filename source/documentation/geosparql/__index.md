@@ -107,7 +107,7 @@ To query a Model with GeoSPARQL or standard SPARQL:
     Model model = .....;
     String query = ....;
     
-    try (QueryExecution qe = QueryExecutionFactory.create(query, model)) {
+    try (QueryExecution qe = QueryExecution.create(query, model)) {
         ResultSet rs = qe.execSelect();
         ResultSetFormatter.outputAsTSV(rs);
     }

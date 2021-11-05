@@ -94,7 +94,7 @@ Once the default server is running it can be queried using Jena as follows:
 
     String service = "http://localhost:3030/ds";
     String query = ....;
-    try (QueryExecution qe = QueryExecutionFactory.sparqlService(service, query)) {
+    try (QueryExecution qe = QueryExecution.service(service).query(query).build()) {
         ResultSet rs = qe.execSelect();
         ResultSetFormatter.outputAsTSV(rs);
     }

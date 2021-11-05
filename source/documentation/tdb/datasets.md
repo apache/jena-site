@@ -48,9 +48,11 @@ Set globally:
 
 or set on a per query basis:
 
-    try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-        qExec.getContext().set(TDB.symUnionDefaultGraph, true) ;
-        ...
+    try(QueryExecution qExec = QueryExecution.dataset(dataset)
+            .query(query)
+            .set(TDB.symUnionDefaultGraph,true)
+            .build() ) {
+         ....
     }
 
 ## Special Graph Names

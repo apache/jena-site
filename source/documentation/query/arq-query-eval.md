@@ -182,8 +182,8 @@ The steps from algebra generation to query evaluation are carried
 out when a query is executed via the `QueryExecution.execSelect` or
 other `QueryExecution` exec operation. It is possible to carry out
 storage-specific operations when the query execution is created. A
-query engine works in conjunction with a `QueryExecution` created
-by the `QueryExecutionFactory` to provide the evaluation of a query
+query engine works in conjunction with a `QueryExecution`
+to provide the evaluation of a query
 pattern. `QueryExecutionBase` provides all the machinery for the
 different result types and does not need to be modified by
 extensions to query execution.
@@ -490,8 +490,7 @@ While it is possible to replace the entire process of query
 evaluation, this is a substantial endeavour. `QueryExecutionBase`
 provides the machinery for result presentation (`SELECT`,
 `CONSTRUCT`, `DESCRIBE`, `ASK`), leaving the work of pattern
-evaluation to the custom query engine. `QueryExecutionFactory`
-assumes that `QueryExecutionBase` will be used.
+evaluation to the custom query engine.
 
 ## Algebra Extensions
 

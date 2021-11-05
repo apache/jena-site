@@ -35,13 +35,13 @@ this code even if another thread commits changes in the lifetime of this transac
      dataset.begin(ReadWrite.READ) ;
      try {
          String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
-         try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
+         try(QueryExecution qExec = QueryExecution.create(qs1, dataset)) {
              ResultSet rs = qExec.execSelect() ;
              ResultSetFormatter.out(rs) ;
          }
 
          String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
-         try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
+         try(QueryExecution qExec = QueryExecution.create(qs2, dataset)) {
              rs = qExec.execSelect() ;
              ResultSetFormatter.out(rs) ;
          }
@@ -81,23 +81,21 @@ dataset.
          model.add( ... )
 
          // A SPARQL query will see the new statement added.
-         try (QueryExecution qExec = QueryExecutionFactory.create(
+         try (QueryExecution qExec = QueryExecution.create(
                  "SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10",
-               dataset)) {
+                 dataset)) {
              ResultSet rs = qExec.execSelect() ;
              ResultSetFormatter.out(rs) ;
          }
 
          // ... perform a SPARQL Update
-         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
          String sparqlUpdateString = StrUtils.strjoinNL(
               "PREFIX . <http://example/>",
               "INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }"
               ) ;
 
          UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
-         UpdateProcessor proc = UpdateExecutionFactory.create(request, graphStore) ;
-         proc.execute() ;
+         UpdateExecution.dataset(dataset).update(request).execute();
 
          // Finally, commit the transaction.
          dataset.commit() ;
