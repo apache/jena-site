@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - SDB Loading performance</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/rdfs/">Data with RDFS Inferencing</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/shex/index.html">ShEx</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/loading_performance.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">LOADING PERFORMANCE</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">SDB Loading performance</h1>
+            
+	<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-databases-and-hardware">The Databases and Hardware</a>
+<ul>
+<li><a href="#hardware">Hardware</a></li>
+<li><a href="#windows-setup">Windows setup</a></li>
+<li><a href="#linux-setup">Linux setup</a></li>
+</ul>
+</li>
+<li><a href="#the-dataset-and-queries">The Dataset and Queries</a>
+<ul>
+<li><a href="#lubm">LUBM</a></li>
+<li><a href="#dbpedia">dbpedia</a></li>
+</ul>
+</li>
+<li><a href="#loading">Loading</a></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#uniprot-700m-loading-tuning-helps">Uniprot 700m loading: Tuning Helps</a></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>Performance reporting is an area prone to misinterpretation, and
+such reports should be liberally decorated with disclaimers. In our
+case there are an alarming number of variables: the hardware, the
+operating system, the database engine and its myriad parameters,
+the data itself, the queries, and planetary alignment.</p>
+<p>Given this here is some basic information. You may find it
+sufficient:</p>
+<ul>
+<li>Loading speed will be in the thousands of triples per second
+range. Expect to load around 5 million triples per hour.</li>
+<li>Index layout is usually better than hash for loading speed.
+Hash loading is very bad on MySQL.</li>
+<li>Hash layout is better for query speed.</li>
+</ul>
+<p>We suggest that you don&rsquo;t choose your database based on these
+figures. The performance is broadly similar, so if you already have
+a relational database installed this is your best option.</p>
+<h2 id="the-databases-and-hardware">The Databases and Hardware</h2>
+<p>SDB supports a range of databases, but the figures here are limited
+to SQLServer and Postgresql. The hardware used was identical,
+although running linux (for Postgresql) and windows (for
+SQLServer).</p>
+<h3 id="hardware">Hardware</h3>
+<ul>
+<li>Dual AMD Opteron processors, 64 bit, 1.8 GHz.</li>
+<li>8 GB memory.</li>
+<li>80 GB disk for database.</li>
+</ul>
+<h3 id="windows-setup">Windows setup</h3>
+<ul>
+<li>Windows server 2003</li>
+<li>Java 6 64 bit</li>
+<li>SQLServer 2005</li>
+</ul>
+<h3 id="linux-setup">Linux setup</h3>
+<ul>
+<li>Redhat Enterprise Linux 4</li>
+<li>Java 6 64 bit</li>
+<li>Postgresql 8.2</li>
+</ul>
+<h2 id="the-dataset-and-queries">The Dataset and Queries</h2>
+<p>We use the Lehigh University Benchmark
+<a href="http://swat.cse.lehigh.edu/projects/lubm/" title="http://swat.cse.lehigh.edu/projects/lubm/">http://swat.cse.lehigh.edu/projects/lubm/</a>
+and dbpedia
+<a href="http://dbpedia.org/" title="http://dbpedia.org/">http://dbpedia.org/</a>,
+together with some example queries that each provides. You can find
+the queries in SDB/PerfTests.</p>
+<h3 id="lubm">LUBM</h3>
+<p>LUBM generates artificial datasets. To be useful one needs to apply
+reasoning, and this was done in advance of loading. The queries are
+quite stressful for SDB in that they are not very ground (in many
+neither subjects nor objects are present), and many produce very
+large result sets. Thus they are probably atypical of many SPARQL
+queries.</p>
+<ul>
+<li>Size: 19 million triples (including inferred triples).</li>
+</ul>
+<h3 id="dbpedia">dbpedia</h3>
+<p>The dbpedia queries are, unlike LUBM, quite ground. dbpedia
+contains many large literals, in contrast to LUBM.</p>
+<ul>
+<li>Size: 25 million triples.</li>
+</ul>
+<h2 id="loading">Loading</h2>
+<p>All operations were performed using SDB&rsquo;s command line tools. The
+data was loaded into a freshly formatted SDB store &ndash; although
+postgresql needs an ANALYSE to avoid silly planning &ndash; then the
+additional indexes were added.</p>
+<h2 id="results">Results</h2>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Database loading Speed (tps)</th>
+<th>Index time (s)</th>
+<th>Size (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LUBM Postgres (Hash)</td>
+<td>4972</td>
+<td>199</td>
+<td>5124</td>
+</tr>
+<tr>
+<td>LUBM Postgres (Index)</td>
+<td>8658</td>
+<td>176</td>
+<td>3666</td>
+</tr>
+<tr>
+<td>LUBM SQLServer (Hash)</td>
+<td>8762</td>
+<td>121</td>
+<td>3200</td>
+</tr>
+<tr>
+<td>LUBM SQLServer (Index)</td>
+<td>7419</td>
+<td>68</td>
+<td>2029</td>
+</tr>
+<tr>
+<td>DBpedia Postgres (Hash)</td>
+<td>3029</td>
+<td>298</td>
+<td>10193</td>
+</tr>
+<tr>
+<td>DBpedia Postgres (Index)</td>
+<td>4293</td>
+<td>227</td>
+<td>6251</td>
+</tr>
+<tr>
+<td>DBpedia SQLServer (Hash)</td>
+<td>5345</td>
+<td>162</td>
+<td>6349</td>
+</tr>
+<tr>
+<td>DBpedia SQLServer (Index)</td>
+<td>4749</td>
+<td>110</td>
+<td>4930</td>
+</tr>
+</tbody>
+</table>
+<h2 id="uniprot-700m-loading-tuning-helps">Uniprot 700m loading: Tuning Helps</h2>
+<p>To illustrate the variability in loading speed, and emphasise the
+importance of tuning, consider the case of Uniprot
+<a href="http://dev.isb-sib.ch/projects/uniprot-rdf/" title="http://dev.isb-sib.ch/projects/uniprot-rdf/">http://dev.isb-sib.ch/projects/uniprot-rdf/</a>.
+Uniprot contains (at the time of writing) around 700 million
+triples. We loaded these on to the SQLServer setup given above, but
+with the following changes:</p>
+<ul>
+<li>The database was stored on a separate disk.</li>
+<li>The database&rsquo;s transactional logs were stored on yet another
+disk.</li>
+</ul>
+<p>So the rdf data, database data, and log data were all on distinct
+disks.</p>
+<p>Loading into an index-layout store proceeded at:</p>
+<ul>
+<li>11079 triples per second</li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2021 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

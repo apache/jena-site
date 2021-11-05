@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - SDB - persistent triple stores using relational databases</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/rdfs/">Data with RDFS Inferencing</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/shex/index.html">ShEx</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/sdb_index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">SDB INDEX</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">SDB - persistent triple stores using relational databases</h1>
+            
+	<p>SDB uses an SQL database for the storage and query of RDF data.
+Many databases are supported, both Open Source and proprietary.</p>
+<p>An SDB store can be accessed and managed with the provided command
+line scripts and via the Jena API.</p>
+<blockquote>
+<i>
+Use of SDB for new applications is not recommended.
+</i>
+</blockquote>
+<p><i>This component is &ldquo;maintenance only&rdquo;.</i></p>
+<p><i><a href="../tdb/index.html">TDB</a> is faster, more scalable and better supported
+than SDB.</i></p>
+<h2 id="status">Status</h2>
+<p>As of June 2013 the Jena developers agreed to treat SDB as
+being only maintained where possible.
+See <a href="http://mail-archives.apache.org/mod_mbox/jena-users/201306.mbox/%3c51B1A7FB.4070601@apache.org%3e">Future of SDB</a> thread on the mailing list.</p>
+<p>The developers intend to continue releasing SDB alongside other Jena
+components but it is not actively developed.  None of the developers
+use it within their organizations.</p>
+<p>SDB may be revived as a fully supported component if members of the
+community come forward to develop it.  The Jena team strongly recommends
+the use of <a href="../tdb/">TDB</a> instead of SDB for all new development due to
+TDBs substantially better performance and scalability.</p>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="installation.html">SDB Installation</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="commands.html">Command line utilities</a></li>
+<li><a href="store_description.html">Store Description format</a></li>
+<li><a href="dataset_description.html">Dataset And Model Descriptions</a></li>
+<li><a href="javaapi.html">Use from Java</a></li>
+<li><a href="configuration.html">Specialized configuration</a></li>
+<li><a href="database_layouts.html">Database Layouts</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="fuseki_integration.html">Fuseki Integration</a></li>
+<li><a href="databases_supported.html">Databases supported</a></li>
+</ul>
+<h2 id="downloads">Downloads</h2>
+<p>SDB is distributed from the Apache Jena project. See the
+<a href="/download/index.cgi">downloads page</a> for details.</p>
+<h2 id="support">Support</h2>
+<p><a href="/help_and_support">Support and questions</a></p>
+<h2 id="details">Details</h2>
+<ul>
+<li><a href="loading_data.html">Loading data</a></li>
+<li><a href="loading_performance.html">Loading performance</a></li>
+<li><a href="query_performance.html">Query performance</a></li>
+</ul>
+<h2 id="database-notes">Database Notes</h2>
+<p>List of <a href="databases_supported.html">databases supported</a></p>
+<p>Notes:</p>
+<ul>
+<li><a href="db_notes.html#postgresql">PostgreSQL notes</a></li>
+<li><a href="db_notes.html#mysql">MySQL notes</a></li>
+<li>Oracle notes</li>
+<li><a href="db_notes.html#ms_sql">Microsoft SQL Server notes</a></li>
+<li><a href="db_notes.html#db2">DB2 notes</a></li>
+<li><a href="db_notes.html#derby">Derby notes</a></li>
+<li>HSQLDB notes</li>
+<li>H2 notes</li>
+</ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2021 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

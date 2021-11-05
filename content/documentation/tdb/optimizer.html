@@ -287,12 +287,14 @@ logger.arq-info.level = INFO
 set globally:</p>
 <pre><code>ARQ.getContext().set(ARQ.symLogExec,true) ;
 </code></pre>
-<p>and it may also be set on an individual query execution using it&rsquo;s
+<p>and it may also be set on an individual query execution using its
 local context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-    qExec.getContext().set(ARQ.symLogExec,true) ;
+<pre><code>try(QueryExecution qExec = QueryExecution.dataset(dataset)
+          .query(query)
+          .set(ARQ.symLogExec,true)
+          .build() ) {
     ResultSet rs = qExec.execSelect() ;
- }
+}
 </code></pre>
 <p>On the command line:</p>
 <pre><code> tdbquery --set arq:logExec=true --file queryfile

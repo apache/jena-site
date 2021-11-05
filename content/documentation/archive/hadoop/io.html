@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Apache Jena Elephas - IO API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/rdfs/">Data with RDFS Inferencing</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/shex/index.html">ShEx</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/hadoop/io.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive/hadoop'>HADOOP</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">IO</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">Apache Jena Elephas - IO API</h1>
+            
+	<p>The IO API provides support for reading and writing RDF within Apache Hadoop applications.  This is done by providing <code>InputFormat</code> and <code>OutputFormat</code> implementations that cover all the RDF serialisations that Jena supports.</p>
+<p>{% toc %}</p>
+<h1 id="background-on-hadoop-io">Background on Hadoop IO</h1>
+<p>If you are already familiar with the Hadoop IO paradigm then please skip this section, if not please read as otherwise some of the later information will not make much sense.</p>
+<p>Hadoop applications and particularly Map/Reduce exploit horizontally scalability by dividing input data up into <em>splits</em> where each <em>split</em> represents a portion of the input data that can be read in <em>isolation</em> from the other pieces.  This <em>isolation</em> property is very important to understand, if a file format requires that the entire file be read sequentially in order to properly interpret it then it cannot be split and must be read as a whole.</p>
+<p>Therefore depending on the file formats used for your input data you may not get as much parallel performance because Hadoop&rsquo;s ability to <em>split</em> the input data may be limited.</p>
+<p>In some cases there are file formats that may be processed in multiple ways i.e. you can <em>split</em> them into pieces or you can process them as a whole.  Which approach you wish to use will depend on whether you have a single file to process or many files to process.  In the case of many files processing files as a whole may provide better overall throughput than processing them as chunks.  However your mileage may vary especially if your input data has many files of uneven size.</p>
+<h2 id="compressed-io">Compressed IO</h2>
+<p>Hadoop natively provides support for compressed input and output providing your Hadoop cluster is appropriately configured.  The advantage of compressing the input/output data is that it means there is less IO workload on the cluster however this comes with the disadvantage that most compression formats block Hadoop&rsquo;s ability to <em>split</em> up the input.</p>
+<p>Hadoop generally handles compression automatically and all our input and output formats are capable of handling compressed input and output as necessary.  However in order to use this your Hadoop cluster/job configuration must be appropriately configured to inform Hadoop about what compression codecs are in use.</p>
+<p>For example to enable BZip2 compression (assuming your cluster doesn&rsquo;t enable this by default):</p>
+<pre><code>// Assumes you already have a Configuration object you are preparing 
+// in the variable config
+
+config.set(HadoopIOConstants.IO_COMPRESSION_CODECS, BZip2Codec.class.getCanonicalName());
+</code></pre>
+<p>See the Javadocs for the Hadoop <a href="https://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/compress/CompressionCodec.html">CompressionCodec</a> API to see the available out of the box implementations.  Note that some clusters may provide additional compression codecs beyond those built directly into Hadoop.</p>
+<h1 id="rdf-io-in-hadoop">RDF IO in Hadoop</h1>
+<p>There are a wide range of RDF serialisations supported by ARQ, please see the <a href="../io/">RDF IO</a> for an overview of the formats that Jena supports.  In this section we go into a lot more depth of how exactly we support RDF IO in Hadoop.</p>
+<h2 id="input">Input</h2>
+<p>One of the difficulties posed when wrapping these for Hadoop IO is that the formats have very different properties in terms of our ability to <em>split</em> them into distinct chunks for Hadoop to process.  So we categorise the possible ways to process RDF inputs as follows:</p>
+<ol>
+<li>Line Based - Each line of the input is processed as a single line</li>
+<li>Batch Based - The input is processed in batches of N lines (where N is configurable)</li>
+<li>Whole File - The input is processed as a whole</li>
+</ol>
+<p>There is then also the question of whether a serialisation encodes triples, quads or can encode both.  Where a serialisation encodes both we provide two variants of it so you can choose whether you want to process it as triples/quads.</p>
+<h3 id="blank-nodes-in-input">Blank Nodes in Input</h3>
+<p>Note that readers familiar with RDF may be wondering how we cope with blank nodes when splitting input and this is an important issue to address.</p>
+<p>Essentially Jena contains functionality that allows it to predictably generate identifiers from the original identifier present in the file e.g. <code>_:blank</code>.  This means that wherever <code>_:blank</code> appears  in the original file we are guaranteed to assign it the same internal identifier.  Note that this functionality uses a seed value to ensure that blank nodes coming from different input files are not assigned the same identifier.</p>
+<p>When used with Hadoop this seed is chosen based on a combination of the Job ID and the input file path.  This means that the same file processed by different jobs will produce different blank node identifiers each time.  However within a job every read of the file will predictably generate blank node identifiers so splitting does not prevent correct blank node identification.</p>
+<p>Additionally the binary serialisation we use for our RDF primitives (described on the <a href="common.html">Common API</a>) page guarantees that internal identifiers are preserved as-is when communicating values across the cluster.</p>
+<h3 id="mixed-inputs">Mixed Inputs</h3>
+<p>In many cases your input data may be in a variety of different RDF formats in which case we have you covered.  The <code>TriplesInputFormat</code>, <code>QuadsInputFormat</code> and <code>TriplesOrQuadsInputFormat</code> can handle mixture of triples/quads/both triples &amp; quads as desired.  Note that in the case of <code>TriplesOrQuadsInputFormat</code> any triples are up-cast into quads in the default graph.</p>
+<p>With mixed inputs the specific input format to use for each is determined based on the file extensions of each input file, unrecognised extensions will result in an <code>IOException</code>.  Compression is handled automatically you simply need to name your files appropriately to indicate the type of compression used e.g. <code>example.ttl.gz</code> would be treated as GZipped Turtle, if you&rsquo;ve used a decent compression tool it should have done this for you.  The downside of mixed inputs is that it decides quite late what the input format is which means that it always processes inputs as whole files because it doesn&rsquo;t decide on the format until after it has been asked to split the inputs.</p>
+<h2 id="output">Output</h2>
+<p>As with input we also need to be careful about how we output RDF data.  Similar to input some serialisations can be output in a streaming fashion while other serialisations require us to store up all the data and then write it out in one go at the end.  We use the same categorisations for output though the meanings are slightly different:</p>
+<ol>
+<li>Line Based - Each record is written as soon as it is received</li>
+<li>Batch Based - Records are cached until N records are seen or the end of output and then the current batch is output (where N is configurable)</li>
+<li>Whole File - Records are cached until the end of output and then the entire output is written in one go</li>
+</ol>
+<p>However both the batch based and whole file approaches have the downside that it is possible to exhaust memory if you have large amounts of output to process (or set the batch size too high for batch based output).</p>
+<h3 id="blank-nodes-in-output">Blank Nodes in Output</h3>
+<p>As with input blank nodes provide a complicating factor in producing RDF output.  For whole file output formats this is not an issue but it does need to be considered for line and batch based formats.</p>
+<p>However what we have found in practise is that the Jena writers will predictably map internal identifiers to the blank node identifiers in the output serialisations.  What this means is that even when processing output in batches we&rsquo;ve found that using the line/batch based formats correctly preserve blank node identity.</p>
+<p>If you are concerned about potential data corruption as a result of this then you should make sure to always choose a whole file output format but be aware that this can exhaust memory if your output is large.</p>
+<h4 id="blank-node-divergence-in-multi-stage-pipelines">Blank Node Divergence in multi-stage pipelines</h4>
+<p>The other thing to consider with regards to blank nodes in output is that Hadoop will by default create multiple output files (one for each reducer) so even if consistent and valid blank nodes are output they may be spread over multiple files.</p>
+<p>In multi-stage pipelines you may need to manually concatenate these files back together (assuming they are in a format that allows this e.g. NTriples) as otherwise when you pass them as input to the next job the blank node identifiers will diverge from each other.  <a href="https://issues.apache.org/jira/browse/JENA-820">JENA-820</a> discusses this problem and introduces a special configuration setting that can be used to resolve this.  Note that even with this setting enabled some formats are not capable of respecting it, see the later section on <a href="#job-configuration-options">Job Configuration Options</a> for more details.</p>
+<p>An alternative workaround is to always use RDF Thrift as the intermediate output format since it preserves blank node identifiers precisely as they are seen.  This also has the advantage that RDF Thrift is extremely fast to read and write which can speed up multi-stage pipelines considerably.</p>
+<h3 id="node-output-format">Node Output Format</h3>
+<p>We also include a special <code>NTriplesNodeOutputFormat</code> which is capable of outputting pairs composed of a <code>NodeWritable</code> key and any value type.  Think of this as being similar to the standard Hadoop <code>TextOutputFormat</code> except it understands how to format nodes as valid NTriples serialisation.  This format is useful when performing simple statistical analysis such as node usage counts or other calculations over nodes.</p>
+<p>In the case where the value of the key value pair is also a RDF primitive proper NTriples formatting is also applied to each of the nodes in the value</p>
+<h2 id="rdf-serialisation-support">RDF Serialisation Support</h2>
+<h3 id="input-1">Input</h3>
+<p>The following table categorises how each supported RDF serialisation is processed for input.  Note that in some cases we offer multiple ways to process a serialisation.</p>
+<table>
+  <tr>
+    <th>RDF Serialisation</th>
+    <th>Line Based</th>
+    <th>Batch Based</th>
+    <th>Whole File</th>
+  </tr>
+  <tr>
+    <th colspan="4">Triple Formats</th>
+  </tr>
+  <tr><td>NTriples</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+  <tr><td>Turtle</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/XML</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/JSON</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Quad Formats</th>
+  </tr>
+  <tr><td>NQuads</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+  <tr><td>TriG</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>TriX</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Triple/Quad Formats</th>
+  </tr>
+  <tr><td>JSON-LD</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF Thrift</td><td>No</td><td>No</td><td>Yes</td></tr>
+</table>
+<h3 id="output-1">Output</h3>
+<p>The following table categorises how each supported RDF serialisation can be processed for output.  As with input some serialisations may be processed in multiple ways.</p>
+<table>
+  <tr>
+    <th>RDF Serialisation</th>
+    <th>Line Based</th>
+    <th>Batch Based</th>
+    <th>Whole File</th>
+  </tr>
+  <tr>
+    <th colspan="4">Triple Formats</th>
+  </tr>
+  <tr><td>NTriples</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr><td>Turtle</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+  <tr><td>RDF/XML</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF/JSON</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr>
+    <th colspan="4">Quad Formats</th>
+  </tr>
+  <tr><td>NQuads</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr><td>TriG</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+  <tr><td>TriX</td><td>Yes</td><td>No</td><td>No</td></tr>
+  <tr>
+    <th colspan="4">Triple/Quad Formats</th>
+  </tr>
+  <tr><td>JSON-LD</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>RDF Thrift</td><td>Yes</td><td>No</td><td>No</td></tr>
+</table>
+<h2 id="job-setup">Job Setup</h2>
+<p>To use RDF as an input and/or output format you will need to configure your Job appropriately, this requires setting the input/output format and setting the data paths:</p>
+<pre><code>// Create a job using default configuration
+Job job = Job.createInstance(new Configuration(true));
+
+// Use Turtle as the input format
+job.setInputFormatClass(TurtleInputFormat.class);
+FileInputFormat.setInputPath(job, &quot;/users/example/input&quot;);
+
+// Use NTriples as the output format
+job.setOutputFormatClass(NTriplesOutputFormat.class);
+FileOutputFormat.setOutputPath(job, &quot;/users/example/output&quot;);
+
+// Other job configuration...
+</code></pre>
+<p>This example takes in input in Turtle format from the directory <code>/users/example/input</code> and outputs the end results in NTriples in the directory <code>/users/example/output</code>.</p>
+<p>Take a look at the <a href="../javadoc/hadoop/io/">Javadocs</a> to find the actual available input and output format implementations.</p>
+<h3 id="job-configuration-options">Job Configuration Options</h3>
+<p>There are a several useful configuration options that can be used to tweak the behaviour of the RDF IO functionality if desired.</p>
+<h4 id="input-lines-per-batch">Input Lines per Batch</h4>
+<p>Since our line based input formats use the standard Hadoop <code>NLineInputFormat</code> to decide how to split up inputs we support the standard <code>mapreduce.input.lineinputformat.linespermap</code> configuration setting for changing the number of lines processed per map.</p>
+<p>You can set this directly in your configuration:</p>
+<pre><code>job.getConfiguration().setInt(NLineInputFormat.LINES_PER_MAP, 100);
+</code></pre>
+<p>Or you can use the convenience method of <code>NLineInputFormat</code> like so:</p>
+<pre><code>NLineInputFormat.setNumLinesPerMap(job, 100);
+</code></pre>
+<h4 id="max-line-length">Max Line Length</h4>
+<p>When using line based inputs it may be desirable to ignore lines that exceed a certain length (for example if you are not interested in really long literals).  Again we use the standard Hadoop configuration setting <code>mapreduce.input.linerecordreader.line.maxlength</code> to control this behaviour:</p>
+<pre><code>job.getConfiguration().setInt(HadoopIOConstants.MAX_LINE_LENGTH, 8192);
+</code></pre>
+<h4 id="ignoring-bad-tuples">Ignoring Bad Tuples</h4>
+<p>In many cases you may have data that you know contains invalid tuples, in such cases it can be useful to just ignore the bad tuples and continue.  By default we enable this behaviour and will skip over bad tuples though they will be logged as an error.  If you want you can disable this behaviour by setting the <code>rdf.io.input.ignore-bad-tuples</code> configuration setting:</p>
+<pre><code>job.getConfiguration().setBoolean(RdfIOConstants.INPUT_IGNORE_BAD_TUPLES, false);
+</code></pre>
+<h4 id="global-blank-node-identity">Global Blank Node Identity</h4>
+<p>The default behaviour of this library is to allocate file scoped blank node identifiers in such a way that the same syntactic identifier read from the same file is allocated the same blank node ID even across input splits within a job.  Conversely the same syntactic identifier in different input files will result in different blank nodes within a job.</p>
+<p>However as discussed earlier in the case of multi-stage jobs the intermediate outputs may be split over several files which can cause the blank node identifiers to diverge from each other when they are read back in by subsequent jobs.  For multi-stage jobs this is often (but not always) incorrect and undesirable behaviour in which case you will need to set the <code>rdf.io.input.bnodes.global-identity</code> property to true for the subsequent jobs:</p>
+<pre><code>job.getConfiguration.setBoolean(RdfIOConstants.GLOBAL_BNODE_IDENTITY, true);
+</code></pre>
+<p><strong>Important</strong> - This should only be set for the later jobs in a multi-stage pipeline and should rarely (if ever) be set for single jobs or the first job of a pipeline.</p>
+<p>Even with this setting enabled not all formats are capable of honouring this option, RDF/XML and JSON-LD will ignore this option and should be avoided as intermediate output formats.</p>
+<p>As noted earlier an alternative workaround to enabling this setting is to instead use RDF Thrift as the intermediate output format since it guarantees to preserve blank node identifiers as-is on both reads and writes.</p>
+<h4 id="output-batch-size">Output Batch Size</h4>
+<p>The batch size for batched output formats can be controlled by setting the <code>rdf.io.output.batch-size</code> property as desired.  The default value for this if not explicitly configured is 10,000:</p>
+<pre><code>job.getConfiguration.setInt(RdfIOConstants.OUTPUT_BATCH_SIZE, 25000);</code></pre>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2021 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

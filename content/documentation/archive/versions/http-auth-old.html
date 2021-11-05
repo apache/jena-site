@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - HTTP Authentication in ARQ (Superseded)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/rdfs/">Data with RDFS Inferencing</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/shex/index.html">ShEx</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                    </ul>
+                </li>
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/versions/http-auth-old.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/archive/versions'>VERSIONS</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">HTTP AUTH OLD</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">HTTP Authentication in ARQ (Superseded)</h1>
+            
+	<p><i>Documentation for HTTP Authentication (Jena3.1.1 to Jena 4.2.0) using Apache Commons HttpClient.</i></p>
+<hr>
+<p>After <a href="#http-authentication-from-jena-311">Jena 3.1.0</a>, Jena exposes the underlying HTTP Commons functionality to support a range of authentication mechanisms as well as <a href="https://hc.apache.org/httpcomponents-client-ga/examples.html">other HTTP configuration</a>. From <a href="#http-authentication-from-jena-300-through-310">Jena 3.0.0 through Jena 3.1.0</a> there is a Jena-specific framework that provides a uniform mechanism for HTTP authentication. This documentation is therefore divided into two sections. The first explains how to use HTTP Commons code, and the second explains the older Jena-specific functionality.</p>
+<h2 id="http-authentication-from-jena-311">HTTP Authentication from Jena 3.1.1</h2>
+<p>APIs that support authentication typically provide methods for providing an <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/HttpClient.html">HttpClient</a> for use with the given instance of that API class. Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default client that is used when no other client is explicitly specified.  This may be configured via the
+<code>setDefaultHttpClient(HttpClient httpClient)</code> method of the <a href="/documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html">HttpOp</a> class. This allows for static-scoped configuration of HTTP behavior.</p>
+<h3 id="examples-of-authentication">Examples of authentication</h3>
+<p>This section includes a series of examples showing how to use HTTP Commons classes to perform authenticated work. Most of them take advantage of <code>HttpOp.setDefaultHttpClient</code> as described above.</p>
+<h4 id="simple-authentication-using-username-and-password">Simple authentication using username and password</h4>
+<p>First we build an authenticating client:</p>
+<pre><code>CredentialsProvider credsProvider = new BasicCredentialsProvider();
+Credentials credentials = new UsernamePasswordCredentials(&quot;user&quot;, &quot;passwd&quot;);
+credsProvider.setCredentials(AuthScope.ANY, credentials);
+HttpClient httpclient = HttpClients.custom()
+    .setDefaultCredentialsProvider(credsProvider)
+    .build();
+HttpOp.setDefaultHttpClient(httpclient);
+</code></pre>
+<p>Notice that we gave no scope for use with the credentials (<code>AuthScope.ANY</code>). We can make further use of that parameter if we want to assign a scope for some credentials:</p>
+<pre><code>CredentialsProvider credsProvider = new BasicCredentialsProvider();
+Credentials unscopedCredentials = new UsernamePasswordCredentials(&quot;user&quot;, &quot;passwd&quot;);
+credsProvider.setCredentials(AuthScope.ANY, unscopedCredentials);
+Credentials scopedCredentials = new UsernamePasswordCredentials(&quot;user&quot;, &quot;passwd&quot;);
+final String host = &quot;http://example.com/sparql&quot;;
+final int port = 80;
+final String realm = &quot;aRealm&quot;;
+final String schemeName = &quot;DIGEST&quot;;
+AuthScope authscope = new AuthScope(host, port, realm, schemeName);
+credsProvider.setCredentials(authscope, scopedCredentials);
+HttpClient httpclient = HttpClients.custom()
+    .setDefaultCredentialsProvider(credsProvider)
+    .build();
+HttpOp.setDefaultHttpClient(httpclient);
+</code></pre>
+<h4 id="authenticating-via-a-form">Authenticating via a form</h4>
+<p>For this case we introduce an <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/client/protocol/HttpClientContext.html">HttpClientContext</a>, which we can use to retrieve the cookie we get from logging into a form. We then use the cookie to authenticate elsewhere.</p>
+<pre><code>// we'll use this context to maintain our HTTP &quot;conversation&quot;
+HttpClientContext httpContext = new HttpClientContext();
+
+// first we use a method on HttpOp to log in and get our cookie
+Params params = new Params();
+params.addParam(&quot;username&quot;, &quot;Bob Wu&quot;);
+params.addParam(&quot;password&quot;, &quot;my password&quot;);
+HttpOp.execHttpPostForm(&quot;http://example.com/loginform&quot;, params , null, null, null, httpContext);
+
+// now our cookie is stored in httpContext
+CookieStore cookieStore = httpContext.getCookieStore();
+
+// lastly we build a client that uses that cookie
+HttpClient httpclient = HttpClients.custom()
+    .setDefaultCookieStore(cookieStore)
+    .build();
+HttpOp.setDefaultHttpClient(httpclient);
+
+// alternatively we could use the context directly
+Query query = ...
+QueryEngineHTTP qEngine = QueryExecutionFactory.createServiceRequest(&quot;http:example.com/someSPARQL&quot;, query);
+qEngine.setHttpContext(httpContext);
+ResultSet results = qEngine.execSelect();
+</code></pre>
+<h3 id="using-authentication-functionality-in-direct-query-execution">Using authentication functionality in direct query execution</h3>
+<p>Jena offers support for <a href="sparql-remote.html#from-your-application">directly creating</a> SPARQL queries against remote services. To use <a href="/documentation/javadoc/arq/org/apache/jena/query/QueryExecutionFactory.html">QueryExecutionFactory</a> in this case, select the methods (<code>sparqlService</code>, <code>createServiceRequest</code>) that offer an <code>HttpClient</code> parameter and use an authenticating client in that slot. In the case of <a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html">QueryEngineHTTP</a>, it is possible to use constructors that have a parameter slot for an <code>HttpClient</code>, but it is also possible post-construction to use <code>setClient(HttpClient client)</code> and <code>setHttpContext(HttpClientContext context)</code> (as shown above). These techniques allow control over HTTP behavior when requests are made to remote services.</p>
+<h2 id="http-authentication-from-jena-300-through-310">HTTP Authentication from Jena 3.0.0 through 3.1.0</h2>
+<p>APIs that support authentication typically provide two methods for providing authenticators, a <code>setAuthentication(String username, char[] password)</code> method
+which merely configures a <code>SimpleAuthenticator</code>.  There will also be a <code>setAuthenticator(HttpAuthenticator authenticator)</code> method
+that allows you to configure an arbitrary authenticator.</p>
+<p>Authenticators applied this way will only be used for requests by that specific API.  APIs that currently support this are as follows:</p>
+<ul>
+<li><a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html">QueryEngineHTTP</a> - This is the <code>QueryExecution</code> implementation returned by <code>QueryExecutionFactory.sparqlService()</code> calls</li>
+<li><a href="/documentation/javadoc/arq/org/apache/jena/sparql/modify/UpdateProcessRemoteBase.html">UpdateProcessRemoteBase</a> - This is the base class of <code>UpdateProcessor</code> implementations returned by <code>UpdateExecutionFactory.createRemote()</code> and <code>UpdateExecutionFactory.createRemoteForm()</code> calls</li>
+<li><a href="/documentation/javadoc/arq/org/apache/jena/web/DatasetGraphAccessorHTTP.html">DatasetGraphAccessorHTTP</a> - This is the <code>DatasetGraphAccessor</code> implementation underlying remote dataset accessors.</li>
+</ul>
+<p>From 2.11.0 onwards the relevant factory methods include overloads that allow providing a <code>HttpAuthenticator</code> at creation time which
+avoids the needs to cast and manually set the authenticator afterwards e.g.</p>
+<pre><code>HttpAuthenticator authenticator = new SimpleAuthenticator(&quot;user&quot;, &quot;password&quot;.toCharArray());
+try(QueryExecution qe = QueryExecutionFactory.sparqlService(&quot;http://example.org/sparql&quot;,
+                                                            &quot;SELECT * WHERE { ?s a ?type }&quot;, 
+                                                            authenticator)) {
+    ...
+}
+</code></pre>
+<h3 id="authenticators">Authenticators</h3>
+<p>Authentication mechanisms are provided by <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/HttpAuthenticator.html">HttpAuthenticator</a> implementations of which a number are provided built into ARQ.</p>
+<p>This API provides the authenticator with access to the <code>HttpClient</code>, <code>HttpContext</code> and target <code>URI</code> of the request that is about to be carried
+out.  This allows for authenticators to add credentials to requests on a per-request basis and/or to use different mechanisms and credentials for different services.</p>
+<h4 id="simpleauthenticator">SimpleAuthenticator</h4>
+<p>The <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/SimpleAuthenticator.html">simple authenticator</a> is as the name suggests the simplest implementation.  It takes a single set of credentials which is applied to
+any service.</p>
+<p>Authentication however is not preemptive so unless the remote service sends a HTTP challenge (401 Unauthorized or 407 Proxy Authorization
+Required) then credentials will not actually be submitted.</p>
+<h4 id="scopedauthenticator">ScopedAuthenticator</h4>
+<p>The <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ScopedAuthenticator.html">scoped authenticator</a> is an authenticator which maps credentials to different service URIs.  This allows you to specify different
+credentials for different services as appropriate.  Similarly to the simple authenticator this is not preemptive authentication so credentials are
+not sent unless the service requests them.</p>
+<p>Scoping of credentials is not based on exact mapping of the request URI to credentials but rather on a longest match approach.  For example
+if you define credentials for <code>http://example.org</code> then these are used for any request that requires authentication under that URI
+e.g. <code>http://example.org/some/path</code>.  However, if you had also defined credentials for <code>http://example.org/some/path</code> then these would be
+used in favor of those for <code>http://example.org</code></p>
+<h4 id="serviceauthenticator">ServiceAuthenticator</h4>
+<p>The <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/ServiceAuthenticator.html">service authenticator</a> is an authenticator which uses information encoded in the ARQ context and basically provides access to the
+existing credential provision mechanisms provided for the <code>SERVICE</code> clause, see <a href="service.html">Basic Federated Query</a> for more information on
+configuration for this.</p>
+<h4 id="formsauthenticator">FormsAuthenticator</h4>
+<p>The <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/FormsAuthenticator.html">forms authenticator</a> is an authenticator usable with services that require form based logins and use session cookies to verify login state.
+This is intended for use with services that don&rsquo;t support HTTP&rsquo;s built-in authentication mechanisms for whatever reason.  One example of this
+are servers secured using Apache HTTP Server <a href="https://httpd.apache.org/docs/2.4/mod/mod_auth_form.html">mod_auth_form</a>.</p>
+<p>This is one of the more complex authenticators to configure because it requires you to know certain details of the form login mechanism of
+the service you are authenticating against.  In the simplest case where a site is using Apache <a href="https://httpd.apache.org/docs/2.4/mod/mod_auth_form.html">mod_auth_form</a> in its default configuration you
+merely need to know the URL to which login requests should be POSTed and your credentials.  Therefore you can do the following to configure
+an authenticator:</p>
+<pre><code>URI targetService = new URI(&quot;http://example.org/sparql&quot;);
+FormLogin formLogin = new ApacheModAuthFormLogin(&quot;http://example.org/login&quot;, &quot;user&quot;, &quot;password&quot;.toCharArray());
+FormsAuthenticator authenticator = new FormsAuthenticator(targetService, formLogin);
+</code></pre>
+<p>In the above example the service we want to authenticate against is <code>http://example.org/sparql</code> and it requires us to first login by POSTing
+our credentials to <code>http://example.org/login</code>.</p>
+<p>However if the service is using a more complicated forms login setup you will additionally need to know what the names of the form fields used
+to submit the username and password.  For example say we were authenticating to a service where the form fields were called <strong>id</strong> and <strong>pwd</strong>
+we&rsquo;d need to configure our authenticator as follows:</p>
+<pre><code>URI targetService = new URI(&quot;http://example.org/sparql&quot;);
+FormLogin formLogin = new ApacheModAuthFormLogin(&quot;http://example.org/login&quot;, &quot;id&quot;, &quot;pwd&quot;, &quot;user&quot;, &quot;password&quot;.toCharArray());
+FormsAuthenticator authenticator = new FormsAuthenticator(targetService, formLogin);
+</code></pre>
+<p>Note that you can also create a forms authenticator that uses different login forms for different services by creating a <code>Map&lt;URI, FormLogin&gt;</code>
+that maps each service to an associated form login and passing that to the <code>FormsAuthenticator</code> constructor.</p>
+<p>Currently forms based login that require more than just a username and password are not supported.</p>
+<h4 id="preemptivebasicauthenticator">PreemptiveBasicAuthenticator</h4>
+<p>This <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/PreemptiveBasicAuthenticator.html">authenticator</a> is a decorator over another authenticator that enables preemptive basic authentication, this <strong>only</strong> works for servers
+that support basic authentication and so will cause authentication failures when any other authentication scheme is required.  You should <strong>only</strong>
+use this when you know the remote server uses basic authentication.</p>
+<p>Preemptive authentication is not enabled by default for two reasons:</p>
+<ol>
+<li>It reduces security as it can result in sending credentials to servers that don&rsquo;t actually require them.</li>
+<li>It <strong>only</strong> works for basic authentication and not for other HTTP authentication mechanisms e.g. digest authentication</li>
+</ol>
+<p>The 2nd point is important to emphasise, this <strong>only</strong> works for servers using Basic authentication.</p>
+<p>Also be aware that basic authentication is very insecure since it sends credentials over the wire with only obfuscation for protection.  Therefore
+many servers will use more secure schemes like Digest authentication which <strong>cannot</strong> be done preemptively as they require more complex
+challenge response sequences.</p>
+<h4 id="delegatingauthenticator">DelegatingAuthenticator</h4>
+<p>The <a href="/documentation/javadoc/arq/org/apache/jena/atlas/web/auth/DelegatingAuthenticator.html">delegating authenticator</a> allows for mapping different authenticators to different services, this is useful when you need to mix and
+match the types of authentication needed.</p>
+<h3 id="the-default-authenticator">The Default Authenticator</h3>
+<p>Since it may not always be possible/practical to configure authenticators on a per-request basis the API includes a means to specify a default
+authenticator that is used when no authenticator is explicitly specified.  This may be configured via the
+<code>setDefaultAuthenticator(HttpAuthenticator authenticator)</code> method of the <a href="/documentation/javadoc/arq/org/apache/jena/riot/web/HttpOp.html">HttpOp</a> class.</p>
+<p>By default there is already a default authenticator configured which is the <code>ServiceAuthenticator</code> since this preserves behavioural
+backwards compatibility with prior versions of ARQ.</p>
+<p>You can configure the default authenticator to whatever you need so even if you don&rsquo;t directly control the code that is making HTTP requests
+provided that it is using ARQs APIs to make these then authentication will still be applied.</p>
+<p>Note that the default authenticator may be disabled by setting it to <code>null</code>.</p>
+<h2 id="other-concerns">Other concerns</h2>
+<h3 id="debugging-authentication">Debugging Authentication</h3>
+<p>ARQ uses <a href="http://hc.apache.org">Apache Http Client</a> for all its HTTP operations and this provides detailed logging information that can be used for debugging.  To
+see this information you need to configure your logging framework to set the <code>org.apache.http</code> package to either <code>DEBUG</code> or <code>TRACE</code> level.</p>
+<p>The <code>DEBUG</code> level will give you general diagnostic information about requests and responses while the <code>TRACE</code> level will give you detailed
+HTTP traces i.e. allow you to see the exact HTTP requests and responses which can be extremely useful for debugging authentication problems.</p>
+<h3 id="authenticating-to-a-sparql-federated-service">Authenticating to a SPARQL federated service</h3>
+<p>ARQ allows the user to configure HTTP behavior to use on a per-<code>SERVICE</code> basis, including authentication behavior such as is described above. This works via the ARQ context. See <a href="service.html">Basic Federated Query</a> for more information on configuring this functionality.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            Copyright &copy; 2011&ndash;2021 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>

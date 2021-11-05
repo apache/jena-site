@@ -179,18 +179,15 @@
 	<p>SPARQL is a
 <a href="http://www.w3.org/TR/sparql11-query/">query language</a> and a
 <a href="http://www.w3.org/2001/sw/DataAccess/proto-wd/">remote access protocol</a>.
-The remote access protocol can be used with plain HTTP or over
-<a href="http://www.w3.org/TR/soap12-part0/">SOAP</a>.</p>
+The remote access protocol runs over HTTP.</p>
 <p>See <a href="../fuseki2/index.html">Fuseki</a> for an implementation of the
 SPARQL protocol over HTTP. Fuseki uses ARQ to provide SPARQL
 query access to Jena models, including Jena persistent models.</p>
 <p>ARQ includes a query engine capable of using the HTTP version.</p>
 <h2 id="from-your-application">From your application</h2>
-<p>The <code>QueryExecutionFactory</code> has methods for creating a
-<code>QueryExecution</code> object for remote use.
-<code>QueryExecutionFactory.sparqlService</code></p>
-<p>These methods build a query execution object that uses the query
-engine in <code>org.apache.jena.sparql.engine.http</code>.</p>
+<p>The <code>QueryExecutionHTTP</code> has methods for creating a
+<code>QueryExecution</code> object for remote use. There are various
+HTTP specific settings; the default should work in most cases.</p>
 <p>The remote request is made when the <code>execSelect</code>, <code>execConstruct</code>,
 <code>execDescribe</code> or <code>execAsk</code> method is called.</p>
 <p>The results are held locally after remote execution and can be
@@ -204,7 +201,7 @@ query requests using the <code>--service</code> argument:</p>
 <p>The query given is parsed locally to check for syntax errors before
 sending.</p>
 <h2 id="authentication">Authentication</h2>
-<p>ARQ provides a flexible API for authenticating against remote services, see the <a href="http-auth.html">HTTP Authentication</a> documentation for more details.</p>
+<p>ARQ provides a flexible API for authenticating against remote services, see the <a href="../sparql-apis/http-auth.html">HTTP Authentication</a> documentation for more details.</p>
 <h2 id="firewalls-and-proxies">Firewalls and Proxies</h2>
 <p>Don&rsquo;t forget to set the proxy for Java if you are accessing a
 public server from behind a blocking firewall. Most home firewalls

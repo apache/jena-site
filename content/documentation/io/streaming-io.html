@@ -186,6 +186,14 @@ input parsing performance using W3C Standards.</p>
 <p>Files ending in <code>.gz</code> are assumed to be gzip-compressed. Input and output
 to such files takes this into account, including looking for the other file
 extension.  <code>data.nt.gz</code> is parsed as a gzip-compressed N-Triples file.</p>
+<p>Jena does not support all possible compression formats itself, only
+GZip and BZip2 are supported directly.  If you want to use an
+alternative compression format you can do so by adding suitable dependencies
+into your project and passing an appropriate <code>InputStream</code>/<code>OutputStream</code>
+implementation to Jena code e.g.</p>
+<pre><code>InputStream input =  new ZstdCompressorInputStream(....);
+RDFParser.source(input).lang(Lang.NQ).parse(graph);
+</code></pre>
 <h2 id="streamrdf">StreamRDF</h2>
 <p>The central abstraction is
 <a href="/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDF.html"><code>StreamRDF</code></a>
