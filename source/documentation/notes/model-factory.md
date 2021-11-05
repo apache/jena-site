@@ -23,9 +23,7 @@ no special ontology interface.
 
 ## Database model creation
 
-_Note:_ this section previously referred to creating database models
-with RDB, a now obsolete Jena features. For methods of creating models
-with [SDB](/documentation/sdb/index.html) and [TDB](/documentation/tdb/index.html)
+For methods of creating models for [TDB](/documentation/tdb/index.html)
 please see the relevant reference sections.
 
 ## Inference model creation

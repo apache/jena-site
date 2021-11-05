@@ -18,8 +18,7 @@ ARQ consists of the following parts:
     -   Reference engine - direct implementation of the algebra
     -   Quad engine - direct implementation of the algebra except
     -   The main engine
-    -   SDB, a SPARQL database for large-sale persistent data (external
-        system)
+    -   TDB, a SPARQL database for large-sale persistent data
 
 -   Result set handling for the SPARQL XML results format, the
     [JSON](http://json.org) and text versions.

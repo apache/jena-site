@@ -1913,8 +1913,7 @@ model. In this section we briefly discuss using the ontology API with
 Jena's persistent database models.
 
 For information on setting-up and accessing the persistent models
-themselves, please see the
-[SDB](/documentation/sdb/index.html) and [TDB](/documentation/tdb/index.html)
+themselves, see the [TDB](/documentation/tdb/index.html)
 reference sections.
 
 There are two somewhat separate requirements for persistently
