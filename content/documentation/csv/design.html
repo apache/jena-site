@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - CSV PropertyTable - Design</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/csv/design.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/csv'>CSV</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">DESIGN</li>
             
             
         
@@ -174,101 +174,69 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">CSV PropertyTable - Design</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
-</table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
-</code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
-</code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
-</code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
-</code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+	<h2 id="architecture">Architecture</h2>
+<p>The architecture of CSV PropertyTable mainly involves 2 components:</p>
+<ul>
+<li><a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/PropertyTable.java">PropertyTable</a></li>
+<li><a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphPropertyTable.java">GraphPropertyTable</a></li>
+</ul>
+<p><img src="jena-csv-architecture.png" alt="Picture of architecture of jena-csv" title="Architecture of jena-csv"></p>
+<h2 id="propertytable">PropertyTable</h2>
+<p>A <code>PropertyTable</code> is collection of data that is sufficiently regular in shape it can be treated as a table.
+That means each subject has a value for each one of the set of properties.
+Irregularity in terms of missing values needs to be handled but not multiple values for the same property.
+With special storage, a PropertyTable</p>
+<ul>
+<li>is more compact and more amenable to custom storage (e.g. a JSON document store)</li>
+<li>can have custom indexes on specific columns</li>
+<li>can guarantee access orders</li>
+</ul>
+<p>More explicitly, <code>PropertyTable</code> is designed to be a table of RDF terms, or
+<a href="https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/Node.java">Nodes</a> in Jena.
+Each <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/Column.java">Column</a> of the <code>PropertyTable</code> has an unique columnKey <code>Node</code> of the predicate (or p for short).
+Each <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/Row.java">Row</a> of the <code>PropertyTable</code> has an unique rowKey <code>Node</code> of the subject (or s for short).
+You can use <code>getColumn()</code> to get the <code>Column</code> by its columnKey <code>Node</code> of the predicate, while <code>getRow()</code> for <code>Row</code>.</p>
+<p>A <code>PropertyTable</code> should be constructed in this workflow (in order):</p>
+<ol>
+<li>Create <code>Columns</code> using <code>PropertyTable.createColumn()</code> for each <code>Column</code> of the <code>PropertyTable</code></li>
+<li>Create <code>Rows</code> using <code>PropertyTable.createRow()</code> for each <code>Row</code> of the <code>PropertyTable</code></li>
+<li>For each <code>Row</code> created, set a value (<code>Node</code>) at the specified <code>Column</code>, by calling <code>Row.setValue()</code></li>
+</ol>
+<p>Once a <code>PropertyTable</code> is built, tabular data within can be accessed by the API of <code>PropertyTable.getMatchingRows()</code>, <code>PropertyTable.getColumnValues()</code>, etc.</p>
+<h2 id="graphpropertytable">GraphPropertyTable</h2>
+<p><code>GraphPropertyTable</code> implements the <a href="https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/Graph.java">Graph</a> interface (read-only) over a <code>PropertyTable</code>.
+This is subclass from <a href="https://github.com/apache/jena/tree/main/jena-core/src/main/java/org/apache/jena/graph/impl/GraphBase.java">GraphBase</a> and implements <code>find()</code>.
+The <code>graphBaseFind()</code>(for matching a <code>Triple</code>) and <code>propertyTableBaseFind()</code>(for matching a whole <code>Row</code>) methods can choose the access route based on the find arguments.
+<code>GraphPropertyTable</code> holds/wraps a reference of the <code>PropertyTable</code> instance, so that such a <code>Graph</code> can be treated in a more table-like fashion.</p>
+<p><strong>Note:</strong> Both <code>PropertyTable</code> and <code>GraphPropertyTable</code> are <em>NOT</em> restricted to CSV data.
+They are supposed to be compatible with any table-like data sources, such as relational databases, Microsoft Excel, etc.</p>
+<h2 id="graphcsv">GraphCSV</h2>
+<p><a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/GraphCSV.java">GraphCSV</a> is a sub class of GraphPropertyTable aiming at CSV data.
+Its constructor takes a CSV file path as the parameter, parse the file using a CSV Parser, and makes a <code>PropertyTable</code> through <code>PropertyTableBuilder</code>.</p>
+<p>For CSV to RDF mapping, we establish some basic principles:</p>
+<h3 id="single-value-and-regular-shaped-csv-only">Single-Value and Regular-Shaped CSV Only</h3>
+<p>In the <a href="https://www.w3.org/2013/csvw/wiki/Main_Page">CSV-WG</a>, it looks like duplicate column names are not going to be supported. Therefore, we just consider parsing single-valued CSV tables.
+There is the current editor working <a href="http://w3c.github.io/csvw/syntax/">draft</a> from the CSV on the Web Working Group, which is defining a more regular data out of CSV.
+This is the target for the CSV work of GraphCSV: tabular regular-shaped CSV; not arbitrary, irregularly shaped CSV.</p>
+<h3 id="no-additional-csv-metadata">No Additional CSV Metadata</h3>
+<p>A CSV file with no additional metadata is directly mapped to RDF, which makes a simpler case compared to SQL-to-RDF work.
+It&rsquo;s not necessary to have a defined primary column, similar to the primary key of database. The subject of the triple can be generated through one of:</p>
+<ol>
+<li>The triples for each row have a blank node for the subject, e.g. something like the illustration</li>
+<li>The triples for row N have a subject URI which is <code>&lt;FILE#_N&gt;</code>.</li>
+</ol>
+<h3 id="data-type-for-typed-literal">Data Type for Typed Literal</h3>
+<p>All the values in CSV are parsed as strings line by line. As a better option for the user to turn on, a dynamic choice which is a posh way of saying attempt to parse it as an integer (or decimal, double, date) and if it passes, it&rsquo;s an integer (or decimal, double, date).
+Note that for the current release, all of the numbers are parsed as <code>double</code>, and <code>date</code> is not supported yet.</p>
+<h3 id="file-path-as-namespace">File Path as Namespace</h3>
+<p>RDF requires that the subjects and the predicates are URIs. We need to pass in the namespaces (or just the default namespaces) to make URIs by combining the namespaces with the values in CSV.
+We don’t have metadata of the namespaces for the columns, But subjects can be blank nodes which is useful because each row is then a new blank node. For predicates, suppose the URL of the CSV file is <code>file:///c:/town.csv</code>, then the columns can be <code>&lt;file:///c:/town.csv#Town&gt;</code> and <code>&lt;file:///c:/town.csv#Population&gt;</code>, as is showed in the illustration.</p>
+<h3 id="first-line-of-table-header-needed-as-predicates">First Line of Table Header Needed as Predicates</h3>
+<p>The first line of the CSV file must be the table header. The columns of the first line are parsed as the predicates of the RDF triples. The RDF triple data are parsed starting from the second line.</p>
+<h3 id="utf-8-encoded-only">UTF-8 Encoded Only</h3>
+<p>The CSV files must be UTF-8 encoded. If your CSV files are using Western European encodings, please change the encoding before using CSV PropertyTable.</p>
 
 
         </div>

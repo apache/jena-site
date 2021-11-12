@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - Maven Artifacts for Apache Jena Elephas</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/hadoop/artifacts.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/hadoop'>HADOOP</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">ARTIFACTS</li>
             
             
         
@@ -174,101 +174,76 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">Maven Artifacts for Apache Jena Elephas</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
-</table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+	<p>The Apache Jena Elephas libraries for Apache Hadoop are a collection of maven artifacts which can be used individually
+or together as desired.  These are available from the same locations as any other Jena
+artifact, see <a href="/download/maven.html">Using Jena with Maven</a> for more information.</p>
+<h1 id="hadoop-dependencies">Hadoop Dependencies</h1>
+<p>The first thing to note is that although our libraries depend on relevant Hadoop libraries these dependencies
+are marked as <code>provided</code> and therefore are not transitive.  This means that you may typically also need to
+declare these basic dependencies as <code>provided</code> in your own POM:</p>
+<pre><code>&lt;!-- Hadoop Dependencies --&gt;
+&lt;!-- Note these will be provided on the Hadoop cluster hence the provided 
+        scope --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+  &lt;artifactId&gt;hadoop-common&lt;/artifactId&gt;
+  &lt;version&gt;2.6.0&lt;/version&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+  &lt;artifactId&gt;hadoop-mapreduce-client-common&lt;/artifactId&gt;
+  &lt;version&gt;2.6.0&lt;/version&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
 </code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
+<h3 id="using-alternative-hadoop-versions">Using Alternative Hadoop versions</h3>
+<p>If you wish to use a different Hadoop version then we suggest that you build the modules yourself from source which can be
+found in the <code>jena-elephas</code> folder of our source release (available on the <a href="../download/">Downloads</a> page) or from our Git
+repository (see <a href="../getting_involved/">Getting Involved</a> for details of the repository).</p>
+<p>When building you need to set the <code>hadoop.version</code> property to the desired version e.g.</p>
+<pre><code>&gt; mvn clean package -Dhadoop.version=2.4.1
 </code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
+<p>Would build for Hadoop <code>2.4.1</code></p>
+<p><strong>Note</strong> that we only support Hadoop 2.x APIs and so Elephas cannot be built for Hadoop 1.x</p>
+<h1 id="jena-rdf-tools-for-apache-hadoop-artifacts">Jena RDF Tools for Apache Hadoop Artifacts</h1>
+<h2 id="common-api">Common API</h2>
+<p>The <code>jena-elephas-common</code> artifact provides common classes for enabling RDF on Hadoop.  This is mainly
+composed of relevant <code>Writable</code> implementations for the various supported RDF primitives.</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-elephas-common&lt;/artifactId&gt;
+  &lt;version&gt;x.y.z&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+<h2 id="io-api">IO API</h2>
+<p>The <a href="io.html">IO API</a> artifact provides support for reading and writing RDF in Hadoop:</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-elephas-io&lt;/artifactId&gt;
+  &lt;version&gt;x.y.z&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
+<h2 id="mapreduce">Map/Reduce</h2>
+<p>The <a href="mapred.html">Map/Reduce</a> artifact provides various building block mapper and reducer implementations
+to help you get started writing Map/Reduce jobs over RDF data quicker:</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-elephas-mapreduce&lt;/artifactId&gt;
+  &lt;version&gt;x.y.z&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+<h2 id="rdf-stats-demo">RDF Stats Demo</h2>
+<p>The <a href="demo.html">RDF Stats Demo</a> artifact is a Hadoop job jar which can be used to run some simple demo applications over your
+own RDF data:</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-elephas-stats&lt;/artifactId&gt;
+  &lt;version&gt;x.y.z&lt;/version&gt;
+  &lt;classifier&gt;hadoop-job&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
 
 
         </div>

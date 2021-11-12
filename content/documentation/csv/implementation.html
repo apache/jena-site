@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - CSV PropertyTable - Implementation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/csv/implementation.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/csv'>CSV</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">IMPLEMENTATION</li>
             
             
         
@@ -174,101 +174,62 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">CSV PropertyTable - Implementation</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
+	<h2 id="propertytable-implementations">PropertyTable Implementations</h2>
+<p>There are 2 implementations for <code>PropertyTable</code>. The pros and cons are summarised in the following table:</p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
-<th>Effect</th>
+<th>PropertyTable Implementation</th>
+<th>Description</th>
+<th>Supported Indexes</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
+<td><code>PropertyTableArrayImpl</code></td>
+<td>implemented by a two-dimensioned Java array of <code>Nodes</code></td>
+<td>SPO, PSO</td>
+<td>compact memory usage, fast for querying with S and P, fast for query a whole <code>Row</code></td>
+<td>slow for query with O, table Row/Column size provided</td>
 </tr>
 <tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
+<td><code>PropertyTableHashMapImpl</code></td>
+<td>implemented by several Java <code>HashMaps</code></td>
+<td>PSO, POS</td>
+<td>fast for querying with O, table Row/Column size not required</td>
+<td>more memory usage for HashMaps</td>
 </tr>
 </tbody>
 </table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+<p>By default, [PropertyTableArrayImpl]((<a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java">https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableArrayImpl.java</a>) is used as the <code>PropertyTable</code> implementation held by <code>GraphCSV</code>.
+If you want to switch to <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/PropertyTableHashMapImpl.java">PropertyTableHashMapImpl</a>, just use the static method of <code>GraphCSV.createHashMapImpl()</code> to replace the default <code>new GraphCSV()</code> way.
+Here is an example:</p>
+<pre><code>Model model_csv_array_impl = ModelFactory.createModelForGraph(new GraphCSV(file)); // PropertyTableArrayImpl
+Model model_csv_hashmap_impl = ModelFactory.createModelForGraph(GraphCSV.createHashMapImpl(file)); // PropertyTableHashMapImpl
 </code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
+<h2 id="stagegenerator-optimization-for-graphpropertytable">StageGenerator Optimization for GraphPropertyTable</h2>
+<p>Accessing from SPARQL via <code>Graph.find()</code> will work, but it&rsquo;s not ideal. Some optimizations can be done for processing a SPARQL basic graph pattern. More explicitly, in the method of <code>OpExecutor.execute(OpBGP, ...)</code>, when the target for the query is a <code>GraphPropertyTable</code>, it can get a whole <code>Row</code>, or <code>Rows</code>, of the table data and match the pattern with the bindings.</p>
+<p>The optimization of querying a whole <code>Row</code> in the PropertyTable are supported now.
+The following query pattern can be transformed into a <code>Row</code> querying, without generating triples:</p>
+<pre><code>?x :prop1 ?v .
+?x :prop2 ?w .
+...
 </code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
+<p>It&rsquo;s made by using the extension point of <code>StageGenerator</code>, because it&rsquo;s now just concerned with <code>BasicPattern</code>.
+The detailed workflow goes in this way:</p>
+<ol>
+<li>Split the incoming <code>BasicPattern</code> by subjects, (i.e. it becomes multiple sub BasicPatterns grouped by the same subjects. (see <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTable.java">QueryIterPropertyTable</a> )</li>
+<li>For each sub <code>BasicPattern</code>, if the <code>Triple</code> size within is greater than 1 (i.e. at least 2 <code>Triples</code>), it&rsquo;s turned into a <code>Row</code> querying, and processed by <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/QueryIterPropertyTableRow.java">QueryIterPropertyTableRow</a>, else if it contains only 1 <code>Triple</code>, it goes for the traditional <code>Triple</code> querying by <code>graph.graphBaseFind()</code></li>
+</ol>
+<p>In order to turn on this optimization, we need to register the <a href="https://github.com/apache/jena/tree/main/jena-csv/src/main/java/org/apache/jena/propertytable/impl/StageGeneratorPropertyTable.java">StageGeneratorPropertyTable</a> into ARQ context, before performing SPARQL querying:</p>
+<pre><code>StageGenerator orig = (StageGenerator)ARQ.getContext().get(ARQ.stageGenerator) ;
+StageGenerator stageGenerator = new StageGeneratorPropertyTable(orig) ;
+StageBuilder.setGenerator(ARQ.getContext(), stageGenerator) ;
 </code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
-</code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
 
 
         </div>

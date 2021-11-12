@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - SDB - persistent triple stores using relational databases</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sdb/sdb_index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">SDB INDEX</li>
             
             
         
@@ -174,101 +174,69 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">SDB - persistent triple stores using relational databases</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
-</table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
-</code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
-</code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
-</code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
-</code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+	<p>SDB uses an SQL database for the storage and query of RDF data.
+Many databases are supported, both Open Source and proprietary.</p>
+<p>An SDB store can be accessed and managed with the provided command
+line scripts and via the Jena API.</p>
+<blockquote>
+<i>
+Use of SDB for new applications is not recommended.
+</i>
+</blockquote>
+<p><i>This component is &ldquo;maintenance only&rdquo;.</i></p>
+<p><i><a href="../tdb/index.html">TDB</a> is faster, more scalable and better supported
+than SDB.</i></p>
+<h2 id="status">Status</h2>
+<p>As of June 2013 the Jena developers agreed to treat SDB as
+being only maintained where possible.
+See <a href="http://mail-archives.apache.org/mod_mbox/jena-users/201306.mbox/%3c51B1A7FB.4070601@apache.org%3e">Future of SDB</a> thread on the mailing list.</p>
+<p>The developers intend to continue releasing SDB alongside other Jena
+components but it is not actively developed.  None of the developers
+use it within their organizations.</p>
+<p>SDB may be revived as a fully supported component if members of the
+community come forward to develop it.  The Jena team strongly recommends
+the use of <a href="../tdb/">TDB</a> instead of SDB for all new development due to
+TDBs substantially better performance and scalability.</p>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="installation.html">SDB Installation</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="commands.html">Command line utilities</a></li>
+<li><a href="store_description.html">Store Description format</a></li>
+<li><a href="dataset_description.html">Dataset And Model Descriptions</a></li>
+<li><a href="javaapi.html">Use from Java</a></li>
+<li><a href="configuration.html">Specialized configuration</a></li>
+<li><a href="database_layouts.html">Database Layouts</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="fuseki_integration.html">Fuseki Integration</a></li>
+<li><a href="databases_supported.html">Databases supported</a></li>
+</ul>
+<h2 id="downloads">Downloads</h2>
+<p>SDB is distributed from the Apache Jena project. See the
+<a href="/download/index.cgi">downloads page</a> for details.</p>
+<h2 id="support">Support</h2>
+<p><a href="/help_and_support">Support and questions</a></p>
+<h2 id="details">Details</h2>
+<ul>
+<li><a href="loading_data.html">Loading data</a></li>
+<li><a href="loading_performance.html">Loading performance</a></li>
+<li><a href="query_performance.html">Query performance</a></li>
+</ul>
+<h2 id="database-notes">Database Notes</h2>
+<p>List of <a href="databases_supported.html">databases supported</a></p>
+<p>Notes:</p>
+<ul>
+<li><a href="db_notes.html#postgresql">PostgreSQL notes</a></li>
+<li><a href="db_notes.html#mysql">MySQL notes</a></li>
+<li>Oracle notes</li>
+<li><a href="db_notes.html#ms_sql">Microsoft SQL Server notes</a></li>
+<li><a href="db_notes.html#db2">DB2 notes</a></li>
+<li><a href="db_notes.html#derby">Derby notes</a></li>
+<li>HSQLDB notes</li>
+<li>H2 notes</li>
+</ul>
 
 
         </div>

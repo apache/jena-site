@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - SDB Loading data</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sdb/loading_data.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">LOADING DATA</li>
             
             
         
@@ -174,101 +174,103 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">SDB Loading data</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
-</table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+	<p>There are three ways to load data into SDB:</p>
+<ol>
+<li>Use the command utility
+<a href="commands.html#Loading_data" title="SDB/Commands">sdbload</a></li>
+<li>Use one of the Jena <code>model.read</code> operations</li>
+<li>Use the Jena <code>model.add</code></li>
+</ol>
+<p>The last one of these requires the application to signal the
+beginning and end of batches.</p>
+<h2 id="loading-with-modelread">Loading with <code>Model.read</code></h2>
+<p>A Jena Model obtained from SDB via:</p>
+<pre><code>SDBFactory.connectModel(store)
 </code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
+<p>will automatically bulk load data for each call of one of the
+<code>Model.read</code> operations.</p>
+<h2 id="loading-with-modeladd">Loading with <code>Model.add</code></h2>
+<p>The <code>Model.add</code> operations, in any form or combination of forms,
+whether loading a single statement, list of statements, or another
+model, will invoke the bulk loader if previously notified before an
+add operation.</p>
+<p>You can also explicitly delimit bulk operations:</p>
+<pre><code> model.notifyEvent(GraphEvents.startRead)
+ ... do add/remove operations ...
+ model.notifyEvent(GraphEvents.finishRead)
 </code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
-</code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
+<p><strong>Failing to notify the end of the operations will result in data loss</strong>.</p>
+<p>A try/finally block can ensure that the finish is notified.</p>
+<pre><code> model.notifyEvent(GraphEvents.startRead) ;
+ try {
+    ... do add/remove operations ...
+ } finally {
+   model.notifyEvent(GraphEvents.finishRead) ;
  }
 </code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
+<p>The <code>model.read</code> operations do this automatically.</p>
+<p>The bulk loader will automatically chunk large sequences of
+additions to sizes appropriate to the underlying database. The bulk
+loader is threaded with double-buffered; loading to the database
+happens in parallel to the application thread and any RDF parsing.</p>
+<h2 id="how-the-loader-works">How the loader works</h2>
+<p>Loading consists of two phases: in the java VM, and on the database
+itself. The SDB loader takes incoming triples and breaks them down
+into components ready for the database. These prepared triples are
+added to a queue for the database phase, which (by default) takes
+place on a separate thread. When the number of triples reaches a
+limit (default 20,000), or finish update is signalled, the triples
+are passed to the database.</p>
+<p>You can configure whether to use threading and the &lsquo;chunk size&rsquo; &ndash;
+the number of triples per load event &ndash; via <code>StoreLoader</code>.</p>
+<pre><code>Store store; // SDB Store
+...
+store.getLoader().setChunkSize(5000); //
+store.getLoader().setUseThreading(false); // Don't thread
 </code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+<p>You should set these <em>before</em> the loader has been used.</p>
+<p>Each loader sets up two temporary tables (<code>NNode</code> and <code>NTrip</code>) that
+mirror <code>Nodes</code> and <code>Triples</code> tables. These tables are virtually
+identical, except that a) they are not indexed and b) for the index
+variant there is no index column for nodes.</p>
+<p>When loading prepared triples &ndash; triples that have been broken down
+ready for the database &ndash; are passed to the loader core (normally
+running on a different thread). When the chunk size is reached, or
+we are out of triples, the following happens:</p>
+<ul>
+<li>Prepared nodes are added in one go to <code>NNode</code>. Duplicate nodes
+within a chunk are suppressed on the java side (this is worth doing
+since they are quite common, e.g. properties).</li>
+<li>Prepared triples are added in one go to <code>NTrip</code>.</li>
+<li>New nodes are added to the node table (duplicate suppression is
+explained below).</li>
+<li>New triples are added to the triple table (once again
+suppressing dupes). For the index case this involves joining on the
+node table to do a hash to index lookup.</li>
+<li>We commit.</li>
+<li>If anything goes wrong the transaction (the chunk) is rolled
+back, and an exception is thrown (or readied for throwing on the
+calling thread).</li>
+</ul>
+<p>Thus there are five calls to the database for every chunk. The
+database handles almost all of the work uninterrupted (duplicate
+suppression, hash to index lookup), which makes loading reasonably
+quick.</p>
+<h2 id="duplicate-suppression">Duplicate Suppression</h2>
+<p>MySQL has a very useful <code>INSERT IGNORE</code>, which will keep going,
+skipping an offending row if a uniqueness constraint is violated.
+For other databases we need something else.</p>
+<p>Having tried a number of options the best seems to be to <code>INSERT</code>
+new items by <code>LEFT JOIN</code> new items to existing items, then
+filtering <code>WHERE (existing item feature) IS NULL</code>. Specifically,
+for the triple hash case (where no id lookups are needed):</p>
+<pre><code>INSERT INTO Triples
+SELECT DISTINCT NTrip.s, NTrip.p, NTrip.o -- DISTINCT because new triples may contain duplicates (not so for nodes)
+NTrip LEFT JOIN Triples ON (NTrip.s=Triples.s AND NTrip.p=Triples.p AND NTrip.o=Triples.o)
+WHERE Triples.s IS NULL OR Triples.p IS NULL OR Triples.o IS NULL
+</code></pre>
 
 
         </div>

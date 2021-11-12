@@ -233,10 +233,8 @@ under the symbol <code>SystemTDB.symTupleFilter</code> then execute the query as
 <pre><code>    Dataset ds = ... ;
     Filter&lt;Tuple&lt;NodeId&gt;&gt; filter = createFilter(ds) ;
     Query query = ... ;
-    try (QueryExecution qExec = QueryExecution.dataset(ds)
-            .query(query)
-            .set(SystemTDB.symTupleFilter, filter)
-            .build() ) {}
+    try (QueryExecution qExec = QueryExecutionFactory.create(query, ds)) {
+        qExec.getContext().set(SystemTDB.symTupleFilter, filter) ;
         ResultSet rs = qExec.execSelect() ;
         ...
     }

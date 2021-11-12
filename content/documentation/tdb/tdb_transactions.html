@@ -256,13 +256,13 @@ actions that do not change the data.  The general pattern is:</p>
  dataset.begin(ReadWrite.READ) ;
  String qs1 = &quot;SELECT * {?s ?p ?o} LIMIT 10&quot; ;        
 
- try(QueryExecution qExec = QueryExecution.dataset(dataset).query(qs1).build() ) {
+ try(QueryExecution qExec = QueryExecutionFactory.create(qs1, dataset)) {
      ResultSet rs = qExec.execSelect() ;
      ResultSetFormatter.out(rs) ;
  } 
 
  String qs2 = &quot;SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10&quot; ;  
- try(QueryExecution qExec = QueryExecution.dataset(dataset).query(qs2).build() ) {
+ try(QueryExecution qExec = QueryExecutionFactory.create(qs2, dataset)) {
      rs = qExec.execSelect() ;
      ResultSetFormatter.out(rs) ;
  }
@@ -296,21 +296,23 @@ dataset.</p>
      model.add( ... )
 
      // A SPARQL query will see the new statement added.
-     try (QueryExecution qExec = QueryExecution.dataset(dataset)
-             .query(&quot;SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10&quot;)
-             .build() ) {
+     try (QueryExecution qExec = QueryExecutionFactory.create(
+             &quot;SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10&quot;, 
+           dataset)) {
          ResultSet rs = qExec.execSelect() ;
          ResultSetFormatter.out(rs) ;
      }
 
      // ... perform a SPARQL Update
+     GraphStore graphStore = GraphStoreFactory.create(dataset) ;
      String sparqlUpdateString = StrUtils.strjoinNL(
           &quot;PREFIX . &lt;http://example/&gt;&quot;,
           &quot;INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }&quot;
           ) ;
 
      UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
-     UpdateExecution.dataset(dataset).update(request).execute();
+     UpdateProcessor proc = UpdateExecutionFactory.create(request, graphStore) ;
+     proc.execute() ;
         
      // Finally, commit the transaction. 
      dataset.commit() ;

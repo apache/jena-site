@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - SDB/Commands</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sdb/commands.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">COMMANDS</li>
             
             
         
@@ -174,101 +174,222 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">SDB/Commands</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
+	<p>This page describes the command line programs that can be used to
+create an SDB store, load data into it and to issue queries.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li>
+<p><a href="#scripts">Scripts</a></p>
+<ul>
+<li><a href="#script-set-up">Script set up</a></li>
+<li><a href="#argument-structure">Argument Structure</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#store-description">Store Description</a></p>
+<ul>
+<li><a href="#modifying-the-store-description">Modifying the Store Description</a></li>
+<li><a href="#logging-and-monitoring">Logging and Monitoring</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#sdb-commands">SDB Commands</a></p>
+<ul>
+<li><a href="#database-creation">Database creation</a></li>
+<li><a href="#loading-data">Loading data</a></li>
+<li><a href="#query">Query</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#other">Other</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="scripts">Scripts</h2>
+<p>The directory <code>bin/</code> contains shell scripts to run the commands
+from the command line. The scripts are bash scripts which also run
+over <a href="http://www.cygwin.com/" title="http://www.cygwin.com/">Cygwin</a>.</p>
+<h3 id="script-set-up">Script set up</h3>
+<p>Set the environment variable <code>SDBROOT</code> to the root of the SDB
+installation.</p>
+<p>A store description can include naming the class for the JDBC
+driver. Getting a <code>Store</code> object from a store description will
+automatically load the JDBC driver from the classpath.</p>
+<p>When running scripts, set the environment variable <code>SDB_JDBC</code> to
+one or more jar files for JDBC drivers. If it is more than one jar
+file, use the classpath syntax for your system. You can also use
+the system property <code>jdbc.drivers</code>.</p>
+<p>Set the environment variables <code>SDB_USER</code> and <code>SDB_PASSWORD</code> to the
+database user name and password for JDBC.</p>
+<pre><code> $ export SDBROOT=&quot;/path/to/sdb
+ $ export SDB_USER=&quot;YourDbUserName&quot;
+ $ export SDB_PASSWORD=&quot;YourDbPassword&quot;
+ $ export SDB_JDBC=&quot;/path/to/driver.jar&quot;
+</code></pre>
+<p>They are bash scripts, and work on Linux and Cygwin for MS
+Windows.</p>
+<pre><code> $ export PATH=$SDBROOT/bin:$PATH
+</code></pre>
+<p>Alternatively, there are wrapper scripts in <code>$SDBROOT/bin2</code> which
+can be placed in a convenient directory that is already on the
+shell command path.</p>
+<h3 id="argument-structure">Argument Structure</h3>
+<p>All commands take a SDB store description to extract the connection
+and configuration information they need. This is written
+<em><code>SPEC</code></em> in the command descriptions below but it can be
+composed of several arguments as described here.</p>
+<p>Each command then has command-specific arguments described below.</p>
+<p>All commands support <code>--help</code> to give details of named and
+positional arguments.</p>
+<p>There are two equivalent forms of named argument syntax:</p>
+<pre><code>--arg=val
+
+--arg val
+</code></pre>
+<h2 id="store-description">Store Description</h2>
+<p>If this is not specified, commands load the description file
+sdb.ttl from the current directory.</p>
+<pre><code> --sdb=&lt;sdb.ttl&gt;
+</code></pre>
+<p>This store description is a
+<a href="/documentation/assembler/">Jena assembler</a>
+file. The description consists of two parts; a store description
+and a connection description.</p>
+<p>Often, this is all that is needed to describe which store to use.
+The individual components of a connection or configuration can be
+overridden after the description have been read, before it is
+processed.</p>
+<p>The directory <code>Store/</code> has example assembler files.</p>
+<p>The full details of the assembler file is given in
+&lsquo;<a href="store_description.html" title="SDB/Store Description">SDB/Store Description</a>&rsquo;</p>
+<h3 id="modifying-the-store-description">Modifying the Store Description</h3>
+<p>The individual items of a store description can be overridden by
+various command arguments. The description in the assembler file is
+read, then any command line arguments used to modify the
+description, then the appropriate object is created from the
+modified description.</p>
+<p>Set the layout type:</p>
+<pre><code> --layout : layout name
+</code></pre>
+<p>Currently, one of <code>layout1</code>, <code>layout2</code>, <code>layout2/index</code>,
+<code>layout2/hash</code>.</p>
+<p>Set JDBC details:</p>
+<pre><code> --dbName : Database Name
+ --dbHost : Host machine name
+ --dbType : Database type.
+ --dbUser : Database use
+ --dbPassword : Database password.
+</code></pre>
+<p>The host name can <code>host</code> or <code>host:port</code>.</p>
+<p>The better way to handle passwords is to use environment variables
+SDB_USER and SDB_PASSWORD because then the user/password is not
+stored in a visible way.</p>
+<h3 id="logging-and-monitoring">Logging and Monitoring</h3>
+<p>All commands take the following arguments (although they may do
+nothing if they make no sense to the command).</p>
+<pre><code> -v
+</code></pre>
+<p>Be verbose.</p>
+<pre><code> --time
+</code></pre>
+<p>Print timing information. Treat with care - while the timer avoids
+recording JVM and some class loading time, it can&rsquo;t avoid all class
+loading. Hence, the values of timing are more meaningful on longer
+operations. JDBC operation times to a remote server can also be a
+significant proportion in short operations.</p>
+<pre><code> --log=[all|none|queries|statements|exceptions]
+</code></pre>
+<p>to log SQL actions on the database connection (but not the prepared
+statements used by the loader). Can be repeated on the command
+line.</p>
+<h2 id="sdb-commands">SDB Commands</h2>
+<h3 id="database-creation">Database creation</h3>
+<pre><code> sdbconfig SPEC [--create|--format|--indexes|--dropIndexes]
+</code></pre>
+<p>Setup a database.</p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
-<th>Effect</th>
+<th>Option</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
+<td><code>--create</code></td>
+<td>formats the store and sets up indexes</td>
 </tr>
 <tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
+<td><code>--format</code></td>
+<td>just formats the store and creates indexes for loading, not querying.</td>
 </tr>
 <tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
+<td><code>--indexes</code></td>
+<td>Create indexes for querying</td>
 </tr>
 <tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
+<td><code>--dropIndexes</code> </td>
+<td>Drop indexes for querying.</td>
 </tr>
 </tbody>
 </table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+<p>Loading large graphs can be faster by formatting, loading the data,
+then building the query indexes with this command.</p>
+<pre><code> sdbtruncate SPEC
 </code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
+<p>Truncate the store. Non-transactional. Destroys data.</p>
+<h3 id="loading-data">Loading data</h3>
+<pre><code> sdbload SPEC FILE [FILE ...]
 </code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
+<p>Load RDF data into a store using the SDB bulk loader. Data is
+streamed into the database and is not loaded as a single
+transaction.</p>
+<p>The file&rsquo;s extension is used to determine the data syntax.</p>
+<p>To load into a named graph:</p>
+<pre><code> sdbload SPEC --graph=URI FILE [FILE ...]
 </code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+<h3 id="query">Query</h3>
+<pre><code> sdbquery SPEC --query=FILE
 </code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
+<p>Execute a query.</p>
+<pre><code> sdbprint SPEC --print=X [--sql] --query=FILE
 </code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
+<p>Print details of a query. <code>X</code> is any of <code>query</code>, <code>op</code>, <code>sqlNode</code>,
+<code>sql</code> or <code>plan</code>. <code>--print=X</code> can be repeated. &ndash;sql is short for
+&ndash;print=sql. The default is <code>--print=sql</code>.</p>
+<h3 id="testing">Testing</h3>
+<pre><code> sdbtest SPEC MANIFEST
 </code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+<p>Execute a test manifest file. The manifest of all query tests,
+which will test connection and loading of data, is in
+<code>&lt;em&gt;SDBROOT&lt;/em&gt;/testing/manifest-sdb.ttl</code>.</p>
+<h3 id="other">Other</h3>
+<pre><code> sdbdump SPEC --out=SYNTAX
+</code></pre>
+<p>Dump the contents of a store N-TRIPLES or a given serialization
+format (usual Jena syntax names, e.g. <code>Turtle</code> or <code>TTL</code>).</p>
+<p>Only suitable for data sizes that fit in memory. All output
+syntaxes that do some form of pretty printing will need additional
+space for their internal datastructures.</p>
+<pre><code> sdbsql SPEC [ --file=FILE | SQL string ]
+</code></pre>
+<p>Execute a SQL command on the store, using the connection details
+from the store specification. The SQL command either comes from
+file <code>FILE</code> or the command line as a string.</p>
+<pre><code> sdbinfo SPEC
+</code></pre>
+<p>Details of a store.</p>
+<pre><code> sdbmeta SPEC --out=SYNTAX
+</code></pre>
+<p>Do things with the meta graphs of a store.</p>
+<pre><code> sdbscript SPEC FILE
+</code></pre>
+<p>Execute a script. Currently only JRuby is supported.</p>
+<pre><code> sdbtuple SPEC [--create|--print|--drop|--truncate]  tableName
+</code></pre>
+<p>Many of the tables used within SDB are tuples of RDF nodes. This
+command allows low-level access to these tuple tables. Misuse of
+this command can corrupt the store.</p>
 
 
         </div>

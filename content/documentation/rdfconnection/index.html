@@ -188,7 +188,7 @@ data in Java.  It provides support for try-resource and functional code
 passing styles, as well the more basic sequence of methods calls.</p>
 <p>For example: using <code>try-resources</code> to manage the connection, and perform two operations, one to load
 some data, and one to make a query can be written as:</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
     conn.load(&quot;data.ttl&quot;) ;
     conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
        Resource subject = qs.getResource(&quot;s&quot;) ;
@@ -198,7 +198,7 @@ some data, and one to make a query can be written as:</p>
 </code></pre>
 <p>This could have been written as (approximately &ndash; the error handling is better
 in the example above):</p>
-<pre><code>RDFConnection conn = RDFConnection.connect(...)
+<pre><code>RDFConnection conn = RDFConnectionFactory.connect(...)
 conn.load(&quot;data.ttl&quot;) ;
 QueryExecution qExec = conn.query(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;) ;
 ResultSet rs = qExec.execSelect() ;
@@ -210,6 +210,9 @@ while(rs.hasNext()) {
 qExec.close() ;
 conn.close() ;
 </code></pre>
+<p>Jena also provides a separate
+<a href="/documentation/jdbc/index.html">SPARQL over JDBC driver</a>
+library.</p>
 <h2 id="transactions">Transactions</h2>
 <p>Transactions are the preferred way to work with RDF data.
 Operations on an <code>RDFConnection</code> outside of an application-controlled
@@ -218,7 +221,7 @@ operation. This &ldquo;autocommit&rdquo; feature may lead to inefficient operati
 to excessive overhead.</p>
 <p>The <code>Txn</code> class provides a Java8-style transaction API.  Transactions are
 code passed in the <code>Txn</code> library that handles the transaction lifecycle.</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
     Txn.execWrite(conn, ()-&gt; {
         conn.load(&quot;data1.ttl&quot;) ;
         conn.load(&quot;data2.ttl&quot;) ;
@@ -230,7 +233,7 @@ code passed in the <code>Txn</code> library that handles the transaction lifecyc
 }
 </code></pre>
 <p>The traditional style of explicit <code>begin</code>, <code>commit</code>, <code>abort</code> is also available.</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
     conn.begin(ReadWrite.WRITE) ;
     try {
         conn.load(&quot;data1.ttl&quot;) ;
@@ -291,7 +294,7 @@ dataset.  It provides a standardised way to manage the data in a dataset.</p>
 <p>The operations are to fetch a graph, set the RDF data in a graph,
 add more RDF data into a graph, and delete a graph from a dataset.</p>
 <p>For example: load two files:</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
+<pre><code>try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
     conn.load(&quot;data1.ttl&quot;) ;
     conn.load(&quot;data2.nt&quot;) ;
   }
@@ -325,14 +328,14 @@ accessing returned models must be done with <a href="../txn">transactions</a>
 in this mode.</p>
 <h2 id="query-usage">Query Usage</h2>
 <p><code>RDFConnection</code> provides methods for each of the SPARQL query forms (<code>SELECT</code>,
-<code>CONSTRUCT</code>, <code>DESCRIBE</code>, <code>ASK</code>) as well as a way to get the
-<code>QueryExecution</code> for specialized configuration. When creating an
-<code>QueryExecution</code> explicitly, care should be taken to close it.</p>
-<p>If the application wishes to capture the result set from a SELECT query and
+<code>CONSTRUCT</code>, <code>DESCRIBE</code>, <code>ASK</code>) as well as a way to get the lower level
+<code>QueryExecution</code> for specialized configuration.</p>
+<p>When creating an <code>QueryExecution</code> explicitly, care should be taken to close
+it. If the application wishes to capture the result set from a SELECT query and
 retain it across the lifetime of the transaction or <code>QueryExecution</code>, then
 the application should create a copy which is not attached to any external system
 with <code>ResultSetFactory.copyResults</code>.</p>
-<pre><code>  try ( RDFConnection conn = RDFConnection.connect(&quot;https://...&quot;) ) {
+<pre><code>  try ( RDFConnection conn = RDFConnectionFactory.connect(&quot;foo&quot;) ) {
       ResultSet safeCopy =
           Txn.execReadReturn(conn, ()-&gt; {
               // Process results by row:
@@ -347,7 +350,7 @@ with <code>ResultSetFactory.copyResults</code>.</p>
 </code></pre>
 <h2 id="update-usage">Update Usage</h2>
 <p>SPARQL Update operations can be performed and mixed with other operations.</p>
-<pre><code>  try ( RDFConnection conn = RDFConnection.connect(...) ) {
+<pre><code>  try ( RDFConnection conn = RDFConnectionFactory.connect(...) ) {
       Txn.execWrite(conn, ()-&gt; {
          conn.update(&quot;DELETE DATA { ... }&quot; ) ;
          conn.load(&quot;data.ttl&quot;) ;

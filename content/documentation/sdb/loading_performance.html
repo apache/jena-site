@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - SDB Loading performance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sdb/loading_performance.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">LOADING PERFORMANCE</li>
             
             
         
@@ -174,101 +174,175 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">SDB Loading performance</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
+	<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-databases-and-hardware">The Databases and Hardware</a>
+<ul>
+<li><a href="#hardware">Hardware</a></li>
+<li><a href="#windows-setup">Windows setup</a></li>
+<li><a href="#linux-setup">Linux setup</a></li>
+</ul>
+</li>
+<li><a href="#the-dataset-and-queries">The Dataset and Queries</a>
+<ul>
+<li><a href="#lubm">LUBM</a></li>
+<li><a href="#dbpedia">dbpedia</a></li>
+</ul>
+</li>
+<li><a href="#loading">Loading</a></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#uniprot-700m-loading-tuning-helps">Uniprot 700m loading: Tuning Helps</a></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>Performance reporting is an area prone to misinterpretation, and
+such reports should be liberally decorated with disclaimers. In our
+case there are an alarming number of variables: the hardware, the
+operating system, the database engine and its myriad parameters,
+the data itself, the queries, and planetary alignment.</p>
+<p>Given this here is some basic information. You may find it
+sufficient:</p>
+<ul>
+<li>Loading speed will be in the thousands of triples per second
+range. Expect to load around 5 million triples per hour.</li>
+<li>Index layout is usually better than hash for loading speed.
+Hash loading is very bad on MySQL.</li>
+<li>Hash layout is better for query speed.</li>
+</ul>
+<p>We suggest that you don&rsquo;t choose your database based on these
+figures. The performance is broadly similar, so if you already have
+a relational database installed this is your best option.</p>
+<h2 id="the-databases-and-hardware">The Databases and Hardware</h2>
+<p>SDB supports a range of databases, but the figures here are limited
+to SQLServer and Postgresql. The hardware used was identical,
+although running linux (for Postgresql) and windows (for
+SQLServer).</p>
+<h3 id="hardware">Hardware</h3>
+<ul>
+<li>Dual AMD Opteron processors, 64 bit, 1.8 GHz.</li>
+<li>8 GB memory.</li>
+<li>80 GB disk for database.</li>
+</ul>
+<h3 id="windows-setup">Windows setup</h3>
+<ul>
+<li>Windows server 2003</li>
+<li>Java 6 64 bit</li>
+<li>SQLServer 2005</li>
+</ul>
+<h3 id="linux-setup">Linux setup</h3>
+<ul>
+<li>Redhat Enterprise Linux 4</li>
+<li>Java 6 64 bit</li>
+<li>Postgresql 8.2</li>
+</ul>
+<h2 id="the-dataset-and-queries">The Dataset and Queries</h2>
+<p>We use the Lehigh University Benchmark
+<a href="http://swat.cse.lehigh.edu/projects/lubm/" title="http://swat.cse.lehigh.edu/projects/lubm/">http://swat.cse.lehigh.edu/projects/lubm/</a>
+and dbpedia
+<a href="http://dbpedia.org/" title="http://dbpedia.org/">http://dbpedia.org/</a>,
+together with some example queries that each provides. You can find
+the queries in SDB/PerfTests.</p>
+<h3 id="lubm">LUBM</h3>
+<p>LUBM generates artificial datasets. To be useful one needs to apply
+reasoning, and this was done in advance of loading. The queries are
+quite stressful for SDB in that they are not very ground (in many
+neither subjects nor objects are present), and many produce very
+large result sets. Thus they are probably atypical of many SPARQL
+queries.</p>
+<ul>
+<li>Size: 19 million triples (including inferred triples).</li>
+</ul>
+<h3 id="dbpedia">dbpedia</h3>
+<p>The dbpedia queries are, unlike LUBM, quite ground. dbpedia
+contains many large literals, in contrast to LUBM.</p>
+<ul>
+<li>Size: 25 million triples.</li>
+</ul>
+<h2 id="loading">Loading</h2>
+<p>All operations were performed using SDB&rsquo;s command line tools. The
+data was loaded into a freshly formatted SDB store &ndash; although
+postgresql needs an ANALYSE to avoid silly planning &ndash; then the
+additional indexes were added.</p>
+<h2 id="results">Results</h2>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
-<th>Effect</th>
+<th>Benchmark</th>
+<th>Database loading Speed (tps)</th>
+<th>Index time (s)</th>
+<th>Size (MB)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
+<td>LUBM Postgres (Hash)</td>
+<td>4972</td>
+<td>199</td>
+<td>5124</td>
 </tr>
 <tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
+<td>LUBM Postgres (Index)</td>
+<td>8658</td>
+<td>176</td>
+<td>3666</td>
 </tr>
 <tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
+<td>LUBM SQLServer (Hash)</td>
+<td>8762</td>
+<td>121</td>
+<td>3200</td>
 </tr>
 <tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
+<td>LUBM SQLServer (Index)</td>
+<td>7419</td>
+<td>68</td>
+<td>2029</td>
 </tr>
 <tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
+<td>DBpedia Postgres (Hash)</td>
+<td>3029</td>
+<td>298</td>
+<td>10193</td>
+</tr>
+<tr>
+<td>DBpedia Postgres (Index)</td>
+<td>4293</td>
+<td>227</td>
+<td>6251</td>
+</tr>
+<tr>
+<td>DBpedia SQLServer (Hash)</td>
+<td>5345</td>
+<td>162</td>
+<td>6349</td>
+</tr>
+<tr>
+<td>DBpedia SQLServer (Index)</td>
+<td>4749</td>
+<td>110</td>
+<td>4930</td>
 </tr>
 </tbody>
 </table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
-</code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
-</code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
-</code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
-</code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+<h2 id="uniprot-700m-loading-tuning-helps">Uniprot 700m loading: Tuning Helps</h2>
+<p>To illustrate the variability in loading speed, and emphasise the
+importance of tuning, consider the case of Uniprot
+<a href="http://dev.isb-sib.ch/projects/uniprot-rdf/" title="http://dev.isb-sib.ch/projects/uniprot-rdf/">http://dev.isb-sib.ch/projects/uniprot-rdf/</a>.
+Uniprot contains (at the time of writing) around 700 million
+triples. We loaded these on to the SQLServer setup given above, but
+with the following changes:</p>
+<ul>
+<li>The database was stored on a separate disk.</li>
+<li>The database&rsquo;s transactional logs were stored on yet another
+disk.</li>
+</ul>
+<p>So the rdf data, database data, and log data were all on distinct
+disks.</p>
+<p>Loading into an index-layout store proceeded at:</p>
+<ul>
+<li>11079 triples per second</li>
+</ul>
 
 
         </div>

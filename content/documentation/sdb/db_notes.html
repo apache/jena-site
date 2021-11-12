@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - SDB Database Notes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/explain.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/sdb/db_notes.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/sdb'>SDB</a></li>
             
             
         
@@ -162,7 +162,7 @@
         
         
             
-                <li class="active">EXPLAIN</li>
+                <li class="active">DB NOTES</li>
             
             
         
@@ -174,101 +174,159 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">SDB Database Notes</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
-the SPARQL algebra for the query is generated as described in the SPARQL
-specification. High-level optimization occurs by rewriting the algebra
-into new, equivalent algebra forms and introducing specialized algebra
-operators. During query execution, the low-level, storage-specific
-optimization occurs such as choosing the order of triple patterns within
-basic graph patterns.</p>
-<p>The effect of <a href="#algebra-transformations">high-level optimizations</a> can
-be seen using <code>arq.qparse</code> and the low-level runtime optimizations can
-be seen by <a href="#execution-logging">execution logging</a>.</p>
-<h2 id="algebra-transformations">Algebra Transformations</h2>
-<p>The preparation for a query for execution can be investigated with the
-command <code>arq.qparse --explain --query QueryFile.rq</code>. Different storage
-systems may perform different optimizations, usually chosen from the
-standard set. <code>qparse</code> shows the action of the memory-storage optimizer
-which applies all optimizations.</p>
-<p>Other useful arguments are:</p>
-<p><strong>qparse arguments</strong></p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
-</table>
-<p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
-<p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
-
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+	<ul>
+<li><a href="#db2">DB2</a></li>
+<li><a href="#derby">Derby</a></li>
+<li><a href="#ms-sql">MS SQL</a></li>
+<li><a href="#mysql">MySQL</a></li>
+<li><a href="#postgresql">PostgresQL</a></li>
+</ul>
+<h2 id="db2">DB2</h2>
+<h3 id="database-creation">Database creation</h3>
+<p>The database should be created with code set UTF-8 so unicode is
+enabled (SDB creates tables CCSID UNICODE for full
+internationalization support).</p>
+<h2 id="derby">Derby</h2>
+<h3 id="loading-restriction">Loading Restriction</h3>
+<p>Only one load operation can be active at any one time. Limitations
+on temporary tables in Derby mean the loader tables are not
+temporary and hence are shared by all connections.</p>
+<h2 id="ms-sql">MS SQL</h2>
+<p>The collation sequence for the database must be one that is binary
+(BIN in the name). It does not matter which one is used. Without
+BIN, string matching is case insensitive but RDF requires case
+sensitive literals and IRIs. The normal layout is not affected by
+this because it does not use string comparisons.</p>
+<h2 id="mysql">MySQL</h2>
+<h3 id="national-characters">National Characters</h3>
+<p>SDB formats all table columns used for storing text in the MySQL
+schema to UTF-8. However, this does not cause the data to be
+transmitted in UTF-8 over the JDBC connection.</p>
+<p>The best way is to run the server with a default character set of
+UTF-8. This is set in the MySQL server configuration file:</p>
+<pre><code>[mysql]
+default-character-set=utf8
 </code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
-<p>ARQ can log query and update execution details globally or for an
-individual operations. This adds another level of control on top of the
-logger level controls.</p>
-<p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
+<p>A less reliable way is to pass parameters to the JDBC driver in the
+JDBC URL. The application will need to explicitly set the JDBC URL
+in the
+<a href="store_description.html" title="SDB/Store Description">store configuration</a>
+file.</p>
+<pre><code> ...?useUnicode=true&amp;characterEncoding=UTF-8
 </code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
-the execution context.</p>
-<p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
-query execution speeds but the order of operations logged will be
-correct.</p>
-<p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
-at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
-<code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
-logger.arq-exec.level = INFO
+<h3 id="connection-timeouts">Connection timeouts</h3>
+<p>If you get the connection timing out after (by default) 8 hours of
+no activity, try setting <code>autoReconnect=true</code> in the JDBC URL.</p>
+<h3 id="tuning">Tuning</h3>
+<ol>
+<li>For InndoDB, the critical parameter is
+<code>innodb_buffer_pool_size</code>. See the MySQL sample configuration files
+for details.</li>
+<li>Using ANALYZE TABLE on the database tables can improve the
+choices made by the MySQL optimizer.</li>
+</ol>
+<h3 id="connection-timeout">Connection Timeout</h3>
+<p>MySQL closes the JDBC connection after a period of no use (8 hours
+by default).</p>
+<p>While deprecated my MySQL, <code>?autoReconnect=true</code> may help here.</p>
+<p>Other ways of addressing the problem are to make a simple query
+call on a regular basis just to keep the connection alive (e.g.
+<code>SELECT * { &lt;http://example/junk&gt; &lt;http://example/junk&gt; &lt;http://example/junk&gt; }</code>).</p>
+<p>Some connection pool systems automatic compensate for this feature
+of MySQL.</p>
+<h2 id="postgresql">PostgresQL</h2>
+<h3 id="databases-must-use-utf-8-encoding">Databases must use UTF-8 encoding</h3>
+<p>Create SDB stores with encoding UTF-8.</p>
+<p>International character sets can cause corrupted databases
+otherwise. The database will not pass the SDB test suite.</p>
+<p>Set this when creating the database with pgAdmin or if you use the
+command line, for example:</p>
+<pre><code> CREATE DATABASE &quot;YourStoreName&quot;
+ WITH OWNER = &quot;user&quot;
+      ENCODING = 'UTF8'
+      TABLESPACE = pg_default;
 </code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
-globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+<h3 id="improving-loading-rates">Improving loading rates</h3>
+<p>The index layout (&ldquo;layout2/index&rdquo;) usually loads faster than the
+hash form.</p>
+<p><em>Existing store</em></p>
+<p>When loading into an existing store, where there is existing data
+and <code>ANALYZE</code> has been run, the process is:</p>
+<ul>
+<li>
+<p>Drop indexes</p>
+<p>sdbconfig &ndash;drop</p>
+</li>
+<li>
+<p>Load data</p>
+<p>sdbload file</p>
+</li>
+<li>
+<p>Redo the indexes</p>
+<p>sdbconfig &ndash;index</p>
+</li>
+</ul>
+<p><em>Fresh store</em></p>
+<p>PostgreSQL needs statistics to improve load performance through the
+use of <code>ANALYSE</code>.</p>
+<p>When loading the first time, there are no statistics so, for a
+large load, it is advisable to load a sample, run <code>ANALYSE</code> and
+then load the whole data.</p>
+<ul>
+<li>
+<p>Create the database without indexes (just the primary keys).</p>
+<p>sdbconfig &ndash;format</p>
+</li>
+<li>
+<p>Load a sample of the triples (say, a 100K or a million triples</p>
+<ul>
+<li>until</li>
+</ul>
+</li>
+</ul>
+<p>the load rate starts to drop appreciably). The sample must be
+representative of the data.</p>
+<pre><code> sdbload --time sample
 </code></pre>
-<p>and it may also be set on an individual query execution using its local
-context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
+<ul>
+<li>
+<p>Run <code>ANALYZE</code> on the database.</p>
+</li>
+<li>
+<p>If your sample is one part of a large set of files, this set is
+not necessary at all. If you are loading one single large file then
+you might wish to empty the database. This is only needed if the
+data has bNodes in</p>
+</li>
+</ul>
+<p>it because the load process suppresses duplicates.</p>
+<pre><code> sdbconfig --truncate
 </code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
-<p>Logging information levels: see the <a href="logging.html">logging page</a></p>
+<ul>
+<li>
+<p>Now load the data or rest of the data.</p>
+<p>sdbload &ndash;time file</p>
+</li>
+<li>
+<p>Add the indexes. This only takes a few minutes even on a very
+large store but calculating them during loading (that is,
+<code>--create</code>, not <code>--format</code>) is noticeably slower.</p>
+<p>sdbconfig &ndash;index</p>
+</li>
+<li>
+<p>Run <code>ANALYZE</code> on the database again.</p>
+</li>
+</ul>
+<h3 id="tuning-1">Tuning</h3>
+<p>It is essential to run the PostgreSQL ANALYZE command on a
+database, either during or after building. This is done via the
+command line <code>psql</code> or via <code>pgAdmin</code>. The PostgreSQL documentation
+describes ways to run this as a background daemon.</p>
+<p>Various of the PostgreSQL configuration parameters will affect
+performance, particularly <code>effective_cache_size</code>. The parameter
+<code>enable_seqscan</code> <em>may</em> help avoid some unexpected slow queries.</p>
 
 
         </div>
