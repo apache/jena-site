@@ -178,6 +178,7 @@
             
 	<h2 id="faqs">FAQs</h2>
 <ul>
+<li><a href="#tdv1-tdb2">What are TDB1 and TDB2?</a></li>
 <li><a href="#transactions">Does TDB support Transactions?</a></li>
 <li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
 <li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
@@ -192,6 +193,12 @@
 <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
 <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
 </ul>
+<p>&lt;a name=&quot;tdb1-tdb2&gt;</a></p>
+<h2 id="tdb1-and-tdb2">TDB1 and TDB2</h2>
+<p>TDB2 is a later generation of database for Jena. It is more robust and can
+handle large update transactions.</p>
+<p>These are different databases systems - the have different on-disk file formats
+and databases for one are not compatible with other database engine.</p>
 <p><a name="transactions"></a></p>
 <h2 id="does-tdb-support-transactions">Does TDB support transactions?</h2>
 <p>Yes, TDB provides
@@ -206,10 +213,10 @@ transactionally.</p>
 <p><a name="multi-jvm"></a></p>
 <h2 id="can-i-share-a-tdb-dataset-between-multiple-applications">Can I share a TDB dataset between multiple applications?</h2>
 <p>Multiple applications, running in multiple JVMs, using the same
-file databases is <strong>not</strong> supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
+file databases is <strong>not</strong> supported and has a high risk of data corruption.  Once corrupted, a database cannot be repaired
 and must be rebuilt from the original source data. Therefore there <strong>must</strong> be a single JVM
 controlling the database directory and files.</p>
-<p>From 1.1.0 onwards TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
+<p>TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
 protect your data from corruption.</p>
 <p>If you wish to share a TDB dataset between applications use our <a href="../fuseki2/">Fuseki</a> component which provides a
 database server. Fuseki supports <a href="http://www.w3.org/TR/sparql11-query/">SPARQL Query</a>,
@@ -235,8 +242,13 @@ will need to be rebuilt from the original source data, this is why we <strong>st
 <p>As noted above to resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database <strong>cannot</strong>
 be repaired. This is why we <strong>strongly</strong> recommend you use <a href="tdb_transactions.html">transactions</a> since this protects your dataset against
 corruption.</p>
+<h2 id="what-is-tdbxloader">What is <code>tdb.xloader</code>?</h2>
+<p><code>tdb1.xloader</code> and <code>tdb2.xloader</code> are bulk laodrs for very large dataset that
+take several hours to load.</p>
+<p>See <a href="./tdb-xloader.html">TDB xloader</a> for more information.</p>
 <p><a name="tdbloader-vs-tdbloader2"></a></p>
 <h2 id="what-is-the-different-between-tdbloader-and-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</h2>
+<p><code>tdbloader2</code> has been replaced by <code>tdb1.xloader</code> and <code>tdb2.xloader</code> for TDB1 and TDB2 respectively.</p>
 <p><code>tdbloader</code> and <code>tdbloader2</code> differ in how they build databases.</p>
 <p><code>tdbloader</code> is Java based and uses the same TDB APIs that you would use in your own Java code to perform the data load.  The advantage of this is that
 it supports incremental loading of data into a TDB database.  The downside is that the loader will be slower for initial database builds.</p>
