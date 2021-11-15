@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - explaining ARQ queries</title>
+    <title>Apache Jena - Explaining ARQ queries</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -174,13 +174,9 @@
 
                 
             </div>
-            <h1 class="title">explaining ARQ queries</h1>
+            <h1 class="title">Explaining ARQ queries</h1>
             
-	<p><em>This page applies to ARQ version 2.8.6 and later. In this version query
-logging was consolidated and made uniform across ARQ, SDB and TDB.
-Details of TDB logging changed to use this logging and explanation
-framework from TDB version 0.8.8.</em></p>
-<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
+	<p>Optimization in ARQ proceeds on two levels. After the query is parsed,
 the SPARQL algebra for the query is generated as described in the SPARQL
 specification. High-level optimization occurs by rewriting the algebra
 into new, equivalent algebra forms and introducing specialized algebra
@@ -258,8 +254,7 @@ globally:</p>
 </code></pre>
 <p>and it may also be set on an individual query execution using its local
 context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecutionFactory.create(...)) {
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.ALL) ;
+<pre><code> try(QueryExecution qExec = QueryExecution.create() ... .set(ARQ.symLogExec, Explain.InfoLevel.ALL).build() ) {
      ResultSet rs = qExec.execSelect() ;
      ...
  }

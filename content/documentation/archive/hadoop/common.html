@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - Apache Jena Elephas - Common API</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/hadoop/common.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/hadoop'>HADOOP</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">COMMON</li>
             
             
         
@@ -174,90 +182,35 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">Apache Jena Elephas - Common API</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
-<ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
-<ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
-</ul>
-</li>
-<li>
-<p>Query engines to execute queries</p>
-<ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
-</ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+	<p>The Common API provides the basic data model for representing RDF data within Apache Hadoop applications.  This primarily takes the form of <code>Writable</code> implementations and the necessary machinery to efficiently serialise and deserialise these.</p>
+<p>Currently we represent the three main RDF primitives - Nodes, Triples and Quads - though in future a wider range of primitives may be supported if we receive contributions to implement them.</p>
+<h1 id="rdf-primitives">RDF Primitives</h1>
+<h2 id="nodes">Nodes</h2>
+<p>The <code>Writable</code> type for nodes is predictably enough called <code>NodeWritable</code> and it implements the <code>WritableComparable</code> interface which means it can be used as both a key and/or value in Map/Reduce.  In standard Hadoop style a <code>get()</code> method returns the actual value as a Jena <code>Node</code> instance while a corresponding <code>set()</code> method allows the value to be set.  Conveying <code>null</code> values is acceptable and fully supported.</p>
+<p>Note that nodes are lazily converted to and from the underlying binary representation so there is minimal overhead if you create a <code>NodeWritable</code> instance that does not actually ever get read/written.</p>
+<p><code>NodeWritable</code> supports and automatically registers itself for Hadoop&rsquo;s <a href="https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/io/WritableComparator.html"><code>WritableComparator</code></a> mechanism which allows it to provide high efficiency binary comparisons on nodes which helps reduce phases run faster by avoiding unnecessary deserialisation into POJOs.</p>
+<p>However the downside of this is that the sort order for nodes may not be as natural as the sort order using POJOs or when sorting with SPARQL.  Ultimately this is a performance trade off and in our experiments the benefits far outweigh the lack of a more natural sort order.</p>
+<p>You simply use it as follows</p>
+<pre><code>NodeWritable nw = new NodeWritable();
+
+// Set the value
+nw.set(NodeFactory.createURI(&quot;http://example.org&quot;));
+
+// Get the value (remember this may be null)
+Node value = nw.get();
+</code></pre>
+<h2 id="triples">Triples</h2>
+<p>Again the <code>Writable</code> type for nodes is simply called <code>TripleWritable</code> and it also implements the <code>WritableComparable</code> interface meaning it may be used as both a key and/or value.  Again the standard Hadoop conventions of a <code>get()</code> and <code>set()</code> method to get/set the value as a Jena <code>Triple</code> are followed.  Unlike the <code>NodeWritable</code> this class does not support conveying <code>null</code> values.</p>
+<p>Like the other primitives it is lazily converted to and from the underlying binary representations and it also supports &amp; registers itself for Hadoop&rsquo;s <code>WritableComparator</code> mechanism.</p>
+<h2 id="quads">Quads</h2>
+<p>Similarly the <code>Writable</code> type for quads is again simply called <code>QuadWritable</code> and it implements the <code>WritableComparable</code> interface making it usable as both a key and/or value.  As per the other primitives standard Hadoop conventions of a <code>get()</code> and <code>set()</code> method are provided to get/set the value as a Jena <code>Quad</code>.  Unlike the <code>NodeWritable</code> this class does not support conveying <code>null</code> values.</p>
+<p>Like the other primitives it is lazily converted to and from the underlying binary representations and it also supports &amp; registers itself for Hadoop&rsquo;s <code>WritableComparator</code> mechanism.</p>
+<h2 id="arbitrary-sized-tuples">Arbitrary sized tuples</h2>
+<p>In some cases you may have data that is RDF like but not itself RDF or that is a mix of triples and quads in which case you may wish to use the <code>NodeTupleWritable</code>.  This is used to represent an arbitrarily sized tuple consisting of zero or more <code>Node</code> instances, there is no restriction on the number of nodes per tuple and no requirement that tuple data be uniform in size.</p>
+<p>Like the other primitives it implements <code>WritableComparable</code> so can be used as a key and/or value.  However this primitive does not support binary comparisons meaning it may not perform as well as using the other primitives.</p>
+<p>In this case the <code>get()</code> and <code>set()</code> methods get/set a <code>Tuple&lt;Node&gt;</code> instance which is a convenience container class provided by ARQ.  Currently the implementation does not support lazy conversion so the full <code>Tuple&lt;Node&gt;</code> is reconstructed as soon as an <code>NodeTupleWritable</code> instance is deserialised.</p>
 
 
         </div>

@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - Apache Jena Elephas - RDF Stats Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/hadoop/demo.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/hadoop'>HADOOP</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">DEMO</li>
             
             
         
@@ -174,90 +182,96 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">Apache Jena Elephas - RDF Stats Demo</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
-<ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
-<ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
-</ul>
-</li>
-<li>
-<p>Query engines to execute queries</p>
-<ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
-</ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
+	<p>The RDF Stats Demo is a pre-built application available as a ready to run Hadoop Job JAR with all dependencies embedded within it.  The demo app uses the other libraries to allow calculating a number of basic statistics over any RDF data supported by Elephas.</p>
+<p>To use it you will first need to build it from source or download the relevant Maven artefact:</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-elephas-stats&lt;/artifactId&gt;
+  &lt;version&gt;x.y.z&lt;/version&gt;
+  &lt;classifier&gt;hadoop-job&lt;/classifier&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Where <code>x.y.z</code> is the desired version.</p>
+<h1 id="pre-requisites">Pre-requisites</h1>
+<p>In order to run this demo you will need to have a Hadoop 2.x cluster available, for simple experimentation purposes a <a href="http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html">single node cluster</a> will be sufficient.</p>
+<h1 id="running">Running</h1>
+<p>Assuming your cluster is started and running and the <code>hadoop</code> command is available on your path you can run the application without any arguments to see help:</p>
+<pre><code>&gt; hadoop jar jena-elephas-stats-VERSION-hadoop-job.jar org.apache.jena.hadoop.rdf.stats.RdfStats
+NAME
+    hadoop jar PATH_TO_JAR org.apache.jena.hadoop.rdf.stats.RdfStats - A
+    command which computes statistics on RDF data using Hadoop
+
+SYNOPSIS
+    hadoop jar PATH_TO_JAR org.apache.jena.hadoop.rdf.stats.RdfStats
+            [ {-a | --all} ] [ {-d | --data-types} ] [ {-g | --graph-sizes} ]
+            [ {-h | --help} ] [ --input-type &lt;inputType&gt; ] [ {-n | --node-count} ]
+            [ --namespaces ] {-o | --output} &lt;OutputPath&gt; [ {-t | --type-count} ]
+            [--] &lt;InputPath&gt;...
+
+OPTIONS
+    -a, --all
+        Requests that all available statistics be calculated
+
+    -d, --data-types
+        Requests that literal data type usage counts be calculated
+
+    -g, --graph-sizes
+        Requests that the size of each named graph be counted
+
+    -h, --help
+        Display help information
+
+    --input-type &lt;inputType&gt;
+        Specifies whether the input data is a mixture of quads and triples,
+        just quads or just triples. Using the most specific data type will
+        yield the most accurate statistics
+
+        This options value is restricted to the following value(s):
+            mixed
+            quads
+            triples
+
+    -n, --node-count
+        Requests that node usage counts be calculated
+
+    --namespaces
+        Requests that namespace usage counts be calculated
+
+    -o &lt;OutputPath&gt;, --output &lt;OutputPath&gt;
+        Sets the output path
+
+    -t, --type-count
+        Requests that rdf:type usage counts be calculated
+
+    --
+        This option can be used to separate command-line options from the
+        list of argument, (useful when arguments might be mistaken for
+        command-line options)
+
+    &lt;InputPath&gt;
+        Sets the input path(s)
+</code></pre>
+<p>If we wanted to calculate the node count on some data we could do the following:</p>
+<pre><code>&gt; hadoop jar jena-elephas-stats-VERSION-hadoop-job.jar org.apache.jena.hadoop.rdf.stats.RdfStats --node-count --output /example/output /example/input
+</code></pre>
+<p>This calculates the node counts for the input data found in <code>/example/input</code> placing the generated counts in <code>/example/output</code></p>
+<h2 id="specifying-inputs-and-outputs">Specifying Inputs and Outputs</h2>
+<p>Inputs are specified simply by providing one or more paths to the data you wish to analyse.  You can provide directory paths in which case all files within the directory will be processed.</p>
+<p>To specify the output location use the <code>-o</code> or <code>--output</code> option followed by the desired output path.</p>
+<p>By default the demo application assumes a mixture of quads and triples data, if you know your data is only in triples/quads then you can use the <code>--input-type</code> argument followed by <code>triples</code> or <code>quads</code> to indicate the type of your data.  Not doing this can skew some statistics as the default is to assume mixed data and so all triples are upgraded into quads when calculating the statistics.</p>
+<h2 id="available-statistics">Available Statistics</h2>
+<p>The following statistics are available and are activated by the relevant command line option:</p>
 <table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
+  <tr><th>Command Line Option</th><th>Statistic</th><th>Description & Notes</th></tr>
+  <tr><td><code>-n</code> or <code>--node-count</code></td><td>Node Count</td><td>Counts the occurrences of each unique RDF term i.e. node in Jena parlance</td></tr>
+  <tr><td><code>-t</code> or <code>--type-count</code></td><td>Type Count</td><td>Counts the occurrences of each declared <code>rdf:type</code> value</td></tr>
+  <tr><td><code>-d</code> or <code>--data-types</code></td><td>Data Type Count</td><td>Counts the occurrences of each declared literal data type</td></tr>
+  <tr><td><code>--namespaces</code></td><td>Namespace Counts</td><td>Counts the occurrences of namespaces within the data.<br />Namespaces are determined by splitting URIs at the <code>#</code> fragment separator if present and if not the last <code>/</code> character
+  <tr><td><code>-g</code> or <code>--graph-sizes</code></td><td>Graph Sizes</td><td>Counts the sizes of each graph declared in the data</td></tr>
 </table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+<p>You can also use the <code>-a</code> or <code>--all</code> option if you simply wish to calculate all statistics.</p>
 
 
         </div>
