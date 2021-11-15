@@ -179,8 +179,9 @@
 	<p>This page describes how to filter quads at the lowest level of TDB.
 It can be used to hide certain quads (triples in named graphs) or
 triples.</p>
-<p>The code for the example on this page can be found in the TDB
-download: <code>src-examples/tdb.examples/ExQuadFilter.java</code> Filtering
+<p>The code for the example on this page can be found in the
+<a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/tdb">TDB examples</a>
+Filtering
 quads should be used with care. The performance of the tuple filter
 callback is critical.</p>
 <p>See also
@@ -193,18 +194,12 @@ accept or reject the quad or triple. This happens during basic
 graph pattern processing.</p>
 <p>A rejected quad is simply not processed further in the basic graph
 pattern and it is as if it is not in the dataset.</p>
-<p>The filter has a signature of:</p>
-<pre><code> // org.apache.jena.atlas.iterator.Filter
- interface Filter&lt;T&gt;
- {
-    public boolean accept(T item) ;
- }
-</code></pre>
-<p>with a type parameter of <code>Tuple&lt;NodeId&gt;</code>. <code>NodeId</code> is the low level
+<p>The filter has a signature of: <code>java.util.function.Predicate&lt;Tuple&lt;NodeId&gt;&gt;</code>
+with a type parameter of <code>Tuple&lt;NodeId&gt;</code>. <code>NodeId</code> is the low level
 internal identifier TDB uses for RDF terms. <code>Tuple</code> is a class for
 an immutable tuples of values of the same type.</p>
 <pre><code>  /** Create a filter to exclude the graph http://example/g2 */
-  private static Filter&lt;Tuple&lt;NodeId&gt;&gt; createFilter(Dataset ds)
+  private static Predicate&lt;Tuple&lt;NodeId&gt;&gt; createFilter(Dataset ds)
   {
       DatasetGraphTransaction dst = (DatasetGraphTransaction)(ds.asDatasetGraph()) ;
       DatasetGraphTDB dsg = dst.getBaseDatasetGraph();
@@ -215,8 +210,7 @@ an immutable tuples of values of the same type.</p>
       final NodeId target = nodeTable.getNodeIdForNode(Node.createURI(&quot;http://example/g2&quot;)) ;
 
       // Filter for accept/reject as quad as being visible.
-      Filter&lt;Tuple&lt;NodeId&gt;&gt; filter = new Filter&lt;Tuple&lt;NodeId&gt;&gt;() {
-          public boolean accept(Tuple&lt;NodeId&gt; item)
+      Predicate&lt;Tuple&lt;NodeId&gt;&gt; filter = item -&gt;
           {
               // Quads are 4-tuples, triples are 3-tuples.
               if ( item.size() == 4 &amp;&amp; item.get(0).equals(target) )
@@ -224,19 +218,19 @@ an immutable tuples of values of the same type.</p>
                   return false ;
               // Accept
               return true ;
-          } } ;
+          } ;
       return filter ;
   }
 </code></pre>
 <p>To install a filter, put it in the context of a query execution
 under the symbol <code>SystemTDB.symTupleFilter</code> then execute the query as normal.</p>
 <pre><code>    Dataset ds = ... ;
-    Filter&lt;Tuple&lt;NodeId&gt;&gt; filter = createFilter(ds) ;
+    Predicate&lt;Tuple&lt;NodeId&gt;&gt; filter = createFilter(ds) ;
     Query query = ... ;
     try (QueryExecution qExec = QueryExecution.dataset(ds)
             .query(query)
             .set(SystemTDB.symTupleFilter, filter)
-            .build() ) {}
+            .build() ) {
         ResultSet rs = qExec.execSelect() ;
         ...
     }
