@@ -4,6 +4,7 @@ title: TDB FAQs
 
 ## FAQs
 
+-   [What are TDB1 and TDB2?](#tdb1-tdb2)
 -   [Does TDB support Transactions?](#transactions)
 -   [Can I share a TDB dataset between multiple applications?](#multi-jvm)
 -   [What is the *Impossibly Large Object* exception?](#impossibly-large-object)
@@ -17,6 +18,15 @@ title: TDB FAQs
 -   [Why can't I delete a dataset (MS Windows/64 bit)?](#windows-dataset-delete)
 -   [What is the *Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database* error?](#tdb2-lock)
 -   [My question isn't answered here?](#not-answered)
+
+<a name="tdb1-tdb2></a>
+## TDB1 and TDB2
+
+TDB2 is a later generation of database for Jena. It is more robust and can
+handle large update transactions.
+
+These are different databases systems - the have different on-disk file formats
+and databases for one are not compatible with other database engine.
 
 <a name="transactions"></a>
 ## Does TDB support transactions?
@@ -37,11 +47,11 @@ transactionally.
 ## Can I share a TDB dataset between multiple applications?
 
 Multiple applications, running in multiple JVMs, using the same
-file databases is **not** supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
+file databases is **not** supported and has a high risk of data corruption.  Once corrupted, a database cannot be repaired
 and must be rebuilt from the original source data. Therefore there **must** be a single JVM
 controlling the database directory and files.
 
-From 1.1.0 onwards TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
+TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
 protect your data from corruption.
 
 If you wish to share a TDB dataset between applications use our [Fuseki](../fuseki2/) component which provides a 
@@ -77,10 +87,21 @@ As noted above to resolve this problem you **must** rebuild your database from t
 be repaired. This is why we **strongly** recommend you use [transactions](tdb_transactions.html) since this protects your dataset against 
 corruption.
 
+## What is `tdb.xloader`?
+
+`tdb1.xloader` and `tdb2.xloader` are bulk loaders for very large datasets that
+take several hours to load.
+
+See [TDB xloader](./tdb-xloader.html) for more information.
+
 <a name="tdbloader-vs-tdbloader2"></a>
 ## What is the different between `tdbloader` and `tdbloader2`?
 
+`tdbloader2` has been replaced by `tdb1.xloader` and `tdb2.xloader` for TDB1 and TDB2 respectively.
+
+
 `tdbloader` and `tdbloader2` differ in how they build databases.
+
 
 `tdbloader` is Java based and uses the same TDB APIs that you would use in your own Java code to perform the data load.  The advantage of this is that
 it supports incremental loading of data into a TDB database.  The downside is that the loader will be slower for initial database builds.
