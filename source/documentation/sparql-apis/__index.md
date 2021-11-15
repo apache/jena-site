@@ -109,8 +109,8 @@ objects have been removed.
 
 ## Substitution
 
-All query and update builders provide operations to uses a query and substitute
-variables for concrete RDF terms in the execution  
+All query and update builders provide operations to use a query and substitute
+variables for concrete RDF terms in the execution.
 
 Unlike "initial bindings" substitution is provided in query and update builders
 for both local and remote cases. 
@@ -121,7 +121,7 @@ DATA` but can be used with `INSERT { ?s ?p ?o } WHERE {}` and
 `DELETE { ?s ?p ?o } WHERE {}`.
 
 Full example:
-[ExQuerySubstitute_01.java](https://github.com/afs/jena/tree/main/jena-arq/src-examples/arq/examples/ExQuerySubstitute_01.java).
+[ExQuerySubstitute_01.java](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/ExQuerySubstitute_01.java).
 
 ``` 
     ResultSet resultSet1 = QueryExecution.dataset(dataset)

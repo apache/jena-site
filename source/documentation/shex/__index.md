@@ -57,7 +57,7 @@ The package `org.apache.jena.shex` has the main classes.
 
 Examples:
 
-https://github.com/apache/jena/tree/main/jena-shex/src/main/java/org/apache/jena/shex/examples/
+https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/examples/
 
 ```
     public static void main(String ...args) {

@@ -105,7 +105,8 @@ on the default graph. For instance:
     // The part of "GRAPH ?g1 { ?s1 ?p1 ?o1 }" will be ignored. Only "?s ?p ?o" in the default graph will be returned.
     Iterator<Triple> triples = qexec.execConstructTriples();
 
-More examples can be found at `ExampleConstructQuads.java` under `jena-arq/src-examples`
+More examples can be found at `ExampleConstructQuads.java` at
+[jena-examples:arq/examples/constructquads/](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/constructquads/).
 
 ## Fuseki Support
 

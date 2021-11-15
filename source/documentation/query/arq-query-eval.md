@@ -31,8 +31,8 @@ For higher SPARQL performance, ARQ can be extended at the
 
 Applications writers who extend ARQ at the query execution level
 should be prepared to work with the source code for ARQ for
-specific details and for finding code to reuse. Some example can be
-found in the `src-examples` directory in the ARQ download.
+specific details and for finding code to reuse. Some examples can be
+found [arq/examples directory](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/) 
 
 -   [Overview of ARQ Query processing](#overview-of-arq-query-processing)
 -   [The Main Query Engine](#the-main-query-engine)
@@ -230,8 +230,8 @@ called to return a `Plan` object for the execution. The main
 operation of the `Plan` interface is to get the `QueryIterator` for
 the query.
 
-See the example in
-`src-examples/arq.examples.engine.MyQueryEngine`.
+See the example `arq.examples.engine.MyQueryEngine` at
+[jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/).
 
 ## The Main Query Engine
 
@@ -363,7 +363,8 @@ has a convenience operation to do this):
       StageBuilder.setGenerator(ARQ.getContext(), myStageGenerator) ;
 
 
-Example: `src-examples/arq.examples.bgpmatching`.
+Example:
+[jena-examples:arq/examples/bgpmatching](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/bgpmatching/)
 
 ## OpExecutor
 
@@ -483,7 +484,8 @@ Generator or a combination of all three extension mechanism.
 
 Only a small, skeleton custom query engine is needed to intercept
 the initial setup. See the example in
-`src-examples/arq.examples.engine.MyQueryEngine`.
+[jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/)
+`arq.examples.engine.MyQueryEngine`.
 
 While it is possible to replace the entire process of query
 evaluation, this is a substantial endeavour. `QueryExecutionBase`

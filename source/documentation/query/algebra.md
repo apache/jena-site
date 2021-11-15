@@ -86,14 +86,13 @@ SSE is simply passing the calls to the writer operation from the
 
 ## Creating an algebra expression programmatically
 
-See the example in `src-examples/arq.examples.AlgebraExec`.
+See the example in 
+[AlgebraExec](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/algebra/AlgebraExec.java).
 
 To produce the complete javadoc for ARQ, download an ARQ
 distribution and run the ant task 'javadoc-all'.
 
 ## Evaluating a algebra expression
-
-See the example in `src-examples/arq.examples.AlgebraExec`.
 
     QueryIterator qIter = Algebra.exec(op,graph) ;
 

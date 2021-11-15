@@ -92,7 +92,7 @@ The package `org.apache.jena.shacl` has the main classes.
 
 ## API Examples
 
-https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples
+https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shacl/examples/
 
 Example
 [`Shacl01_validateGraph`](
