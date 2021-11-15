@@ -3,7 +3,7 @@ title: Apache Jena SPARQL APIs
 slug: index
 ---
 
-Jump to "[Changes](#changes)".
+Jump to the "[Changes](#changes)" section.
 
 ## Overview
 
@@ -89,12 +89,10 @@ objects have been removed.
 
 * Deprecate modifying `QueryExecution` after it is built.
 
-* Parameterization for remote queries.
-  Parameterization - replacing variables by values before sending
-  a query - makes the query into a template. The same applies to updates.
-  This is also provided uniformly for local queries and should be used in
-  preference to the local-only "initial binding" approach which is
-  similarly but not identical.
+* Substitution of variables for concrete values in query and update execution.
+  This is a form of paramterization that works in both local and remnote usage
+  (unlike "intial bindings" which are only available for lcoal query execution).
+  See the [substitution section](#substitution) section below.
 
 * `HttpOp`, using `java.net.http.HttpClient`, is split into `HttpRDF` for
   GET/POST/PUT/DELETE of graphs and datasets and new `HttpOp` for packaged-up
@@ -108,6 +106,41 @@ objects have been removed.
 * `DatasetAccessor`s removed - previously these were deprecated. `GSP` and
 `ModelStore` are the replacement for remote operations. `RDFConnection` and
 `RDFLink` provide APIs.
+
+## Substitution
+
+All query and update builders provide operations to uses a query and substitute
+variables for concrete RDF terms in the execution  
+
+Unlike "initial bindings" substitution is provided in query and update builders
+for both local and remote cases. 
+
+Substitution is always "replace variable with RDF term" in a query or update
+that is correct syntax. This means is does not apply to `INSERT DATA` or `DELETE
+DATA` but can be used with `INSERT { ?s ?p ?o } WHERE {}` and 
+`DELETE { ?s ?p ?o } WHERE {}`.
+
+Full example:
+[ExQuerySubstitute_01.java](https://github.com/afs/jena/tree/main/jena-arq/src-examples/arq/examples/ExQuerySubstitute_01.java).
+
+``` 
+    ResultSet resultSet1 = QueryExecution.dataset(dataset)
+            .query(prefixes+"SELECT * { ?person foaf:name ?name }")
+            .substitution("name", name1)
+            .select();
+    ResultSetFormatter.out(resultSet1);
+```
+
+Substitution is to be preferred over "initial bindings" because it is clearly
+defined and applies to both query and update in both local and remote uses.
+
+"Substitution" and "initial bindings" are similar but not identical.
+
+See also 
+* [Parameterized Queries](documentation/query/parameterized-sparql-strings.html) 
+* [Jena Query Builder](https://jena.apache.org/documentation/extras/querybuilder/index.html)
+
+which provide a different ways to build a query.
 
 ## <tt>RDFConnection</tt>
 
