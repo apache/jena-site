@@ -269,9 +269,10 @@ and receiving datasets, rather than individual graphs.</p>
 <p>Both API and GPI provide builders for detailed setup, particularly for remote
 usage over HTTP and HTTPS where detailed control of the HTTP requests is
 sometimes necessary to work with other triple stores.</p>
-<p>Factory style functions for many common usage patterns are retained in
-<code>QueryExecutionFactory</code>, <code>UpdateExecutionFactory</code>. Note that any methods that
-involved Apache HttpClient objects have been removed.</p>
+<p>Use of the builders is preferred to factories. Factory style functions for many
+common usage patterns are retained in <code>QueryExecutionFactory</code>,
+<code>UpdateExecutionFactory</code>. Note that any methods that involved Apache HttpClient
+objects have been removed.</p>
 <h2 id="changes">Changes from Jena 4.2.0 to Jena 4.3.0</h2>
 <ul>
 <li>
@@ -282,7 +283,7 @@ still covered by the existing <code>QueryExecutionFactory</code> as well as the 
 </li>
 <li>
 <p>HTTP usage provided by the JDK <code>java.net.http</code> package, with challenge-based
-authentication provided on top by Jena. <a href="#auth">See below</a>.</p>
+authentication provided on top by Jena. <a href="./http-auth.html">See the authentiucation documentation</a>.</p>
 </li>
 <li>
 <p>Authentication support is uniformly applied to query, update, GSP and <code>SERVICE</code>.</p>
@@ -355,19 +356,12 @@ defined and applies to both query and update in both local and remote uses.</p>
         conn.queryAsk(&quot;ASK{}&quot;);
     }
 </code></pre><p>or the less flexible:</p>
-<pre><code>    try ( RDFConnection conn = RDFConnectionFactory.connect(dataURL) ) {
+<pre><code>    try ( RDFConnection conn = RDFConnection.connect(dataURL) ) {
         conn.update(&quot;INSERT DATA{}&quot;);
         conn.queryAsk(&quot;ASK{}&quot;);
     }
 </code></pre><h2 id="query-execution">Query Execution</h2>
-<p>Factory Examples</p>
-<pre><code>  Dataset dataset = ...
-  Query query = ...
-  try ( QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ) {
-       ResultSet results = qExec.execSelect();
-       ... use results ...
-  }
-</code></pre><p>Builder Examples
+<p>Builder Examples
 Builders are reusable and modifiable after a &ldquo;build&rdquo; operation.</p>
 <pre><code>Dataset dataset = ...
 Query query = ...
@@ -385,6 +379,13 @@ try ( QueryExecution qExec = QueryExecution.create()
     ResultSet results = qExec.execSelect();
     ... use results ...
 }
+</code></pre><p>Factory Examples</p>
+<pre><code>  Dataset dataset = ...
+  Query query = ...
+  try ( QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ) {
+       ResultSet results = qExec.execSelect();
+       ... use results ...
+  }
 </code></pre><p>More complex setup:</p>
 <pre><code>// JDK HttpClient
 HttpClient httpClient = HttpClient.newBuilder()
@@ -473,106 +474,7 @@ collection of endpoints with the same prefix.</p>
 maps URLs or prefix of URLs to a function of interface <code>HttpRequestModifier</code>
 which has access to the headers and the query string parameters of the request.</p>
 <h2 id="auth">Authentication</h2>
-<p>For any use of users-password information, and especially HTTP basic
-authentication, information is visible in the HTTP headers. Using HTTPS is
-necessary to avoid snooping.  Digest authentication is also stronger over HTTPS
-because it protects against man-in-the-middle attacks.</p>
-<p>There are 5 variations:</p>
-<ol>
-<li>Basic authentication</li>
-<li>Challenge-Basic authentication</li>
-<li>Challenge-Digest authentication</li>
-<li>URL user (that is, <code>user@host.net</code> in the URL)</li>
-<li>URL user and password in the URL (that is, <code>user:password@host.net</code> in the URL)</li>
-</ol>
-<p>Basic authentication occurs where the app provides the user and password
-information to the JDK <code>HttpClient</code> and that information is always used when
-sending HTTP requests with that <code>HttpClient</code>. It does not require an initial
-request-challenge-resend to initiate. This is provided natively by the <code>java.net.http</code>
-JDK code. See <code>HttpClient.newBuilder().authenticate(...)</code>.</p>
-<p>Challenge based authentication, for &ldquo;basic&rdquo; or &ldquo;digest&rdquo;, are provided by Jena.
-The challenge happens on the first contact with the remote endpoint and the
-server returns a 401 response with an HTTP header saying which style of
-authentication is required. There is a registry of users name and password for
-endpoints which is consulted and the appropriate
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization"><code>Authorization:</code></a>
-header is generated then the request resent. If no registration matches, the 401
-is passed back to the application as an exception.</p>
-<p>Because it is a challenge response to a request, the request must be sent twice,
-first to trigger the challenge and then again with the HTTP authentication
-information.  To make this automatic, the first request must not be a streaming
-request (the stream is not repeatable). All HTTP request generated by Jena are
-repeatable.</p>
-<p>The URL can contain a <code>userinfo</code> part, either the <code>users@host</code> form, or the <code>user:password@host</code> form.
-If just the user is given, the authentication environment is consulted for registered users-password information. If user and password is given, the details as given are used. This latter form is not recommended and should only be used if necessary because the password is in-clear in the SPARQL
-query.</p>
-<h3 id="jdk-httpclientauthenticator">JDK HttpClient.authenticator</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Basic or Digest - determined when the challenge happens.
-</span><span style="color:#080;font-style:italic"></span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataURL<span style="color:#666">),</span> <span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-    <span style="color:#666">}</span>
-</code></pre></div><p>alternatively, the java platform provides basic authentication.
-This is not challenge based - any request sent using a <code>HttpClient</code> configured
-with an authenticator will include the authentication details.
-(Caution - including sending username/password to the wrong site!).
-Digest authentication must use <code>AuthEnv.get().registerUsernamePassword</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    Authenticator authenticator <span style="color:#666">=</span> AuthLib<span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span><span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-    HttpClient httpClient <span style="color:#666">=</span> HttpClient<span style="color:#666">.</span><span style="color:#b44">newBuilder</span><span style="color:#666">()</span>
-            <span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span>authenticator<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">();</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Use with RDFConnection      
-</span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
-    <span style="color:#666">}</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-    <span style="color:#666">}</span>
-</code></pre></div><h3 id="challenge-registration">Challenge registration</h3>
-<p><code>AuthEnv</code> maintains a registry of credentials and also a registry of which service URLs
-the credentials should be used. It supports registration of endpoint prefixes so that one
-registration will apply to all URLs starting with a common root.</p>
-<p>The main function is <code>AuthEnv.get().registerUsernamePassword</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#080;font-style:italic">// Application setup code 
-</span><span style="color:#080;font-style:italic"></span>   AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span><span style="color:#b44">&#34;username&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#666">...</span>
-   <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-       qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-   <span style="color:#666">}</span>
-</code></pre></div><p>When an HTTP 401 response with an <code>WWW-Authenticate</code> header is received, the Jena http handling code
-will will look for a suitable authentication registration (exact or longest prefix), and retry the
-request. If it succeeds, a modifier is installed so all subsequent request to the same endpoint will
-have the authentication header added and there is no challenge round-trip.</p>
-<h3 id="ttservicett-1"><tt>SERVICE</tt></h3>
-<p>The same mechanism is used for the URL in a SPARQL <code>SERVICE</code> clause.  If there is a 401 challenge,
-the registry is consulted and authetication applied.</p>
-<p>In addition, if the SERVICE URL has a username as the <code>userinfo</code> (that is, <code>https://users@some.host/...</code>),
-that user name is used to look in the authentication registry.</p>
-<p>If the <code>userinfo</code> is of the form &ldquo;username:password&rdquo; then the information as given in the URL is
-used.</p>
-<pre><code>    AuthEnv.get().registerUsernamePassword(URI.create(&quot;http://host/sparql&quot;), &quot;u&quot;, &quot;p&quot;);
-     // Registration applies to SERVICE.
-    Query query = QueryFactory.create(&quot;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&quot;);
-    try ( QueryExecution qExec = QueryExecution.create().query(query).dataset(...).build() ) {
-        System.out.println(&quot;Call using SERVICE...&quot;);
-        ResultSet rs = qExec.execSelect();
-        ResultSetFormatter.out(rs);
-    }
-</code></pre><h2 id="environment">Environment</h2>
-<p><code>AuthEnv</code> - passwordRegistry , authModifiers
-<code>RegistryHttpClient</code></p>
+<p><a href="./http-auth.html">Documentation for authentication</a>.</p>
 
 
         </div>

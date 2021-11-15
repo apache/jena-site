@@ -301,7 +301,7 @@ for the client users to manipulate the programming API described in the
 previous sections, e.g.</p>
 <pre><code>String queryString = &quot; CONSTRUCT { GRAPH &lt;http://example/ns#g1&gt; {?s ?p ?o} } WHERE {?s ?p ?o}&quot; ;
 Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-try ( QueryExecution qExec = QueryExecutionFactory.sparqlService(serviceQuery, query) ) { // serviceQuery is the URL of the remote service
+try ( QueryExecution qExec = QueryExecution.service(serviceQuery).query(query).build() ) { // serviceQuery is the URL of the remote service
     Iterator&lt;Quad&gt; result = qExec.execConstructQuads();
     ...
 }

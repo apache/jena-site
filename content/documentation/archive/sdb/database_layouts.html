@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - SDB Database Layouts</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/database_layouts.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">DATABASE LAYOUTS</li>
             
             
         
@@ -174,90 +182,48 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">SDB Database Layouts</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
-<ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
-<ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
-</ul>
-</li>
-<li>
-<p>Query engines to execute queries</p>
-<ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
-</ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+	<p><a href="index.html" title="SDB">SDB</a> does not have a single database layout. This
+page is an informal overview of the two main types (&ldquo;layout2/hash&rdquo;
+and &ldquo;layout2/index&rdquo;).</p>
+<p>In SDB one store is one RDF dataset is one SQL database.</p>
+<p>Databases of type layout2 have a triples table for the default
+graph, a quads table for the named graphs. In the triples and quads
+tables, the columns are integers referencing a nodes table.</p>
+<p>In the hash form, the integers are 8-byte hashes of the node.</p>
+<p>In the index form, the integers are 4-byte sequence ids into the
+node table.</p>
+<p><strong>Triples</strong></p>
+<pre><code>+-----------+
+| S | P | O |
++-----------+
+</code></pre>
+<p>Primary key: SPO  <br />
+Indexes: PO, OS</p>
+<p><strong>Quads</strong></p>
+<pre><code>+---------------+
+| G | S | P | O |
++---------------+
+</code></pre>
+<p>Primary key: GSPO  <br />
+Indexes: GPO, GOS, SPO, OS, PO.</p>
+<p><strong>Nodes</strong></p>
+<p>In the index-based layout, the table is:</p>
+<pre><code>+------------------------------------------------+
+| Id | Hash | lex | lang | datatype | value type |
++------------------------------------------------+
+</code></pre>
+<p>Primary key: Id  <br />
+Index: Hash</p>
+<p>Hash:</p>
+<pre><code>+-------------------------------------------+
+| Hash | lex | lang | datatype | value type |
++-------------------------------------------+
+</code></pre>
+<p>Primary key: Hash</p>
+<p>All character fields are unicode, supporting any character set,
+including mixed language use.</p>
 
 
         </div>

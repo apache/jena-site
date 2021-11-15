@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - SDB Configuration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/configuration.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">CONFIGURATION</li>
             
             
         
@@ -174,90 +182,127 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">SDB Configuration</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
+	<p>This page describes the configuration options available. These are
+options for query processing, not for the database layout and
+storage, which is controlled by
+<a href="store_description.html" title="SDB/Store Description">store descriptions</a>.</p>
+<h2 id="contents">Contents</h2>
 <ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
+<li><a href="#setting-options">Setting Options</a></li>
+<li><a href="#current-options">Current Options</a>
 <ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
+<li><a href="#queries-over-all-named-graphs">Queries over all Named Graphs</a></li>
+<li><a href="#streaming-over-jdbc">Streaming over JDBC</a></li>
+<li><a href="#annotated-sql">Annotated SQL</a></li>
 </ul>
 </li>
-<li>
-<p>Query engines to execute queries</p>
-<ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
 </ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
+<h2 id="setting-options">Setting Options</h2>
+<p>Options can be set globally, throughout the JVM, or on a per query
+execution basis. SDB uses the same mechanism as
+<a href="http://jena.sf.net/ARQ" title="http://jena.sf.net/ARQ">ARQ</a>.</p>
+<p>There is a global context, which is give to each query
+execution as it is created. Modifications to the global context
+after the query execution is created are not seen by the query
+execution. Modifications to the context of a single query execution
+do not affect any other query execution nor the global context.</p>
+<p>A context is a set of symbol/value pairs. Symbols are used created
+internal to ARQ and SDB and access via Java constants. Values are
+any Java object, together with the values <code>true</code> and <code>false</code>, which
+are short for the constants of class <code>java.lang.Boolean</code>.</p>
+<p>Setting globally:</p>
+<pre><code> SDB.getContext().set(symbol, value) ;
+</code></pre>
+<p>Per query execution:</p>
+<pre><code> QueryExecution qExec = QueryExecutionFactory.create(...) ;
+ qExec.getContext.set(symbol, value) ;
+</code></pre>
+<p>Setting for a query execution happens before any query compilation
+or setup happens. Creation of a query execution object does not
+compile the query, which happens when the appropriate <code>.exec</code>
+method is called.</p>
+<h2 id="current-options">Current Options</h2>
 <table>
 <thead>
 <tr>
-<th>Package</th>
-<th>Use</th>
+<th>Symbol</th>
+<th>Effect</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
+<td><code>SDB.unionDefaultGraph</code></td>
+<td>Query patterns on the default graph match against the union of the named graphs.</td>
+<td>false</td>
 </tr>
 <tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
+<td><code>SDB.jdbcStream</code></td>
+<td>Attempt to stream JDBC results.</td>
+<td>true</td>
 </tr>
 <tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
+<td><code>SDB.jdbcFetchSize</code></td>
+<td>Set the JDBC fetch size on the SQL query statements. Must be &gt;= 0.</td>
+<td>unset</td>
 </tr>
 <tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
+<td><code>SDB.streamGraphAPI</code></td>
+<td>Stream Jena APIs (also requires <code>jdbcStream</code> and <code>jdbcFetchSize</code></td>
+<td>false</td>
 </tr>
 <tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
+<td><code>SDB.annotateGeneratedSQL</code></td>
+<td>Put SQL comments in SQL</td>
+<td>true</td>
 </tr>
 </tbody>
 </table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+<h3 id="queries-over-all-named-graphs">Queries over all Named Graphs</h3>
+<p>All the named graphs can be treated as a single graph in two ways:
+either set the SDB option above or use the URI that refers to RDF
+merge of the named graphs (<code>urn:x-arq:UnionGraph</code>).</p>
+<p>When querying the RDF merge of named graph, the default graph in
+the store is not included.</p>
+<p>This feature applies to queries only. It does not affect the
+storage nor does it change loading.</p>
+<p>To find out which named graph a triple can be found in, use <code>GRAPH</code>
+as usual.</p>
+<p>The following special IRIs exist for use as a graph name in <code>GRAPH</code>
+only:</p>
+<ul>
+<li><code>&lt;urn:x-arq:DefaultGraph&gt;</code> – the default graph, even when
+option for named union queries is set.</li>
+<li><code>&lt;urn:x-arq:UnionGraph&gt;</code> – the union of all named graphs, even
+when the option for named union queries is not set.</li>
+</ul>
+<h3 id="streaming-over-jdbc">Streaming over JDBC</h3>
+<p>By default, SDB processes results from SQL statements in a
+streaming fashion. It is important to close query execution
+objects, especially if not consuming all the results, because that
+causes the underlying JDBC result set to be closed. JDBC result
+sets can be a scarce system resource.</p>
+<p>If this option is set, but the JDBC connection is not streaming,
+then this feature is harmless. Setting it false caused SDB to read
+all results of an SQL statement at once, treating streamed
+connections as unstreamed.</p>
+<p>Note that this only streams results end-to-end if the underlying
+JDBC connection itself is set up to stream. Most do not in the
+default configuration to reduce transient resource peaks on the
+server under load.</p>
+<p>Setting the fetch size enables cursors in some databases but there
+may be restrictions imposed by the database. See the documentation
+for your database for details.</p>
+<p>In addition, operations on the graph API can be made streaming by
+also setting the Graph API to streaming.</p>
+<h3 id="annotated-sql">Annotated SQL</h3>
+<p>SQL generation can include SQL comments to show how SPARQL has been
+turned into SQL. This option is <code>true</code> by default and always set
+for the command <code>sdbprint</code>.</p>
+<pre><code>SDB.getContext().setFalse(SDB.annotateGeneratedSQL) ;
+</code></pre>
 
 
         </div>

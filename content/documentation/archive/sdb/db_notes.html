@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - SDB Database Notes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/db_notes.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">DB NOTES</li>
             
             
         
@@ -174,90 +182,159 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">SDB Database Notes</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
+	<ul>
+<li><a href="#db2">DB2</a></li>
+<li><a href="#derby">Derby</a></li>
+<li><a href="#ms-sql">MS SQL</a></li>
+<li><a href="#mysql">MySQL</a></li>
+<li><a href="#postgresql">PostgresQL</a></li>
+</ul>
+<h2 id="db2">DB2</h2>
+<h3 id="database-creation">Database creation</h3>
+<p>The database should be created with code set UTF-8 so unicode is
+enabled (SDB creates tables CCSID UNICODE for full
+internationalization support).</p>
+<h2 id="derby">Derby</h2>
+<h3 id="loading-restriction">Loading Restriction</h3>
+<p>Only one load operation can be active at any one time. Limitations
+on temporary tables in Derby mean the loader tables are not
+temporary and hence are shared by all connections.</p>
+<h2 id="ms-sql">MS SQL</h2>
+<p>The collation sequence for the database must be one that is binary
+(BIN in the name). It does not matter which one is used. Without
+BIN, string matching is case insensitive but RDF requires case
+sensitive literals and IRIs. The normal layout is not affected by
+this because it does not use string comparisons.</p>
+<h2 id="mysql">MySQL</h2>
+<h3 id="national-characters">National Characters</h3>
+<p>SDB formats all table columns used for storing text in the MySQL
+schema to UTF-8. However, this does not cause the data to be
+transmitted in UTF-8 over the JDBC connection.</p>
+<p>The best way is to run the server with a default character set of
+UTF-8. This is set in the MySQL server configuration file:</p>
+<pre><code>[mysql]
+default-character-set=utf8
+</code></pre>
+<p>A less reliable way is to pass parameters to the JDBC driver in the
+JDBC URL. The application will need to explicitly set the JDBC URL
+in the
+<a href="store_description.html" title="SDB/Store Description">store configuration</a>
+file.</p>
+<pre><code> ...?useUnicode=true&amp;characterEncoding=UTF-8
+</code></pre>
+<h3 id="connection-timeouts">Connection timeouts</h3>
+<p>If you get the connection timing out after (by default) 8 hours of
+no activity, try setting <code>autoReconnect=true</code> in the JDBC URL.</p>
+<h3 id="tuning">Tuning</h3>
+<ol>
+<li>For InndoDB, the critical parameter is
+<code>innodb_buffer_pool_size</code>. See the MySQL sample configuration files
+for details.</li>
+<li>Using ANALYZE TABLE on the database tables can improve the
+choices made by the MySQL optimizer.</li>
+</ol>
+<h3 id="connection-timeout">Connection Timeout</h3>
+<p>MySQL closes the JDBC connection after a period of no use (8 hours
+by default).</p>
+<p>While deprecated my MySQL, <code>?autoReconnect=true</code> may help here.</p>
+<p>Other ways of addressing the problem are to make a simple query
+call on a regular basis just to keep the connection alive (e.g.
+<code>SELECT * { &lt;http://example/junk&gt; &lt;http://example/junk&gt; &lt;http://example/junk&gt; }</code>).</p>
+<p>Some connection pool systems automatic compensate for this feature
+of MySQL.</p>
+<h2 id="postgresql">PostgresQL</h2>
+<h3 id="databases-must-use-utf-8-encoding">Databases must use UTF-8 encoding</h3>
+<p>Create SDB stores with encoding UTF-8.</p>
+<p>International character sets can cause corrupted databases
+otherwise. The database will not pass the SDB test suite.</p>
+<p>Set this when creating the database with pgAdmin or if you use the
+command line, for example:</p>
+<pre><code> CREATE DATABASE &quot;YourStoreName&quot;
+ WITH OWNER = &quot;user&quot;
+      ENCODING = 'UTF8'
+      TABLESPACE = pg_default;
+</code></pre>
+<h3 id="improving-loading-rates">Improving loading rates</h3>
+<p>The index layout (&ldquo;layout2/index&rdquo;) usually loads faster than the
+hash form.</p>
+<p><em>Existing store</em></p>
+<p>When loading into an existing store, where there is existing data
+and <code>ANALYZE</code> has been run, the process is:</p>
 <ul>
 <li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
+<p>Drop indexes</p>
+<p>sdbconfig &ndash;drop</p>
 </li>
 <li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
+<p>Load data</p>
+<p>sdbload file</p>
+</li>
+<li>
+<p>Redo the indexes</p>
+<p>sdbconfig &ndash;index</p>
+</li>
+</ul>
+<p><em>Fresh store</em></p>
+<p>PostgreSQL needs statistics to improve load performance through the
+use of <code>ANALYSE</code>.</p>
+<p>When loading the first time, there are no statistics so, for a
+large load, it is advisable to load a sample, run <code>ANALYSE</code> and
+then load the whole data.</p>
 <ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
-</ul>
+<li>
+<p>Create the database without indexes (just the primary keys).</p>
+<p>sdbconfig &ndash;format</p>
 </li>
 <li>
-<p>Query engines to execute queries</p>
+<p>Load a sample of the triples (say, a 100K or a million triples</p>
 <ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
+<li>until</li>
 </ul>
+</li>
+</ul>
+<p>the load rate starts to drop appreciably). The sample must be
+representative of the data.</p>
+<pre><code> sdbload --time sample
+</code></pre>
+<ul>
+<li>
+<p>Run <code>ANALYZE</code> on the database.</p>
 </li>
 <li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
+<p>If your sample is one part of a large set of files, this set is
+not necessary at all. If you are loading one single large file then
+you might wish to empty the database. This is only needed if the
+data has bNodes in</p>
 </li>
 </ul>
-<h2 id="main-packages">Main packages</h2>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+<p>it because the load process suppresses duplicates.</p>
+<pre><code> sdbconfig --truncate
+</code></pre>
+<ul>
+<li>
+<p>Now load the data or rest of the data.</p>
+<p>sdbload &ndash;time file</p>
+</li>
+<li>
+<p>Add the indexes. This only takes a few minutes even on a very
+large store but calculating them during loading (that is,
+<code>--create</code>, not <code>--format</code>) is noticeably slower.</p>
+<p>sdbconfig &ndash;index</p>
+</li>
+<li>
+<p>Run <code>ANALYZE</code> on the database again.</p>
+</li>
+</ul>
+<h3 id="tuning-1">Tuning</h3>
+<p>It is essential to run the PostgreSQL ANALYZE command on a
+database, either during or after building. This is done via the
+command line <code>psql</code> or via <code>pgAdmin</code>. The PostgreSQL documentation
+describes ways to run this as a background daemon.</p>
+<p>Various of the PostgreSQL configuration parameters will affect
+performance, particularly <code>effective_cache_size</code>. The parameter
+<code>enable_seqscan</code> <em>may</em> help avoid some unexpected slow queries.</p>
 
 
         </div>

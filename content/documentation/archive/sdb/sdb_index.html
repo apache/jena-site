@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - SDB - persistent triple stores using relational databases</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/sdb_index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">SDB INDEX</li>
             
             
         
@@ -174,90 +182,69 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">SDB - persistent triple stores using relational databases</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
+	<p>SDB uses an SQL database for the storage and query of RDF data.
+Many databases are supported, both Open Source and proprietary.</p>
+<p>An SDB store can be accessed and managed with the provided command
+line scripts and via the Jena API.</p>
+<blockquote>
+<i>
+Use of SDB for new applications is not recommended.
+</i>
+</blockquote>
+<p><i>This component is &ldquo;maintenance only&rdquo;.</i></p>
+<p><i><a href="../tdb/index.html">TDB</a> is faster, more scalable and better supported
+than SDB.</i></p>
+<h2 id="status">Status</h2>
+<p>As of June 2013 the Jena developers agreed to treat SDB as
+being only maintained where possible.
+See <a href="http://mail-archives.apache.org/mod_mbox/jena-users/201306.mbox/%3c51B1A7FB.4070601@apache.org%3e">Future of SDB</a> thread on the mailing list.</p>
+<p>The developers intend to continue releasing SDB alongside other Jena
+components but it is not actively developed.  None of the developers
+use it within their organizations.</p>
+<p>SDB may be revived as a fully supported component if members of the
+community come forward to develop it.  The Jena team strongly recommends
+the use of <a href="../tdb/">TDB</a> instead of SDB for all new development due to
+TDBs substantially better performance and scalability.</p>
+<h2 id="documentation">Documentation</h2>
 <ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
+<li><a href="installation.html">SDB Installation</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="commands.html">Command line utilities</a></li>
+<li><a href="store_description.html">Store Description format</a></li>
+<li><a href="dataset_description.html">Dataset And Model Descriptions</a></li>
+<li><a href="javaapi.html">Use from Java</a></li>
+<li><a href="configuration.html">Specialized configuration</a></li>
+<li><a href="database_layouts.html">Database Layouts</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="fuseki_integration.html">Fuseki Integration</a></li>
+<li><a href="databases_supported.html">Databases supported</a></li>
+</ul>
+<h2 id="downloads">Downloads</h2>
+<p>SDB is distributed from the Apache Jena project. See the
+<a href="/download/index.cgi">downloads page</a> for details.</p>
+<h2 id="support">Support</h2>
+<p><a href="/help_and_support">Support and questions</a></p>
+<h2 id="details">Details</h2>
 <ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
+<li><a href="loading_data.html">Loading data</a></li>
+<li><a href="loading_performance.html">Loading performance</a></li>
+<li><a href="query_performance.html">Query performance</a></li>
 </ul>
-</li>
-<li>
-<p>Query engines to execute queries</p>
+<h2 id="database-notes">Database Notes</h2>
+<p>List of <a href="databases_supported.html">databases supported</a></p>
+<p>Notes:</p>
 <ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
+<li><a href="db_notes.html#postgresql">PostgreSQL notes</a></li>
+<li><a href="db_notes.html#mysql">MySQL notes</a></li>
+<li>Oracle notes</li>
+<li><a href="db_notes.html#ms_sql">Microsoft SQL Server notes</a></li>
+<li><a href="db_notes.html#db2">DB2 notes</a></li>
+<li><a href="db_notes.html#derby">Derby notes</a></li>
+<li>HSQLDB notes</li>
+<li>H2 notes</li>
 </ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
 
 
         </div>

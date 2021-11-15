@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - Internal Design</title>
+    <title>Apache Jena - SDB Query performance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -119,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/architecture.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/sdb/query_performance.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="active">ARCHITECTURE</li>
+                <li><a href='/documentation/archive/sdb'>SDB</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">QUERY PERFORMANCE</li>
             
             
         
@@ -174,90 +182,76 @@
 
                 
             </div>
-            <h1 class="title">ARQ - Internal Design</h1>
+            <h1 class="title">SDB Query performance</h1>
             
-	<p>@@ Incomplete / misnamed?</p>
-<p>ARQ consists of the following parts:</p>
+	<p>This page compares the effect of SDB with RDB, Jena&rsquo;s usual
+database layout. RDB was designed for supporting the fine-grained
+API calls as well as having some support for basic graph patterns.
+Therefore, the RDB design goals were not those of SDB.</p>
+<p>RDB uses a denormalised database layout in order that all
+statement-level operations do not require additional joins. The
+<a href="database_layouts.html" title="SDB/Database Layouts">SDB layout</a> is
+normalised so that the triple table is narrower and uses integers
+for RDF nodes, then does do joins to get the node representation.
+These optimizers for longer patterns, not API operations.</p>
+<p>These figures were taken July 2007.</p>
+<p>As with any performance figures, these should be taken merely as a
+guide. The shape of the data, the hardware details, choice of
+database, and its configuration (particularly amount of memory
+used), as well as the queries themselves all greatly contribute to
+the execution costs.</p>
+<h2 id="contents">Contents</h2>
 <ul>
-<li>
-<p>The SPARQL abstract syntax tree (AST) and the SPARQL parser</p>
-</li>
-<li>
-<p>The algebra generator that turns SPARQL AST into algebra
-expressions</p>
-<ul>
-<li>Implementation of the translation in the SPARQL specification.</li>
-<li>Quad version compiling SPARQL to quad expressions, not basic
-graph patterns.</li>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#lubm-query-1">LUBM Query 1</a></li>
+<li><a href="#lubm-query-2">LUBM Query 2</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
-</li>
-<li>
-<p>Query engines to execute queries</p>
-<ul>
-<li>SPARQL protocol client - remote HTTP requests</li>
-<li>Reference engine - direct implementation of the algebra</li>
-<li>Quad engine - direct implementation of the algebra except</li>
-<li>The main engine</li>
-<li>TDB, a SPARQL database for large-sale persistent data</li>
-</ul>
-</li>
-<li>
-<p>Result set handling for the SPARQL XML results format, the
-<a href="http://json.org">JSON</a> and text versions.</p>
-</li>
-</ul>
-<h2 id="main-packages">Main packages</h2>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>org.apache.jena.query</code></td>
-<td>The application API</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.syntax</code></td>
-<td>Abstract syntax tree</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.algebra</code></td>
-<td>SPARQL algebra</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.lang</code></td>
-<td>The parsers: SPARQL, ARQ, RDQL</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.expr</code></td>
-<td>Expression code.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.serializer</code></td>
-<td>Output in SPARQL, ARQ forms, in SPARQL syntax, in an abstract form (useful in debugging) and in XML.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine</code></td>
-<td>The abstraction of a query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.main</code></td>
-<td>The usual query engine.</td>
-</tr>
-<tr>
-<td><code>org.apache.jena.sparql.engine.ref</code></td>
-<td>The reference query engine (and quad version)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-execution-classes">Key Execution Classes</h2>
-<h3 id="bindings">Bindings</h3>
-<h3 id="query-iterators">Query Iterators</h3>
-<h3 id="context">Context</h3>
-<p><a href="index.html">ARQ documentation index</a></p>
+<h2 id="setup">Setup</h2>
+<p><a href="loading_performance.html#the-databases-and-hardware" title="SDB/Loading performance">Database and hardware setup</a>
+was the same as for the
+<a href="loading_performance.html" title="SDB/Loading performance">load performance</a>
+tests.</p>
+<p>Data was taken generated with the LUBM test generator (with N =
+15), then the inference expanded on loading to give about 19.5
+million triples. This data is larger than the database could
+completely cache.</p>
+<p>The queries are taken the LUBM suite and rewritten in SPARQL.</p>
+<h2 id="lubm-query-1">LUBM Query 1</h2>
+<pre><code> PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+ PREFIX ub: &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+ SELECT * WHERE
+ {
+     ?x rdf:type ub:GraduateStudent .
+     ?x ub:takesCourse &lt;http://www.Department0.University0.edu/GraduateCourse0&gt; .
+ }
+</code></pre>
+<p>Jena: 24.16s <br />
+SDB/index: 0.014s<br />
+SDB/hash: 0.04s</p>
+<h2 id="lubm-query-2">LUBM Query 2</h2>
+<pre><code> PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+ PREFIX ub: &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+ SELECT * WHERE
+ {
+      ?x rdf:type ub:GraduateStudent .
+      ?y rdf:type ub:University .
+      ?z rdf:type ub:Department .
+      ?x ub:memberOf ?z .
+      ?z ub:subOrganizationOf ?y .
+      ?x ub:undergraduateDegreeFrom ?y .
+ }
+</code></pre>
+<p>This query searches for a particular pattern in the data without
+specific starting point.</p>
+<p>Jena: 232.1s (153s with an addition index on OP) <br />
+SDB/index: 12.7s <br />
+SDB/hash: 3.7s</p>
+<p><strong>Notes:</strong> Removing the <code>rdf:type</code> statements actually slows the query down.</p>
+<h2 id="summary">Summary</h2>
+<p>In SPARQL queries, there is often a sufficiently complex graph
+pattern that the SDb design tradeoff provides significant
+advantages in query performance.</p>
 
 
         </div>
