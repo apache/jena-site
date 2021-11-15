@@ -446,7 +446,6 @@ custom query engine and overriding `QueryEngineMain.modifyOp`:
       @Override
       protected Op modifyOp(Op op)
       {
-         // Cope with initial bindings.
          op = Substitute.substitute(op, initialInput) ;
          // Use standard optimizations.
          op = super.modifyOp(op) ;
