@@ -13,7 +13,7 @@ title: TDB Command-line Utilities
 -   [TDB Commands](#tdb-commands)
     -   [Store description](#store-description)
     -   [tdbloader](#tdbloader)
-    -   [tdbloader2](#tdbloader2)
+    -   [TDB xloader](#tdb-xloader)
     -   [tdbquery](#tdbquery)
     -   [tdbdump](#tdbdump)
     -   [tdbstats](#tdbstats)
@@ -98,10 +98,37 @@ are loaded into the dataset according to the name or the default graph.
 Bulk loader and index builder. Performs bulk load operations more
 efficiently than simply reading RDF into a TDB-back model.
 
+### tdb.xloader
+
+`tdb1.xloader` and `tdb2.xloader` are bulk loaders for very large data for TDB1
+and TDB2.
+
+See [TDB xloader](./tdb-xloader.html) for more information. These loaders only
+work on Linux and Mac OS/X since it relies on some Unix system utilities.
+
+### `tdbquery`
+
+Invoke a SPARQL query on a store. Use `--time` for timing
+information. The store is attached on each run of this command so
+timing includes some overhead not present in a running system.
+
+Details about query execution can be obtained -- see notes on the
+[TDB Optimizer](optimizer.html#investigating-what-is-going-on).
+
+### `tdbdump`
+
+Dump the store in
+[N-Quads](http://www.w3.org/TR/n-quads/)
+format.
+
+### `tdbstats`
+
+Produce a statistics for the dataset. See the
+[TDB Optimizer description.](optimizer.html#statistics-rule-file).
+
 ### `tdbloader2`
 
-Bulk loader and index builder. Faster than `tdbloader` but only works
-on Linux and Mac OS/X since it relies on some Unix system utilities.
+*This has been replace by  [TDB xloader](./tdb-xloader.html).*
 
 This bulk loader can only be used to create a database. It may
 overwrite existing data. It requires accepts the `--loc` argument and a
@@ -130,23 +157,3 @@ If you are building a large dataset (i.e. gigabytes of input data) you may
 wish to have the [PipeViewer](http://www.ivarch.com/programs/pv.shtml)
 tool installed on your system as this will provide extra progress information 
 during the indexing phase of the build.
-
-### `tdbquery`
-
-Invoke a SPARQL query on a store. Use `--time` for timing
-information. The store is attached on each run of this command so
-timing includes some overhead not present in a running system.
-
-Details about query execution can be obtained -- see notes on the
-[TDB Optimizer](optimizer.html#investigating-what-is-going-on).
-
-### `tdbdump`
-
-Dump the store in
-[N-Quads](http://www.w3.org/TR/n-quads/)
-format.
-
-### tdbstats
-
-Produce a statistics for the dataset. See the
-[TDB Optimizer description.](optimizer.html#statistics-rule-file).
