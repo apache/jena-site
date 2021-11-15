@@ -136,3 +136,7 @@ used.
         ResultSetFormatter.out(rs);
     }
 ```
+
+## Examples
+
+[jena-examples:arq/examples/auth/](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/auth).

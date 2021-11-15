@@ -11,7 +11,8 @@ operations, so in a single request graphs can be created, loaded
 with RDF data and modified.
 
 Some examples of ARQ's SPARQL Update support are to be found in the
-download in src-examples/arq/examples/update.
+download in 
+[jena-examples:arq/examples/update](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/update).
 
 The main API classes are:
 
