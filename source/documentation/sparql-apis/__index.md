@@ -99,7 +99,7 @@ objects have been removed.
   common patterns of HTTP usage.
 
 * The previous `HttpOp` is available as `HttpOp1` and Apache HttpClient is still
-  a dependency. Eventually, `HttpOp`` and dependecy on  Apache HttpClient will be removed.
+  a dependency. Eventually, `HttpOp` and dependency on  Apache HttpClient will be removed.
 
 * GSP - support for dataset operations as well as graphs (also supported by Fuseki).
 
