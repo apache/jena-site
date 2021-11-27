@@ -56,11 +56,11 @@ Load a TDB2 database, and expose, read-only, via docker:
     mkdir -p databases/DB2
     tdb2.tdbloader --loc databases/DB2 MyData.ttl
     # Publish read-only
-    docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --loc databases/DB2 /ds
+    docker-compose run --rm --name MyServer --service-ports fuseki --loc databases/DB2 /ds
 
 To allow update on the database, add `--update`. Updates are persisted.
 
-    docker-compose run --rm --name MyServer --service-ports fuseki --tdb2 --update --loc databases/DB2 /ds
+    docker-compose run --rm --name MyServer --service-ports fuseki --update --loc databases/DB2 /ds
 
 See
 [fuseki-configuration](https://jena.apache.org/documentation/fuseki2/fuseki-configuration.html)
@@ -101,7 +101,7 @@ Run:
 With databases on a bind mount to host filesystem directory:
 
     MNT="--mount type=bind,src=$PWD/databases,dst=/fuseki/databases"
-    docker run -i --rm -p "3030:3030" $MNT --name MyServer -t fuseki --tdb2 --update --loc databases/DB2 /ds
+    docker run -i --rm -p "3030:3030" $MNT --name MyServer -t fuseki --update --loc databases/DB2 /ds
 
 ## Version specific notes:
 
