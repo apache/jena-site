@@ -1043,8 +1043,8 @@ configuration still leaves something to be desired and will the subject of futur
 
 ### OWL Example {#OWLexamples}
 <p>As an example of using the OWL inference support, consider the sample schema
-  and data file in the data directory - <a href="data/owlDemoSchema.xml">owlDemoSchema.xml</a>
-  and <a href="data/owlDemoData.xml">owlDemoData.xml</a>. </p>
+  and data file in the data directory - <a href="data/owlDemoSchema.rdf">owlDemoSchema.rdf</a>
+  and <a href="data/owlDemoData.rdf">owlDemoData.rdf</a>. </p>
 <p>The schema file shows a simple, artificial ontology concerning computers which
   defines a GamingComputer as a Computer which includes at least one bundle of
   type GameBundle and a component with the value gamingGraphics. </p>
@@ -1054,8 +1054,8 @@ configuration still leaves something to be desired and will the subject of futur
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
   and then apply that to the demo data to obtain an inference model, as follows:</p>
 
-    Model schema = RDFDataMgr.loadModel("file:data/owlDemoSchema.xml");
-    Model data = RDFDataMgr.loadModel("file:data/owlDemoData.xml");
+    Model schema = RDFDataMgr.loadModel("file:data/owlDemoSchema.rdf");
+    Model data = RDFDataMgr.loadModel("file:data/owlDemoData.rdf");
     Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
     reasoner = reasoner.bindSchema(schema);
     InfModel infmodel = ModelFactory.createInfModel(reasoner, data);
