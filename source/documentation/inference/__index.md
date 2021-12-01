@@ -627,17 +627,17 @@ slug: index
   data and use an instance of the RDFS reasoner to query the two.</p>
 <p>We shall use a trivial schema:</p>
 
-      <rdf:Description rdf:about="&amp;eg;mum">
-        <rdfs:subPropertyOf rdf:resource="&amp;eg;parent"/>
+      <rdf:Description rdf:about="eg:mum">
+        <rdfs:subPropertyOf rdf:resource="eg:parent"/>
       </rdf:Description>
      
-      <rdf:Description rdf:about="&amp;eg;parent">
-        <rdfs:range  rdf:resource="&amp;eg;Person"/>
-        <rdfs:domain rdf:resource="&amp;eg;Person"/>
+      <rdf:Description rdf:about="eg:parent">
+        <rdfs:range  rdf:resource="eg:Person"/>
+        <rdfs:domain rdf:resource="eg:Person"/>
       </rdf:Description>
     
-      <rdf:Description rdf:about="&amp;eg;age">
-        <rdfs:range rdf:resource="&amp;xsd;integer" />
+      <rdf:Description rdf:about="eg:age">
+        <rdfs:range rdf:resource="xsd:integer" />
       </rdf:Description>
 
 <p>This defines a property <code>parent</code> from <code>Person</code> to <code>Person</code>,
@@ -645,10 +645,10 @@ slug: index
   property <code>age</code>.</p>
 <p>We shall also use the even simpler instance file:</p>
 
-      &lt;Teenager rdf:about="&amp;eg;colin">
-          &lt;mum rdf:resource="&amp;eg;rosy" />
-          &lt;age>13&lt;/age>
-      &lt;/Teenager>
+      <Teenager rdf:about="eg:colin">
+          <mum rdf:resource="eg:rosy" />
+          <age>13</age>
+      </Teenager>
 
 <p>
   Which defines a <code>Teenager</code> called <code>colin</code> who has a <code>mum</code>
@@ -1043,8 +1043,8 @@ configuration still leaves something to be desired and will the subject of futur
 
 ### OWL Example {#OWLexamples}
 <p>As an example of using the OWL inference support, consider the sample schema
-  and data file in the data directory - <a href="data/owlDemoSchema.xml">owlDemoSchema.xml</a>
-  and <a href="data/owlDemoData.xml">owlDemoData.xml</a>. </p>
+  and data file in the data directory - <a href="data/owlDemoSchema.rdf">owlDemoSchema.rdf</a>
+  and <a href="data/owlDemoData.rdf">owlDemoData.rdf</a>. </p>
 <p>The schema file shows a simple, artificial ontology concerning computers which
   defines a GamingComputer as a Computer which includes at least one bundle of
   type GameBundle and a component with the value gamingGraphics. </p>
@@ -1054,7 +1054,7 @@ configuration still leaves something to be desired and will the subject of futur
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
   and then apply that to the demo data to obtain an inference model, as follows:</p>
 
-    Model schema = RDFDataMgr.loadModel("file:data/owlDemoSchema.owl");
+    Model schema = RDFDataMgr.loadModel("file:data/owlDemoSchema.rdf");
     Model data = RDFDataMgr.loadModel("file:data/owlDemoData.rdf");
     Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
     reasoner = reasoner.bindSchema(schema);
@@ -1381,10 +1381,10 @@ So an example complete rule file which includes the RDFS rules and defines
 a single extra rule is:
 
     # Example rule file
-    @prefix pre: &lt;http://jena.hpl.hp.com/prefix#&gt;.
-    @include &lt;RDFS&gt;.
+    @prefix pre: <http://jena.hpl.hp.com/prefix#>.
+    @include <RDFS>.
 
-    [rule1: (?f pre:father ?a) (?u pre:brother ?f) -&gt; (?u pre:uncle ?a)]
+    [rule1: (?f pre:father ?a) (?u pre:brother ?f) -> (?u pre:uncle ?a)]
 </p>
 
 <p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
@@ -1486,7 +1486,7 @@ triple(s1, p1, o1) :- triple(sb1, pb1, ob1), ...
   can exploit all of the results of the subgoals involved in previous queries.
   In essence we build up a closure of the data set in response to successive queries.
   The <code>reset()</code> operation on the inference model will force these tabled
-  results to be discarded, thus saving memory and the expense of response time
+  results to be discarded, thus saving memory at the expense of response time
   for future queries.</p>
 <p>When the inference Model is updated by adding or removing statements all tabled
   results are discarded by an internal <code>reset()</code> and the next query
@@ -1649,7 +1649,7 @@ Reasoner reasoner = new GenericRuleReasoner(rules);</pre>
 <p>Each primitive can optionally be used in either the rule body, the rule head
   or both. If used in the rule body then as well as binding variables (and any
   procedural side-effects like printing) the primitive can act as a test - if
-  it returns false the rule will not match. Primitives using in the rule head
+  it returns false the rule will not match. Primitives used in the rule head
   are only used for their side effects.</p>
 <p>The set of builtin primitives available at the time writing are:</p>
 <table width="90%" border="1" cellspacing="0" cellpadding="0">
@@ -2014,7 +2014,7 @@ while (i.hasNext()) {
  computing all possible answers when an application might only want a few.]</p>
 <p>
  A simple example of this is that the <em>interesting</em> bits of RDFS
- can be captured by enabled TransitiveClosureCaching and including just the
+ can be captured by enabling TransitiveClosureCaching and including just the
  four core rules:</p>
 <pre>
 [rdfs2:  (?x ?p ?y), (?p rdfs:domain ?c) -&gt; (?x rdf:type ?c)]
@@ -2035,7 +2035,7 @@ while (i.hasNext()) {
 <p>Validation rules take the general form:</p>
 <pre>(?v rb:validation on()) ...  -&gt;
     [ (?X rb:violation error('summary', 'description', args)) &lt;- ...) ] .</pre>
-<p>First the validate call with &quot;switch on&quot; validation by insert an
+<p>The validation calls can be "switched on" by inserting an
   additional triple into the graph of the form:</p>
 <pre>_:anon rb:validation on() .</pre>
 <p>This makes it possible to build rules, such as the template above, which are
