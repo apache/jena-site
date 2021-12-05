@@ -3,7 +3,8 @@ title: TDB xloader
 ---
 
 TDB xloader ("x" for external) is a bulkloader for very large datasets. The goal
-is stability and reliability for long running loading, running on modest and
+is stability and reliability for long running loading, running on modest
+hardware and can load to storage of rotating disk or SSD.
 
 xloader is not a replacement for regular TDB1 and TDB2 loaders.
 
@@ -12,7 +13,7 @@ There are two scripts to load data using the xloader subsystem.
 "tdb1.xloader", which was called "tdbloader2" and has some improvements.
 
 It is not as fast as other TDB loaders on dataset where the general loaders work
-on without encountering progressive slowdown.
+without encountering progressive slowdown.
 
 The xloaders for TDB1 and TDB2 are not identical. The TDB2 xloader is more
 capable; it is based on the same design approach with further refinements to
