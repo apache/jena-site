@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9};
+var data = {"i0":9,"i1":9,"i2":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -138,7 +138,7 @@ extends java.lang.Object</pre>
  All initialization should be concurrent and thread-safe.  In particular,
  some subsystems need initialization in some sort of order (e.g. ARQ before TDB).
  <p>
- This is achieved by "levels": levels less than 100 are considered "Jena system levels"
+ This is achieved by "levels": levels less than 500 are considered "Jena system levels"
  and are reserved.
  <ul>
  <li>0 - reserved
@@ -146,7 +146,9 @@ extends java.lang.Object</pre>
  <li>20 - RIOT
  <li>30 - ARQ
  <li>40 - TDB
- <li>100-500 - Fuseki initialization, including customizations
+ <li>50-100 - Other Jena system modules.
+ <li>101 - Fuseki
+ <li>102-9998 - Application
  <li>9999 - other
  </ul>
  See also the <a href="http://jena.apache.org/documentation/notes/system-initialization.html">notes on Jena initialization</a>.</div>
@@ -219,34 +221,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#forEach(java.util.function.Consumer)">forEach</a></span>&#8203;(java.util.function.Consumer&lt;<a href="JenaSubsystemLifecycle.html" title="interface in org.apache.jena.sys">JenaSubsystemLifecycle</a>&gt;&nbsp;action)</code></th>
-<td class="colLast">
-<div class="block">Call an action on each item in the registry.</div>
-</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#init()">init</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>static void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#forEachReverse(java.util.function.Consumer)">forEachReverse</a></span>&#8203;(java.util.function.Consumer&lt;<a href="JenaSubsystemLifecycle.html" title="interface in org.apache.jena.sys">JenaSubsystemLifecycle</a>&gt;&nbsp;action)</code></th>
-<td class="colLast">
-<div class="block">Call an action on each item in the registry but in the reverse
- enumeration order.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>static <a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys">JenaSubsystemRegistry</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#get()">get</a></span>()</code></th>
-<td class="colLast">
-<div class="block">The current JenaSubsystemRegistry</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>static void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#init()">init</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Initialize Jena.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logLifecycle(java.lang.String,java.lang.Object...)">logLifecycle</a></span>&#8203;(java.lang.String&nbsp;fmt,
             java.lang.Object...&nbsp;args)</code></th>
@@ -254,19 +232,10 @@ extends java.lang.Object</pre>
 <div class="block">Output a debugging message if DEBUG_INIT is set</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>static void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSubsystemRegistry(org.apache.jena.sys.JenaSubsystemRegistry)">setSubsystemRegistry</a></span>&#8203;(<a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys">JenaSubsystemRegistry</a>&nbsp;thing)</code></th>
-<td class="colLast">
-<div class="block">Set the <a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys"><code>JenaSubsystemRegistry</code></a>.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#shutdown()">shutdown</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Shutdown subsystems</div>
-</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -333,6 +302,17 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="logLifecycle(java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>logLifecycle</h4>
+<pre class="methodSignature">public static&nbsp;void&nbsp;logLifecycle&#8203;(java.lang.String&nbsp;fmt,
+                                java.lang.Object...&nbsp;args)</pre>
+<div class="block">Output a debugging message if DEBUG_INIT is set</div>
+</li>
+</ul>
 <a id="init()">
 <!--   -->
 </a>
@@ -340,91 +320,15 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>init</h4>
 <pre class="methodSignature">public static&nbsp;void&nbsp;init()</pre>
-<div class="block">Initialize Jena.
- <p>
- This function is cheap to call when already initialized so can be called to be sure.
- A commonly used idiom in jena is a static initializer in key classes.
- <p>
- By default, initialization happens by using <code>ServiceLoader.load</code> to find
- <a href="JenaSubsystemLifecycle.html" title="interface in org.apache.jena.sys"><code>JenaSubsystemLifecycle</code></a> objects.
- See <a href="#setSubsystemRegistry(org.apache.jena.sys.JenaSubsystemRegistry)"><code>setSubsystemRegistry(org.apache.jena.sys.JenaSubsystemRegistry)</code></a> to intercept that choice.</div>
 </li>
 </ul>
 <a id="shutdown()">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>shutdown</h4>
 <pre class="methodSignature">public static&nbsp;void&nbsp;shutdown()</pre>
-<div class="block">Shutdown subsystems</div>
-</li>
-</ul>
-<a id="setSubsystemRegistry(org.apache.jena.sys.JenaSubsystemRegistry)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setSubsystemRegistry</h4>
-<pre class="methodSignature">public static&nbsp;void&nbsp;setSubsystemRegistry&#8203;(<a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys">JenaSubsystemRegistry</a>&nbsp;thing)</pre>
-<div class="block">Set the <a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys"><code>JenaSubsystemRegistry</code></a>.
- To have any effect, this function
- must be called before any other Jena code,
- and especially before calling <code>JenaSystem.init()</code>.</div>
-</li>
-</ul>
-<a id="get()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>get</h4>
-<pre class="methodSignature">public static&nbsp;<a href="JenaSubsystemRegistry.html" title="interface in org.apache.jena.sys">JenaSubsystemRegistry</a>&nbsp;get()</pre>
-<div class="block">The current JenaSubsystemRegistry</div>
-</li>
-</ul>
-<a id="forEach(java.util.function.Consumer)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>forEach</h4>
-<pre class="methodSignature">public static&nbsp;void&nbsp;forEach&#8203;(java.util.function.Consumer&lt;<a href="JenaSubsystemLifecycle.html" title="interface in org.apache.jena.sys">JenaSubsystemLifecycle</a>&gt;&nbsp;action)</pre>
-<div class="block">Call an action on each item in the registry. Calls are made sequentially
- and in increasing level order. The exact order within a level is not
- specified; it is not registration order.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>action</code> - </dd>
-</dl>
-</li>
-</ul>
-<a id="forEachReverse(java.util.function.Consumer)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>forEachReverse</h4>
-<pre class="methodSignature">public static&nbsp;void&nbsp;forEachReverse&#8203;(java.util.function.Consumer&lt;<a href="JenaSubsystemLifecycle.html" title="interface in org.apache.jena.sys">JenaSubsystemLifecycle</a>&gt;&nbsp;action)</pre>
-<div class="block">Call an action on each item in the registry but in the reverse
- enumeration order. Calls are made sequentially and in decreasing level
- order. The "reverse" is opposite order to <a href="#forEach(java.util.function.Consumer)"><code>forEach(java.util.function.Consumer&lt;org.apache.jena.sys.JenaSubsystemLifecycle&gt;)</code></a>, which may not
- be stable within a level. It is not related to registration order.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>action</code> - </dd>
-</dl>
-</li>
-</ul>
-<a id="logLifecycle(java.lang.String,java.lang.Object...)">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>logLifecycle</h4>
-<pre class="methodSignature">public static&nbsp;void&nbsp;logLifecycle&#8203;(java.lang.String&nbsp;fmt,
-                                java.lang.Object...&nbsp;args)</pre>
-<div class="block">Output a debugging message if DEBUG_INIT is set</div>
 </li>
 </ul>
 </li>

@@ -26,8 +26,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":1,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
+var data = {"i0":6,"i1":6,"i2":1,"i3":1,"i4":1,"i5":1,"i6":1,"i7":1,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":1,"i29":1,"i30":1,"i31":1,"i32":38,"i33":38,"i34":38,"i35":38,"i36":38,"i37":38};
+var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -128,7 +128,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../sparql/engine/http/QueryEngineHTTP.html" title="class in org.apache.jena.sparql.engine.http">QueryEngineHTTP</a></code>, <code><a href="../sparql/engine/QueryExecutionBase.html" title="class in org.apache.jena.sparql.engine">QueryExecutionBase</a></code></dd>
+<dd><code><a href="../sparql/engine/http/QueryEngineHTTP.html" title="class in org.apache.jena.sparql.engine.http">QueryEngineHTTP</a></code>, <code><a href="../sparql/exec/QueryExecutionAdapter.html" title="class in org.apache.jena.sparql.exec">QueryExecutionAdapter</a></code>, <code><a href="../sparql/exec/QueryExecutionCompat.html" title="class in org.apache.jena.sparql.exec">QueryExecutionCompat</a></code>, <code><a href="../sparql/exec/http/QueryExecutionHTTP.html" title="class in org.apache.jena.sparql.exec.http">QueryExecutionHTTP</a></code></dd>
 </dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">QueryExecution</span>
@@ -148,7 +148,7 @@ extends java.lang.AutoCloseable</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -169,102 +169,143 @@ extends java.lang.AutoCloseable</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>static <a href="QueryExecutionBuilder.html" title="class in org.apache.jena.query">QueryExecutionBuilder</a></code></td>
+<td class="colFirst"><code>static <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#create()">create</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Create a local execution builder</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>static <a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#create(java.lang.String,org.apache.jena.query.Dataset)">create</a></span>&#8203;(java.lang.String&nbsp;query,
+      <a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution on a dataset for a given query</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>static <a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#create(java.lang.String,org.apache.jena.rdf.model.Model)">create</a></span>&#8203;(java.lang.String&nbsp;query,
+      <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution on a dataset for a given query</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>static <a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#create(org.apache.jena.query.Query,org.apache.jena.query.Dataset)">create</a></span>&#8203;(<a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
+      <a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution on a dataset for a given query</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>static <a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#create(org.apache.jena.query.Query,org.apache.jena.rdf.model.Model)">create</a></span>&#8203;(<a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
+      <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution on a dataset for a given query</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>static <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#dataset(org.apache.jena.query.Dataset)">dataset</a></span>&#8203;(<a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution builder on a dataset</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execAsk()">execAsk</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute an ASK query</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstruct()">execConstruct</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstruct(org.apache.jena.rdf.model.Model)">execConstruct</a></span>&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query, putting the statements into 'model'.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstructDataset()">execConstructDataset</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query, putting the statements into 'dataset'.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstructDataset(org.apache.jena.query.Dataset)">execConstructDataset</a></span>&#8203;(<a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query, putting the statements into 'dataset'.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstructQuads()">execConstructQuads</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query, returning the results as an iterator of <a href="../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core"><code>Quad</code></a>.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Triple.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Triple</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execConstructTriples()">execConstructTriples</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a CONSTRUCT query, returning the results as an iterator of <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Triple.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink"><code>Triple</code></a>.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execDescribe()">execDescribe</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a DESCRIBE query</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execDescribe(org.apache.jena.rdf.model.Model)">execDescribe</a></span>&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</code></th>
 <td class="colLast">
 <div class="block">Execute a DESCRIBE query, putting the statements into 'model'.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Triple.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Triple</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execDescribeTriples()">execDescribeTriples</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a DESCRIBE query, returning the results as an iterator of <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Triple.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink"><code>Triple</code></a>.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../atlas/json/JsonArray.html" title="class in org.apache.jena.atlas.json">JsonArray</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execJson()">execJson</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a JSON query and return a json array</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.util.Iterator&lt;<a href="../atlas/json/JsonObject.html" title="class in org.apache.jena.atlas.json">JsonObject</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execJsonItems()">execJsonItems</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a JSON query and return an interator</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="ResultSet.html" title="interface in org.apache.jena.query">ResultSet</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#execSelect()">execSelect</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Execute a SELECT query</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../sparql/util/Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContext()">getContext</a></span>()</code></th>
 <td class="colLast">
@@ -273,87 +314,135 @@ extends java.lang.AutoCloseable</pre>
   Java objects (so it is not an RDF graph).</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataset()">getDataset</a></span>()</code></th>
 <td class="colLast">
 <div class="block">The dataset against which the query will execute.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="Query.html" title="class in org.apache.jena.query">Query</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQuery()">getQuery</a></span>()</code></th>
 <td class="colLast">
 <div class="block">The query associated with a query execution.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i24" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQueryString()">getQueryString</a></span>()</code></th>
+<td class="colLast">
+<div class="block">The query as a string.</div>
+</td>
+</tr>
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>long</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeout1()">getTimeout1</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the first timeout (time to first result), in milliseconds: negative if unset</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>long</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTimeout2()">getTimeout2</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the second timeout (overall query execution after first result), in milliseconds: negative if unset</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isClosed()">isClosed</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Answer whether this QueryExecution object has been closed or not.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i28" class="altColor">
+<td class="colFirst"><code>static <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#model(org.apache.jena.rdf.model.Model)">model</a></span>&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</code></th>
+<td class="colLast">
+<div class="block">Create a local execution builder on a model</div>
+</td>
+</tr>
+<tr id="i29" class="rowColor">
+<td class="colFirst"><code>static <a href="../sparql/exec/http/QueryExecutionHTTPBuilder.html" title="class in org.apache.jena.sparql.exec.http">QueryExecutionHTTPBuilder</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#service(java.lang.String)">service</a></span>&#8203;(java.lang.String&nbsp;serviceURL)</code></th>
+<td class="colLast">
+<div class="block">Create a remote execution builder going to an endpoint URL.</div>
+</td>
+</tr>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>static <a href="../sparql/exec/http/QueryExecutionHTTP.html" title="class in org.apache.jena.sparql.exec.http">QueryExecutionHTTP</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#service(java.lang.String,java.lang.String)">service</a></span>&#8203;(java.lang.String&nbsp;endpointURL,
+       java.lang.String&nbsp;queryString)</code></th>
+<td class="colLast">
+<div class="block">Create a remote execution.</div>
+</td>
+</tr>
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>static <a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#service(java.lang.String,org.apache.jena.query.Query)">service</a></span>&#8203;(java.lang.String&nbsp;endpointURL,
+       <a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query)</code></th>
+<td class="colLast">
+<div class="block">Create a remote execution.</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setInitialBinding(org.apache.jena.query.QuerySolution)">setInitialBinding</a></span>&#8203;(<a href="QuerySolution.html" title="interface in org.apache.jena.query">QuerySolution</a>&nbsp;binding)</code></th>
 <td class="colLast">
-<div class="block">Set the initial association of variables and values.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query"><code>QueryExecutionDatasetBuilder</code></a> and set the initial binding before building.</div>
+</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setInitialBinding(org.apache.jena.sparql.engine.binding.Binding)">setInitialBinding</a></span>&#8203;(<a href="../sparql/engine/binding/Binding.html" title="interface in org.apache.jena.sparql.engine.binding">Binding</a>&nbsp;binding)</code></th>
 <td class="colLast">
-<div class="block">Set the initial association of variables and values.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query"><code>QueryExecutionDatasetBuilder</code></a> and set the initial binding before building.</div>
+</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeout(long)">setTimeout</a></span>&#8203;(long&nbsp;timeout)</code></th>
 <td class="colLast">
-<div class="block">Set time, in milliseconds</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().timeout(....)...</code></div>
+</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeout(long,long)">setTimeout</a></span>&#8203;(long&nbsp;timeout1,
           long&nbsp;timeout2)</code></th>
 <td class="colLast">
-<div class="block">Set time, in milliseconds</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().initialTimeout(timeout1, timeUnit).overallTimeout(timeout, timeUnit)...</code></div>
+</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeout(long,java.util.concurrent.TimeUnit)">setTimeout</a></span>&#8203;(long&nbsp;timeout,
           java.util.concurrent.TimeUnit&nbsp;timeoutUnits)</code></th>
 <td class="colLast">
-<div class="block">Set a timeout on the query execution.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().timeout(....)...</code></div>
+</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTimeout(long,java.util.concurrent.TimeUnit,long,java.util.concurrent.TimeUnit)">setTimeout</a></span>&#8203;(long&nbsp;timeout1,
           java.util.concurrent.TimeUnit&nbsp;timeUnit1,
           long&nbsp;timeout2,
           java.util.concurrent.TimeUnit&nbsp;timeUnit2)</code></th>
 <td class="colLast">
-<div class="block">Set timeouts on the query execution; the first timeout refers to time to first result,
- the second refers to overall query execution after the first result.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().initialTimeout(timeout1, timeUnit1).overallTimeout(timeout, timeUnit2)...</code></div>
+</div>
 </td>
 </tr>
 </table>
@@ -373,13 +462,110 @@ extends java.lang.AutoCloseable</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="create(org.apache.jena.query.Query,org.apache.jena.query.Dataset)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>create</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a>&nbsp;create&#8203;(<a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
+                             <a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</pre>
+<div class="block">Create a local execution on a dataset for a given query</div>
+</li>
+</ul>
+<a id="create(java.lang.String,org.apache.jena.rdf.model.Model)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>create</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a>&nbsp;create&#8203;(java.lang.String&nbsp;query,
+                             <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</pre>
+<div class="block">Create a local execution on a dataset for a given query</div>
+</li>
+</ul>
+<a id="create(java.lang.String,org.apache.jena.query.Dataset)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>create</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a>&nbsp;create&#8203;(java.lang.String&nbsp;query,
+                             <a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</pre>
+<div class="block">Create a local execution on a dataset for a given query</div>
+</li>
+</ul>
+<a id="create(org.apache.jena.query.Query,org.apache.jena.rdf.model.Model)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>create</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a>&nbsp;create&#8203;(<a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
+                             <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</pre>
+<div class="block">Create a local execution on a dataset for a given query</div>
+</li>
+</ul>
+<a id="service(java.lang.String,org.apache.jena.query.Query)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>service</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecution.html" title="interface in org.apache.jena.query">QueryExecution</a>&nbsp;service&#8203;(java.lang.String&nbsp;endpointURL,
+                              <a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query)</pre>
+<div class="block">Create a remote execution.</div>
+</li>
+</ul>
+<a id="service(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>service</h4>
+<pre class="methodSignature">static&nbsp;<a href="../sparql/exec/http/QueryExecutionHTTP.html" title="class in org.apache.jena.sparql.exec.http">QueryExecutionHTTP</a>&nbsp;service&#8203;(java.lang.String&nbsp;endpointURL,
+                                  java.lang.String&nbsp;queryString)</pre>
+<div class="block">Create a remote execution.</div>
+</li>
+</ul>
+<a id="dataset(org.apache.jena.query.Dataset)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dataset</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a>&nbsp;dataset&#8203;(<a href="Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</pre>
+<div class="block">Create a local execution builder on a dataset</div>
+</li>
+</ul>
+<a id="model(org.apache.jena.rdf.model.Model)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>model</h4>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a>&nbsp;model&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/rdf/model/Model.html?is-external=true" title="class or interface in org.apache.jena.rdf.model" class="externalLink">Model</a>&nbsp;model)</pre>
+<div class="block">Create a local execution builder on a model</div>
+</li>
+</ul>
+<a id="service(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>service</h4>
+<pre class="methodSignature">static&nbsp;<a href="../sparql/exec/http/QueryExecutionHTTPBuilder.html" title="class in org.apache.jena.sparql.exec.http">QueryExecutionHTTPBuilder</a>&nbsp;service&#8203;(java.lang.String&nbsp;serviceURL)</pre>
+<div class="block">Create a remote execution builder going to an endpoint URL.</div>
+</li>
+</ul>
 <a id="create()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>create</h4>
-<pre class="methodSignature">static&nbsp;<a href="QueryExecutionBuilder.html" title="class in org.apache.jena.query">QueryExecutionBuilder</a>&nbsp;create()</pre>
+<pre class="methodSignature">static&nbsp;<a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query">QueryExecutionDatasetBuilder</a>&nbsp;create()</pre>
+<div class="block">Create a local execution builder</div>
 </li>
 </ul>
 <a id="setInitialBinding(org.apache.jena.query.QuerySolution)">
@@ -388,9 +574,16 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setInitialBinding</h4>
-<pre class="methodSignature">void&nbsp;setInitialBinding&#8203;(<a href="QuerySolution.html" title="interface in org.apache.jena.query">QuerySolution</a>&nbsp;binding)</pre>
+<pre class="methodSignature">@Deprecated
+void&nbsp;setInitialBinding&#8203;(<a href="QuerySolution.html" title="interface in org.apache.jena.query">QuerySolution</a>&nbsp;binding)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query"><code>QueryExecutionDatasetBuilder</code></a> and set the initial binding before building.</div>
+</div>
 <div class="block">Set the initial association of variables and values.
- May not be supported by all QueryExecution implementations.</div>
+ May not be supported by all QueryExecution implementations.
+ <p>
+ The preferred way is to use <a href="QueryExecutionDatasetBuilder.html#substitution(org.apache.jena.query.QuerySolution)"><code>QueryExecutionDatasetBuilder.substitution(QuerySolution)</code></a>
+ which is supported uniformly for local and remote queries.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>binding</code> - </dd>
@@ -403,9 +596,16 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setInitialBinding</h4>
-<pre class="methodSignature">void&nbsp;setInitialBinding&#8203;(<a href="../sparql/engine/binding/Binding.html" title="interface in org.apache.jena.sparql.engine.binding">Binding</a>&nbsp;binding)</pre>
+<pre class="methodSignature">@Deprecated
+void&nbsp;setInitialBinding&#8203;(<a href="../sparql/engine/binding/Binding.html" title="interface in org.apache.jena.sparql.engine.binding">Binding</a>&nbsp;binding)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <a href="QueryExecutionDatasetBuilder.html" title="class in org.apache.jena.query"><code>QueryExecutionDatasetBuilder</code></a> and set the initial binding before building.</div>
+</div>
 <div class="block">Set the initial association of variables and values.
- May not be supported by all QueryExecution implementations.</div>
+ May not be supported by all QueryExecution implementations.
+ <p>
+ The preferred way is to use <a href="QueryExecutionDatasetBuilder.html#substitution(org.apache.jena.sparql.engine.binding.Binding)"><code>QueryExecutionDatasetBuilder.substitution(Binding)</code></a>
+ which is supported uniformly for local and remote queries.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>binding</code> - </dd>
@@ -447,6 +647,19 @@ extends java.lang.AutoCloseable</pre>
 <pre class="methodSignature"><a href="Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;getQuery()</pre>
 <div class="block">The query associated with a query execution.
   May be null (QueryExecution may have been created by other means)</div>
+</li>
+</ul>
+<a id="getQueryString()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getQueryString</h4>
+<pre class="methodSignature">java.lang.String&nbsp;getQueryString()</pre>
+<div class="block">The query as a string.
+ This may be null (QueryExecution may have been created by other means).
+ This may contain non-Jena extensions and can not be parsed by Jena.
+ If <code>getQuery()</code> is not null, this is a corresponding string that parses to the same query.</div>
 </li>
 </ul>
 <a id="execSelect()">
@@ -702,12 +915,20 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setTimeout</h4>
-<pre class="methodSignature">void&nbsp;setTimeout&#8203;(long&nbsp;timeout,
+<pre class="methodSignature">@Deprecated
+void&nbsp;setTimeout&#8203;(long&nbsp;timeout,
                 java.util.concurrent.TimeUnit&nbsp;timeoutUnits)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().timeout(....)...</code></div>
+</div>
 <div class="block">Set a timeout on the query execution.
  Processing will be aborted after the timeout (which starts when the appropriate exec call is made).
  Not all query execution systems support timeouts.
  A timeout of less than zero means no timeout.</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="QueryExecutionDatasetBuilder.html#timeout(long,java.util.concurrent.TimeUnit)"><code>QueryExecutionDatasetBuilder.timeout(long, java.util.concurrent.TimeUnit)</code></a></dd>
+</dl>
 </li>
 </ul>
 <a id="setTimeout(long)">
@@ -716,11 +937,15 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setTimeout</h4>
-<pre class="methodSignature">void&nbsp;setTimeout&#8203;(long&nbsp;timeout)</pre>
+<pre class="methodSignature">@Deprecated
+void&nbsp;setTimeout&#8203;(long&nbsp;timeout)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().timeout(....)...</code></div>
+</div>
 <div class="block">Set time, in milliseconds</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="#setTimeout(long,java.util.concurrent.TimeUnit)"><code>setTimeout(long, TimeUnit)</code></a></dd>
+<dd><a href="QueryExecutionDatasetBuilder.html#timeout(long,java.util.concurrent.TimeUnit)"><code>QueryExecutionDatasetBuilder.timeout(long, java.util.concurrent.TimeUnit)</code></a></dd>
 </dl>
 </li>
 </ul>
@@ -730,10 +955,14 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setTimeout</h4>
-<pre class="methodSignature">void&nbsp;setTimeout&#8203;(long&nbsp;timeout1,
+<pre class="methodSignature">@Deprecated
+void&nbsp;setTimeout&#8203;(long&nbsp;timeout1,
                 java.util.concurrent.TimeUnit&nbsp;timeUnit1,
                 long&nbsp;timeout2,
                 java.util.concurrent.TimeUnit&nbsp;timeUnit2)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().initialTimeout(timeout1, timeUnit1).overallTimeout(timeout, timeUnit2)...</code></div>
+</div>
 <div class="block">Set timeouts on the query execution; the first timeout refers to time to first result,
  the second refers to overall query execution after the first result.
  Processing will be aborted if a timeout expires.
@@ -747,8 +976,12 @@ extends java.lang.AutoCloseable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setTimeout</h4>
-<pre class="methodSignature">void&nbsp;setTimeout&#8203;(long&nbsp;timeout1,
+<pre class="methodSignature">@Deprecated
+void&nbsp;setTimeout&#8203;(long&nbsp;timeout1,
                 long&nbsp;timeout2)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">Use <code>QueryExecution.create().initialTimeout(timeout1, timeUnit).overallTimeout(timeout, timeUnit)...</code></div>
+</div>
 <div class="block">Set time, in milliseconds</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>

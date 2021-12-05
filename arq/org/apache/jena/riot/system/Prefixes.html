@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9};
+var data = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -133,6 +133,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">Prefixes</span>
 extends java.lang.Object</pre>
+<div class="block">Functions related to <a href="PrefixMap.html" title="interface in org.apache.jena.riot.system"><code>PrefixMap</code></a>.</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="PrefixMapFactory.html" title="class in org.apache.jena.riot.system"><code>PrefixMapFactory</code></a></dd>
+</dl>
 </li>
 </ul>
 </div>
@@ -161,10 +166,24 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#dftGraphPrefixSet">dftGraphPrefixSet</a></span></code></th>
+<td class="colLast">
+<div class="block">Special name for default graph prefixes.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>static <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Node.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Node</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#nodeDataset">nodeDataset</a></span></code></th>
 <td class="colLast">
 <div class="block">Name for dataset prefixes.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Node.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Node</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#nodeDefaultGraph">nodeDefaultGraph</a></span></code></th>
+<td class="colLast">
+<div class="block">Name assigned to the default graph.</div>
 </td>
 </tr>
 </table>
@@ -238,27 +257,13 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>static boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isDftGraph(java.lang.String)">isDftGraph</a></span>&#8203;(java.lang.String&nbsp;graphName)</code></th>
-<td class="colLast">
-<div class="block">Is this a name for the default graph prefix set?</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>static boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isDftGraph(org.apache.jena.graph.Node)">isDftGraph</a></span>&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Node.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Node</a>&nbsp;graphName)</code></th>
-<td class="colLast">
-<div class="block">Is this a name node for the default graph prefix set?</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#prefix(java.lang.String)">prefix</a></span>&#8203;(java.lang.String&nbsp;prefix)</code></th>
 <td class="colLast">
 <div class="block">Canonical prefix - remove a trailing ":".</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString(org.apache.jena.riot.system.PrefixMap)">toString</a></span>&#8203;(<a href="PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;prefixMap)</code></th>
 <td class="colLast">
@@ -289,6 +294,29 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Field Detail</h3>
+<a id="dftGraphPrefixSet">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dftGraphPrefixSet</h4>
+<pre>public static final&nbsp;java.lang.String dftGraphPrefixSet</pre>
+<div class="block">Special name for default graph prefixes.
+ This is different to the datasetPrefixSet.
+ Only used by (TDB1) GraphTxnTDB_Prefixes and (TDB2) GraphViewSwitchable_Prefixes
+ which have separated dataset/default graph prefixes.
+
+ For legacy migration reasons, TDB1 uses "" and TDB2 uses
+ defaultGraphNodeGenerated for the dataset prefix set.
+ See 
+ TDB1 )
+ TDB2 <code>StoragePrefixesView</code></div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../constant-values.html#org.apache.jena.riot.system.Prefixes.dftGraphPrefixSet">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
 <a id="datasetPrefixSet">
 <!--   -->
 </a>
@@ -301,6 +329,16 @@ extends java.lang.Object</pre>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../../constant-values.html#org.apache.jena.riot.system.Prefixes.datasetPrefixSet">Constant Field Values</a></dd>
 </dl>
+</li>
+</ul>
+<a id="nodeDefaultGraph">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nodeDefaultGraph</h4>
+<pre>public static&nbsp;<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Node.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Node</a> nodeDefaultGraph</pre>
+<div class="block">Name assigned to the default graph.</div>
 </li>
 </ul>
 <a id="nodeDataset">
@@ -342,26 +380,6 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="isDftGraph(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isDftGraph</h4>
-<pre class="methodSignature">public static&nbsp;boolean&nbsp;isDftGraph&#8203;(java.lang.String&nbsp;graphName)</pre>
-<div class="block">Is this a name for the default graph prefix set?</div>
-</li>
-</ul>
-<a id="isDftGraph(org.apache.jena.graph.Node)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isDftGraph</h4>
-<pre class="methodSignature">public static&nbsp;boolean&nbsp;isDftGraph&#8203;(<a href="https://jena.apache.org/jena-core/apidocs/org/apache/jena/graph/Node.html?is-external=true" title="class or interface in org.apache.jena.graph" class="externalLink">Node</a>&nbsp;graphName)</pre>
-<div class="block">Is this a name node for the default graph prefix set?</div>
-</li>
-</ul>
 <a id="prefix(java.lang.String)">
 <!--   -->
 </a>

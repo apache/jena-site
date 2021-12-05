@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.apache.jena.fuseki.main"},{"l":"org.apache.jena.fuseki.main.cmds"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.apache.jena.fuseki.main"},{"l":"org.apache.jena.fuseki.main.cmds"},{"l":"org.apache.jena.fuseki.main.sys"}]

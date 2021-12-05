@@ -354,6 +354,20 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static <a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#RDF_PROTO">RDF_PROTO</a></span></code></th>
+<td class="colLast">
+<div class="block">RDF Protobuf output.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#RDF_PROTO_VALUES">RDF_PROTO_VALUES</a></span></code></th>
+<td class="colLast">
+<div class="block">A variant of an an RDFFormat that uses value encoding (e.g.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#RDF_THRIFT">RDF_THRIFT</a></span></code></th>
 <td class="colLast">
 <div class="block">RDF Thrift output.</div>
@@ -1025,6 +1039,42 @@ extends java.lang.Object</pre>
 <pre>public static final&nbsp;<a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a> TRIX</pre>
 </li>
 </ul>
+<a id="RDF_PROTO">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RDF_PROTO</h4>
+<pre>public static final&nbsp;<a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a> RDF_PROTO</pre>
+<div class="block">RDF Protobuf output. This format is faithful representation of RDF written
+ and it is suitable for database dumps. It does not encode numeric
+ literals as values (see <a href="#RDF_PROTO_VALUES"><code>RDF_PROTO_VALUES</code></a>).</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="#RDF_PROTO_VALUES"><code>RDF_PROTO_VALUES</code></a></dd>
+</dl>
+</li>
+</ul>
+<a id="RDF_PROTO_VALUES">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RDF_PROTO_VALUES</h4>
+<pre>public static final&nbsp;<a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a> RDF_PROTO_VALUES</pre>
+<div class="block">A variant of an an RDFFormat that uses value encoding (e.g. integers,
+ doubles, decimals as binary). This does not preserve exact representation
+ (+001 is the same value as 1, +1 and 001) which may matter for database
+ dumps. It looses datatype for derived types (xsd:long, xsd:int, xsd:short
+ and xsd:byte become xsd:integer).
+ For large volumes of numeric data, it may provide a significant reduction in size
+ in combination with using prefixes for subjects and predicates.</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="#RDF_PROTO"><code>RDF_PROTO</code></a></dd>
+</dl>
+</li>
+</ul>
 <a id="RDF_THRIFT">
 <!--   -->
 </a>
@@ -1032,7 +1082,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>RDF_THRIFT</h4>
 <pre>public static final&nbsp;<a href="RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a> RDF_THRIFT</pre>
-<div class="block">RDF Thrift output. This format is faithful representation of RDF writtern
+<div class="block">RDF Thrift output. This format is faithful representation of RDF written
  and it is suitable for database dumps. It does not encode numeric
  literals as values (see <a href="#RDF_THRIFT_VALUES"><code>RDF_THRIFT_VALUES</code></a>).</div>
 <dl>
@@ -1051,7 +1101,7 @@ extends java.lang.Object</pre>
 <div class="block">A variant of an an RDFFormat that uses value encoding (e.g. integers,
  doubles, decimals as binary). This does not preserve exact representation
  (+001 is the same value as 1, +1 and 001) which may matter for database
- dumps. It looses datatype for derived types (xsd;long, xsd:int, xsd:short
+ dumps. It looses datatype for derived types (xsd:long, xsd:int, xsd:short
  and xsd:byte become xsd:integer).
  For large volumes of numeric data, it may provide a significant reduction in size
  in combination with using prefixes for subjects and predicates.</div>
