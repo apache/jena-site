@@ -25,7 +25,7 @@ title: TDB FAQs
 TDB2 is a later generation of database for Jena. It is more robust and can
 handle large update transactions.
 
-These are different databases systems - the have different on-disk file formats
+These are different databases systems - they have different on-disk file formats
 and databases for one are not compatible with other database engine.
 
 <a name="transactions"></a>

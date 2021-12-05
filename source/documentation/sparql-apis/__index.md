@@ -91,7 +91,7 @@ objects have been removed.
 
 * Substitution of variables for concrete values in query and update execution.
   This is a form of paramterization that works in both local and remnote usage
-  (unlike "intial bindings" which are only available for lcoal query execution).
+  (unlike "initial bindings" which are only available for local query execution).
   See the [substitution section](#substitution) section below.
 
 * `HttpOp`, using `java.net.http.HttpClient`, is split into `HttpRDF` for
@@ -116,7 +116,7 @@ Unlike "initial bindings" substitution is provided in query and update builders
 for both local and remote cases. 
 
 Substitution is always "replace variable with RDF term" in a query or update
-that is correct syntax. This means is does not apply to `INSERT DATA` or `DELETE
+that is correct syntax. This means it does not apply to `INSERT DATA` or `DELETE
 DATA` but can be used with `INSERT { ?s ?p ?o } WHERE {}` and 
 `DELETE { ?s ?p ?o } WHERE {}`.
 
@@ -140,7 +140,7 @@ See also
 * [Parameterized Queries](documentation/query/parameterized-sparql-strings.html) 
 * [Jena Query Builder](https://jena.apache.org/documentation/extras/querybuilder/index.html)
 
-which provide a different ways to build a query.
+which provide different ways to build a query.
 
 ## <tt>RDFConnection</tt>
 
