@@ -254,7 +254,7 @@ For N-Triples and N-Quads, you can use
 `RiotParsers.createIteratorNTriples(input)` which parses the input on the
 calling thread.
 
-[RIOT example 9](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT9_AsyncParser.java).
+[RIOT example 9](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java).
 
 ### Filter the output of parsing
 
