@@ -4,7 +4,6 @@ title: Jena Full Text Search
 
 This extension to ARQ combines SPARQL and full text search via
 [Lucene](https://lucene.apache.org).
-[ElasticSearch](https://www.elastic.co) 
 It gives applications the ability to perform indexed full text
 searches within SPARQL queries. Here is a version compatibility table:
 
