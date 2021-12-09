@@ -445,30 +445,31 @@ contain &lsquo;:'.</p>
 configuration file is necessary.</p>
 <p>The base URI for reading models will be the original URI, not the alternative location.</p>
 <h2 id="advanced-examples">Advanced examples</h2>
-<p>Example code may be found in <a href="https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples/riot/">jena-arq/src-examples</a>.</p>
+<p>Example code may be found in <a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/">jena-examples:arq/examples</a>.</p>
 <h3 id="iterating-over-parser-output">Iterating over parser output</h3>
 <p>One of the capabilities of the RIOT API is the ability to treat parser output as an iterator,
 this is useful when you don&rsquo;t want to go to the trouble of writing a full sink implementation and can easily express your
 logic in normal iterator style.</p>
-<p>To do this you use one of the subclasses of
-<a href="https://github.com/apache/jena/tree/main/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFIterator.java?view=markup">PipedRDFIterator</a>
-in conjunction with a <a href="https://github.com/apache/jena/tree/main/jena-arq/src/main/java/org/apache/jena/riot/lang/PipedRDFStream.java?view=markup">PipedRDFStream</a>.</p>
-<p>This <code>PipedRDFStream</code> provides an implementation of <code>StreamRDF</code> which allows it to consume parser output and this is consumed by
-the <code>PipedRDFIterator</code> implementation.  This has some advantages over a direct <code>StreamRDF</code> implementation since it allows the parser
-production of data to run ahead of your consumption of data which may result in better overall throughput.</p>
-<p>The only complication is that you need to ensure that the thread feeding the <code>PipedRDFStream</code> and the consumer of the iterator are on different threads
-as otherwise you can run into a deadlock situation where one is waiting on data from the other which is never started.</p>
-<p>See <a href="https://github.com/apache/jena/blob/main/jena-arq/src-examples/arq/examples/riot/ExRIOT6_AddNewReader.java">RIOT example 6</a>
-which shows an example usage including a simple way to push the parser onto a different thread to avoid the possible deadlock.</p>
+<p>To do this you use <code>AsyncParser.asyncParseTriples</code> which parses the input on
+another thread:</p>
+<pre><code>    Iterator&lt;Triple&gt; iter = AsyncParser.asyncParseTriples(filename);
+    iter.forEachRemaining(triple-&gt;{
+        // Do something with triple
+    });
+</code></pre>
+<p>For N-Triples and N-Quads, you can use
+<code>RiotParsers.createIteratorNTriples(input)</code> which parses the input on the
+calling thread.</p>
+<p><a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java">RIOT example 9</a>.</p>
 <h3 id="filter-the-output-of-parsing">Filter the output of parsing</h3>
 <p>When working with very large files, it can be useful to
 process the stream of triples or quads produced
 by the parser so as to work in a streaming fashion.</p>
-<p>See <a href="https://github.com/apache/jena/blob/main/jena-arq/src-examples/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java">RIOT example 4</a></p>
+<p>See <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java">RIOT example 4</a></p>
 <h3 id="add-a-new-language">Add a new language</h3>
 <p>The set of languages is not fixed. A new language,
 together with a parser, can be added to RIOT as shown in
-<a href="https://github.com/apache/jena/tree/main/jena-arq/src-examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java">RIOT example 5</a></p>
+<a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java">RIOT example 5</a></p>
 
 
         </div>

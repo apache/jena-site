@@ -171,7 +171,7 @@
             </div>
             <h1 class="title">Apache Jena SPARQL APIs</h1>
             
-	<p>Jump to &ldquo;<a href="#changes">Changes</a>&quot;.</p>
+	<p>Jump to the &ldquo;<a href="#changes">Changes</a>&rdquo; section.</p>
 <h2 id="overview">Overview</h2>
 <p>The SPARQL specifications provide
 <a href="https://www.w3.org/TR/sparql11-query/">query</a>,
@@ -302,12 +302,10 @@ necessary.</li>
 <p>Deprecate modifying <code>QueryExecution</code> after it is built.</p>
 </li>
 <li>
-<p>Parameterization for remote queries.
-Parameterization - replacing variables by values before sending
-a query - makes the query into a template. The same applies to updates.
-This is also provided uniformly for local queries and should be used in
-preference to the local-only &ldquo;initial binding&rdquo; approach which is
-similarly but not identical.</p>
+<p>Substitution of variables for concrete values in query and update execution.
+This is a form of paramterization that works in both local and remnote usage
+(unlike &ldquo;initial bindings&rdquo; which are only available for local query execution).
+See the <a href="#substitution">substitution section</a> section below.</p>
 </li>
 <li>
 <p><code>HttpOp</code>, using <code>java.net.http.HttpClient</code>, is split into <code>HttpRDF</code> for
@@ -316,7 +314,7 @@ common patterns of HTTP usage.</p>
 </li>
 <li>
 <p>The previous <code>HttpOp</code> is available as <code>HttpOp1</code> and Apache HttpClient is still
-a dependency. Eventually, `HttpOp`` and dependecy on  Apache HttpClient will be removed.</p>
+a dependency. Eventually, <code>HttpOp</code> and dependency on  Apache HttpClient will be removed.</p>
 </li>
 <li>
 <p>GSP - support for dataset operations as well as graphs (also supported by Fuseki).</p>
@@ -327,6 +325,30 @@ a dependency. Eventually, `HttpOp`` and dependecy on  Apache HttpClient will be 
 <code>RDFLink</code> provide APIs.</p>
 </li>
 </ul>
+<h2 id="substitution">Substitution</h2>
+<p>All query and update builders provide operations to use a query and substitute
+variables for concrete RDF terms in the execution.</p>
+<p>Unlike &ldquo;initial bindings&rdquo; substitution is provided in query and update builders
+for both local and remote cases.</p>
+<p>Substitution is always &ldquo;replace variable with RDF term&rdquo; in a query or update
+that is correct syntax. This means it does not apply to <code>INSERT DATA</code> or <code>DELETE DATA</code> but can be used with <code>INSERT { ?s ?p ?o } WHERE {}</code> and
+<code>DELETE { ?s ?p ?o } WHERE {}</code>.</p>
+<p>Full example:
+<a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/ExQuerySubstitute_01.java">ExQuerySubstitute_01.java</a>.</p>
+<pre><code>    ResultSet resultSet1 = QueryExecution.dataset(dataset)
+            .query(prefixes+&quot;SELECT * { ?person foaf:name ?name }&quot;)
+            .substitution(&quot;name&quot;, name1)
+            .select();
+    ResultSetFormatter.out(resultSet1);
+</code></pre><p>Substitution is to be preferred over &ldquo;initial bindings&rdquo; because it is clearly
+defined and applies to both query and update in both local and remote uses.</p>
+<p>&ldquo;Substitution&rdquo; and &ldquo;initial bindings&rdquo; are similar but not identical.</p>
+<p>See also</p>
+<ul>
+<li><a href="documentation/query/parameterized-sparql-strings.html">Parameterized Queries</a></li>
+<li><a href="https://jena.apache.org/documentation/extras/querybuilder/index.html">Jena Query Builder</a></li>
+</ul>
+<p>which provide different ways to build a query.</p>
 <h2 id="ttrdfconnectiontt"><tt>RDFConnection</tt></h2>
 <p><a href="../rdfconnection/">RDFConnection</a></p>
 <pre><code>    try ( RDFConnection conn = RDFConnectionRemote.service(dataURL).build()) {
