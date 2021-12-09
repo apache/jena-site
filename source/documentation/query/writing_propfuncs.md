@@ -64,15 +64,15 @@ Assuming you have an implementation of
 
 
     final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ARQ.getContext());
-    reg.put("urn:ex:fn#example", new ExamplePropertyFunctionFactory);
+    reg.put("urn:ex:fn#example", new ExamplePropertyFunctionFactory());
     PropertyFunctionRegistry.set(ARQ.getContext(), reg);
 
 
 The only difference between global and dataset-specific registration is where the `Context` object comes from:
 
-    final Dataset ds = DatasetFactory.createMem();
+    final Dataset ds = DatasetFactory.createGeneral();
     final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ds.getContext());
-    reg.put("urn:ex:fn#example", new ExamplePropertyFunctionFactory);
+    reg.put("urn:ex:fn#example", new ExamplePropertyFunctionFactory());
     PropertyFunctionRegistry.set(ds.getContext(), reg);
 
 Note that 
@@ -92,7 +92,7 @@ The implementation of a Property Function is actually quite straight forward onc
     		return new PFuncSimple()
     		{
     			@Override
-    			public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCxt) 
+    			public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCtx) 
     			{	
                     return QueryIterNullIterator.create(execCtx);
     			}
