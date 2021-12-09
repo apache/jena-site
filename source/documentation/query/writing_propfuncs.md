@@ -92,7 +92,7 @@ The implementation of a Property Function is actually quite straight forward onc
     		return new PFuncSimple()
     		{
     			@Override
-    			public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCxt) 
+    			public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCtx) 
     			{	
                     return QueryIterNullIterator.create(execCtx);
     			}
