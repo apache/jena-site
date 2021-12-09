@@ -14,7 +14,7 @@ searches within SPARQL queries. Here is a version compatibility table:
 | 3.3.0 - 3.9.0    | 6.4.x              | not supported     | 5.2.2 - 5.2.13 |
 | 3.10.0           | 7.4.0              | not supported     | 6.4.2          |
 | 3.15.0 - 3.17.0  | 7.7.x              | not supported     | 6.8.6          |
-| 4.0.0            | 8.8.x              | not supported     | not supported  |
+| 4.0.0 - current  | 8.8.x              | not supported     | not supported  |
 
 SPARQL allows the use of 
 [regex](https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#func-regex) 
