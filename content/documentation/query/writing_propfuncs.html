@@ -226,13 +226,13 @@ of data.</p>
 <a href="/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionFactory</code></a>
 (shown later), you can register a function as follows:</p>
 <pre><code>final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ARQ.getContext());
-reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory);
+reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory());
 PropertyFunctionRegistry.set(ARQ.getContext(), reg);
 </code></pre>
 <p>The only difference between global and dataset-specific registration is where the <code>Context</code> object comes from:</p>
-<pre><code>final Dataset ds = DatasetFactory.createMem();
+<pre><code>final Dataset ds = DatasetFactory.createGeneral();
 final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ds.getContext());
-reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory);
+reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory());
 PropertyFunctionRegistry.set(ds.getContext(), reg);
 </code></pre>
 <p>Note that
@@ -249,7 +249,7 @@ regardless of their arguments we could do so as follows:</p>
         return new PFuncSimple()
         {
             @Override
-            public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCxt) 
+            public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCtx) 
             {	
                 return QueryIterNullIterator.create(execCtx);
             }
