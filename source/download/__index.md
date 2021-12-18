@@ -20,23 +20,23 @@ WAR file packaging):
 
 | Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.1.tar.gz">apache-jena-fuseki-4.3.1.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.1.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.1.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.1.zip">apache-jena-fuseki-4.3.1.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.1.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.1.zip.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.2.tar.gz">apache-jena-fuseki-4.3.2.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.2.zip">apache-jena-fuseki-4.3.2.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.asc) |
 
 <p>&nbsp;</p>
 Source release: this forms the official release of Apache Jena. All binaries artifacts and maven binaries correspond to this source.
 
 | Apache Jena Release | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/source/jena-4.3.1-source-release.zip">jena-4.3.1-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.3.1-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.3.1-source-release.zip.asc) |
+|<a href="[preferred]jena/source/jena-4.3.2-source-release.zip">jena-4.3.2-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.3.2-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.3.2-source-release.zip.asc) |
 
 <p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
 | Jena libraries | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/binaries/apache-jena-4.3.1.tar.gz">apache-jena-4.3.1.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.1.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.1.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-4.3.1.zip">apache-jena-4.3.1.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.1.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.1.zip.asc) |
+|<a href="[preferred]jena/binaries/apache-jena-4.3.2.tar.gz">apache-jena-4.3.2.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-4.3.2.zip">apache-jena-4.3.2.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.zip.asc) |
 
 ### Individual Modules
 
