@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Tutorial SPARQL - A primeira consulta SPARQL</title>
+    <title>Apache Jena - Citing Jena</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/tutorials/sparql_query1_pt.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/about_jena/citing.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -147,7 +147,7 @@
         
         
             
-                <li><a href='/tutorials'>TUTORIALS</a></li>
+                <li><a href='/about_jena'>ABOUT JENA</a></li>
             
             
         
@@ -155,7 +155,7 @@
         
         
             
-                <li class="active">SPARQL QUERY1 PT</li>
+                <li class="active">CITING</li>
             
             
         
@@ -167,62 +167,29 @@
 
                 
             </div>
-            <h1 class="title">Tutorial SPARQL - A primeira consulta SPARQL</h1>
+            <h1 class="title">Citing Jena</h1>
             
-	<p>Nesta sessão, vamos olhar para a primeira consulta simples e mostrar como executá-la em Jena.</p>
-<h2 id="o-hello-world-de-consultas">O &ldquo;hello world&rdquo; de consultas</h2>
-<p>O arquivo &ldquo;<a href="sparql_data/q1.rq">q1.rq</a>&rdquo; contem a seguinte consulta:</p>
-<pre><code>SELECT ?x
-WHERE { ?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  &quot;John Smith&quot; }
+	<p>The name of the project is “Apache Jena”. That should appear as the first
+use in a paper and in a reference. After that &ldquo;Jena&rdquo; can be used.
+It is also a <a href="https://www.apache.org/foundation/marks/#books">trademark</a>
+of the Apache Software Foundation. This is also the industry practice.</p>
+<p>The reference should indicate the website <a href="https://jena.apache.org/">https://jena.apache.org/</a>
+(<code>https</code> is preferable). If relevant to reproducibility, or discussing
+performance, the release version number <strong>MUST</strong> also be included. The date
+of access would also be helpful to the reader.</p>
+<p>You can use names such as “TDB” and “Fuseki” on their own. They are informal
+names to parts of the whole system. They also change over time and versions.
+You could say “Apache Jena Fuseki” for the triplestore but as the components
+function as part of the whole, “Apache Jena” would be accurate.</p>
+<p>The first paper citing Jena is <a href="https://dl.acm.org/doi/10.1145/1013367.1013381">Jena: implementing the semantic web recommendations</a>.
+That only covers the API and its implementation. Some parts of the system
+mentioned in that paper have been dropped a long time ago (e.g. the “RDB”
+system). The paper is also prior to the move to under the Apache Software
+Foundation. It is also good to acknowledge Brian McBride, who started the
+project.</p>
+<p>Here is an example of what a citation may look like:</p>
+<pre><code>Apache Software Foundation, 2021. Apache Jena, Available at: https://jena.apache.org/.
 </code></pre>
-<p>executando esta consulta com a aplicação de consultas em linhas de comando:</p>
-<pre><code>---------------------------------
-| x                             |
-=================================
-| &lt;http://somewhere/JohnSmith/&gt; |
----------------------------------
-</code></pre>
-<p>Isso funciona casando o padrão da tripla na clausula <code>WHERE</code> contra as triplas no grafo RDF. O predicado e o objeto da tripla são valores fixos, então o padrão vai casar somente triplas com estes valores. O sujeito é a variável, e não há outras restrições para a variável. O padrão casa qualquer tripla com aquele predicado e aquele objeto, e isso casa com soluções para <code>x</code>.</p>
-<p>O item entre  &lt;&gt; é a URI (atualmente, é uma IRI) e o item entre &quot;&rdquo; é uma literal. Assim como Turtle, N3 ou N-Triplas, literais tipadas são escritas com ^^e tags de linguagem podem ser adicionadas com @.</p>
-<p>?x é uma variável chamada x. A ? não faz parte do nome e por conta disso não aparece nos resultados.</p>
-<p>Há um casamento. A consulta retorna o casamento na variável x da consulta. A saída mostrada foi obtida usando uma das aplicações de ARQ em linhas de comando.</p>
-<h2 id="executando-a-consulta">Executando a consulta</h2>
-<p>Há <a href="/documentation/query/cmds.html">scripts de ajuda</a> nos diretórios de  ARQ <code>bat/</code> e
-<code>bin/</code> de sua distribuição. Eles podem não estar na distribuição do Jena. Você deve checar esses scripts antes de usá-los.</p>
-<h3 id="instalação-no-windows">Instalação no Windows</h3>
-<p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
-<pre><code>set ARQROOT=c:\MyProjects\ARQ
-</code></pre>
-<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
-<p>No diretório do ARQ, execute:</p>
-<pre><code>bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
-</code></pre>
-<p>Você pode simplesmente colocar o diretório <code>bat/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
-<h3 id="scripts-bash-para-linuxcyquinunix">scripts bash para Linux/Cyquin/Unix</h3>
-<p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
-<pre><code>export ARQROOT=$HOME/MyProjects/ARQ
-</code></pre>
-<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
-<p>No diretório do ARQ, execute:</p>
-<pre><code>bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
-</code></pre>
-<p>Você pode simplesmente colocar o diretório <code>bin/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
-<p><a href="http://www.cygwin.com/">Cygwin</a> é um ambiente Linux para Windows.</p>
-<h3 id="usando-a-aplicação-de-linhas-de-comando-de-jena-diretamente">Usando a aplicação de linhas de comando de Jena diretamente</h3>
-<p>Você precisará modificar o classpath para incluir <em>todos</em> os arquivos jar do diretório <code>lib/</code> do ARQ.</p>
-<p>Por exemplo, no Windows:</p>
-<pre><code>ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
-ARQdir\lib\commons-logging-1.1.jar;ARQdir\lib\concurrent.jar;ARQdir\lib\icu4j_3_4.jar;
-ARQdir\lib\iri.jar;ARQdir\lib\jena.jar;ARQdir\lib\jenatest.jar;
-ARQdir\lib\json.jar;ARQdir\lib\junit.jar;ARQdir\lib\log4j-1.2.12.jar;
-ARQdir\lib\lucene-core-2.2.0.jar;ARQdir\lib\stax-api-1.0.jar;
-ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
-</code></pre>
-<p>onde <code>&lt;i&gt;ARQdir&lt;/i&gt;</code> é onde você descompactou o ARQ. Isso tudo precisa estar numa linha.</p>
-<p>Os nomes dos arquivos JAR muitas vezes mudam e novos arquivos são adicionados – verifique essa lista com sua versão do ARQ.</p>
-<p>Os comandos estão no pacote ARQ.</p>
-<p><a href="sparql_basic_patterns_pt.html">Próximo: Padrões Básicos</a></p>
-
 
         </div>
     </div>
