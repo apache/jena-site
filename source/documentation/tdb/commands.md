@@ -98,13 +98,13 @@ are loaded into the dataset according to the name or the default graph.
 Bulk loader and index builder. Performs bulk load operations more
 efficiently than simply reading RDF into a TDB-back model.
 
-### tdb.xloader
+### tdb.xloader {#tdb-xloader}
 
 `tdb1.xloader` and `tdb2.xloader` are bulk loaders for very large data for TDB1
 and TDB2.
 
 See [TDB xloader](./tdb-xloader.html) for more information. These loaders only
-work on Linux and Mac OS/X since it relies on some Unix system utilities.
+work on Linux since it relies on some Unix system utilities.
 
 ### `tdbquery`
 
