@@ -105,6 +105,7 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Project</li>
                         <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/citing.html">Citing</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
                         <li><a href="/about_jena/architecture.html">Architecture</a></li>
                         <li><a href="/about_jena/team.html">Project team</a></li>
@@ -172,23 +173,10 @@
             <h1 class="title">Apache Jena GeoSPARQL</h1>
             
 	<p>An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.</p>
-<p>Integration with Fuseki is provided either by using the
-<a href="geosparql-assembler.html">GeoSPARQL assembler</a> or using the self-contained original
-<a href="geosparql-fuseki.html">jena-fuseki-geosparql</a>.  In either case, this page
-describes the GeoSPARQL supported features.</p>
-<h2 id="getting-started">Getting Started</h2>
-<p>GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.</p>
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-  &lt;artifactId&gt;jena-geosparql&lt;/artifactId&gt;
-  &lt;version&gt;...&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
+<p>An <a href="geosparql-fuseki">integration with Fuseki</a> is available but attention should be paid to the contents of this page to understand supported features.</p>
 <h2 id="features">Features</h2>
-<p>This implementation follows the 11-052r4 OGC GeoSPARQL standard
-(<a href="https://www.ogc.org/standards/geosparql">https://www.ogc.org/standards/geosparql</a>).  The implementation is pure Java
-and does not require any set-up or configuration of any third party relational
-databases and geospatial extensions.</p>
+<p>This implementation follows the 11-052r4 OGC GeoSPARQL standard (<a href="https://www.ogc.org/standards/geosparql">https://www.ogc.org/standards/geosparql</a>).
+The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.</p>
 <p>It implements the six Conformance Classes described in the GeoSPARQL document:</p>
 <ul>
 <li>Core</li>
@@ -198,49 +186,42 @@ databases and geospatial extensions.</p>
 <li>RDFS Entailment Extension</li>
 <li>Query Rewrite Extension</li>
 </ul>
-<p>The WKT (as described in 11-052r4) and GML 2.0 Simple Features Profile
-(10-100r3) serialisations are supported.  Additional serialisations can be
-implemented by extending the
-<code>org.apache.jena.geosparql.implementation.datatype.GeometryDatatype</code> and
-registering with Jena&rsquo;s <code>org.apache.jena.datatypes.TypeMapper</code>.</p>
+<p>The WKT (as described in 11-052r4) and GML 2.0 Simple Features Profile (10-100r3) serialisations are supported.
+Additional serialisations can be implemented by extending the
+<code>org.apache.jena.geosparql.implementation.datatype.GeometryDatatype</code>
+and registering with Jena&rsquo;s <code>org.apache.jena.datatypes.TypeMapper</code>.</p>
 <p>All three spatial relation families are supported: <em>Simple Feature</em>, <em>Egenhofer</em> and <em>RCC8</em>.</p>
-<p>Indexing and caching of spatial objects and relations is performed <em>on-demand</em>
-during query execution.  Therefore, set-up delays should be minimal. Spatial
-indexing is available based on the <em>STRtree</em> from the JTS library. The <em>STRtree</em>
-is readonly once built and contributions of a <em>QuadTree</em> implementation are
-welcome.</p>
-<p>Benchmarking of the implementation against Strabon and Parliament has found it
-to be comparable or quicker.  The benchmarking used was the Geographical query
-and dataset (<a href="http://geographica.di.uoa.gr/">http://geographica.di.uoa.gr/</a>).</p>
+<p>Indexing and caching of spatial objects and relations is performed <em>on-demand</em> during query execution.
+Therefore, set-up delays should be minimal. Spatial indexing is available based on the <em>STRtree</em> from the JTS library. The <em>STRtree</em> is readonly once built and contributions of a <em>QuadTree</em> implementation are welcome.</p>
+<p>Benchmarking of the implementation against Strabon and Parliament has found it to be comparable or quicker.
+The benchmarking used was the Geographical query and dataset (<a href="http://geographica.di.uoa.gr/">http://geographica.di.uoa.gr/</a>).</p>
 <h2 id="additional-features">Additional Features</h2>
 <p>The following additional features are also provided:</p>
 <ul>
 <li>Geometry properties are automatically calculated and do not need to be asserted in the dataset.</li>
-<li>Conversion between EPSG spatial/coordinate reference systems is applied
-automatically. Therefore, mixed datasets or querying can be applied. This is
-reliance upon local installation of Apache SIS EPSG dataset, see <strong>Key
-Dependencies</strong>.</li>
-<li>Units of measure are automatically converted to the appropriate units for the
-coordinate reference system.</li>
-<li>Geometry, transformation and spatial relation results are stored in persistent
-and configurable time-limited caches to improve response times and reduce
-recalculations.</li>
-<li>Dataset conversion between serialisations and spatial/coordinate reference
-systems. Tabular data can also be loaded, see RDF Tables project
-(<a href="https://github.com/galbiston/rdf-tables">https://github.com/galbiston/rdf-tables</a>).</li>
+<li>Conversion between EPSG spatial/coordinate reference systems is applied automatically. Therefore, mixed datasets or querying can be applied. This is reliance upon local installation of Apache SIS EPSG dataset, see <strong>Key Dependencies</strong>.</li>
+<li>Units of measure are automatically converted to the appropriate units for the coordinate reference system.</li>
+<li>Geometry, transformation and spatial relation results are stored in persistent and configurable time-limited caches to improve response times and reduce recalculations.</li>
+<li>Dataset conversion between serialisations and spatial/coordinate reference systems. Tabular data can also be loaded, see RDF Tables project (<a href="https://github.com/galbiston/rdf-tables">https://github.com/galbiston/rdf-tables</a>).</li>
 <li>Functions to test Geometry properties directly on Geometry Literals have been included for convenience.</li>
 </ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-geosparql&lt;/artifactId&gt;
+  &lt;version&gt;...&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>A HTTP server (SPARQL endpoint) using is available - for details, see the <a href="geosparql-fuseki">Geosparql Fuseki documentation</a>.</p>
 <h3 id="sparql-query-configuration">SPARQL Query Configuration</h3>
-<p>Using the library for SPARQL querying requires one line of code.  All indexing
-and caching is performed during query execution and so there should be minimal
-delay during initialisation.  This will register the Property Functions with ARQ
-query engine and configures the <em>indexes</em> used for time-limited caching.</p>
+<p>Using the library for SPARQL querying requires one line of code.
+All indexing and caching is performed during query execution and so there should be minimal delay during initialisation.
+This will register the Property Functions with ARQ query engine and configures the <em>indexes</em> used for time-limited caching.</p>
 <p>There are three <em>indexes</em> which can be configured independently or switched off.
-These <em>indexes</em> retain data that may be required again when a query is being
-executed but may not be required between different queries.  Therefore, the
-memory usage will grow during query execution and then recede as data is not
-re-used.  All the <em>indexes</em> support concurrency and can be set to a maximum size
-or allowed to increase capacity as required.</p>
+These <em>indexes</em> retain data that may be required again when a query is being executed but may not be required between different queries.
+Therefore, the memory usage will grow during query execution and then recede as data is not re-used.
+All the <em>indexes</em> support concurrency and can be set to a maximum size or allowed to increase capacity as required.</p>
 <ul>
 <li><em>Geometry Literal</em>: Geometry objects following de-serialisation from <code>Geometry Literal</code>.</li>
 <li><em>Geometry Transform</em>: Geometry objects resulting from coordinate transformations between spatial reference systems.</li>
@@ -269,9 +250,8 @@ The <em>indexes</em> can be configured by size, retention duration and frequency
 </li>
 </ul>
 <p>A variety of configuration methods are provided in
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.  Caching of
-frequently used but small quantity data is also applied in several <em>registries</em>,
-e.g. coordinate reference systems and mathematical transformations.</p>
+<code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.
+Caching of frequently used but small quantity data is also applied in several <em>registries</em>, e.g. coordinate reference systems and mathematical transformations.</p>
 <p>Example GeoSPARQL query:</p>
 <pre><code>PREFIX geo: &lt;http://www.opengis.net/ont/geosparql#&gt;
 
@@ -293,23 +273,19 @@ try (QueryExecution qe = QueryExecution.create(query, model)) {
     ResultSetFormatter.outputAsTSV(rs);
 }
 </code></pre>
-<p>If your dataset needs to be separate from your application and accessed over
-HTTP then you probably need the <a href="geosparql-assembler">GeoSPARQL Assembler</a> to
-integrate with Fuseki.  The GeoSPARQL functionality needs to be setup in the
-application or Fuseki server where the dataset is located.</p>
-<p>It is <strong>recommended</strong> that <code>hasDefaultGeometry</code> properties are included in the
-dataset to access all functionality.  It is <strong>necessary</strong> that <code>SpatialObject</code>
-classes are asserted or inferred (i.e. a reasoner with the GeoSPARQL schema is
-applied) in the dataset.  Methods to prepare a dataset can be found in
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code>.</p>
-<h3 id="api-the-library-can-be-used-as-an-api-in-java--the-main-class-to-handle">API The library can be used as an API in Java.  The main class to handle</h3>
-<p>geometries and their spatial relations is the <code>GeometryWrapper</code>.  This can be
-obtained by parsing the string representation of a geometry using the
-appropriate datatype (e.g. WKT or GML).  Alternatively, a Literal can be
-extracted automatically using the <code>GeometryWrapper.extract()</code> method and
-registered datatypes.  The <code>GeometryWrapperFactory</code> can be used to directly
-construct a <code>GeometryWrapper</code>.  There is overlap between spatial relation
-families so repeated methods are not specified.</p>
+<p>If your dataset needs to be separate from your application and accessed over HTTP then you probably need
+the <a href="geosparql-fuseki">GeoSPARQL Fuseki project</a>.
+The GeoSPARQL functionality needs to be setup in the application or Fuseki server where the dataset is located.</p>
+<p>It is <strong>recommended</strong> that <code>hasDefaultGeometry</code> properties are included in the dataset to access all functionality.
+It is <strong>necessary</strong> that <code>SpatialObject</code> classes are asserted or inferred (i.e. a reasoner with the GeoSPARQL schema is applied) in the dataset.
+Methods to prepare a dataset can be found in <code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code>.</p>
+<h3 id="api">API</h3>
+<p>The library can be used as an API in Java.
+The main class to handle geometries and their spatial relations is the <code>GeometryWrapper</code>.
+This can be obtained by parsing the string representation of a geometry using the appropriate datatype (e.g. WKT or GML).
+Alternatively, a Literal can be extracted automatically using the <code>GeometryWrapper.extract()</code> method and registered datatypes.
+The <code>GeometryWrapperFactory</code> can be used to directly construct a <code>GeometryWrapper</code>.
+There is overlap between spatial relation families so repeated methods are not specified.</p>
 <ul>
 <li>
 <p>Parse a <code>Geometry Literal</code>: <code>GeometryWrapper geometryWrapper = WKTDatatype.INSTANCE.parse(&quot;POINT(1 1)&quot;);</code></p>
@@ -339,26 +315,18 @@ families so repeated methods are not specified.</p>
 <p>The GeoSPARQL standard specifies that WKT Geometry Literals without an SRS URI are defaulted to CRS84 <code>http://www.opengis.net/def/crs/OGC/1.3/CRS84</code>.</p>
 <h2 id="key-dependencies">Key Dependencies</h2>
 <h3 id="geosparql">GeoSPARQL</h3>
-<p>The OGC GeoSPARQL standard supports representing and querying geospatial data on
-the Semantic Web.  GeoSPARQL defines a vocabulary for representing geospatial
-data in RDF, and it defines an extension to the SPARQL query language for
-processing geospatial data.  In addition, GeoSPARQL is designed to accommodate
-systems based on qualitative spatial reasoning and systems based on quantitative
-spatial computations.</p>
-<p>The GeoSPARQL standard is based upon the OGC Simple Features standard
-(<a href="http://www.opengeospatial.org/standards/sfa">http://www.opengeospatial.org/standards/sfa</a>) used in relational databases.
+<p>The OGC GeoSPARQL standard supports representing and querying geospatial data on the Semantic Web.
+GeoSPARQL defines a vocabulary for representing geospatial data in RDF, and it defines an extension to the SPARQL query language for processing geospatial data.
+In addition, GeoSPARQL is designed to accommodate systems based on qualitative spatial reasoning and systems based on quantitative spatial computations.</p>
+<p>The GeoSPARQL standard is based upon the OGC Simple Features standard (<a href="http://www.opengeospatial.org/standards/sfa">http://www.opengeospatial.org/standards/sfa</a>) used in relational databases.
 Modifications and enhancements have been made for usage with RDF and SPARQL.
-The Simple Features standard, and by extension GeoSPARQL, simplify calculations
-to Euclidean planer geometry.  Therefore, datasets using a geographic
-spatial/coordinate reference system, which are based on latitude and longitude
-on an ellipsoid, e.g. WGS84, will have minor error introduced.  This error has
-been deemed acceptable due to the simplification in calculation it offers.</p>
+The Simple Features standard, and by extension GeoSPARQL, simplify calculations to Euclidean planer geometry.
+Therefore, datasets using a geographic spatial/coordinate reference system, which are based on latitude and longitude on an ellipsoid, e.g. WGS84, will have minor error introduced.
+This error has been deemed acceptable due to the simplification in calculation it offers.</p>
 <h3 id="apache-sissis_data-environment-variable">Apache SIS/SIS_DATA Environment Variable</h3>
-<p>Apache Spatial Information System (SIS) is a free software, Java language
-library for developing geospatial applications.  SIS provides data structures
-for geographic features and associated meta-data along with methods to
-manipulate those data structures.  The library is an implementation of GeoAPI
-3.0 interfaces and can be used for desktop or server applications.</p>
+<p>Apache Spatial Information System (SIS) is a free software, Java language library for developing geospatial applications.
+SIS provides data structures for geographic features and associated meta-data along with methods to manipulate those data structures.
+The library is an implementation of GeoAPI 3.0 interfaces and can be used for desktop or server applications.</p>
 <p>A subset of the EPSG spatial/coordinate reference systems are included by default.
 The full EPSG dataset is not distributed due to the EPSG terms of use being incompatible with the Apache Licence.
 Several options are available to include the EPSG dataset by setting the <code>SIS_DATA</code> environment variable (<a href="http://sis.apache.org/epsg.html">http://sis.apache.org/epsg.html</a>).</p>
@@ -371,39 +339,26 @@ implementation &quot;org.apache.sis.non-free:sis-embedded-data:$sisVersion&quot;
 <h2 id="note">Note</h2>
 <p>The following are implementation points that may be useful during usage.</p>
 <h3 id="geosparql-schema">GeoSPARQL Schema</h3>
-<p>An RDF/XML schema has been published for the GeoSPARQL v1.0 standard (v1.0.1 -
-<a href="http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf">http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf</a>).  This can
-be applied to Jena Models (see <a href="/documentation/inference/">the inference
-documentation</a>) to provide RDFS and OWL inferencing
-on a GeoSPARQL conforming dataset.  However, the published schema does not
-conform with the standard.</p>
-<p>The property <code>hasDefaultGeometry</code> is missing from the schema and instead the
-<code>defaultGeometry</code> property is stated.</p>
-<p>This prevents RDFS inferencing being performed correctly and has been reported
-to the OGC Standards Tracker.  A corrected version of the schema is available in
-the <code>Resources</code> folder.</p>
+<p>An RDF/XML schema has been published for the GeoSPARQL v1.0 standard (v1.0.1 - <a href="http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf">http://schemas.opengis.net/geosparql/1.0/geosparql_vocab_all.rdf</a>).
+This can be applied to Jena Models (see <a href="/documentation/inference/">the inference documentation</a>) to provide RDFS and OWL inferencing on a GeoSPARQL conforming dataset.
+However, the published schema does not conform with the standard.</p>
+<p>The property <code>hasDefaultGeometry</code> is missing from the schema and instead the <code>defaultGeometry</code> property is stated.</p>
+<p>This prevents RDFS inferencing being performed correctly and has been reported to the OGC Standards Tracker.
+A corrected version of the schema is available in the <code>Resources</code> folder.</p>
 <h3 id="spatial-relations">Spatial Relations</h3>
-<p>The GeoSPARQL and Simple Features standard both define the DE-9IM intersection
-patterns for the three spatial relation families.  However, these patterns are
-not always consistent with the patterns stated by the JTS library for certain
-relations.</p>
-<p>For example, GeoSPARQL/Simple Features use <code>TFFFTFFFT</code> <em>equals</em> relations in
-<em>Simple Feature</em>, <em>Egenhofer</em> and <em>RCC8</em>.  However, this does not yield the
-usually expected result when comparing a pair of point geometries.  The Simple
-Features standard states that the boundary of a point is empty.  Therefore, the
-boundary intersection of two points would also be empty so give a negative
-comparison result.</p>
-<p>JTS, and other libraries, use the alternative intersection pattern of
-<code>T*F**FFF*</code>.  This is a combination of the <em>within</em> and <em>contains</em> relations and
-yields the expected results for all geometry types.</p>
-<p>The spatial relations utilised by JTS have been implemented as the extension
-<code>spatial:equals</code> filter and property functions.  A user can also supply their
-own DE-9IM intersection patterns by using the <code>geof:relate</code> filter function.</p>
+<p>The GeoSPARQL and Simple Features standard both define the DE-9IM intersection patterns for the three spatial relation families.
+However, these patterns are not always consistent with the patterns stated by the JTS library for certain relations.</p>
+<p>For example, GeoSPARQL/Simple Features use <code>TFFFTFFFT</code> <em>equals</em> relations in <em>Simple Feature</em>, <em>Egenhofer</em> and <em>RCC8</em>.
+However, this does not yield the usually expected result when comparing a pair of point geometries.
+The Simple Features standard states that the boundary of a point is empty.
+Therefore, the boundary intersection of two points would also be empty so give a negative comparison result.</p>
+<p>JTS, and other libraries, use the alternative intersection pattern of <code>T*F**FFF*</code>.
+This is a combination of the <em>within</em> and <em>contains</em> relations and yields the expected results for all geometry types.</p>
+<p>The spatial relations utilised by JTS have been implemented as the extension <code>spatial:equals</code> filter and property functions.
+A user can also supply their own DE-9IM intersection patterns by using the <code>geof:relate</code> filter function.</p>
 <h3 id="spatial-relations-and-geometry-shapestypes">Spatial Relations and Geometry Shapes/Types</h3>
-<p>The spatial relations for the three spatial families do not apply to all
-combinations of the geometry shapes (<code>Point</code>, <code>LineString</code>, <code>Polygon</code>) and their
-collections (<code>MultiPoint</code>, <code>MultiLineString</code>, <code>MultiPolygon</code>).  Therefore, some
-queries may not produce all the results that may initially be expected.</p>
+<p>The spatial relations for the three spatial families do not apply to all combinations of the geometry shapes (<code>Point</code>, <code>LineString</code>, <code>Polygon</code>) and their collections  (<code>MultiPoint</code>, <code>MultiLineString</code>, <code>MultiPolygon</code>).
+Therefore, some queries may not produce all the results that may initially be expected.</p>
 <p>Some examples are:</p>
 <ul>
 <li>In some relations there may only be results when a collection of shapes is being used, e.g. two multi-points can overlap but two points cannot.</li>
@@ -412,9 +367,8 @@ queries may not produce all the results that may initially be expected.</p>
 </ul>
 <p>Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.</p>
 <h3 id="equals-relations">Equals Relations</h3>
-<p>The three equals relations (<em>sfEquals</em>, <em>ehEquals</em> and <em>rccEquals</em>) use spatial
-equality and not lexical equality.  Therefore, some comparisons using these
-relations may not be as expected.</p>
+<p>The three equals relations (<em>sfEquals</em>, <em>ehEquals</em> and <em>rccEquals</em>) use spatial equality and not lexical equality.
+Therefore, some comparisons using these relations may not be as expected.</p>
 <p>The JTS description of <em>sfEquals</em> is:</p>
 <ul>
 <li>True if two geometries have at least one point in common and no point of either geometry lies in the exterior of the other geometry.</li>
@@ -423,11 +377,10 @@ relations may not be as expected.</p>
 Shapes which differ in the number of points but have the same geometry are equal and will return true.</p>
 <p>e.g. <code>LINESTRING (0 0, 0 10)</code> and <code>LINESTRING (0 0, 0 5, 0 10)</code> are spatially equal.</p>
 <h3 id="query-rewrite-extension">Query Rewrite Extension</h3>
-<p>The Query Rewrite Extension provides for simpler querying syntax.  <code>Feature</code> and
-<code>Geometry</code> can be used in spatial relations without needing the relations to be
-asserted in the dataset.  This also means the <code>Geometry Literal</code> does not need
-to be specified in the query.  In the case of <code>Features</code> this requires the
-<code>hasDefaultGeometry</code> property to be used in the dataset.</p>
+<p>The Query Rewrite Extension provides for simpler querying syntax.
+<code>Feature</code> and <code>Geometry</code> can be used in spatial relations without needing the relations to be asserted in the dataset.
+This also means the <code>Geometry Literal</code> does not need to be specified in the query.
+In the case of <code>Features</code> this requires the <code>hasDefaultGeometry</code> property to be used in the dataset.</p>
 <p>This means the query:</p>
 <pre><code>    ?subj geo:hasDefaultGeometry ?subjGeom .
     ?subjGeom geo:hasSerialization ?subjLit .
@@ -440,38 +393,24 @@ to be specified in the query.  In the case of <code>Features</code> this require
 <p>becomes:</p>
 <pre><code>    ?subj geo:sfContains ?obj .
 </code></pre>
-<p>Methods are available to apply the <code>hasDefaultGeometry</code> property to every
-<code>Geometry</code> with a single <code>hasGeometry</code> property, see
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code>.</p>
-<p>Depending upon the spatial relation, queries may include the specified <code>Feature</code>
-and <code>Geometry</code> in the results.  e.g. FeatureA is bound in a query on a dataset
-only containing FeatureA and GeometryA. The results FeatureA and GeometryA are
-returned rather than no results.  Therefore, filtering using
-<code>FILTER(!sameTerm(?subj, ?obj))</code> etc. may be needed in some cases.  The query
-rewrite functionality can be switched off in the library configuration, see
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.</p>
-<p>Each dataset is assigned a Query Rewrite Index to store the results of previous
-tests.  There is the potential that relations are tested multiple times in a
-query (i.e. <em>Feature-Feature</em>, <em>Feature-Geometry</em>, <em>Geometry-Geometry</em>,
-<em>Geometry-Feature</em>).  Therefore, it is useful to retain the results for at least
-a short period of time.</p>
-<p>Iterating through all combinations of spatial relations for a dataset containing
-<em>n</em> Geometry Literals will produce 27<em>n</em>^2 true/false results (asserting the
-true result statements in a dataset would be a subset).  Control is given on a
-dataset basis to allow choice in when and how storage of rewrite results is
-applied, e.g. store all found results on a small dataset but on demand for a
-large dataset.</p>
-<p>This index can be configured on a global and individual dataset basis for the
-maximum size and duration until unused items are removed.  Query rewriting can
-be switched on independently of the indexes, i.e. query rewriting can be
-performed but an index is configured to not store the result.</p>
+<p>Methods are available to apply the <code>hasDefaultGeometry</code> property to every <code>Geometry</code> with a single <code>hasGeometry</code>
+property, see <code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code>.</p>
+<p>Depending upon the spatial relation, queries may include the specified <code>Feature</code> and <code>Geometry</code> in the results.
+e.g. FeatureA is bound in a query on a dataset only containing FeatureA and GeometryA. The results FeatureA and GeometryA are returned rather than no results.
+Therefore, filtering using <code>FILTER(!sameTerm(?subj, ?obj))</code> etc. may be needed in some cases.
+The query rewrite functionality can be switched off in the library configuration, see <code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.</p>
+<p>Each dataset is assigned a Query Rewrite Index to store the results of previous tests.
+There is the potential that relations are tested multiple times in a query (i.e. <em>Feature-Feature</em>, <em>Feature-Geometry</em>, <em>Geometry-Geometry</em>, <em>Geometry-Feature</em>).
+Therefore, it is useful to retain the results for at least a short period of time.</p>
+<p>Iterating through all combinations of spatial relations for a dataset containing <em>n</em> Geometry Literals will produce 27<em>n</em>^2 true/false results (asserting the true result statements in a dataset would be a subset).
+Control is given on a dataset basis to allow choice in when and how storage of rewrite results is applied, e.g. store all found results on a small dataset but on demand for a large dataset.</p>
+<p>This index can be configured on a global and individual dataset basis for the maximum size and duration until unused items are removed.
+Query rewriting can be switched on independently of the indexes, i.e. query rewriting can be performed but an index is configured to not store the result.</p>
 <h3 id="dataset-conversion">Dataset Conversion</h3>
-<p>Methods to convert datasets between serialisations and spatial/coordinate
-reference systems are available in:
+<p>Methods to convert datasets between serialisations and spatial/coordinate reference systems are available in:
 <code>org.apache.jena.geosparql..configuration.GeoSPARQLOperations</code></p>
-<p>The following list shows some of the operations that can be performed.  Once
-these operations have been performed they can be serialised to file or stored in
-a Jena TDB to remove the need to reprocess.</p>
+<p>The following list shows some of the operations that can be performed.
+Once these operations have been performed they can be serialised to file or stored in a Jena TDB to remove the need to reprocess.</p>
 <ul>
 <li>
 <p>Load a Jena Model from file: <code>Model dataModel = RDFDataMgr.loadModel(&quot;data.ttl&quot;);</code></p>
@@ -498,33 +437,22 @@ a Jena TDB to remove the need to reprocess.</p>
 <p>Create Spatial Index for a Model within a Dataset for spatial querying: <code>Dataset dataset = SpatialIndex.wrapModel(model);</code></p>
 </li>
 </ul>
-<p>Other operations are available and can be applied to a Dataset containing
-multiple Models and in some cases files and folders.  These operations do
-<strong>not</strong> configure and setup the GeoSPARQL functions or indexes that are required
-for querying.</p>
+<p>Other operations are available and can be applied to a Dataset containing multiple Models and in some cases files and folders.
+These operations do <strong>not</strong> configure and setup the GeoSPARQL functions or indexes that are required for querying.</p>
 <h3 id="spatial-index">Spatial Index</h3>
-<p>A Spatial Index can be created to improve searching of a dataset.  The Spatial
-Index is expected to be unique to the dataset and should not be shared between
-datasets.  Once built the Spatial Index cannot have additional items added to
-it.</p>
-<p>A Spatial Index is required for the <code>jena-spatial</code> property functions and is
-optional for the GeoSPARQL spatial relations.  Only a single SRS can be used for
-a Spatial Index and it is recommended that datasets are converted to a single
-SRS, see <code>GeoSPARQLOperations</code>.</p>
-<p>Setting up a Spatial Index can be done through
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.  Additional methods
-for building, loading and saving Spatial Indexes are provided in
-<code>org.apache.jena.geosparql.spatial.SpatialIndex</code>.</p>
+<p>A Spatial Index can be created to improve searching of a dataset.
+The Spatial Index is expected to be unique to the dataset and should not be shared between datasets.
+Once built the Spatial Index cannot have additional items added to it.</p>
+<p>A Spatial Index is required for the <code>jena-spatial</code> property functions and is optional for the GeoSPARQL spatial relations.
+Only a single SRS can be used for a Spatial Index and it is recommended that datasets are converted to a single SRS, see <code>GeoSPARQLOperations</code>.</p>
+<p>Setting up a Spatial Index can be done through <code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.
+Additional methods for building, loading and saving Spatial Indexes are provided in <code>org.apache.jena.geosparql.spatial.SpatialIndex</code>.</p>
 <h3 id="units-uri">Units URI</h3>
-<p>Spatial/coordinate reference systems use a variety of measuring systems for
-defining distances.  These can be specified using a URI identifier, as either
-URL or URN, with conversion undertaken automatically as required.  It should be
-noted that there is error inherent in spatial reference systems and some
-variation in values may occur between different systems.</p>
-<p>The following table gives some examples of units that are supported (additional
-units can be added to the <code>UnitsRegistry</code> using the <code>javax.measure.Unit</code> API.
-These URI are all in the namespace <code>http://www.opengis.net/def/uom/OGC/1.0/</code> and
-here use the prefix <code>units</code>.</p>
+<p>Spatial/coordinate reference systems use a variety of measuring systems for defining distances.
+These can be specified using a URI identifier, as either URL or URN, with conversion undertaken automatically as required.
+It should be noted that there is error inherent in spatial reference systems and some variation in values may occur between different systems.</p>
+<p>The following table gives some examples of units that are supported (additional units can be added to the <code>UnitsRegistry</code> using the <code>javax.measure.Unit</code> API.
+These URI are all in the namespace <code>http://www.opengis.net/def/uom/OGC/1.0/</code> and here use the prefix <code>units</code>.</p>
 <table>
 <thead>
 <tr>
@@ -555,27 +483,14 @@ here use the prefix <code>units</code>.</p>
 </tr>
 </tbody>
 </table>
-<p>Full listing of default Units can be found in
-<code>org.apache.jena.geosparql.implementation.vocabulary.Unit_URI</code>.</p>
+<p>Full listing of default Units can be found in <code>org.apache.jena.geosparql.implementation.vocabulary.Unit_URI</code>.</p>
 <h2 id="geography-markup-language-support-gml">Geography Markup Language Support (GML)</h2>
-<p>The supported GML profile is GML 2.0 Simple Features Profile (10-100r3), which
-is a profile of GML 3.2.1 (07-036r1).  The profile restricts the geometry shapes
-permitted in GML 3.2.1 to a subset, see 10-100r3 page 22.  The profile supports
-Points, LineString and Polygon shapes used in WKT. There are also additional
-shape serialisations available in the profile that do not exist in WKT or JTS to
-provide simplified representations which would otherwise use LineStrings or
-Polygons.  Curves can be described by LineStringSegment, Arc, Circle and
-CircleByCenterPoint. Surfaces can be formed similarly to Polygons or using
-Curves.  These additional shapes can be read as part of a dataset or query but
-will not be produced if the SRS of the shape is transformed, instead a
-LineString or Polygon representation will be produced.</p>
-<p>Details of the GML structure for these shapes can be found in the
-<a href="http://www.datypic.com/sc/niem21/s-geometryPrimitives.xsd.html">geometryPrimitives.xsd</a>,
-<a href="http://www.datypic.com/sc/niem21/s-geometryBasic0d1d.xsd.html">geometryBasic0d1d.xsd</a>,
-<a href="http://www.datypic.com/sc/niem21/s-geometryBasic2d.xsd.html">geometryBasic2d.xsd</a>
-and
-<a href="http://www.datypic.com/sc/niem21/s-geometryAggregates.xsd.html">geometryAggregates.xsd</a>
-schemas.</p>
+<p>The supported GML profile is GML 2.0 Simple Features Profile (10-100r3), which is a profile of GML 3.2.1 (07-036r1).
+The profile restricts the geometry shapes permitted in GML 3.2.1 to a subset, see 10-100r3 page 22.
+The profile supports Points, LineString and Polygon shapes used in WKT. There are also additional shape serialisations available in the profile that do not exist in WKT or JTS to provide simplified representations which would otherwise use LineStrings or Polygons.
+Curves can be described by LineStringSegment, Arc, Circle and CircleByCenterPoint. Surfaces can be formed similarly to Polygons or using Curves.
+These additional shapes can be read as part of a dataset or query but will not be produced if the SRS of the shape is transformed, instead a LineString or Polygon representation will be produced.</p>
+<p>Details of the GML structure for these shapes can be found in the <a href="http://www.datypic.com/sc/niem21/s-geometryPrimitives.xsd.html">geometryPrimitives.xsd</a>, <a href="http://www.datypic.com/sc/niem21/s-geometryBasic0d1d.xsd.html">geometryBasic0d1d.xsd</a>, <a href="http://www.datypic.com/sc/niem21/s-geometryBasic2d.xsd.html">geometryBasic2d.xsd</a> and <a href="http://www.datypic.com/sc/niem21/s-geometryAggregates.xsd.html">geometryAggregates.xsd</a> schemas.</p>
 <p>The labelling of collections is as follows:</p>
 <table>
 <thead>
@@ -604,23 +519,14 @@ schemas.</p>
 </tbody>
 </table>
 <h2 id="apache-jena-spatial-functionswgs84-geo-predicates">Apache Jena Spatial Functions/WGS84 Geo Predicates</h2>
-<p>The <code>jena-spatial</code> module contains several SPARQL functions for querying
-datasets using the WGS84 Geo predicates for latitude
-(<code>http://www.w3.org/2003/01/geo/wgs84_pos#lat</code>) and longitude
-(<code>http://www.w3.org/2003/01/geo/wgs84_pos#long</code>).  These <code>jena-spatial</code>
-functions are supported for both Geo predicates and Geometry Literals, i.e. a
-GeoSPARQL dataset.  Additional SPARQL filter functions have been provided to
-convert Geo predicate properties into WKT strings and calculate Great Circle and
-Euclidean distances.  The <code>jena-spatial</code>functions require setting up a Spatial
-Index for the target Dataset,
-e.g. <code>GeoSPARQLConfig.setupSpatialIndex(dataset);</code>, see Spatial Index section.</p>
+<p>The <code>jena-spatial</code> module contains several SPARQL functions for querying datasets using the WGS84 Geo predicates for latitude (<code>http://www.w3.org/2003/01/geo/wgs84_pos#lat</code>) and longitude (<code>http://www.w3.org/2003/01/geo/wgs84_pos#long</code>).
+These <code>jena-spatial</code> functions are supported for both Geo predicates and Geometry Literals, i.e. a GeoSPARQL dataset.
+Additional SPARQL filter functions have been provided to convert Geo predicate properties into WKT strings and calculate Great Circle and Euclidean distances.
+The <code>jena-spatial</code>functions require setting up a Spatial Index for the target Dataset, e.g. <code>GeoSPARQLConfig.setupSpatialIndex(dataset);</code>, see Spatial Index section.</p>
 <h3 id="supported-features">Supported Features</h3>
-<p>The Geo predicate form of spatial representation is restricted to only &lsquo;Point&rsquo;
-shapes in the WGS84 spatial/coordinate reference system.  The Geo predicates are
-properties of the <code>Feature</code> and do not use the properties and structure of the
-GeoSPARQL standard, including Geometry Literals.  Methods are available to
-convert datasets from Geo predicates to GeoSPARQL structure, see:
-<code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code></p>
+<p>The Geo predicate form of spatial representation is restricted to only &lsquo;Point&rsquo; shapes in the WGS84 spatial/coordinate reference system.
+The Geo predicates are properties of the <code>Feature</code> and do not use the properties and structure of the GeoSPARQL standard, including Geometry Literals.
+Methods are available to convert datasets from Geo predicates to GeoSPARQL structure, see: <code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code></p>
 <p>The spatial relations and query re-writing of GeoSPARQL outlined previously has been implemented for Geo predicates.
 However, only certain spatial relations are valid for <code>Point</code> to <code>Point</code> relationships.
 Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.</p>
@@ -632,25 +538,18 @@ Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.</p>
   BIND(&quot;POLYGON((...))&quot;^^&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt; AS ?box) .
   FILTER(geof:sfContains(?box, ?point))
 </code></pre>
-<p>Alternatively, utilising more shapes, relations and spatial reference systems
-can be achieved by converting the dataset to the GeoSPARQL structure.</p>
+<p>Alternatively, utilising more shapes, relations and spatial reference systems can be achieved by converting the dataset to the GeoSPARQL structure.</p>
 <pre><code>  ?subj geo:hasGeometry ?geom .
   ?geom geo:hasSerialization ?geomLit .
   #Coordinate order is Lon/Lat without stated SRS URI.
   BIND(&quot;POLYGON((...))&quot;^^&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt; AS ?box) .
   FILTER(geof:sfContains(?box, ?geomLit))
 </code></pre>
-<p>Datasets can contain both Geo predicates and Geometry Literals without
-interference.  However, a dataset containing both types will only examine those
-<code>Features</code> which have Geometry Literals for spatial relations, i.e. the check
-for Geo predicates is a fallback when Geometry Literals aren&rsquo;t found.
-Therefore, it is <strong>not</strong> recommended to insert new Geo predicate properties
-after a dataset has been converted to GeoSPARQL structure (unless corresponding
-Geometry and Geometry Literals are included).</p>
+<p>Datasets can contain both Geo predicates and Geometry Literals without interference.
+However, a dataset containing both types will only examine those <code>Features</code> which have Geometry Literals for spatial relations, i.e. the check for Geo predicates is a fallback when Geometry Literals aren&rsquo;t found.
+Therefore, it is <strong>not</strong> recommended to insert new Geo predicate properties after a dataset has been converted to GeoSPARQL structure (unless corresponding Geometry and Geometry Literals are included).</p>
 <h3 id="filter-functions">Filter Functions</h3>
-<p>These filter functions are available in the
-<code>http://jena.apache.org/function/spatial#</code> namespace and here use the prefix
-<code>spatialF</code>.</p>
+<p>These filter functions are available in the <code>http://jena.apache.org/function/spatial#</code> namespace and here use the prefix <code>spatialF</code>.</p>
 <table>
 <thead>
 <tr>
@@ -722,20 +621,13 @@ Geometry and Geometry Literals are included).</p>
 </tbody>
 </table>
 <h3 id="property-functions">Property Functions</h3>
-<p>These property functions are available in the <code>http://jena.apache.org/spatial#</code>
-namespace and here use the prefix <code>spatial</code>.  This is the same namespace as the
-<code>jena-spatial</code> functions utilise and these form direct replacements.  The
-subject <code>Feature</code> may be bound, to test the pattern is true, or unbound, to find
-all cases the pattern is true.  These property functions require a <code>Spatial Index</code> to be setup for the dataset.</p>
-<p>The optional <em>?limit</em> parameter restricts the number of results returned. The
-default value is -1 which returns all results. No guarantee is given for
-ordering of results.  The optional <em>?unitsURI</em> parameter specifies the units of
-a distance. The default value is kilometres through the string or resource
-<code>http://www.opengis.net/def/uom/OGC/1.0/kilometre</code>.</p>
-<p>The <code>spatial:equals</code> property function behaves the same way as the main
-GeoSPARQL property functions. Either, both or neither of the subject and object
-can be bound. A <code>Spatial Index</code> is <strong>not</strong> required for the dataset with the
-<code>spatial:equals</code> property function.</p>
+<p>These property functions are available in the <code>http://jena.apache.org/spatial#</code> namespace and here use the prefix <code>spatial</code>.
+This is the same namespace as the <code>jena-spatial</code> functions utilise and these form direct replacements.
+The subject <code>Feature</code> may be bound, to test the pattern is true, or unbound, to find all cases the pattern is true.
+These property functions require a <code>Spatial Index</code> to be setup for the dataset.</p>
+<p>The optional <em>?limit</em> parameter restricts the number of results returned. The default value is -1 which returns all results. No guarantee is given for ordering of results.
+The optional <em>?unitsURI</em> parameter specifies the units of a distance. The default value is kilometres through the string or resource <code>http://www.opengis.net/def/uom/OGC/1.0/kilometre</code>.</p>
+<p>The <code>spatial:equals</code> property function behaves the same way as the main GeoSPARQL property functions. Either, both or neither of the subject and object can be bound. A <code>Spatial Index</code> is <strong>not</strong> required for the dataset with the <code>spatial:equals</code> property function.</p>
 <table>
 <thead>
 <tr>
@@ -782,13 +674,10 @@ can be bound. A <code>Spatial Index</code> is <strong>not</strong> required for 
 </tr>
 </tbody>
 </table>
-<p>The Cardinal Functions find all <code>Features</code> that are present in the specified
-direction.  In Geographic spatial reference systems (SRS), e.g. WGS84 and CRS84,
-the East/West directions wrap around.  Therefore, a search is made from the
-shape&rsquo;s edge for up to half the range of the SRS (i.e. 180 degrees in WGS84) and
-will continue across the East/West boundary if necessary.  In other SRS,
-e.g. Projected onto a flat plane, the East/West check is made from the shape&rsquo;s
-edge to the farthest limit of the SRS range, i.e. there is no wrap around.</p>
+<p>The Cardinal Functions find all <code>Features</code> that are present in the specified direction.
+In Geographic spatial reference systems (SRS), e.g. WGS84 and CRS84, the East/West directions wrap around.
+Therefore, a search is made from the shape&rsquo;s edge for up to half the range of the SRS (i.e. 180 degrees in WGS84) and will continue across the East/West boundary if necessary.
+In other SRS, e.g. Projected onto a flat plane, the East/West check is made from the shape&rsquo;s edge to the farthest limit of the SRS range, i.e. there is no wrap around.</p>
 <table>
 <thead>
 <tr>
@@ -832,14 +721,11 @@ edge to the farthest limit of the SRS range, i.e. there is no wrap around.</p>
 </tbody>
 </table>
 <h2 id="geometry-property-filter-functions">Geometry Property Filter Functions</h2>
-<p>The GeoSPARQL standard provides a set of properties related to geometries, see
-Section 8.4.  These are applied on the Geometry resource and are automatically
-determined if not asserted in the data.  However, it may be necessary to
-retrieve the properties of a Geometry Literal directly without an associated
-Geometry resource.  Filter functions to do this have been included as part of
-the <code>http://www.opengis.net/def/function/geosparql/</code> namespace as a minor
-variation to the GeoSPARQL standard.  The relevant functions using the <code>geof</code>
-prefix are:</p>
+<p>The GeoSPARQL standard provides a set of properties related to geometries, see Section 8.4.
+These are applied on the Geometry resource and are automatically determined if not asserted in the data.
+However, it may be necessary to retrieve the properties of a Geometry Literal directly without an associated Geometry resource.
+Filter functions to do this have been included as part of the <code>http://www.opengis.net/def/function/geosparql/</code> namespace as a minor variation to the GeoSPARQL standard.
+The relevant functions using the <code>geof</code> prefix are:</p>
 <table>
 <thead>
 <tr>
@@ -874,11 +760,8 @@ prefix are:</p>
 </tr>
 </tbody>
 </table>
-<p>A dataset that follows the GeoSPARQL Feature-Geometry-GeometryLiteral can have
-simpler SPARQL queries without needing to use these functions by taking
-advantage of the Query Rewriting functionality.  The <code>geof:isValid</code> filter
-function and <code>geo:isValid</code> property for a Geometry resource are not part of the
-GeoSPARQL standard but have been included as a minor variation.</p>
+<p>A dataset that follows the GeoSPARQL Feature-Geometry-GeometryLiteral can have simpler SPARQL queries without needing to use these functions by taking advantage of the Query Rewriting functionality.
+The <code>geof:isValid</code> filter function and <code>geo:isValid</code> property for a Geometry resource are not part of the GeoSPARQL standard but have been included as a minor variation.</p>
 <h2 id="future-work">Future Work</h2>
 <ul>
 <li>Implementing GeoJSON as a <code>GeometryLiteral</code> serialisation (<a href="https://tools.ietf.org/html/rfc7946">https://tools.ietf.org/html/rfc7946</a>).</li>
@@ -891,11 +774,9 @@ GeoSPARQL standard but have been included as a minor variation.</p>
 <li>Taha Osman</li>
 </ul>
 <h2 id="why-use-this-implementation">Why Use This Implementation?</h2>
-<p>There are several implementations of the GeoSPARQL standard.  The conformance
-and completeness of these implementations is difficult to ascertain and varies
-between features.</p>
-<p>However, the following may be of interest when considering whether to use this
-implementation based on reviewing several alternatives.</p>
+<p>There are several implementations of the GeoSPARQL standard.
+The conformance and completeness of these implementations is difficult to ascertain and varies between features.</p>
+<p>However, the following may be of interest when considering whether to use this implementation based on reviewing several alternatives.</p>
 <table>
 <thead>
 <tr>
@@ -906,19 +787,30 @@ implementation based on reviewing several alternatives.</p>
 <tbody>
 <tr>
 <td>Implements all six components of the GeoSPARQL standard.</td>
-<td>Generally partially implement the Geometry Topology and Geometry Extensions. Do not implement the Query Rewrite</td>
+<td>Generally partially implement the Geometry Topology and Geometry Extensions. Do not implement the Query Rewrite Extension.</td>
 </tr>
 <tr>
-<td>Extension.</td>
-<td></td>
+<td>Pure Java and does not require a supporting relational database. Configuration requires a single line of code (although Apache SIS may need some setting up, see above).</td>
+<td>Require setting up a database, configuring a geospatial extension and setting environment variables.</td>
+</tr>
+<tr>
+<td>Uses Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.</td>
+<td>Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.</td>
+</tr>
+<tr>
+<td>Automatically determines geometry properties and handles mixed cases of units or coordinate reference systems. The GeoSPARQL standard suggests this approach but does not require it.</td>
+<td>Tend to produce errors or no results in these situations.</td>
+</tr>
+<tr>
+<td>Performs indexing and caching on-demand which reduces set-up time and only performs calculations that are required.</td>
+<td>Perform indexing in the data loading phase and initialisation phase, which can lead to lengthy delays (even on relatively small datasets).</td>
+</tr>
+<tr>
+<td>Uses JTS which does not truncate coordinate precision and applies spatial equality.</td>
+<td>May truncate coordinate precision and apply lexical equality, which is quicker but does not comply with the GeoSPARQL standard.</td>
 </tr>
 </tbody>
 </table>
-<p>Pure Java and does not require a supporting relational database. Configuration requires a single line of code (although Apache SIS may need some setting up, see above).|Require setting up a database, configuring a geospatial extension and setting environment variables.
-Uses Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.|Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.
-Automatically determines geometry properties and handles mixed cases of units or coordinate reference systems. The GeoSPARQL standard suggests this approach but does not require it.|Tend to produce errors or no results in these situations.
-Performs indexing and caching on-demand which reduces set-up time and only performs calculations that are required.|Perform indexing in the data loading phase and initialisation phase, which can lead to lengthy delays (even on relatively small datasets).
-Uses JTS which does not truncate coordinate precision and applies spatial equality.|May truncate coordinate precision and apply lexical equality, which is quicker but does not comply with the GeoSPARQL standard.</p>
 
 
         </div>
