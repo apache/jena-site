@@ -29,10 +29,6 @@ To unsubscribe from a mailing list, send email to `LIST-unsubscribe@jena.apache.
 
 Full details of Apache mailing lists: [http://www.apache.org/foundation/mailinglists.html](http://www.apache.org/foundation/mailinglists.html).
 
-## Other channels
-
-Some Jena developers hang out on `#jena` on `irc.freenode.net`.
-
 ## Other resources
 
 There are curated collections of Jena questions on [StackOverflow](http://stackoverflow.com/questions/tagged/jena)
