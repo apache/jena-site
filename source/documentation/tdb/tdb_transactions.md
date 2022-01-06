@@ -5,13 +5,13 @@ title: TDB Transactions
 TDB provides
 [ACID](http://en.wikipedia.org/wiki/ACID)
 transaction support through the use of
-[write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).
+[write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging) in TDB1
+and copy-on-write MVCC structures in TDB2.
 
-Use of transactions protects a TDB dataset
-against data corruption, unexpected process termination and system crashes and therefore use of transactions is **strongly** recommended.
+Use of transactions protects a TDB dataset against data corruption, unexpected
+process termination and system crashes. 
 
-This feature is part of version TDB 0.9.0 and later.  Databases created with version of TDB 0.8.X can be used with 0.9.X
-to add transactional capability.
+Non-transactional use of TDB1 should be avoided; TDB2 only operates with transactions.
 
 ## Contents
 
@@ -23,18 +23,19 @@ to add transactional capability.
 -   [Multi-threaded use](#multi-threaded-use)
 -   [Bulk loading](#bulk-loading)
 -   [Multi JVM](#multi-jvm)
--   [Migration from TDB 0.8.X](#migration-from-tdb-08x)
--   [Reverting to TDB 0.8.X](#reverting-to-tdb-08x)
 
 ## Overview
 
-The transaction mechanism in TDB is based on
-[write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).
-All changes made inside a write-transaction are written to
-[journals](http://en.wikipedia.org/wiki/Journaling_file_system),
-then propagated to the main database at a suitable moment. This
-design allows for read-transactions to proceed without locking or
-other overhead over the base database.
+TDB2 uses [MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)
+via a copy-on-write mechanism. Update transactions can be of any size.
+
+The TDB1 transaction mechanism is based on
+[write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).  All
+changes made inside a write-transaction are written to
+[journals](http://en.wikipedia.org/wiki/Journaling_file_system), then propagated
+to the main database at a suitable moment.  Transactions is TDB1 are limited in
+size to a few 10's of million triples because they retain data in-memory until
+indexes can be updated.
 
 Transactional TDB supports one active write transaction, and
 multiple read transactions at the same time. Read-transactions
@@ -59,23 +60,26 @@ transactions, the highest
 (some of these limitations may be removed in later versions)
 
 -   Bulk loads: the TDB bulk loader is not transactional
--   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) are not supported.
+-   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) 
+    are not supported.
+
+TDB2 remved the limitations of TDB1:
+
 -   Some active transaction state is held exclusively in-memory,
     limiting scalability.
 -   Long-running transactions. Read-transactions cause a build-up
     of pending changes;
 
 If a single read transaction runs for a long time when there are
-many updates, the system will consume a lot of temporary
+many updates, the TDB1 system will consume a lot of temporary
 resources.
 
 ## API for Transactions
 
-TDB supports the general Jena API for transactions on RDF datasets 
-(introduced in Jena 2.7.0, ARQ 2.9.0).
+Ths section uses the primitives of the transaction mechanism. 
 
-A TDB-backed dataset can be used non-transactionally but once used in a transaction, 
-it must be used transactionally after that.
+Better APIs are described in [the transaction API
+documentation](/documentation/txn/).
 
 ### Read transactions
 
@@ -218,35 +222,15 @@ same storage. in both cases, the transactions are independent.
 Multiple applications, running in multiple JVMs, using the same
 file databases is not supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
 and must be rebuilt from the original source data. Therefore there **must** be a single JVM
-controlling the database directory and files.  From 1.1.0 onwards TDB includes automatic prevention against multi-JVM
+controlling the database directory and files. TDB includes automatic prevention against multi-JVM
 which prevents this under most circumstances.
 
-Use our [Fuseki](../fuseki2/) component to provide a
-database server for multiple applications. Fuseki supports 
-[SPARQL Query](http://www.w3.org/TR/sparql11-query/),
-[SPARQL Update](http://www.w3.org/TR/sparql11-update/) and the
-[SPARQL Graph Store protocol](http://www.w3.org/TR/sparql11-http-rdf-update/).
+Use [Fuseki](../fuseki2/) to provide a database server for multiple
+applications. Fuseki supports [SPARQL
+Query](http://www.w3.org/TR/sparql11-query/), [SPARQL
+Update](http://www.w3.org/TR/sparql11-update/) and the [SPARQL Graph Store
+protocol](http://www.w3.org/TR/sparql11-http-rdf-update/).
 
 ## Bulk loading
 
-The bulk loader is not transactional.
-
-## Migration from TDB 0.8.X
-
-The database files used by TDB 0.9.0 are fully compatible with TDB
-0.8.X; there are no file format changes and application code using
-the interface provided by `TDBFactory` will continue to work as
-before, without transaction capabilities. The only addition is the
-presence of journal files.
-
-Transactions use a new API: the `TDBFactory` API is still present.
-If an application simply uses the TDB 0.9 codebase, it will work as
-before without transactions.
-
-Applications can start using transaction by coding to the new API.
-
-## Reverting to TDB 0.8.X
-
-A database can be reverted to TDB 0.8.X by running `tdb.tdbrecover`
-- this program recovers any committed transaction with pending
-actions. The database can then be used with TDB 0.8.X.
+Bulk loaders are not transactional.

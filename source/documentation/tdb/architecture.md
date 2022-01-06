@@ -2,8 +2,8 @@
 title: TDB Architecture
 ---
 
-This page gives an overview of the TDB architecture. Specific
-details refer to TDB 0.8.
+This page gives an overview of the TDB architecture.
+It applies to TDB1 and TDB2 with differences noted.
 
 ## Contents
 
@@ -13,6 +13,7 @@ details refer to TDB 0.8.
     -   [Triple and Quad indexes](#triple-and-quad-indexes)
     -   [Prefixes Table](#prefixes-table)
     -   [TDB B+Trees](#tdb-btrees)
+    -   [Transactions](#tdb-transactions)
 -   [Inline values](#inline-values)
 -   [Query Processing](#query-processing)
 -   [Caching on 32 and 64 bit Java systems](#caching-on-32-and-64-bit-java-systems)
@@ -39,8 +40,7 @@ filing system. A dataset consists of
 
 The node table stores the representation of RDF terms (except for
 inlined value - see below). It provides two mappings from Node to
-NodeId and from NodeId to Node. This is sometimes called a
-dictionary.
+NodeId and from NodeId to Node.
 
 The Node to NodeId mapping is used during data loading and when
 converting constant terms in queries from their Jena Node
@@ -88,23 +88,72 @@ or
 ### TDB B+Trees
 
 Many of the persistent data structures in TDB use a custom
-implementation of threaded
+implementation of 
 [B+Trees](http://en.wikipedia.org/wiki/B+_tree "http://en.wikipedia.org/wiki/B%2B_tree").
 The TDB implementation only provides for fixed length key and fixed
-length value. There is no use of the value part in triple indexes.
+length value. There is no use of the value part in triple and quads indexes.
 
-The threaded nature means that long scans of indexes proceeds
-without needing to traverse the branches of the tree.
+### Transactions {#tdb-transactions}
 
-See the description of index caching below.
+Both TDB1 and TDB2 provide database transactions.
+The API is described on the [Jena Transactions page](/docuemntation/txn/ "Jena Transactions").
+
+When running with transactions, TDB1 and TDB2 provide support for multiple read
+and write transactions without application involvement. There will be multiple
+readers active, and also a single writer active (referred to as "MR+SW"). TDB
+itself manages multiple writers, queuing them as necessary.
+
+To support transactions, TDB2 uses copy-on-write MVCC data structures internally.
+
+TDB1 can run non-transactionally but the application is responsible for ensuring
+that there is one writer or several readers, not both. This is referred to as
+"MRSW". Misuse of TDB1 in non-transactional mode can corrupt the database.
 
 ## Inline values
 
-Values of certain datatypes are held as part of the NodeId in the
-bottom 56 bits. The top 8 bits indicates the type - external NodeId
-or the value space.
+Values of certain datatypes are held as part of the NodeId.
+The top bit indicates whether the remaining 63 bits are a position in the stored
+RDF terms file (high bit is 0) or an encoded value (high bit 1).
 
-The value spaces handled are (TDB 0.8): xsd:decimal, xsd:integer,
+By storing the value, the exact lexical form is not recorded. The
+integers 01 and 1 will both be treated as the value 1.
+
+### TDB2
+
+The TDB2 encoding is as follows:
+
+* High bit (bit 63) 0 means the node is in the object table (PTR).
+* High bit (bit 63) 1, bit 62 1: double as 62 bits.
+* High bit (bit 63) 1, bit 62 0: 6 bits of type, 56 bits of value.
+ 
+If a value would not fit, it will be stored externally so there is no
+guarantee that all integers, say, are store inline.
+ 
+* Integer format: signed 56 bit number, the type field has the XSD type.
+* Derived types of integer, each with their own datatype.
+* Decimal format: 8 bits scale, 48bits of signed valued.
+* Date and DateTime
+* Boolean
+* Float
+
+In the case of xsd:double, the standard Java 64 bit format is used except that the range
+of the exponent is reduced by 2 bits.
+
+* bit  63    : sign bit
+* bits 52-62 : exponent, 11 bits, the power of 2, bias -1023.
+* bits 0-51  : mantissa (significand) 52 bits (the leading one is not stored).
+
+Exponents are 11 bits, with values -1022 to +1023 held as 1 to 2046 (11 bits, bias -1023)
+Exponents 0x000 and 0x7ff have a special meaning:
+
+The xsd:dateTime and xsd:date ranges cover about 8000 years from
+year zero with a precision down to 1 millisecond. Timezone
+information is retained to an accuracy of 15 minutes with special
+timezones for Z and for no explicit timezone.
+
+### TDB1
+
+The value spaces handled are: xsd:decimal, xsd:integer,
 xsd:dateTime, xsd:date and xsd:boolean. Each has its own encoding
 to fit in 56 bits. If a node falls outside of the range of values
 that can be represented in the 56 bit encoding.
@@ -114,31 +163,27 @@ year zero with a precision down to 1 millisecond. Timezone
 information is retained to an accuracy of 15 minutes with special
 timezones for Z and for no explicit timezone.
 
-By storing the value, the exact lexical form is not recorded. The
-integers 01 and 1 will both be treated as the value 1.
-
 Derived XSD datatypes are held as their base type. The exact
 datatype is not retained; the value of the RDF term is.
+An input of `xsd:int` will become `xsd:integer`.
 
 ## Query Processing
 
-TDB uses the
-[OpExecutor extension point of ARQ](TODO).
+TDB uses quad-execution rewriting SPARQL algebra `(graph...)` to blocks of quads
+where possible. It extends `OpExecutor`.
 TDB provides low level optimization of basic graph patterns using a
-[statistics based optimizer](optimizer.html "TDB/Optimizer").
+[statistics based optimizer](optimizer.html).
 
 ## Caching on 32 and 64 bit Java systems
 
-TDB runs on both 32-bit and 64-bit Java Virtual Machines. The same
-file formats are used on both systems and database files can be
-transferred between architectures (no TDB system should be running
-for the database at the time of copy). What differs is the file
-access mechanism used.
+TDB runs on both 32-bit and 64-bit Java Virtual Machines.  A 64-bit Java Virtual
+Machine is the normal mode of use.  The same file formats are used on both
+systems and database files can be transferred between architectures (no TDB
+system should be running for the database at the time of copy). What differs is
+the file access mechanism used.
 
-TDB is faster on a 64 bit JVM because more memory is available for
-file caching.
-
-The node table caches are always in the Java heap.
+The node table caches are always in the Java heap but otherwise the OS file
+system plays an important part in index caching.
 
 The file access mechanism can be set explicitly, but this is not a
 good idea for production usage, only for experimentation - see the
