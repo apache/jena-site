@@ -123,9 +123,9 @@ Fuseki comes in in two forms, a single system &amp;ldquo;webapp&amp;rdquo;, comb
       
       <guid>https://jena.apache.org/documentation/geosparql/</guid>
       <description>An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
-Integration with Fuseki is provided either by using the GeoSPARQL assembler or using the self-contained original jena-fuseki-geosparql. In either case, this page describes the GeoSPARQL supported features.
-Getting Started GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  Features This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql). The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.</description>
+An integration with Fuseki is available but attention should be paid to the contents of this page to understand supported features.
+Features This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql). The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.
+It implements the six Conformance Classes described in the GeoSPARQL document:</description>
     </item>
     
     <item>
@@ -863,29 +863,15 @@ The relevant SPARQL standards are:
     </item>
     
     <item>
-      <title>GeoSPARQL Assembler</title>
-      <link>https://jena.apache.org/documentation/geosparql/geosparql-assembler.html</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://jena.apache.org/documentation/geosparql/geosparql-assembler.html</guid>
-      <description>Details of the GeoSPARQL support are proivded on the GeoSPARQL page.
-The assembler for GeoSPARQL support is part of the jena-geosparql artifact and miost be on the Fuseki server classpath.
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  or download the binary from the Maven central repository org/apache/jena/jena-geosparql
-The GeoSPARQL assembler can be used in a Fuseki configuration file.
-This example is of a read-only
-PREFIX fuseki: &amp;lt;http://jena.apache.org/fuseki#&amp;gt; PREFIX rdf: &amp;lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&amp;gt; PREFIX rdfs: &amp;lt;http://www.</description>
-    </item>
-    
-    <item>
       <title>GeoSPARQL Fuseki</title>
       <link>https://jena.apache.org/documentation/geosparql/geosparql-fuseki.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/geosparql/geosparql-fuseki.html</guid>
-      <description>This application provides a HTTP server compliant with the GeoSPARQL standard.
-GeoSPARQL can also be integrated with Fuseki using the GeoSPARQL assembler with a general Fuseki server.
-jena-fuseki-geosparql GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line. SPARQL queries directly on Jena Datasets and Models can be done using the GeoSPARQL Jena module.
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-fuseki-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  or download the binary from the Maven central repository org/apache/jena/jena-fuseki-geosparql</description>
+      <description>This application provides a HTTP server compliant with the GeoSPARQL standard. It uses the embedded server Fuseki and provides additional parameters for dataset loading.
+The project uses the GeoSPARQL implementation from the GeoSPARQL Jena module, which includes a range of functions in addition to those from the GeoSPARQL standard.
+Currently, there is no GUI interface as provided in the Fuseki distribution.
+The intended usage is to specify a TDB folder (either TDB1 or TDB2, created if required) for persistent storage of the dataset.</description>
     </item>
     
     <item>
@@ -1674,8 +1660,8 @@ Setting Store Parameters In TDB, there is exactly one internal object for each d
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/tdb/architecture.html</guid>
-      <description>This page gives an overview of the TDB architecture. Specific details refer to TDB 0.8.
-Contents  Terminology Design  The Node Table Triple and Quad indexes Prefixes Table TDB B+Trees   Inline values Query Processing Caching on 32 and 64 bit Java systems  Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
+      <description>This page gives an overview of the TDB architecture. It applies to TDB1 and TDB2 with differences noted.
+Contents  Terminology Design  The Node Table Triple and Quad indexes Prefixes Table TDB B+Trees Transactions   Inline values Query Processing Caching on 32 and 64 bit Java systems  Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
     </item>
     
     <item>
@@ -1787,10 +1773,10 @@ On 32 bit platforms, TDB uses in-heap caching of file data. In practice, the JVM
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/tdb/tdb_transactions.html</guid>
-      <description>TDB provides ACID transaction support through the use of write-ahead-logging.
-Use of transactions protects a TDB dataset against data corruption, unexpected process termination and system crashes and therefore use of transactions is strongly recommended.
-This feature is part of version TDB 0.9.0 and later. Databases created with version of TDB 0.8.X can be used with 0.9.X to add transactional capability.
-Contents  Overview Limitations API for Transactions  Read transactions Write transactions   Multi-threaded use Bulk loading Multi JVM Migration from TDB 0.</description>
+      <description>TDB provides ACID transaction support through the use of write-ahead-logging in TDB1 and copy-on-write MVCC structures in TDB2.
+Use of transactions protects a TDB dataset against data corruption, unexpected process termination and system crashes.
+Non-transactional use of TDB1 should be avoided; TDB2 only operates with transactions.
+Contents  Overview Limitations API for Transactions  Read transactions Write transactions   Multi-threaded use Bulk loading Multi JVM  Overview TDB2 uses MVCC via a copy-on-write mechanism.</description>
     </item>
     
     <item>
