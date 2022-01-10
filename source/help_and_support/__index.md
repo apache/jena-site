@@ -31,8 +31,10 @@ Full details of Apache mailing lists: [http://www.apache.org/foundation/mailingl
 
 ## Other resources
 
-There are curated collections of Jena questions on [StackOverflow](http://stackoverflow.com/questions/tagged/jena)
-and [answers.semanticweb.com](http://answers.semanticweb.com/tags/jena/).
+There are curated collections of Jena questions on StackOverflow 
+[tagged 'jena'](http://stackoverflow.com/questions/tagged/jena) and 
+['apache-jena'](http://stackoverflow.com/questions/tagged/apache-jena).
+There are also [questions and answers about SPARQL](http://stackoverflow.com/questions/tagged/sparql).
 
 ## How to ask a good question
 
