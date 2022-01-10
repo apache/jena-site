@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Citing Jena</title>
+    <title>Apache Jena - GeoSPARQL Assembler</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -105,7 +105,6 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Project</li>
                         <li><a href="/about_jena/about.html">About Jena</a></li>
-                        <li><a href="/about_jena/citing.html">Citing</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
                         <li><a href="/about_jena/architecture.html">Architecture</a></li>
                         <li><a href="/about_jena/team.html">Project team</a></li>
@@ -120,7 +119,7 @@
                     </ul>
                 </li>
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/about_jena/citing.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/geosparql/geosparql-assembler.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -147,7 +146,7 @@
         
         
             
-                <li><a href='/about_jena'>ABOUT JENA</a></li>
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
             
             
         
@@ -155,7 +154,15 @@
         
         
             
-                <li class="active">CITING</li>
+                <li><a href='/documentation/geosparql'>GEOSPARQL</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">GEOSPARQL ASSEMBLER</li>
             
             
         
@@ -167,28 +174,82 @@
 
                 
             </div>
-            <h1 class="title">Citing Jena</h1>
+            <h1 class="title">GeoSPARQL Assembler</h1>
             
-	<p>The name of the project is “Apache Jena”. That should appear as the first
-use in a paper and in a reference. After that &ldquo;Jena&rdquo; can be used.
-It is also a <a href="https://www.apache.org/foundation/marks/#books">trademark</a>
-of the Apache Software Foundation. This is also the industry practice.</p>
-<p>The reference should indicate the website <a href="https://jena.apache.org/">https://jena.apache.org/</a>
-(<code>https</code> is preferable). If relevant to reproducibility, or discussing
-performance, the release version number <strong>MUST</strong> also be included. The date
-of access would also be helpful to the reader.</p>
-<p>You can use names such as “TDB” and “Fuseki” on their own. They are informal
-names to parts of the whole system. They also change over time and versions.
-You could say “Apache Jena Fuseki” for the triplestore but as the components
-function as part of the whole, “Apache Jena” would be accurate.</p>
-<p>The first paper citing Jena is <a href="https://dl.acm.org/doi/10.1145/1013367.1013381">Jena: implementing the semantic web recommendations</a>.
-That only covers the API and its implementation. Some parts of the system
-mentioned in that paper have been dropped a long time ago (e.g. the “RDB”
-system). The paper is also prior to the move to under the Apache Software
-Foundation. It is also good to acknowledge Brian McBride, who started the
-project.</p>
-<p>Here is an example of what a citation may look like:</p>
-<pre><code>Apache Software Foundation, 2021. Apache Jena, Available at: https://jena.apache.org/.
+	<p>Details of the GeoSPARQL support are proivded on the <a href="index">GeoSPARQL page</a>.</p>
+<p>The assembler for GeoSPARQL support is part of the <code>jena-geosparql</code> artifact and
+miost be on the Fuseki server classpath.</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-geosparql&lt;/artifactId&gt;
+  &lt;version&gt;...&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>or download the binary from the
+<a href="https://repo1.maven.org/maven2/org/apache/jena/jena-geosparql/">Maven central repository org/apache/jena/jena-geosparql</a></p>
+<p>The GeoSPARQL assembler can be used in a Fuseki configuration file.</p>
+<p>This example is of a read-only</p>
+<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX tdb2:      &lt;http://jena.apache.org/2016/tdb#&gt;
+
+PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
+
+&lt;#service&gt; rdf:type fuseki:Service;
+    fuseki:name &quot;geo&quot;;
+    fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
+    fuseki:dataset &lt;#geo_ds&gt; .
+
+&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    geosparql:spatialIndexFile     &quot;DB/spatial.index&quot;;
+    geosparql:dataset &lt;#baseDataset&gt; ;
+    .
+
+&lt;#baseDataset&gt; rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location &quot;DB/&quot; ;
+    .
+</code></pre><p>It is possible to run with a data file loaded into memory and
+an spatial in-memory index:</p>
+<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
+
+&lt;#service&gt; rdf:type fuseki:Service;
+    fuseki:name &quot;ds&quot;;
+    fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
+    fuseki:dataset &lt;#geo_ds&gt; .
+
+# In-memory data and index.
+
+&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    geosparql:dataset &lt;#baseDataset&gt; .
+
+&lt;#baseDataset&gt; rdf:type ja:MemoryDataset ;
+    ja:data &lt;file:geosparql_data.ttl&gt; ;
+    .
+</code></pre><p>The full assembler properties with the default settings is:</p>
+<pre><code>&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    # Build in-memory is absent.
+    geosparql:spatialIndexFile     &quot;spatial.index&quot;;
+
+    ## Default settings. See documentation for meanings.
+    geosparql:inference            true ;
+    geosparql:queryRewrite         true ;
+    geosparql:indexEnabled         true ;
+    geosparql:applyDefaultGeometry false ;
+    
+    # 3 item lists: [Geometry Literal, Geometry Transform, Query Rewrite]
+    geosparql:indexSizes           &quot;-1,-1,-1&quot; ;       # Default - unlimited.
+    geosparql:indexExpires         &quot;5000,5000,5000&quot; ; # Default - time in milliseconds.
+
+    ## Required setting - data over which GeoSPARQL is applied.
+    geosparql:dataset &lt;#baseDataset&gt; ;
+    .
 </code></pre>
 
         </div>

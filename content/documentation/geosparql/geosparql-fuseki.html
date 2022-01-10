@@ -105,7 +105,6 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Project</li>
                         <li><a href="/about_jena/about.html">About Jena</a></li>
-                        <li><a href="/about_jena/citing.html">Citing</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
                         <li><a href="/about_jena/architecture.html">Architecture</a></li>
                         <li><a href="/about_jena/team.html">Project team</a></li>
@@ -177,48 +176,71 @@
             </div>
             <h1 class="title">GeoSPARQL Fuseki</h1>
             
-	<p>This application provides a HTTP server compliant with the GeoSPARQL standard.
-It uses the embedded server Fuseki and provides additional parameters for dataset loading.</p>
-<p>The project uses the GeoSPARQL implementation from the <a href="index">GeoSPARQL Jena module</a>, which includes a range of functions in addition to those from the GeoSPARQL standard.</p>
-<p>Currently, <strong>there is no GUI interface</strong> as provided in the Fuseki distribution.</p>
-<p>The intended usage is to specify a TDB folder (either TDB1 or TDB2, created if required) for persistent storage of the dataset. File loading, inferencing and data conversion operations can also be specified to load and manipulate data into the dataset. When the server is restarted these conversion operations are not required again (as they have been stored in the dataset) unless there are relevant changes. The TDB dataset can also be prepared and manipulated programatically using the Jena API.</p>
-<p>Updates can be made to the dataset while the Fuseki server is running. However, these changes will not be applied to inferencing and spatial indexes until the server restarts (any default or specified spatial index file must not exists to trigger building). This is due to the current implementation of RDFS inferencing in Jena (and is required in any Fuseki server with inferencing) and the selected spatial index.</p>
-<p>A subset of the EPSG spatial/coordinate reference systems are included by default from the Apache SIS project (<a href="http://sis.apache.org">http://sis.apache.org</a>).
-The full EPSG dataset is not distributed due to the EPSG terms of use being incompatible with the Apache Licence.
-Several options are available to include the EPSG dataset by setting the <code>SIS_DATA</code> environment variable (<a href="http://sis.apache.org/epsg.html)">http://sis.apache.org/epsg.html)</a>.</p>
-<p>It is expected that at least one Geometry Literal or Geo Predicate is present in a dataset (otherwise a standard Fuseki server can be used).
-A spatial index is created and new data cannot be added to the index once built.
-The spatial index can optionally be stored for future usage and needs to removed from a TDB folder if the index is to rebuilt.</p>
-<h2 id="clarifications-on-geosparql">Clarifications on GeoSPARQL</h2>
-<h3 id="geographic-markup-language-gml">Geographic Markup Language (GML)</h3>
-<p>GeoSPARQL refers to the Geographic Markup Language (GML) as one format for <code>GeometryLiterals</code>. This does not mean that GML is part of the GeoSPARQL standard. Instead a subset of geometry encodings from the GML standards are permitted (specifically the <code>GML 2.0 Simple Features Profile (10-100r3)</code> is supported by GeoSPARQL Jena). The expected encoding of data is in RDF triples and can be loaded from any RDF file format supported by Apache Jena. Conversion of GML to RDF is out of scope of the GeoSPARQL standard and Apache Jena.</p>
-<h3 id="geo-predicates-latlon">Geo Predicates Lat/Lon</h3>
-<p>Historically, geopsatial data has frequently been encoded as Latitude/Longitude coordinates in the WGS84 coordinate reference system. The GeoSPARQL standard specifically chooses not to adopt this approach and instead uses the more versatile <code>GeomtryLiteral</code>, which permits multiple encoding formats that support multiple coordinate reference systems and geometry shapes. Therefore, Lat/Lon Geo Predicates are not part of the GeoSPARQL standard. However, GeoSPARQL Jena provides two methods to support users with geo predicates in their geosptail data.</p>
-<ul>
-<li>
-<ol>
-<li>Conversion of Geo Predicates to the GeoSPARQL data structure (encoding the Lat/Lon as a Point geometry).</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>Spatial extension which provides property and filter functions accepting Lat/Lon arguments.</li>
-</ol>
-</li>
-</ul>
-<p>The Spatial extension functions (documented in the <a href="index">GeoSPARQL Jena module</a>) support triples in either GeoSPARQL data structure or Geo Predicates. Therefore, converting a dataset to GeoSPARQL will not lose functionality. By converting to the GeoSPARQL data structure, datasets can include a broader range of geospatial data.</p>
-<h2 id="getting-started">Getting Started</h2>
+	<p>This application provides a HTTP server compliant with the GeoSPARQL standard.</p>
+<p>GeoSPARQL can also be integrated with Fuseki using the
+<a href="#fuseki-assembler">GeoSPARQL assembler</a> with a general Fuseki server.</p>
+<h2 id="jena-fuseki-geosparql"><code>jena-fuseki-geosparql</code></h2>
 <p>GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line.
 SPARQL queries directly on Jena Datasets and Models can be done using
-the <a href="index">GeoSPARQL Jena module</a>.</p>
+the <a href="index.html">GeoSPARQL Jena module</a>.</p>
 <pre><code>&lt;dependency&gt;
   &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-  &lt;artifactId&gt;fuseki-geosparql&lt;/artifactId&gt;
+  &lt;artifactId&gt;jena-fuseki-geosparql&lt;/artifactId&gt;
   &lt;version&gt;...&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
 <p>or download the binary from the
-<a href="http://central.maven.org/maven2/org/apache/jena/jena-fuseki-geosparql/">Maven central repository org/apache/jena/jena-fuseki-geosparql</a></p>
+<a href="https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-geosparql/">Maven central repository org/apache/jena/jena-fuseki-geosparql</a></p>
+<p>This uses the embedded server Fuseki and provides additional parameters for dataset loading.</p>
+<p>The project uses the GeoSPARQL implementation from the <a href="index.html">GeoSPARQL Jena module</a>, which includes a range of functions in addition to those from the GeoSPARQL standard.</p>
+<p>Currently, there is no GUI interface as provided with this server.</p>
+<p>The intended usage is to specify a TDB folder (either TDB1 or TDB2, created if
+required) for persistent storage of the dataset. File loading, inferencing and
+data conversion operations can also be specified to load and manipulate data
+into the dataset. When the server is restarted these conversion operations are
+not required again (as they have been stored in the dataset) unless there are
+relevant changes. The TDB dataset can also be prepared and manipulated
+programatically using the Jena API.</p>
+<p>Updates can be made to the dataset while the Fuseki server is running. However,
+these changes will not be applied to inferencing and spatial indexes until the
+server restarts (any default or specified spatial index file must not exists to
+trigger building). This is due to the current implementation of RDFS inferencing
+in Jena (and is required in any Fuseki server with inferencing) and the selected
+spatial index.</p>
+<p>A subset of the EPSG spatial/coordinate reference systems are included by
+default from the Apache SIS project (<a href="http://sis.apache.org">http://sis.apache.org</a>).  The full EPSG
+dataset is not distributed due to the EPSG terms of use being incompatible with
+the Apache Licence.  Several options are available to include the EPSG dataset
+by setting the <code>SIS_DATA</code> environment variable
+(<a href="http://sis.apache.org/epsg.html)">http://sis.apache.org/epsg.html)</a>.</p>
+<p>It is expected that at least one Geometry Literal or Geo Predicate is present in
+a dataset (otherwise a standard Fuseki server can be used).  A spatial index is
+created and new data cannot be added to the index once built.  The spatial index
+can optionally be stored for future usage and needs to removed from a TDB folder
+if the index is to rebuilt.</p>
+<h2 id="clarifications-on-geosparql">Clarifications on GeoSPARQL</h2>
+<h3 id="geographic-markup-language-gml">Geographic Markup Language (GML)</h3>
+<p>GeoSPARQL refers to the Geographic Markup Language (GML) as one format for
+<code>GeometryLiterals</code>. This does not mean that GML is part of the GeoSPARQL
+standard. Instead a subset of geometry encodings from the GML standards are
+permitted (specifically the <code>GML 2.0 Simple Features Profile (10-100r3)</code> is
+supported by GeoSPARQL Jena). The expected encoding of data is in RDF triples
+and can be loaded from any RDF file format supported by Apache Jena. Conversion
+of GML to RDF is out of scope of the GeoSPARQL standard and Apache Jena.</p>
+<h3 id="geo-predicates-latlon">Geo Predicates Lat/Lon</h3>
+<p>Historically, geospatial data has frequently been encoded as Latitude/Longitude
+coordinates in the WGS84 coordinate reference system. The GeoSPARQL standard
+specifically chooses not to adopt this approach and instead uses the more
+versatile <code>GeometryLiteral</code>, which permits multiple encoding formats that support
+multiple coordinate reference systems and geometry shapes. Therefore, Lat/Lon
+Geo Predicates are not part of the GeoSPARQL standard. However, GeoSPARQL Jena
+provides two methods to support users with geo predicates in their geospatial
+data.</p>
+<ol>
+<li>Conversion of Geo Predicates to the GeoSPARQL data structure (encoding the Lat/Lon as a Point geometry).</li>
+<li>Spatial extension which provides property and filter functions accepting Lat/Lon arguments.</li>
+</ol>
+<p>The Spatial extension functions (documented in the <a href="index">GeoSPARQL Jena module</a>) support triples in either GeoSPARQL data structure or Geo Predicates. Therefore, converting a dataset to GeoSPARQL will not lose functionality. By converting to the GeoSPARQL data structure, datasets can include a broader range of geospatial data.</p>
 <h3 id="command-line">Command Line</h3>
 <p>Run from the command line and send queries over HTTP.</p>
 <p><code>java -jar jena-fuseki-geosparql-VER.jar ARGS</code></p>
