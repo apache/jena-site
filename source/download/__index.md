@@ -15,13 +15,19 @@ You may [verify the authenticity of artifacts](https://www.apache.org/info/verif
 
 ### Apache Jena Distributions
 
-The binary distribution of Fuseki (this includes both the standalone and
-WAR file packaging):
+The binary distribution of Fuseki:
 
-| Jena Fuseki  | SHA512 | Signature |
+| Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
 | <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.2.tar.gz">apache-jena-fuseki-4.3.2.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.tar.gz.asc) |
 | <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.2.zip">apache-jena-fuseki-4.3.2.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.asc) |
+<p>&nbsp;</p>
+
+The binary distribution of Fuseki as a WAR file:
+
+| Apache Jena Fuseki  | SHA512 | Signature |
+| ------------ | :----: | :-------: |
+| <a href="[preferred]jena/binaries/jena-fuseki-war-4.3.2.war">jena-fuseki-war-4.3.2.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.3.2.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.3.2.war.asc) |
 
 <p>&nbsp;</p>
 Source release: this forms the official release of Apache Jena. All binaries artifacts and maven binaries correspond to this source.
@@ -33,7 +39,7 @@ Source release: this forms the official release of Apache Jena. All binaries art
 <p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
-| Jena libraries | SHA512 | Signature |
+| Apache Jena libraries | SHA512 | Signature |
 | ------------ | :----: | :-------: |
 |<a href="[preferred]jena/binaries/apache-jena-4.3.2.tar.gz">apache-jena-4.3.2.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.tar.gz.asc) |
 | <a href="[preferred]jena/binaries/apache-jena-4.3.2.zip">apache-jena-4.3.2.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.3.2.zip.asc) |
