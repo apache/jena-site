@@ -45,6 +45,7 @@ transactional persistent storage layer, and incorporates
 - Client access
     - [Use from Java](../rdfconnection)
     - [SPARQL Over HTTP](soh.html) - scripts to help with data management.
+- Extending Fuseki with [Fuseki Modules](fuseki-modules.html)
 - [Links to Standards](rdf-sparql-standards.html)
 
 The Jena users mailing is the place to get help with Fuseki.

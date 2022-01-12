@@ -87,7 +87,15 @@ public interface FusekiModule extends SubsystemLifecycle {
      * configuration. The "configModel" parameter is set if a configuration file was
      * used otherwise it is null.
      */
-    public default void configuration(FusekiServer.Builder builder, DataAccessPointRegistry dapRegistry, Model configModel) {}
+    public default void configuration(FusekiServer.Builder builder, DataAccessPointRegistry dapRegistry, Model configModel) {
+        dapRegistry.accessPoints().forEach(accessPoint->configDataAccessPoint(builder, accessPoint, configModel));
+    }
+
+    /**
+     * This method is called for each {@link DataAccessPoint}
+     * by the default implementation of {@link #configuration}.
+     */
+    public default void configDataAccessPoint(FusekiServer.Builder builder, DataAccessPoint dap, Model configModel) {}
 
     /**
      * Built, not started, about to be returned to the builder caller.
