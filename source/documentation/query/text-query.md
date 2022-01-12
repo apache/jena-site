@@ -781,7 +781,6 @@ The following is an example of an assembler file defining a TDB dataset with a L
         fuseki:name                       "myds" ;     # e.g : `s-query --service=http://localhost:3030/myds "select * ..."`
         fuseki:serviceQuery               "query" ;    # SPARQL query service
         fuseki:serviceUpdate              "update" ;   # SPARQL update service
-        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
         fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
         fuseki:dataset                    :text_dataset ;
         .
@@ -1710,7 +1709,6 @@ The Fuseki configuration simply points to the text dataset as the
         fuseki:serviceQuery             "query" ;
         fuseki:serviceQuery             "sparql" ;
         fuseki:serviceUpdate            "update" ;
-        fuseki:serviceUpload            "upload" ;
         fuseki:serviceReadGraphStore    "get" ;
         fuseki:serviceReadWriteGraphStore    "data" ;
         fuseki:dataset                  :text_dataset ;

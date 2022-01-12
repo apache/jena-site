@@ -36,7 +36,6 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
     fuseki:serviceQuery             "query" ;
     fuseki:serviceQuery             "sparql" ;
     fuseki:serviceUpdate            "update" ;
-    fuseki:serviceUpload            "upload" ;
     fuseki:serviceReadWriteGraphStore      "data" ;
     # A separate read-only graph store endpoint:
     fuseki:serviceReadGraphStore       "get" ;
@@ -73,7 +72,6 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
     fuseki:serviceQuery             "query" ;
     fuseki:serviceQuery             "sparql" ;
     fuseki:serviceUpdate            "update" ;
-    fuseki:serviceUpload            "upload" ;
     fuseki:serviceReadWriteGraphStore      "data" ;
     # A separate read-only graph store endpoint:
     fuseki:serviceReadGraphStore       "get" ;

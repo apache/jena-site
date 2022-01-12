@@ -5,7 +5,7 @@ title: Spatial searches with SPARQL
 This module was first released with Jena 2.11.0.
 It was last released in Jena 3.12.0.
 
-Jena provides a  a [GeoSPARQL implementation](../geosparql/).
+Jena provides a [GeoSPARQL implementation](../geosparql/).
 
 ----
 
@@ -263,11 +263,9 @@ The Fuseki configuration simply points to the spatial dataset as the fuseki:data
         fuseki:serviceQuery             "query" ;
         fuseki:serviceQuery             "sparql" ;
         fuseki:serviceUpdate            "update" ;
-        fuseki:serviceUpload            "upload" ;
         fuseki:serviceReadGraphStore    "get" ;
         fuseki:serviceReadWriteGraphStore    "data" ;
         fuseki:dataset                  :spatial_dataset ;
-
 
 
 ## Building a Spatial Index

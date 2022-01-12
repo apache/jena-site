@@ -134,7 +134,6 @@ Define the service for the fuseki:Service. Note that the fuseki:dataset served b
         fuseki:serviceQuery               "query" ;    # SPARQL query service
         fuseki:serviceQuery               "sparql" ;   # SPARQL query service
         fuseki:serviceUpdate              "update" ;   # SPARQL query service
-        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
         fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
         # A separate read-only graph store endpoint:
         fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)

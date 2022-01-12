@@ -13,7 +13,6 @@ Example:
         fuseki:serviceQuery               "sparql" ;   # SPARQL query service
         fuseki:serviceQuery               "query" ;    # SPARQL query service (alt name)
         fuseki:serviceUpdate              "update" ;   # SPARQL update service
-        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
         fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph Store Protocol (read and write)
         fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph Store Protocol (read only)
         fuseki:dataset                    <#dataset> ;
@@ -21,13 +20,12 @@ Example:
 
 `<#dataset>` refers to a dataset description in the same file.
 
-There are fixed set of services:
+There are a fixed set of services:
 
 | Service | Description |
 |---------|-------------|
 | fuseki:serviceQuery | SPARQL query service |
 | fuseki:serviceUpdate | SPARQL update service |
-| fuseki:serviceUpload | Non-SPARQL HTML file upload service |
 | fuseki:serviceReadGraphStore | SPARQL Graph Store Protocol (read)
 | fuseki:serviceReadWriteGraphStore | SPARQL Graph Store Protocol (read and write)
 
