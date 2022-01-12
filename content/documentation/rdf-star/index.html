@@ -178,26 +178,25 @@ original work which is described in
 <a href="https://blog.liu.se/olafhartig/2019/01/10/position-statement-rdf-star-and-sparql-star/">Olaf Hartig&rsquo;s blog entry</a>.</p>
 <p>Example:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-turtle" data-lang="turtle"><span style="">&lt;&lt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">john</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span><span style="">&gt;&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dct:</span><span style="color:#008000;font-weight:bold">source</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://example/directory&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
-</span></code></pre></div><p>The part <code>&lt;&lt; :john foaf:name &quot;John Smith&quot; &gt;&gt;</code> is a quoted triple and refers to the triple with subject <code>:john</code>, property <code>foaf:name</code> and object <code>&quot;John Smith&quot;</code>.</p>
+</span></code></pre></div><p>The part <code>&lt;&lt; :john foaf:name &quot;John Smith&quot; &gt;&gt;</code> is an embedded triple and refers to the triple with subject <code>:john</code>, property <code>foaf:name</code> and object <code>&quot;John Smith&quot;</code>.</p>
 <p>Triple terms can be in the subject or object position.</p>
 <p>Jena provides support for RDF-star and the related SPARQL-star.</p>
 <ul>
 <li>Turtle, N-Triples, TriG and N-Quads extended for Triple Terms syntax,
 input and output.  There is no output in RDF/XML.</li>
-<li>SPARQL extended with Triple Term syntax for graph matching.</li>
-<li>SPARQL Result formats for JSON and XML extended to support quoted triples in results.</li>
+<li>SPARQL extended with Triple Term syntax for graph matching</li>
+<li>SPARQL Result formats for JSON and XML extended to support Triple Terms in results.</li>
 <li>Support in the Model API.</li>
-<li>Translation to and from RDF reification.</li>
 </ul>
 <p>All this is active by default in Fuseki.</p>
 <p>The aim is to follow the definition of the <a href="https://w3c.github.io/rdf-star/">RDF-star community</a>.</p>
 <p>Storage in databases <a href="/documentation/tdb">TDB1</a> and <a href="/documentation/tdb2/">TDB2</a>
 as well as in-memory databases is supported.</p>
 <h2 id="rdf-star">RDF-star</h2>
-<p>RDF-star syntax for quoted triples is added to the parsers for Turtle, N-Triples, TriG and N-Quads.</p>
-<p>Datasets may have graphs that have quoted triples that refer to triples anywhere, not just in the same graph.</p>
+<p>RDF-star syntax for embedded triples is added to the parsers for Turtle, N-Triples, TriG and N-Quads.</p>
+<p>Datasets may have graphs that have embedded triples that refer to triples anywhere, not just in the same graph.</p>
 <h2 id="sparql-star">SPARQL-star</h2>
-<p>Matches for quoted triples:</p>
+<p>Matches for embedded triples:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> { <span style="color:#666">&lt;&lt;</span>:<span style="color:#008000;font-weight:bold">john</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name</span> <span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
 </code></pre></div><p>Insert triples terms into the default graph to record the graph source.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">INSERT</span> { <span style="color:#666">&lt;&lt;</span><span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
@@ -214,8 +213,9 @@ as well as in-memory databases is supported.</p>
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#666">&lt;&lt;</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?t</span>) {
    <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> 
 }
-</code></pre></div><h3 id="sparql-functions-related-to-quoted-triples">SPARQL Functions related to quoted triples</h3>
-<p>These functions cause an expression error if passed the wrong type of arguments.</p>
+</code></pre></div><h3 id="sparql-functions-related-to-embedded-triples">SPARQL Functions related to embedded triples</h3>
+<p>These functions cause an expression error if passed the wrong type of arguments. <code>afn:</code>
+is a prefix for <code>&lt;http://jena.apache.org/ARQ/function#&gt;</code>.</p>
 <table>
 <thead>
 <tr>
@@ -226,30 +226,30 @@ as well as in-memory databases is supported.</p>
 <tbody>
 <tr>
 <td><code>TRIPLE(?s, ?p, ?o)</code></td>
-<td>Create a quoted triple from s/p/o</td>
+<td>Create an embedded triple from s/p/o</td>
 </tr>
 <tr>
 <td><code>isTRIPLE(?t)</code></td>
-<td>Return true if the argument value is a quoted triple</td>
+<td>Return true if the argument value is an embedded triple</td>
 </tr>
 <tr>
 <td><code>SUBJECT(?t)</code></td>
-<td>Return the subject of the quoted triple</td>
+<td>Return the subject of the embedded triple</td>
 </tr>
 <tr>
 <td><code>PREDICATE(?t)</code></td>
-<td>Return the predicate (property) of the quoted triple</td>
+<td>Return the predicate (property) of the embedded triple</td>
 </tr>
 <tr>
 <td><code>OBJECT(?t)</code></td>
-<td>Return the object of the quoted triple</td>
+<td>Return the object of the embedded triple</td>
 </tr>
 </tbody>
 </table>
 <h3 id="sparql-results">SPARQL results</h3>
 <p>The syntaxes for SPARQL results from a SELECT query, <code>application/sparql-results+json</code>,
-<code>application/sparql-results+xml</code> are extended to include quoted triples:</p>
-<p>The quoted triple <code>&lt;&lt; _:b0 &lt;http://example/p&gt; 123  &gt;&gt;</code> is encoded, in
+<code>application/sparql-results+xml</code> are extended to include embedded triples:</p>
+<p>The embedded triple <code>&lt;&lt; _:b0 &lt;http://example/p&gt; 123  &gt;&gt;</code> is encoded, in
 <code>application/sparql-results+json</code> as:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">    {
       <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;triple&#34;</span> ,
@@ -271,20 +271,15 @@ as well as in-memory databases is supported.</p>
       <span style="color:#008000;font-weight:bold">&lt;/object&gt;</span>
     <span style="color:#008000;font-weight:bold">&lt;/triple&gt;</span>
 </code></pre></div><h2 id="model-api">Model API</h2>
-<p>RDF-star quoted triples are treated as <code>Resource</code> to preserve the typed Model API.
+<p>RDF-star embedded triples are treated as <code>Resource</code> to preserve the typed Model API.
 They occur in the subject and object positions.</p>
-<p>A <code>Resource</code> contains a <code>Statement</code> object if the underlying RDF term is an RDF-star quoted triple.</p>
+<p>A <code>Resource</code> contains a <code>Statement</code> object if the underlying RDF term is an RDF-star embedded triple.</p>
 <p>New methods include:</p>
 <ul>
 <li><code>Statement  Resource.getStatement()</code></li>
 <li><code>Resource  Model.createResource(Statement)</code></li>
 <li><code>Resource  ResourceFactory.createStatement</code></li>
 </ul>
-<h2 id="reification">Reification</h2>
-<p><code>org.apache.jena.system.RDFStar</code> provides functions to translate RDF-star into
-RDF reification, and translate it back again to RDF-star.</p>
-<p>Translating back to RDF-star relies on the consistency constraint that there is
-only one reification for each unique quoted triple term.</p>
 
 
         </div>
