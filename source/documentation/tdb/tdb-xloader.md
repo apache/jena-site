@@ -6,13 +6,14 @@ TDB xloader ("x" for external) is a bulkloader for very large datasets. The goal
 is stability and reliability for long running loading, running on modest
 hardware and can be use to load a database on rotating disk or SSD.
 
-xloader is not a replacement for regular TDB1 and TDB2 loaders.
+`xloader` is not a replacement for regular TDB1 and TDB2 loaders. It is for very
+large datasets.
 
 There are two scripts to load data using the xloader subsystem.
 
-"tdb1.xloader", which was called "tdbloader2" and has some improvements.
+"tdb1.xloader", which was called "tdbloader2", has some improvements.
 
-It is not as fast as other TDB loaders on dataset where the general loaders work
+It is not as fast as other TDB loaders on datasets where the general loaders work
 without encountering progressive slowdown.
 
 The xloaders for TDB1 and TDB2 are not identical. The TDB2 xloader is more
@@ -39,6 +40,12 @@ temporary files.
 
 `FILE` is any RDF syntax supported by Jena. Syntax is determined by the file
 extension and can include an addtional ".gz" or ".bz2" for compressed files.
+
+`tdb2.xloader` also supports argument `--threads` to set the number of threads
+to use with `sort(1)`. The default is 2. The recommendation for an initial
+setting is to set it to the number of cores (not hardware threads) minus 1. This
+is sensitive to the hardware environment. Experimentation may show a different,
+better setting.
 
 ### Advice
 
