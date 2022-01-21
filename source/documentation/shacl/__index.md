@@ -8,8 +8,8 @@ W3C [Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/).
 It implements SHACL Core and SHACL SPARQL Constraints.
 
 In addition, it provides:
-* [SHACL Compact Syntax](https://w3c.github.io/shacl/shacl-compact-syntax/)
-* [SPARQL-based targets](https://w3c.github.io/shacl/shacl-af/#SPARQLTarget)
+* [SHACL Compact Syntax](#shacl-compact-syntax)
+* [SPARQL-based targets](#sparql-based-targets)
 
 ## Command line
 
@@ -149,3 +149,24 @@ Extensions:
 * The `nodeParam` grammar rule supports "targetClass" (normally written 
   with the shorthand `->`) as well as the defined
   "targetNode", "targetObjectsOf", "targetSubjectsOf"
+
+## SPARQL-based targets
+
+SPARQL-based targets allow the target nodes to be calculated with a SPARQL
+`SELECT` query.
+
+See [SPARQL-based targets](https://w3c.github.io/shacl/shacl-af/#SPARQLTarget)
+for details.
+
+```
+ex:example
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            SELECT ?this
+            WHERE {
+              ...
+            }
+            """ ;
+    ] ;
+```
