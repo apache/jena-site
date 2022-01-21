@@ -134,8 +134,14 @@
                         <li><a href="http://www.apache.org/security/">Security</a></li>
                     </ul>
                 </li>
-
-                <li id="edit"><a href="{{ .Site.Params.siteRepositoryUrl }}/edit/{{ .Site.Params.siteRepositorySourceBranch }}/source/{{ .Page.Path }}" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+{{/* Fixup for Hugo warning : was .Page.Path */ -}}
+{{ $path := "" }}
+{{ with .File }}
+    {{ $path = .Path }}
+{{ else }}
+    {{ $path = .Path }}
+{{ end }}
+                <li id="edit"><a href="{{ .Site.Params.siteRepositoryUrl }}/edit/{{ .Site.Params.siteRepositorySourceBranch }}/source/{{ $path }}" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
