@@ -28,7 +28,7 @@ While the programming interface to <code>Model</code> is quite rich,
 internally, the RDF graph is stored in a much simpler abstraction named <code>Graph</code>.
 This allows Jena to use a variety of different storage strategies equivalently, as long
 as they conform to the <code>Graph</code> interface. Out-of-the box, Jena can store
-a graph as an in-memory store, in an SQL database, or as a persistent store using a
+a graph as an in-memory store, or as a persistent store using a
 custom disk-based tuple index. The graph interface is also a convenient extension point
 for connecting other stores to Jena, such as LDAP, by writing an adapter that allows
 the calls from the <code>Graph</code> API to work on that store.
