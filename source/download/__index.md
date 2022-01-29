@@ -23,13 +23,6 @@ The binary distribution of Fuseki:
 | <a href="[preferred]jena/binaries/apache-jena-fuseki-4.3.2.zip">apache-jena-fuseki-4.3.2.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.3.2.zip.asc) |
 <p>&nbsp;</p>
 
-The binary distribution of Fuseki as a WAR file:
-
-| Apache Jena Fuseki  | SHA512 | Signature |
-| ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/jena-fuseki-war-4.3.2.war">jena-fuseki-war-4.3.2.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.3.2.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.3.2.war.asc) |
-
-<p>&nbsp;</p>
 Source release: this forms the official release of Apache Jena. All binaries artifacts and maven binaries correspond to this source.
 
 | Apache Jena Release | SHA512 | Signature |
