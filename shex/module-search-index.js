@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"org.apache.jena.shex"}]
+moduleSearchIndex = [{"l":"org.apache.jena.shex"}];updateSearchResults();

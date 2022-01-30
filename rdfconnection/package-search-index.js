@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"org.apache.jena.rdfconnection","l":"org.apache.jena.rdfconnection"},{"m":"org.apache.jena.rdfconnection","l":"org.apache.jena.rdflink"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"org.apache.jena.rdfconnection","l":"org.apache.jena.rdfconnection"},{"m":"org.apache.jena.rdfconnection","l":"org.apache.jena.rdflink"}];updateSearchResults();

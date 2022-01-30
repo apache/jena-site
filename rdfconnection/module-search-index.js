@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"org.apache.jena.rdfconnection"}]
+moduleSearchIndex = [{"l":"org.apache.jena.rdfconnection"}];updateSearchResults();
