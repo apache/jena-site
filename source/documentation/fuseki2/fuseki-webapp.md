@@ -78,9 +78,12 @@ where the distribution was unpacked.
 ## Fuseki as a Web Application {#fuseki-web-application}
 
 Fuseki can run from a
-[WAR](http://en.wikipedia.org/wiki/WAR_%28file_format%29) file.  Fuseki
-requires at least support for the Servlet 3.0 API (e.g. Apache Tomcat 7 or
-Jetty 8) as well as Java8.
+[WAR](http://en.wikipedia.org/wiki/WAR_%28file_format%29) file. 
+
+The war file can be downloaded from the [project downloads page](/download/). It
+should then be renamed to the webapp name "ROOT.war" (this means there no name
+in the URL) or "fuseki.war" (with a name `/fuseki/`) or some other choice of
+name.
 
 `FUSEKI_HOME` is not applicable.
 
