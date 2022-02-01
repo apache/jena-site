@@ -8,7 +8,8 @@ Main](./fuseki-main.html) server. The module can modify the server
 configuration, add new functionality, or react to a server being built and
 started.
 
-This feature was added in Jena version 4.3.0.
+This feature was added in Jena version 4.3.0. They are an expeirmental feature
+that will evolve based on experineace and use cases.
 
 Fuseki Modules are loaded use the JDK
 [ServiceLoader](https://www.baeldung.com/java-spi) by being placing a jar file on the classpath,
