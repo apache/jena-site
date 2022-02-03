@@ -751,7 +751,7 @@ PREFIX : &amp;lt;#&amp;gt; PREFIX fuseki: &amp;lt;http://jena.apache.org/fuseki#
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-old-config-endpoint.html</guid>
       <description>This page describes the original Fuseki2 server configuration syntax.
 Example:
-## Updatable dataset. &amp;lt;#service1&amp;gt; rdf:type fuseki:Service ; fuseki:name &amp;quot;ds&amp;quot; ; # http://host:port/ds fuseki:serviceQuery &amp;quot;sparql&amp;quot; ; # SPARQL query service fuseki:serviceQuery &amp;quot;query&amp;quot; ; # SPARQL query service (alt name) fuseki:serviceUpdate &amp;quot;update&amp;quot; ; # SPARQL update service fuseki:serviceReadWriteGraphStore &amp;quot;data&amp;quot; ; # SPARQL Graph Store Protocol (read and write) fuseki:serviceReadGraphStore &amp;quot;get&amp;quot; ; # SPARQL Graph Store Protocol (read only) fuseki:dataset &amp;lt;#dataset&amp;gt; ; .  &amp;lt;#dataset&amp;gt; refers to a dataset description in the same file.</description>
+## Updatable dataset. &amp;lt;#service1&amp;gt; rdf:type fuseki:Service ; fuseki:name &amp;quot;ds&amp;quot; ; # http://host:port/ds fuseki:serviceQuery &amp;quot;sparql&amp;quot; ; # SPARQL query service fuseki:serviceQuery &amp;quot;query&amp;quot; ; # SPARQL query service (alt name) fuseki:serviceUpdate &amp;quot;update&amp;quot; ; # SPARQL update service fuseki:serviceUpload &amp;quot;upload&amp;quot; ; # Non-SPARQL upload service fuseki:serviceReadWriteGraphStore &amp;quot;data&amp;quot; ; # SPARQL Graph Store Protocol (read and write) fuseki:serviceReadGraphStore &amp;quot;get&amp;quot; ; # SPARQL Graph Store Protocol (read only) fuseki:dataset &amp;lt;#dataset&amp;gt; ; .</description>
     </item>
     
     <item>
@@ -1567,7 +1567,7 @@ Contents  Need Design Intent Other Approaches  RDF Lisp XML JSON   Design  Token
       
       <guid>https://jena.apache.org/documentation/query/spatial-query-doc.html</guid>
       <description>This module was first released with Jena 2.11.0. It was last released in Jena 3.12.0.
-Jena provides a GeoSPARQL implementation.
+Jena provides a a GeoSPARQL implementation.
  This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query. It gives applications the ability to perform simple spatial searches within SPARQL queries. Spatial indexes are additional information for accessing the RDF graph.
 The spatial index can be either Apache Lucene for a same-machine spatial index, or Apache Solr for a large scale enterprise search application.</description>
     </item>
@@ -1618,7 +1618,7 @@ The supported datatypes (including those required by SPARQL 1.1), including full
       <guid>https://jena.apache.org/documentation/rdf-star/</guid>
       <description>RDF-star is an extension to RDF that provides a way for one triple to refer to another triple. RDF* is the name of the original work which is described in Olaf Hartig&amp;rsquo;s blog entry.
 Example:
-&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is a quoted triple and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
+&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is an embedded triple and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
 Triple terms can be in the subject or object position.</description>
     </item>
     
@@ -1660,8 +1660,8 @@ Setting Store Parameters In TDB, there is exactly one internal object for each d
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/tdb/architecture.html</guid>
-      <description>This page gives an overview of the TDB architecture. Specific details refer to TDB 0.8.
-Contents  Terminology Design  The Node Table Triple and Quad indexes Prefixes Table TDB B+Trees   Inline values Query Processing Caching on 32 and 64 bit Java systems  Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
+      <description>This page gives an overview of the TDB architecture. It applies to TDB1 and TDB2 with differences noted.
+Contents  Terminology Design  The Node Table Triple and Quad indexes Prefixes Table TDB B+Trees Transactions   Inline values Query Processing Caching on 32 and 64 bit Java systems  Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
     </item>
     
     <item>
@@ -1773,10 +1773,10 @@ On 32 bit platforms, TDB uses in-heap caching of file data. In practice, the JVM
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/tdb/tdb_transactions.html</guid>
-      <description>TDB provides ACID transaction support through the use of write-ahead-logging.
-Use of transactions protects a TDB dataset against data corruption, unexpected process termination and system crashes and therefore use of transactions is strongly recommended.
-This feature is part of version TDB 0.9.0 and later. Databases created with version of TDB 0.8.X can be used with 0.9.X to add transactional capability.
-Contents  Overview Limitations API for Transactions  Read transactions Write transactions   Multi-threaded use Bulk loading Multi JVM Migration from TDB 0.</description>
+      <description>TDB provides ACID transaction support through the use of write-ahead-logging in TDB1 and copy-on-write MVCC structures in TDB2.
+Use of transactions protects a TDB dataset against data corruption, unexpected process termination and system crashes.
+Non-transactional use of TDB1 should be avoided; TDB2 only operates with transactions.
+Contents  Overview Limitations API for Transactions  Read transactions Write transactions   Multi-threaded use Bulk loading Multi JVM  Overview TDB2 uses MVCC via a copy-on-write mechanism.</description>
     </item>
     
     <item>
