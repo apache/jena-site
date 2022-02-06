@@ -91,7 +91,7 @@ To silence logging from Java, try:
 
 ## Building a server {#build}
 
-A ``FusekiServer`` is built by creating a configuration,
+A `FusekiServer` is built by creating a configuration,
 building the server, then running it.  The application needs to start
 the server.
 
@@ -112,16 +112,17 @@ dataset that can be updated via HTTP.
     ...
     server.stop() ;
 
+The services are avilable on a named endpoint and also on the dataset URL itself.
+
 URLs:
 
-| Service | Endpoint |
-|---------|----------|
-| SPARQL Query      | ``http://host:3330/ds/query``   |
-| SPARQL Query      | ``http://host:3330/ds/sparql``  |
-| SPARQL Update     | ``http://host:3330/ds/update``  |
-| File upload       | ``http://host:3330/ds/update``  |
-| GSP read-write    | ``http://host:3330/ds/data``    |
-| Read-write quads  | ``http://host:3330/ds``         |
+| Service | Endpoint1 | Endpoint2 |
+|---------|----------|------------|
+| SPARQL Query   | `http://host:3330/ds/query`   | `http://host:3330/ds` |
+| SPARQL Query   | `http://host:3330/ds/sparql`  | `http://host:3330/ds` |
+| SPARQL Update  | `http://host:3330/ds/update`  | `http://host:3330/ds` |
+| GSP read-write | `http://host:3330/ds/data`    | `http://host:3330/ds` |
+
 
 "GSP" = SPARQL Graph Store Protocol
 
@@ -132,16 +133,15 @@ set that is read-only over HTTP. The application can still update the dataset.
     Dataset ds = ... ;
     FusekiServer server = FusekiServer.create()
         .port(3332)
-        .add("/ds", ds, true)
+        .add("/ds", ds, false)
         .build() ;
     server.start() ;
 
-| Service | Endpoint |
-|---------|----------|
-| SPARQL Query   | ``http://host:3332/ds/query``   |
-| SPARQL Query   | ``http://host:3332/ds/sparql``  |
-| GSP read-only  | ``http://host:3332/ds/data``    |
-| GET quads      | ``http://host:3332/ds``         |
+| Service | Endpoint | Endpoint2 |
+|---------|----------|-----------|
+| SPARQL Query  | `http://host:3332/ds/query`  | `http://host:3332/ds` |
+| SPARQL Query  | `http://host:3332/ds/sparql` | `http://host:3332/ds` |
+| GSP read-only | `http://host:3332/ds/data`   | `http://host:3332/ds` |
 
 ### Example 3
 
@@ -149,7 +149,7 @@ Different combinations of services and endpoint names can be given using a `Data
 
     DatasetGraph dsg = ... ;
     DataService dataService = new DataService(dsg) ;
-    dataService.addEndpoint(OperationName.Quads_RW, "");
+    dataService.addEndpoint(OperationName.GSP_RW, "");
     dataService.addEndpoint(OperationName.Query, "");
     dataService.addEndpoint(OperationName.Update, "");
 
@@ -159,15 +159,14 @@ Different combinations of services and endpoint names can be given using a `Data
        .build() ;
     server.start() ;
 
-This setup puts all the operation on the dataset URL. The ``Content-type`` and any query
+This setup puts all the operation on the dataset URL. The `Content-type` and any query
 string is used to determine the operation.
 
 | Service | Endpoint |
 |---------|----------|
-| SPARQL Query    | ``http://host:3332/ds``  |
-| SPARQL Update   | ``http://host:3332/ds``  |
-| GSP read-only   | ``http://host:3332/ds``  |
-| GET/POST quads  | ``http://host:3332/ds``  |
+| SPARQL Query    | `http://host:3332/ds`  |
+| SPARQL Update   | `http://host:3332/ds`  |
+| GSP read-write  | `http://host:3332/ds`  |
 
 ### Example 4
 

@@ -172,7 +172,7 @@ form with field "update=".
 
 A GSP operation has `?default` or `?graph=`.
 
-Quads operations have no query string and a have a `Content-Type` for a data in
+Quads operations are also provided by GSP endpoints when there is no query string and a have a `Content-Type` for a data in
 a RDF triples or quads syntax.
 
 So, for example "GET /dataset" is a request to get all the triples and quads in the
@@ -257,10 +257,10 @@ GET, POST, PUT (not DELETE, that would be the dataset itself),
 and the request or response is one of the syntaxes for datasets
 (TriG, N-Quads, JSON-LD, TriX).
 
-Fuseki also provides [/documentation/io/rdf-binary.html](RDF Binary) for triples and quads.
+The DSP ("Dataset Store Protocol") operations provide operations similar to GSP
+but operating on the dataset, not a speciifc graph.
 
-The quads extension applies when there is no `?default` or `?graph`. 
-`GET` fetches the dataset in quads format, and `PUT` and `POST` take quads format data (N-Quads and Trig).
+Fuseki also provides [/documentation/io/rdf-binary.html](RDF Binary) for triples and quads.
 
 ## Context
 
