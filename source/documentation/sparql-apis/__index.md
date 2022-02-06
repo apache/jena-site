@@ -11,6 +11,7 @@ The SPARQL specifications provide
 [query](https://www.w3.org/TR/sparql11-query/),
 [update](https://www.w3.org/TR/sparql11-update/) and the
 [graph store protocol](https://www.w3.org/TR/sparql11-http-rdf-update/) (GSP).
+In addition, Jena provided store operations for named graph formats.
 
 For working with RDF data:
 
@@ -33,6 +34,7 @@ and for SPARQL,
 | `UpdateExecution`  | `UpdateExec` |
 | `ResultSet`        | `RowSet`     |
 | `ModelStore`       | `GSP`        |
+| `ModelStore`       | `DSP`        |
 
 Jena provides a single interface, [`RDFConnection`](../rdfconnection) for
 working with local and remote RDF data using these protocols in a unified way.
@@ -57,8 +59,9 @@ classes.
 
 `UpdateProcessor` is a legacy name for `UpdateExecution`
 
-`GSP` provides the SPARQL Graph Store Protocol, including extensions for sending
-and receiving datasets, rather than individual graphs.
+`GSP` provides the SPARQL Graph Store Protocol, and 'DSP' (Dataset Store
+Protocol) provides for sending and receiving datasets, rather than individual
+graphs.
 
 Both API and GPI provide builders for detailed setup, particularly for remote
 usage over HTTP and HTTPS where detailed control of the HTTP requests is
@@ -69,7 +72,9 @@ common usage patterns are retained in `QueryExecutionFactory`,
 `UpdateExecutionFactory`. Note that any methods that involved Apache HttpClient
 objects have been removed.
 
-## Changes from Jena 4.2.0 to Jena 4.3.0 {#changes}
+## Changes from Jena 4.2.0 {#changes}
+
+### Changes at Jena 4.3.0 {#changes430}
 
 * Execution objects have a companion builder. This is especially important of
   HTTP as there many configuration options that may be needed. Local use is
@@ -79,7 +84,7 @@ objects have been removed.
 * HTTP usage provided by the JDK `java.net.http` package, with challenge-based
   authentication provided on top by Jena. [See the authentiucation documentation](./http-auth.html).
 
-* Authentication support is uniformly applied to query, update, GSP and `SERVICE`.
+* Authentication support is uniformly applied to query, update, GSP, DSP and `SERVICE`.
 
 * HTTP/2 support
 
@@ -106,6 +111,15 @@ objects have been removed.
 * `DatasetAccessor`s removed - previously these were deprecated. `GSP` and
 `ModelStore` are the replacement for remote operations. `RDFConnection` and
 `RDFLink` provide APIs.
+
+### Changes at Jena 4.5.0 {#changes450}
+
+Separate the dataset operations from the graph operations.
+
+* GSP - SPARQL Graph Store Protocol
+
+* DSP - Dataset Store Protocol: HTTP GET, POST, PUT operations on the datatse,
+e.g. quad formats like TriG.
 
 ## Substitution
 
