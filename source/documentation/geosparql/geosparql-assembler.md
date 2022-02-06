@@ -71,7 +71,7 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 
 The full assembler properties with the default settings is:
 ```
-<#geo_ds> rdf:type geosparql:geosparqlDataset ;
+<#geo_ds> rdf:type geosparql:GeosparqlDataset ;
     # Build in-memory is absent.
     geosparql:spatialIndexFile     "spatial.index";
 
