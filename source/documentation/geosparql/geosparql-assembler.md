@@ -5,7 +5,7 @@ title: GeoSPARQL Assembler
 Details of the GeoSPARQL support are proivded on the [GeoSPARQL page](index).
 
 The assembler for GeoSPARQL support is part of the `jena-geosparql` artifact and
-miost be on the Fuseki server classpath.
+must be on the Fuseki server classpath, along with its dependencies.
 
     <dependency>
       <groupId>org.apache.jena</groupId>
@@ -18,7 +18,7 @@ or download the binary from the
 
 The GeoSPARQL assembler can be used in a Fuseki configuration file.
 
-This example is of a read-only 
+This example is of a read-only: 
 
 ```
 PREFIX fuseki:    <http://jena.apache.org/fuseki#>
