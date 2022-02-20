@@ -180,8 +180,8 @@
             </div>
             <h1 class="title">TDB Architecture</h1>
             
-	<p>This page gives an overview of the TDB architecture. Specific
-details refer to TDB 0.8.</p>
+	<p>This page gives an overview of the TDB architecture.
+It applies to TDB1 and TDB2 with differences noted.</p>
 <h2 id="contents">Contents</h2>
 <ul>
 <li><a href="#terminology">Terminology</a></li>
@@ -191,6 +191,7 @@ details refer to TDB 0.8.</p>
 <li><a href="#triple-and-quad-indexes">Triple and Quad indexes</a></li>
 <li><a href="#prefixes-table">Prefixes Table</a></li>
 <li><a href="#tdb-btrees">TDB B+Trees</a></li>
+<li><a href="#tdb-transactions">Transactions</a></li>
 </ul>
 </li>
 <li><a href="#inline-values">Inline values</a></li>
@@ -215,8 +216,7 @@ filing system. A dataset consists of</p>
 <h3 id="the-node-table">The Node Table</h3>
 <p>The node table stores the representation of RDF terms (except for
 inlined value - see below). It provides two mappings from Node to
-NodeId and from NodeId to Node. This is sometimes called a
-dictionary.</p>
+NodeId and from NodeId to Node.</p>
 <p>The Node to NodeId mapping is used during data loading and when
 converting constant terms in queries from their Jena Node
 representation to the TDB-specific internal ids.</p>
@@ -251,18 +251,59 @@ or
 <a href="http://www.w3.org/TeamSubmission/turtle/" title="http://www.w3.org/TeamSubmission/turtle/">Turtle</a>.</p>
 <h3 id="tdb-btrees">TDB B+Trees</h3>
 <p>Many of the persistent data structures in TDB use a custom
-implementation of threaded
+implementation of
 <a href="http://en.wikipedia.org/wiki/B+_tree" title="http://en.wikipedia.org/wiki/B%2B_tree">B+Trees</a>.
 The TDB implementation only provides for fixed length key and fixed
-length value. There is no use of the value part in triple indexes.</p>
-<p>The threaded nature means that long scans of indexes proceeds
-without needing to traverse the branches of the tree.</p>
-<p>See the description of index caching below.</p>
+length value. There is no use of the value part in triple and quads indexes.</p>
+<h3 id="tdb-transactions">Transactions</h3>
+<p>Both TDB1 and TDB2 provide database transactions.
+The API is described on the <a href="/docuemntation/txn/" title="Jena Transactions">Jena Transactions page</a>.</p>
+<p>When running with transactions, TDB1 and TDB2 provide support for multiple read
+and write transactions without application involvement. There will be multiple
+readers active, and also a single writer active (referred to as &ldquo;MR+SW&rdquo;). TDB
+itself manages multiple writers, queuing them as necessary.</p>
+<p>To support transactions, TDB2 uses copy-on-write MVCC data structures internally.</p>
+<p>TDB1 can run non-transactionally but the application is responsible for ensuring
+that there is one writer or several readers, not both. This is referred to as
+&ldquo;MRSW&rdquo;. Misuse of TDB1 in non-transactional mode can corrupt the database.</p>
 <h2 id="inline-values">Inline values</h2>
-<p>Values of certain datatypes are held as part of the NodeId in the
-bottom 56 bits. The top 8 bits indicates the type - external NodeId
-or the value space.</p>
-<p>The value spaces handled are (TDB 0.8): xsd:decimal, xsd:integer,
+<p>Values of certain datatypes are held as part of the NodeId.
+The top bit indicates whether the remaining 63 bits are a position in the stored
+RDF terms file (high bit is 0) or an encoded value (high bit 1).</p>
+<p>By storing the value, the exact lexical form is not recorded. The
+integers 01 and 1 will both be treated as the value 1.</p>
+<h3 id="tdb2">TDB2</h3>
+<p>The TDB2 encoding is as follows:</p>
+<ul>
+<li>High bit (bit 63) 0 means the node is in the object table (PTR).</li>
+<li>High bit (bit 63) 1, bit 62 1: double as 62 bits.</li>
+<li>High bit (bit 63) 1, bit 62 0: 6 bits of type, 56 bits of value.</li>
+</ul>
+<p>If a value would not fit, it will be stored externally so there is no
+guarantee that all integers, say, are store inline.</p>
+<ul>
+<li>Integer format: signed 56 bit number, the type field has the XSD type.</li>
+<li>Derived types of integer, each with their own datatype.</li>
+<li>Decimal format: 8 bits scale, 48bits of signed valued.</li>
+<li>Date and DateTime</li>
+<li>Boolean</li>
+<li>Float</li>
+</ul>
+<p>In the case of xsd:double, the standard Java 64 bit format is used except that the range
+of the exponent is reduced by 2 bits.</p>
+<ul>
+<li>bit  63    : sign bit</li>
+<li>bits 52-62 : exponent, 11 bits, the power of 2, bias -1023.</li>
+<li>bits 0-51  : mantissa (significand) 52 bits (the leading one is not stored).</li>
+</ul>
+<p>Exponents are 11 bits, with values -1022 to +1023 held as 1 to 2046 (11 bits, bias -1023)
+Exponents 0x000 and 0x7ff have a special meaning:</p>
+<p>The xsd:dateTime and xsd:date ranges cover about 8000 years from
+year zero with a precision down to 1 millisecond. Timezone
+information is retained to an accuracy of 15 minutes with special
+timezones for Z and for no explicit timezone.</p>
+<h3 id="tdb1">TDB1</h3>
+<p>The value spaces handled are: xsd:decimal, xsd:integer,
 xsd:dateTime, xsd:date and xsd:boolean. Each has its own encoding
 to fit in 56 bits. If a node falls outside of the range of values
 that can be represented in the 56 bit encoding.</p>
@@ -270,24 +311,22 @@ that can be represented in the 56 bit encoding.</p>
 year zero with a precision down to 1 millisecond. Timezone
 information is retained to an accuracy of 15 minutes with special
 timezones for Z and for no explicit timezone.</p>
-<p>By storing the value, the exact lexical form is not recorded. The
-integers 01 and 1 will both be treated as the value 1.</p>
 <p>Derived XSD datatypes are held as their base type. The exact
-datatype is not retained; the value of the RDF term is.</p>
+datatype is not retained; the value of the RDF term is.
+An input of <code>xsd:int</code> will become <code>xsd:integer</code>.</p>
 <h2 id="query-processing">Query Processing</h2>
-<p>TDB uses the
-<a href="TODO">OpExecutor extension point of ARQ</a>.
+<p>TDB uses quad-execution rewriting SPARQL algebra <code>(graph...)</code> to blocks of quads
+where possible. It extends <code>OpExecutor</code>.
 TDB provides low level optimization of basic graph patterns using a
-<a href="optimizer.html" title="TDB/Optimizer">statistics based optimizer</a>.</p>
+<a href="optimizer.html">statistics based optimizer</a>.</p>
 <h2 id="caching-on-32-and-64-bit-java-systems">Caching on 32 and 64 bit Java systems</h2>
-<p>TDB runs on both 32-bit and 64-bit Java Virtual Machines. The same
-file formats are used on both systems and database files can be
-transferred between architectures (no TDB system should be running
-for the database at the time of copy). What differs is the file
-access mechanism used.</p>
-<p>TDB is faster on a 64 bit JVM because more memory is available for
-file caching.</p>
-<p>The node table caches are always in the Java heap.</p>
+<p>TDB runs on both 32-bit and 64-bit Java Virtual Machines.  A 64-bit Java Virtual
+Machine is the normal mode of use.  The same file formats are used on both
+systems and database files can be transferred between architectures (no TDB
+system should be running for the database at the time of copy). What differs is
+the file access mechanism used.</p>
+<p>The node table caches are always in the Java heap but otherwise the OS file
+system plays an important part in index caching.</p>
 <p>The file access mechanism can be set explicitly, but this is not a
 good idea for production usage, only for experimentation - see the
 <a href="configuration.html#File_Access_Mode" title="TDB/Configuration">File Access mode option</a>.</p>
