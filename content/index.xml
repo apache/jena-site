@@ -143,9 +143,9 @@ Fuseki comes in in two forms, a single system &amp;ldquo;webapp&amp;rdquo;, comb
       
       <guid>https://jena.apache.org/documentation/geosparql/</guid>
       <description>An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
-An integration with Fuseki is available but attention should be paid to the contents of this page to understand supported features.
-Features This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql). The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.
-It implements the six Conformance Classes described in the GeoSPARQL document:</description>
+Integration with Fuseki is provided either by using the GeoSPARQL assembler or using the self-contained original jena-fuseki-geosparql. In either case, this page describes the GeoSPARQL supported features.
+Getting Started GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  Features This implementation follows the 11-052r4 OGC GeoSPARQL standard (https://www.ogc.org/standards/geosparql). The implementation is pure Java and does not require any set-up or configuration of any third party relational databases and geospatial extensions.</description>
     </item>
     
     <item>
@@ -181,7 +181,7 @@ The sequence from core to TDB should be executed before application components. 
  apache-jena – contains the APIs, SPARQL engine, the TDB native RDF database and command line tools apache-jena-fuseki – the Jena SPARQL server  Jena4 requires Java 11.
 Jena jars are available from Maven.
 You may verify the authenticity of artifacts below by using the PGP KEYS file.
-Apache Jena Distributions The binary distribution of Fuseki (this includes both the standalone and WAR file packaging):</description>
+Apache Jena Release Source release: this forms the official release of Apache Jena.</description>
     </item>
     
     <item>
@@ -813,7 +813,7 @@ PREFIX : &amp;lt;#&amp;gt; PREFIX fuseki: &amp;lt;http://jena.apache.org/fuseki#
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-old-config-endpoint.html</guid>
       <description>This page describes the original Fuseki2 server configuration syntax.
 Example:
-## Updatable dataset. &amp;lt;#service1&amp;gt; rdf:type fuseki:Service ; fuseki:name &amp;quot;ds&amp;quot; ; # http://host:port/ds fuseki:serviceQuery &amp;quot;sparql&amp;quot; ; # SPARQL query service fuseki:serviceQuery &amp;quot;query&amp;quot; ; # SPARQL query service (alt name) fuseki:serviceUpdate &amp;quot;update&amp;quot; ; # SPARQL update service fuseki:serviceUpload &amp;quot;upload&amp;quot; ; # Non-SPARQL upload service fuseki:serviceReadWriteGraphStore &amp;quot;data&amp;quot; ; # SPARQL Graph Store Protocol (read and write) fuseki:serviceReadGraphStore &amp;quot;get&amp;quot; ; # SPARQL Graph Store Protocol (read only) fuseki:dataset &amp;lt;#dataset&amp;gt; ; .</description>
+## Updatable dataset. &amp;lt;#service1&amp;gt; rdf:type fuseki:Service ; fuseki:name &amp;quot;ds&amp;quot; ; # http://host:port/ds fuseki:serviceQuery &amp;quot;sparql&amp;quot; ; # SPARQL query service fuseki:serviceQuery &amp;quot;query&amp;quot; ; # SPARQL query service (alt name) fuseki:serviceUpdate &amp;quot;update&amp;quot; ; # SPARQL update service fuseki:serviceReadWriteGraphStore &amp;quot;data&amp;quot; ; # SPARQL Graph Store Protocol (read and write) fuseki:serviceReadGraphStore &amp;quot;get&amp;quot; ; # SPARQL Graph Store Protocol (read only) fuseki:dataset &amp;lt;#dataset&amp;gt; ; .  &amp;lt;#dataset&amp;gt; refers to a dataset description in the same file.</description>
     </item>
     
     <item>
@@ -855,7 +855,7 @@ Logging is via SLF4J over Apache Log4J2, or by the Tomcat configuration if runni
       
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-modules.html</guid>
       <description>Fuseki modules are a mechanism to include extension code into a Fuseki server. Modules are invoked during the process of building a Fuseki Main server. The module can modify the server configuration, add new functionality, or react to a server being built and started.
-This feature was added in Jena version 4.3.0.
+This feature was added in Jena version 4.3.0. They are an expeirmental feature that will evolve based on experineace and use cases.
 Fuseki Modules are loaded use the JDK ServiceLoader by being placing a jar file on the classpath, together with any additional dependencies.</description>
     </item>
     
@@ -925,15 +925,29 @@ The relevant SPARQL standards are:
     </item>
     
     <item>
+      <title>GeoSPARQL Assembler</title>
+      <link>https://jena.apache.org/documentation/geosparql/geosparql-assembler.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/geosparql/geosparql-assembler.html</guid>
+      <description>Details of the GeoSPARQL support are proivded on the GeoSPARQL page.
+The assembler for GeoSPARQL support is part of the jena-geosparql artifact and must be on the Fuseki server classpath, along with its dependencies.
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  or download the binary from the Maven central repository org/apache/jena/jena-geosparql
+The GeoSPARQL assembler can be used in a Fuseki configuration file.
+This example is of a read-only:
+PREFIX fuseki: &amp;lt;http://jena.apache.org/fuseki#&amp;gt; PREFIX rdf: &amp;lt;http://www.</description>
+    </item>
+    
+    <item>
       <title>GeoSPARQL Fuseki</title>
       <link>https://jena.apache.org/documentation/geosparql/geosparql-fuseki.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/geosparql/geosparql-fuseki.html</guid>
-      <description>This application provides a HTTP server compliant with the GeoSPARQL standard. It uses the embedded server Fuseki and provides additional parameters for dataset loading.
-The project uses the GeoSPARQL implementation from the GeoSPARQL Jena module, which includes a range of functions in addition to those from the GeoSPARQL standard.
-Currently, there is no GUI interface as provided in the Fuseki distribution.
-The intended usage is to specify a TDB folder (either TDB1 or TDB2, created if required) for persistent storage of the dataset.</description>
+      <description>This application provides a HTTP server compliant with the GeoSPARQL standard.
+GeoSPARQL can also be integrated with Fuseki using the GeoSPARQL assembler with a general Fuseki server.
+jena-fuseki-geosparql GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line. SPARQL queries directly on Jena Datasets and Models can be done using the GeoSPARQL Jena module.
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.jena&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jena-fuseki-geosparql&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;...&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  or download the binary from the Maven central repository org/apache/jena/jena-fuseki-geosparql</description>
     </item>
     
     <item>
@@ -1850,7 +1864,7 @@ PREFIX info: &amp;lt;http://somewhere/peopleInfo#&amp;gt; PREFIX vcard: &amp;lt;
       
       <guid>https://jena.apache.org/documentation/query/spatial-query-doc.html</guid>
       <description>This module was first released with Jena 2.11.0. It was last released in Jena 3.12.0.
-Jena provides a a GeoSPARQL implementation.
+Jena provides a GeoSPARQL implementation.
  This is an extension to Apache Jena ARQ, which combines SPARQL and simple spatial query. It gives applications the ability to perform simple spatial searches within SPARQL queries. Spatial indexes are additional information for accessing the RDF graph.
 The spatial index can be either Apache Lucene for a same-machine spatial index, or Apache Solr for a large scale enterprise search application.</description>
     </item>
@@ -1901,7 +1915,7 @@ The supported datatypes (including those required by SPARQL 1.1), including full
       <guid>https://jena.apache.org/documentation/rdf-star/</guid>
       <description>RDF-star is an extension to RDF that provides a way for one triple to refer to another triple. RDF* is the name of the original work which is described in Olaf Hartig&amp;rsquo;s blog entry.
 Example:
-&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is an embedded triple and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
+&amp;lt;&amp;lt;:johnfoaf:name&amp;#34;John Smith&amp;#34;&amp;gt;&amp;gt;dct:source&amp;lt;http://example/directory&amp;gt;.The part &amp;lt;&amp;lt; :john foaf:name &amp;quot;John Smith&amp;quot; &amp;gt;&amp;gt; is a quoted triple and refers to the triple with subject :john, property foaf:name and object &amp;quot;John Smith&amp;quot;.
 Triple terms can be in the subject or object position.</description>
     </item>
     
@@ -2100,9 +2114,9 @@ The file access mechanism can be set explicitly, but this is not a good idea for
       
       <guid>https://jena.apache.org/documentation/tdb/tdb-xloader.html</guid>
       <description>TDB xloader (&amp;ldquo;x&amp;rdquo; for external) is a bulkloader for very large datasets. The goal is stability and reliability for long running loading, running on modest hardware and can be use to load a database on rotating disk or SSD.
-xloader is not a replacement for regular TDB1 and TDB2 loaders.
+xloader is not a replacement for regular TDB1 and TDB2 loaders. It is for very large datasets.
 There are two scripts to load data using the xloader subsystem.
-&amp;ldquo;tdb1.xloader&amp;rdquo;, which was called &amp;ldquo;tdbloader2&amp;rdquo; and has some improvements.</description>
+&amp;ldquo;tdb1.xloader&amp;rdquo;, which was called &amp;ldquo;tdbloader2&amp;rdquo;, has some improvements.</description>
     </item>
     
     <item>

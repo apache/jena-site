@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Jena assembler quickstart</title>
+    <title>Apache Jena - GeoSPARQL Assembler</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -123,7 +123,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/assembler/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/geosparql/geosparql-assembler.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -139,9 +139,6 @@
 
 
 
-
-    
-    
 
 
 <ol class="breadcrumb">
@@ -161,7 +158,15 @@
         
         
             
-                <li class="active">ASSEMBLER</li>
+                <li><a href='/documentation/geosparql'>GEOSPARQL</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">GEOSPARQL ASSEMBLER</li>
             
             
         
@@ -173,70 +178,83 @@
 
                 
             </div>
-            <h1 class="title">Jena assembler quickstart</h1>
+            <h1 class="title">GeoSPARQL Assembler</h1>
             
-	<p>Jena&rsquo;s assembler provides a means of constructing Jena models
-according to a recipe, where that recipe is itself stated in
-RDF. This is the Assembler quickstart page. For more detailed
-information, see the <a href="assembler-howto.html">Assembler howto</a>
-or <a href="inside-assemblers.html">Inside assemblers</a>.</p>
-<h2 id="what-is-an-assembler-specification">What is an Assembler specification?</h2>
-<p>An Assembler <em>specification</em> is an RDF description of how to
-construct a model and its associated resources, such as reasoners,
-prefix mappings, and initial content. The Assembler vocabulary is
-given in the <a href="assembler.ttl">Assembler schema</a>,
-and we&rsquo;ll use the prefix <code>ja</code> for its identifiers.</p>
-<h2 id="what-is-an-assembler">What is an Assembler?</h2>
-<p>An <em>Assembler</em> is an object that implements the <code>Assembler</code>
-interface and can construct objects (typically models) from
-Assembler specifications. The constant <code>Assembler.general</code> is an
-Assembler that knows how to construct some general patterns
-of model specification.</p>
-<h2 id="how-can-i-make-a-model-according-to-a-specification">How can I make a model according to a specification?</h2>
-<p>Suppose the Model <code>M</code> contains an Assembler specification whose
-<em>root</em> - the Resource describing the whole Model to construct is
-<code>R</code> (so <code>R.getModel() == M)</code>. Invoke:</p>
-<pre><code>Assembler.general.openModel(R)
+	<p>Details of the GeoSPARQL support are proivded on the <a href="index">GeoSPARQL page</a>.</p>
+<p>The assembler for GeoSPARQL support is part of the <code>jena-geosparql</code> artifact and
+must be on the Fuseki server classpath, along with its dependencies.</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+  &lt;artifactId&gt;jena-geosparql&lt;/artifactId&gt;
+  &lt;version&gt;...&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
-<p>The result is the desired Model. Further details about the
-<code>Assembler</code> interface, the special Assembler <code>general</code>, and the
-details of specific Assemblers, are deferred to the
-<a href="assembler-howto.html">Assembler howto</a>.</p>
-<h2 id="how-can-i-specify-">How can I specify &hellip;</h2>
-<p>In the remaining sections, the object we want to describe is given
-the root resource <code>my:root</code>.</p>
-<h3 id="-a-memory-model">&hellip; a memory model?</h3>
-<pre><code>my:root a ja:MemoryModel.
-</code></pre>
-<h3 id="-an-inference-model">&hellip; an inference model?</h3>
-<pre><code>my:root
-    ja:reasoner [ja:reasonerURL theReasonerURL] ;
-    ja:baseModel theBaseModelResource
-    .
-</code></pre>
-<p><em>theReasonerURL</em> is one of the reasoner (factory) URLs given in the
-inference documentation and code; <em>theBaseModelResource</em> is another
-resource in the same document describing the base model.</p>
-<h3 id="-some-initialising-content">&hellip; some initialising content?</h3>
-<pre><code>my:root
-    ja:content [ja:externalContent &lt;someContentURL&gt;]
-    ... rest of model specification ...
-    .
-</code></pre>
-<p>The model will be pre-loaded with the contents of <em>someContentURL</em>.</p>
-<h3 id="-an-ontology-model">&hellip; an ontology model?</h3>
-<pre><code>my:root
-    ja:ontModelSpec ja:OntModelSpecName ;
-    ja:baseModel somebaseModel
-    .
-</code></pre>
-<p>The <em>OntModelSpecName</em> can be any of the predefined Jena
-OntModelSpec names, eg <code>OWL_DL_MEM_RULE_INF</code>. The baseModel is
-another model description - it can be left out, in which case you
-get an empty memory model. See
-<a href="assembler-howto.html">Assembler howto</a> for construction of
-non-predefined OntModelSpecs.</p>
+<p>or download the binary from the
+<a href="https://repo1.maven.org/maven2/org/apache/jena/jena-geosparql/">Maven central repository org/apache/jena/jena-geosparql</a></p>
+<p>The GeoSPARQL assembler can be used in a Fuseki configuration file.</p>
+<p>This example is of a read-only:</p>
+<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX tdb2:      &lt;http://jena.apache.org/2016/tdb#&gt;
 
+PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
+
+&lt;#service&gt; rdf:type fuseki:Service;
+    fuseki:name &quot;geo&quot;;
+    fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
+    fuseki:dataset &lt;#geo_ds&gt; .
+
+&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    geosparql:spatialIndexFile     &quot;DB/spatial.index&quot;;
+    geosparql:dataset &lt;#baseDataset&gt; ;
+    .
+
+&lt;#baseDataset&gt; rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location &quot;DB/&quot; ;
+    .
+</code></pre><p>It is possible to run with a data file loaded into memory and
+an spatial in-memory index:</p>
+<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
+
+&lt;#service&gt; rdf:type fuseki:Service;
+    fuseki:name &quot;ds&quot;;
+    fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
+    fuseki:dataset &lt;#geo_ds&gt; .
+
+# In-memory data and index.
+
+&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    geosparql:dataset &lt;#baseDataset&gt; .
+
+&lt;#baseDataset&gt; rdf:type ja:MemoryDataset ;
+    ja:data &lt;file:geosparql_data.ttl&gt; ;
+    .
+</code></pre><p>The full assembler properties with the default settings is:</p>
+<pre><code>&lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
+    # Build in-memory is absent.
+    geosparql:spatialIndexFile     &quot;spatial.index&quot;;
+
+    ## Default settings. See documentation for meanings.
+    geosparql:inference            true ;
+    geosparql:queryRewrite         true ;
+    geosparql:indexEnabled         true ;
+    geosparql:applyDefaultGeometry false ;
+    
+    # 3 item lists: [Geometry Literal, Geometry Transform, Query Rewrite]
+    geosparql:indexSizes           &quot;-1,-1,-1&quot; ;       # Default - unlimited.
+    geosparql:indexExpires         &quot;5000,5000,5000&quot; ; # Default - time in milliseconds.
+
+    ## Required setting - data over which GeoSPARQL is applied.
+    geosparql:dataset &lt;#baseDataset&gt; ;
+    .
+</code></pre>
 
         </div>
     </div>
