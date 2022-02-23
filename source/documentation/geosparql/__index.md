@@ -207,7 +207,7 @@ Several options are available to include the EPSG dataset by setting the `SIS_DA
 
 An embedded EPSG dataset can be included in a Gradle application by adding the following dependency to `build.gradle`:
 
-    ext.sisVersion = "0.8"
+    ext.sisVersion = "1.1"
     implementation "org.apache.sis.non-free:sis-embedded-data:$sisVersion"
 
 ### Java Topology Suite
