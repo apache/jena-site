@@ -33,7 +33,7 @@ The TDB1 transaction mechanism is based on
 [write-ahead-logging](http://en.wikipedia.org/wiki/Write-ahead_logging).  All
 changes made inside a write-transaction are written to
 [journals](http://en.wikipedia.org/wiki/Journaling_file_system), then propagated
-to the main database at a suitable moment.  Transactions is TDB1 are limited in
+to the main database at a suitable moment.  Transactions in TDB1 are limited in
 size to a few 10's of million triples because they retain data in-memory until
 indexes can be updated.
 
@@ -63,7 +63,7 @@ transactions, the highest
 -   [Nested transactions](http://en.wikipedia.org/wiki/Nested_transaction) 
     are not supported.
 
-TDB2 remved the limitations of TDB1:
+TDB2 removed the limitations of TDB1:
 
 -   Some active transaction state is held exclusively in-memory,
     limiting scalability.
@@ -222,7 +222,7 @@ same storage. in both cases, the transactions are independent.
 Multiple applications, running in multiple JVMs, using the same
 file databases is not supported and has a high risk of data corruption.  Once corrupted a database cannot be repaired
 and must be rebuilt from the original source data. Therefore there **must** be a single JVM
-controlling the database directory and files. TDB includes automatic prevention against multi-JVM
+controlling the database directory and files. TDB includes automatic prevention against multi-JVM usage
 which prevents this under most circumstances.
 
 Use [Fuseki](../fuseki2/) to provide a database server for multiple
