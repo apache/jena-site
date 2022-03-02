@@ -118,14 +118,16 @@ Detailed control over the setup of the parsing process is provided by
 
 For example, to read Trig data, and set the error handler specially,
 
+        Dataset dataset;
         // The parsers will do the necessary character set conversion.  
         try (InputStream in = new FileInputStream("data.some.unusual.extension")) {
-            RDFParser.create()
-                .source(in)
-                .lang(RDFLanguages.TRIG)
-                .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
-                .base("http://example/base")
-                .parse(noWhere);
+            dataset = 
+                RDFParser.create()
+                    .source(in)
+                    .lang(RDFLanguages.TRIG)
+                    .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
+                    .base("http://example/base")
+                    .toDataset(noWhere);
         }
 
 ## Logging

@@ -22,7 +22,7 @@ into your project and passing an appropriate `InputStream`/`OutputStream`
 implementation to Jena code e.g.
 
     InputStream input =  new ZstdCompressorInputStream(....);
-    RDFParser.source(input).lang(Lang.NQ).parse(graph);
+    Graph graph = RDFParser.source(input).lang(Lang.NQ).toGraph();
 
 ## StreamRDF
 
