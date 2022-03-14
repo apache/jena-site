@@ -81,30 +81,11 @@ preference to using any older versions of Jena.
 Previous Apache Jena releases can be found in the Apache archive area
 at [https://archive.apache.org/dist/jena](https://archive.apache.org/dist/jena/).
 
-## Download Mirrors
+## Apache Software Foundation Distribution Directory (CDN)
 
-<p>[if-any logo]
-<a href="[link]">
-  <img align="right" src="[logo]" border="0" />
-</a>[end]
-The currently selected mirror is <b>[preferred]</b>.  If you encounter a problem with this mirror, please select another mirror.  If all
-mirrors are failing, there are <i>backup</i> mirrors (at the end of the mirrors list) that should be available.</p>
+The Apache Software foundation provides [CDN-distribution](https://dlcdn.apache.org/) for Apache projects and [the current release of Jena](https://dlcdn.apache.org/jena/). 
 
-<form action="[location]" method="get" id="SelectMirror">
-Other mirrors: <select name="Preferred">
-[if-any http]
-  [for http]<option value="[http]">[http]</option>[end]
-[end]
+However Apache has a long history with using mirrors, and the distribution may still be found for the forseeable future on some hosted mirrors. According the the [Apache Mirror History page](https://apache.org/history/mirror-history.html)
+> Any organization that has been hosting an Apache download mirror site, and that finds it useful for its own purposes, may continue to host the mirror site.
 
-[if-any ftp]
-  [for ftp]<option value="[ftp]">[ftp]</option>[end]
-[end]
-[if-any backup]
-  [for backup]<option value="[backup]">[backup]
-  (backup)</option>[end]
-[end]
-</select>
-<input type="submit" value="Change" />
-</form>
-
-You may also consult the [complete list of mirrors](https://www.apache.org/mirrors/)
+See also [the historical list of mirrors](https://web.archive.org/web/20211027074947/https://www.apache.org/mirrors/) from October in 2021.
