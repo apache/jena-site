@@ -270,10 +270,9 @@ otherwise noted, the setting applies to both Turtle and TriG.
 ```
 and in code:
 ```
-  RDFWriter.create()
+  RDFWriter.source(model)
      .set(RIOT.symTurtleDirectiveStyle, "sparql")
      .lang(Lang.TTL)
-     .source(model)
      .output(System.out);
 ```
 ##### _Base URI_
