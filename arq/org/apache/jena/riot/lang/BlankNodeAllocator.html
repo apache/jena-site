@@ -75,7 +75,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="BlankNodeAllocatorFixedSeedHash.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorFixedSeedHash</a></code>, <code><a href="BlankNodeAllocatorGlobal.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorGlobal</a></code>, <code><a href="BlankNodeAllocatorHash.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorHash</a></code>, <code><a href="BlankNodeAllocatorLabel.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorLabel</a></code>, <code><a href="BlankNodeAllocatorLabelEncoded.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorLabelEncoded</a></code></dd>
+<dd><code><a href="BlankNodeAllocatorCounter.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorCounter</a></code>, <code><a href="BlankNodeAllocatorFixedSeedHash.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorFixedSeedHash</a></code>, <code><a href="BlankNodeAllocatorGlobal.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorGlobal</a></code>, <code><a href="BlankNodeAllocatorHash.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorHash</a></code>, <code><a href="BlankNodeAllocatorLabelEncoded.html" title="class in org.apache.jena.riot.lang">BlankNodeAllocatorLabelEncoded</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">BlankNodeAllocator</span></div>
@@ -107,7 +107,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Reset allocation state - calls to <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a> or <a href="#create()"><code>create()</code></a></div>
+<div class="block">Reset allocation state - calls to <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a> will return a different blank node
+ for a label than the one returned before the reset.</div>
 </div>
 </div>
 </div>
@@ -127,24 +128,25 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="alloc(java.lang.String)">
 <h3>alloc</h3>
 <div class="member-signature"><span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></span>&nbsp;<span class="element-name">alloc</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label)</span></div>
-<div class="block">Allocate based on a non-null label.
- Calling this twice, with the same label will generate equivalent nodes
- but they may not be identical (i.e they are .equals but may not be ==)</div>
+<div class="block">Allocate based on a non-null label. Calling this twice, with the same label
+ will generate equivalent nodes but they may not be identical (i.e they are
+ .equals but may not be ==)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></span>&nbsp;<span class="element-name">create</span>()</div>
-<div class="block">Create a fresh blank node, different from anything generated so far.
-  Will not clash with a node allocated by <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a></div>
+<div class="block">Create a fresh blank node, different from anything generated so far. Will not
+ clash with a node allocated by <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a></div>
 </section>
 </li>
 <li>
 <section class="detail" id="reset()">
 <h3>reset</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">reset</span>()</div>
-<div class="block">Reset allocation state - calls to <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a> or <a href="#create()"><code>create()</code></a></div>
+<div class="block">Reset allocation state - calls to <a href="#alloc(java.lang.String)"><code>alloc(java.lang.String)</code></a> will return a different blank node
+ for a label than the one returned before the reset.</div>
 </section>
 </li>
 </ul>

@@ -85,8 +85,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TransformFilterDisjunction</span>
 <span class="extends-implements">extends <a href="../TransformCopy.html" title="class in org.apache.jena.sparql.algebra">TransformCopy</a></span></div>
-<div class="block">Filter disjunction.
- Merge with TransformFilterImprove</div>
+<div class="block">Filter disjunction. This covers the case of
+ <pre>
+  (filter (|| expr1 expr2) pattern)</pre>
+ where either or both of <code>expr1</code> and <code>expr2</code> are equalities that help
+ ground the pattern. This includes <code>?x IN (....)</code> so this optimization can a
+ significant improvement.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
