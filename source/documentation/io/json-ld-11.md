@@ -2,10 +2,14 @@
 title: Reading JSON-LD 1.1
 ---
 
-See "[Reading RDF](./rdf-input.html)" for details of Jena's support JSON-LD v1.0
-using the
-[jsonld-java project](https://github.com/jsonld-java/jsonld-java) 
-for both reading and writing. This is the principle support for JSON-LD.
+<i>
+JSON-LD 1.1 is the default version of JSON-LD supported by Apache Jena.  
+
+This page is out of date and left temporary only for information about using
+JSON-LD 1.1 in versions 4.2.x to 4.4.x.
+</i>
+
+----
 
 This page details support for reading JSON-LD 1.1 using 
 [Titanium JSON-LD](https://github.com/filip26/titanium-json-ld/).
@@ -16,8 +20,8 @@ Public License 2.0.
 
 ## Additional Dependencies
 
-The Titanium engine (`com.apicatalog:titanium-json-ld`) uses the Eclispe Jakarta JSON Processing
-licnesed under the 
+The Titanium engine (`com.apicatalog:titanium-json-ld`) uses the Eclipse Jakarta JSON Processing
+licensed under the 
 [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/) with dependencies:
 
 * jakarta.json:jakarta.json-api

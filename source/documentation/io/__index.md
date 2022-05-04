@@ -30,8 +30,7 @@ can be integrated into both the parser and writer registries.
 RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.
 See the [description of RDF/JSON](rdf-json.html).
 
-See "[Reading JSON-LD 1.1](json-ld-11.html)" for additional setup and use for
-reading JSON-LD 1.1. JSON-LD 1.0 is the current default in Jena.
+From Jena 4.5.0, JSON-LD 1.1 is the main supported version of JSON-LD.
 
 RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
 for fast parsing.  See [RDF Binary](rdf-binary.html).
