@@ -270,37 +270,35 @@ server.start() ;
 ...
 server.stop() ;
 </code></pre>
+<p>The services are avilable on a named endpoint and also on the dataset URL itself.</p>
 <p>URLs:</p>
 <table>
 <thead>
 <tr>
 <th>Service</th>
-<th>Endpoint</th>
+<th>Endpoint1</th>
+<th>Endpoint2</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>SPARQL Query</td>
 <td><code>http://host:3330/ds/query</code></td>
+<td><code>http://host:3330/ds</code></td>
 </tr>
 <tr>
 <td>SPARQL Query</td>
 <td><code>http://host:3330/ds/sparql</code></td>
+<td><code>http://host:3330/ds</code></td>
 </tr>
 <tr>
 <td>SPARQL Update</td>
 <td><code>http://host:3330/ds/update</code></td>
-</tr>
-<tr>
-<td>File upload</td>
-<td><code>http://host:3330/ds/update</code></td>
+<td><code>http://host:3330/ds</code></td>
 </tr>
 <tr>
 <td>GSP read-write</td>
 <td><code>http://host:3330/ds/data</code></td>
-</tr>
-<tr>
-<td>Read-write quads</td>
 <td><code>http://host:3330/ds</code></td>
 </tr>
 </tbody>
@@ -312,7 +310,7 @@ set that is read-only over HTTP. The application can still update the dataset.</
 <pre><code>Dataset ds = ... ;
 FusekiServer server = FusekiServer.create()
     .port(3332)
-    .add(&quot;/ds&quot;, ds, true)
+    .add(&quot;/ds&quot;, ds, false)
     .build() ;
 server.start() ;
 </code></pre>
@@ -321,23 +319,23 @@ server.start() ;
 <tr>
 <th>Service</th>
 <th>Endpoint</th>
+<th>Endpoint2</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>SPARQL Query</td>
 <td><code>http://host:3332/ds/query</code></td>
+<td><code>http://host:3332/ds</code></td>
 </tr>
 <tr>
 <td>SPARQL Query</td>
 <td><code>http://host:3332/ds/sparql</code></td>
+<td><code>http://host:3332/ds</code></td>
 </tr>
 <tr>
 <td>GSP read-only</td>
 <td><code>http://host:3332/ds/data</code></td>
-</tr>
-<tr>
-<td>GET quads</td>
 <td><code>http://host:3332/ds</code></td>
 </tr>
 </tbody>
@@ -346,7 +344,7 @@ server.start() ;
 <p>Different combinations of services and endpoint names can be given using a <code>DataService</code>.</p>
 <pre><code>DatasetGraph dsg = ... ;
 DataService dataService = new DataService(dsg) ;
-dataService.addEndpoint(OperationName.Quads_RW, &quot;&quot;);
+dataService.addEndpoint(OperationName.GSP_RW, &quot;&quot;);
 dataService.addEndpoint(OperationName.Query, &quot;&quot;);
 dataService.addEndpoint(OperationName.Update, &quot;&quot;);
 
@@ -375,11 +373,7 @@ string is used to determine the operation.</p>
 <td><code>http://host:3332/ds</code></td>
 </tr>
 <tr>
-<td>GSP read-only</td>
-<td><code>http://host:3332/ds</code></td>
-</tr>
-<tr>
-<td>GET/POST quads</td>
+<td>GSP read-write</td>
 <td><code>http://host:3332/ds</code></td>
 </tr>
 </tbody>

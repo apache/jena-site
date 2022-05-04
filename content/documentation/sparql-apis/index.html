@@ -181,7 +181,8 @@
 <p>The SPARQL specifications provide
 <a href="https://www.w3.org/TR/sparql11-query/">query</a>,
 <a href="https://www.w3.org/TR/sparql11-update/">update</a> and the
-<a href="https://www.w3.org/TR/sparql11-http-rdf-update/">graph store protocol</a> (GSP).</p>
+<a href="https://www.w3.org/TR/sparql11-http-rdf-update/">graph store protocol</a> (GSP).
+In addition, Jena provided store operations for named graph formats.</p>
 <p>For working with RDF data:</p>
 <table>
 <thead>
@@ -250,6 +251,10 @@
 <td><code>ModelStore</code></td>
 <td><code>GSP</code></td>
 </tr>
+<tr>
+<td><code>ModelStore</code></td>
+<td><code>DSP</code></td>
+</tr>
 </tbody>
 </table>
 <p>Jena provides a single interface, <a href="../rdfconnection"><code>RDFConnection</code></a> for
@@ -269,8 +274,9 @@ extension nodes).</p>
 and the API version is an adapter to convert to the Model API and related
 classes.</p>
 <p><code>UpdateProcessor</code> is a legacy name for <code>UpdateExecution</code></p>
-<p><code>GSP</code> provides the SPARQL Graph Store Protocol, including extensions for sending
-and receiving datasets, rather than individual graphs.</p>
+<p><code>GSP</code> provides the SPARQL Graph Store Protocol, and &lsquo;DSP&rsquo; (Dataset Store
+Protocol) provides for sending and receiving datasets, rather than individual
+graphs.</p>
 <p>Both API and GPI provide builders for detailed setup, particularly for remote
 usage over HTTP and HTTPS where detailed control of the HTTP requests is
 sometimes necessary to work with other triple stores.</p>
@@ -278,7 +284,8 @@ sometimes necessary to work with other triple stores.</p>
 common usage patterns are retained in <code>QueryExecutionFactory</code>,
 <code>UpdateExecutionFactory</code>. Note that any methods that involved Apache HttpClient
 objects have been removed.</p>
-<h2 id="changes">Changes from Jena 4.2.0 to Jena 4.3.0</h2>
+<h2 id="changes">Changes from Jena 4.2.0</h2>
+<h3 id="changes430">Changes at Jena 4.3.0</h3>
 <ul>
 <li>
 <p>Execution objects have a companion builder. This is especially important of
@@ -291,7 +298,7 @@ still covered by the existing <code>QueryExecutionFactory</code> as well as the 
 authentication provided on top by Jena. <a href="./http-auth.html">See the authentiucation documentation</a>.</p>
 </li>
 <li>
-<p>Authentication support is uniformly applied to query, update, GSP and <code>SERVICE</code>.</p>
+<p>Authentication support is uniformly applied to query, update, GSP, DSP and <code>SERVICE</code>.</p>
 </li>
 <li>
 <p>HTTP/2 support</p>
@@ -328,6 +335,17 @@ a dependency. Eventually, <code>HttpOp</code> and dependency on  Apache HttpClie
 <p><code>DatasetAccessor</code>s removed - previously these were deprecated. <code>GSP</code> and
 <code>ModelStore</code> are the replacement for remote operations. <code>RDFConnection</code> and
 <code>RDFLink</code> provide APIs.</p>
+</li>
+</ul>
+<h3 id="changes450">Changes at Jena 4.5.0</h3>
+<p>Separate the dataset operations from the graph operations.</p>
+<ul>
+<li>
+<p>GSP - SPARQL Graph Store Protocol</p>
+</li>
+<li>
+<p>DSP - Dataset Store Protocol: HTTP GET, POST, PUT operations on the datatse,
+e.g. quad formats like TriG.</p>
 </li>
 </ul>
 <h2 id="substitution">Substitution</h2>

@@ -352,14 +352,16 @@ model.read(&quot;data.ttl&quot;) ;
 <code>RDFParser</code> which provides a builder pattern.  It has many options - see
 <a href="/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html">the javadoc for all details</a>.</p>
 <p>For example, to read Trig data, and set the error handler specially,</p>
-<pre><code>    // The parsers will do the necessary character set conversion.  
+<pre><code>    Dataset dataset;
+    // The parsers will do the necessary character set conversion.  
     try (InputStream in = new FileInputStream(&quot;data.some.unusual.extension&quot;)) {
-        RDFParser.create()
-            .source(in)
-            .lang(RDFLanguages.TRIG)
-            .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
-            .base(&quot;http://example/base&quot;)
-            .parse(noWhere);
+        dataset = 
+            RDFParser.create()
+                .source(in)
+                .lang(RDFLanguages.TRIG)
+                .errorHandler(ErrorHandlerFactory.errorHandlerStrict)
+                .base(&quot;http://example/base&quot;)
+                .toDataset(noWhere);
     }
 </code></pre>
 <h2 id="logging">Logging</h2>
