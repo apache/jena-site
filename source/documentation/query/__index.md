@@ -47,7 +47,6 @@ SPARQL is the query language developed by the W3C
 Features of ARQ that are legal SPARQL syntax
 
 - [Conditions in FILTERs](function_forms.html)
-
 - [Free text searches](text-query.html)
 - [Accessing lists](rdf_lists.html) (RDF collections)
 - [Extension mechanisms](extension.html)
@@ -58,6 +57,7 @@ Features of ARQ that are legal SPARQL syntax
   - [Property function library](library-propfunc.html)
 - [Writing SPARQL functions](writing_functions.html)
 - [Writing SPARQL functions in JavaScript](javascript-functions.html)
+- [Custom execution of `SERVICE`](custom_service_executors.html)
 - [Constructing queries programmatically](programmatic.html)
 - [Parameterized query strings](parameterized-sparql-strings.html)
 - [ARQ and the SPARQL algebra](algebra.html)

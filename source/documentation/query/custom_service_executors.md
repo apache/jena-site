@@ -2,7 +2,7 @@
 title: ARQ - Custom Service Executors
 ---
 
-Since Jena 4.2.0 ARQ features a plugin system for custom service executors.
+Since Jena 4.2.0, ARQ features a plugin system for custom service executors.
 The relevant classes are located in the package `org.apache.jena.sparql.service` and are summarized as follows:
 
 * `ServiceExecutorRegistry`: A registry that holds a list of service executors. When Jena starts up, it configures a default registry to handle `SERVICE` requests against HTTP SPARQL endpoints and registers it with the global ARQ context accessible under `ARQ.getContext()`.
@@ -69,4 +69,3 @@ try (QueryExecution qe = QueryExecutionFactory.create(queryStr)) {
 }
 
 ```
-
