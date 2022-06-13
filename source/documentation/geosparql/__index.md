@@ -595,6 +595,7 @@ GeoSPARQL standard but have been included as a minor variation.
 ## Future Work
 
 * Implementing GeoJSON as a `GeometryLiteral` serialisation (<https://tools.ietf.org/html/rfc7946>).
+  Producing GeoJSON is already possible with **geof:asGeoJSON**(*?geometryLiteral*).
 
 ## Contributors
 
