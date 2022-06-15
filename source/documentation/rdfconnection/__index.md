@@ -26,9 +26,9 @@ some data, and one to make a query can be written as:
 
     try ( RDFConnection conn = RDFConnection.connect(...) ) {
         conn.load("data.ttl") ;
-        conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs)->
+        conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
            Resource subject = qs.getResource("s") ;
-           System.out.println("Subject: "+subject) ;
+           System.out.println("Subject: " + subject) ;
         }) ;
     }
 
@@ -42,7 +42,7 @@ in the example above):
     while(rs.hasNext()) {
         QuerySolution qs = rs.next() ;
         Resource subject = qs.getResource("s") ;
-        System.out.println("Subject: "+subject) ;
+        System.out.println("Subject: " + subject) ;
     }
     qExec.close() ;
     conn.close() ;
@@ -59,12 +59,12 @@ The `Txn` class provides a Java8-style transaction API.  Transactions are
 code passed in the `Txn` library that handles the transaction lifecycle.
 
     try ( RDFConnection conn = RDFConnection.connect(...) ) {
-        Txn.execWrite(conn, ()-> {
+        Txn.execWrite(conn, () -> {
             conn.load("data1.ttl") ;
             conn.load("data2.ttl") ;
-            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs)->
+            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) ->
                Resource subject = qs.getResource("s") ;
-               System.out.println("Subject: "+subject) ;
+               System.out.println("Subject: " + subject) ;
             }) ;
         }) ;
     }
@@ -76,9 +76,9 @@ The traditional style of explicit `begin`, `commit`, `abort` is also available.
         try {
             conn.load("data1.ttl") ;
             conn.load("data2.ttl") ;
-            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs)->
+            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
                Resource subject = qs.getResource("s") ;
-               System.out.println("Subject: "+subject) ;
+               System.out.println("Subject: " + subject) ;
             }) ;
             conn.commit() ;
         } finally { conn.end() ; }
@@ -154,7 +154,7 @@ For example: load two files:
     try ( RDFConnection conn = RDFConnection.connect(...) ) {
         conn.load("data1.ttl") ;
         conn.load("data2.nt") ;
-      }
+    }
 
 The file extension is used to determine the syntax.
 
@@ -202,9 +202,9 @@ with `ResultSetFactory.copyResults`.
 
       try ( RDFConnection conn = RDFConnection.connect("https://...") ) {
           ResultSet safeCopy =
-              Txn.execReadReturn(conn, ()-> {
+              Txn.execReadReturn(conn, () -> {
                   // Process results by row:
-                  conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs)->{
+                  conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
                       Resource subject = qs.getResource("s") ;
                       System.out.println("Subject: "+subject) ;
                   }) ;
@@ -218,10 +218,11 @@ with `ResultSetFactory.copyResults`.
 SPARQL Update operations can be performed and mixed with other operations.
 
       try ( RDFConnection conn = RDFConnection.connect(...) ) {
-          Txn.execWrite(conn, ()-> {
+          Txn.execWrite(conn, () -> {
              conn.update("DELETE DATA { ... }" ) ;
              conn.load("data.ttl") ;
-             }) ;
+          }) ;
+      }
 
 ## Dataset operations
 
