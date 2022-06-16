@@ -2,7 +2,7 @@
 title: ARQ - JavaScript SPARQL Functions
 ---
 
-ARQ supports (Jena v3.7.0 onwards) writing 
+ARQ supports writing 
 [custom SPARQL functions](https://www.w3.org/TR/sparql11-query/#extensionFunctions)
 in JavaScript. These functions can be used in FILTERs and for calculating
 values to assign with AS in BIND and SELECT expressions.
@@ -11,6 +11,31 @@ XSD datatypes for strings, numbers and booleans are converted to the
 native JavaScript datatypes. RDFterms that do not fit easily into
 JavaScript datatypes are handled with a object class `NV`.
 
+## Requirements
+
+ARQ requires a javascript engine such as [GraalVM](https://www.graalvm.org/) to
+be added to the classpath.
+
+``` 
+    <properties>
+      <ver.graalvm>....</ver.graalvm>
+      ...
+```
+
+```
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>${ver.graalvm}/version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>${ver.graalvm}/version>
+    </dependency>
+```
+    
 ## Loading JavaScript functions
 
 JavaScript is loaded from an external file using the context setting
