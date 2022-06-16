@@ -181,14 +181,31 @@
             </div>
             <h1 class="title">ARQ - JavaScript SPARQL Functions</h1>
             
-	<p>ARQ supports (Jena v3.7.0 onwards) writing
+	<p>ARQ supports writing
 <a href="https://www.w3.org/TR/sparql11-query/#extensionFunctions">custom SPARQL functions</a>
 in JavaScript. These functions can be used in FILTERs and for calculating
 values to assign with AS in BIND and SELECT expressions.</p>
 <p>XSD datatypes for strings, numbers and booleans are converted to the
 native JavaScript datatypes. RDFterms that do not fit easily into
 JavaScript datatypes are handled with a object class <code>NV</code>.</p>
-<h2 id="loading-javascript-functions">Loading JavaScript functions</h2>
+<h2 id="requirements">Requirements</h2>
+<p>ARQ requires a javascript engine such as <a href="https://www.graalvm.org/">GraalVM</a> to
+be added to the classpath.</p>
+<pre><code>    &lt;properties&gt;
+      &lt;ver.graalvm&gt;....&lt;/ver.graalvm&gt;
+      ...
+</code></pre><pre><code>    &lt;dependency&gt;
+      &lt;groupId&gt;org.graalvm.js&lt;/groupId&gt;
+      &lt;artifactId&gt;js&lt;/artifactId&gt;
+      &lt;version&gt;${ver.graalvm}/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.graalvm.js&lt;/groupId&gt;
+      &lt;artifactId&gt;js-scriptengine&lt;/artifactId&gt;
+      &lt;version&gt;${ver.graalvm}/version&gt;
+    &lt;/dependency&gt;
+</code></pre><h2 id="loading-javascript-functions">Loading JavaScript functions</h2>
 <p>JavaScript is loaded from an external file using the context setting
 &ldquo;<a href="http://jena.apache.org/ARQ#js-library%22">http://jena.apache.org/ARQ#js-library&quot;</a>. This can be written as
 <code>arq:js-library</code> for commands and Fuseki configuration files.</p>
