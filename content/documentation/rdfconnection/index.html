@@ -195,9 +195,9 @@ passing styles, as well the more basic sequence of methods calls.</p>
 some data, and one to make a query can be written as:</p>
 <pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
     conn.load(&quot;data.ttl&quot;) ;
-    conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+    conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
        Resource subject = qs.getResource(&quot;s&quot;) ;
-       System.out.println(&quot;Subject: &quot;+subject) ;
+       System.out.println(&quot;Subject: &quot; + subject) ;
     }) ;
 }
 </code></pre>
@@ -210,7 +210,7 @@ ResultSet rs = qExec.execSelect() ;
 while(rs.hasNext()) {
     QuerySolution qs = rs.next() ;
     Resource subject = qs.getResource(&quot;s&quot;) ;
-    System.out.println(&quot;Subject: &quot;+subject) ;
+    System.out.println(&quot;Subject: &quot; + subject) ;
 }
 qExec.close() ;
 conn.close() ;
@@ -224,12 +224,12 @@ to excessive overhead.</p>
 <p>The <code>Txn</code> class provides a Java8-style transaction API.  Transactions are
 code passed in the <code>Txn</code> library that handles the transaction lifecycle.</p>
 <pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
-    Txn.execWrite(conn, ()-&gt; {
+    Txn.execWrite(conn, () -&gt; {
         conn.load(&quot;data1.ttl&quot;) ;
         conn.load(&quot;data2.ttl&quot;) ;
-        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt;
            Resource subject = qs.getResource(&quot;s&quot;) ;
-           System.out.println(&quot;Subject: &quot;+subject) ;
+           System.out.println(&quot;Subject: &quot; + subject) ;
         }) ;
     }) ;
 }
@@ -240,9 +240,9 @@ code passed in the <code>Txn</code> library that handles the transaction lifecyc
     try {
         conn.load(&quot;data1.ttl&quot;) ;
         conn.load(&quot;data2.ttl&quot;) ;
-        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;
+        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
            Resource subject = qs.getResource(&quot;s&quot;) ;
-           System.out.println(&quot;Subject: &quot;+subject) ;
+           System.out.println(&quot;Subject: &quot; + subject) ;
         }) ;
         conn.commit() ;
     } finally { conn.end() ; }
@@ -299,7 +299,7 @@ add more RDF data into a graph, and delete a graph from a dataset.</p>
 <pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
     conn.load(&quot;data1.ttl&quot;) ;
     conn.load(&quot;data2.nt&quot;) ;
-  }
+}
 </code></pre>
 <p>The file extension is used to determine the syntax.</p>
 <p>There is also a set of scripts to help do these operations from the command
@@ -339,9 +339,9 @@ the application should create a copy which is not attached to any external syste
 with <code>ResultSetFactory.copyResults</code>.</p>
 <pre><code>  try ( RDFConnection conn = RDFConnection.connect(&quot;https://...&quot;) ) {
       ResultSet safeCopy =
-          Txn.execReadReturn(conn, ()-&gt; {
+          Txn.execReadReturn(conn, () -&gt; {
               // Process results by row:
-              conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs)-&gt;{
+              conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
                   Resource subject = qs.getResource(&quot;s&quot;) ;
                   System.out.println(&quot;Subject: &quot;+subject) ;
               }) ;
@@ -353,10 +353,11 @@ with <code>ResultSetFactory.copyResults</code>.</p>
 <h2 id="update-usage">Update Usage</h2>
 <p>SPARQL Update operations can be performed and mixed with other operations.</p>
 <pre><code>  try ( RDFConnection conn = RDFConnection.connect(...) ) {
-      Txn.execWrite(conn, ()-&gt; {
+      Txn.execWrite(conn, () -&gt; {
          conn.update(&quot;DELETE DATA { ... }&quot; ) ;
          conn.load(&quot;data.ttl&quot;) ;
-         }) ;
+      }) ;
+  }
 </code></pre>
 <h2 id="dataset-operations">Dataset operations</h2>
 <p>In addition to the SPARQL Graph Store Protocol, operations on whole
