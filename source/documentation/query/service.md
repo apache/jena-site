@@ -56,10 +56,50 @@ the title already bound from earlier in the query.
 
 ## Controlling `SERVICE` requests.
 
-The `SERVICE` operation in a SPARQL query may be configured via the Context. The values for configuration can be set in the global context (accessed via 
+The `SERVICE` operation in a SPARQL query may be configured via the Context. 
+The values for configuration can be set in the global context (accessed via 
 `ARQ.getContext()`) or in the per-query execution context.
 
+The prefix `arq:` is `<http://jena.apache.org/ARQ#>`.
+
+Symbol | Java Constant | Default
+------ | ------------- | -------
+`arq:httpServiceAllowed`  | `ARQ.httpServiceAllowed` | true
+`arq:httpQueryClient`     | `ARQ.httpQueryClient`    | System default.
+`arq:httpServiceSendMode` | `ARQ.httpServiceSendMode | unset
+
+#### `arq:httpServiceAllowed`
+
+This setting can be used to disable execution of any SERVICE request in query. 
+Set to "false" to prohibit SERVICE requests.
+
+#### `arq:httpQueryClient`
+
+The java.net.http HttpClient object to use for SERVICE execution.
+
+#### `arq:httpServiceSendMode`
+
+The HTTP operation to use. The value is a string or a `QuerySendMode` object.
+
+String settings are:
+
+Setting | Effect
+------- | ------
+"POST"               | Use HTTP POST. Same as "asPost".
+"GET"                | Use HTTP GET unconditionally. Same as "asGetAlways".
+"asGetAlways"        | Use HTTP GET.
+"asGetWithLimitBody" | Use HTTP GET upto a size limit (usually 2kbytes).
+"asGetWithLimitForm" | Use HTTP GET upto a size limit (usually 2kbytes), and use a HTML form for the query.
+"asPostForm"         | Use HTTP POST and use an HTML form for the query.
+"asPost"             | Use HTTP POST.
+
+
+## Old Context setting
+
+Old settings are honored where possible but should not be used:
+
 The prefix  `srv:` is the IRI `<http://jena.hpl.hp.com/Service#>`.
+
 
 Symbol | Usage | Default
 ------ | ----- | -------
