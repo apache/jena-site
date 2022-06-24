@@ -227,8 +227,84 @@ Don&rsquo;t ask for the whole of a bookstore just to find a book whose
 title comes from a local RDF file - ask the bookshop a query with
 the title already bound from earlier in the query.</p>
 <h2 id="controlling-service-requests">Controlling <code>SERVICE</code> requests.</h2>
-<p>The <code>SERVICE</code> operation in a SPARQL query may be configured via the Context. The values for configuration can be set in the global context (accessed via
+<p>The <code>SERVICE</code> operation in a SPARQL query may be configured via the Context.
+The values for configuration can be set in the global context (accessed via
 <code>ARQ.getContext()</code>) or in the per-query execution context.</p>
+<p>The prefix <code>arq:</code> is <code>&lt;http://jena.apache.org/ARQ#&gt;</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Java Constant</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>arq:httpServiceAllowed</code></td>
+<td><code>ARQ.httpServiceAllowed</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>arq:httpQueryClient</code></td>
+<td><code>ARQ.httpQueryClient</code></td>
+<td>System default.</td>
+</tr>
+<tr>
+<td><code>arq:httpServiceSendMode</code></td>
+<td>`ARQ.httpServiceSendMode | unset</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="arqhttpserviceallowed"><code>arq:httpServiceAllowed</code></h4>
+<p>This setting can be used to disable execution of any SERVICE request in query.
+Set to &ldquo;false&rdquo; to prohibit SERVICE requests.</p>
+<h4 id="arqhttpqueryclient"><code>arq:httpQueryClient</code></h4>
+<p>The java.net.http HttpClient object to use for SERVICE execution.</p>
+<h4 id="arqhttpservicesendmode"><code>arq:httpServiceSendMode</code></h4>
+<p>The HTTP operation to use. The value is a string or a <code>QuerySendMode</code> object.</p>
+<p>String settings are:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;POST&rdquo;</td>
+<td>Use HTTP POST. Same as &ldquo;asPost&rdquo;.</td>
+</tr>
+<tr>
+<td>&ldquo;GET&rdquo;</td>
+<td>Use HTTP GET unconditionally. Same as &ldquo;asGetAlways&rdquo;.</td>
+</tr>
+<tr>
+<td>&ldquo;asGetAlways&rdquo;</td>
+<td>Use HTTP GET.</td>
+</tr>
+<tr>
+<td>&ldquo;asGetWithLimitBody&rdquo;</td>
+<td>Use HTTP GET upto a size limit (usually 2kbytes).</td>
+</tr>
+<tr>
+<td>&ldquo;asGetWithLimitForm&rdquo;</td>
+<td>Use HTTP GET upto a size limit (usually 2kbytes), and use a HTML form for the query.</td>
+</tr>
+<tr>
+<td>&ldquo;asPostForm&rdquo;</td>
+<td>Use HTTP POST and use an HTML form for the query.</td>
+</tr>
+<tr>
+<td>&ldquo;asPost&rdquo;</td>
+<td>Use HTTP POST.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="old-context-setting">Old Context setting</h2>
+<p>Old settings are honored where possible but should not be used:</p>
 <p>The prefix  <code>srv:</code> is the IRI <code>&lt;http://jena.hpl.hp.com/Service#&gt;</code>.</p>
 <table>
 <thead>
