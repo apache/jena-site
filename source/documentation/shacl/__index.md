@@ -170,3 +170,68 @@ ex:example
             """ ;
     ] ;
 ```
+## ValidationListener
+
+When given a `ValidationListener` the SHACL validation code emits events at each step of validation:
+* when validation of a shape starts or finishes
+* when the focus nodes of the shape have been identified
+* when validation of a constraint begins, ends and yields positive or negative results
+
+For example, the following listener will just record all events in a List:
+```
+public class RecordingValidationListener implements ValidationListener {
+        private final List<ValidationEvent> events = new ArrayList<>();
+
+        @Override public void onValidationEvent(ValidationEvent e) {
+            events.add(e);
+        }
+
+        public List<ValidationEvent> getEvents() {
+            return events;
+        }
+    }
+```
+The listener must be passed to the constructor of the `ValidationContext`. 
+The following example validates the `dataGraph` according to the `shapesGraph` using the ValidationListener above:
+```
+    Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
+    Graph dataGraph = RDFDataMgr.loadGraph(dataGraphUri); //assuming dataGraphUri points to an RDF file
+    RecordingValidationListener listener = new RecordingValidationListener();  // see above
+    Shapes shapes = Shapes.parse(shapesGraph);
+    ValidationContext vCtx = ValidationContext.create(shapes, dataGraph, listener); // pass listener here
+    for (Shape shape : shapes.getTargetShapes()) {
+        Collection<Node> focusNodes = VLib.focusNodes(dataGraph, shape);
+        for (Node focusNode : focusNodes) {
+            VLib.validateShape(vCtx, dataGraph, shape, focusNode);
+        }
+    }
+    List<ValidationEvent> actualEvents = listener.getEvents(); // all events have been recorded
+```        
+
+The events thus generated might look like this (`event.toString()`, one per line):
+```
+ FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ ConstraintEvaluationForNodeShapeStartedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ ConstraintEvaluatedOnFocusNodeEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape], valid=true}
+ ConstraintEvaluationForNodeShapeFinishedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ FocusNodeValidationFinishedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+[...]    
+```
+Many use cases can be addressed with the `HandlerBasedValidationListener`, which allows for registering event handlers on a per-event basis. 
+For example:
+```
+    ValidationListener myListener = HandlerBasedValidationListener
+        .builder()
+        .forEventType(FocusNodeValidationStartedEvent.class)
+        .addSimpleHandler(e -> {
+           // ... 
+        })
+        .forEventType(ConstraintEvaluatedEvent.class)
+        .addHandler(c -> c
+            .iff(EventPredicates.isValid()) // use a Predicate<ValidationEvent> to select events
+            .handle(e -> {
+                // ...
+            })
+        )
+        .build();
+```
