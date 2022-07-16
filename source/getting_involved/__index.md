@@ -49,7 +49,7 @@ See also how to [use Jena with Maven](/download/maven.html).
 If you have problems with any of our SNAPSHOTs, [let us know](/help_and_support/).
 
 You can check the state of each Jena development builds
-on the [Apache Jenkins continuous integration server](https://builds.apache.org/pview/?match=Jena_.*).
+on the [Apache Jenkins continuous integration server](https://builds.apache.org/job/Jena/).
 
 ### Git repository
 
