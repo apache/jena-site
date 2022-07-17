@@ -14,6 +14,7 @@ These scripts are available jena binary distribution.
 * `tdb2.tdbloader`
 * `tdb2.tdbquery`
 * `tdb2.tdbupdate`
+* `tdb2.tdbstats`
 
 On MS Windows, these commands are called `tdb2_tdbquery` etc.
 
@@ -105,3 +106,10 @@ The parallel loader runs all operations at once. It can deliver the best
 performance providing enough RAM is available and the persistent storage
 is SSD. It can consume all hardware resources, greatly impacting
 any other applications running.
+
+## `tdb2.tdbstats`
+
+Produce statistics for the dataset, which can be used for optimization rules. See the
+[TDB Optimizer description.](../tdb/optimizer.html#statistics-rule-file).
+
+For TDB2 the statistic files is read and placed in the `Data-NNNN` directory (`Data-0001/stats.opt`).

@@ -39,7 +39,11 @@ latest view of the RDF dataset into that directory, then switch to using
 that generation of the database. 
 
 There is also a command line tool `tdb2.tdbcompact` to run the
-compaction process on a database not in use.
+compaction process on a database not in use. The command line
+option  `--deleteOld` removes the last database after compaction.
+
+Compaction can also be called from [the Fuseki HTTP Administration Protocol](/documentation/fuseki2/fuseki-server-protocol.html#compact)
+for live [Fuseki webapps](/documentation/fuseki2/fuseki-webapp.html).
 
 ## Backup
 

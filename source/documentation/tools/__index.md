@@ -119,7 +119,7 @@ pages describe these further.
 
 - **`tdbbackup`**, **`tdb2.tdbbackup`**: create a gzipped copy of the Fuseki dataset's triples.
 
-- **`tdbcompact`**, **`tdb2.tdbcompact`**: reduce the size of the Fuseki dataset.
+- **not implemented for TDB1**, **`tdb2.tdbcompact`**: reduce the size of the Fuseki dataset.
 
 
 

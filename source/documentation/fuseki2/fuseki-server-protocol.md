@@ -43,7 +43,7 @@ Replace `{name}` with a dataset name: e.g. `/$/backup/myDataset`.
 ||
 | <tt>POST</tt>   | `/$/backup/{name}`     |               |
 | <tt>GET</tt>    | `/$/backups-list`      |               |
-| <tt>POST</tt>   | `/$/compact/{name}`    |               |
+| <tt>POST</tt>   | `/$/compact/{name}?deleteOld=true` |               |
 | <tt>POST</tt>   | `/$/sleep`             |               |
 ||
 | <tt>GET</tt>    | `/$/tasks`             |               | 
@@ -171,6 +171,8 @@ a list of file names.
 Pattern: `/$/compact/{name}`
 
 This operations initiates a database compaction task and returns a JSON object with the task Id in it.
+
+The optional parameter and value `deleteOld=true` deletes the database which currently is compacted after compacting completion.
 
 Compaction **ONLY** applies to TDB2 datasets, see [TDB2 Database Administration](../tdb2/tdb2_admin.html#compaction)
 for more details of this operation.
