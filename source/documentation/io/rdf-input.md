@@ -184,7 +184,7 @@ copies of import http resources).
 Location mapping files are RDF, usually written in Turtle although
 an RDF syntax can be used.
 
-    @prefix lm: <http://jena.hpl.hp.com/2004/08/location-mapping#>
+    @prefix lm: <http://jena.hpl.hp.com/2004/08/location-mapping#> .
 
     [] lm:mapping
        [ lm:name "file:foo.ttl" ;      lm:altName "file:etc/foo.ttl" ] ,
