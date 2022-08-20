@@ -63,12 +63,11 @@ Features of ARQ that are legal SPARQL syntax
 - [ARQ and the SPARQL algebra](algebra.html)
 - [Extending ARQ query execution and accessing different storage implementations](arq-query-eval.html)
 - [Custom aggregates](custom_aggregates.html)
+- [Caching and bulk-retrieval for SERVICE](service_enhancer.html)
 
 ## Extensions
 
-Feature of ARQ that go beyond SPARQL syntax. The default query
-language is standard SPARQL. These features require the query to be
-parsed with an explicit declaration of `Syntax.syntaxARQ`.
+Feature of ARQ that go beyond SPARQL syntax. 
 
 - [RDF-star](https://w3c.github.io/rdf-star/)
 - Operators and functions

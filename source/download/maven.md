@@ -101,6 +101,11 @@ structuring Jena development.
     <td>ShEx engine for Jena.</td>
   </tr>
   <tr>
+    <td><code>jena-serviceenhancer</code></td>
+    <td><code>jar</code></td>
+    <td>Bulk retrieval and caching for SERVICE clauses</td>
+  </tr>
+  <tr>
     <td><code>jena-querybuilder</code></td>
     <td><code>jar</code></td>
     <td>A utility package to simplify the building of ARQ queries in code.
