@@ -262,15 +262,13 @@ authentication, has changed.
 See below for more on HTTP authentication with `SERVICE`.
 
 The configuration of `SERVICE` operations has changed in Jena 4.3.0 and the
-paramter names have changed.
+parameter names have changed.
 
 | Symbol | Java Constant | Usage |
 | ------ | ------------- | --- |
 | `arq:httpServiceAllowed` | `ARQ.httpServiceAllowed` | False to disable |
-| `arq:serviceParams`      | `ARQ.serviceParams`    | Map |
-| `arq:httpQueryTimeout`   | `ARQ.httpQueryTimeout` | Request timeout (time to completion) |
 | `arq:httpQueryClient`    | `ARQ.httpQueryCient`   | An `java.net.http.HttpClient` object |
-| `arq:httpQueryCompression` |  | no-op |
+| `arq:httpServiceSendMode` | `ARQ.httpServiceSendMode` | See [Service documentation](../query/service.html) |
 
 where `arq:` is prefix for `<http://jena.apache.org/ARQ#>`.
 
