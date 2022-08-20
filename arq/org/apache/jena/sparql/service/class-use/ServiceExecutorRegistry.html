@@ -57,6 +57,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="#org.apache.jena.sparql.service">org.apache.jena.sparql.service</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#org.apache.jena.sparql.service.bulk">org.apache.jena.sparql.service.bulk</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="#org.apache.jena.sparql.service.single">org.apache.jena.sparql.service.single</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
@@ -69,20 +73,65 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#add(org.apache.jena.sparql.service.ServiceExecutorFactory)" class="member-name-link">add</a><wbr>(<a href="../ServiceExecutorFactory.html" title="interface in org.apache.jena.sparql.service">ServiceExecutorFactory</a>&nbsp;f)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#add(org.apache.jena.sparql.service.single.ServiceExecutor)" class="member-name-link">add</a><wbr>(<a href="../single/ServiceExecutor.html" title="interface in org.apache.jena.sparql.service.single">ServiceExecutor</a>&nbsp;f)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Insert a service executor factory.</div>
+<div class="block">Wraps the given service executor as a chaining one and prepends it
+  to the non-bulk chain via <a href="../ServiceExecutorRegistry.html#addSingleLink(org.apache.jena.sparql.service.single.ChainingServiceExecutor)"><code>addSingleLink(ChainingServiceExecutor)</code></a></div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#addBulkLink(org.apache.jena.sparql.service.bulk.ChainingServiceExecutorBulk)" class="member-name-link">addBulkLink</a><wbr>(<a href="../bulk/ChainingServiceExecutorBulk.html" title="interface in org.apache.jena.sparql.service.bulk">ChainingServiceExecutorBulk</a>&nbsp;f)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Add a chaining bulk executor as a link to the executor chain</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#addSingleLink(org.apache.jena.sparql.service.single.ChainingServiceExecutor)" class="member-name-link">addSingleLink</a><wbr>(<a href="../single/ChainingServiceExecutor.html" title="interface in org.apache.jena.sparql.service.single">ChainingServiceExecutor</a>&nbsp;f)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Prepend the given service executor as a link to the per-binding chain</div>
+</div>
+<div class="col-first odd-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#chooseRegistry(org.apache.jena.sparql.util.Context)" class="member-name-link">chooseRegistry</a><wbr>(<a href="../../util/Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Return the registry from the given context if present; otherwise return the global one</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#copy()" class="member-name-link">copy</a>()</code></div>
+<div class="col-last even-row-color">
+<div class="block">Create an independent copy of the registry</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#copyFrom(org.apache.jena.sparql.util.Context)" class="member-name-link">copyFrom</a><wbr>(<a href="../../util/Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;cxt)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Return a copy of the registry in the context (if present) or a fresh instance</div>
+</div>
+<div class="col-first even-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#createFrom(org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">createFrom</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;from)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copies the origin registry into a new one, or makes a fresh instance if the specified registry is <code>null</code>.</div>
 </div>
 <div class="col-first odd-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#get()" class="member-name-link">get</a>()</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Return the global instance from the ARQ context; create that instance if needed.</div>
+</div>
 <div class="col-first even-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#get(org.apache.jena.sparql.util.Context)" class="member-name-link">get</a><wbr>(<a href="../../util/Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Return the registry from the given context only; null if there is none</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#remove(org.apache.jena.sparql.service.ServiceExecutorFactory)" class="member-name-link">remove</a><wbr>(<a href="../ServiceExecutorFactory.html" title="interface in org.apache.jena.sparql.service">ServiceExecutorFactory</a>&nbsp;f)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#remove(org.apache.jena.sparql.service.single.ServiceExecutor)" class="member-name-link">remove</a><wbr>(<a href="../single/ServiceExecutor.html" title="interface in org.apache.jena.sparql.service.single">ServiceExecutor</a>&nbsp;f)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Remove the given service executor factory.</div>
+<div class="block">Remove a given service executor - internally attempts to unwrap every chaining service executor</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#removeBulkLink(org.apache.jena.sparql.service.bulk.ChainingServiceExecutorBulk)" class="member-name-link">removeBulkLink</a><wbr>(<a href="../bulk/ChainingServiceExecutorBulk.html" title="interface in org.apache.jena.sparql.service.bulk">ChainingServiceExecutorBulk</a>&nbsp;f)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Remove the given service executor</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#removeSingleLink(org.apache.jena.sparql.service.single.ChainingServiceExecutor)" class="member-name-link">removeSingleLink</a><wbr>(<a href="../single/ChainingServiceExecutor.html" title="interface in org.apache.jena.sparql.service.single">ChainingServiceExecutor</a>&nbsp;f)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Remove the given service executor from the per-binding chain</div>
 </div>
 <div class="col-first even-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#standardRegistry()" class="member-name-link">standardRegistry</a>()</code></div>
@@ -93,10 +142,56 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#createFrom(org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">createFrom</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;from)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copies the origin registry into a new one, or makes a fresh instance if the specified registry is <code>null</code>.</div>
+</div>
+<div class="col-first odd-row-color"><code>static void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#initWithDefaults(org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">initWithDefaults</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;registry)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Blindly adds the default executor(s); concretely adds the http executor</div>
+</div>
 <div class="col-first even-row-color"><code>static void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../ServiceExecutorRegistry.html#set(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">set</a><wbr>(<a href="../../util/Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context,
  <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;reg)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="org.apache.jena.sparql.service.bulk">
+<h2>Uses of <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a> in <a href="../bulk/package-summary.html">org.apache.jena.sparql.service.bulk</a></h2>
+<div class="caption"><span>Constructors in <a href="../bulk/package-summary.html">org.apache.jena.sparql.service.bulk</a> with parameters of type <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../bulk/ServiceExecutorBulkOverRegistry.html#%3Cinit%3E(org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">ServiceExecutorBulkOverRegistry</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;registry)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../bulk/ServiceExecutorBulkOverRegistry.html#%3Cinit%3E(org.apache.jena.sparql.service.ServiceExecutorRegistry,int)" class="member-name-link">ServiceExecutorBulkOverRegistry</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;registry,
+ int&nbsp;pos)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="org.apache.jena.sparql.service.single">
+<h2>Uses of <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a> in <a href="../single/package-summary.html">org.apache.jena.sparql.service.single</a></h2>
+<div class="caption"><span>Constructors in <a href="../single/package-summary.html">org.apache.jena.sparql.service.single</a> with parameters of type <a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../single/ServiceExecutorOverRegistry.html#%3Cinit%3E(org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">ServiceExecutorOverRegistry</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;registry)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../single/ServiceExecutorOverRegistry.html#%3Cinit%3E(org.apache.jena.sparql.service.ServiceExecutorRegistry,int)" class="member-name-link">ServiceExecutorOverRegistry</a><wbr>(<a href="../ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;registry,
+ int&nbsp;pos)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>

@@ -170,7 +170,7 @@ loadScripts(document, 'script');</script>
  <a href="../../exec/http/Params.html" title="class in org.apache.jena.sparql.exec.http">Params</a>&nbsp;params,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;httpHeaders)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Allow setting additional/optional query parameters on a per remote service (including for SERVICE).</div>
+<div class="block">Allow setting additional/optional HTTP headers and query parameters on a per remote service (including for SERVICE) basis.</div>
 </div>
 </div>
 </section>
@@ -1496,6 +1496,16 @@ loadScripts(document, 'script');</script>
  <a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dsg,
  <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static <a href="../../engine/QueryEngineRegistry.html" title="class in org.apache.jena.sparql.engine">QueryEngineRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QueryEngineRegistry.</span><code><a href="../../engine/QueryEngineRegistry.html#chooseRegistry(org.apache.jena.sparql.util.Context)" class="member-name-link">chooseRegistry</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last even-row-color">
+<div class="block">If there is a registry in the context then return it otherwise yield the global instance</div>
+</div>
+<div class="col-first odd-row-color"><code>static <a href="../../engine/QueryEngineRegistry.html" title="class in org.apache.jena.sparql.engine">QueryEngineRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryEngineRegistry.</span><code><a href="../../engine/QueryEngineRegistry.html#copyFrom(org.apache.jena.sparql.util.Context)" class="member-name-link">copyFrom</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a copy of the registry from the context or return a new instance</div>
+</div>
 <div class="col-first even-row-color"><code><a href="../../engine/Plan.html" title="interface in org.apache.jena.sparql.engine">Plan</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">QueryEngineFactory.</span><code><a href="../../engine/QueryEngineFactory.html#create(org.apache.jena.query.Query,org.apache.jena.sparql.core.DatasetGraph,org.apache.jena.sparql.engine.binding.Binding,org.apache.jena.sparql.util.Context)" class="member-name-link">create</a><wbr>(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
  <a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset,
@@ -1565,6 +1575,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Locate a suitable factory for this algebra expression
   and dataset from the default registry</div>
 </div>
+<div class="col-first even-row-color"><code>static <a href="../../engine/QueryEngineRegistry.html" title="class in org.apache.jena.sparql.engine">QueryEngineRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QueryEngineRegistry.</span><code><a href="../../engine/QueryEngineRegistry.html#get(org.apache.jena.sparql.util.Context)" class="member-name-link">get</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Get the query engine registry from the context or null if there is none.</div>
+</div>
+<div class="col-first odd-row-color"><code>static void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryEngineRegistry.</span><code><a href="../../engine/QueryEngineRegistry.html#set(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.engine.QueryEngineRegistry)" class="member-name-link">set</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context,
+ <a href="../../engine/QueryEngineRegistry.html" title="class in org.apache.jena.sparql.engine">QueryEngineRegistry</a>&nbsp;registry)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="caption"><span>Constructors in <a href="../../engine/package-summary.html">org.apache.jena.sparql.engine</a> with parameters of type <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></span></div>
 <div class="summary-table three-column-summary">
@@ -1710,24 +1729,27 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><span class="type-name-label">QueryExecApp.</span><code><a href="../../exec/QueryExecApp.html#getContext()" class="member-name-link">getContext</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">QueryExecDataset.</span><code><a href="../../exec/QueryExecDataset.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryExecBuilderAdapter.</span><code><a href="../../exec/QueryExecBuilderAdapter.html#getContext()" class="member-name-link">getContext</a>()</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">QueryExecDatasetBuilder.</span><code><a href="../../exec/QueryExecDatasetBuilder.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QueryExecDataset.</span><code><a href="../../exec/QueryExecDataset.html#getContext()" class="member-name-link">getContext</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">QueryExecMod.</span><code><a href="../../exec/QueryExecMod.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryExecDatasetBuilder.</span><code><a href="../../exec/QueryExecDatasetBuilder.html#getContext()" class="member-name-link">getContext</a>()</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">QueryExecutionAdapter.</span><code><a href="../../exec/QueryExecutionAdapter.html#getContext()" class="member-name-link">getContext</a>()</code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><span class="type-name-label">QueryExecMod.</span><code><a href="../../exec/QueryExecMod.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryExecutionAdapter.</span><code><a href="../../exec/QueryExecutionAdapter.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-last odd-row-color">
 <div class="block">The properties associated with a query execution -
   implementation specific parameters  This includes
   Java objects (so it is not an RDF graph).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">QueryExecutionCompat.</span><code><a href="../../exec/QueryExecutionCompat.html#getContext()" class="member-name-link">getContext</a>()</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QueryExecutionCompat.</span><code><a href="../../exec/QueryExecutionCompat.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="caption"><span>Methods in <a href="../../exec/package-summary.html">org.apache.jena.sparql.exec</a> with parameters of type <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></span></div>
 <div class="summary-table three-column-summary">
@@ -1739,17 +1761,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Set the context.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../../exec/QueryExecDatasetBuilder.html" title="class in org.apache.jena.sparql.exec">QueryExecDatasetBuilder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">QueryExecDatasetBuilder.</span><code><a href="../../exec/QueryExecDatasetBuilder.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;cxt)</code></div>
+<div class="col-first odd-row-color"><code><a href="../../exec/QueryExecBuilder.html" title="interface in org.apache.jena.sparql.exec">QueryExecBuilder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryExecBuilderAdapter.</span><code><a href="../../exec/QueryExecBuilderAdapter.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../../exec/QueryExecutionBuilderAdapter.html" title="class in org.apache.jena.sparql.exec">QueryExecutionBuilderAdapter</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">QueryExecutionBuilderAdapter.</span><code><a href="../../exec/QueryExecutionBuilderAdapter.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-first even-row-color"><code><a href="../../exec/QueryExecDatasetBuilder.html" title="class in org.apache.jena.sparql.exec">QueryExecDatasetBuilder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">QueryExecDatasetBuilder.</span><code><a href="../../exec/QueryExecDatasetBuilder.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;cxt)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../../exec/UpdateExecBuilder.html" title="interface in org.apache.jena.sparql.exec">UpdateExecBuilder</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">UpdateExecBuilder.</span><code><a href="../../exec/UpdateExecBuilder.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code><a href="../../exec/QueryExecutionBuilderAdapter.html" title="class in org.apache.jena.sparql.exec">QueryExecutionBuilderAdapter</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">QueryExecutionBuilderAdapter.</span><code><a href="../../exec/QueryExecutionBuilderAdapter.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../../exec/UpdateExecBuilder.html" title="interface in org.apache.jena.sparql.exec">UpdateExecBuilder</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">UpdateExecBuilder.</span><code><a href="../../exec/UpdateExecBuilder.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Set the context.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="../../exec/UpdateExecBuilder.html" title="interface in org.apache.jena.sparql.exec">UpdateExecBuilder</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">UpdateExecBuilderAdapter.</span><code><a href="../../exec/UpdateExecBuilderAdapter.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="../../exec/UpdateExecDatasetBuilder.html" title="class in org.apache.jena.sparql.exec">UpdateExecDatasetBuilder</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">UpdateExecDatasetBuilder.</span><code><a href="../../exec/UpdateExecDatasetBuilder.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
 <div class="col-last even-row-color">
@@ -2161,8 +2189,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static <a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../../service/ServiceExecutorRegistry.html#chooseRegistry(org.apache.jena.sparql.util.Context)" class="member-name-link">chooseRegistry</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Return the registry from the given context if present; otherwise return the global one</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../../service/ServiceExecutorRegistry.html#copyFrom(org.apache.jena.sparql.util.Context)" class="member-name-link">copyFrom</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;cxt)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Return a copy of the registry in the context (if present) or a fresh instance</div>
+</div>
+<div class="col-first even-row-color"><code>static <a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../../service/ServiceExecutorRegistry.html#get(org.apache.jena.sparql.util.Context)" class="member-name-link">get</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Return the registry from the given context only; null if there is none</div>
+</div>
 <div class="col-first odd-row-color"><code>static void</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">ServiceExecutorRegistry.</span><code><a href="../../service/ServiceExecutorRegistry.html#set(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.service.ServiceExecutorRegistry)" class="member-name-link">set</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context,
  <a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service">ServiceExecutorRegistry</a>&nbsp;reg)</code></div>
@@ -2189,63 +2229,69 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a copy of this context.</div>
 </div>
 <div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#create()" class="member-name-link">create</a>()</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ContextUtils.</span><code><a href="../ContextUtils.html#copyWithRegistries(org.apache.jena.sparql.util.Context)" class="member-name-link">copyWithRegistries</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;from)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Copies the given context also copying its registries
+ (<a href="../../function/FunctionRegistry.html" title="class in org.apache.jena.sparql.function"><code>FunctionRegistry</code></a>, <a href="../../pfunction/PropertyFunctionRegistry.html" title="class in org.apache.jena.sparql.pfunction"><code>PropertyFunctionRegistry</code></a> and <a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service"><code>ServiceExecutorRegistry</code></a>).</div>
+</div>
+<div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#create()" class="member-name-link">create</a>()</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Create an empty context</div>
 </div>
-<div class="col-first odd-row-color"><code>static final <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#emptyContext()" class="member-name-link">emptyContext</a>()</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#emptyContext()" class="member-name-link">emptyContext</a>()</code></div>
+<div class="col-last even-row-color">
 <div class="block">Empty, immutable context</div>
 </div>
-<div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#fromDataset(org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">fromDataset</a><wbr>(<a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#fromDataset(org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">fromDataset</a><wbr>(<a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Return the context of the dataset (not copied); if the dataset is null, return null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DyadicDatasetGraph.</span><code><a href="../DyadicDatasetGraph.html#getContext()" class="member-name-link">getContext</a>()</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#mergeCopy(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.util.Context)" class="member-name-link">mergeCopy</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextGlobal,
+<div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">DyadicDatasetGraph.</span><code><a href="../DyadicDatasetGraph.html#getContext()" class="member-name-link">getContext</a>()</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#mergeCopy(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.util.Context)" class="member-name-link">mergeCopy</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextGlobal,
  <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextLocal)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Merge an outer (defaults to the system global context)
   and local context to produce a new context
   The new context is always a separate copy.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#set(org.apache.jena.sparql.util.Symbol,boolean)" class="member-name-link">set</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
- boolean&nbsp;value)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Store a named value - overwrites any previous set value.</div>
-</div>
 <div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#set(org.apache.jena.sparql.util.Symbol,java.lang.Object)" class="member-name-link">set</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#set(org.apache.jena.sparql.util.Symbol,boolean)" class="member-name-link">set</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
+ boolean&nbsp;value)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Store a named value - overwrites any previous set value.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setFalse(org.apache.jena.sparql.util.Symbol)" class="member-name-link">setFalse</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#set(org.apache.jena.sparql.util.Symbol,java.lang.Object)" class="member-name-link">set</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Store a named value - overwrites any previous set value.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setFalse(org.apache.jena.sparql.util.Symbol)" class="member-name-link">setFalse</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Set property value to be false.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setIfUndef(org.apache.jena.sparql.util.Symbol,java.lang.Object)" class="member-name-link">setIfUndef</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
+<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setIfUndef(org.apache.jena.sparql.util.Symbol,java.lang.Object)" class="member-name-link">setIfUndef</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Store a named value only if it is not currently set.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setTrue(org.apache.jena.sparql.util.Symbol)" class="member-name-link">setTrue</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setTrue(org.apache.jena.sparql.util.Symbol)" class="member-name-link">setTrue</a><wbr>(<a href="../Symbol.html" title="class in org.apache.jena.sparql.util">Symbol</a>&nbsp;property)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Set property value to be true.</div>
 </div>
-<div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setupContextForDataset(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">setupContextForDataset</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;globalContext,
+<div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setupContextForDataset(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">setupContextForDataset</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;globalContext,
  <a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Setup a context using another context and a dataset.</div>
 </div>
 </div>
@@ -2258,26 +2304,32 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><span class="type-name-label">ContextAccumulator.</span><code><a href="../ContextAccumulator.html#context(org.apache.jena.sparql.util.Context)" class="member-name-link">context</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#mergeCopy(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.util.Context)" class="member-name-link">mergeCopy</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextGlobal,
- <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextLocal)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ContextUtils.</span><code><a href="../ContextUtils.html#copyWithRegistries(org.apache.jena.sparql.util.Context)" class="member-name-link">copyWithRegistries</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;from)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Copies the given context also copying its registries
+ (<a href="../../function/FunctionRegistry.html" title="class in org.apache.jena.sparql.function"><code>FunctionRegistry</code></a>, <a href="../../pfunction/PropertyFunctionRegistry.html" title="class in org.apache.jena.sparql.pfunction"><code>PropertyFunctionRegistry</code></a> and <a href="../../service/ServiceExecutorRegistry.html" title="class in org.apache.jena.sparql.service"><code>ServiceExecutorRegistry</code></a>).</div>
+</div>
+<div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#mergeCopy(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.util.Context)" class="member-name-link">mergeCopy</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextGlobal,
+ <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;contextLocal)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Merge an outer (defaults to the system global context)
   and local context to produce a new context
   The new context is always a separate copy.</div>
 </div>
-<div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#putAll(org.apache.jena.sparql.util.Context)" class="member-name-link">putAll</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;other)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DyadicDatasetGraph.</span><code><a href="../DyadicDatasetGraph.html#setContext(org.apache.jena.sparql.util.Context)" class="member-name-link">setContext</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;c)</code></div>
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#putAll(org.apache.jena.sparql.util.Context)" class="member-name-link">putAll</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;other)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setCurrentDateTime(org.apache.jena.sparql.util.Context)" class="member-name-link">setCurrentDateTime</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-first even-row-color"><code><a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">DyadicDatasetGraph.</span><code><a href="../DyadicDatasetGraph.html#setContext(org.apache.jena.sparql.util.Context)" class="member-name-link">setContext</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;c)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setupContextForDataset(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">setupContextForDataset</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;globalContext,
+<div class="col-first odd-row-color"><code>static void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setCurrentDateTime(org.apache.jena.sparql.util.Context)" class="member-name-link">setCurrentDateTime</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;context)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static <a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Context.</span><code><a href="../Context.html#setupContextForDataset(org.apache.jena.sparql.util.Context,org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">setupContextForDataset</a><wbr>(<a href="../Context.html" title="class in org.apache.jena.sparql.util">Context</a>&nbsp;globalContext,
  <a href="../../core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Setup a context using another context and a dataset.</div>
 </div>
 </div>

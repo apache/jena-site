@@ -81,12 +81,21 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Functions for checking nodes, triples and quads.
  <p>
- If the errorHandler is null, use the system wide handler.
+ The "check..." functions have two basic signatures:<br>
+ 1. <code>check...(&lt;i&gt;object&lt;/i&gt;)</code><br>
+ 2. <code>check...(&lt;i&gt;object, errorHandler, line, col&lt;/i&gt;)</code>
  <p>
- If the errorHandler line/columns numbers are -1, -1, messages do not include them.
- <p>
- Operations "<tt>checkXXX(<i>item</i>)</tt>" are for boolean testing
- and do not generate output.</div>
+ The first type are for boolean testing and do not generate output. They call the
+ second type with default values for the last 3 parameters: nullErrorHandler, -1L, -1L.
+ The second type are for boolean testing and optionally generate error handling
+ output.
+ <ul>
+ <li>Argument <code>errorHandler</code> - the <a href="ErrorHandler.html" title="interface in org.apache.jena.riot.system"><code>ErrorHandler</code></a> for output. If the errorHandler
+ is null, use the system wide handler.
+ <li>Argument <code>line</code> - code line number (a long integer) generating the check.
+ <li>Argument <code>col</code> - code column number (a long integer) generating the check.
+ </ul>
+ If the errorHandler is null, the line and column numbers not used.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

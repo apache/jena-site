@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"org.apache.jena.shacl","l":"org.apache.jena.shacl"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"org.apache.jena.shacl","l":"org.apache.jena.shacl"},{"m":"org.apache.jena.shacl","l":"org.apache.jena.shacl.validation"},{"m":"org.apache.jena.shacl","l":"org.apache.jena.shacl.validation.event"}];updateSearchResults();
