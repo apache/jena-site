@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <title>Apache Jena - Extras - Service Enhancer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="/js/jena-navigation.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/js/improve.js" type="text/javascript"></script>
+
+    
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+                <img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Apache Jena</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="homepage"><a href="/index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li id="download"><a href="/download/index.cgi"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Learn <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Tutorials</li>
+                        <li><a href="/tutorials/index.html">Overview</a></li>
+                        <li><a href="/documentation/fuseki2/index.html">Fuseki Triplestore</a></li>
+                        <li><a href="/documentation/notes/index.html">How-To's</a></li>
+                        <li><a href="/documentation/query/manipulating_sparql_using_arq.html">Manipulating SPARQL using ARQ</a></li>
+                        <li><a href="/tutorials/rdf_api.html">RDF core API tutorial</a></li>
+                        <li><a href="/tutorials/sparql.html">SPARQL tutorial</a></li>
+                        <li><a href="/tutorials/using_jena_with_eclipse.html">Using Jena with Eclipse</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">References</li>
+                        <li><a href="/documentation/index.html">Overview</a></li>
+                        <li><a href="/documentation/query/index.html">ARQ (SPARQL)</a></li>
+                        <li><a href="/documentation/assembler/index.html">Assembler</a></li>
+                        <li><a href="/documentation/tools/index.html">Command-line tools</a></li>
+                        <li><a href="/documentation/rdfs/">Data with RDFS Inferencing</a></li>
+                        <li><a href="/documentation/geosparql/index.html">GeoSPARQL</a></li>
+                        <li><a href="/documentation/inference/index.html">Inference API</a></li>
+                        <li><a href="/documentation/javadoc.html">Javadoc</a></li>
+                        <li><a href="/documentation/ontology/">Ontology API</a></li>
+                        <li><a href="/documentation/permissions/index.html">Permissions</a></li>
+                        <li><a href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
+                        <li><a href="/documentation/rdf/index.html">RDF API</a></li>
+                        <li><a href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
+                        <li><a href="/documentation/io/">RDF I/O</a></li>
+                        <li><a href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a href="/documentation/shacl/index.html">SHACL</a></li>
+                        <li><a href="/documentation/shex/index.html">ShEx</a></li>
+                        <li><a href="/documentation/jdbc/index.html">SPARQL over JDBC</a></li>
+                        <li><a href="/documentation/tdb/index.html">TDB</a></li>
+                        <li><a href="/documentation/tdb2/index.html">TDB2</a></li>
+                        <li><a href="/documentation/query/text-query.html">Text Search</a></li>
+                    </ul>
+                </li>
+
+                <li class="drop down">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Javadoc <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/documentation/javadoc.html">All Javadoc</a></li>
+                        <li><a href="/documentation/javadoc/arq/">ARQ</a></li>
+                        <li><a href="/documentation/javadoc_elephas.html">Elephas</a></li>
+                        <li><a href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
+                        <li><a href="/documentation/javadoc/jdbc/">JDBC</a></li>
+                        <li><a href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a href="/documentation/javadoc/permissions/">Permissions</a></li>
+                        <li><a href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
+                        <li><a href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a href="/documentation/javadoc/tdb/">TDB</a></li>
+                        <li><a href="/documentation/javadoc/text/">Text Search</a></li>
+                    </ul>
+                </li>
+
+                <li id="ask"><a href="/help_and_support/index.html"><span class="glyphicon glyphicon-question-sign"></span> Ask</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bullhorn"></span> Get involved <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/getting_involved/index.html">Contribute</a></li>
+                        <li><a href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Project</li>
+                        <li><a href="/about_jena/about.html">About Jena</a></li>
+                        <li><a href="/about_jena/architecture.html">Architecture</a></li>
+                        <li><a href="/about_jena/citing.html">Citing</a></li>
+                        <li><a href="/about_jena/team.html">Project team</a></li>
+                        <li><a href="/about_jena/contributions.html">Related projects</a></li>
+                        <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">ASF</li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                    </ul>
+                </li>
+
+
+    
+
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/service_enhancer.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="breadcrumbs">
+                
+                    
+
+
+
+
+
+<ol class="breadcrumb">
+    
+    
+        
+        
+    
+        
+        
+            
+                <li><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li><a href='/documentation/query'>QUERY</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">SERVICE ENHANCER</li>
+            
+            
+        
+    
+</ol>
+
+
+
+
+                
+            </div>
+            <h1 class="title">Extras - Service Enhancer</h1>
+            
+	<h1 id="service-enhancer-plugin">Service Enhancer Plugin</h1>
+<p>The service enhancer (SE) plugin extends the functionality of the SERVICE clause with:</p>
+<ul>
+<li>Bulk requests</li>
+<li>Correlated joins also known as lateral joins</li>
+<li>A streaming cache for <code>SERVICE</code> requests results which can also cope with bulk requests and correlated joins. Furthermore, queries that only differ in limit and offset will result
+in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory caching provider.</li>
+</ul>
+<p>As a fundamental principle, a request making use of <code>cache</code> and <code>bulk</code> should return the exact same result as if
+those settings were omitted. As a consequence runtime result set size recognition (RRR) is employed to reveal hidden
+result set limits and ensure that always only the appropriate amount of data is returned from the caches.</p>
+<p>A correlated join using this plugin is syntactically expressed with <code>SERVICE &lt;loop:&gt; {}</code>.
+It is a binary operation on two graph patterns:
+The operation &ldquo;loops&rdquo; over every binding obtained from evaluation of the left-hand-side (lhs) and uses it as an input to substitute the variables of the right-hand-side (rhs).
+Afterwards, the substituted rhs is evaluated to sequence of bindings. Each rhs binding is subsequently merged with lhs&rsquo; input binding to produce a solution binding of the join.</p>
+<h2 id="example">Example</h2>
+<p>The following query demonstrates the features of the service enhancer.
+It executes as a single remote request to Wikidata:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">rdfs</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">wd</span>: <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/&gt;</span>
+<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?l</span> {
+  <span style="color:#080;font-style:italic"># The ids below correspond in order to: Apache Jena, Semantic Web, RDF, SPARQL, Andy Seaborne</span>
+  <span style="">VALUES</span> <span style="color:#b8860b">?s</span> { <span style="color:#00f;font-weight:bold">wd</span>:<span style="color:#008000;font-weight:bold">Q1686799</span> <span style="color:#00f;font-weight:bold">wd</span>:<span style="color:#008000;font-weight:bold">Q54837</span> <span style="color:#00f;font-weight:bold">wd</span>:<span style="color:#008000;font-weight:bold">Q54872</span> <span style="color:#00f;font-weight:bold">wd</span>:<span style="color:#008000;font-weight:bold">Q54871</span> <span style="color:#00f;font-weight:bold">wd</span>:<span style="color:#008000;font-weight:bold">Q108379795</span> }
+ 
+  <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;cache:loop:bulk+5:https://query.wikidata.org/sparql&gt;</span> {
+    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?l</span> {
+      <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?l</span>
+      <span style="color:#a2f;font-weight:bold">FILTER</span>(<span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#39;en&#39;</span>))
+    } <span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#b8860b">?l</span> <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
+  }
+}
+</code></pre></div><details>
+  <summary markdown="span">Click here to view the rewritten Query</summary>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+<span style="color:#a2f;font-weight:bold">WHERE</span>
+  {   {   { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+              <span style="color:#a2f;font-weight:bold">WHERE</span>
+                { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#b8860b">?l</span>
+                    <span style="color:#a2f;font-weight:bold">WHERE</span>
+                      { <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/Q1686799&gt;</span>
+                                  <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span>  <span style="color:#b8860b">?l</span>
+                        <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#34;en&#34;</span>)
+                      }
+                  }
+                  <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">0</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>)
+                }
+              <span style="color:#a2f;font-weight:bold">LIMIT</span>   <span style="color:#666">1</span>
+            }
+          }
+        <span style="color:#a2f;font-weight:bold">UNION</span>
+          {   { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+                  <span style="color:#a2f;font-weight:bold">WHERE</span>
+                    { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#b8860b">?l</span>
+                        <span style="color:#a2f;font-weight:bold">WHERE</span>
+                          { <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/Q54837&gt;</span>
+                                      <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span>  <span style="color:#b8860b">?l</span>
+                            <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#34;en&#34;</span>)
+                          }
+                      }
+                      <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">1</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>)
+                    }
+                  <span style="color:#a2f;font-weight:bold">LIMIT</span>   <span style="color:#666">1</span>
+                }
+              }
+            <span style="color:#a2f;font-weight:bold">UNION</span>
+              {   { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+                      <span style="color:#a2f;font-weight:bold">WHERE</span>
+                        { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#b8860b">?l</span>
+                            <span style="color:#a2f;font-weight:bold">WHERE</span>
+                              { <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/Q54872&gt;</span>
+                                          <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span>  <span style="color:#b8860b">?l</span>
+                                <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#34;en&#34;</span>)
+                              }
+                          }
+                          <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">2</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>)
+                        }
+                      <span style="color:#a2f;font-weight:bold">LIMIT</span>   <span style="color:#666">1</span>
+                    }
+                  }
+                <span style="color:#a2f;font-weight:bold">UNION</span>
+                  {   { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+                          <span style="color:#a2f;font-weight:bold">WHERE</span>
+                            { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#b8860b">?l</span>
+                                <span style="color:#a2f;font-weight:bold">WHERE</span>
+                                  { <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/Q54871&gt;</span>
+                                              <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span>  <span style="color:#b8860b">?l</span>
+                                    <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#34;en&#34;</span>)
+                                  }
+                              }
+                              <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">3</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>)
+                            }
+                          <span style="color:#a2f;font-weight:bold">LIMIT</span>   <span style="color:#666">1</span>
+                        }
+                      }
+                    <span style="color:#a2f;font-weight:bold">UNION</span>
+                      { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
+                          <span style="color:#a2f;font-weight:bold">WHERE</span>
+                            { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#b8860b">?l</span>
+                                <span style="color:#a2f;font-weight:bold">WHERE</span>
+                                  { <span style="color:#a0a000">&lt;http://www.wikidata.org/entity/Q108379795&gt;</span>
+                                              <span style="color:#a0a000">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span>  <span style="color:#b8860b">?l</span>
+                                    <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">langMatches</span>(<span style="color:#00a000">lang</span>(<span style="color:#b8860b">?l</span>), <span style="color:#b44">&#34;en&#34;</span>)
+                                  }
+                              }
+                              <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">4</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>)
+                            }
+                          <span style="color:#a2f;font-weight:bold">LIMIT</span>   <span style="color:#666">1</span>
+                        }
+                      }
+                  }
+              }
+          }
+      }
+    <span style="color:#a2f;font-weight:bold">UNION</span>
+      <span style="color:#080;font-style:italic"># This union member adds an end marker</span>
+      <span style="color:#080;font-style:italic"># Its absence in responses is</span>
+      <span style="color:#080;font-style:italic"># used to detect result set size limits</span>
+      { <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">1000000000</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?__idx__</span>) }
+  }
+<span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#a2f;font-weight:bold">ASC</span>(<span style="color:#b8860b">?__idx__</span>) <span style="color:#b8860b">?l</span>
+</code></pre></div><p>Note that in the query above <code>?s</code> has been substituted based on the respective input bindings (in this case the Wikidata IRIs).
+For every bulk query execution, the SE plugin assigns an increasing ID to every input binding (starting from 0). This ID is included in the service request via the
+<code>?__idx__</code> variable. (If the variable is already used then an unused name is allocated by appending a number such as <code>?__idx__1</code>).
+Every obtained binding&rsquo;s <code>?__idx__</code>  value determines the input binding that has to be merged with in order to produce the final binding.
+A special value for <code>?__idx__</code> is the  end marker. It is a number higher than any input binding ID and it is used to detect result set size limits: It&rsquo;s absence in a result set
+means that it was cut off. This information is used to ensure that a request using a certain service IRI does not yield more results than limit.</p>
+</details>
+<p>Note that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
+The cache operates on a per-input-binding basis: For instance, in the example above it means that when removing bindings from the <code>VALUES</code> block data will
+still be served from the cache. Conversely, adding additional bindings to the <code>VALUES</code> block will only send a (bulk) remote request for those
+that lack cache entries.</p>
+<h2 id="namespace">Namespace</h2>
+<p>The plugin introduces the namespace <code>http://jena.apache.org/service-enhancer#</code> which is used for both ARQ context symbols as well as assembler configuration.</p>
+<h2 id="maven-dependency">Maven Dependency</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#008000;font-weight:bold">&lt;dependency&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;groupId&gt;</span>org.apache.jena<span style="color:#008000;font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;artifactId&gt;</span>jena-serviceenhancer<span style="color:#008000;font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="color:#008000;font-weight:bold">&lt;version&gt;</span><span style="color:#080;font-style:italic">&lt;!-- Check the link below for available versions --&gt;</span><span style="color:#008000;font-weight:bold">&lt;/version&gt;</span>
+<span style="color:#008000;font-weight:bold">&lt;/dependency&gt;</span>
+</code></pre></div><p><a href="https://mvnrepository.com/artifact/org.apache.jena/jena-serviceenhancer">Available Versions</a>.</p>
+<p>Adding this dependency will automatically initialize the plugin via service-loading of <code>org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit</code>
+using Jena&rsquo;s plugin system.</p>
+<h2 id="programmatic-setup">Programmatic Setup</h2>
+<p>Loading the <code>jena-serviceenhancer</code> jar file automatically enables bulk requests and caching.
+Correlated joins however require explicit activation because they require specific algebra transformations to run as part of the query optimization process.
+For more details about the transformation see <a href="#programmatic-algebra-transformation">Programmatic Algebra Transformation</a>.</p>
+<p>The following snippet globally enables correlated joins by overriding the context&rsquo;s optimizer:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit</span><span style="color:#666">;</span>
+
+ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
+</code></pre></div><p>As usual, in order to avoid a global setup, the the context of a dataset or statement execution (i.e. query / update) can be used instead:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DatasetFactory dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">();</span>
+ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>dataset<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
+</code></pre></div><p>The lookup proceduce for which optimizer to wrap first consults the given context and then the global one.
+If neither has an optimizer configured then Jena&rsquo;s default one will be used.</p>
+<p>Service requests that do not make use of this plugin&rsquo;s options will not be affected even if the plugin is loaded.
+The plugin registration makes use of the <a href="/documentation/query/custom_service_executors.html">custom service executor extension system</a>.</p>
+<h2 id="assembler">Assembler</h2>
+<p>The <code>se:DatasetServiceEnhancer</code> assembler can be used to enable the SE plugin on a dataset.
+This procedure also automatically enables correlated joins using the dataset&rsquo;s context as described in <a href="#programmatic-setup">Programmatic Setup</a>.
+By default, the SE assembler alters the base dataset&rsquo;s context and returns the base dataset again.
+There is one important exception: If <code>se:enableMgmt</code> is true then the assembler&rsquo;s final step it to create a wrapped dataset with a copy of the original dataset&rsquo;s context where <code>enableMgmt</code> is true.
+This way, management functions are not available in the base dataset.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ttl" data-lang="ttl"><span style="color:#080;font-style:italic"># assembler.ttl</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.apache.org/service-enhancer#&gt;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;urn:example:root&gt;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">DatasetServiceEnhancer</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseDataset</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;urn:example:base&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">datasetId</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;https://my.dataset.id/&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># Defaults to the value of ja:baseDataset</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">cacheMaxEntryCount</span><span style="color:#bbb"> </span><span style="color:#666">300</span><span style="color:#bbb"> </span>;<span style="color:#bbb">             </span><span style="color:#080;font-style:italic"># Maximum number of cache entries ;</span><span style="color:#bbb">
+</span><span style="color:#bbb">                                          </span><span style="color:#080;font-style:italic"># identified by the tuple (service IRI, query, input binding)</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">cacheMaxPageCount</span><span style="color:#bbb"> </span><span style="color:#666">15</span><span style="color:#bbb"> </span>;<span style="color:#bbb">               </span><span style="color:#080;font-style:italic"># Maximum number of pages per cache entry</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">cachePageSize</span><span style="color:#bbb"> </span><span style="color:#666">10000</span><span style="color:#bbb"> </span>;<span style="color:#bbb">                </span><span style="color:#080;font-style:italic"># Number of bindings per page</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">enableMgmt</span><span style="color:#bbb"> </span>false<span style="color:#bbb">                     </span><span style="color:#080;font-style:italic"># Enables management functions;</span><span style="color:#bbb">
+</span><span style="color:#bbb">                                          </span><span style="color:#080;font-style:italic"># wraps the base dataset with an independent context</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>.<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;urn:example:base&gt;</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryDataset</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></code></pre></div><p>In the example above, the shown values for <code>se:cacheMaxEntryCount</code>, <code>se:cacheMaxPageCount</code> and <code>se:cachePageSize</code> are the defaults which are used if those options are left unspecified.
+They allow for caching up to 45mio bindings (300 x 15 x 10000).
+There is one caveat though: Specifying the cache options puts a new a cache instance in the dataset&rsquo;s context. Without these options the global cache instance that is registered in the ARQ context by the SE plugin during service loading is used.
+Presently, the global instance cannot be configured via the assembler.</p>
+<p>Creating a dataset from the specification above is programmatically accomplished as follows:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Model spec <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;assembler.ttl&#34;</span><span style="color:#666">);</span>
+Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">assemble</span><span style="color:#666">(</span>spec<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:example:root&#34;</span><span style="color:#666">));</span>
+</code></pre></div><p>The value of <code>se:datasetId</code> is used to look up caches when referring to the active dataset using <code>SERVICE &lt;urn:x-arq:self&gt; {}</code>.</p>
+<h3 id="configuration-with-fuseki">Configuration with Fuseki</h3>
+<h4 id="adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</h4>
+<p>This section assumes that one of the distributions of <code>apache-jena-fuseki</code> has been downloaded from [https://jena.apache.org/download/].
+The extracted folder should contain the <code>./fuseki-server</code> executable start script which automatically loads all jars (relative to <code>$PWD</code>) under <code>run/extra</code>.
+These folders need to be created e.g. using <code>mkdir -p run/extra</code>. The SE plugin can be manually built or downloaded from maven central (it is self-contained without transitive dependencies).
+Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki version should match.</p>
+<h4 id="fuseki-assembler-configuration">Fuseki Assembler Configuration</h4>
+<p>The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
+Cache management can be performed via SPARQL extension functions. However, usually not every user should be allowed to invalidate caches as this
+could be exploited for service disruptions. Jena does not directly provide a security model for access privileges on functions such as
+known from SQL DBMSs. However, with Fuseki it is possible to create both a public and an admin endpoint over the same base dataset:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ttl" data-lang="ttl"><span style="color:#b8860b">&lt;#myServicePublic&gt;</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;test&#34;</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;#myDsPublic&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#myServiceAdmin&gt;</span><span style="color:#bbb">  </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;testAdmin&#34;</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;#myDsAdmin&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#myDsPublic&gt;</span><span style="color:#bbb">      </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">DatasetServiceEnhancer</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseDataset</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;#myDsBase&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#myDsAdmin&gt;</span><span style="color:#bbb">       </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">DatasetServiceEnhancer</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseDataset</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;#myDsBase&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">enableMgmt</span><span style="color:#bbb"> </span>true<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#myDsBase&gt;</span><span style="color:#bbb">        </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryDataset</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></code></pre></div><p>For configuring access control with Fuseki please refer to <a href="/documentation/fuseki2/fuseki-data-access-control.html">Data Access Control for Fuseki</a>.</p>
+<h2 id="context-symbols">Context Symbols</h2>
+<p>The service enhancer plugin defines several symbols for configuration via context.
+The context symbols are in the namespace <code>http://jena.apache.org/service-enhancer#</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Value type</th>
+<th>Default*</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enableMgmt</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>This symbol must be set to true in the context in order to allow calling certain &ldquo;privileged&rdquo; SPARQL functions.</td>
+</tr>
+<tr>
+<td><code>serviceBulkBindingCount</code></td>
+<td>int</td>
+<td>10</td>
+<td>Number of bindings to group into a single bulk request</td>
+</tr>
+<tr>
+<td><code>serviceBulkMaxBindingCount</code></td>
+<td>int</td>
+<td>100</td>
+<td>Maximum number of input bindings to group into a single bulk request; restricts <code>serviceBulkRequestItemCount</code>. When using <code>bulk+n</code> then <code>n</code> will be capped to the configured value.</td>
+</tr>
+<tr>
+<td><code>datasetId</code></td>
+<td>String</td>
+<td>null</td>
+<td>An IRI to resolve <code>urn:x-arq:self</code> to. Used to discriminate cache entries for self-referenced datasets.</td>
+</tr>
+<tr>
+<td><code>serviceCache</code></td>
+<td>ServiceResponseCache</td>
+<td>null</td>
+<td>Symbol for the cache of services&rsquo; result sets</td>
+</tr>
+<tr>
+<td><code>serviceResultSizeCache</code></td>
+<td>ServiceResultSizeCache</td>
+<td>null</td>
+<td>Symbol for the cache of services&rsquo; result set sizes</td>
+</tr>
+</tbody>
+</table>
+<p>* The value that is assumed if the symbol is absent.</p>
+<p>The class <code>org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerConstants</code> defines the constants for programmatic usage.
+As usual, context attributes can be set on global, dataset and query execution level:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#080;font-style:italic">// Global level
+</span><span style="color:#080;font-style:italic"></span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">serviceBulkBindingCount</span><span style="color:#666">,</span> 5<span style="color:#666">);</span>
+
+<span style="color:#080;font-style:italic">// Dataset level
+</span><span style="color:#080;font-style:italic"></span>Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">();</span>
+dataset<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">datasetId</span><span style="color:#666">,</span> <span style="color:#b44">&#34;http://example.org/myDatasetId&#34;</span><span style="color:#666">);</span>
+
+<span style="color:#080;font-style:italic">// Query Execution level
+</span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataset<span style="color:#666">,</span> <span style="color:#b44">&#34;SELECT * { ?s ?p ?o }&#34;</span><span style="color:#666">))</span> <span style="color:#666">{</span>
+  qe<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">enableMgmt</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>
+  <span style="color:#080;font-style:italic">// ...
+</span><span style="color:#080;font-style:italic"></span><span style="color:#666">}</span>
+</code></pre></div><h2 id="service-options">Service Options</h2>
+<p>The service option syntax is used to express a list of key-value pairs followed by an optional IRI.
+The first pair must always be terminated by a <code>:</code> in order to avoid misinterpreting it as a relative IRI which would be resolved against the configured base IRI.
+Multiple pairs are separated using <code>:</code>. Pairs may be followed by an IRI for the service. If it is absent, then the IRI <code>urn:x-arq:self</code> is implicitly assumed.</p>
+<pre><code>(key[+value]:)* (key[+value][:] | IRI)
+</code></pre><p>The special IRI <code>urn:x-arq:self</code> is used to refer to the active dataset. This is the dataset the query is executed against. If service options are present that are not followed by an IRI then this IRI is assumed.
+Consequently, Both e.g. <code>SERVICE &lt;cache:&gt;</code> or <code>SERVICE &lt;bulk:loop&gt;</code> refer the active dataset.</p>
+<h3 id="bulk-requests">Bulk Requests</h3>
+<p>The <code>bulk</code> key enables bulk requests. The default bulk size is based on <code>serviceBulkBindingCount</code>. It can be overridden using e.g. <code>SERVICE &lt;bulk+20:&gt; {...}</code>. The specified number is silently capped by <code>serviceBulkMaxBindingCount</code>.</p>
+<p>Execution of a bulk request proceeds by first taking <code>n</code> items from the lhs to form a batch.
+Then the bulk query is generated by forming a union where the service&rsquo;s graph pattern is substituted with every input binding in the batch as shown in the <a href="#example">example</a>.</p>
+<h3 id="correlated-joins">Correlated Joins</h3>
+<p>Informally, conventional joins in SPARQL are bottom-up such that the result of a join is obtained from evaluating the lhs and rhs of a join independently and merging all compatible bindings (and discarding the incompatible ones).
+Correlated joins are left-to-right such that each binding obtained from lhs&rsquo;s evaluation is used to substitute the rhs prior to its evaluation.
+Correlated joins alter the scoping rules of variables as demonstrated by the subsequent two examples.</p>
+<p>The following concepts are relevant to understand the how correlated joins are dealt with:</p>
+<ul>
+<li><strong>Scope rename</strong> SPARQL evaluation has a notion of scoping which determines whether a variable will be part of the solution bindings created from a graph pattern <a href="https://www.w3.org/TR/sparql11-query/#variableScope">as defined here</a>. Jena provides <code>TransformScopeRename</code> which renames variables such as their names are globally. Jena&rsquo;s scope renaming prepends <code>/</code> characters before the original variable name so <code>?x</code> may become <code>?/x</code> or <code>?//x</code>. <code>TransformScopeRename</code> is applied by the default optimizer.</li>
+<li><strong>Substitution</strong> When evaluating the lhs of a join then the scope renaming enables that for each obtained binding all variables on the rhs can be substituted with the corresponding values of that binding.</li>
+<li><strong>Base name</strong> The base name of a variable is it&rsquo;s name without scoping. For example the variables <code>?x</code>, <code>?/x</code> and <code>?//x</code> all have the base name <code>x</code>.</li>
+<li><strong>Join key</strong> A join key of a join operation is the set of variables that is the intersection of lhs&rsquo; <strong>visible</strong> variables with rhs&rsquo; <strong>mentioned</strong> ones.</li>
+<li><strong>Join binding</strong> A join binding is obtained by projecting an lhs&rsquo; input binding with a join key. It is used to substitute variables on the rhs and is part of the key object used in caching.</li>
+</ul>
+<h4 id="example-of-scoping-in-a-conventional-join">Example of Scoping in a Conventional join</h4>
+<p>Consider the following example.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?c</span> {
+  <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#a0a000">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?p</span>)
+  { <span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#00a000">COUNT</span>(<span style="color:#666">*</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?c</span>) { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } }
+}
+</code></pre></div><p>Note that the <code>?p</code> on the right hand side becomes scoped as <code>?/p</code>. Consequently, lhs&rsquo; <code>?p</code>  and rhs&rsquo; <code>?/p</code> are considered different variables.</p>
+<pre><code>(project (?p ?c)
+  (join
+    (extend ((?p &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;))
+      (table unit))
+    (project (?c)
+      (extend ((?c ?/.0))
+        (group () ((?/.0 (count)))
+          (bgp (triple ?/s ?/p ?/o))))))) # ?/p is different from the ?p on the lhs
+</code></pre><p>Because there is no overlap in the variables on either side of the join the join key is the empty set of variables.</p>
+<h4 id="example-of-scoping-in-a-correlated-join">Example of Scoping in a Correlated Join</h4>
+<p>The two effects of the <code>loop:</code> transform are shown below. First, a <code>sequence</code> is enforced. And second, the scope of <code>?p</code> is now the same on the lhs and rhs.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?c</span> {
+  <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#a0a000">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?p</span>)
+  <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;loop:&gt;</span> { <span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#00a000">COUNT</span>(<span style="color:#666">*</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?c</span>) { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } }
+}
+</code></pre></div><p>The obtained algebra now includes <code>sequence</code> instead of <code>join</code> and the variable <code>?p</code> appears on both sides of it:</p>
+<pre><code>(project (?p ?c)
+  (sequence
+    (extend ((?p &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;))
+      (table unit))
+    (service &lt;loop:&gt;
+      (project (?c)
+        (extend ((?c ?/.0))
+          (group () ((?/.0 (count)))
+            (bgp (triple ?/s ?p ?/o)))))))) # ?p is now the same here and on the lhs
+</code></pre><p>The join key is set containing <code>?p</code> because this variable appears on either side of the join.
+The lhs will produce a single join binding where <code>?p</code> is assigned to <code>rdf:type</code>.</p>
+<p>Upon evaluation, for each input binding of the lhs the <code>?p</code> on the rhs is now substituted thus giving the count for the specific property.
+Note, that the cache system of this plugin caches per join binding even for bulk requests. Hence, use of <code>SERVICE &lt;loop:cache&gt; {...}</code> will produce cache hits
+for repeated join bindings regardless of the pattern on the lhs.</p>
+<h4 id="programmatic-algebra-transformation">Programmatic Algebra Transformation</h4>
+<p>In order to make <code>loop:</code> work the following machinery is in place:</p>
+<p>The algebra transformation implemented by <code>TransformSE_JoinStrategy</code> needs to run bothe <strong>before</strong> and <strong>after</strong> the <strong>default</strong> algebra optimization.
+The reason is that is does two things:</p>
+<ul>
+<li>It converts every OpJoin instance with a <code>loop:</code> on the right hand side into a <code>OpSequence</code>.</li>
+<li>Any <strong>mentioned</strong> variable on the rhs whose base name matches the base name of a <strong>visible</strong> variable on the lhs gets substituted by the lhs variable.</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String queryStr <span style="color:#666">=</span> <span style="color:#b44">&#34;SELECT ...&#34;</span><span style="color:#666">;</span> <span style="color:#080;font-style:italic">// Put any example query string here
+</span><span style="color:#080;font-style:italic"></span>Transform loopTransform <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> TransformSE_JoinStrategy<span style="color:#666">();</span>
+Op op0 <span style="color:#666">=</span> Algebra<span style="color:#666">.</span><span style="color:#b44">compile</span><span style="color:#666">(</span>QueryFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>queryStr<span style="color:#666">));</span>
+Op op1 <span style="color:#666">=</span> Transformer<span style="color:#666">.</span><span style="color:#b44">transform</span><span style="color:#666">(</span>loopTransform<span style="color:#666">,</span> op0<span style="color:#666">);</span>
+Op op2 <span style="color:#666">=</span> Optimize<span style="color:#666">.</span><span style="color:#b44">stdOptimizationFactory</span><span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">()).</span><span style="color:#b44">rewrite</span><span style="color:#666">(</span>op1<span style="color:#666">);</span>
+Op op3 <span style="color:#666">=</span> Transformer<span style="color:#666">.</span><span style="color:#b44">transform</span><span style="color:#666">(</span>loopTransform<span style="color:#666">,</span> op2<span style="color:#666">);</span>
+System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span>op3<span style="color:#666">);</span>
+</code></pre></div><h3 id="caching">Caching</h3>
+<p>Any graph pattern contained in a <code>SERVICE &lt;cache:&gt; { }</code> block is subject to caching.
+The key of a cache entry is composed of three components:</p>
+<ul>
+<li>The concrete service IRI</li>
+<li>The input binding that originates from the lhs</li>
+<li>The (algebra of) the SERVICE clause&rsquo;s graph pattern (the rhs)</li>
+</ul>
+<p>The cache is slice-aware: If the rhs corresponds to a SPARQL query making use of LIMIT and/or OFFSET then the cache lookup will find any priorly fetched overlapping ranges
+and derive a backend request that only fetches the needed parts.</p>
+<p>The <code>cache</code> service option can be used with the following values:</p>
+<ul>
+<li><code>cache</code>: Read from cache when possible and write retrieved data to cache</li>
+<li><code>cache+default</code>: Same as <code>cache</code>.</li>
+<li><code>cache+clear</code>: Clears all cache entries for the current batch of input bindings.</li>
+<li><code>cache+off</code>: Disables use the cache in the query execution</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">rdf</span>: <span style="color:#a0a000">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+  <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?p</span>)
+  <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;loop:cache:&gt;</span> {
+    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+      <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
+    } <span style="">OFSET</span> <span style="color:#666">10</span> <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">10</span>
+    <span style="color:#080;font-style:italic"># ^ Altering limit/offset will match overlapping ranges of data in the cache</span>
+  }
+}
+</code></pre></div><p>Note, that in pathological cases this can require a bulk request to be repeatedly re-executed with disabled caches for each input binding.
+For example, assume that the largest result yet set seen for a service is 1000 and the system is about to serve the 1001st binding from cache for a specific input binding.
+The question is whether this would exceed the service&rsquo;s so far unknown result set size limit. Therefore, in order to answer that question a remote request that bypasses the cache is performed.
+Furthermore, let&rsquo;s assume that request produces 2000 results. Then for the problem repeats once another input binding&rsquo;s 2001st result was about to be served.</p>
+<h3 id="sparql-functions">SPARQL Functions</h3>
+<p>The service enhancer plugin introduces functions and property functions for listing cache content and removing cache entries.
+The namespace is</p>
+<pre><code>PREFIX se: &lt;http://jena.apache.org/service-enhancer#&gt;
+</code></pre><table>
+<thead>
+<tr>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>long se:cacheRm()</code></td>
+<td>Invalidates all entries from the cache that are not currently in use. Returns the number of invalidated entries.</td>
+</tr>
+<tr>
+<td><code>long se:cacheRm(long)</code></td>
+<td>Attempts to remove the given entry. Returns 1 on success or 0 otherwise (e.g. entry did not exist or was still in use).</td>
+</tr>
+<tr>
+<td><code>?id se:cacheLs ([?serviceIri [?queryStr [?inputBindingStr]]])</code></td>
+<td>Property function to list cache content.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">sepf</span>: <span style="color:#a0a000">&lt;java:org.apache.jena.sparql.service.enhancer.pfunction.&gt;</span>
+<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> <span style="color:#a2f;font-weight:bold">WHERE</span> {
+  <span style="color:#b8860b">?id</span> <span style="color:#00f;font-weight:bold">sepf</span>:<span style="color:#008000;font-weight:bold">cacheLs</span> (<span style="color:#b8860b">?service</span> <span style="color:#b8860b">?query</span> <span style="color:#b8860b">?binding</span>)
+}
+</code></pre></div><p>If e.g. data was cached using the following query, then <code>se:cacheLs</code> will yield the result set below.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+  <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;loop:&gt;</span> {
+    { <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;cache:&gt;</span> {
+      <span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#a0a000">&lt;urn:x-arq:DefaultGraph&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?g</span>) <span style="color:#b8860b">?p</span> (<span style="color:#00a000">COUNT</span>(<span style="color:#666">*</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?c</span>) {
+        <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
+      } <span style="color:#a2f;font-weight:bold">GROUP BY</span> <span style="color:#b8860b">?p</span>
+    } }
+  <span style="color:#a2f;font-weight:bold">UNION</span>
+    { <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;cache:&gt;</span> {
+      <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?g</span> <span style="color:#b8860b">?p</span> (<span style="color:#00a000">COUNT</span>(<span style="color:#666">*</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?c</span>) {
+        <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#b8860b">?g</span> { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> }
+      } <span style="color:#a2f;font-weight:bold">GROUP BY</span> <span style="color:#b8860b">?g</span> <span style="color:#b8860b">?p</span>
+    } }
+  }
+
+  <span style="color:#080;font-style:italic"># FILTER(CONTAINS(STR(?g), &#39;filter over ?g&#39;))</span>
+  <span style="color:#080;font-style:italic"># FILTER(CONTAINS(STR(?p), &#39;filter over ?p&#39;))</span>
+} <span style="color:#a2f;font-weight:bold">order by</span> <span style="color:#a2f;font-weight:bold">DESC</span>(<span style="color:#b8860b">?c</span>) <span style="color:#b8860b">?g</span> <span style="color:#b8860b">?p</span>
+</code></pre></div><pre><code>------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| id | service                           | query                                                                                                 | binding             |
+========================================================================================================================================================================
+| 2  | &quot;urn:x-arq:self@dataset813601419&quot; | &quot;SELECT  (&lt;urn:x-arq:DefaultGraph&gt; AS ?g) ?p (count(*) AS ?c)\nWHERE\n  { ?s  a  ?o }\nGROUP BY ?p\n&quot; | &quot;( ?p = rdf:type )&quot; |
+| 3  | &quot;urn:x-arq:self@dataset813601419&quot; | &quot;SELECT  ?g ?p (count(*) AS ?c)\nWHERE\n  { GRAPH ?g\n      { ?s  a  ?o }\n  }\nGROUP BY ?g ?p\n&quot;     | &quot;( ?p = rdf:type )&quot; |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</code></pre><h4 id="example-invaliding-all-cache-entries">Example: Invaliding all cache entries</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">se</span>: <span style="color:#a0a000">&lt;http://jena.apache.org/service-enhancer#&gt;</span>
+<span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheRm</span>() <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?count</span>) { }
+</code></pre></div><h4 id="example-invalidating-specific-cache-entries">Example: Invalidating specific cache entries</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">se</span>: <span style="color:#a0a000">&lt;http://jena.apache.org/service-enhancer#&gt;</span>
+
+<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#00a000">SUM</span>(<span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheRm</span>(<span style="color:#b8860b">?id</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?count</span>) {
+  <span style="color:#b8860b">?id</span> <span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheList</span> (<span style="color:#a0a000">&lt;http://dbpedia.org/sparql&gt;</span>)
+}
+</code></pre></div><p>For completeness, the functions can be addressed via their fully qualified Java class names:</p>
+<pre><code>&lt;java:org.apache.jena.sparql.service.enhancer.pfunction.cacheLs&gt;
+&lt;java:org.apache.jena.sparql.service.enhancer.function.cacheRm&gt;
+</code></pre><h2 id="limitations-troubleshooting-and-pitfalls">Limitations, Troubleshooting and Pitfalls</h2>
+<h3 id="storing-caches-to-disk">Storing Caches to Disk</h3>
+<p>At present the plugin only ships with an in-memory implementation of the cache. Custom storage strategies can be implemented based one the interface <code>Slice</code>.
+A file-based storage system is expected to be shipped with a later version of the SE plugin.</p>
+<h3 id="caching-with-virtuoso">Caching with Virtuoso</h3>
+<p>There is a bug in Virtuoso that causes queries making use of DISTINCT a with non-zero OFFSET without LIMIT to fail.
+The remainder shows how the SE plugin may unexpectedly fail due to it and shows a workaround.</p>
+<p>The following query will cause caching of the first 10 results:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a0a000">&lt;cache:http://dbpedia.org/sparql&gt;</span> { <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a2f;font-weight:bold">DISTINCT</span> <span style="color:#b8860b">?s</span> { <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">10</span> }
+</code></pre></div><p>Executing the the following query afterwards will fail:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a0a000">&lt;cache:http://dbpedia.org/sparql&gt;</span> { <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a2f;font-weight:bold">DISTINCT</span> <span style="color:#b8860b">?s</span> { <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#b8860b">?s</span> }
+</code></pre></div><p>The reason is that the first 10 results will be read from cache and the actual query sent as a remote request is:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a0a000">&lt;cache:http://dbpedia.org/sparql&gt;</span> { <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a2f;font-weight:bold">DISTINCT</span> <span style="color:#b8860b">?s</span> { <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">OFFSET</span> <span style="color:#666">10</span> }
+</code></pre></div><p>Thus we end up with a query using DISTINCT with a non-zero offset and without LIMIT.</p>
+<p>As a workaround, note that if the service enhancer plugin detects a result set size limit then it will inject it in remote requests.
+In such cases, executing the query <code>SELECT * { SERVICE &lt;http://dbpedia.org/sparql&gt; { ?s ?p ?o } }</code> once will make the result set size limit known
+(at the time of writing DBpedia was configured with a limit of 10000), and therefore the modified request becomes</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a0a000">&lt;cache:http://dbpedia.org/sparql&gt;</span> { <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#a2f;font-weight:bold">DISTINCT</span> <span style="color:#b8860b">?s</span> { <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">ORDER BY</span> <span style="color:#b8860b">?s</span> <span style="color:#a2f;font-weight:bold">OFFSET</span> <span style="color:#666">10</span> <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">10000</span> }
+</code></pre></div><h3 id="order-of-bindings-differ-between-cache-and-remote-reads">Order of Bindings differ between Cache and Remote Reads</h3>
+<p>In practice, many triple store engines return the same response for the same graph pattern / query over the same physical database even if ordering is absent.
+As can be seen from <a href="#example">example</a>, bulk requests result in a union which are sorted by the serial numbers assigned to the input bindings.
+However, SPARQL does not mandate stable sorting, therefore this approach may cause bindings with the same serial number to become &lsquo;shuffled&rsquo;.
+The solution is to is to include sort sufficient conditions in the <code>SERVICE</code>'s graph pattern. The bulk query will include those sort conditions after the serial number sort condition.</p>
+
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container" style="font-size:80%" >
+        <p>
+            Copyright &copy; 2011&ndash;2022 The Apache Software Foundation, Licensed under the
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        </p>
+        <p>
+            Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
+            The Apache Software Foundation.
+            <br/>
+          <a href="https://privacy.apache.org/policies/privacy-policy-public.html"
+             >Apache Software Foundation Privacy Policy</a>.
+        </p>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var link = $('a[href="' + this.location.pathname + '"]');
+    if (link != undefined)
+        link.parents('li,ul').addClass('active');
+</script>
+
+</body>
+</html>
