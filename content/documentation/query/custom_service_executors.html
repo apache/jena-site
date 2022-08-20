@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - TDB2 - Database Administration</title>
+    <title>Apache Jena - ARQ - Custom Service Executors</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -124,7 +124,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/tdb2/tdb2_admin.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/custom_service_executors.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -159,7 +159,7 @@
         
         
             
-                <li><a href='/documentation/tdb2'>TDB2</a></li>
+                <li><a href='/documentation/query'>QUERY</a></li>
             
             
         
@@ -167,7 +167,7 @@
         
         
             
-                <li class="active">TDB2 ADMIN</li>
+                <li class="active">CUSTOM SERVICE EXECUTORS</li>
             
             
         
@@ -179,56 +179,65 @@
 
                 
             </div>
-            <h1 class="title">TDB2 - Database Administration</h1>
+            <h1 class="title">ARQ - Custom Service Executors</h1>
             
-	<h2 id="tdb2-directory-layout">TDB2 directory layout</h2>
-<p>A TDB2 database is contained in a directory location <code>DIR</code> as:</p>
-<pre><code>DIR/
-  Backups/
-  Data-0001/
-  Data-0002/
-  tdb.lock
-</code></pre>
-<p>where <code>Data-NNNN</code> are the compacted generations of the database. The
-highest number is the currently live database.  The others are not used
-and not touched by the TDB2 subsystem. They can be deleted, moved
-elsewhere, or compressed as required. Each is a valid database in it own
-right.</p>
-<p><code>Backups</code> is the directory used to write backup files.</p>
-<p><code>tdb.lock</code> is the lock file to stop multiple use of the same database at
-the same time by different JVM processes. (If you wish to share a database
-between processes, or machines, consider using <a href="tdb2_fuseki.html">Fuseki2 with TDB2</a>.</p>
-<h2 id="compaction">Compaction</h2>
-<p>TDB2 databases grow over time as updates occur. They can be compacted by calling:</p>
-<pre><code>DatabaseMgr.compact(dataset.asDatasetGraph());
-</code></pre>
-<p>Compaction can be done on a live database. Read requests will continue to be
-serviced; write request are held up until compaction has finished. This
-can be a long time for large databases.</p>
-<p>Compaction creates a new <code>Data-NNNN</code> subdirectory and copied over the
-latest view of the RDF dataset into that directory, then switch to using
-that generation of the database.</p>
-<p>There is also a command line tool <code>tdb2.tdbcompact</code> to run the
-compaction process on a database not in use. The command line
-option  <code>--deleteOld</code> removes the last database after compaction.</p>
-<p>Compaction can also be called from <a href="/documentation/fuseki2/fuseki-server-protocol.html#compact">the Fuseki HTTP Administration Protocol</a>
-for live <a href="/documentation/fuseki2/fuseki-webapp.html">Fuseki webapps</a>.</p>
-<h2 id="backup">Backup</h2>
-<p>A TDB2 database can be backed up by calling:</p>
-<pre><code>DatabaseMgr.backup(dataset.asDatasetGraph());
-</code></pre>
-<p>which will create a dump file including a timestamp:</p>
-<pre>
-<i>location</i>/Backups/backup-<i>yyyy-MM-dd_HH:mm:ss</i>.nq.gz
-</pre>
-<p>The file is a compressed N-Quads file.</p>
-<p>Backup can be done on a live database. It takes a consistent view of the
-data and does not include any updates committed after the backup starts.</p>
-<p>Backup can be called on a live database and read and write transactions
-continue to be serviced.</p>
-<p>There is also a command line tool <code>tdb2.tdbbackup</code> to run the
-backup process on a database not in use.</p>
+	<p>Since Jena 4.2.0, ARQ features a plugin system for custom service executors.
+The relevant classes are located in the package <code>org.apache.jena.sparql.service</code> and are summarized as follows:</p>
+<ul>
+<li>
+<p><code>ServiceExecutorRegistry</code>: A registry that holds a list of service executors. When Jena starts up, it configures a default registry to handle <code>SERVICE</code> requests against HTTP SPARQL endpoints and registers it with the global ARQ context accessible under <code>ARQ.getContext()</code>.</p>
+</li>
+<li>
+<p><code>ServiceExecutorFactory</code>: This is the main interface for custom SERVICE handler implementations:</p>
+</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">ServiceExecutorFactory</span> <span style="color:#666">{</span>
+    <span style="color:#a2f;font-weight:bold">public</span> ServiceExecution <span style="color:#00a000">createExecutor</span><span style="color:#666">(</span>OpService substituted<span style="color:#666">,</span> OpService original<span style="color:#666">,</span> Binding binding<span style="color:#666">,</span> ExecutionContext execCxt<span style="color:#666">);</span>
+<span style="color:#666">}</span>
+</code></pre></div><p>The second OpService parameter represents the original <code>SERVICE</code> clause as it occurs in the query, whereas the first parameter is the OpService obtained after substitution of all mentioned variables w.r.t. the current binding.
+A <code>ServiceExecutorFactory</code> can indicate its non-applicability for handling a request simply by returning <code>null</code>. In that case, Jena will ask the next service executor factory in the registry. If a request remains unhandled then the QueryExecException <code>No SERVICE handler</code> is raised.</p>
+<ul>
+<li><code>ServiceExecution</code>: If a <code>ServiceExectorFactory</code> can handle a request then it needs to returns a <code>ServiceExecution</code> instance:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">ServiceExecution</span> <span style="color:#666">{</span>
+    <span style="color:#a2f;font-weight:bold">public</span> QueryIterator <span style="color:#00a000">exec</span><span style="color:#666">();</span>
+<span style="color:#666">}</span>
+</code></pre></div><p>The actual execution is started by calling the <code>exec()</code> method which returns a <code>QueryIterator</code>.
+Note, that there are uses cases where ServiceExecution instances may not have to be executed. For example, one may analyze which service executor factories among a set of them claim to be capable of handling a request. This can be useful for debugging or display in a dashboard of applicable service executors.</p>
+<h2 id="examples">Examples</h2>
+<p>A runnable example suite is located in the jena-examples module at <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/service/CustomServiceExecutor.java">CustomServiceExecutor.java</a>.</p>
+<p>In the remainder we summarize the essentials of setting up a custom service executor.
+The following snippet sets up a simple service executor factory that relays queries targeted at Wikidata to DBpedia:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Node WIKIDATA <span style="color:#666">=</span> NodeFactory<span style="color:#666">.</span><span style="color:#b44">createURI</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://query.wikidata.org/sparql&#34;</span><span style="color:#666">);</span>
+Node DBPEDIA <span style="color:#666">=</span> NodeFactory<span style="color:#666">.</span><span style="color:#b44">createURI</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://dbpedia.org/sparql&#34;</span><span style="color:#666">);</span>
 
+ServiceExecutorFactory myExecutorFactory <span style="color:#666">=</span> <span style="color:#666">(</span>opExecute<span style="color:#666">,</span> original<span style="color:#666">,</span> binding<span style="color:#666">,</span> execCxt<span style="color:#666">)</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+    <span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>opExecute<span style="color:#666">.</span><span style="color:#b44">getService</span><span style="color:#666">().</span><span style="color:#b44">equals</span><span style="color:#666">(</span>WIKIDATA<span style="color:#666">))</span> <span style="color:#666">{</span>
+        opExecute <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> OpService<span style="color:#666">(</span>DBPEDIA<span style="color:#666">,</span> opExecute<span style="color:#666">.</span><span style="color:#b44">getSubOp</span><span style="color:#666">(),</span> opExecute<span style="color:#666">.</span><span style="color:#b44">getSilent</span><span style="color:#666">());</span>
+        <span style="color:#a2f;font-weight:bold">return</span> ServiceExecutorRegistry<span style="color:#666">.</span><span style="color:#b44">httpService</span><span style="color:#666">.</span><span style="color:#b44">createExecutor</span><span style="color:#666">(</span>opExecute<span style="color:#666">,</span> original<span style="color:#666">,</span> binding<span style="color:#666">,</span> execCxt<span style="color:#666">);</span>
+    <span style="color:#666">}</span>
+    <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">;</span>
+<span style="color:#666">};</span>
+</code></pre></div><h3 id="global-vs-local-service-executor-registration">Global vs Local Service Executor Registration</h3>
+<p>The global registry can be accessed and modified as shown below:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ServiceExecutorRegistry globalRegistry <span style="color:#666">=</span> ServiceExecutorRegistry<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">();</span>
+
+<span style="color:#080;font-style:italic">// Note: registry.add() prepends executor factories to the internal list such
+</span><span style="color:#080;font-style:italic">// that they are consulted first!
+</span><span style="color:#080;font-style:italic"></span>globalRegistry<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span>myExecutorFactory<span style="color:#666">);</span>
+
+</code></pre></div><p>The following snippet shows how a custom service executor can be configured locally for an individual query execution:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Context cxt <span style="color:#666">=</span> ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">copy</span><span style="color:#666">();</span>
+ServiceExecutorRegistry localRegistry <span style="color:#666">=</span> ServiceExecutorRegistry<span style="color:#666">().</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">copy</span><span style="color:#666">();</span>
+localRegistry<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span>myExecutorFactory<span style="color:#666">);</span>
+
+String queryStr <span style="color:#666">=</span> <span style="color:#b44">&#34;SELECT * { SERVICE &lt;http://query.wikidata.org/sparql&gt; { ?s ?p &#34;</span>Apache Jena<span style="color:#b44">&#34;@en } }&#34;</span><span style="color:#666">;</span>
+<span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>queryStr<span style="color:#666">))</span> <span style="color:#666">{</span>
+  ServiceExecutorRegistry<span style="color:#666">.</span><span style="color:#b44">set</span><span style="color:#666">(</span>qe<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">(),</span> registry<span style="color:#666">);</span>
+  <span style="color:#080;font-style:italic">// ...
+</span><span style="color:#080;font-style:italic"></span><span style="color:#666">}</span>
+
+</code></pre></div>
 
         </div>
     </div>
