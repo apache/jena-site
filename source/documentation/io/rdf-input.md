@@ -247,16 +247,44 @@ logic in normal iterator style.
 To do this you use `AsyncParser.asyncParseTriples` which parses the input on
 another thread:
 
-        Iterator<Triple> iter = AsyncParser.asyncParseTriples(filename);
+        IteratorCloseable<Triple> iter = AsyncParser.asyncParseTriples(filename);
         iter.forEachRemaining(triple->{
             // Do something with triple
         });
 
+Calling the iterator's close method stops parsing and closes the involved resources.
 For N-Triples and N-Quads, you can use
 `RiotParsers.createIteratorNTriples(input)` which parses the input on the
 calling thread.
 
 [RIOT example 9](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java).
+
+Additional control over parsing is provided by the `AsyncParser.of(...)` methods which return `AsyncParserBuilder` instances.
+The builder features a fluent API that allows for fine-tuning internal buffer sizes as well as eventually obtaining
+a standard Java `Stream`. Calling the stream's close method stops parsing and closes the involved resources.
+Therefore, these streams are best used in conjunction with try-with-resources blocks:
+
+        try (Stream<Triple> stream = AsyncParser.of(filename)
+                .setQueueSize(2).setChunkSize(100).streamTriples().limit(1000)) {
+            // Do something with the stream
+        }
+
+The AsyncParser also supports parsing RDF into a stream of `EltStreamRDF` elements. Each element can hold a triple, quad, prefix, base IRI or exception.
+For all `Stream`-based methods there also exist `Iterator`-based versions:
+
+        IteratorCloseable<EltStreamRDF> it = AsyncParser.of(filename).asyncParseElements();
+        try {
+            while (it.hasNext()) {
+                EltStreamRDF elt = it.next();
+                if (elt.isTriple()) {
+                   // Do something with elt.getTriple();
+                } else if (elt.isPrefix()) {
+                   // Do something with elt.getPrefix() and elt.getIri();
+                }
+            }
+        } finally {
+            Iter.close(it);
+        }
 
 ### Filter the output of parsing
 
