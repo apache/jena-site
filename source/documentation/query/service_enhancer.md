@@ -2,7 +2,6 @@
 title: Service Enhancer
 ---
 
-# Service Enhancer Plugin
 The service enhancer (SE) plugin extends the functionality of the SERVICE clause with:
 
 - Bulk requests
