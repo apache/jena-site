@@ -336,6 +336,12 @@ maximum size and duration until unused items are removed.  Query rewriting can
 be switched on independently of the indexes, i.e. query rewriting can be
 performed but an index is configured to not store the result.
 
+As an extension to the standard, supplying a `Geometry Literal` is
+also permitted. For example:
+
+        ?subj geo:sfContains "POINT(0 0)"^^geo:wktLiteral .
+
+
 ### Dataset Conversion
 
 Methods to convert datasets between serialisations and spatial/coordinate
