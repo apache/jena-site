@@ -27,10 +27,13 @@ processed as usual.
 
 ## From the command line
 
-The [`arq.sparql` command](cmds.html#arq.sparql) can issue remote
+The [`arq.rsparql` command](cmds.html#arq.rsparql) can issue remote
 query requests using the `--service` argument:
 
-    java -cp ... arq.query --service 'http://host/service' 'SELECT ?s WHERE {?s [] []}'
+    java -cp ... arq.rsparql --service 'http://host/service' --query 'SELECT ?s WHERE {?s [] []}'
+    
+Or:
+    rsparql --service 'http://host/service' --query 'SELECT ?s WHERE {?s [] []}'
 
 This takes a URL that is the service location.
 
