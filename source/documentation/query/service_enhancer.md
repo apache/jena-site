@@ -1,5 +1,5 @@
 ---
-title: Extras - Service Enhancer
+title: Service Enhancer
 ---
 
 # Service Enhancer Plugin
