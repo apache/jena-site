@@ -305,6 +305,62 @@ for details.</p>
             }
             &quot;&quot;&quot; ;
     ] ;
+</code></pre><h2 id="validationlistener">ValidationListener</h2>
+<p>When given a <code>ValidationListener</code> the SHACL validation code emits events at each step of validation:</p>
+<ul>
+<li>when validation of a shape starts or finishes</li>
+<li>when the focus nodes of the shape have been identified</li>
+<li>when validation of a constraint begins, ends and yields positive or negative results</li>
+</ul>
+<p>For example, the following listener will just record all events in a List:</p>
+<pre><code>public class RecordingValidationListener implements ValidationListener {
+        private final List&lt;ValidationEvent&gt; events = new ArrayList&lt;&gt;();
+
+        @Override public void onValidationEvent(ValidationEvent e) {
+            events.add(e);
+        }
+
+        public List&lt;ValidationEvent&gt; getEvents() {
+            return events;
+        }
+    }
+</code></pre><p>The listener must be passed to the constructor of the <code>ValidationContext</code>.
+The following example validates the <code>dataGraph</code> according to the <code>shapesGraph</code> using the ValidationListener above:</p>
+<pre><code>    Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
+    Graph dataGraph = RDFDataMgr.loadGraph(dataGraphUri); //assuming dataGraphUri points to an RDF file
+    RecordingValidationListener listener = new RecordingValidationListener();  // see above
+    Shapes shapes = Shapes.parse(shapesGraph);
+    ValidationContext vCtx = ValidationContext.create(shapes, dataGraph, listener); // pass listener here
+    for (Shape shape : shapes.getTargetShapes()) {
+        Collection&lt;Node&gt; focusNodes = VLib.focusNodes(dataGraph, shape);
+        for (Node focusNode : focusNodes) {
+            VLib.validateShape(vCtx, dataGraph, shape, focusNode);
+        }
+    }
+    List&lt;ValidationEvent&gt; actualEvents = listener.getEvents(); // all events have been recorded
+</code></pre><p>The events thus generated might look like this (<code>event.toString()</code>, one per line):</p>
+<pre><code> FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ ConstraintEvaluationForNodeShapeStartedEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ ConstraintEvaluatedOnFocusNodeEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape], valid=true}
+ ConstraintEvaluationForNodeShapeFinishedEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ FocusNodeValidationFinishedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+[...]    
+</code></pre><p>Many use cases can be addressed with the <code>HandlerBasedValidationListener</code>, which allows for registering event handlers on a per-event basis.
+For example:</p>
+<pre><code>    ValidationListener myListener = HandlerBasedValidationListener
+        .builder()
+        .forEventType(FocusNodeValidationStartedEvent.class)
+        .addSimpleHandler(e -&gt; {
+           // ... 
+        })
+        .forEventType(ConstraintEvaluatedEvent.class)
+        .addHandler(c -&gt; c
+            .iff(EventPredicates.isValid()) // use a Predicate&lt;ValidationEvent&gt; to select events
+            .handle(e -&gt; {
+                // ...
+            })
+        )
+        .build();
 </code></pre>
 
         </div>
