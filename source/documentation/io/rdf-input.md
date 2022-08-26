@@ -236,7 +236,7 @@ The base URI for reading models will be the original URI, not the alternative lo
 
 ## Advanced examples
 
-Example code may be found in [jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/).
+Example code may be found in [jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/).
 
 ### Iterating over parser output
 
@@ -264,10 +264,10 @@ When working with very large files, it can be useful to
 process the stream of triples or quads produced
 by the parser so as to work in a streaming fashion.
 
-See [RIOT example 4](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java)
+See [RIOT example 4](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java)
 
 ### Add a new language
 
 The set of languages is not fixed. A new language, 
 together with a parser, can be added to RIOT as shown in
-[RIOT example 5](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)
+[RIOT example 5](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)

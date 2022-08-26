@@ -367,7 +367,7 @@ pass the "frame" in the `JSONLD_FRAME_PRETTY` and `JSONLD_FRAME_FLAT`
 cases.
 
 What can be done, and how it can be, is explained in the 
-[sample code](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/Ex_WriteJsonLD.java).
+[sample code](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/Ex_WriteJsonLD.java).
 
 ### RDF Binary {#rdf-binary}
 
@@ -402,7 +402,7 @@ while the jena writer name defaults to a streaming plain output.
 
 ## Examples {#examples}
 
-Example code may be found in [jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/).
+Example code may be found in [jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/).
 
 ### Ways to write a model
 
@@ -456,7 +456,7 @@ might give:
 ### Adding a new output format
 
 A complete example of adding a new output format is given in the example file: 
-[RIOT Output example 7](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/arq/examples/riot/ExRIOT7_AddNewWriter.java).
+[RIOT Output example 7](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT7_AddNewWriter.java).
 
 ## Notes {#notes}
 
