@@ -8,11 +8,11 @@ The service enhancer (SE) plugin extends the functionality of the SERVICE clause
 - Bulk requests
 - Correlated joins also known as lateral joins
 - A streaming cache for `SERVICE` requests results which can also cope with bulk requests and correlated joins. Furthermore, queries that only differ in limit and offset will result
-in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory caching provider.
+in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory cache provider.
 
 As a fundamental principle, a request making use of `cache` and `bulk` should return the exact same result as if
-those settings were omitted. As a consequence runtime result set size recognition (RRR) is employed to reveal hidden
-result set limits and ensure that always only the appropriate amount of data is returned from the caches.
+those settings were omitted. As a consequence, runtime result set size recognition (RRR) is employed to reveal hidden
+result set limits. This is used to ensure that always only the appropriate amount of data is returned from the caches.
 
 A correlated join using this plugin is syntactically expressed with `SERVICE <loop:> {}`.
 It is a binary operation on two graph patterns:
@@ -40,7 +40,7 @@ SELECT ?s ?l {
 ```
 
 <details>
-  <summary markdown="span">Click here to view the rewritten Query</summary>
+  <summary>Click here to view the rewritten query</summary>
 
 ```sparql
 SELECT  *
@@ -142,7 +142,7 @@ means that it was cut off. This information is used to ensure that a request usi
 </details>
 
 
-Note that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
+Note, that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
 The cache operates on a per-input-binding basis: For instance, in the example above it means that when removing bindings from the `VALUES` block data will
 still be served from the cache. Conversely, adding additional bindings to the `VALUES` block will only send a (bulk) remote request for those
 that lack cache entries.
@@ -176,13 +176,13 @@ import org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit;
 ServiceEnhancerInit.wrapOptimizer(ARQ.getContext());
 ```
 
-As usual, in order to avoid a global setup, the the context of a dataset or statement execution (i.e. query / update) can be used instead:
+As usual, in order to avoid a global setup, the context of a dataset or statement execution (i.e. query / update) can be used instead:
 ```java
 DatasetFactory dataset = DatasetFactory.create();
 ServiceEnhancerInit.wrapOptimizer(dataset.getContext());
 ```
 
-The lookup proceduce for which optimizer to wrap first consults the given context and then the global one.
+The lookup procedure for which optimizer to wrap first consults the given context and then the global one.
 If neither has an optimizer configured then Jena's default one will be used.
 
 Service requests that do not make use of this plugin's options will not be affected even if the plugin is loaded.
@@ -192,7 +192,7 @@ The plugin registration makes use of the [custom service executor extension syst
 The `se:DatasetServiceEnhancer` assembler can be used to enable the SE plugin on a dataset.
 This procedure also automatically enables correlated joins using the dataset's context as described in [Programmatic Setup](#programmatic-setup).
 By default, the SE assembler alters the base dataset's context and returns the base dataset again.
-There is one important exception: If `se:enableMgmt` is true then the assembler's final step it to create a wrapped dataset with a copy of the original dataset's context where `enableMgmt` is true.
+There is one important exception: If `se:enableMgmt` is true then the assembler's final step is to create a wrapped dataset with a copy of the original dataset's context where `enableMgmt` is true.
 This way, management functions are not available in the base dataset.
 
 ```ttl
@@ -207,6 +207,10 @@ PREFIX se: <http://jena.apache.org/service-enhancer#>
                                           # identified by the tuple (service IRI, query, input binding)
   se:cacheMaxPageCount 15 ;               # Maximum number of pages per cache entry
   se:cachePageSize 10000 ;                # Number of bindings per page
+  se:bulkMaxSize 100 ;                    # Maximum number of input bindings to group into a bulk request
+  se:bulkSize 30 ;                        # Default bulk size when not specifying a size
+  se:bulkMaxOutOfBandSize 30 ;            # Dispatch non-full batches as soon as this number of non-fitting
+                                          # input bindings have been encountered
   se:enableMgmt false                     # Enables management functions;
                                           # wraps the base dataset with an independent context
   .
@@ -214,7 +218,7 @@ PREFIX se: <http://jena.apache.org/service-enhancer#>
 <urn:example:base> a ja:MemoryDataset .
 ```
 
-In the example above, the shown values for `se:cacheMaxEntryCount`, `se:cacheMaxPageCount` and `se:cachePageSize` are the defaults which are used if those options are left unspecified.
+In the example above, the shown values for `se:cacheMaxEntryCount`, `se:cacheMaxPageCount`, `se:cachePageSize`, `se:bulkMaxSize`, `se:bulkSize` and `se:bulkMaxOutOfBandSize` are the defaults which are used if those options are left unspecified.
 They allow for caching up to 45mio bindings (300 x 15 x 10000).
 There is one caveat though: Specifying the cache options puts a new a cache instance in the dataset's context. Without these options the global cache instance that is registered in the ARQ context by the SE plugin during service loading is used.
 Presently, the global instance cannot be configured via the assembler.
@@ -234,7 +238,7 @@ The value of `se:datasetId` is used to look up caches when referring to the acti
 This section assumes that one of the distributions of `apache-jena-fuseki` has been downloaded from [https://jena.apache.org/download/].
 The extracted folder should contain the `./fuseki-server` executable start script which automatically loads all jars (relative to `$PWD`) under `run/extra`.
 These folders need to be created e.g. using `mkdir -p run/extra`. The SE plugin can be manually built or downloaded from maven central (it is self-contained without transitive dependencies).
-Placing it into the `run/extra` folder makes it available for use with Fuseki. The plugin and Fuseki version should match.
+Placing it into the `run/extra` folder makes it available for use with Fuseki. The plugin and Fuseki versions should match.
 
 #### Fuseki Assembler Configuration
 The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
@@ -258,14 +262,15 @@ For configuring access control with Fuseki please refer to [Data Access Control 
 The service enhancer plugin defines several symbols for configuration via context.
 The context symbols are in the namespace `http://jena.apache.org/service-enhancer#`.
 
-| Symbol                       | Value type             | Default\* | Description |
-|------------------------------|------------------------|-----------|-------------|
-| `enableMgmt`                 | boolean                | false     | This symbol must be set to true in the context in order to allow calling certain "privileged" SPARQL functions. |
-| `serviceBulkBindingCount`    | int                    | 10        | Number of bindings to group into a single bulk request |
-| `serviceBulkMaxBindingCount` | int                    | 100       | Maximum number of input bindings to group into a single bulk request; restricts `serviceBulkRequestItemCount`. When using `bulk+n` then `n` will be capped to the configured value. |
-| `datasetId`                  | String                 | null      | An IRI to resolve `urn:x-arq:self` to. Used to discriminate cache entries for self-referenced datasets. |
-| `serviceCache`               | ServiceResponseCache   | null      | Symbol for the cache of services' result sets |
-| `serviceResultSizeCache`     | ServiceResultSizeCache | null      | Symbol for the cache of services' result set sizes |
+| Symbol                                | Value type             | Default\* | Description |
+|---------------------------------------|------------------------|-----------|-------------|
+| `enableMgmt`                          | boolean                | false     | This symbol must be set to true in the context in order to allow calling certain "privileged" SPARQL functions. |
+| `serviceBulkBindingCount`             | int                    | 10        | Number of bindings to group into a single bulk request |
+| `serviceBulkMaxBindingCount`          | int                    | 100       | Maximum number of input bindings to group into a single bulk request; restricts `serviceBulkRequestItemCount`. When using `bulk+n` then `n` will be capped to the configured value. |
+| `serviceBulkMaxOutOfBandBindingCount` | int                    | 30        | Dispatch non-full batches as soon as this number of non-fitting bindings have been read from the input iterator |
+| `datasetId`                           | String                 | null      | An IRI to resolve `urn:x-arq:self` to. Used to discriminate cache entries for self-referenced datasets. |
+| `serviceCache`                        | ServiceResponseCache   | null      | Symbol for the cache of services' result sets |
+| `serviceResultSizeCache`              | ServiceResultSizeCache | null      | Symbol for the cache of services' result set sizes |
 
 
 \* The value that is assumed if the symbol is absent.
@@ -421,7 +426,7 @@ SELECT * {
 Note, that in pathological cases this can require a bulk request to be repeatedly re-executed with disabled caches for each input binding.
 For example, assume that the largest result yet set seen for a service is 1000 and the system is about to serve the 1001st binding from cache for a specific input binding.
 The question is whether this would exceed the service's so far unknown result set size limit. Therefore, in order to answer that question a remote request that bypasses the cache is performed.
-Furthermore, let's assume that request produces 2000 results. Then for the problem repeats once another input binding's 2001st result was about to be served.
+Furthermore, let's assume that another request produced 2000 results. Then the problem repeats once another input binding's 2001st result were about to be served.
 
 ### SPARQL Functions
 The service enhancer plugin introduces functions and property functions for listing cache content and removing cache entries.
@@ -475,18 +480,18 @@ SELECT * {
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```
 
-#### Example: Invaliding all cache entries
+#### Example: Invaliding All Cache Entries
 ```sparql
 PREFIX se: <http://jena.apache.org/service-enhancer#>
 SELECT (se:cacheRm() AS ?count) { }
 ```
 
-#### Example: Invalidating specific cache entries
+#### Example: Invalidating Specific Cache Entries
 ```sparql
 PREFIX se: <http://jena.apache.org/service-enhancer#>
 
 SELECT SUM(se:cacheRm(?id) AS ?count) {
-  ?id se:cacheList (<http://dbpedia.org/sparql>)
+  ?id se:cacheLs (<http://dbpedia.org/sparql>)
 }
 ```
 
