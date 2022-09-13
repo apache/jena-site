@@ -167,6 +167,16 @@ useful for managing the files externally.
 The returned JSON object will have the form `{ backups: [ ... ] }` where the `[]` array is
 a list of file names.
 
+Since 4.7.0 backups are written to a temporary file in the same directory and renamed on completion.
+In case of server crash, it will not be renamed.
+This guarantees backups are complete.
+Cleanup of incomplete backups can be done by users on application / container start: remove all incomplete files.g
+
+### Backup policies
+
+Users can use the backup api [the Fuseki HTTP Administration Protocol](/documentation/fuseki2/fuseki-server-protocol.html#backup) to build backup policies.
+See issue for more information https://github.com/apache/jena/issues/1500 .
+
 ### Compact
 Pattern: `/$/compact/{name}`
 
