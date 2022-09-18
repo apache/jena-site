@@ -87,3 +87,4 @@ The command tdbquery takes the same --explain argument.
 
 Logging information levels: see the [logging page](logging.html)
 
+To get ARQ query explanation in Fuseki logs see [Fuseki logging](/documentation/fuseki2/fuseki-logging.html)

@@ -65,18 +65,20 @@ Optimizer control files
 
 | File name   | Effect   |
 | ----------- | -------- |
-| `none.opt`  | No reordering - execute triple patterns in the order in the query |
 |`fixed.opt`  | Use a built-in reordering based on the number of variables in a triple pattern.
 |`stats.opt`  | The contents of this file are the weighing rules (see below).
 
-The contents of the files `none.opt` and `fixed.opt` are not read
-and don't matter. They can be zero-length files.
+The contents of the file `fixed.opt` are not read
+and don't matter, it can be a zero-length file.
 
 If more then one file is found, the choice is made: `stats.opt`
-over `fixed.opt` over `none.opt`.
+over `fixed.opt`.
 
-The "no reorder" strategy can be useful in investigating the
-effects. Filter placement still takes place.
+Optimization can be disabled by setting `arq:optReorderBGP` to false. This can be
+done in the Assembler file by setting `ja:context` on the server, dataset, or endpoint:
+
+    [] ja:context [ ja:cxtName "arq:optReorderBGP" ;  ja:cxtValue false ] .
+
 
 ## Filter placement
 
@@ -98,13 +100,13 @@ setting means it is possible to log some queries and not others.
 
 The logger used is called `org.apache.jena.arq.exec`. Messages are
 sent at level "INFO". So for log4j2, the following can be set in the
-log4j2.properties file:
+`log4j2.properties` file:
 
     # Execution logging
     logger.arq-exec.name  = org.apache.jena.arq.exec
     logger.arq-exec.level = INFO
 
-    logger.arq-info.name  = org.apache.jena.arq.exec
+    logger.arq-info.name  = org.apache.jena.arq.info
     logger.arq-info.level = INFO
 
 The context setting is for key (Java constant) `ARQ.symLogExec`. To
@@ -125,6 +127,11 @@ local context.
 On the command line:
 
      tdbquery --set arq:logExec=true --file queryfile
+
+This can also be done in the Assembler file by setting `ja:context` 
+on the server, dataset, or endpoint:
+
+    [] ja:context [ ja:cxtName "arq:logExec" ;  ja:cxtValue "info" ] .
 
 ## Explanation Levels
 
