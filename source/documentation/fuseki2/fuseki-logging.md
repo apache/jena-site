@@ -12,7 +12,7 @@ the Tomcat configuration if running the WAR file.
 | Full Log name                   | Usage |
 |---------------                  |-------|
 | org.apache.jena.fuseki.Server   | General Server Messages              |
-| org.apache.jena.fuseki.Request  | NCSA request Log.                    |
+| org.apache.jena.fuseki.Request  | NCSA request Log                     |
 | org.apache.jena.fuseki.Fuseki   | The HTTP request log                 |
 | org.apache.jena.fuseki.Admin    | Administration operations            |
 | org.apache.jena.fuseki.Builder  | Dataset and service build operations |
@@ -41,8 +41,8 @@ The Fuseki Main engine looks for the log4j2 configuration as follows:
 * Use a built-in configuration.
 
 The last step is a fallback to catch the case where Fuseki has been repackaged
-into a new WAR file and `org/apache/jena/fuseki/log4j.properties` omitted, or run from
-the base jar.  It is better to include `org/apache/jena/fuseki/log4j.properties`.
+into a new WAR file and `org/apache/jena/fuseki/log4j2.properties` omitted, or run from
+the base jar.  It is better to include `org/apache/jena/fuseki/log4j2.properties`.
 
 The preferred customization is to use a custom `log4j2.properties` file in the
 directory where Fuseki Main is run.
@@ -52,6 +52,16 @@ which defaults to `/etc/fuseki` on Linux.
 
 For the standalone webapp server, `FUSEKI_BASE` defaults to directory `run/`
 within the directory where the server is run.
+
+The property `fuseki.loglogging` can also be set to `true` for additional logging.
+
+## Setting ARQ explain logging
+
+Query explanation can be turned on by setting the symbol `arq:optReorderBGP` in the context
+to "info", "fine" or "all". This can be done in the Assembler file by setting `ja:context` 
+on the server, dataset, or endpoint:
+
+    [] ja:context [ ja:cxtName "arq:logExec" ;  ja:cxtValue "info" ] .
 
 ## Default setting
 

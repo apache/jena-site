@@ -36,7 +36,7 @@ Logger Names | Name | Constant | Logger | Use
 `org.apache.jena.arq.info` | `ARQ.logInfoName` | `ARQ.getLoggerInfo()` | General information
 `org.apache.jena.arq.exec` | `ARQ.logExecName` | `ARQ.getLoggerExec()` | Execution information
 
-The reading of `log4j.properties` from the current directory is achieved
+The reading of `log4j2.properties` from the current directory is achieved
 by a call to `org.apache.jena.atlas.logging.Log.setlog4j2()`.
 
 Example `log4j2.properties` file:
@@ -63,14 +63,15 @@ logger.jena.level = INFO
 logger.arq-exec.name  = org.apache.jena.arq.exec
 logger.arq-exec.level = INFO
 
-logger.arq-info.name  = org.apache.jena.arq.exec
+logger.arq-info.name  = org.apache.jena.arq.info
 logger.arq-info.level = INFO
 
 logger.riot.name  = org.apache.jena.riot
 logger.riot.level = INFO
 ```
 A [Fuseki](../serving/data/index.html)
-server output can include [ARQ execution logging](explain.html "ARQ/Explain").
+server output can include [ARQ execution logging](explain.html "ARQ/Explain"),
+see [Fuseki logging](/documentation/fuseki2/fuseki-logging.html) for the configuration.
 
 ## Execution Logging
 
@@ -83,7 +84,7 @@ the execution context.
 
 The logger used is called `org.apache.jena.arq.exec`. Message are sent
 at level "info". So for log4j2, the following can be set in the
-log4j2.properties file:
+`log4j2.properties` file:
 
     logger.arq-exec.name  = org.apache.jena.arq.exec
     logger.arq-exec.level = INFO
