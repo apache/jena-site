@@ -1867,7 +1867,7 @@ considerably.
 Jena's inference machinery defines some specialised services that
 are not exposed through the addition of extra triples to the model.
 These are exposed by the
-[`InfModel`](/documentation/javadoc/jena/org/apache/jena/rdf/model/InfModel.html)
+[`InfModel`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/InfModel.html)
 interface; for convenience OntModel extends this interface to make
 these services directly available to the user. Please note that
 calling inference-specific methods on an ontology model that does
