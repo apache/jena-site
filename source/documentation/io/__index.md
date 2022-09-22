@@ -58,7 +58,7 @@ The file extensions understood are:
 | `.jsonld` | JSON-LD      |
 | `.trdf`   | RDF Thrift   |
 | `.rt`     | RDF Thrift   |
-| `.rpb     | RDF Protobuf |
+| `.rpb`    | RDF Protobuf |
 | `.pbrdf`  | RDF Protobuf |
 | `.rj`     | RDF/JSON     |
 | `.trix`   | TriX         |
