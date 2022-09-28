@@ -18,6 +18,7 @@ dependencies and application code, the contents of the Jena files must
 be combined and be present in the combined jar as a java resource of the
 same name.
 
+#### Maven
 The 
 [maven shade plugin](https://maven.apache.org/plugins/maven-shade-plugin/) 
 is capable of doing this process in a build using a "transformer".
@@ -27,32 +28,42 @@ for Fuseki.  It uses the maven shade plugin with a `transformer`.
 
 This is an extract from the POM:
 
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-shade-plugin</artifactId>
-      <configuration>
-        ...
-        <transformers>
-          <transformer 
-              implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-          ... other transformers ...
-        </transformers>
-
+```xml
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-shade-plugin</artifactId>
+  <configuration>
+    ...
+    <transformers>
+      <transformer 
+          implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+      ... other transformers ...
+    </transformers>
+  </configuration>
+</plugin>
+```
 See
 [jena-fuseki2/jena-fuseki-server/pom.xml](https://github.com/apache/jena/blob/main/jena-fuseki2/jena-fuseki-server/pom.xml)
 for the complete shade plugin setup used by Fuseki.
 
-If doing manually, create a single file in your application jar the
-all lines of all the services resource files. The order does not matter
-- Jena calls modules in the right order.
-
-For Gradle, the [shadowJar plugin](https://imperceptiblethoughts.com/shadow/)
+#### Gradle
+For Gradle, the [shadowJar plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
 has the
 [mergeServiceFiles](https://imperceptiblethoughts.com/shadow/configuration/merging/#merging-service-descriptor-files)
 operation.
 
-    // Merging Service Files
-    shadowJar {
-      mergeServiceFiles()
-      . . .
-    }
+```groovy
+plugins {
+  ...    
+  id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+shadowJar {
+  mergeServiceFiles()
+}
+...
+```    
+
+#### Manual assembling
+If doing manually, create a single file (`META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle`) in your application jar containing the
+lines of all the services resource files. The order does not matter.
+Jena calls modules in the right order.
