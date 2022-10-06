@@ -65,14 +65,15 @@ Optimizer control files
 
 | File name   | Effect   |
 | ----------- | -------- |
+| `none.opt`  | No reordering - execute triple patterns in the order in the query |
 |`fixed.opt`  | Use a built-in reordering based on the number of variables in a triple pattern.
 |`stats.opt`  | The contents of this file are the weighing rules (see below).
 
-The contents of the file `fixed.opt` are not read
-and don't matter, it can be a zero-length file.
+The contents of the files `none.opt` and `fixed.opt` are not read
+and don't matter. They can be zero-length files.
 
 If more then one file is found, the choice is made: `stats.opt`
-over `fixed.opt`.
+over `fixed.opt` over `none.opt`.
 
 Optimization can be disabled by setting `arq:optReorderBGP` to false. This can be
 done in the Assembler file by setting `ja:context` on the server, dataset, or endpoint:
