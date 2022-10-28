@@ -30,8 +30,8 @@ argument.
 
 To validate:
 
-<pre>shex validate --schema SCHEMA.shex --map MAP.shexmap --data DATA.ttl</pre>
-<pre>shex v -s SCHEMA.shex -m MAp.shexmap -d data.ttl</pre>
+<pre>shex validate --schema SCHEMA.shex --map MAP.smap --data DATA.ttl</pre>
+<pre>shex v -s SCHEMA.shex -m MAP.smap -d data.ttl</pre>
 
 To parse a file:
 
@@ -73,7 +73,7 @@ https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/exampl
 
         // Shapes map.
         System.out.println("Read shapes map");
-        ShexMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
+        ShapeMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
 
         // ShexReport
         System.out.println("Validate");
