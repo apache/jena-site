@@ -26,7 +26,7 @@ transactional persistent storage layer, and incorporates
 
 ## Contents
 
-- [Download with UI](#download-fuseki)
+- [Download with UI](#download-fuseki-with-ui)
 - [Getting Started](#getting-started-with-fuseki)
 - [Running Fuseki with UI](fuseki-webapp.html)
     - [As a standalone server with UI](fuseki-webapp.html#fuseki-standalone-server)
