@@ -13,7 +13,11 @@ searches within SPARQL queries. Here is a version compatibility table:
 | 3.3.0 - 3.9.0    | 6.4.x              | not supported     | 5.2.2 - 5.2.13 |
 | 3.10.0           | 7.4.0              | not supported     | 6.4.2          |
 | 3.15.0 - 3.17.0  | 7.7.x              | not supported     | 6.8.6          |
-| 4.0.0 - current  | 8.8.x              | not supported     | not supported  |
+| 4.0.0 - 4.6.1    | 8.8.x              | not supported     | not supported  |
+| 4.7.0 - current  | 9.4.x              | not supported     | not supported  |
+
+Note: In Lucene 9, the default setup of the `StandardAnalyzer` changed to having
+no stop words. For more details, see [analyzer specifications](#configuring-an-analyzer) below.
 
 SPARQL allows the use of 
 [regex](https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#func-regex) 
@@ -987,6 +991,16 @@ The `text:map` is a list of [analyzer specifications](#configuring-an-analyzer) 
 Text to be indexed is passed through a text analyzer that divides it into tokens 
 and may perform other transformations such as eliminating stop words. If a Lucene
 or Elasticsearch text index is used, then by default the Lucene `StandardAnalyzer` is used.
+
+As of Jena 4.7.x / Lucene 9.x onwards, the `StandardAnalyzer` does not default to having
+English stopwords if no stop words are provided. The setting up until
+Apache Lucene 8 had the stopwords:
+
+<pre>
+      "a"  "an"  "and"  "are"  "as"  "at"  "be"  "but"  "by"  "for"  "if"  "in"  "into"  "is" 
+      "it"  "no"  "not"  "of"  "on"  "or"  "such"  "that"  "the"  "their"  "then"  "there" 
+      "these"  "they"  "this"  "to"  "was"  "will"  "with"
+</pre>
 
 In case of a `TextIndexLucene` the default analyzer can be replaced by another analyzer with 
 the `text:analyzer` property on the `text:TextIndexLucene` resource in the 
