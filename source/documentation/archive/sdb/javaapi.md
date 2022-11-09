@@ -2,6 +2,11 @@
 title: SDB JavaAPI
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 This page describes how to use SDB from Java.
 
 Code examples are in `src-examples/` in the SDB distribution.

@@ -2,6 +2,11 @@
 title: SDB Store Description
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 Use of an SDB store requires a `Store` object which is described in
 two parts:
 

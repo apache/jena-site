@@ -2,6 +2,11 @@
 title: SDB Dataset Description
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 Assembler descriptions for RDF Datasets and individual models are
 built from
 [Store Descriptions](store_description.html "SDB/Store Description").

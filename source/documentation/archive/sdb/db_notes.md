@@ -2,6 +2,11 @@
 title: SDB Database Notes
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 - [DB2](#db2)
 - [Derby](#derby)
 - [MS SQL](#ms-sql)

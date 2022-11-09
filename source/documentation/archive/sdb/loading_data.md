@@ -2,6 +2,11 @@
 title: SDB Loading data
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 There are three ways to load data into SDB:
 
 1.  Use the command utility

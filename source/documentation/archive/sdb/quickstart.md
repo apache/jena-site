@@ -2,6 +2,11 @@
 title: SDB Quickstart
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 SDB provides some command line tools to work with SDB triple
 stores. In the following it assumed that you have a store
 description set up for your database (`sdb.ttl`). See the
