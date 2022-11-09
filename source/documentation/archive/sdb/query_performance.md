@@ -2,6 +2,11 @@
 title: SDB Query performance
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 This page compares the effect of SDB with RDB, Jena's usual
 database layout. RDB was designed for supporting the fine-grained
 API calls as well as having some support for basic graph patterns.

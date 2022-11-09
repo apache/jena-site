@@ -2,6 +2,11 @@
 title: SDB Configuration
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 This page describes the configuration options available. These are
 options for query processing, not for the database layout and
 storage, which is controlled by

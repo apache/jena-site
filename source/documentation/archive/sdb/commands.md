@@ -2,6 +2,11 @@
 title: SDB/Commands
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 This page describes the command line programs that can be used to
 create an SDB store, load data into it and to issue queries.
 

@@ -2,6 +2,11 @@
 title: SDB Loading performance
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 -   [Introduction](#introduction)
 -   [The Databases and Hardware](#the-databases-and-hardware)
     -   [Hardware](#hardware)

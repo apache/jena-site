@@ -2,6 +2,11 @@
 title: SDB Database Layouts
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 [SDB](index.html "SDB") does not have a single database layout. This
 page is an informal overview of the two main types ("layout2/hash"
 and "layout2/index").

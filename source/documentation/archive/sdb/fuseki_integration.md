@@ -2,6 +2,11 @@
 title: SDB Fuseki Integration
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 [Fuseki](../fuseki2/index.html) is a server
 that implements the SPARQL protocol for HTTP. It can be used to
 give a SPARQL interface to an SDB installation.

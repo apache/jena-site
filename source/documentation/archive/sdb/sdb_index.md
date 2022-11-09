@@ -2,6 +2,11 @@
 title: SDB - persistent triple stores using relational databases
 ---
 
+----
+> The Apache Jena SDB module has been retired and no longer supported.<br/>
+> The last release of Jena with this module is Jena 3.17.0.<br/>
+----
+
 SDB uses an SQL database for the storage and query of RDF data.
 Many databases are supported, both Open Source and proprietary.
 

@@ -2,6 +2,11 @@
 title: SDB Databases Supported
 ---
 
+----
+> The Apache Jena SDB module has been retired and is no longer supported.<br/>
+> The last release of Jena with this module was Apache Jena 3.17.0.<br/>
+----
+
 Product | Version
 ------- | --------
 [Oracle 10g](http://www.oracle.com/database/index.html "http://www.oracle.com/database/index.html") | Including OracleXE
