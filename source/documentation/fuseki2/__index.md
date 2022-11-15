@@ -6,10 +6,10 @@ aliases:
     - /documentation/serving_data/index.html
 ---
 
-Apache Jena Fuseki is a SPARQL server.  It can run as a operating system
+Apache Jena Fuseki is a SPARQL server.  It can run as an operating system
 service, as a Java web application (WAR file), and as a standalone server.
 
-Fuseki comes in in two forms, a single system "webapp", combined with a UI
+Fuseki comes in two forms, a single system "webapp", combined with a UI
 for admin and query, and as "main", a server suitable to run as part of a larger
 deployment, including [with Docker](fuseki-main.html#docker) or running embedded.
 Both forms use the same core protocol engine and [same configuration file
