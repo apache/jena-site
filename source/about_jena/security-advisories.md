@@ -10,7 +10,7 @@ Jena follows the standard [ASF Security for Committers](https://www.apache.org/s
 reporting and addressing security issues.
 
 If you think you have identified a Security issue in our project please refer to that policy for how to report it, and
-the process that the Jena Project Management Committe (PMC) will follow in addressing the issue.
+the process that the Jena Project Management Committee (PMC) will follow in addressing the issue.
 
 ## Single Supported Version
 
@@ -84,7 +84,7 @@ Users should upgrade to latest Jena 4.x [release](../download/) available.
 
 # CVEs in Jena Dependencies
 
-The following advisories are CVE's in Jena's dependencies that may affect users of Jena, as with Jena specific CVEs our
+The following advisories are CVEs in Jena's dependencies that may affect users of Jena, as with Jena specific CVEs our
 standard [Security Issue Policy](#security-issue-policy) applies and any necessary dependency updates, dependency API
 and/or configuration changes have been adopted and released as soon as appropriate.
 
