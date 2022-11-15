@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - TDB xloader</title>
+    <title>Apache Jena - Jena Security Advisories</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/tdb/tdb-xloader.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/about_jena/security-advisories.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -152,7 +152,7 @@
         
         
             
-                <li><a href='/documentation'>DOCUMENTATION</a></li>
+                <li><a href='/about_jena'>ABOUT JENA</a></li>
             
             
         
@@ -160,15 +160,7 @@
         
         
             
-                <li><a href='/documentation/tdb'>TDB</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="active">TDB XLOADER</li>
+                <li class="active">SECURITY ADVISORIES</li>
             
             
         
@@ -180,49 +172,70 @@
 
                 
             </div>
-            <h1 class="title">TDB xloader</h1>
+            <h1 class="title">Jena Security Advisories</h1>
             
-	<p>TDB xloader (&ldquo;x&rdquo; for external) is a bulkloader for very large datasets. The goal
-is stability and reliability for long running loading, running on modest
-hardware and can be use to load a database on rotating disk or SSD.</p>
-<p><code>xloader</code> is not a replacement for regular TDB1 and TDB2 loaders. It is for very
-large datasets.</p>
-<p>There are two scripts to load data using the xloader subsystem.</p>
-<p>&ldquo;tdb1.xloader&rdquo;, which was called &ldquo;tdbloader2&rdquo;, has some improvements.</p>
-<p>It is not as fast as other TDB loaders on datasets where the general loaders work
-without encountering progressive slowdown.</p>
-<p>The xloaders for TDB1 and TDB2 are not identical. The TDB2 xloader is more
-capable; it is based on the same design approach with further refinements to
-building the node table and to reduce the total amount of temporary file space
-used.</p>
-<p>The xloader does not run on MS Windows. It uses an external sort program from
-unix - <code>sort(1)</code>.</p>
-<p>The xloader only builds a fresh database from empty.
-It can not be used to load an existing database.</p>
-<h3 id="running-xloader">Running xloader</h3>
-<p><code>tdb2.xloader --loc DIRECTORY</code> FILE&hellip;</p>
-<p>or</p>
-<p><code>tdb1.xloader --loc DIRECTORY</code> FILE&hellip;</p>
-<p>Additionally, there is an argument <code>--tmpdir</code> to use a different directory for
-temporary files.</p>
-<p><code>FILE</code> is any RDF syntax supported by Jena. Syntax is determined by the file
-extension and can include an addtional &ldquo;.gz&rdquo; or &ldquo;.bz2&rdquo; for compressed files.</p>
-<p><code>tdb2.xloader</code> also supports argument <code>--threads</code> to set the number of threads
-to use with <code>sort(1)</code>. The default is 2. The recommendation for an initial
-setting is to set it to the number of cores (not hardware threads) minus 1. This
-is sensitive to the hardware environment. Experimentation may show a different,
-better setting.</p>
-<h3 id="advice">Advice</h3>
-<p>To avoid a load failing due to a syntax or other data error, it is advisable to
-run <code>riot --check</code> on the data first. Parsing is faster than loading.</p>
-<p>The TDB databases will take up a lot of disk space and in addition during
-loading <code>xloader</code> uses a significant amount of temporary disk space.</p>
-<p>If desired, the data can be converted to <a href="../io/rdf-binary.html">RDF Thrift</a> at
-this stage by adding <code>--stream rdf-thrift</code> to the riot checking run.  Parsing
-RDF Thrift is faster than parsing N-Triples although the bulk of the loading
-process is not limited by parser speed.</p>
-<p>Do not capture the bulk loader output in a file on the same disk as the database
-or temporary directory; it slows loading down.</p>
+	<h1 id="security-issue-policy">Security Issue Policy</h1>
+<h2 id="process">Process</h2>
+<p>Jena follows the standard <a href="https://www.apache.org/security/committers.html">ASF Security for Committers</a> policy for
+reporting and addressing security issues.</p>
+<p>If you think you have identified a Security issue in our project please refer to that policy for how to report it, and
+the process that the Jena Project Management Committe (PMC) will follow in addressing the issue.</p>
+<h2 id="single-supported-version">Single Supported Version</h2>
+<p>As a project with a relatively small developer community Apache Jena only has the resources to maintain a single release
+version.  Therefore any accepted security issue reported will be fixed by developing a fix for our <code>main</code> branch.  We
+will then make a release with the fix in a timeframe appropriate to the severity of the issue.</p>
+<h2 id="standard-mitigation-advice">Standard Mitigation Advice</h2>
+<p>Note that as a project our guidance to users is <strong>always</strong> to use the newest Jena version available to ensure you have
+any security fixes we have made available.</p>
+<p>Where more specific mitigations are available these will be denoted in the individual CVEs.</p>
+<h2 id="end-of-life-eol-components">End of Life (EOL) Components</h2>
+<p>Where a security advisory is issued for a component that is already EOL (sometimes referred to as archived or retired
+within our documentation) then we will not fix the issue but instead reiterate our previous recommendations that users
+cease using the EOL component and migrate to actively supported components.</p>
+<p>Such issues will follow the <a href="https://cve.mitre.org/cve/cna/CVE_Program_End_of_Life_EOL_Assignment_Process.html">CVE EOL Assignment
+Process</a> and will be clearly denoted
+by the <strong>UNSUPPORTED WHEN ASSIGNED</strong> text at the start of the description.</p>
+<h2 id="security-issues-in-dependencies">Security Issues in Dependencies</h2>
+<p>For our dependencies the project relies primarily upon GitHub Dependabot Alerts to be made aware of available dependency
+updates, whether security related or otherwise.  When a security related update is released and our analysis shows that
+Jena users may be affected we endeavour to take the dependency upgrade ASAP and make a new release in timeframe
+appropriate to the severity of the issue.</p>
+<h1 id="jena-cves">Jena CVEs</h1>
+<p>The following CVEs specifically relate to the Jena codebase itself and have been addressed by the project. Per our
+policy above we advise users to always utilise the latest Jena release available.</p>
+<p>Please refer to the individual CVE links for further details and mitigations.</p>
+<h2 id="cve-2022-45136---jdbc-serialisation-in-apache-jena-sdb">CVE-2022-45136 - JDBC Serialisation in Apache Jena SDB</h2>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45136">CVE-2022-45136</a> affects all versions of <a href="../documentation/archive/sdb/">Jena
+SDB</a> up to and including the final 3.17.0 release</p>
+<p>Apache Jena SDB has been EOL since December 2020 and we recommend any remaining users migrate to <a href="../documentation/tdb2/">Jena TDB
+2</a> or other 3rd party vendor alternatives.</p>
+<p>Apache Jena would like to thank Crilwa &amp; LaNyer640 for reporting this issue</p>
+<h2 id="cve-2022-28890---processing-external-dtds">CVE-2022-28890 - Processing External DTDs</h2>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-28890">CVE-2022-28890</a> affects the RDF/XML parser in Jena 4.4.0
+only</p>
+<p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
+<p>Apache Jena would like to thank Feras Daragma, Avishag Shapira &amp; Amit Laish (GE Digital, Cyber Security Lab) for their
+report.</p>
+<h2 id="cve-2021-39239---xml-external-entity-xxe-vulnerability">CVE-2021-39239 - XML External Entity (XXE) Vulnerability</h2>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-39239">CVE-2021-39239</a> affects XML parsing up to Jena 4.1.0</p>
+<p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
+<h2 id="cve-2021-33192---display-information-ui-xss-in-apache-jena-fuseki">CVE-2021-33192 - Display information UI XSS in Apache Jena Fuseki</h2>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33192">CVE-2021-33192</a> affected
+<a href="../documentation/fuseki2/">Fuseki</a> 2.0.0 through 4.0.0</p>
+<p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
+<h1 id="cves-in-jena-dependencies">CVEs in Jena Dependencies</h1>
+<p>The following advisories are CVE&rsquo;s in Jena&rsquo;s dependencies that may affect users of Jena, as with Jena specific CVEs our
+standard <a href="#security-issue-policy">Security Issue Policy</a> applies and any necessary dependency updates, dependency API
+and/or configuration changes have been adopted and released as soon as appropriate.</p>
+<h2 id="log4shell">log4shell</h2>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046">CVE-2021-45105</a>,
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45105">CVE-2021-45105</a> and
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44832">CVE-2021-44832</a>, collectively known as
+<a href="https://en.wikipedia.org/wiki/Log4Shell">log4shell</a> were several vulnerabilities identified in the <a href="https://logging.apache.org/log4j/2.x/index.html">Apache
+Log4j</a> project that Jena uses as the concrete logging implementation
+for <a href="../documentation/fuseki2/">Fuseki</a> and our command line tools.</p>
+<p>Jena versions prior to 4.4.0 included vulnerable versions of Log4j.</p>
+<p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
 
 
         </div>

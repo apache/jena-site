@@ -111,6 +111,7 @@
                         <li><a href="/about_jena/team.html">Project team</a></li>
                         <li><a href="/about_jena/contributions.html">Related projects</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/security-advisories.html">Security Advisories</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">ASF</li>
                         <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
@@ -263,8 +264,10 @@ file in the database directory.</p>
 and don&rsquo;t matter. They can be zero-length files.</p>
 <p>If more then one file is found, the choice is made: <code>stats.opt</code>
 over <code>fixed.opt</code> over <code>none.opt</code>.</p>
-<p>The &ldquo;no reorder&rdquo; strategy can be useful in investigating the
-effects. Filter placement still takes place.</p>
+<p>Optimization can be disabled by setting <code>arq:optReorderBGP</code> to false. This can be
+done in the Assembler file by setting <code>ja:context</code> on the server, dataset, or endpoint:</p>
+<pre><code>[] ja:context [ ja:cxtName &quot;arq:optReorderBGP&quot; ;  ja:cxtValue false ] .
+</code></pre>
 <h2 id="filter-placement">Filter placement</h2>
 <p>One of the key optimization is of filtered basic graph patterns.
 This optimization decides the best order of triple patterns in a
@@ -280,12 +283,12 @@ by two setting: the logging level and a context setting. Having two
 setting means it is possible to log some queries and not others.</p>
 <p>The logger used is called <code>org.apache.jena.arq.exec</code>. Messages are
 sent at level &ldquo;INFO&rdquo;. So for log4j2, the following can be set in the
-log4j2.properties file:</p>
+<code>log4j2.properties</code> file:</p>
 <pre><code># Execution logging
 logger.arq-exec.name  = org.apache.jena.arq.exec
 logger.arq-exec.level = INFO
 
-logger.arq-info.name  = org.apache.jena.arq.exec
+logger.arq-info.name  = org.apache.jena.arq.info
 logger.arq-info.level = INFO
 </code></pre>
 <p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To
@@ -303,6 +306,10 @@ local context.</p>
 </code></pre>
 <p>On the command line:</p>
 <pre><code> tdbquery --set arq:logExec=true --file queryfile
+</code></pre>
+<p>This can also be done in the Assembler file by setting <code>ja:context</code>
+on the server, dataset, or endpoint:</p>
+<pre><code>[] ja:context [ ja:cxtName &quot;arq:logExec&quot; ;  ja:cxtValue &quot;info&quot; ] .
 </code></pre>
 <h2 id="explanation-levels">Explanation Levels</h2>
 <table>

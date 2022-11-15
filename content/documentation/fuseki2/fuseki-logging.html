@@ -111,6 +111,7 @@
                         <li><a href="/about_jena/team.html">Project team</a></li>
                         <li><a href="/about_jena/contributions.html">Related projects</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
+                        <li><a href="/about_jena/security-advisories.html">Security Advisories</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">ASF</li>
                         <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
@@ -199,7 +200,7 @@ the Tomcat configuration if running the WAR file.</p>
 </tr>
 <tr>
 <td>org.apache.jena.fuseki.Request</td>
-<td>NCSA request Log.</td>
+<td>NCSA request Log</td>
 </tr>
 <tr>
 <td>org.apache.jena.fuseki.Fuseki</td>
@@ -237,14 +238,21 @@ or reverse proxy will log access requests anyway.</p>
 <li>Use a built-in configuration.</li>
 </ul>
 <p>The last step is a fallback to catch the case where Fuseki has been repackaged
-into a new WAR file and <code>org/apache/jena/fuseki/log4j.properties</code> omitted, or run from
-the base jar.  It is better to include <code>org/apache/jena/fuseki/log4j.properties</code>.</p>
+into a new WAR file and <code>org/apache/jena/fuseki/log4j2.properties</code> omitted, or run from
+the base jar.  It is better to include <code>org/apache/jena/fuseki/log4j2.properties</code>.</p>
 <p>The preferred customization is to use a custom <code>log4j2.properties</code> file in the
 directory where Fuseki Main is run.</p>
 <p>For the war file packaging, the <code>log4j2.properties</code> should go in <code>FUSEKI_BASE</code>
 which defaults to <code>/etc/fuseki</code> on Linux.</p>
 <p>For the standalone webapp server, <code>FUSEKI_BASE</code> defaults to directory <code>run/</code>
 within the directory where the server is run.</p>
+<p>The property <code>fuseki.loglogging</code> can also be set to <code>true</code> for additional logging.</p>
+<h2 id="setting-arq-explain-logging">Setting ARQ explain logging</h2>
+<p>Query explanation can be turned on by setting the symbol <code>arq:optReorderBGP</code> in the context
+to &ldquo;info&rdquo;, &ldquo;fine&rdquo; or &ldquo;all&rdquo;. This can be done in the Assembler file by setting <code>ja:context</code>
+on the server, dataset, or endpoint:</p>
+<pre><code>[] ja:context [ ja:cxtName &quot;arq:logExec&quot; ;  ja:cxtValue &quot;info&quot; ] .
+</code></pre>
 <h2 id="default-setting">Default setting</h2>
 <p>The <a href="https://github.com/apache/jena/blob/main/jena-fuseki2/apache-jena-fuseki/log4j2.properties">default log4j2.properties</a>.</p>
 <h2 id="logrotate">Logrotate</h2>
