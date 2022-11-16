@@ -33,7 +33,7 @@ TDB2 database:
 The `--loc` directory is either a TDB1 or TDB2 database. 
 The directory `DIR` must exist.
 If the database in `DIR` does not exist, then a new database is created. By
-default this is a TDB2 database unoess teh argument --tdb1 is given.
+default this is a TDB2 database unless the argument --tdb1 is given.
 
 An in-memory, non-peristent database (always updatable) is:
 
