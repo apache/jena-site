@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - RDF Patch</title>
+    <title>Apache Jena - </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -141,9 +141,6 @@
 
 
 
-    
-    
-
 
 <ol class="breadcrumb">
     
@@ -162,7 +159,15 @@
         
         
             
-                <li class="active">RDF PATCH</li>
+                <li><a href='/documentation/rdf-patch'>RDF PATCH</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">INDEX</li>
             
             
         
@@ -174,9 +179,12 @@
 
                 
             </div>
-            <h1 class="title">RDF Patch</h1>
+            <h1 class="title"></h1>
             
-	<p>This page describes RDF Patch. An RDF Patch is a set of changes to an
+	<h2 id="slug-index">f&mdash;
+title: RDF Patch
+slug: index</h2>
+<p>This page describes RDF Patch. An RDF Patch is a set of changes to an
 <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF dataset</a>.
 The change are for triples, quads and prefixes.</p>
 <p>Changes to triples involving blank nodes are handled by using their system
@@ -245,9 +253,9 @@ throughput.</p>
 <p>The header provides for basic information about patch. It is a series of
 (key, value) pairs.</p>
 <p>It is better to put complex metadata in a separate file and link to it
-from the header, but certain information is best kept with the patch. An example
-used by Delta is to keep the identifer of the global version id of the dataset
-so that patches are applied in the right order.</p>
+from the header, but certain information is best kept with the patch. If
+patches are given an identifier, and als refer to the exp[ected previous patch,
+it create a log and patches can be applied in the right order.</p>
 <p>A header section can be used to provide additional information. In this example
 a patch has an identifier and refers to a previous patch. This might be used to
 create a log of patches, a log being a sequnce of chnages to apply in-order.</p>
@@ -286,7 +294,7 @@ Turtle on the prefix name.</p>
 </code></pre><p><code>PA</code> is adding a prefix, <code>PD</code> is deleting a prefix.</p>
 <h4 id="quads-and-triples">Quads and Triples</h4>
 <p>Triples and quads are written like N-Quads, 3 or 4 RDF terms,
-with the addition of a initial <code>A</code> or <code>D</code> for &ldquo;add&rdquo; or &ldquo;delete&rdquo;.
+with the addition of an initial <code>A</code> or <code>D</code> for &ldquo;add&rdquo; or &ldquo;delete&rdquo;.
 Triples are in the order S-P-O, quads are S-P-O-G.</p>
 <p>Add a triple:</p>
 <pre><code>A  &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
@@ -301,17 +309,17 @@ that the blank node is unique to that one time reading of the document.
 A new blank node is generated every time the file is read into a graph
 or dataset, and that blank node does not appear in the existing data.</p>
 <p>In practice, most RDF triplestores have some kind of internal
-identifier that identifies th blank node.  RDF Patch requires a &ldquo;system
+identifier that identifies the blank node.  RDF Patch requires a &ldquo;system
 identifier&rdquo; for blank nodes so that change can refer to an existing
 blank node in the data.</p>
 <p>These can be written as <code>_:label</code> or <code>&lt;_:label&gt;</code> (the latter provides a
 wider set of permissible characters in the label). Note that <code>_</code> is
-illegal as a IRI scheme to highlight the fact this is not, strictly, an
+illegal as an IRI scheme to highlight the fact this is not, strictly, an
 IRI.</p>
 <p>RDF 1.1 describes
 <a href="https://www.w3.org/TR/rdf11-concepts/#section-skolemization"><em>skolemization</em></a>
 where blank nodes are replaced by a URI.  A system could use those for
-RDF Patch if it also meets the additonal requirements to be able to
+RDF Patch if it also meets the additional requirements to be able to
 receive and reverse the mapping back to the internal blank node object
 and also that all system generating patches can safely generate new,
 fresh skolem IRIs that will become new blank nodes in the RDF dataset
