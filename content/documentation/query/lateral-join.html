@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/lateral.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/lateral-join.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -168,7 +168,7 @@
         
         
             
-                <li class="active">LATERAL</li>
+                <li class="active">LATERAL JOIN</li>
             
             
         
@@ -205,12 +205,12 @@ SELECT * {
    LATERAL { OPTIONAL { SELECT * ?s rdfs:label ?label } LIMIT 1}
    }
 }
-</code></pre><h3 id="syntax">Syntax</h3>
+</code></pre><h4 id="syntax">Syntax</h4>
 <p>The <code>LATERAL</code> keyword which takes the graph pattern so far in the group, from
 the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
-<h3 id="evaluation">Evaluation</h3>
+<h4 id="evaluation">Evaluation</h4>
 <p><a href="https://afs.github.io/substitute.html">Substituting variables</a> from the LHS into the RHS (with the same restrictions), then executing the pattern, gives the evaluation of <code>LATERAL</code></p>
-<h3 id="variable-assignment">Variable assignment</h3>
+<h4 id="variable-assignment">Variable assignment</h4>
 <p>There needs to be a new syntax restriction: there can no variable introduced by
 <code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
 <code>LATERAL</code> RHS, that is the same name as any
@@ -224,9 +224,9 @@ SELECT * {
    LATERAL { BIND( 123 AS ?o) }
 }
 </code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
-<p>In ARQ, <a href="https://www.w3.org/TR/sparql11-query/#variableScope">LET</a> would work.
+<p>In ARQ, <a href="assignment.html">LET</a> would work.
 <code>LET</code> for a variable that is bound acts like a filter.</p>
-<h3 id="variable-scopes">Variable Scopes</h3>
+<h4 id="variable-scopes">Variable Scopes</h4>
 <p>In looping on the input, a lateral join makes the bindings of variables in the current row
 available to the right hand side pattern, settign their value from the top down.</p>
 <p>In SPARQL, it is possible to have variables of the same name which are not
@@ -252,7 +252,7 @@ inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is 
 <code>?label</code> for the same results.</p>
 <h3 id="notes">Notes</h3>
 <p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the not-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to ab SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
-<h2 id="sparql-specification-additional">SPARQL Specification Additional</h2>
+<h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
 <h3 id="syntax-1">Syntax</h3>
 <p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
 <pre><code>[56]  	GraphPatternNotTriples	  ::=  	GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
