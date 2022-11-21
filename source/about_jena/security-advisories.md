@@ -14,9 +14,8 @@ the process that the Jena Project Management Committee (PMC) will follow in addr
 
 ## Single Supported Version
 
-As a project with a relatively small developer community Apache Jena only has the resources to maintain a single release
-version.  Therefore any accepted security issue reported will be fixed by developing a fix for our `main` branch.  We
-will then make a release with the fix in a timeframe appropriate to the severity of the issue.  
+As a project, Apache Jena only has the resources to maintain a single release
+version.  Any accepted security issue will be fixed in a future release in a timeframe appropriate to the severity of the issue.  
 
 ## Standard Mitigation Advice
 
