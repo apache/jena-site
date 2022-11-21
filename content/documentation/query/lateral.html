@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Running Fuseki with UI</title>
+    <title>Apache Jena - ARQ - Lateral Join</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-webapp.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/lateral.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -160,7 +160,7 @@
         
         
             
-                <li><a href='/documentation/fuseki2'>FUSEKI2</a></li>
+                <li><a href='/documentation/query'>QUERY</a></li>
             
             
         
@@ -168,7 +168,7 @@
         
         
             
-                <li class="active">FUSEKI WEBAPP</li>
+                <li class="active">LATERAL</li>
             
             
         
@@ -180,102 +180,121 @@
 
                 
             </div>
-            <h1 class="title">Running Fuseki with UI</h1>
+            <h1 class="title">ARQ - Lateral Join</h1>
             
-	<p>Fuseki/UI can be run in a number of ways:</p>
+	<p>Lateral joins using the keyword <code>LATERAL</code> were introduced in Apache jena 4.7.0.</p>
+<p>A <code>LATERAL</code> join is like a foreach loop, looping on the results from the
+left-hand side (LHS), the pattern before the <code>LATERAL</code> keyword, and executing
+the right-hand side (RHS) query pattern once for each row, with the variables
+from the RHS in-scope during each RHS evaluation.</p>
+<p>A regular join only executes the RHS once, and the variables from the LHS are
+only used for the join condition after evaluation of the left and right
+sub-patterns.</p>
+<p>Another way to think of a lateral join is as a <code>flatmap</code>.</p>
+<p>Examples:</p>
+<pre><code>## Get exactly one label for each subject with type `:T`
+SELECT * {
+   ?s rdf:type :T
+   LATERAL {
+     SELECT * { ?s rdfs:label ?label } LIMIT 1
+   }
+}
+</code></pre><pre><code>## Get zero or one labels for each subject.
+SELECT * {
+   ?s ?p ?o
+   LATERAL { OPTIONAL { SELECT * ?s rdfs:label ?label } LIMIT 1}
+   }
+}
+</code></pre><h3 id="syntax">Syntax</h3>
+<p>The <code>LATERAL</code> keyword which takes the graph pattern so far in the group, from
+the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
+<h3 id="evaluation">Evaluation</h3>
+<p><a href="https://afs.github.io/substitute.html">Substituting variables</a> from the LHS into the RHS (with the same restrictions), then executing the pattern, gives the evaluation of <code>LATERAL</code></p>
+<h3 id="variable-scopes">Variable Scopes</h3>
+<p>In looping on the input, a lateral join makes the bindings of variables in the current row
+available to the right hand side pattern, settign their value from the top down.</p>
+<p>In SPARQL, it is possible to have variables of the same name which are not
+exposed within a sub-select. These are not lateral-joined to a variable of the
+same name from the LHS.</p>
+<p>This is not speciifc to lateral joins. In</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?s rdfs:label ?label } }
+</code></pre><p>the inner <code>?s</code> can be replaced by <code>?z</code> without changing the results because the
+inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is hidden by the <code>SELECT ?label</code>.</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?z rdfs:label ?label } }
+</code></pre><p>The same rule applies to lateral joins.</p>
+<pre><code>SELECT * {
+   ?s rdf:type :T 
+   LATERAL {
+     SELECT ?label { ?s rdfs:label ?label } LIMIT 1
+   }
+}
+</code></pre><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
+<code>?label</code> for the same results.</p>
+<h3 id="variable-assignment">Variable assignment</h3>
+<p>There needs to be a new syntax restriction: there can no variable introduced by
+<code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
+<code>LATERAL</code> RHS, that is the same name as any
+<a href="https://www.w3.org/TR/sparql11-query/#variableScope">in-scope</a> variable from
+the LHS.</p>
+<p>Such a variable assignment would conflict with the variable being set in
+variables of the row being joined.</p>
+<pre><code>## ** Illegal **
+SELECT * {
+   ?s ?p ?o
+   LATERAL { BIND( 123 AS ?o) }
+}
+</code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
+<p>In ARQ, <a href="https://www.w3.org/TR/sparql11-query/#variableScope">LET</a> would work.
+<code>LET</code> for a variable that is bound acts like a filter.</p>
+<h3 id="notes">Notes</h3>
+<p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the not-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to ab SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
+<h2 id="sparql-specification-additional">SPARQL Specification Additional</h2>
+<h3 id="syntax-1">Syntax</h3>
+<p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
+<pre><code>[56]  	GraphPatternNotTriples	  ::=  	GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
+[57]  	OptionalGraphPattern	  ::=  	'OPTIONAL' GroupGraphPattern
+[  ]  	LateralGraphPattern	  ::=  	'LATERAL' GroupGraphPattern
+</code></pre><h3 id="algebra">Algebra</h3>
+<p>The new algebra is operator is <code>lateral</code> which takes two expressions</p>
+<pre><code>  SELECT * {
+    ?s  ?p  ?o
+    LATERAL
+      { ?a  ?b  ?c }
+}
+</code></pre><p>is translated to:</p>
+<pre><code>  (lateral
+    (bgp (triple ?s ?p ?o))
+    (bgp (triple ?a ?b ?c)))
+</code></pre><h3 id="evaluation-1">Evaluation</h3>
+<p>To evaluate <code>lateral</code>:</p>
 <ul>
-<li><a href="#fuseki-standalone-server">As a standalone server</a></li>
-<li><a href="#fuseki-service">As a service</a> run by the operation system, for example, started when the machine boots</li>
-<li><a href="#fuseki-web-application">As a Web Application</a> inside a container such as Apache Tomcat or Jetty.</li>
+<li>Evaluate the first argument (left-hand side from syntax) to get a multiset of solution mappings.</li>
+<li>For each solution mapping (&ldquo;row&rdquo;),
+inject variable bindings into the second argument
+Evaluate this pattern
+Add to results</li>
 </ul>
-<p>Fuseki is also packaged as a plain server <a href="fuseki-main.html">&ldquo;Fuseki Main&rdquo;</a>
-with no UI for use as a configurable SPARQL server, for <a href="fuseki-docker.html">building as a Docker
-container</a>, and as a deployment and development standalone
-server. It supports the arguments used by the standalone server.</p>
-<p>The configuration file is the same format for all forms of the Fuseki server.</p>
-<p>See &ldquo;<a href="fuseki-configuration.html">Fuseki Configuration</a>&rdquo; for information on
-how to provide datasets and configure services using the configuration file.</p>
-<h2 id="fuseki-standalone-server">Fuseki as a Standalone Server</h2>
-<p>This is running Fuseki from the command line.</p>
-<p>To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:</p>
-<p>where <code>/NAME</code> is the dataset publishing name at this server in URI space.</p>
-<p>TDB2 database:</p>
-<pre><code>fuseki-server [--loc=DIR] [[--update] /NAME]
-</code></pre>
-<p>The <code>--loc</code> directory is either a TDB1 or TDB2 database.
-The directory <code>DIR</code> must exist.
-If the database in <code>DIR</code> does not exist, then a new database is created. By
-default this is a TDB2 database unless the argument &ndash;tdb1 is given.</p>
-<p>An in-memory, non-peristent database (always updatable) is:</p>
-<pre><code>fuseki-server --mem /NAME
-</code></pre>
-<p>Load a file at start and provide it read-only:</p>
-<pre><code>fuseki-server --file=MyData.ttl /NAME
-</code></pre>
-<p>where <code>MyData.ttl</code> can be any RDF format, both triples or quads.</p>
-<p>Administrative functions are only available from &ldquo;localhost&rdquo;.</p>
-<p>See <code>fuseki-server --help</code> for details of more arguments.</p>
-<h2 id="layout">Layout</h2>
-<p>When run from the command line, the server creates its work area in the
-directory named by environment variable <code>FUSEKI_BASE</code>. When run from the
-command line, this defaults to the current directory.</p>
-<p><a href="fuseki-layout.html">Fuseki layout</a></p>
-<p>If you get the error message <code>Can't find jarfile to run</code> then you either
-need to put a copy of <code>fuseki-server.jar</code> in the current directory or set
-the environment variable <code>FUSEKI_HOME</code> to point to an unpacked Fuseki
-distribution.</p>
-<p>Starting with no dataset and no configuration is possible.
-Datasets can be added from the admin UI to a running server.</p>
-<h2 id="fuseki-service">Fuseki as a Service</h2>
-<p>Fuseki can run as an operating system service, started when the server
-machine boots.  The script <code>fuseki</code> is a Linux <code>init.d</code> with the common
-secondary arguments of <code>start</code> and <code>stop</code>.</p>
-<p>Process arguments are read from <code>/etc/default/fuseki</code> including
-<code>FUSEKI_HOME</code> and <code>FUSEKI_BASE</code>.  <code>FUSEKI_HOME</code> should be the directory
-where the distribution was unpacked.</p>
-<h2 id="fuseki-web-application">Fuseki as a Web Application</h2>
-<p>Fuseki can run from a
-<a href="http://en.wikipedia.org/wiki/WAR_%28file_format%29">WAR</a> file.</p>
-<p>The war file can be downloaded from the <a href="/download/">project downloads page</a>. It
-should then be renamed to the webapp name &ldquo;ROOT.war&rdquo; (this means there no name
-in the URL) or &ldquo;fuseki.war&rdquo; (with a name <code>/fuseki/</code>) or some other choice of
-name.</p>
-<p><code>FUSEKI_HOME</code> is not applicable.</p>
-<p><code>FUSEKI_BASE</code> defaults to <code>/etc/fuseki</code> which must be a writeable
-directory.  It is initialised the first time Fuseki runs, including a
-<a href="http://shiro.apache.org/">Apache Shiro</a> security file but this is only
-intended as a starting point.  It restricts use of the admin UI to the
-local machine.</p>
-<p>When deploying as a web application a more fully featured Admin API is
-made available and described on the
-<a href="fuseki-server-protocol.html">Fuseki Server Protocol (REST API)</a> page.</p>
-<h2 id="configuring-logging">Configuring logging</h2>
-<p>When running from a WAR file in a webapp container such as Apache Tomcat, the
-logging configuration comes from the file <code>log4j2.properties</code> in the root of the
-unpacked war file, e.g. <code>/var/lib/tomcat9/webapps/fuseki/log4j2.properties</code>.</p>
-<p>The name of the file is taken from <code>web.xml</code>:</p>
-<p><context-param>
-<param-name>log4jConfiguration</param-name>
-<param-value>log4j2.properties</param-value>
-</context-param></p>
-<p>This only applies when running in a webapp container. When run from the command
-line, the server looks for <code>log4j2.properties</code> in the current directory and if
-not found, uses a built-in configuration.</p>
-<p>This logging goes to the standard output.</p>
-<h2 id="fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</h2>
-<p><code>systemd</code> may be set to sandbox Tomcat9. The file area <code>/etc/fuseki</code> will not
-be writable to Fuseki. To enable this area, add <code>ReadWritePaths=/etc/fuseki/</code> to
-the file <code>/etc/systemd/system/tomcat9.service.d/override.conf</code>,
-creating the file if necessary.</p>
-<p><code>systemd</code> also captures standard out and routes it to the system journal:</p>
-<pre><code>  journalctl -u tomcat9
-</code></pre><p>To direct the output to the traditional location of
-/var/log/tomcat9/catalina.out use the <code>StandardOutput</code> setting in <code>override.conf</code>:</p>
-<pre><code>    [Service]
-   
-    # Allow access to the Fuseki area
-    ReadWritePaths=/etc/fuseki/
-    StandardOutput=file:/var/log/tomcat9/catalina.out
+<p>Outline:</p>
+<pre><code>Definition: Lateral
+
+Let Ω be a multiset of solution mappings. We define:
+
+Lateral(Ω, P) = { μ | union of Ω1 where 
+           foreach μ1 in Ω:
+               pattern2 = inject(pattern, μ1)
+               Ω1 = eval(D(G), pattern2)
+	       result Ω1
+	   }
+</code></pre><p>where <code>inject</code> is the <a href="https://afs.github.io/substitute.html">corrected <code>substitute</code></a> operation.</p>
+<p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is in-scope&rdquo; in some
+way, rather than rely on <code>inject</code> which is a mechanism.</p>
+<pre><code>Definition: Evaluation of Lateral
+
+eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)
 </code></pre>
 
         </div>
