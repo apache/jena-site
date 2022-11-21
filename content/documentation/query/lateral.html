@@ -186,9 +186,9 @@
 <p>A <code>LATERAL</code> join is like a foreach loop, looping on the results from the
 left-hand side (LHS), the pattern before the <code>LATERAL</code> keyword, and executing
 the right-hand side (RHS) query pattern once for each row, with the variables
-from the RHS in-scope during each RHS evaluation.</p>
+from the input LHS in-scope during each RHS evaluation.</p>
 <p>A regular join only executes the RHS once, and the variables from the LHS are
-only used for the join condition after evaluation of the left and right
+used for the join condition after evaluation of the left and right
 sub-patterns.</p>
 <p>Another way to think of a lateral join is as a <code>flatmap</code>.</p>
 <p>Examples:</p>
@@ -210,6 +210,22 @@ SELECT * {
 the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
 <h3 id="evaluation">Evaluation</h3>
 <p><a href="https://afs.github.io/substitute.html">Substituting variables</a> from the LHS into the RHS (with the same restrictions), then executing the pattern, gives the evaluation of <code>LATERAL</code></p>
+<h3 id="variable-assignment">Variable assignment</h3>
+<p>There needs to be a new syntax restriction: there can no variable introduced by
+<code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
+<code>LATERAL</code> RHS, that is the same name as any
+<a href="https://www.w3.org/TR/sparql11-query/#variableScope">in-scope</a> variable from
+the LHS.</p>
+<p>Such a variable assignment would conflict with the variable being set in
+variables of the row being joined.</p>
+<pre><code>## ** Illegal **
+SELECT * {
+   ?s ?p ?o
+   LATERAL { BIND( 123 AS ?o) }
+}
+</code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
+<p>In ARQ, <a href="https://www.w3.org/TR/sparql11-query/#variableScope">LET</a> would work.
+<code>LET</code> for a variable that is bound acts like a filter.</p>
 <h3 id="variable-scopes">Variable Scopes</h3>
 <p>In looping on the input, a lateral join makes the bindings of variables in the current row
 available to the right hand side pattern, settign their value from the top down.</p>
@@ -234,22 +250,6 @@ inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is 
 }
 </code></pre><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
 <code>?label</code> for the same results.</p>
-<h3 id="variable-assignment">Variable assignment</h3>
-<p>There needs to be a new syntax restriction: there can no variable introduced by
-<code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
-<code>LATERAL</code> RHS, that is the same name as any
-<a href="https://www.w3.org/TR/sparql11-query/#variableScope">in-scope</a> variable from
-the LHS.</p>
-<p>Such a variable assignment would conflict with the variable being set in
-variables of the row being joined.</p>
-<pre><code>## ** Illegal **
-SELECT * {
-   ?s ?p ?o
-   LATERAL { BIND( 123 AS ?o) }
-}
-</code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
-<p>In ARQ, <a href="https://www.w3.org/TR/sparql11-query/#variableScope">LET</a> would work.
-<code>LET</code> for a variable that is bound acts like a filter.</p>
 <h3 id="notes">Notes</h3>
 <p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the not-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to ab SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
 <h2 id="sparql-specification-additional">SPARQL Specification Additional</h2>
