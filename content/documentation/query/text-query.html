@@ -221,13 +221,21 @@ searches within SPARQL queries. Here is a version compatibility table:</p>
 <td>6.8.6</td>
 </tr>
 <tr>
-<td>4.0.0 - current</td>
+<td>4.0.0 - 4.6.1</td>
 <td>8.8.x</td>
+<td>not supported</td>
+<td>not supported</td>
+</tr>
+<tr>
+<td>4.7.0 - current</td>
+<td>9.4.x</td>
 <td>not supported</td>
 <td>not supported</td>
 </tr>
 </tbody>
 </table>
+<p>Note: In Lucene 9, the default setup of the <code>StandardAnalyzer</code> changed to having
+no stop words. For more details, see <a href="#configuring-an-analyzer">analyzer specifications</a> below.</p>
 <p>SPARQL allows the use of
 <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#func-regex">regex</a>
 in <code>FILTER</code>s which is a test on a value retrieved earlier in the query
@@ -1160,6 +1168,14 @@ updated.</p>
 <p>Text to be indexed is passed through a text analyzer that divides it into tokens
 and may perform other transformations such as eliminating stop words. If a Lucene
 or Elasticsearch text index is used, then by default the Lucene <code>StandardAnalyzer</code> is used.</p>
+<p>As of Jena 4.7.x / Lucene 9.x onwards, the <code>StandardAnalyzer</code> does not default to having
+English stopwords if no stop words are provided. The setting up until
+Apache Lucene 8 had the stopwords:</p>
+<pre>
+      "a"  "an"  "and"  "are"  "as"  "at"  "be"  "but"  "by"  "for"  "if"  "in"  "into"  "is" 
+      "it"  "no"  "not"  "of"  "on"  "or"  "such"  "that"  "the"  "their"  "then"  "there" 
+      "these"  "they"  "this"  "to"  "was"  "will"  "with"
+</pre>
 <p>In case of a <code>TextIndexLucene</code> the default analyzer can be replaced by another analyzer with
 the <code>text:analyzer</code> property on the <code>text:TextIndexLucene</code> resource in the
 <a href="#text-dataset-assembler">text dataset assembler</a>,  for example with a <code>SimpleAnalyzer</code>:</p>
