@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - A SPARQL Processor for Jena</title>
+    <title>Apache Jena - ARQ - Lateral Join</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/lateral-join.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -141,9 +141,6 @@
 
 
 
-
-    
-    
 
 
 <ol class="breadcrumb">
@@ -163,7 +160,15 @@
         
         
             
-                <li class="active">QUERY</li>
+                <li><a href='/documentation/query'>QUERY</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="active">LATERAL JOIN</li>
             
             
         
@@ -175,132 +180,122 @@
 
                 
             </div>
-            <h1 class="title">ARQ - A SPARQL Processor for Jena</h1>
+            <h1 class="title">ARQ - Lateral Join</h1>
             
-	<p>ARQ is a query engine for <a href="https://jena.apache.org/">Jena</a> that
-supports the
-<a href="http://www.w3.org/TR/sparql11-query/">SPARQL RDF Query language</a>.
-SPARQL is the query language developed by the W3C
-<a href="http://www.w3.org/2001/sw/DataAccess/">RDF Data Access Working Group</a>.</p>
-<h2 id="arq-features">ARQ Features</h2>
+	<p>Lateral joins using the keyword <code>LATERAL</code> were introduced in Apache Jena 4.7.0.</p>
+<p>A <code>LATERAL</code> join is like a foreach loop, looping on the results from the
+left-hand side (LHS), the pattern before the <code>LATERAL</code> keyword, and executing
+the right-hand side (RHS) query pattern once for each row, with the variables
+from the input LHS in-scope during each RHS evaluation.</p>
+<p>A regular join only executes the RHS once, and the variables from the LHS are
+used for the join condition after evaluation of the left and right
+sub-patterns.</p>
+<p>Another way to think of a lateral join is as a <code>flatmap</code>.</p>
+<p>Examples:</p>
+<pre><code>## Get exactly one label for each subject with type `:T`
+SELECT * {
+   ?s rdf:type :T
+   LATERAL {
+     SELECT * { ?s rdfs:label ?label } LIMIT 1
+   }
+}
+</code></pre><pre><code>## Get zero or one labels for each subject.
+SELECT * {
+   ?s ?p ?o
+   LATERAL { OPTIONAL { SELECT * ?s rdfs:label ?label } LIMIT 1}
+   }
+}
+</code></pre><h4 id="syntax">Syntax</h4>
+<p>The <code>LATERAL</code> keyword which takes the graph pattern so far in the group, from
+the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
+<h4 id="evaluation">Evaluation</h4>
+<p><a href="https://afs.github.io/substitute.html">Substituting variables</a> from the LHS into the RHS (with the same restrictions), then executing the pattern, gives the evaluation of <code>LATERAL</code>.</p>
+<h4 id="variable-assignment">Variable assignment</h4>
+<p>There needs to be a new syntax restriction: there can no variable introduced by
+<code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
+<code>LATERAL</code> RHS, that is the same name as any
+<a href="https://www.w3.org/TR/sparql11-query/#variableScope">in-scope</a> variable from
+the LHS.</p>
+<p>Such a variable assignment would conflict with the variable being set in
+variables of the row being joined.</p>
+<pre><code>## ** Illegal **
+SELECT * {
+   ?s ?p ?o
+   LATERAL { BIND( 123 AS ?o) }
+}
+</code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
+<p>In ARQ, <a href="assignment.html">LET</a> would work.
+<code>LET</code> for a variable that is bound acts like a filter.</p>
+<h4 id="variable-scopes">Variable Scopes</h4>
+<p>In looping on the input, a lateral join makes the bindings of variables in the current row
+available to the right hand side pattern, setting their value from the top down.</p>
+<p>In SPARQL, it is possible to have variables of the same name which are not
+exposed within a sub-select. These are not lateral-joined to a variable of the
+same name from the LHS.</p>
+<p>This is not speciifc to lateral joins. In</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?s rdfs:label ?label } }
+</code></pre><p>the inner <code>?s</code> can be replaced by <code>?z</code> without changing the results because the
+inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is hidden by the <code>SELECT ?label</code>.</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?z rdfs:label ?label } }
+</code></pre><p>The same rule applies to lateral joins.</p>
+<pre><code>SELECT * {
+   ?s rdf:type :T 
+   LATERAL {
+     SELECT ?label { ?s rdfs:label ?label } LIMIT 1
+   }
+}
+</code></pre><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
+<code>?label</code> for the same results.</p>
+<h3 id="notes">Notes</h3>
+<p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the non-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to an SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
+<h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
+<h3 id="syntax-1">Syntax</h3>
+<p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
+<pre><code>[56]  	GraphPatternNotTriples	  ::=  	GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
+[57]  	OptionalGraphPattern	  ::=  	'OPTIONAL' GroupGraphPattern
+[  ]  	LateralGraphPattern	  ::=  	'LATERAL' GroupGraphPattern
+</code></pre><h3 id="algebra">Algebra</h3>
+<p>The new algebra operator is <code>lateral</code> which takes two expressions</p>
+<pre><code>  SELECT * {
+    ?s  ?p  ?o
+    LATERAL
+      { ?a  ?b  ?c }
+}
+</code></pre><p>is translated to:</p>
+<pre><code>  (lateral
+    (bgp (triple ?s ?p ?o))
+    (bgp (triple ?a ?b ?c)))
+</code></pre><h3 id="evaluation-1">Evaluation</h3>
+<p>To evaluate <code>lateral</code>:</p>
 <ul>
-<li>Standard SPARQL</li>
-<li>Free text search via Lucene</li>
-<li>SPARQL/Update</li>
-<li>Access and extension of the SPARQL algebra</li>
-<li>Support for custom filter functions, including javascript functions</li>
-<li>Property functions for custom processing of semantic
-relationships</li>
-<li>Aggregation, GROUP BY and assignment as SPARQL extensions</li>
-<li>Support for federated query</li>
-<li>Support for extension to other storage systems</li>
-<li>Client-support for remote access to any SPARQL endpoint</li>
+<li>Evaluate the first argument (left-hand side from syntax) to get a multiset of solution mappings.</li>
+<li>For each solution mapping (&ldquo;row&rdquo;),
+inject variable bindings into the second argument
+Evaluate this pattern
+Add to results</li>
 </ul>
-<h2 id="introduction">Introduction</h2>
-<ul>
-<li><a href="/tutorials/sparql.html">A Brief Tutorial on SPARQL</a></li>
-<li><a href="app_api.html">Application API</a> - covers the majority of
-application usages</li>
-<li><a href="faq.html">Frequently Asked Questions</a></li>
-<li><a href="support.html">ARQ Support</a></li>
-<li>Application <a href="/documentation/javadoc/arq/index.html">javadoc</a></li>
-<li><a href="cmds.html">Command line utilities</a></li>
-<li><a href="sparql-remote.html">Querying remote SPARQL services</a>
-<ul>
-<li><a href="http-auth.html">HTTP Authentication for ARQ</a></li>
-</ul>
-</li>
-<li><a href="logging.html">Logging</a></li>
-<li><a href="explain.html">Explaining queries</a></li>
-<li><a href="manipulating_sparql_using_arq.html">Tutorial: manipulating SPARQL using ARQ</a></li>
-<li><a href="service.html">Basic federated query (<code>SERVICE</code>)</a></li>
-<li><a href="property_paths.html">Property paths</a></li>
-<li><a href="group-by.html">GROUP BY and counting</a></li>
-<li><a href="select_expr.html">SELECT expressions</a></li>
-<li><a href="sub-select.html">Sub-SELECT</a></li>
-<li><a href="negation.html">Negation</a></li>
-</ul>
-<p>Features of ARQ that are legal SPARQL syntax</p>
-<ul>
-<li><a href="function_forms.html">Conditions in FILTERs</a></li>
-<li><a href="text-query.html">Free text searches</a></li>
-<li><a href="rdf_lists.html">Accessing lists</a> (RDF collections)</li>
-<li><a href="extension.html">Extension mechanisms</a>
-<ul>
-<li><a href="extension.html#valueFunctions">Custom Expression Functions</a></li>
-<li><a href="extension.html#property-functions">Property Functions</a></li>
-</ul>
-</li>
-<li>Library
-<ul>
-<li><a href="library-function.html">Expression function library</a></li>
-<li><a href="library-propfunc.html">Property function library</a></li>
-</ul>
-</li>
-<li><a href="writing_functions.html">Writing SPARQL functions</a></li>
-<li><a href="javascript-functions.html">Writing SPARQL functions in JavaScript</a></li>
-<li><a href="custom_service_executors.html">Custom execution of <code>SERVICE</code></a></li>
-<li><a href="programmatic.html">Constructing queries programmatically</a></li>
-<li><a href="parameterized-sparql-strings.html">Parameterized query strings</a></li>
-<li><a href="algebra.html">ARQ and the SPARQL algebra</a></li>
-<li><a href="arq-query-eval.html">Extending ARQ query execution and accessing different storage implementations</a></li>
-<li><a href="custom_aggregates.html">Custom aggregates</a></li>
-<li><a href="service_enhancer.html">Caching and bulk-retrieval for SERVICE</a></li>
-</ul>
-<h2 id="extensions">Extensions</h2>
-<p>Feature of ARQ that go beyond SPARQL syntax.</p>
-<ul>
-<li><a href="lateral-join.html">LATERAL Join</a></li>
-<li><a href="https://w3c.github.io/rdf-star/">RDF-star</a></li>
-<li>Operators and functions
-<code>[MOD](https://www.w3.org/TR/xpath-functions/#func-numeric-mod)</code>
-and <code>[IDIV](https://www.w3.org/TR/xpath-functions/#func-numeric-integer-divide)</code> for modulus and integer division.</li>
-<li><a href="assignment.html">LET variable assignment</a></li>
-<li><a href="collation.html">Order results using a Collation</a></li>
-<li><a href="construct-quad.html">Construct Quad</a></li>
-<li><a href="generate-json-from-sparql.html">Generate JSON from SPARQL</a></li>
-</ul>
-<h2 id="update">Update</h2>
-<p>ARQ supports the W3C standard SPARQL Update language.</p>
-<ul>
-<li><a href="http://www.w3.org/TR/sparql11-update/">SPARQL Update</a></li>
-<li><a href="update.html">The ARQ SPARQL/Update API</a></li>
-</ul>
-<h2 id="see-also">See Also</h2>
-<ul>
-<li><a href="../fuseki2/index.html">Fuseki</a> - Server implementation of the SPARQL protocol.</li>
-<li><a href="../tdb">TDB - A SPARQL database for Jena</a>, a pure Java persistence layer for large graphs, high performance applications and embedded use.</li>
-<li><a href="../rdfconnection">RDFConnection</a>, a unified API for SPARQL Query, Update and Graph Store Protocol.</li>
-</ul>
-<h2 id="w3c-documents">W3C Documents</h2>
-<ul>
-<li><a href="http://www.w3.org/TR/sparql11-query/">SPARQL Query Language specification</a></li>
-<li><a href="https://www.w3.org/TR/sparql11-results-json/">SPARQL Query Results JSON Format</a></li>
-<li><a href="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL Protocol</a></li>
-</ul>
-<h2 id="articles">Articles</h2>
-<p>Articles and documentation elsewhere:</p>
-<ul>
-<li><a href="http://xml.com/lpt/a/2005/11/16/introducing-sparql-querying-semantic-web-tutorial.html">Introducing SPARQL: Querying the Semantic Web</a>
-(<a href="http://www.xml.com/">xml.com</a> article by Leigh Dodds)</li>
-<li><a href="http://www.ibm.com/developerworks/xml/library/j-sparql/">Search RDF data with SPARQL</a>
-(by Phil McCarthy) - article published on IBM developer works about
-SPARQL and Jena.</li>
-<li><a href="http://www.dajobe.org/2005/04-sparql/">SPARQL reference card</a>
-(by <a href="http://www.dajobe.org/">Dave Beckett</a>)</li>
-<li><a href="http://www.ldodds.com/blog/archives/000251.html">Parameterised Queries with SPARQL and ARQ</a>
-(by Leigh Dodds)</li>
-<li><a href="http://www.ldodds.com/blog/archives/000252.html">Writing an ARQ Extension Function</a>
-(by Leigh Dodds)</li>
-</ul>
-<h2 id="rdf-syntax-specifications">RDF Syntax Specifications</h2>
-<ul>
-<li><a href="https://www.w3.org/TR/turtle/">Turtle</a></li>
-<li><a href="https://www.w3.org/TR/n-triples">N-Triples</a></li>
-<li><a href="https://www.w3.org/TR/trig/">TriG</a></li>
-<li><a href="https://www.w3.org/TR/n-quads/">N-Quads</a></li>
-</ul>
+<p>Outline:</p>
+<pre><code>Definition: Lateral
 
+Let Ω be a multiset of solution mappings. We define:
+
+Lateral(Ω, P) = { μ | union of Ω1 where 
+           foreach μ1 in Ω:
+               pattern2 = inject(pattern, μ1)
+               Ω1 = eval(D(G), pattern2)
+	       result Ω1
+	   }
+</code></pre><p>where <code>inject</code> is the <a href="https://afs.github.io/substitute.html">corrected <code>substitute</code></a> operation.</p>
+<p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is in-scope&rdquo; in some
+way, rather than rely on <code>inject</code> which is a mechanism.</p>
+<pre><code>Definition: Evaluation of Lateral
+
+eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)
+</code></pre>
 
         </div>
     </div>
