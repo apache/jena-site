@@ -2,13 +2,13 @@
 title: Using Jena with Apache Maven
 ---
 
-[Apache Maven](http://maven.apache.org) is a tool to help Java projects manage
+[Apache Maven](https://maven.apache.org) is a tool to help Java projects manage
 their dependencies on library code, such as Jena. By declaring a dependency on
 the core of Jena in your project's <code>pom.xml</code> file, you will get the
 consistent set of library files that Jena depends on automatically added too.
 
 This page assumes you have Maven installed on your computer. If this is not the case,
-please read and follow [these instructions](http://maven.apache.org/download.html#Installation).
+please read and follow [these instructions](https://maven.apache.org/download.html#Installation).
 
 ### Repositories
 

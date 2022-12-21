@@ -106,6 +106,6 @@ Some Jena developers hang out on #jena on irc.freenode.net.
 
 To better understand how to get involved and how the Apache Software Foundation works we recommend you read:
 
- * [http://www.apache.org/foundation/getinvolved.html](http://www.apache.org/foundation/getinvolved.html)
- * [http://www.apache.org/foundation/how-it-works.html](http://www.apache.org/foundation/how-it-works.html)
- * [http://www.apache.org/dev/contributors.html](http://www.apache.org/dev/contributors.html)
+ * [https://www.apache.org/foundation/getinvolved.html](https://www.apache.org/foundation/getinvolved.html)
+ * [https://www.apache.org/foundation/how-it-works.html](https://www.apache.org/foundation/how-it-works.html)
+ * [https://www.apache.org/dev/contributors.html](https://www.apache.org/dev/contributors.html)

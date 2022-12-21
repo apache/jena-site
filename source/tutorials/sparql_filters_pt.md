@@ -33,7 +33,7 @@ resultados:
     -------------
 
 A linguagem de expressão regular 
-[XQuery regular expression language](http://www.w3.org/TR/xpath-functions/#regex-syntax)
+[XQuery regular expression language](https://www.w3.org/TR/xpath-functions/#regex-syntax)
 é a versão codificada da mesma encontrada em Perl.
 
 ## Testando valores

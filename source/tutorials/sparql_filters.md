@@ -41,7 +41,7 @@ with the results:
     -------------
 
 The regular expression language is the same as the
-[XQuery regular expression language](http://www.w3.org/TR/xpath-functions/#regex-syntax)
+[XQuery regular expression language](https://www.w3.org/TR/xpath-functions/#regex-syntax)
 which is codified version of that found in Perl.
 
 ## Testing Values

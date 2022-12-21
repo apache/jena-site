@@ -4,7 +4,7 @@ slug: index
 ---
 
 Apache Jena (or Jena in short) is a free and open source Java 
-framework for building [semantic web](http://en.wikipedia.org/wiki/Semantic_Web) and 
+framework for building [semantic web](https://en.wikipedia.org/wiki/Semantic_Web) and 
 [Linked Data](http://linkeddata.org/) applications.
 The framework is composed of different APIs interacting together to process RDF data. If you are new here, you might want to
 get started by following one of the [tutorials](/tutorials/index.html). You can also browse [the documentation](/documentation/index.html) if you are interested in a particular topic.

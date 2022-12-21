@@ -17,7 +17,7 @@ to subscribe with. This list is a good place to ask for advice on developing Jen
 applications, or solving  a problem with using Jena. *Please see below for notes
 on asking good questions*. The list is archived at
 [lists.apache.org](https://lists.apache.org/list.html?users@jena.apache.org)
-or externally at [jena.markmail.org](http://jena.markmail.org/search/)
+or externally at [jena.markmail.org](https://jena.markmail.org/search/)
 
 The *developers* list is `dev@jena.apache.org`. To join this
 list, please send an email to: <a href="mailto:dev-subscribe@jena.apache.org">
@@ -27,14 +27,14 @@ platform itself, including patches you want to submit.
 
 To unsubscribe from a mailing list, send email to `LIST-unsubscribe@jena.apache.org`.
 
-Full details of Apache mailing lists: [http://www.apache.org/foundation/mailinglists.html](http://www.apache.org/foundation/mailinglists.html).
+Full details of Apache mailing lists: [https://www.apache.org/foundation/mailinglists.html](https://www.apache.org/foundation/mailinglists.html).
 
 ## Other resources
 
 There are curated collections of Jena questions on StackOverflow 
-[tagged 'jena'](http://stackoverflow.com/questions/tagged/jena) and 
-['apache-jena'](http://stackoverflow.com/questions/tagged/apache-jena).
-There are also [questions and answers about SPARQL](http://stackoverflow.com/questions/tagged/sparql).
+[tagged 'jena'](https://stackoverflow.com/questions/tagged/jena) and 
+['apache-jena'](https://stackoverflow.com/questions/tagged/apache-jena).
+There are also [questions and answers about SPARQL](https://stackoverflow.com/questions/tagged/sparql).
 
 ## How to ask a good question
 
@@ -55,7 +55,7 @@ Asking good questions is **the best way to get good answers**. Try to follow the
   is often enough for you to figure out the problem yourself, which is always satisfying!
 
   - **Don't re-post your question** after only a few hours. People are busy, and may be in a different timezone
-  to you. If you're not sure if your question made it to the list, [look in the archive](http://markmail.org/search/?q=list:org.apache.jena.*).
+  to you. If you're not sure if your question made it to the list, [look in the archive](https://markmail.org/search/?q=list:org.apache.jena.*).
 
   - **Adding lots of exclamation marks** or other punctuation will **not** move your question up the queue. Quite the
   reverse, in fact.

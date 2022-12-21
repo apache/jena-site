@@ -17,10 +17,10 @@ description, please see the [getting started](/getting_started/) guide.
 Quelques uns des tutoriels de Jena sont aussi disponibles en français. Vous
 pouvez les voir en suivant ces liens:
 
-- [Une introduction à RDF](http://web-semantique.developpez.com/tutoriels/jena/introduction-rdf/)
-- [Requêtes SPARQL utilisant l'API Java ARQ](http://web-semantique.developpez.com/tutoriels/jena/arq/api-application/)
-- [Les entrées/sorties RDF](http://web-semantique.developpez.com/tutoriels/jena/io/)
-- [Une introduction à SPARQL](http://web-semantique.developpez.com/tutoriels/jena/arq/introduction-sparql/)
+- [Une introduction à RDF](https://web-semantique.developpez.com/tutoriels/jena/introduction-rdf/)
+- [Requêtes SPARQL utilisant l'API Java ARQ](https://web-semantique.developpez.com/tutoriels/jena/arq/api-application/)
+- [Les entrées/sorties RDF](https://web-semantique.developpez.com/tutoriels/jena/io/)
+- [Une introduction à SPARQL](https://web-semantique.developpez.com/tutoriels/jena/arq/introduction-sparql/)
 
 Os tutoriais a seguir explicam aspectos de RDF e da programação em Jena de aplicações linked-data. Veja também o guia
 [getting started](/getting_started/) - em inglês.
@@ -32,7 +32,7 @@ Os tutoriais a seguir explicam aspectos de RDF e da programação em Jena de apl
 
 Simplified Chinese:
 
-- [RDF 和 Jena RDF API 入门](http://domdong.blogspot.com.au/2013/04/an-introduction-to-rdf-and-jena-rdf-api.html)
+- [RDF 和 Jena RDF API 入门](https://domdong.blogspot.com.au/2013/04/an-introduction-to-rdf-and-jena-rdf-api.html)
 
 Greek:
 
