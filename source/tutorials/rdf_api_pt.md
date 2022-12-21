@@ -46,7 +46,7 @@ relativamente simples, então esta abordagem não exigirá muito tempo.</p>
 <p> O framework de descrição de recursos (RDF) é um padrão (tecnicamente uma recomendação da W3C) para descrever recursos. Mas o que são recursos? Isso é uma questão profunda e a definição precisa ainda é um assunto de debates. Para nossos propósitos, nós podemos pensar em recursos como tudo que podemos identificar. Você é um recurso, assim como sua página pessoal, este tutorial, o número um e a grande baleia branca em Moby Dick.</p>
 
 <p>Nossos exemplos neste tutorial serão sobre pessoas.  Elas usam uma <a
-href="http://www.w3.org/TR/vcard-rdf">representação RDF de cartão de negócios (VCARDS)</a>. RDF é melhor representado como um diagrama de nós e arcos. Um simples vcard se assemelha a isto em RDF:</p>
+href="https://www.w3.org/TR/vcard-rdf">representação RDF de cartão de negócios (VCARDS)</a>. RDF é melhor representado como um diagrama de nós e arcos. Um simples vcard se assemelha a isto em RDF:</p>
 
 <p align="center">
 <img border="0" src="figures/fig1.png" alt="figure 1" width="240" height="180"></p>
@@ -191,8 +191,8 @@ http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#FN  "John Smith"
 
 <p>Agora você sabe o porquê de ser simples elaborar modelos. Se você olhar atentamente, você perceberá que cada linha consiste de três campos representando o sujeito, predicado e objeto de cada sentença. Há quatro arcos no nosso modelo, então há quatro sentenças. O "anon:14df86:ecc3dee17b:-7fff" é um identificador interno gerado pelo Jena. Não é uma URI e não deve ser confundido como tal. É simplesmente um nome interno usado pela implementação do Jena.</p>
 
-<p>O W3C <a href="http://www.w3.org/2001/sw/RDFCore/">RDFCore Working
-Group</a> definiu uma notação similar chamada <a href="http://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples</a>. O nome significa "notação de triplas". Nós veremos na próxima sessão que o Jena possui uma interface de escrita de N-Triples também.</p>
+<p>O W3C <a href="https://www.w3.org/2001/sw/RDFCore/">RDFCore Working
+Group</a> definiu uma notação similar chamada <a href="https://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples</a>. O nome significa "notação de triplas". Nós veremos na próxima sessão que o Jena possui uma interface de escrita de N-Triples também.</p>
 
 <h2><a id="ch-Writing-RDF">Escrita de RDF</a></h2>
 
@@ -225,7 +225,7 @@ model.write(System.out);</pre>
 
 <p></p>
 
-<p>As especificações de RDF especificam como representar RDF como XML. A sintaxe de RDF XML é bastante complexa. Recomendamos ao leitor dar uma olhada no <a href="http://www.w3.org/TR/rdf-primer/">primer</a>  sendo desenvolvido pelo RDFCore WG para uma introdução mais detalhada. Entretanto, vamos dar uma olhada rápida em como interpretar a saída acima.</p>
+<p>As especificações de RDF especificam como representar RDF como XML. A sintaxe de RDF XML é bastante complexa. Recomendamos ao leitor dar uma olhada no <a href="https://www.w3.org/TR/rdf-primer/">primer</a>  sendo desenvolvido pelo RDFCore WG para uma introdução mais detalhada. Entretanto, vamos dar uma olhada rápida em como interpretar a saída acima.</p>
 
 <p>RDF é normalmente encapsulada num elemento &lt;rdf:RDF&gt;. O elemento é opcional se houver outras maneiras de saber se aquele XML é RDF, mas normalmente ele é presente. O elemento RDF define os dois namespaces usados no documento. Há um elemento  &lt;rdf:Description&gt; que descreve o recurso cuja URI é "http://somewhere/JohnSmith". Se o atributo rdf:about estivesse ausente, esse elemento representaria um blank node.</p>
 

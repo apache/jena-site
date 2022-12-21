@@ -10,16 +10,16 @@ slug: index
 Welcome to the Apache Jena project! Jena is a Java framework for building
 Semantic Web applications.
 Jena provides a collection of tools and Java libraries to help you
-to develop [semantic web](http://www.w3.org/2001/sw/) and
-[linked-data](http://linkeddata.org/) apps, tools and servers.
+to develop [semantic web](https://www.w3.org/2001/sw/) and
+[linked-data](https://linkeddata.org/) apps, tools and servers.
 
 The Jena Framework includes:
 
-* an API for reading, processing and writing [RDF](http://www.w3.org/RDF/) data in XML, N-triples and Turtle formats;
-* an ontology API for handling [OWL](http://www.w3.org/standards/techs/owl#w3c_all) and RDFS ontologies;
+* an API for reading, processing and writing [RDF](https://www.w3.org/RDF/) data in XML, N-triples and Turtle formats;
+* an ontology API for handling [OWL](https://www.w3.org/standards/techs/owl#w3c_all) and RDFS ontologies;
 * a rule-based inference engine for reasoning with RDF and OWL data sources;
 * stores to allow large numbers of RDF triples to be efficiently stored on disk;
-* a query engine compliant with the latest [SPARQL](http://www.w3.org/standards/semanticweb/query) specification
+* a query engine compliant with the latest [SPARQL](https://www.w3.org/standards/semanticweb/query) specification
 * servers to allow RDF data to be published to other applications using a variety
 of protocols, including SPARQL
 

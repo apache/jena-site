@@ -15,14 +15,14 @@ multiple ways to encode the same graph.  In this tutorial, we use a
 more "triple-like" serialization, called
 [Turtle](http://www.ilrt.bris.ac.uk/discovery/2004/01/turtle/) (see
 also N3 language described in the
-[W3C semantic web primer](http://www.w3.org/2000/10/swap/Primer)).
+[W3C semantic web primer](https://www.w3.org/2000/10/swap/Primer)).
 
 We will start with the simple data in [vc-db-1.rdf](sparql_data/vc-db-1.rdf):
 this file contains RDF for a number of vCard descriptions of
 people.  vCards are described in
-[RFC2426](http://www.ietf.org/rfc/rfc2426.txt) and the RDF
+[RFC2426](https://www.ietf.org/rfc/rfc2426.txt) and the RDF
 translation is described in the W3C note
-"[Representing vCard Objects in RDF/XML](http://www.w3.org/TR/vcard-rdf.html)". 
+"[Representing vCard Objects in RDF/XML](https://www.w3.org/TR/vcard-rdf.html)". 
 Our example database just contains some name information.
 
 Graphically, the data looks like:

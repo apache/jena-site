@@ -61,7 +61,7 @@ No diretório do ARQ, execute:
 
 Você pode simplesmente colocar o diretório `bin/` no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.
 
-[Cygwin](http://www.cygwin.com/) é um ambiente Linux para Windows.
+[Cygwin](https://www.cygwin.com/) é um ambiente Linux para Windows.
 
 ### Usando a aplicação de linhas de comando de Jena diretamente
 

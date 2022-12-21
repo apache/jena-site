@@ -81,7 +81,7 @@ so all developers should see the comments even if they aren't explicitly watchin
 Depending on where a patch comes from there may be IP clearance issues, for small patches this is generally a non-issue.
 Where this comes into play is when a large patch is coming in which has been developed completely externally to Jena, particularly if that patch has been developed for/on behalf of a company rather than be developers working in their free time.
 
-For patches like this we may require that the company in question submit a [CCLA](http://www.apache.org/licenses/cla-corporate.txt) and that the developers involve submit [ICLAs](http://www.apache.org/licenses/icla.txt).  There may also need to be IP Clearance vote called on the developer list to give developers a chance to review the code and check that there isn't anything being incorporated that violates Apache policy.
+For patches like this we may require that the company in question submit a [CCLA](https://www.apache.org/licenses/cla-corporate.txt) and that the developers involve submit [ICLAs](https://www.apache.org/licenses/icla.pdf).  There may also need to be IP Clearance vote called on the developer list to give developers a chance to review the code and check that there isn't anything being incorporated that violates Apache policy.
 
 ## Pull Requests and Commit Messages
 
