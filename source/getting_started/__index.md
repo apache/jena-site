@@ -9,7 +9,7 @@ framework for building [semantic web](https://en.wikipedia.org/wiki/Semantic_Web
 The framework is composed of different APIs interacting together to process RDF data. If you are new here, you might want to
 get started by following one of the [tutorials](/tutorials/index.html). You can also browse [the documentation](/documentation/index.html) if you are interested in a particular topic.
 
-<h2><img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Tutorials</h2>
+<h2><i class="bi-journal"></i> Tutorials</h2>
 
 * [RDF API tutorial](/tutorials/rdf_api.html) - you will learn 
 the essence of the semantic web and the graph representation
@@ -20,7 +20,7 @@ to formulate expressive queries over RDF data.
 usage of advanced semantic web features such as reasoning over your data using OWL.
 * Finally, [some of the tutorials](/tutorials/index.html) are also available in Traditional Chinese, Portuguese and French.
 
-<h2><img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Documentation</h2>
+<h2><i class="bi-book"></i> Documentation</h2>
 
 The following topics are covered in the documentation:
 
@@ -37,10 +37,10 @@ The following topics are covered in the documentation:
 * [TDB](/documentation/tdb/) - a fast persistent triple store that stores directly to disk
 * [Tools](/documentation/tools/) - various command-line tools and utilities to help developers manage RDF data and other aspects of Jena
 
-<h2><img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Framework Architecture</h2>
+<h2><i class="bi-puzzle"></i> Framework Architecture</h2>
 
 The interaction between the different APIs:
 
 ![Jena architecture overview](/images/jena-architecture.png "Jena architecture overview")
 
-<h2><img class="logo-menu" src="/images/jena-logo/jena-logo-notext-small.png" alt="jena logo">Other resources</h2>
+<h2><i class="bi-info-circle"></i> Other resources</h2>
