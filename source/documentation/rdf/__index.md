@@ -16,7 +16,9 @@ contained in a data structure called a `Model`. The model denotes an
 attached to each other by labelled relations. Each relationship goes
 only in one direction, so the triple:
 
-    example:ijd foaf:name "Ian"
+```turtle
+example:ijd foaf:name "Ian"
+```
 
 can be read as '*resource* `example:ijd` *has property* `foaf:name` *with value* `"Ian"`'.
 Clearly the reverse is not true. Mathematically, this makes the model an instance of a
@@ -86,8 +88,10 @@ as nodes in a graph, the common interface `RDFNode` is a super-class of both `Re
 In an RDF graph, the relationships always connect one subject resource to one other resource or
 one literal. For example:
 
-    example:ijd foaf:firstName "Ian".
-    example:ijd foaf:knows example:mary.
+```turtle
+example:ijd foaf:firstName "Ian".
+example:ijd foaf:knows example:mary.
+```
 
 The relationship, or *predicate*, always connects two nodes (formally, it has *arity* two). The first
 argument of the predicate is node we are linking *from*, and the second is the node we are linking
@@ -137,23 +141,29 @@ Fortunately, RDF specifies that a property is identified by a URI, and 'price' o
 A logical solution is for both Acme and Emca to use their own web spaces to provide different
 base URIs on which to construct the URI for the property:
 
-    http://acme.example/schema/products#price
-    http://emca.example/ontology/catalogue/price
+```
+http://acme.example/schema/products#price
+http://emca.example/ontology/catalogue/price
+```
 
 These are clearly now two distinct identities, and so each company can define the semantics of the
 price property without interfering with the other. Writing out such long strings each time, however,
 can be unwieldy and a source of error. A *compact URI* or [*curie*](http://www.w3.org/TR/curie/)
 is an abbreviated form in which a namespace and name are separated by a colon character:
 
-    acme-product:price
-    emca-catalogue:price
+```
+acme-product:price
+emca-catalogue:price
+```
 
 where `acme-product` is defined to be `http://acme.example/schema/products#`. This can be defined,
 for example, in Turtle:
 
-    @prefix acme-product: <http://acme.example/schema/products#>.
+```turtle
+@prefix acme-product: <http://acme.example/schema/products#>.
 
-    acme-product:widget acme-product:price "44.99"^^xsd:decimal.
+acme-product:widget acme-product:price "44.99"^^xsd:decimal.
+```
 
 The datatype `xsd:decimal` is another example of an abbreviated URI. Note that no `@prefix` rules
 are defined by RDF or Turtle: authors of RDF content should ensure that all prefixes used in curies
@@ -189,5 +199,4 @@ oaj.jena.rdf.listeners  | Listening for changes to the statements in a model |
 oaj.jena.reasoner|  The reasoner subsystem is supports a range of inference engines which derive additional information from an RDF model | [Reasoner how-to](/documentation/inference/index.html)
 oaj.jena.shared | Common utility classes |
 oaj.jena.vocabulary | A package containing constant classes with predefined constant objects for classes and properties defined in well known vocabularies. |
-
 oaj.jena.xmloutput |   Writing RDF/XML. | [I/O index](/documentation/io/index.html)

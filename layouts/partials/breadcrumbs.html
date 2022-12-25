@@ -7,15 +7,15 @@
     {{ $.Scratch.Set "url" $newUrl }}
 {{ end }}
 
-<ol class="breadcrumb">
+<ol class="breadcrumb mt-4 p-2 bg-body-tertiary">
     {{ $splittedUrl := split ($.Scratch.Get "url") "/" }}
     {{ range $index, $element := $splittedUrl }}
         {{ $.Scratch.Add "breadcrumb_path" $element }}
         {{ if ne $element "" }}
             {{ if eq $index (sub (len $splittedUrl) 1) }}
-                <li class="active">{{ upper (replace (humanize .) ".html" "") }}</li>
+                <li class="breadcrumb-item active">{{ upper (replace (humanize .) ".html" "") }}</li>
             {{ else }}
-                <li><a href='{{ $.Scratch.Get "breadcrumb_path" }}'>{{ upper (replace (humanize .) ".html" "") }}</a></li>
+                <li class="breadcrumb-item"><a href='{{ $.Scratch.Get "breadcrumb_path" }}'>{{ upper (replace (humanize .) ".html" "") }}</a></li>
             {{ end }}
             {{ $.Scratch.Add "breadcrumb_path" "/" }}
         {{ end }}
