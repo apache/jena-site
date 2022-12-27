@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../../script-dir/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="../../../../../../script-dir/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -87,7 +87,12 @@ loadScripts(document, 'script');</script>
  finite-sized concurrent <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/BlockingQueue.html" title="class or interface in java.util.concurrent" class="external-link"><code>BlockingQueue</code></a>.
  <p>
  There are overheads, so this is only beneficial in some situations. Delivery to
- the StreamRDF has an initial latency while the first batch of work is accumulated.</div>
+ the StreamRDF has an initial latency while the first batch of work is accumulated.
+ Using the <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> gives control over the chunk size such that initial latency
+ can be reduced at the cost of possibly decreasing the overall throughput.
+ <p>
+ Closing the returned <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ClosableIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link"><code>ClosableIterator</code></a>s terminates the parsing
+ process and closes the involved resources.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -112,7 +117,7 @@ loadScripts(document, 'script');</script>
  and sends the output to a StreamRDF on the callers thread.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParse(java.lang.String,org.apache.jena.riot.system.StreamRDF)" class="member-name-link">asyncParse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filesOrURL,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParse(java.lang.String,org.apache.jena.riot.system.StreamRDF)" class="member-name-link">asyncParse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL,
  <a href="StreamRDF.html" title="interface in org.apache.jena.riot.system">StreamRDF</a>&nbsp;output)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Function that reads a file or GETs a URL, parses the content on a separate
@@ -125,19 +130,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Function that parses content from a list of files or URLs on a separate thread
  and sends the output to a StreamRDF on the callers thread.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseQuads(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)" class="member-name-link">asyncParseQuads</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
  <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - quads.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseQuads(java.lang.String)" class="member-name-link">asyncParseQuads</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - quads</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseQuads(java.util.List)" class="member-name-link">asyncParseQuads</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - quads</div>
@@ -149,22 +154,49 @@ loadScripts(document, 'script');</script>
 <div class="block">Parse a number of sources (<a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilders</code></a>) on a separate thread and
  send the output to a StreamRDF on the callers thread.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseTriples(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)" class="member-name-link">asyncParseTriples</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
  <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - triples.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseTriples(java.lang.String)" class="member-name-link">asyncParseTriples</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - triples</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#asyncParseTriples(java.util.List)" class="member-name-link">asyncParseTriples</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Pull parser - triples</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#of(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)" class="member-name-link">of</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
+ <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
+ <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from an input stream.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#of(java.lang.String)" class="member-name-link">of</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a file or URL.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#of(org.apache.jena.riot.RDFParserBuilder)" class="member-name-link">of</a><wbr>(<a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a>&nbsp;source)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from an <a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#ofLocations(java.util.List)" class="member-name-link">ofLocations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a set of files and/or URLs.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#ofSources(java.util.List)" class="member-name-link">ofSources</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a>&gt;&nbsp;sources)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a set of <a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> instances.</div>
 </div>
 </div>
 </div>
@@ -186,7 +218,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="asyncParse(java.lang.String,org.apache.jena.riot.system.StreamRDF)">
 <h3>asyncParse</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">asyncParse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filesOrURL,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">asyncParse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL,
  <a href="StreamRDF.html" title="interface in org.apache.jena.riot.system">StreamRDF</a>&nbsp;output)</span></div>
 <div class="block">Function that reads a file or GETs a URL, parses the content on a separate
  thread and sends the output to a StreamRDF on the callers thread.</div>
@@ -224,21 +256,21 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="asyncParseTriples(java.lang.String)">
 <h3>asyncParseTriples</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</span></div>
 <div class="block">Pull parser - triples</div>
 </section>
 </li>
 <li>
 <section class="detail" id="asyncParseTriples(java.util.List)">
 <h3>asyncParseTriples</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</span></div>
 <div class="block">Pull parser - triples</div>
 </section>
 </li>
 <li>
 <section class="detail" id="asyncParseTriples(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)">
 <h3>asyncParseTriples</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">asyncParseTriples</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
  <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</span></div>
 <div class="block">Pull parser - triples.
@@ -249,26 +281,63 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="asyncParseQuads(java.lang.String)">
 <h3>asyncParseQuads</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</span></div>
 <div class="block">Pull parser - quads</div>
 </section>
 </li>
 <li>
 <section class="detail" id="asyncParseQuads(java.util.List)">
 <h3>asyncParseQuads</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</span></div>
 <div class="block">Pull parser - quads</div>
 </section>
 </li>
 <li>
 <section class="detail" id="asyncParseQuads(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)">
 <h3>asyncParseQuads</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.jena.atlas.iterator.IteratorCloseable&lt;<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&gt;</span>&nbsp;<span class="element-name">asyncParseQuads</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
  <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</span></div>
 <div class="block">Pull parser - quads.
  <p>
  See also <a href="../lang/RiotParsers.html#createIteratorNQuads(java.io.InputStream,org.apache.jena.riot.system.StreamRDF)"><code>RiotParsers.createIteratorNQuads(java.io.InputStream, org.apache.jena.riot.system.StreamRDF)</code></a>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="of(java.lang.String)">
+<h3>of</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></span>&nbsp;<span class="element-name">of</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileOrURL)</span></div>
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a file or URL.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ofLocations(java.util.List)">
+<h3>ofLocations</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></span>&nbsp;<span class="element-name">ofLocations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;filesOrURLs)</span></div>
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a set of files and/or URLs.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="of(java.io.InputStream,org.apache.jena.riot.Lang,java.lang.String)">
+<h3>of</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></span>&nbsp;<span class="element-name">of</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input,
+ <a href="../Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang,
+ <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baseURI)</span></div>
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from an input stream.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="of(org.apache.jena.riot.RDFParserBuilder)">
+<h3>of</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></span>&nbsp;<span class="element-name">of</span><wbr><span class="parameters">(<a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a>&nbsp;source)</span></div>
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from an <a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ofSources(java.util.List)">
+<h3>ofSources</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system">AsyncParserBuilder</a></span>&nbsp;<span class="element-name">ofSources</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a>&gt;&nbsp;sources)</span></div>
+<div class="block">Create an <a href="AsyncParserBuilder.html" title="class in org.apache.jena.riot.system"><code>AsyncParserBuilder</code></a> from a set of <a href="../RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> instances.</div>
 </section>
 </li>
 </ul>
@@ -280,7 +349,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Licenced under the Apache License, Version 2.0</small></p>
+<p class="legal-copy"><small>Licensed under the Apache License, Version 2.0</small></p>
 </footer>
 </div>
 </div>
