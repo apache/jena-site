@@ -1,6 +1,9 @@
 ---
 title: RDF Patch
 slug: index
+aliases:
+    - /documentation/rdfpatch/
+    - /documentation/rdfpatch/index.html
 ---
 
 This page describes RDF Patch. An RDF Patch is a set of changes to an
