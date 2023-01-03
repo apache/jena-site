@@ -107,7 +107,10 @@ The inner `?s` in the `SELECT ?label` is not the outer `?s` because the `SELECT
 
 ### Notes
 
-There is a similarity to filter `NOT EXISTS`/`EXISTS` expressed as the non-legal `FILTER ( ASK { pattern } )` where the variables of the row being filtered are available to "pattern". This is similar to an SQL [correlated subquery](https://en.wikipedia.org/wiki/Correlated_subquery).
+There is a similarity to filter `NOT EXISTS`/`EXISTS` expressed as the non-legal
+`FILTER ( ASK { pattern } )` where the variables of the row being filtered are
+available to "pattern". This is similar to an SQL
+[correlated subquery](https://en.wikipedia.org/wiki/Correlated_subquery).
 
 ## SPARQL Specification Additional Material
 
@@ -162,10 +165,11 @@ Lateral(Ω, P) = { μ | union of Ω1 where
 	       result Ω1
 	   }
 ```
-where `inject` is the [corrected `substitute`](https://afs.github.io/substitute.html) operation.
+where `inject` is the [corrected `substitute`](https://afs.github.io/substitute.html) 
+operation.
 
-An alternative style is to define Lateral more like "evaluate P such that μ is in-scope" in some
-way, rather than rely on `inject` which is a mechanism. 
+An alternative style is to define Lateral more like "evaluate P such that μ is
+in-scope" in some way, rather than rely on `inject` which is a mechanism.
 
 ```
 Definition: Evaluation of Lateral

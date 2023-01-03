@@ -1,4 +1,4 @@
-f---
+---
 title: RDF Patch
 slug: index
 ---
