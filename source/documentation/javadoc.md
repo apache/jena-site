@@ -12,6 +12,7 @@ title: Jena JavaDoc
 - [Text search](javadoc/text/index.html)
 - [SHACL](javadoc/shacl/index.html)
 - [ShEx](javadoc/shex/index.html)
+- [RDF Patch](javadoc/rdfpatch/index.html)
 - [GeoSPARQL](javadoc/geosparql/index.html)
 - [Query Builder](javadoc/extras/querybuilder/index.html)
 - [Service Enhancer](javadoc/extras/serviceenhancer/index.html)
