@@ -187,11 +187,11 @@
 <li>Bulk requests</li>
 <li>Correlated joins also known as lateral joins</li>
 <li>A streaming cache for <code>SERVICE</code> requests results which can also cope with bulk requests and correlated joins. Furthermore, queries that only differ in limit and offset will result
-in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory caching provider.</li>
+in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory cache provider.</li>
 </ul>
 <p>As a fundamental principle, a request making use of <code>cache</code> and <code>bulk</code> should return the exact same result as if
-those settings were omitted. As a consequence runtime result set size recognition (RRR) is employed to reveal hidden
-result set limits and ensure that always only the appropriate amount of data is returned from the caches.</p>
+those settings were omitted. As a consequence, runtime result set size recognition (RRR) is employed to reveal hidden
+result set limits. This is used to ensure that always only the appropriate amount of data is returned from the caches.</p>
 <p>A correlated join using this plugin is syntactically expressed with <code>SERVICE &lt;loop:&gt; {}</code>.
 It is a binary operation on two graph patterns:
 The operation &ldquo;loops&rdquo; over every binding obtained from evaluation of the left-hand-side (lhs) and uses it as an input to substitute the variables of the right-hand-side (rhs).
@@ -213,7 +213,7 @@ It executes as a single remote request to Wikidata:</p>
   }
 }
 </code></pre></div><details>
-  <summary markdown="span">Click here to view the rewritten Query</summary>
+  <summary>Click here to view the rewritten query</summary>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
 <span style="color:#a2f;font-weight:bold">WHERE</span>
   {   {   { { <span style="color:#a2f;font-weight:bold">SELECT</span>  <span style="color:#666">*</span>
@@ -308,7 +308,7 @@ Every obtained binding&rsquo;s <code>?__idx__</code>  value determines the input
 A special value for <code>?__idx__</code> is the  end marker. It is a number higher than any input binding ID and it is used to detect result set size limits: It&rsquo;s absence in a result set
 means that it was cut off. This information is used to ensure that a request using a certain service IRI does not yield more results than limit.</p>
 </details>
-<p>Note that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
+<p>Note, that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
 The cache operates on a per-input-binding basis: For instance, in the example above it means that when removing bindings from the <code>VALUES</code> block data will
 still be served from the cache. Conversely, adding additional bindings to the <code>VALUES</code> block will only send a (bulk) remote request for those
 that lack cache entries.</p>
@@ -331,10 +331,10 @@ For more details about the transformation see <a href="#programmatic-algebra-tra
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit</span><span style="color:#666">;</span>
 
 ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
-</code></pre></div><p>As usual, in order to avoid a global setup, the the context of a dataset or statement execution (i.e. query / update) can be used instead:</p>
+</code></pre></div><p>As usual, in order to avoid a global setup, the context of a dataset or statement execution (i.e. query / update) can be used instead:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DatasetFactory dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">();</span>
 ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>dataset<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
-</code></pre></div><p>The lookup proceduce for which optimizer to wrap first consults the given context and then the global one.
+</code></pre></div><p>The lookup procedure for which optimizer to wrap first consults the given context and then the global one.
 If neither has an optimizer configured then Jena&rsquo;s default one will be used.</p>
 <p>Service requests that do not make use of this plugin&rsquo;s options will not be affected even if the plugin is loaded.
 The plugin registration makes use of the <a href="/documentation/query/custom_service_executors.html">custom service executor extension system</a>.</p>
@@ -342,7 +342,7 @@ The plugin registration makes use of the <a href="/documentation/query/custom_se
 <p>The <code>se:DatasetServiceEnhancer</code> assembler can be used to enable the SE plugin on a dataset.
 This procedure also automatically enables correlated joins using the dataset&rsquo;s context as described in <a href="#programmatic-setup">Programmatic Setup</a>.
 By default, the SE assembler alters the base dataset&rsquo;s context and returns the base dataset again.
-There is one important exception: If <code>se:enableMgmt</code> is true then the assembler&rsquo;s final step it to create a wrapped dataset with a copy of the original dataset&rsquo;s context where <code>enableMgmt</code> is true.
+There is one important exception: If <code>se:enableMgmt</code> is true then the assembler&rsquo;s final step is to create a wrapped dataset with a copy of the original dataset&rsquo;s context where <code>enableMgmt</code> is true.
 This way, management functions are not available in the base dataset.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ttl" data-lang="ttl"><span style="color:#080;font-style:italic"># assembler.ttl</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span><span style="color:#bbb">
@@ -355,12 +355,16 @@ This way, management functions are not available in the base dataset.</p>
 </span><span style="color:#bbb">                                          </span><span style="color:#080;font-style:italic"># identified by the tuple (service IRI, query, input binding)</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">cacheMaxPageCount</span><span style="color:#bbb"> </span><span style="color:#666">15</span><span style="color:#bbb"> </span>;<span style="color:#bbb">               </span><span style="color:#080;font-style:italic"># Maximum number of pages per cache entry</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">cachePageSize</span><span style="color:#bbb"> </span><span style="color:#666">10000</span><span style="color:#bbb"> </span>;<span style="color:#bbb">                </span><span style="color:#080;font-style:italic"># Number of bindings per page</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">bulkMaxSize</span><span style="color:#bbb"> </span><span style="color:#666">100</span><span style="color:#bbb"> </span>;<span style="color:#bbb">                    </span><span style="color:#080;font-style:italic"># Maximum number of input bindings to group into a bulk request</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">bulkSize</span><span style="color:#bbb"> </span><span style="color:#666">30</span><span style="color:#bbb"> </span>;<span style="color:#bbb">                        </span><span style="color:#080;font-style:italic"># Default bulk size when not specifying a size</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">bulkMaxOutOfBandSize</span><span style="color:#bbb"> </span><span style="color:#666">30</span><span style="color:#bbb"> </span>;<span style="color:#bbb">            </span><span style="color:#080;font-style:italic"># Dispatch non-full batches as soon as this number of non-fitting</span><span style="color:#bbb">
+</span><span style="color:#bbb">                                          </span><span style="color:#080;font-style:italic"># input bindings have been encountered</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">se:</span><span style="color:#008000;font-weight:bold">enableMgmt</span><span style="color:#bbb"> </span>false<span style="color:#bbb">                     </span><span style="color:#080;font-style:italic"># Enables management functions;</span><span style="color:#bbb">
 </span><span style="color:#bbb">                                          </span><span style="color:#080;font-style:italic"># wraps the base dataset with an independent context</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span>.<span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;urn:example:base&gt;</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryDataset</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
-</span></code></pre></div><p>In the example above, the shown values for <code>se:cacheMaxEntryCount</code>, <code>se:cacheMaxPageCount</code> and <code>se:cachePageSize</code> are the defaults which are used if those options are left unspecified.
+</span></code></pre></div><p>In the example above, the shown values for <code>se:cacheMaxEntryCount</code>, <code>se:cacheMaxPageCount</code>, <code>se:cachePageSize</code>, <code>se:bulkMaxSize</code>, <code>se:bulkSize</code> and <code>se:bulkMaxOutOfBandSize</code> are the defaults which are used if those options are left unspecified.
 They allow for caching up to 45mio bindings (300 x 15 x 10000).
 There is one caveat though: Specifying the cache options puts a new a cache instance in the dataset&rsquo;s context. Without these options the global cache instance that is registered in the ARQ context by the SE plugin during service loading is used.
 Presently, the global instance cannot be configured via the assembler.</p>
@@ -373,7 +377,7 @@ Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="col
 <p>This section assumes that one of the distributions of <code>apache-jena-fuseki</code> has been downloaded from [https://jena.apache.org/download/].
 The extracted folder should contain the <code>./fuseki-server</code> executable start script which automatically loads all jars (relative to <code>$PWD</code>) under <code>run/extra</code>.
 These folders need to be created e.g. using <code>mkdir -p run/extra</code>. The SE plugin can be manually built or downloaded from maven central (it is self-contained without transitive dependencies).
-Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki version should match.</p>
+Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki versions should match.</p>
 <h4 id="fuseki-assembler-configuration">Fuseki Assembler Configuration</h4>
 <p>The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
 Cache management can be performed via SPARQL extension functions. However, usually not every user should be allowed to invalidate caches as this
@@ -417,6 +421,12 @@ The context symbols are in the namespace <code>http://jena.apache.org/service-en
 <td>int</td>
 <td>100</td>
 <td>Maximum number of input bindings to group into a single bulk request; restricts <code>serviceBulkRequestItemCount</code>. When using <code>bulk+n</code> then <code>n</code> will be capped to the configured value.</td>
+</tr>
+<tr>
+<td><code>serviceBulkMaxOutOfBandBindingCount</code></td>
+<td>int</td>
+<td>30</td>
+<td>Dispatch non-full batches as soon as this number of non-fitting bindings have been read from the input iterator</td>
 </tr>
 <tr>
 <td><code>datasetId</code></td>
@@ -558,7 +568,7 @@ and derive a backend request that only fetches the needed parts.</p>
 </code></pre></div><p>Note, that in pathological cases this can require a bulk request to be repeatedly re-executed with disabled caches for each input binding.
 For example, assume that the largest result yet set seen for a service is 1000 and the system is about to serve the 1001st binding from cache for a specific input binding.
 The question is whether this would exceed the service&rsquo;s so far unknown result set size limit. Therefore, in order to answer that question a remote request that bypasses the cache is performed.
-Furthermore, let&rsquo;s assume that request produces 2000 results. Then for the problem repeats once another input binding&rsquo;s 2001st result was about to be served.</p>
+Furthermore, let&rsquo;s assume that another request produced 2000 results. Then the problem repeats once another input binding&rsquo;s 2001st result were about to be served.</p>
 <h3 id="sparql-functions">SPARQL Functions</h3>
 <p>The service enhancer plugin introduces functions and property functions for listing cache content and removing cache entries.
 The namespace is</p>
@@ -614,14 +624,14 @@ The namespace is</p>
 | 2  | &quot;urn:x-arq:self@dataset813601419&quot; | &quot;SELECT  (&lt;urn:x-arq:DefaultGraph&gt; AS ?g) ?p (count(*) AS ?c)\nWHERE\n  { ?s  a  ?o }\nGROUP BY ?p\n&quot; | &quot;( ?p = rdf:type )&quot; |
 | 3  | &quot;urn:x-arq:self@dataset813601419&quot; | &quot;SELECT  ?g ?p (count(*) AS ?c)\nWHERE\n  { GRAPH ?g\n      { ?s  a  ?o }\n  }\nGROUP BY ?g ?p\n&quot;     | &quot;( ?p = rdf:type )&quot; |
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-</code></pre><h4 id="example-invaliding-all-cache-entries">Example: Invaliding all cache entries</h4>
+</code></pre><h4 id="example-invaliding-all-cache-entries">Example: Invaliding All Cache Entries</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">se</span>: <span style="color:#a0a000">&lt;http://jena.apache.org/service-enhancer#&gt;</span>
 <span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheRm</span>() <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?count</span>) { }
-</code></pre></div><h4 id="example-invalidating-specific-cache-entries">Example: Invalidating specific cache entries</h4>
+</code></pre></div><h4 id="example-invalidating-specific-cache-entries">Example: Invalidating Specific Cache Entries</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">se</span>: <span style="color:#a0a000">&lt;http://jena.apache.org/service-enhancer#&gt;</span>
 
 <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#00a000">SUM</span>(<span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheRm</span>(<span style="color:#b8860b">?id</span>) <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?count</span>) {
-  <span style="color:#b8860b">?id</span> <span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheList</span> (<span style="color:#a0a000">&lt;http://dbpedia.org/sparql&gt;</span>)
+  <span style="color:#b8860b">?id</span> <span style="color:#00f;font-weight:bold">se</span>:<span style="color:#008000;font-weight:bold">cacheLs</span> (<span style="color:#a0a000">&lt;http://dbpedia.org/sparql&gt;</span>)
 }
 </code></pre></div><p>For completeness, the functions can be addressed via their fully qualified Java class names:</p>
 <pre><code>&lt;java:org.apache.jena.sparql.service.enhancer.pfunction.cacheLs&gt;
