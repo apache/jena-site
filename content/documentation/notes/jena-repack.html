@@ -194,41 +194,45 @@ documentation for process in Jena is <a href="system-initialization.html">availa
 dependencies and application code, the contents of the Jena files must
 be combined and be present in the combined jar as a java resource of the
 same name.</p>
+<h4 id="maven">Maven</h4>
 <p>The
 <a href="https://maven.apache.org/plugins/maven-shade-plugin/">maven shade plugin</a>
 is capable of doing this process in a build using a &ldquo;transformer&rdquo;.</p>
 <p>The Apache Jena uses the shade plugin technique itself to make the combined jar
 for Fuseki.  It uses the maven shade plugin with a <code>transformer</code>.</p>
 <p>This is an extract from the POM:</p>
-<pre><code>&lt;plugin&gt;
-  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-  &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
-  &lt;configuration&gt;
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#008000;font-weight:bold">&lt;plugin&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#008000;font-weight:bold">&lt;/groupId&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;artifactId&gt;</span>maven-shade-plugin<span style="color:#008000;font-weight:bold">&lt;/artifactId&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;configuration&gt;</span>
     ...
-    &lt;transformers&gt;
-      &lt;transformer 
-          implementation=&quot;org.apache.maven.plugins.shade.resource.ServicesResourceTransformer&quot;/&gt;
+    <span style="color:#008000;font-weight:bold">&lt;transformers&gt;</span>
+      <span style="color:#008000;font-weight:bold">&lt;transformer</span> 
+          <span style="color:#b44">implementation=</span><span style="color:#b44">&#34;org.apache.maven.plugins.shade.resource.ServicesResourceTransformer&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
       ... other transformers ...
-    &lt;/transformers&gt;
-</code></pre>
-<p>See
+    <span style="color:#008000;font-weight:bold">&lt;/transformers&gt;</span>
+  <span style="color:#008000;font-weight:bold">&lt;/configuration&gt;</span>
+<span style="color:#008000;font-weight:bold">&lt;/plugin&gt;</span>
+</code></pre></div><p>See
 <a href="https://github.com/apache/jena/blob/main/jena-fuseki2/jena-fuseki-server/pom.xml">jena-fuseki2/jena-fuseki-server/pom.xml</a>
 for the complete shade plugin setup used by Fuseki.</p>
-<p>If doing manually, create a single file in your application jar the
-all lines of all the services resource files. The order does not matter</p>
-<ul>
-<li>Jena calls modules in the right order.</li>
-</ul>
-<p>For Gradle, the <a href="https://imperceptiblethoughts.com/shadow/">shadowJar plugin</a>
+<h4 id="gradle">Gradle</h4>
+<p>For Gradle, the <a href="https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow">shadowJar plugin</a>
 has the
 <a href="https://imperceptiblethoughts.com/shadow/configuration/merging/#merging-service-descriptor-files">mergeServiceFiles</a>
 operation.</p>
-<pre><code>// Merging Service Files
-shadowJar {
-  mergeServiceFiles()
-  . . .
-}
-</code></pre>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">plugins <span style="color:#666">{</span>
+  <span style="color:#666">...</span>    
+  id <span style="color:#b44">&#34;com.github.johnrengelman.shadow&#34;</span> version <span style="color:#b44">&#34;7.1.2&#34;</span>
+<span style="color:#666">}</span>
+shadowJar <span style="color:#666">{</span>
+  mergeServiceFiles<span style="color:#666">()</span>
+<span style="color:#666">}</span>
+<span style="color:#666">...</span>
+</code></pre></div><h4 id="manual-assembling">Manual assembling</h4>
+<p>If doing manually, create a single file (<code>META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle</code>) in your application jar containing the
+lines of all the services resource files. The order does not matter.
+Jena calls modules in the right order.</p>
 
 
         </div>
