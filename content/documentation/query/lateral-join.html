@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Tutorial - Manipulating SPARQL using ARQ</title>
+    <title>Apache Jena - ARQ - Lateral Join</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/manipulating_sparql_using_arq.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/lateral-join.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -168,7 +168,7 @@
         
         
             
-                <li class="active">MANIPULATING SPARQL USING ARQ</li>
+                <li class="active">LATERAL JOIN</li>
             
             
         
@@ -180,168 +180,122 @@
 
                 
             </div>
-            <h1 class="title">Tutorial - Manipulating SPARQL using ARQ</h1>
+            <h1 class="title">ARQ - Lateral Join</h1>
             
-	<p>When you&rsquo;ve been working with SPARQL you quickly find that static
-queries are restrictive. Maybe you want to vary a value, perhaps add a
-filter, alter the limit, etc etc. Being an impatient sort you dive in to
-the query string, and it works. But what about <a href="http://xkcd.com/327/">little Bobby
-Tables</a>? And, even if you
-sanitise your inputs, string manipulation is a fraught process and
-syntax errors await you. Although it might seem harder than string
-munging, the ARQ API is your friend in the long run.</p>
-<p><em>Originally published on the <a href="https://web.archive.org/web/20151107135044/http://researchrevealed.ilrt.bris.ac.uk/?p=35">Research Revealed project
-blog</a></em></p>
-<h2 id="inserting-values-simple-prepared-statements">Inserting values (simple prepared statements)</h2>
-<p>Let&rsquo;s begin with something simple. Suppose we wanted to restrict the
-following query to a particular person:</p>
-<pre><code>   select * { ?person &lt;http://xmlns.com/foaf/0.1/name&gt; ?name }
-</code></pre>
-<p><code>String#replaceAll</code> would work, but there is a safer way.
-<code>QueryExecutionFactory</code> in most cases lets you supply a <code>QuerySolution</code>
-with which you can prebind values.</p>
-<pre><code>   QuerySolutionMap initialBinding = new QuerySolutionMap();
-   initialBinding.add(&quot;name&quot;, personResource);
-   qe = QueryExecutionFactory.create(query, dataset, initialBinding);
-</code></pre>
-<p>This is often much simpler than the string equivalent since you don&rsquo;t
-have to escape quotes in literals. (Beware that this doesn&rsquo;t work for
-<code>sparqlService</code>, which is a great shame. It would be nice to spend some
-time remedying that.)</p>
-<h2 id="making-a-query-from-scratch">Making a Query from Scratch</h2>
-<p>The previously mentioned limitation is due to the fact that prebinding
-doesn&rsquo;t actually change the query at all, but the execution of that
-query. So what how do we really alter queries?</p>
-<p>ARQ provides two ways to work with queries: at the syntax level (<code>Query</code>
-and <code>Element</code>), or the algebra level (<code>Op</code>). The distinction is clear in
-filters:</p>
-<pre><code>   SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }
-</code></pre>
-<p>If you work at the syntax level you&rsquo;ll find that this looks (in pseudo
-code) like:</p>
-<pre><code>   (GROUP (PATTERN ( ?s &lt;http://example.com/val&gt; ?val )) (FILTER ( &lt; ?val 20 ) ))
-</code></pre>
-<p>That is there&rsquo;s a group containing a triple pattern and a filter, just
-as you see in the query. The algebra is different, and we can see it
-using <code>arq.qparse --print op</code></p>
-<pre><code>   $ java arq.qparse --print op 'SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }'
-   (base &lt;file:///...&gt;
-       (project (?s)
-           (filter (&lt; ?val 20)
-               (bgp (triple ?s &lt;http://example.com/val&gt; ?val)))))
-</code></pre>
-<p>Here the filter contains the pattern, rather than sitting next to it.
-This form makes it clear that the expression is filtering the pattern.</p>
-<p>Let&rsquo;s create that query from scratch using ARQ. We begin with some
-common pieces: the triple to match, and the expression for the filter.</p>
-<pre><code>   // ?s ?p ?o .
-   Triple pattern =
-       Triple.create(Var.alloc(&quot;s&quot;), Var.alloc(&quot;p&quot;), Var.alloc(&quot;o&quot;));
-   // ( ?s &lt; 20 )
-   Expr e = new E_LessThan(new ExprVar(&quot;s&quot;), new NodeValueInteger(20));
-</code></pre>
-<p><code>Triple</code> should be familiar from jena. <code>Var</code> is an extension of <code>Node</code>
-for variables. <code>Expr</code> is the root interface for expressions, those
-things that appear in <code>FILTER</code> and <code>LET</code>.</p>
-<p>First the syntax route:</p>
-<pre><code>   ElementTriplesBlock block = new ElementTriplesBlock(); // Make a BGP
-   block.addTriple(pattern);                              // Add our pattern match
-   ElementFilter filter = new ElementFilter(e);           // Make a filter matching the expression
-   ElementGroup body = new ElementGroup();                // Group our pattern match and filter
-   body.addElement(block);
-   body.addElement(filter);
-
-   Query q = QueryFactory.make();
-   q.setQueryPattern(body);                               // Set the body of the query to our group
-   q.setQuerySelectType();                                // Make it a select query
-   q.addResultVar(&quot;s&quot;);                                   // Select ?s
-</code></pre>
-<p>Now the algebra:</p>
-<pre><code>   Op op;
-   BasicPattern pat = new BasicPattern();                 // Make a pattern
-   pat.add(pattern);                                      // Add our pattern match
-   op = new OpBGP(pat);                                   // Make a BGP from this pattern
-   op = OpFilter.filter(e, op);                           // Filter that pattern with our expression
-   op = new OpProject(op, Arrays.asList(Var.alloc(&quot;s&quot;))); // Reduce to just ?s
-   Query q = OpAsQuery.asQuery(op);                       // Convert to a query
-   q.setQuerySelectType();                                // Make is a select query
-</code></pre>
-<p>Notice that the query form (<code>SELECT, CONSTRUCT, DESCRIBE, ASK</code>) isn&rsquo;t
-part of the algebra, and we have to set this in the query (although
-SELECT is the default). <code>FROM</code> and <code>FROM NAMED</code> are similarly absent.</p>
-<h2 id="navigating-and-tinkering-visitors">Navigating and Tinkering: Visitors</h2>
-<p>You can also look around the algebra and syntax using visitors. Start by
-extending <code>OpVisitorBase</code> (<code>ElementVisitorBase</code>) which stubs out the
-interface so you can concentrate on the parts of interest, then walk
-using <code>OpWalker.walk(Op, OpVisitor)</code>
-(<code>ElementWalker.walk(Element, ElementVisitor)</code>). These work bottom up.</p>
-<p>For some alterations, like manipulating triple matches in place,
-visitors will do the trick. They provide a simple way to get to the
-right parts of the query, and you can alter the pattern backing BGPs in
-both the algebra and syntax. Mutation isn&rsquo;t consistently available,
-however, so don&rsquo;t depend on it.</p>
-<h2 id="transforming-the-algebra">Transforming the Algebra</h2>
-<p>So far there is no obvious advantage in using the algebra. The real
-power is visible in transformers, which allow you to reorganise an
-algebra completely. ARQ makes extensive use of transformations to
-simplify and optimise query execution.</p>
-<p>In Research Revealed I wrote some code to take a number of constraints
-and produce a query. There were a number of ways to do this, but one way
-I found was to generate ops from each constraint and join the results:</p>
-<pre><code>   for (Constraint con: cons) {
-       op = OpJoin.create(op, consToOp(cons)); // join
+	<p>Lateral joins using the keyword <code>LATERAL</code> were introduced in Apache Jena 4.7.0.</p>
+<p>A <code>LATERAL</code> join is like a foreach loop, looping on the results from the
+left-hand side (LHS), the pattern before the <code>LATERAL</code> keyword, and executing
+the right-hand side (RHS) query pattern once for each row, with the variables
+from the input LHS in-scope during each RHS evaluation.</p>
+<p>A regular join only executes the RHS once, and the variables from the LHS are
+used for the join condition after evaluation of the left and right
+sub-patterns.</p>
+<p>Another way to think of a lateral join is as a <code>flatmap</code>.</p>
+<p>Examples:</p>
+<pre><code>## Get exactly one label for each subject with type `:T`
+SELECT * {
+   ?s rdf:type :T
+   LATERAL {
+     SELECT * { ?s rdfs:label ?label } LIMIT 1
    }
-</code></pre>
-<p>The result was a perfectly correct mess, which is only barely readable
-with just three conditions:</p>
-<pre><code>   (join
-       (join
-           (filter (&lt; ?o0 20) (bgp (triple ?s &lt;urn:ex:prop0&gt; ?o0)))
-           (filter (&lt; ?o1 20) (bgp (triple ?s &lt;urn:ex:prop1&gt; ?o1))))
-       (filter (&lt; ?o2 20) (bgp (triple ?s &lt;urn:ex:prop2&gt; ?o2))))
-</code></pre>
-<p>Each of the constraints is a filter on a bgp. This can be made much more
-readable by moving the filters out, and merging the triple patterns. We
-can do this with the following <code>Transform</code>:</p>
-<pre><code>   class QueryCleaner extends TransformBase
-   {
-       @Override
-       public Op transform(OpJoin join, Op left, Op right) {
-           // Bail if not of the right form
-           if (!(left instanceof OpFilter &amp;&amp; right instanceof OpFilter)) return join;
-           OpFilter leftF = (OpFilter) left;
-           OpFilter rightF = (OpFilter) right;
-
-           // Add all of the triple matches to the LHS BGP
-           ((OpBGP) leftF.getSubOp()).getPattern().addAll(((OpBGP) rightF.getSubOp()).getPattern());
-           // Add the RHS filter to the LHS
-           leftF.getExprs().addAll(rightF.getExprs());
-           return leftF;
-       }
+}
+</code></pre><pre><code>## Get zero or one labels for each subject.
+SELECT * {
+   ?s ?p ?o
+   LATERAL { OPTIONAL { SELECT * ?s rdfs:label ?label } LIMIT 1}
    }
-   ...
-   op = Transformer.transform(new QueryCleaner(), op); // clean query
-</code></pre>
-<p>This looks for joins of the form:</p>
-<pre><code>   (join
-       (filter (exp1) (bgp1))
-       (filter (exp2) (bgp2)))
-</code></pre>
-<p>And replaces it with:</p>
-<pre><code>   (filter (exp1 &amp;&amp; exp2) (bgp1 &amp;&amp; bgp2))
-</code></pre>
-<p>As we go through the original query all joins are removed, and the
-result is:</p>
-<pre><code>   (filter (exprlist (&lt; ?o0 20) (&lt; ?o1 20) (&lt; ?o2 20))
-       (bgp
-           (triple ?s &lt;urn:ex:prop0&gt; ?o0)
-           (triple ?s &lt;urn:ex:prop1&gt; ?o1)
-           (triple ?s &lt;urn:ex:prop2&gt; ?o2)
-   ))
-</code></pre>
-<p>That completes this brief introduction. There is much more to ARQ, of
-course, but hopefully you now have a taste for what it can do.</p>
+}
+</code></pre><h4 id="syntax">Syntax</h4>
+<p>The <code>LATERAL</code> keyword which takes the graph pattern so far in the group, from
+the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
+<h4 id="evaluation">Evaluation</h4>
+<p><a href="https://afs.github.io/substitute.html">Substituting variables</a> from the LHS into the RHS (with the same restrictions), then executing the pattern, gives the evaluation of <code>LATERAL</code>.</p>
+<h4 id="variable-assignment">Variable assignment</h4>
+<p>There needs to be a new syntax restriction: there can no variable introduced by
+<code>AS</code> (<code>BIND</code>, or sub-query) or <code>VALUES</code> in-scope at the top level of the
+<code>LATERAL</code> RHS, that is the same name as any
+<a href="https://www.w3.org/TR/sparql11-query/#variableScope">in-scope</a> variable from
+the LHS.</p>
+<p>Such a variable assignment would conflict with the variable being set in
+variables of the row being joined.</p>
+<pre><code>## ** Illegal **
+SELECT * {
+   ?s ?p ?o
+   LATERAL { BIND( 123 AS ?o) }
+}
+</code></pre><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
+<p>In ARQ, <a href="assignment.html">LET</a> would work.
+<code>LET</code> for a variable that is bound acts like a filter.</p>
+<h4 id="variable-scopes">Variable Scopes</h4>
+<p>In looping on the input, a lateral join makes the bindings of variables in the current row
+available to the right hand side pattern, setting their value from the top down.</p>
+<p>In SPARQL, it is possible to have variables of the same name which are not
+exposed within a sub-select. These are not lateral-joined to a variable of the
+same name from the LHS.</p>
+<p>This is not speciifc to lateral joins. In</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?s rdfs:label ?label } }
+</code></pre><p>the inner <code>?s</code> can be replaced by <code>?z</code> without changing the results because the
+inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is hidden by the <code>SELECT ?label</code>.</p>
+<pre><code>SELECT * {
+  ?s rdf:type :T 
+  { SELECT ?label { ?z rdfs:label ?label } }
+</code></pre><p>The same rule applies to lateral joins.</p>
+<pre><code>SELECT * {
+   ?s rdf:type :T 
+   LATERAL {
+     SELECT ?label { ?s rdfs:label ?label } LIMIT 1
+   }
+}
+</code></pre><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
+<code>?label</code> for the same results.</p>
+<h3 id="notes">Notes</h3>
+<p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the non-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to an SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
+<h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
+<h3 id="syntax-1">Syntax</h3>
+<p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
+<pre><code>[56]  	GraphPatternNotTriples	  ::=  	GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
+[57]  	OptionalGraphPattern	  ::=  	'OPTIONAL' GroupGraphPattern
+[  ]  	LateralGraphPattern	  ::=  	'LATERAL' GroupGraphPattern
+</code></pre><h3 id="algebra">Algebra</h3>
+<p>The new algebra operator is <code>lateral</code> which takes two expressions</p>
+<pre><code>  SELECT * {
+    ?s  ?p  ?o
+    LATERAL
+      { ?a  ?b  ?c }
+}
+</code></pre><p>is translated to:</p>
+<pre><code>  (lateral
+    (bgp (triple ?s ?p ?o))
+    (bgp (triple ?a ?b ?c)))
+</code></pre><h3 id="evaluation-1">Evaluation</h3>
+<p>To evaluate <code>lateral</code>:</p>
+<ul>
+<li>Evaluate the first argument (left-hand side from syntax) to get a multiset of solution mappings.</li>
+<li>For each solution mapping (&ldquo;row&rdquo;),
+inject variable bindings into the second argument
+Evaluate this pattern
+Add to results</li>
+</ul>
+<p>Outline:</p>
+<pre><code>Definition: Lateral
 
+Let Ω be a multiset of solution mappings. We define:
+
+Lateral(Ω, P) = { μ | union of Ω1 where 
+           foreach μ1 in Ω:
+               pattern2 = inject(pattern, μ1)
+               Ω1 = eval(D(G), pattern2)
+	       result Ω1
+	   }
+</code></pre><p>where <code>inject</code> is the <a href="https://afs.github.io/substitute.html">corrected <code>substitute</code></a> operation.</p>
+<p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is in-scope&rdquo; in some
+way, rather than rely on <code>inject</code> which is a mechanism.</p>
+<pre><code>Definition: Evaluation of Lateral
+
+eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)
+</code></pre>
 
         </div>
     </div>

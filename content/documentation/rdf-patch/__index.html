@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Tutorial - Manipulating SPARQL using ARQ</title>
+    <title>Apache Jena - </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -125,7 +125,7 @@
 
     
 
-                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/query/manipulating_sparql_using_arq.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
+                <li id="edit"><a href="https://github.com/apache/jena-site/edit/main/source/documentation/rdf-patch/__index.md" title="Edit this page on GitHub"><span class="glyphicon glyphicon-pencil"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -160,7 +160,7 @@
         
         
             
-                <li><a href='/documentation/query'>QUERY</a></li>
+                <li><a href='/documentation/rdf-patch'>RDF PATCH</a></li>
             
             
         
@@ -168,7 +168,7 @@
         
         
             
-                <li class="active">MANIPULATING SPARQL USING ARQ</li>
+                <li class="active">INDEX</li>
             
             
         
@@ -180,167 +180,159 @@
 
                 
             </div>
-            <h1 class="title">Tutorial - Manipulating SPARQL using ARQ</h1>
+            <h1 class="title"></h1>
             
-	<p>When you&rsquo;ve been working with SPARQL you quickly find that static
-queries are restrictive. Maybe you want to vary a value, perhaps add a
-filter, alter the limit, etc etc. Being an impatient sort you dive in to
-the query string, and it works. But what about <a href="http://xkcd.com/327/">little Bobby
-Tables</a>? And, even if you
-sanitise your inputs, string manipulation is a fraught process and
-syntax errors await you. Although it might seem harder than string
-munging, the ARQ API is your friend in the long run.</p>
-<p><em>Originally published on the <a href="https://web.archive.org/web/20151107135044/http://researchrevealed.ilrt.bris.ac.uk/?p=35">Research Revealed project
-blog</a></em></p>
-<h2 id="inserting-values-simple-prepared-statements">Inserting values (simple prepared statements)</h2>
-<p>Let&rsquo;s begin with something simple. Suppose we wanted to restrict the
-following query to a particular person:</p>
-<pre><code>   select * { ?person &lt;http://xmlns.com/foaf/0.1/name&gt; ?name }
-</code></pre>
-<p><code>String#replaceAll</code> would work, but there is a safer way.
-<code>QueryExecutionFactory</code> in most cases lets you supply a <code>QuerySolution</code>
-with which you can prebind values.</p>
-<pre><code>   QuerySolutionMap initialBinding = new QuerySolutionMap();
-   initialBinding.add(&quot;name&quot;, personResource);
-   qe = QueryExecutionFactory.create(query, dataset, initialBinding);
-</code></pre>
-<p>This is often much simpler than the string equivalent since you don&rsquo;t
-have to escape quotes in literals. (Beware that this doesn&rsquo;t work for
-<code>sparqlService</code>, which is a great shame. It would be nice to spend some
-time remedying that.)</p>
-<h2 id="making-a-query-from-scratch">Making a Query from Scratch</h2>
-<p>The previously mentioned limitation is due to the fact that prebinding
-doesn&rsquo;t actually change the query at all, but the execution of that
-query. So what how do we really alter queries?</p>
-<p>ARQ provides two ways to work with queries: at the syntax level (<code>Query</code>
-and <code>Element</code>), or the algebra level (<code>Op</code>). The distinction is clear in
-filters:</p>
-<pre><code>   SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }
-</code></pre>
-<p>If you work at the syntax level you&rsquo;ll find that this looks (in pseudo
-code) like:</p>
-<pre><code>   (GROUP (PATTERN ( ?s &lt;http://example.com/val&gt; ?val )) (FILTER ( &lt; ?val 20 ) ))
-</code></pre>
-<p>That is there&rsquo;s a group containing a triple pattern and a filter, just
-as you see in the query. The algebra is different, and we can see it
-using <code>arq.qparse --print op</code></p>
-<pre><code>   $ java arq.qparse --print op 'SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }'
-   (base &lt;file:///...&gt;
-       (project (?s)
-           (filter (&lt; ?val 20)
-               (bgp (triple ?s &lt;http://example.com/val&gt; ?val)))))
-</code></pre>
-<p>Here the filter contains the pattern, rather than sitting next to it.
-This form makes it clear that the expression is filtering the pattern.</p>
-<p>Let&rsquo;s create that query from scratch using ARQ. We begin with some
-common pieces: the triple to match, and the expression for the filter.</p>
-<pre><code>   // ?s ?p ?o .
-   Triple pattern =
-       Triple.create(Var.alloc(&quot;s&quot;), Var.alloc(&quot;p&quot;), Var.alloc(&quot;o&quot;));
-   // ( ?s &lt; 20 )
-   Expr e = new E_LessThan(new ExprVar(&quot;s&quot;), new NodeValueInteger(20));
-</code></pre>
-<p><code>Triple</code> should be familiar from jena. <code>Var</code> is an extension of <code>Node</code>
-for variables. <code>Expr</code> is the root interface for expressions, those
-things that appear in <code>FILTER</code> and <code>LET</code>.</p>
-<p>First the syntax route:</p>
-<pre><code>   ElementTriplesBlock block = new ElementTriplesBlock(); // Make a BGP
-   block.addTriple(pattern);                              // Add our pattern match
-   ElementFilter filter = new ElementFilter(e);           // Make a filter matching the expression
-   ElementGroup body = new ElementGroup();                // Group our pattern match and filter
-   body.addElement(block);
-   body.addElement(filter);
-
-   Query q = QueryFactory.make();
-   q.setQueryPattern(body);                               // Set the body of the query to our group
-   q.setQuerySelectType();                                // Make it a select query
-   q.addResultVar(&quot;s&quot;);                                   // Select ?s
-</code></pre>
-<p>Now the algebra:</p>
-<pre><code>   Op op;
-   BasicPattern pat = new BasicPattern();                 // Make a pattern
-   pat.add(pattern);                                      // Add our pattern match
-   op = new OpBGP(pat);                                   // Make a BGP from this pattern
-   op = OpFilter.filter(e, op);                           // Filter that pattern with our expression
-   op = new OpProject(op, Arrays.asList(Var.alloc(&quot;s&quot;))); // Reduce to just ?s
-   Query q = OpAsQuery.asQuery(op);                       // Convert to a query
-   q.setQuerySelectType();                                // Make is a select query
-</code></pre>
-<p>Notice that the query form (<code>SELECT, CONSTRUCT, DESCRIBE, ASK</code>) isn&rsquo;t
-part of the algebra, and we have to set this in the query (although
-SELECT is the default). <code>FROM</code> and <code>FROM NAMED</code> are similarly absent.</p>
-<h2 id="navigating-and-tinkering-visitors">Navigating and Tinkering: Visitors</h2>
-<p>You can also look around the algebra and syntax using visitors. Start by
-extending <code>OpVisitorBase</code> (<code>ElementVisitorBase</code>) which stubs out the
-interface so you can concentrate on the parts of interest, then walk
-using <code>OpWalker.walk(Op, OpVisitor)</code>
-(<code>ElementWalker.walk(Element, ElementVisitor)</code>). These work bottom up.</p>
-<p>For some alterations, like manipulating triple matches in place,
-visitors will do the trick. They provide a simple way to get to the
-right parts of the query, and you can alter the pattern backing BGPs in
-both the algebra and syntax. Mutation isn&rsquo;t consistently available,
-however, so don&rsquo;t depend on it.</p>
-<h2 id="transforming-the-algebra">Transforming the Algebra</h2>
-<p>So far there is no obvious advantage in using the algebra. The real
-power is visible in transformers, which allow you to reorganise an
-algebra completely. ARQ makes extensive use of transformations to
-simplify and optimise query execution.</p>
-<p>In Research Revealed I wrote some code to take a number of constraints
-and produce a query. There were a number of ways to do this, but one way
-I found was to generate ops from each constraint and join the results:</p>
-<pre><code>   for (Constraint con: cons) {
-       op = OpJoin.create(op, consToOp(cons)); // join
-   }
-</code></pre>
-<p>The result was a perfectly correct mess, which is only barely readable
-with just three conditions:</p>
-<pre><code>   (join
-       (join
-           (filter (&lt; ?o0 20) (bgp (triple ?s &lt;urn:ex:prop0&gt; ?o0)))
-           (filter (&lt; ?o1 20) (bgp (triple ?s &lt;urn:ex:prop1&gt; ?o1))))
-       (filter (&lt; ?o2 20) (bgp (triple ?s &lt;urn:ex:prop2&gt; ?o2))))
-</code></pre>
-<p>Each of the constraints is a filter on a bgp. This can be made much more
-readable by moving the filters out, and merging the triple patterns. We
-can do this with the following <code>Transform</code>:</p>
-<pre><code>   class QueryCleaner extends TransformBase
-   {
-       @Override
-       public Op transform(OpJoin join, Op left, Op right) {
-           // Bail if not of the right form
-           if (!(left instanceof OpFilter &amp;&amp; right instanceof OpFilter)) return join;
-           OpFilter leftF = (OpFilter) left;
-           OpFilter rightF = (OpFilter) right;
-
-           // Add all of the triple matches to the LHS BGP
-           ((OpBGP) leftF.getSubOp()).getPattern().addAll(((OpBGP) rightF.getSubOp()).getPattern());
-           // Add the RHS filter to the LHS
-           leftF.getExprs().addAll(rightF.getExprs());
-           return leftF;
-       }
-   }
-   ...
-   op = Transformer.transform(new QueryCleaner(), op); // clean query
-</code></pre>
-<p>This looks for joins of the form:</p>
-<pre><code>   (join
-       (filter (exp1) (bgp1))
-       (filter (exp2) (bgp2)))
-</code></pre>
-<p>And replaces it with:</p>
-<pre><code>   (filter (exp1 &amp;&amp; exp2) (bgp1 &amp;&amp; bgp2))
-</code></pre>
-<p>As we go through the original query all joins are removed, and the
-result is:</p>
-<pre><code>   (filter (exprlist (&lt; ?o0 20) (&lt; ?o1 20) (&lt; ?o2 20))
-       (bgp
-           (triple ?s &lt;urn:ex:prop0&gt; ?o0)
-           (triple ?s &lt;urn:ex:prop1&gt; ?o1)
-           (triple ?s &lt;urn:ex:prop2&gt; ?o2)
-   ))
-</code></pre>
-<p>That completes this brief introduction. There is much more to ARQ, of
-course, but hopefully you now have a taste for what it can do.</p>
+	<h2 id="slug-index">f&mdash;
+title: RDF Patch
+slug: index</h2>
+<p>This page describes RDF Patch. An RDF Patch is a set of changes to an
+<a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF dataset</a>.
+The change are for triples, quads and prefixes.</p>
+<p>Changes to triples involving blank nodes are handled by using their system
+identifier which uniquely identifies a blank node. Unlike RDF syntaxes, blank
+nodes are not generated afresh each time the document is parsed.</p>
+<h2 id="example">Example</h2>
+<p>This example ensures certain prefixes are in the dataset and adds some
+basic triples for a new subclass of <code>&lt;http://example/SUPER_CLASS&gt;</code>.</p>
+<pre><code>TX .
+PA &quot;rdf&quot; &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; .
+PA &quot;owl&quot; &quot;http://www.w3.org/2002/07/owl#&quot; .
+PA &quot;rdfs&quot; &quot;http://www.w3.org/2000/01/rdf-schema#&quot; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;http://example/SUPER_CLASS&gt; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SubClass&quot; .
+TC .
+</code></pre><h2 id="structure">Structure</h2>
+<p>The text format for an RDF Patch is N-Triples-like: it is a series of
+rows, each row ends with a <code>.</code> (DOT).  The tokens on a row are keywords,
+URIs, blank nodes, writen with their label (see below) or RDF Literals,
+in N-triples syntax.  A keyword follows the same rules as
+Turtle prefix declarations without a trailing <code>:</code>.</p>
+<p>A line has an operation code, then some number of items depending on
+the operation.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>H</code></td>
+<td>Header</td>
+</tr>
+<tr>
+<td><code>TX</code><br/><code>TC</code><br/><code>TA</code></td>
+<td>Change block: transactions</td>
+</tr>
+<tr>
+<td><code>PA</code><br/><code>PD</code><br/></td>
+<td>Change: Prefix add and delete</td>
+</tr>
+<tr>
+<td><code>A</code><br/><code>D</code></td>
+<td>Change: Add and delete triples and quads</td>
+</tr>
+</tbody>
+</table>
+<p>The general structure of an RDF patch is a header (possible empty), then a
+number of change blocks.</p>
+<p>Each change block is a transaction. Transactions can be explicit recorded (&lsquo;TX&rsquo;
+start, <code>TC</code> commit) to include multiple transaction in one patch. They are not
+required. If not present, the patch should be applied atomically to the data.</p>
+<pre><code>header
+TX
+Quad, triple or prefix changes
+TC or TA
+</code></pre><p>Multiple transaction blocks are allowed for multiple sets of changes in one
+patch.</p>
+<p>A binary version based on <a href="../io/rdf-binary/">RDF Thrift</a> is provided.
+Parsing binary compared to text for N-triples achieves a x3-x4 increase in
+throughput.</p>
+<h3 id="header">Header</h3>
+<p>The header provides for basic information about patch. It is a series of
+(key, value) pairs.</p>
+<p>It is better to put complex metadata in a separate file and link to it
+from the header, but certain information is best kept with the patch. If
+patches are given an identifier, and als refer to the exp[ected previous patch,
+it create a log and patches can be applied in the right order.</p>
+<p>A header section can be used to provide additional information. In this example
+a patch has an identifier and refers to a previous patch. This might be used to
+create a log of patches, a log being a sequnce of chnages to apply in-order.</p>
+<pre><code>H id &lt;uuid:0686c69d-8f89-4496-acb5-744f0157a8db&gt; .
+H prev &lt;uuid:3ee0eca0-6d5f-4b4d-85db-f69ab1167eb1&gt; .
+TX .
+PA &quot;rdf&quot; &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; .
+PA &quot;owl&quot; &quot;http://www.w3.org/2002/07/owl#&quot; .
+PA &quot;rdfs&quot; &quot;http://www.w3.org/2000/01/rdf-schema#&quot; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;http://example/SUPER_CLASS&gt; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SubClass&quot; .
+TC .
+</code></pre><p>Header format:</p>
+<pre><code>H word RDFTerm .
+</code></pre><p>where <code>word</code> is a string in quotes, or an unquoted string (no spaces, starts with a letter,
+same as a prefix without the colon).</p>
+<p>The header is ended by the first non <code>H</code> line or the end of the patch.</p>
+<h3 id="transactions">Transactions</h3>
+<pre><code>TX .
+TC .
+</code></pre><p>These delimit a block of quad, triple and prefix changes.</p>
+<p>Abort, <code>TA</code> is provided so that changes can be streamed, not obliging the
+application to buffer change and wait to confirm the action is
+committed.</p>
+<p>Transactions should be applied atomically when a patch is applied.</p>
+<h3 id="changes">Changes</h3>
+<p>A change is an add or delete of a quad or a prefix.</p>
+<h4 id="prefixes">Prefixes</h4>
+<p>Prefixes do not apply to the data of the patch. They are
+changes to the data the patch is applied to.</p>
+<p>The prefix name is without the trailing colon. It can be given as a
+quoted string or unquoted string (keyword) with the same limitations as
+Turtle on the prefix name.</p>
+<pre><code>PA rdf &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+</code></pre><p><code>PA</code> is adding a prefix, <code>PD</code> is deleting a prefix.</p>
+<h4 id="quads-and-triples">Quads and Triples</h4>
+<p>Triples and quads are written like N-Quads, 3 or 4 RDF terms,
+with the addition of an initial <code>A</code> or <code>D</code> for &ldquo;add&rdquo; or &ldquo;delete&rdquo;.
+Triples are in the order S-P-O, quads are S-P-O-G.</p>
+<p>Add a triple:</p>
+<pre><code>A  &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
+</code></pre><h2 id="blank-nodes">Blank nodes</h2>
+<p>In order to synchronize datasets, changes involving blank nodes may need
+to refer to a blank node already in the data.  RDF Patch deals with this
+by making blank node labels refer to the &ldquo;system identifier&rdquo; for the
+blank node.</p>
+<p>In this way, RDF Patch is not an &ldquo;RDF Format&rdquo;.  In all syntaxes for RDF
+(Turtle, TriG, RDF/XML etc), blank nodes are &ldquo;document scoped&rdquo; meaning
+that the blank node is unique to that one time reading of the document.
+A new blank node is generated every time the file is read into a graph
+or dataset, and that blank node does not appear in the existing data.</p>
+<p>In practice, most RDF triplestores have some kind of internal
+identifier that identifies the blank node.  RDF Patch requires a &ldquo;system
+identifier&rdquo; for blank nodes so that change can refer to an existing
+blank node in the data.</p>
+<p>These can be written as <code>_:label</code> or <code>&lt;_:label&gt;</code> (the latter provides a
+wider set of permissible characters in the label). Note that <code>_</code> is
+illegal as an IRI scheme to highlight the fact this is not, strictly, an
+IRI.</p>
+<p>RDF 1.1 describes
+<a href="https://www.w3.org/TR/rdf11-concepts/#section-skolemization"><em>skolemization</em></a>
+where blank nodes are replaced by a URI.  A system could use those for
+RDF Patch if it also meets the additional requirements to be able to
+receive and reverse the mapping back to the internal blank node object
+and also that all system generating patches can safely generate new,
+fresh skolem IRIs that will become new blank nodes in the RDF dataset
+then a patch is applied to it.</p>
+<h2 id="preferred-style">Preferred Style</h2>
+<p>The preferred style is to write patch rows on a single line, single
+space between tokens on a row and a single space before the terminal
+<code>.</code>.  No comments should be included (comments start <code>#</code> and run to end of
+line).</p>
+<p>Headers should be placed before the item they refer to; for information
+used by an RDF Patch Log, the metadata is about the whole patch and
+should be at the start of the file, before any <code>TX</code>.</p>
 
 
         </div>
