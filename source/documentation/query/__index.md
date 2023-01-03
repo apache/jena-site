@@ -69,6 +69,7 @@ Features of ARQ that are legal SPARQL syntax
 
 Feature of ARQ that go beyond SPARQL syntax. 
 
+- [LATERAL Join](lateral-join.html)
 - [RDF-star](https://w3c.github.io/rdf-star/)
 - Operators and functions
     `[MOD](https://www.w3.org/TR/xpath-functions/#func-numeric-mod)`
