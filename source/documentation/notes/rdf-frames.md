@@ -27,7 +27,7 @@ is why the following is not an error:
       </rdf:Property>
 
       <Truck rdf:ID="truck1">
-        <age>2</a>
+        <age>2</age>
       </Truck>
 
 Whereas many object-oriented or frame-oriented representations
