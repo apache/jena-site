@@ -298,4 +298,4 @@ See [RIOT example 4](https://github.com/apache/jena/blob/main/jena-examples/src/
 
 The set of languages is not fixed. A new language, 
 together with a parser, can be added to RIOT as shown in
-[RIOT example 5](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT5_StreamRDFCollect.java)
+[RIOT example 6](https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT6_AddNewReader.java)
