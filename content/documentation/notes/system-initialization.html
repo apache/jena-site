@@ -182,23 +182,25 @@
             </div>
             <h1 class="title">Apache Jena Initialization</h1>
             
-	<p>Jena has a simple initialization sequence that is
+	<p>Jena has an initialization sequence that is
 used to setup components available at runtime.</p>
 <p>Application code is welcome to also use this mechanism. This
-must be done with care. Java initialization can lead to
+must be done with care. During Jena initialization, there is
 visibility of uninitialized data.</p>
 <p>The standard initialization sequence is<br>
 Core -&gt; RIOT -&gt; ARQ -&gt; TDB -&gt; other (including jena text)</p>
-<p>The sequence from core to TDB should be executed before application
+<p>The sequence from core to level 500 should be executed before application
 components. See below for how to control the order.</p>
 <p>Initialization occurs when <code>JenaSystem.init()</code> is first called.  Jena ensures that this
 is done when the application first uses any Jena code by using class
 initializers.</p>
+<p>Application can call <code>JenaSystem.init()</code>.</p>
 <p>See <a href="jena-repack.html">notes on repacking Jena code</a> for how to deal
-with ServiceLoader files in repacked jars.</p>
+with <code>ServiceLoader</code> files in repacked jars.</p>
 <h2 id="initialization-code">Initialization code</h2>
-<p>Initialization code is an implementation of <code>JenaSubsystemLifecycle</code>.
-For use in the default initialization, the class must have a zero-argument constructor</p>
+<p>Initialization code is an implementation of <code>JenaSubsystemLifecycle</code> which
+itself extends <code>SubsystemLifecycle</code>.</p>
+<p>For use in the default initialization, the class must have a zero-argument constructor</p>
 <pre><code>public interface JenaSubsystemLifecycle {
     public void start() ;
     public void stop() ;
@@ -210,75 +212,39 @@ The levels used by Jena are:</p>
 <ul>
 <li>0 - reserved</li>
 <li>10 - Used by jena-core</li>
+<li>15 - CLI Commands registry</li>
 <li>20 - RIOT</li>
 <li>30 - ARQ</li>
-<li>40 - TDB</li>
-<li>9999 - other</li>
+<li>40 - Text indexing</li>
+<li>40 - TDB1</li>
+<li>42 - TDB1</li>
+<li>60 - Additional HTTP configuration</li>
+<li>60 - RDFPAtch</li>
+<li>96 - SHACL</li>
+<li>96 - ShEx</li>
+<li>101 - Fuseki</li>
+<li>9999 - Default.</li>
 </ul>
+<p>Levels up to 500 are considered to be &ldquo;Jena system level&rdquo;, Application code
+should use level above 500.</p>
+<p>Fuseki initialization includes <a href="/documentation/fuseki2/fuseki-modules">Fuseki
+Modules</a> which uses <code>SubsystemLifecycle</code>
+for different Java interface.</p>
 <h2 id="the-initialization-process">The Initialization Process</h2>
-<p>The process followed by <code>JenaSystem.init()</code> is to obtain an instance of
-<code>JenaSubsystemRegistry</code>, ask it to <code>load()</code> initialization code, then call
-that code in an order based on declared level. The order of invocation
-of different initialization code within the same level is undefined
-and may be different from run to run.</p>
+<p>The process followed by <code>JenaSystem.init()</code> is to load all java <code>ServiceLoader</code>
+regsitered <code>JenaSubsystemLifecycle</code>, osrt into level order, then call <code>init</code>.
+Initialization code unit at the same level can be called in any order and the
+order may be different between runs.</p>
 <p>Only the first call of <code>JenaSystem.init()</code> causes the process to run.
 Any subsequent calls are cheap, so calling <code>JenaSystem.init()</code>
 when in doubt about the initialization state is safe.</p>
 <p>Overlapping concurrent calls to <code>JenaSystem.init()</code> are thread-safe.
 On a return from <code>JenaSystem.init()</code>, Jena has been initialized at some point.</p>
-<h2 id="the-standard-subsystem-registry">The Standard Subsystem Registry</h2>
-<p>The <code>JenaSubsystemRegistry</code> normally used is based on <code>java.util.ServiceLoader</code>.
-It looks for class resources
-<code>META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle</code>
-on the classpath during the load step.</p>
-<p>See the javadoc for <code>java.util.ServiceLoader</code> for more details.</p>
-<p>See also the javadoc for
-<a href="/documentation/javadoc/jena/org/apache/jena/system/JenaSystem.html">JenaSystem</a>
-and the source code.</p>
 <h2 id="debugging">Debugging</h2>
 <p>There is a flag <code>JenaSystem.DEBUG_INIT</code> to help with development. It is not
 intended for runtime logging.</p>
 <p>Jena components print their initialization beginning and end points on
 <code>System.err</code> to help track down ordering issues.</p>
-<h2 id="modifying-the-standard-process">Modifying the Standard Process</h2>
-<p>It is possible, with care, to alter the way
-that initialization code is discovered.</p>
-<p>An application can change the <code>JenaSubsystemRegistry</code> instance.
-This must be done before any Jena code is called anywhere
-in the current JVM.</p>
-<pre><code>// Example alternative registry.
-JenaSubsystemRegistry r = new JenaSubsystemRegistryBasic() {
-    @Override
-    public void load() {
-        if ( JenaSystem.DEBUG_INIT )
-            System.err.println(&quot;Example custom load&quot;) ;
-        super.load();
-    }
-} ;
-
-// Set the sub-system registry
-JenaSystem.setSubsystemRegistry(r);
-
-// Enable output if required
-// JenaSystem.DEBUG_INIT = true ;
-
-// Initialize Jena
-JenaSystem.init() ;
-</code></pre>
-<h2 id="jena-initialization-in-multi-classloader-environments">Jena initialization in multi-classloader environments</h2>
-<p>In some applications with multiple classloaders, or different classloader strategies, Jena initialization may
-not work as expected. If the Jena initialization debug information shows that components were not loaded correctly,
-trying to switch the context class loader may fix the initialization process.</p>
-<pre><code>ClassLoader contextClassLoader = null;
-try {
-    contextClassLoader = Thread.currentThread().getContextClassLoader();
-    Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
-    JenaSystem.DEBUG_INIT = true;
-    // ...
-} finally {
-    Thread.currentThread().setContextClassLoader(contextClassLoader);
-}
-</code></pre>
 
 
         </div>

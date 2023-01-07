@@ -251,7 +251,10 @@ inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is 
 </code></pre><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
 <code>?label</code> for the same results.</p>
 <h3 id="notes">Notes</h3>
-<p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the non-legal <code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are available to &ldquo;pattern&rdquo;. This is similar to an SQL <a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
+<p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the non-legal
+<code>FILTER ( ASK { pattern } )</code> where the variables of the row being filtered are
+available to &ldquo;pattern&rdquo;. This is similar to an SQL
+<a href="https://en.wikipedia.org/wiki/Correlated_subquery">correlated subquery</a>.</p>
 <h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
 <h3 id="syntax-1">Syntax</h3>
 <p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
@@ -289,9 +292,10 @@ Lateral(Ω, P) = { μ | union of Ω1 where
                Ω1 = eval(D(G), pattern2)
 	       result Ω1
 	   }
-</code></pre><p>where <code>inject</code> is the <a href="https://afs.github.io/substitute.html">corrected <code>substitute</code></a> operation.</p>
-<p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is in-scope&rdquo; in some
-way, rather than rely on <code>inject</code> which is a mechanism.</p>
+</code></pre><p>where <code>inject</code> is the <a href="https://afs.github.io/substitute.html">corrected <code>substitute</code></a>
+operation.</p>
+<p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is
+in-scope&rdquo; in some way, rather than rely on <code>inject</code> which is a mechanism.</p>
 <pre><code>Definition: Evaluation of Lateral
 
 eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)

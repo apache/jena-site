@@ -460,15 +460,41 @@ this is useful when you don&rsquo;t want to go to the trouble of writing a full 
 logic in normal iterator style.</p>
 <p>To do this you use <code>AsyncParser.asyncParseTriples</code> which parses the input on
 another thread:</p>
-<pre><code>    Iterator&lt;Triple&gt; iter = AsyncParser.asyncParseTriples(filename);
+<pre><code>    IteratorCloseable&lt;Triple&gt; iter = AsyncParser.asyncParseTriples(filename);
     iter.forEachRemaining(triple-&gt;{
         // Do something with triple
     });
 </code></pre>
-<p>For N-Triples and N-Quads, you can use
+<p>Calling the iterator&rsquo;s close method stops parsing and closes the involved resources.
+For N-Triples and N-Quads, you can use
 <code>RiotParsers.createIteratorNTriples(input)</code> which parses the input on the
 calling thread.</p>
 <p><a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java">RIOT example 9</a>.</p>
+<p>Additional control over parsing is provided by the <code>AsyncParser.of(...)</code> methods which return <code>AsyncParserBuilder</code> instances.
+The builder features a fluent API that allows for fine-tuning internal buffer sizes as well as eventually obtaining
+a standard Java <code>Stream</code>. Calling the stream&rsquo;s close method stops parsing and closes the involved resources.
+Therefore, these streams are best used in conjunction with try-with-resources blocks:</p>
+<pre><code>    try (Stream&lt;Triple&gt; stream = AsyncParser.of(filename)
+            .setQueueSize(2).setChunkSize(100).streamTriples().limit(1000)) {
+        // Do something with the stream
+    }
+</code></pre>
+<p>The AsyncParser also supports parsing RDF into a stream of <code>EltStreamRDF</code> elements. Each element can hold a triple, quad, prefix, base IRI or exception.
+For all <code>Stream</code>-based methods there also exist <code>Iterator</code>-based versions:</p>
+<pre><code>    IteratorCloseable&lt;EltStreamRDF&gt; it = AsyncParser.of(filename).asyncParseElements();
+    try {
+        while (it.hasNext()) {
+            EltStreamRDF elt = it.next();
+            if (elt.isTriple()) {
+               // Do something with elt.getTriple();
+            } else if (elt.isPrefix()) {
+               // Do something with elt.getPrefix() and elt.getIri();
+            }
+        }
+    } finally {
+        Iter.close(it);
+    }
+</code></pre>
 <h3 id="filter-the-output-of-parsing">Filter the output of parsing</h3>
 <p>When working with very large files, it can be useful to
 process the stream of triples or quads produced
@@ -477,7 +503,7 @@ by the parser so as to work in a streaming fashion.</p>
 <h3 id="add-a-new-language">Add a new language</h3>
 <p>The set of languages is not fixed. A new language,
 together with a parser, can be added to RIOT as shown in
-<a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT5_StreamRDFCollect.java">RIOT example 5</a></p>
+<a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT6_AddNewReader.java">RIOT example 6</a></p>
 
 
         </div>
