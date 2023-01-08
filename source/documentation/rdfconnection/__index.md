@@ -171,7 +171,7 @@ provided).
 
 ### Local vs Remote
 
-GSP operations work on while models and datasets. When used on a remote connection,
+GSP operations work on whole models and datasets. When used on a remote connection,
 the result of a GSP operation is a separate copy of the remote RDF data.  When working
 with local connections, 3 isolation modes are available:
 
