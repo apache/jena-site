@@ -43,7 +43,7 @@ slug: index
   of deriving additional information and the term <em>reasoner</em> to refer to
   a specific code object that performs this task. Such usage is arbitrary and
   if we slip into using equivalent terms like <em>reasoning</em> and <em>inference
-  engine</em> please forgive us. </p>
+  engine</em>, please forgive us. </p>
 <p>The overall structure of the inference machinery is illustrated below. </p>
 <p class="centered"><img src="reasoner-overview.png" width="544" height="305" alt="Overall structure of inference machinery"></p>
 <p>Applications normally access the inference machinery by using the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
@@ -168,7 +168,7 @@ slug: index
   methods, particularly <code>ModelFactory.createInfModel</code>. </p>
 
 #### Accessing inferences
-<p>Finally, having created a inference model then any API operations which access
+<p>Finally, having created an inference model, any API operations which access
   RDF statements will be able to access additional statements which are entailed
   from the bound data by means of the reasoner. Depending on the reasoner these
   additional <i>virtual</i> statements may all be precomputed the first time the
