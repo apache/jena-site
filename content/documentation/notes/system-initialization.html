@@ -111,14 +111,13 @@
                         <li><a href="/about_jena/team.html">Project team</a></li>
                         <li><a href="/about_jena/contributions.html">Related projects</a></li>
                         <li><a href="/about_jena/roadmap.html">Roadmap</a></li>
-                        <li><a href="/about_jena/security-advisories.html">Security Advisories</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">ASF</li>
-                        <li><a href="https://www.apache.org/">Apache Software Foundation</a></li>
-                        <li><a href="https://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
-                        <li><a href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
-                        <li><a href="https://www.apache.org/security/">Security</a></li>
-                        <li><a href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a href="http://www.apache.org/">Apache Software Foundation</a></li>
+                        <li><a href="http://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
+                        <li><a href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
+                        <li><a href="http://www.apache.org/security/">Security</a></li>
+                        <li><a href="http://www.apache.org/foundation/thanks.html">Thanks</a></li>
                     </ul>
                 </li>
 
@@ -182,70 +181,103 @@
             </div>
             <h1 class="title">Apache Jena Initialization</h1>
             
-	<p>Jena has an initialization sequence that is
+	<p>Jena has a simple initialization sequence that is
 used to setup components available at runtime.</p>
 <p>Application code is welcome to also use this mechanism. This
-must be done with care. During Jena initialization, there can be
-visibility of uninitialized data in class static members.</p>
+must be done with care. Java initialization can lead to
+visibility of uninitialized data.</p>
 <p>The standard initialization sequence is<br>
 Core -&gt; RIOT -&gt; ARQ -&gt; TDB -&gt; other (including jena text)</p>
-<p>The sequence from 0 to level 500 is the Jena platform
-initialization. Application may use the jena initialization mechanism and it is
-recommended to place initialization code above level 500.</p>
+<p>The sequence from core to TDB should be executed before application
+components. See below for how to control the order.</p>
 <p>Initialization occurs when <code>JenaSystem.init()</code> is first called.  Jena ensures that this
 is done when the application first uses any Jena code by using class
 initializers.</p>
-<p>Application can call <code>JenaSystem.init()</code>.</p>
 <p>See <a href="jena-repack.html">notes on repacking Jena code</a> for how to deal
-with <code>ServiceLoader</code> files in repacked jars.</p>
+with ServiceLoader files in repacked jars.</p>
 <h2 id="initialization-code">Initialization code</h2>
-<p>Initialization code is an implementation of <code>JenaSubsystemLifecycle</code> which
-itself extends <code>SubsystemLifecycle</code>.</p>
-<p>For use in the default initialization, the class must have a zero-argument
-constructor and implement:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">JenaSubsystemLifecycle</span> <span style="color:#666">{</span>
-        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-        <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> <span style="color:#00a000">level</span><span style="color:#666">()</span> <span style="color:#666">{</span> <span style="color:#a2f;font-weight:bold">return</span> 9999 <span style="color:#666">;</span> <span style="color:#666">}</span>
-    <span style="color:#666">}</span>
-</code></pre></div><p>The code should supply a level, indicating its place in the order of initialization.
+<p>Initialization code is an implementation of <code>JenaSubsystemLifecycle</code>.
+For use in the default initialization, the class must have a zero-argument constructor</p>
+<pre><code>public interface JenaSubsystemLifecycle {
+    public void start() ;
+    public void stop() ;
+    default public int level() { return 9999 ; }
+}
+</code></pre>
+<p>The code also supply a level, indicating its place in the order of initialization.
 The levels used by Jena are:</p>
 <ul>
 <li>0 - reserved</li>
 <li>10 - Used by jena-core</li>
-<li>15 - CLI Commands registry</li>
 <li>20 - RIOT</li>
 <li>30 - ARQ</li>
-<li>40 - Text indexing</li>
-<li>40 - TDB1</li>
-<li>42 - TDB2</li>
-<li>60 - Additional HTTP configuration</li>
-<li>60 - RDFPatch</li>
-<li>96 - SHACL</li>
-<li>96 - ShEx</li>
-<li>101 - Fuseki</li>
-<li>9999 - Default.</li>
+<li>40 - TDB</li>
+<li>9999 - other</li>
 </ul>
-<p>Levels up to 500 are considered to be &ldquo;Jena system level&rdquo;, Application code
-should use level above 500.</p>
-<p>Fuseki initialization includes <a href="/documentation/fuseki2/fuseki-modules">Fuseki
-Modules</a> which uses <code>SubsystemLifecycle</code>
-with a different Java interface.</p>
 <h2 id="the-initialization-process">The Initialization Process</h2>
-<p>The process followed by <code>JenaSystem.init()</code> is to load all java <code>ServiceLoader</code>
-registered <code>JenaSubsystemLifecycle</code>, sort into level order, then call <code>init</code> on
-each initialization object. Initialization code at the same level may be called
-in any order and that order may be different between runs.</p>
+<p>The process followed by <code>JenaSystem.init()</code> is to obtain an instance of
+<code>JenaSubsystemRegistry</code>, ask it to <code>load()</code> initialization code, then call
+that code in an order based on declared level. The order of invocation
+of different initialization code within the same level is undefined
+and may be different from run to run.</p>
 <p>Only the first call of <code>JenaSystem.init()</code> causes the process to run.
 Any subsequent calls are cheap, so calling <code>JenaSystem.init()</code>
 when in doubt about the initialization state is safe.</p>
 <p>Overlapping concurrent calls to <code>JenaSystem.init()</code> are thread-safe.
 On a return from <code>JenaSystem.init()</code>, Jena has been initialized at some point.</p>
+<h2 id="the-standard-subsystem-registry">The Standard Subsystem Registry</h2>
+<p>The <code>JenaSubsystemRegistry</code> normally used is based on <code>java.util.ServiceLoader</code>.
+It looks for class resources
+<code>META-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle</code>
+on the classpath during the load step.</p>
+<p>See the javadoc for <code>java.util.ServiceLoader</code> for more details.</p>
+<p>See also the javadoc for
+<a href="/documentation/javadoc/jena/org/apache/jena/system/JenaSystem.html">JenaSystem</a>
+and the source code.</p>
 <h2 id="debugging">Debugging</h2>
 <p>There is a flag <code>JenaSystem.DEBUG_INIT</code> to help with development. It is not
 intended for runtime logging.</p>
 <p>Jena components print their initialization beginning and end points on
 <code>System.err</code> to help track down ordering issues.</p>
+<h2 id="modifying-the-standard-process">Modifying the Standard Process</h2>
+<p>It is possible, with care, to alter the way
+that initialization code is discovered.</p>
+<p>An application can change the <code>JenaSubsystemRegistry</code> instance.
+This must be done before any Jena code is called anywhere
+in the current JVM.</p>
+<pre><code>// Example alternative registry.
+JenaSubsystemRegistry r = new JenaSubsystemRegistryBasic() {
+    @Override
+    public void load() {
+        if ( JenaSystem.DEBUG_INIT )
+            System.err.println(&quot;Example custom load&quot;) ;
+        super.load();
+    }
+} ;
+
+// Set the sub-system registry
+JenaSystem.setSubsystemRegistry(r);
+
+// Enable output if required
+// JenaSystem.DEBUG_INIT = true ;
+
+// Initialize Jena
+JenaSystem.init() ;
+</code></pre>
+<h2 id="jena-initialization-in-multi-classloader-environments">Jena initialization in multi-classloader environments</h2>
+<p>In some applications with multiple classloaders, or different classloader strategies, Jena initialization may
+not work as expected. If the Jena initialization debug information shows that components were not loaded correctly,
+trying to switch the context class loader may fix the initialization process.</p>
+<pre><code>ClassLoader contextClassLoader = null;
+try {
+    contextClassLoader = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+    JenaSystem.DEBUG_INIT = true;
+    // ...
+} finally {
+    Thread.currentThread().setContextClassLoader(contextClassLoader);
+}
+</code></pre>
 
 
         </div>
@@ -257,7 +289,7 @@ intended for runtime logging.</p>
     <div class="container" style="font-size:80%" >
         <p>
             Copyright &copy; 2011&ndash;2023 The Apache Software Foundation, Licensed under the
-            <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+            <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>
             Apache Jena, Jena, the Apache Jena project logo, Apache and the Apache feather logos are trademarks of
