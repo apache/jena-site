@@ -10,7 +10,7 @@ does not provide RDF axioms. The RDFS vocabulary is not included in the data.
 It does support use with RDF datasets, where each graph in the dataset has the
 same RDFS vocabulary applied to it.
 
-This is not a replacement for the [Jena RDFS Reasoner support](/inference/)
+This is not a replacement for the [Jena RDFS Reasoner support](/documentation/inference/#rdfs)
 which covers full RDFS inference.
 
 The data is updateable, and graphs can be added and removed from the dataset.
