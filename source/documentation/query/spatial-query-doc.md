@@ -32,21 +32,6 @@ This query makes a spatial query for the places within 10 kilometres of Bristol 
         ?place rdfs:label ?placeName
     }
 
-## Table of Contents
-
-- [How to Use it by Code](#how-to-use-it-by-code)
-    - [Create Spatial Dataset](#create-spatial-dataset)
-    - [Supported Geo Data for Indexing and Querying](#supported-geo-data-for-indexing-and-querying)
-        - [Builtin Geo Predicates](#builtin-geo-predicates)
-        - [Custom Geo Predicates](#custom-geo-predicates)
-    - [Load Geo Data into Spatial Dataset](#load-geo-data-into-spatial-dataset)
-- [Property Function Library](#property-function-library)
-- [Spatial Dataset Assembler](#spatial-dataset-assembler)
-- [Working with Solr](#working-with-solr)
-- [Working with Fuseki](#working-with-fuseki)
-- [Building a Spatial Index](#building-a-spatial-index)
-
-
 ## How to Use it by Code
 
 ### Create Spatial Dataset

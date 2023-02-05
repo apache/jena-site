@@ -74,55 +74,6 @@ distributed across separate machines.
 This [example code](https://github.com/apache/jena/tree/main/jena-text/src/main/java/examples/)
 illustrates creating an in-memory dataset with a Lucene index.
 
-## Table of Contents
-
--   [Architecture](#architecture)
-    -   [One triple equals one document](#one-triple-equals-one-document)
-    -   [One document equals one entity](#one-document-equals-one-entity)
-        -   [External Content](#external-content)
-    -   [External applications](#external-applications)
-    -   [Document structure](#document-structure)
--   [Query with SPARQL](#query-with-sparql)
-    -   [Syntax](#syntax)
-        -   [Input arguments](#input-arguments)
-        -   [Output arguments](#output-arguments)
-    -   [Query strings](#query-strings)
-        -   [Simple queries](#simple-queries)
-        -   [Queries with language tags](#queries-with-language-tags)
-        -   [Queries that retrieve literals](#queries-that-retrieve-literals)
-        -   [Queries with graphs](#queries-with-graphs)
-        -   [Queries across multiple `Fields`](#queries-across-multiple-fields)
-            -   [Multiple fields in the default integration model](#multiple-fields-in-the-default-integration-model)
-            -   [Multiple fields in the one document equals one entity model](#multiple-fields-in-the-one-document-equals-one-entity-model)
-        -   [Queries with _Boolean Operators_ and _Term Modifiers_](#queries-with-boolean-operators-and-term-modifiers)
-        -   [Highlighting](#highlighting)
-    -   [Good practice](#good-practice)
--   [Configuration](#configuration)
-    -   [Text Dataset Assembler](#text-dataset-assembler)
-        -   [Lists of Indexed Properties](#lists-of-indexed-properties)
-    -   [Configuring an analyzer](#configuring-an-analyzer)
-    -   [Configuration by Code](#configuration-by-code)
-    -   [Graph-specific Indexing](#graph-specific-indexing)
-    -   [Linguistic Support with Lucene Index](#linguistic-support-with-lucene-index)
-        - [Explicit Language Field in the Index](#explicit-language-field-in-the-index)
-    	- [SPARQL Linguistic Clause Forms](#sparql-linguistic-clause-forms)
-    	- [LocalizedAnalyzer](#localizedanalyzer)
-    	- [Multilingual Support](#multilingual-support)
-    -   [Generic and Defined Analyzer Support](#generic-and-defined-analyzer-support)
-        - [Generic Analyzers, Tokenizers and Filters](#generic-analyzers-tokenizers-and-filters)
-        - [Defined Analyzers](#defined-analyzers)
-        - [Extending multilingual support](#extending0-multilingual-support)
-        - [Multilingual enhancements for multi-encoding searches](#multilingual-enhancements-for-multi-encoding-searches)
-        - [Naming analyzers for later use](#naming-analyzers-for-later-use)
-    -   [Storing Literal Values](#storing-literal-values)
-- [Working with Fuseki](#working-with-fuseki)
-- [Building a Text Index](#building-a-text-index)
-- [Configuring Alternative TextDocProducers](#configuring-alternative-textdocproducers)
-  - [Default behavior](#default-behavior)
-    - [Example](#example)
-  - [Multiple fields per document](#multiple-fields-per-document)
-- [Maven Dependency](#maven-dependency)
-
 ## Architecture
 
 In general, a text index engine (Lucene or Elasticsearch) indexes
@@ -1846,7 +1797,7 @@ multiple searchable fields by extending `org.apache.jena.sparql.core.DatasetChan
 such as with `org.apache.jena.query.text.TextDocProducerEntities`; however, this form of
 extension is not currently (Jena 3.13.1) functional.
 
-# Maven Dependency
+## Maven Dependency
 
 The <code>jena-text</code> module is included in Fuseki.  To use it within application code,
 then use the following maven dependency:

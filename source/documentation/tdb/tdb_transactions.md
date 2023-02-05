@@ -13,17 +13,6 @@ process termination and system crashes.
 
 Non-transactional use of TDB1 should be avoided; TDB2 only operates with transactions.
 
-## Contents
-
--   [Overview](#overview)
--   [Limitations](#limitations)
--   [API for Transactions](#api-for-transactions)
-    - [Read transactions](#read-transactions)
-    - [Write transactions](#write-transactions)
--   [Multi-threaded use](#multi-threaded-use)
--   [Bulk loading](#bulk-loading)
--   [Multi JVM](#multi-jvm)
-
 ## Overview
 
 TDB2 uses [MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)

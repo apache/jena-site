@@ -7,20 +7,8 @@ The first section gives a quick introduction to the
 I/O subsystem. The other sections are aimed at users wishing to use
 advanced features within the RDF/XML I/O subsystem.
 
-## Contents
+Other content related to Jena RDF/XML How-To includes:
 
-- [Quick Introduction](#quick-introduction)
-- [RDF/XML, RDF/XML-ABBREV](#rdfxml-rdfxml-abbrev)
-- [Character Encoding Issues](#character-encoding-issues)
-  - [Encodings Supported in Jena 2.2 and later](#encodings-supported-in-jena-22-and-later)
-- [When to Use Reader and Writer?](#when-to-use-reader-and-writer)
-- [Introduction to Advanced Jena I/O](#introduction-to-advanced-jena-io)
-- [Advanced RDF/XML Input](#advanced-rdfxml-input)
-  - [ARP properties](#arp-properties)
-  - [Interrupting ARP](#interrupting-arp)
-- [Advanced RDF/XML Output](#advanced-rdfxml-output)
-- [Conformance](#conformance)
-- [Faster RDF/XML I/O](#faster-rdfxml-io)
 - [Details of ARP, the Jena RDF/XML parser](arp.html)
 
 ## Quick Introduction

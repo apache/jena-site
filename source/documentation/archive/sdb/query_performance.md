@@ -27,13 +27,6 @@ database, and its configuration (particularly amount of memory
 used), as well as the queries themselves all greatly contribute to
 the execution costs.
 
-## Contents
-
--   [Setup](#setup)
--   [LUBM Query 1](#lubm-query-1)
--   [LUBM Query 2](#lubm-query-2)
--   [Summary](#summary)
-
 ## Setup
 
 [Database and hardware setup](loading_performance.html#the-databases-and-hardware "SDB/Loading performance")

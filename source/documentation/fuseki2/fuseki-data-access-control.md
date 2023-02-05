@@ -21,21 +21,6 @@ for configuring security over the whole of the Fuseki UI.
 
 This page applies to Fuseki Main.
 
-## Contents
-
-- [HTTPS](#https)
-- [Authentication](#authentication)
-    - [Using curl](#using-curl)
-    - [Using wget](#using-wget)
-- [Access control lists](#acl)
-    - [Format of ja:allowedUsers](#alloweduser)
-    - [Server Level ACLs](#server-acl)
-    - [Dataset Level ACLs](#dataset-acl)
-    - [Endpoint Level ACLs](#endpoint-acl)
-- [Graph Access Control Lists](#graph-acl)
-    - [Graph Security Registry](#graph-security-registry)
-- [Configuring Jetty directly](#jetty-configuration)
-
 ## HTTPS
 
 HTTPS support is configured from the fuseki server command line.

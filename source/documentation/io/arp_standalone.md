@@ -6,16 +6,6 @@ ARP can be used both as a Jena subsystem, or as a standalone
 RDF/XML parser. This document gives a quick guide to using ARP
 standalone.
 
-## Contents
-
--   [Overview](#overview)
--   [Sample Code](#sample)
--   [ARP Event Handling](#handlers)
--   [Configuring ARP](#config)
--   [Interrupting ARP](#interrupt)
--   [Using Other SAX Sources](#sax2rdf)
--   [Memory usage](#memory)
-
 ## Overview
 
 To load an RDF file:

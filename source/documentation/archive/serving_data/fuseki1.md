@@ -20,19 +20,6 @@ The relevant SPARQL standards are:
 -   [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/)
 -   [SPARQL 1.1 Graph Store HTTP Protocol](http://www.w3.org/TR/sparql11-http-rdf-update/)
 
-## Contents
-
--   [Download](#download-fuseki1)
--   [Getting Started](#getting-started-with-fuseki)
--   [Security](#security-and-access-control)
--   [Logging](#logging)
--   [Server URI scheme](#server-uri-scheme)
--   [Running a Fuseki Server](#running-a-fuseki-server)
--   [Fuseki Configuration File](#fuseki-configuration-file)
--   [SPARQL Over HTTP](#sparql-over-http)
--   [Use from Java](#use-from-java)
--   [Development System](#development-system)
-
 ## Download Fuseki1
 
 Binaries for Fuseki1 are available from the 

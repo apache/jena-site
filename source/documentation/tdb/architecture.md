@@ -5,19 +5,6 @@ title: TDB Architecture
 This page gives an overview of the TDB architecture.
 It applies to TDB1 and TDB2 with differences noted.
 
-## Contents
-
--   [Terminology](#terminology)
--   [Design](#design)
-    -   [The Node Table](#the-node-table)
-    -   [Triple and Quad indexes](#triple-and-quad-indexes)
-    -   [Prefixes Table](#prefixes-table)
-    -   [TDB B+Trees](#tdb-btrees)
-    -   [Transactions](#tdb-transactions)
--   [Inline values](#inline-values)
--   [Query Processing](#query-processing)
--   [Caching on 32 and 64 bit Java systems](#caching-on-32-and-64-bit-java-systems)
-
 ## Terminology
 
 Terms like "table" and "index" are used in this description. They

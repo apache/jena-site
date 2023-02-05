@@ -6,35 +6,6 @@ A way to write down data structures in an RDF-centric syntax.
 
 But not an idea for another RDF serialization format.
 
-## Contents
-
--   [Need](#need)
--   [Design Intent](#design-intent)
--   [Other Approaches](#other-approaches)
-    -   [RDF](#rdf)
-    -   [Lisp](#lisp)
-    -   [XML](#xml)
-    -   [JSON](#json)
--   [Design](#design)
-    -   [Tokens](#tokens)
-    -   [SSE Comments](#sse-comments)
-    -   [SSE Escapes](#sse-escapes)
-    -   [Structures](#structures)
--   [Tagged Structures](#tagged-structures)
-    -   [IRI resolution](#iri-resolution)
-        -   [base](#base)
-        -   [prefix](#prefix)
-        -   [Nesting](#nesting)
-    -   [Links](#links)
--   [Building Java Objects](#building-java-objects)
-    -   [SSE Factory](#sse-factory)
--   [Mapping to RDF](#mapping-to-rdf)
--   [SSE Files](#sse-files)
--   [Longer Examples](#longer-examples)
-    -   [Query 1](#query-1)
-    -   [Complete SPARQL Execution](#complete-sparql-execution)
--   [SSE Grammar](#sse-grammar)
-
 ## Need
 
 The [SPARQL algebra](http://www.w3.org/TR/sparql11-query/#sparqlAlgebra)

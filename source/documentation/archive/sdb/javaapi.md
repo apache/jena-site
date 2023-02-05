@@ -11,19 +11,6 @@ This page describes how to use SDB from Java.
 
 Code examples are in `src-examples/` in the SDB distribution.
 
-## Contents
-
--   [Concepts](#concepts)
--   [Obtaining the Store](#obtaining-the-store)
-    -   [From a configuration file](#from-a-configuration-file)
-    -   [In Java code](#in-java-code)
-    -   [Database User and Password](#database-user-and-password)
--   [Connection Management](#connection-management)
--   [Formatting or Emptying the Store](#formatting-or-emptying-the-store)
--   [Loading data](#loading-data)
--   [Executing Queries](#executing-queries)
--   [Using the Jena Model API with SDB](#using-the-jena-model-api-with-sdb)
-
 ## Concepts
 
 -   `Store`
