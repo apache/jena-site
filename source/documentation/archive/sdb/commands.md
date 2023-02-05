@@ -10,24 +10,6 @@ title: SDB/Commands
 This page describes the command line programs that can be used to
 create an SDB store, load data into it and to issue queries.
 
-## Contents
-
--   [Scripts](#scripts)
-    -   [Script set up](#script-set-up)
-    -   [Argument Structure](#argument-structure)
-
--   [Store Description](#store-description)
-    -   [Modifying the Store Description](#modifying-the-store-description)
-    -   [Logging and Monitoring](#logging-and-monitoring)
-
--   [SDB Commands](#sdb-commands)
-    -   [Database creation](#database-creation)
-    -   [Loading data](#loading-data)
-    -   [Query](#query)
-    -   [Testing](#testing)
-    -   [Other](#other)
-
-
 ## Scripts
 
 The directory `bin/` contains shell scripts to run the commands

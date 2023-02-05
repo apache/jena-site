@@ -2,7 +2,7 @@
 title: An Introduction to RDF and the Jena RDF API
 ---
 
-<h2>Preface</h2>
+## Preface
 
 This is a tutorial introduction to both W3C's Resource Description Framework
 (RDF) and Jena, a Java API for RDF.  It is written for the programmer who is
@@ -29,26 +29,7 @@ model.</p>
 all the examples used in this tutorial can be downloaded from
 <a href="//jena.apache.org/download/index.cgi"><code>jena.apache.org/download/index.cgi</code></a>.</p>
 
-<p></p>
-
-<h2>Table of Contents</h2>
-<ol>
-  <li><a href="#ch-Introduction">Introduction</a></li>
-  <li><a href="#ch-Statements">Statements</a></li>
-  <li><a href="#ch-Writing-RDF">Writing RDF</a></li>
-  <li><a href="#ch-Reading-RDF">Reading RDF</a></li>
-  <li><a href="#ch-Prefixes">Controlling Prefixes</a></li>
-  <li><a href="#ch-Jena-RDF-Packages">Jena RDF Packages</a></li>
-  <li><a href="#ch-Navigating-a-Model">Navigating a Model</a></li>
-  <li><a href="#ch-Querying-a-Model">Querying a Model</a></li>
-  <li><a href="#ch-Operations-on-Models">Operations on Models</a></li>
-  <li><a href="#ch-Containers">Containers</a></li>
-  <li><a href="#ch-More-about-Literals-and-Datatypes">More about Literals and
-    Datatypes</a></li>
-  <li><a href="#ch-Glossary">Glossary</a></li>
-</ol>
-
-<h2><a id="ch-Introduction">Introduction</a></h2>
+## Introduction {# id="ch-Introduction" }
 
 <p>The Resource Description Framework (RDF) is a standard (technically a W3C
 Recommendation) for describing resources. What is a resource?  That is
@@ -193,7 +174,7 @@ Resource johnSmith
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a> in the /src-examples directory
 of the Jena distribution.</p>
 
-<h2><a id="ch-Statements">Statements</a></h2>
+## Statements {# id="ch-Statements" }
 
 <p>Each arc in an RDF Model is called a <i><a
 href="#glos-Statement">statement</a></i>. Each statement asserts a fact
@@ -283,7 +264,7 @@ href="https://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples</a>.  The name
 means "triple notation".  We will see in the next section that Jena has an
 N-Triples writer built in.</p>
 
-<h2><a id="ch-Writing-RDF">Writing RDF</a></h2>
+## Writing RDF {# id="ch-Writing-RDF" }
 
 <p>Jena has methods for reading and writing RDF as XML. These can be
 used to save an RDF model to a file and later read it back in again.</p>
@@ -377,7 +358,7 @@ RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 <p>This will produce output similar to that of tutorial 3 which conforms to
 the N-Triples specification.</p>
 
-<h2><a id="ch-Reading-RDF">Reading RDF</a></h2>
+## Reading RDF {# id="ch-Reading-RDF" }
 
 <p><a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstrates reading the
 statements recorded in RDF XML form into a model. With this tutorial,
@@ -450,9 +431,9 @@ looks like:</p>
 </rdf:RDF>
 ```
 
-<h2 id="ch-Prefixes">Controlling Prefixes</h2>
+## Controlling Prefixes {# id="ch-Prefixes" }
 
-<h3>Explicit prefix definitions</h3>
+### Explicit prefix definitions
 
 In the previous section, we saw that the output XML declared a namespace
 prefix <code>vcard</code> and used that prefix to abbreviate URIs. While RDF
@@ -600,7 +581,7 @@ adding a whole group of mappings at once; see the documentation for
 <code>PrefixMapping</code> for details.
 
 
-<h2 id="ch-Jena-RDF-Packages">Jena RDF Packages</h2>
+## Jena RDF Packages {# id="ch-Jena-RDF-Packages" }
 
 <p>Jena is a Java API for semantic web applications.  The key RDF package for
 the application developer is
@@ -629,7 +610,7 @@ implementation of <code>Resource</code>, then no conversions between the two
 types will be necessary.</p>
 
 
-<h2 id="ch-Navigating-a-Model">Navigating a Model</h2>
+## Navigating a Model {# id="ch-Navigating-a-Model" }
 
 <p>So far, this tutorial has dealt mainly with creating, reading and writing
 RDF Models. It is now time to deal with accessing information held in a
@@ -749,7 +730,7 @@ The nicknames of "John Smith" are:
 </p>
 
 
-<h2 id="ch-Querying-a-Model">Querying a Model</h2>
+## Querying a Model {# id="ch-Querying-a-Model" }
 
 <p>The previous section dealt with the case of navigating a model from a
 resource with a known URI. This section deals with searching a
@@ -920,7 +901,7 @@ the statements in the Model and test each one individually, whilst the second
 allows indexes maintained by the implementation to improve performance.  Try
 it on a large Model and see for yourself, but make a cup of coffee first.</p>
 
-<h2 id="ch-Operations-on-Models">Operations on Models</h2>
+## Operations on Models {# id="ch-Operations-on-Models" }
 
 <p>Jena provides three operations for manipulating Models as a whole.  These
 are the common set operations of union, intersection and difference.</p>
@@ -987,7 +968,7 @@ and
 Javadocs for more details.
 </p>
 
-<h2 id="ch-Containers">Containers</h2>
+## Containers {# id="ch-Containers" }
 
 <p>RDF defines a special kind of resources for representing collections of
 things. These resources are called <i>containers</i>. The members of a
@@ -1111,7 +1092,7 @@ The RDFCore WG have relaxed this constraint, which allows partial
 representation of containers.  This therefore is an area of Jena may be
 changed in the future.</p>
 
-<h2 id="ch-More-about-Literals-and-Datatypes">More about Literals and Datatypes</h2>
+## More about Literals and Datatypes {# id="ch-More-about-Literals-and-Datatypes" }
 
 <p>RDF literals are not just simple strings.  Literals may have a language
 tag to indicate the language of the literal.  The literal "chat" with an
@@ -1196,7 +1177,7 @@ statement is added.</p>
 Jena supports these using the <i>typed literal</i> mechanisms; they are
 not discussed in this tutorial.</p>
 
-<h2 id="ch-Glossary">Glossary</h2>
+## Glossary {# id="ch-Glossary" }
 
 <dl>
 
@@ -1240,7 +1221,7 @@ Another term for a statement.</dd>
 
 </dl>
 
-<h2>Footnotes</h2>
+## Footnotes
 <ol>
   <li><a id="fn-01"></a>The identifier of an RDF resource can
     include a fragment identifier, e.g.

@@ -17,18 +17,6 @@ slug: index
   <a href="/help_and_support/index.html">mailing lists</a>
   is welcomed. </p>
 
-## Index {#index}
-<ol>
-  <li><a href="#overview">Overview of inference support</a> </li>
-  <li><a href="#api">The inference API</a></li>
-  <li><a href="#rdfs">The RDFS reasoner</a></li>
-  <li><a href="#owl">The OWL reasoner</a></li>
-  <li><a href="#transitive">The transitive reasoner</a></li>
-  <li><a href="#rules">The general purpose rule engine</a></li>
-  <li><a href="#extensions">Extending the inference support</a></li>
-  <li><a href="#futures">Futures</a></li>
-</ol>
-
 ## Overview of inference support {#overview}
 <p>The Jena inference subsystem is designed to allow a range of inference engines
   or reasoners to be plugged into Jena. Such engines are used to derive additional

@@ -9,17 +9,6 @@ these cases, ARP and Jena can be used as a SAX event handler,
 turning SAX events into triples, or a DOM tree can be parsed into a
 Jena Model.
 
-## Contents
-
--   [Overview](#overview)
--   [Sample Code](#sample-code)
--   [Initializing SAX event source](#initializing-sax-event-source)
--   [Error Handler](#error-handler)
--   [Options](#options)
--   [XML Lang and Namespaces](#xml-lang-and-namespaces)
--   [Using your own triple handler](#using-your-own-triple-handler)
--   [Using a DOM as input](#using-a-dom-as-input)
-
 ## 1. Overview
 
 To read an arbitrary SAX source as triples to be added into a Jena

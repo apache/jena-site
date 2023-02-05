@@ -20,26 +20,10 @@ generated. The user can add and modify rules to tune the database
 based on higher level knowledge, such as inverse function
 properties.
 
-## Contents
-
--   [Quickstart](#quickstart)
--   [Running tdbstats](#running-tdbstats)
--   [Choosing the optimizer strategy](#choosing-the-optimizer-strategy)
--   [Filter placement](#filter-placement)
--   [Investigating what is going on](#investigating-what-is-going-on)
--   [Statistics Rule File](#statistics-rule-file)
-    -   [Statistics Rule Language](#statistics-rule-language)
-    -   [Abbreviated Rule Form](#abbreviated-rule-form)
-    -   [Defaults](#defaults)
--   [Generating a statistics file](#generating-a-statistics-file)
-    -   [Generating statistics for Union Graphs](#generating-statistics-for-union-graphs)
--   [Writing Rules](#writing-rules)
-
 The commands look for file `log4j2.properties` in the current directory, as well
 as the usual log4j2 initialization with property `log4j.configurationFile` and
 looking for classpath resource `log4j2.properties`; there is a default setup of
 log4j2 built-in.
-
 
 ## Quickstart
 

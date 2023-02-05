@@ -21,14 +21,6 @@ Commands:
 Each command supports the `-v` flag to print out details of the
 HTTP interaction.
 
-## Contents
-
--   [SOH SPARQL Query](#soh-sparql-query)
--   [SOH SPARQL HTTP](#soh-sparql-http)
--   [SOH SPARQL Update](#soh-sparql-update)
--   [Service endpoints](#service-endpoints)
-
-
 ## SOH SPARQL Query
 
     s-query --service=endpointURL 'query string'

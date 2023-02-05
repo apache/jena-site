@@ -21,16 +21,6 @@ Store objects themselves are lightweight so connections to an SDB
 database can be created on a per-request basis as required for use
 in J2EE application servers.
 
-## Contents
-
--   [Store Descriptions](#store-descriptions)
--   [SDB Connections](#sdb-connections)
--   [Example](#example)
--   [Vocabulary](#vocabulary)
-    -   [Store](#store)
-    -   [Connection](#connection)
-
-
 ## Store Descriptions
 
 A store description identifies which storage layout is being used,

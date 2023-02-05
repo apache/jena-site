@@ -5,18 +5,6 @@ title: TDB Configuration
 There are a number of configuration options that affect the
 operation of TDB.
 
-## Contents
-
--   [Setting Options](#setting-options)
-    -   [Setting from the command line](#setting-from-the-command-line)
-    -   [Setting with Java System properties](#setting-with-java-system-properties)
--   [Query of the union of named graphs](#query-of-the-union-of-named-graphs)
--   [Logging Query Execution](#logging-query-execution)
--   [Dataset Caching](#dataset-caching)
--   [File Access Mode](#file-access-mode)
--   [TDB Configuration Symbols](#tdb-configuration-symbols)
--   [Advanced Store Configuration](#advanced-store-configuration)
-
 ## Setting Options
 
 Options can be set globally, through out the JVM, or on a per query

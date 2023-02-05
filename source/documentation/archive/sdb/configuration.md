@@ -12,15 +12,6 @@ options for query processing, not for the database layout and
 storage, which is controlled by
 [store descriptions](store_description.html "SDB/Store Description").
 
-## Contents
-
--   [Setting Options](#setting-options)
--   [Current Options](#current-options)
-    -   [Queries over all Named Graphs](#queries-over-all-named-graphs)
-    -   [Streaming over JDBC](#streaming-over-jdbc)
-    -   [Annotated SQL](#annotated-sql)
-
-
 ## Setting Options
 
 Options can be set globally, throughout the JVM, or on a per query

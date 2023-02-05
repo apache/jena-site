@@ -2,6 +2,7 @@
 title: Home
 ---
 
+<main class="d-flex flex-column">
 <div class="px-5 my-4 bg-light rounded-3" id="jumbotron">
   <div class="container-fluid py-5">
   <h1 class="display-5 fw-bold"><img alt="Apache Jena" src="/images/jena-logo/jena-logo-jumbotron.png"/> Apache Jena</h1>
@@ -62,3 +63,4 @@ title: Home
     </div>
   </div>
 </div>
+</main>

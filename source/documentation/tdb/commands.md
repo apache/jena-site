@@ -2,23 +2,6 @@
 title: TDB Command-line Utilities
 ---
 
-## Contents
-
--   [Installation](#installation)
--   [Scripts](#scripts)
-    -   [Script set up - bash scripts](#script-set-up-bash-scripts)
-    -   [Script set up - Windows batch files](#script-set-up-windows-batch-files)
--   [Command line script arguments](#command-line-script-arguments)
-    -   [Setting options from the command line](#setting-options-from-the-command-line)
--   [TDB Commands](#tdb-commands)
-    -   [Store description](#store-description)
-    -   [tdbloader](#tdbloader)
-    -   [TDB xloader](#tdb-xloader)
-    -   [tdbquery](#tdbquery)
-    -   [tdbdump](#tdbdump)
-    -   [tdbstats](#tdbstats)
-
-
 ## Installation
 
 From Apache Jena version `2.7.x` onwards, TDB is now installed as part of a single integrated Jena

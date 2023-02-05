@@ -16,14 +16,6 @@ Having the description in a file means that the data that the
 application is going to work on can be changed without changing the
 program code.
 
-## Contents
-
--   [Dataset](#dataset)
-    -   [Union Default Graph](#union-default-graph)
--   [Graph](#graph)
--   [Mixed Datasets](#mixed-datasets)
--   [RDFS](#rdfs)
-
 ## Dataset
 
 This is needed for use in [Fuseki](../fuseki2/ "Fuseki").

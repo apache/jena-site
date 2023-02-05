@@ -3,12 +3,7 @@ title: Jena Query Builder - A query builder for Jena.
 slug: index
 ---
 
-
-# Table of Contents
-
-{% toc %}
-
-# Overview
+## Overview
 
 Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions.  The Query Builder module is an extra package and is found in the `jena-querybuilder` jar. 
 
@@ -28,7 +23,7 @@ produces
     WHERE
       { ?s ?p ?o }
 
-# Constructing Expressions
+## Constructing Expressions
 
 Expressions are primarily used in `filter` and `bind` statements as well as in select clauses.  All the standard expressions are implemented in the `ExprFactory` class.  An `ExprFactory` can be retrieved from any Builder by calling the `getExprFactory()` method.  This will create a Factory that has the same prefix mappings and the query.  An alternative is to construct the `ExprFactory` directly, this factory will not have the prefixes defined in `PrefixMapping.Extended`.
 
@@ -41,7 +36,7 @@ Expressions are primarily used in `filter` and `bind` statements as well as in s
         .addWhere( ?s, "cf:air_temperature", ?v )
 
 
-# Update Builder
+## Update Builder
 
 The `UpdateBuilder` is used to create `Update`, `UpdateDeleteWhere` or `UpdateRequest` objects.  When an `UpdateRequest` is built is contains a single `Update` object as defined by the `UpdateBuilder`.  `Update` objects can  be added to an UpdateRequest using the `appendTo()` method.
 
@@ -60,7 +55,7 @@ The `UpdateBuilder` is used to create `Update`, `UpdateDeleteWhere` or `UpdateRe
         .where( subj, dc:creator, "me")
         .appendTo( req );
 
-# Where Builder
+## Where Builder
 
 In some use cases it is desirable to create a where clause without constructing an entire query.  The `WhereBuilder` is designed to fit this need.  For example to construct the query:
 
@@ -116,7 +111,7 @@ The where clauses could be built inline as:
 
 
 
-# Template Usage
+## Template Usage
 
 In addition to making it easier to build valid queries the QueryBuilder has a clone method.
 Using this a developer can create as "Template" query and add to it as necessary.
@@ -138,7 +133,7 @@ produces
         ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> foaf:person .
       }
 
-# Prepared Statement Usage
+## Prepared Statement Usage
 
 The query builders have the ability to replace variables with other values.  This can be
 

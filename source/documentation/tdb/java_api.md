@@ -8,15 +8,6 @@ Jena API including the
 The application obtains a model or RDF datasets from TDB then uses
 it as for any other model or dataset.
 
-## Contents
-
--   [Constructing a model or dataset](#constructing-a-model-or-dataset)
-    -   [Using a directory name](#using-a-directory-name)
-    -   [Using an assembler file](#using-an-assembler-file)
--   [Bulkloader](#bulkloader)
--   [Concurrency](#concurrency)
--   [Caching and synchronization](#caching-and-synchronization)
-
 TDB also supports [transactions](tdb_transactions.html).
 
 ## Constructing a model or dataset
