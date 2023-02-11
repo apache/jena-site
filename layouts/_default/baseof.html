@@ -176,15 +176,40 @@
 <script src="/js/improve.js" type="text/javascript"></script>
 <!-- for marking links as active in the navbar-menu -->
 <script type="text/javascript">
-const link = document.querySelector(`a[href="${window.location.pathname}"]`);
-if (link !== undefined && link !== null) {
-    const parents = link.parentElement
-    for (const parent of parents) {
-        if (parent.tagName === 'ul' ||  parent.tagName === 'li') {
-            parent.style += 'active';
+(function() {
+    'use strict'
+    /*
+     * Find the link in the menu that corresponds to the currently open page.
+     * NOTE: We call .querySelectorAll because we may have more than one link
+     *       in the page for the same entry, e.g. the Logo and Home link to
+     *       the same page.
+     */
+    const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)
+    if (links !== undefined && links !== null) {
+        for (const link of links) {
+            // We may call add twice for this link, but that is fine.
+            link.classList.add('active')
+            let parentElement = link.parentElement
+            let count = 0
+            const levelsLimit = 4
+            // Keep iterating while we have the parent being UL's and LI's, with a hard-limit
+            // (to prevent possibly crashing some tabs with deeply nested and/or long menus).
+            // N.B.: In Bootstrap 5 the navigation menus are composed with UL's, that contain
+            //       LI's, that contain either other UL's (sub-menus) or A's (links). We are
+            //       after the A's.
+            while (['UL', 'LI'].includes(parentElement.tagName) && count <= levelsLimit) {
+                if (parentElement.tagName === 'LI') {
+                    // Here we can rely on the JS API to search the first child A element,
+                    // and if found add the active class. In Bootstrap 5 the link elements
+                    // are marked as active, different than in previous version.
+                    parentElement.querySelector('a:first-child').classList.add('active')
+                }
+                parentElement = parentElement.parentElement
+                count++
+            }
         }
     }
-}
+})()
 </script>
 
 </body>
