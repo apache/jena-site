@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -179,7 +178,55 @@
             <h1 class="title">Apache Jena Elephas - IO API</h1>
             
             
-	<p>The IO API provides support for reading and writing RDF within Apache Hadoop applications.  This is done by providing <code>InputFormat</code> and <code>OutputFormat</code> implementations that cover all the RDF serialisations that Jena supports.</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#compressed-io">Compressed IO</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#input">Input</a>
+      <ul>
+        <li><a href="#blank-nodes-in-input">Blank Nodes in Input</a></li>
+        <li><a href="#mixed-inputs">Mixed Inputs</a></li>
+      </ul>
+    </li>
+    <li><a href="#output">Output</a>
+      <ul>
+        <li><a href="#blank-nodes-in-output">Blank Nodes in Output</a>
+          <ul>
+            <li><a href="#blank-node-divergence-in-multi-stage-pipelines">Blank Node Divergence in multi-stage pipelines</a></li>
+          </ul>
+        </li>
+        <li><a href="#node-output-format">Node Output Format</a></li>
+      </ul>
+    </li>
+    <li><a href="#rdf-serialisation-support">RDF Serialisation Support</a>
+      <ul>
+        <li><a href="#input-1">Input</a></li>
+        <li><a href="#output-1">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#job-setup">Job Setup</a>
+      <ul>
+        <li><a href="#job-configuration-options">Job Configuration Options</a>
+          <ul>
+            <li><a href="#input-lines-per-batch">Input Lines per Batch</a></li>
+            <li><a href="#max-line-length">Max Line Length</a></li>
+            <li><a href="#ignoring-bad-tuples">Ignoring Bad Tuples</a></li>
+            <li><a href="#global-blank-node-identity">Global Blank Node Identity</a></li>
+            <li><a href="#output-batch-size">Output Batch Size</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>The IO API provides support for reading and writing RDF within Apache Hadoop applications.  This is done by providing <code>InputFormat</code> and <code>OutputFormat</code> implementations that cover all the RDF serialisations that Jena supports.</p>
 <p>{% toc %}</p>
 <h1 id="background-on-hadoop-io">Background on Hadoop IO</h1>
 <p>If you are already familiar with the Hadoop IO paradigm then please skip this section, if not please read as otherwise some of the later information will not make much sense.</p>
@@ -337,6 +384,54 @@ FileOutputFormat.setOutputPath(job, &quot;/users/example/output&quot;);
 <p>The batch size for batched output formats can be controlled by setting the <code>rdf.io.output.batch-size</code> property as desired.  The default value for this if not explicitly configured is 10,000:</p>
 <pre><code>job.getConfiguration.setInt(RdfIOConstants.OUTPUT_BATCH_SIZE, 25000);</code></pre>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#compressed-io">Compressed IO</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#input">Input</a>
+      <ul>
+        <li><a href="#blank-nodes-in-input">Blank Nodes in Input</a></li>
+        <li><a href="#mixed-inputs">Mixed Inputs</a></li>
+      </ul>
+    </li>
+    <li><a href="#output">Output</a>
+      <ul>
+        <li><a href="#blank-nodes-in-output">Blank Nodes in Output</a>
+          <ul>
+            <li><a href="#blank-node-divergence-in-multi-stage-pipelines">Blank Node Divergence in multi-stage pipelines</a></li>
+          </ul>
+        </li>
+        <li><a href="#node-output-format">Node Output Format</a></li>
+      </ul>
+    </li>
+    <li><a href="#rdf-serialisation-support">RDF Serialisation Support</a>
+      <ul>
+        <li><a href="#input-1">Input</a></li>
+        <li><a href="#output-1">Output</a></li>
+      </ul>
+    </li>
+    <li><a href="#job-setup">Job Setup</a>
+      <ul>
+        <li><a href="#job-configuration-options">Job Configuration Options</a>
+          <ul>
+            <li><a href="#input-lines-per-batch">Input Lines per Batch</a></li>
+            <li><a href="#max-line-length">Max Line Length</a></li>
+            <li><a href="#ignoring-bad-tuples">Ignoring Bad Tuples</a></li>
+            <li><a href="#global-blank-node-identity">Global Blank Node Identity</a></li>
+            <li><a href="#output-batch-size">Output Batch Size</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

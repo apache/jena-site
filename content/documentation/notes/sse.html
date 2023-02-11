@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,55 +170,61 @@
             <h1 class="title">SPARQL S-Expressions (or &#34;SPARQL Syntax Expressions&#34;)</h1>
             
             
-	<p>A way to write down data structures in an RDF-centric syntax.</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#need">Need</a></li>
+    <li><a href="#design-intent">Design Intent</a></li>
+    <li><a href="#other-approaches">Other Approaches</a>
+      <ul>
+        <li><a href="#rdf">RDF</a></li>
+        <li><a href="#lisp">Lisp</a></li>
+        <li><a href="#xml">XML</a></li>
+        <li><a href="#json">JSON</a></li>
+      </ul>
+    </li>
+    <li><a href="#design">Design</a>
+      <ul>
+        <li><a href="#tokens">Tokens</a></li>
+        <li><a href="#sse-comments">SSE Comments</a></li>
+        <li><a href="#sse-escapes">SSE Escapes</a></li>
+        <li><a href="#structures">Structures</a></li>
+      </ul>
+    </li>
+    <li><a href="#tagged-structures">Tagged Structures</a>
+      <ul>
+        <li><a href="#iri-resolution">IRI resolution</a>
+          <ul>
+            <li><a href="#base"><code>base</code></a></li>
+            <li><a href="#prefix"><code>prefix</code></a></li>
+            <li><a href="#nesting">Nesting</a></li>
+          </ul>
+        </li>
+        <li><a href="#links">Links</a></li>
+      </ul>
+    </li>
+    <li><a href="#building-java-objects">Building Java Objects</a>
+      <ul>
+        <li><a href="#sse-factory">SSE Factory</a></li>
+      </ul>
+    </li>
+    <li><a href="#mapping-to-rdf">Mapping to RDF</a></li>
+    <li><a href="#sse-files">SSE Files</a></li>
+    <li><a href="#longer-examples">Longer Examples</a>
+      <ul>
+        <li><a href="#query-1">Query 1</a></li>
+        <li><a href="#complete-sparql-execution">Complete SPARQL Execution</a></li>
+      </ul>
+    </li>
+    <li><a href="#sse-grammar">SSE Grammar</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>A way to write down data structures in an RDF-centric syntax.</p>
 <p>But not an idea for another RDF serialization format.</p>
-<h2 id="contents">Contents</h2>
-<ul>
-<li><a href="#need">Need</a></li>
-<li><a href="#design-intent">Design Intent</a></li>
-<li><a href="#other-approaches">Other Approaches</a>
-<ul>
-<li><a href="#rdf">RDF</a></li>
-<li><a href="#lisp">Lisp</a></li>
-<li><a href="#xml">XML</a></li>
-<li><a href="#json">JSON</a></li>
-</ul>
-</li>
-<li><a href="#design">Design</a>
-<ul>
-<li><a href="#tokens">Tokens</a></li>
-<li><a href="#sse-comments">SSE Comments</a></li>
-<li><a href="#sse-escapes">SSE Escapes</a></li>
-<li><a href="#structures">Structures</a></li>
-</ul>
-</li>
-<li><a href="#tagged-structures">Tagged Structures</a>
-<ul>
-<li><a href="#iri-resolution">IRI resolution</a>
-<ul>
-<li><a href="#base">base</a></li>
-<li><a href="#prefix">prefix</a></li>
-<li><a href="#nesting">Nesting</a></li>
-</ul>
-</li>
-<li><a href="#links">Links</a></li>
-</ul>
-</li>
-<li><a href="#building-java-objects">Building Java Objects</a>
-<ul>
-<li><a href="#sse-factory">SSE Factory</a></li>
-</ul>
-</li>
-<li><a href="#mapping-to-rdf">Mapping to RDF</a></li>
-<li><a href="#sse-files">SSE Files</a></li>
-<li><a href="#longer-examples">Longer Examples</a>
-<ul>
-<li><a href="#query-1">Query 1</a></li>
-<li><a href="#complete-sparql-execution">Complete SPARQL Execution</a></li>
-</ul>
-</li>
-<li><a href="#sse-grammar">SSE Grammar</a></li>
-</ul>
 <h2 id="need">Need</h2>
 <p>The <a href="http://www.w3.org/TR/sparql11-query/#sparqlAlgebra">SPARQL algebra</a>
 defines the semantics of a SPARQL graph pattern. Every SPARQL query
@@ -567,6 +572,59 @@ context sorts out the different usages.</p>
 <h2 id="sse-grammar">SSE Grammar</h2>
 <p><em>@@ insert grammar here</em></p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#need">Need</a></li>
+    <li><a href="#design-intent">Design Intent</a></li>
+    <li><a href="#other-approaches">Other Approaches</a>
+      <ul>
+        <li><a href="#rdf">RDF</a></li>
+        <li><a href="#lisp">Lisp</a></li>
+        <li><a href="#xml">XML</a></li>
+        <li><a href="#json">JSON</a></li>
+      </ul>
+    </li>
+    <li><a href="#design">Design</a>
+      <ul>
+        <li><a href="#tokens">Tokens</a></li>
+        <li><a href="#sse-comments">SSE Comments</a></li>
+        <li><a href="#sse-escapes">SSE Escapes</a></li>
+        <li><a href="#structures">Structures</a></li>
+      </ul>
+    </li>
+    <li><a href="#tagged-structures">Tagged Structures</a>
+      <ul>
+        <li><a href="#iri-resolution">IRI resolution</a>
+          <ul>
+            <li><a href="#base"><code>base</code></a></li>
+            <li><a href="#prefix"><code>prefix</code></a></li>
+            <li><a href="#nesting">Nesting</a></li>
+          </ul>
+        </li>
+        <li><a href="#links">Links</a></li>
+      </ul>
+    </li>
+    <li><a href="#building-java-objects">Building Java Objects</a>
+      <ul>
+        <li><a href="#sse-factory">SSE Factory</a></li>
+      </ul>
+    </li>
+    <li><a href="#mapping-to-rdf">Mapping to RDF</a></li>
+    <li><a href="#sse-files">SSE Files</a></li>
+    <li><a href="#longer-examples">Longer Examples</a>
+      <ul>
+        <li><a href="#query-1">Query 1</a></li>
+        <li><a href="#complete-sparql-execution">Complete SPARQL Execution</a></li>
+      </ul>
+    </li>
+    <li><a href="#sse-grammar">SSE Grammar</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -166,7 +165,19 @@
             <h1 class="title">Jena Permissions - A Permissions wrapper around the Jena RDF implementation</h1>
             
             
-	<p>Jena Permissions is a SecurityEvaluator interface and a set of dynamic proxies that apply that interface to Jena Graphs, Models, and associated methods and classes. It does not implement any specific security policy but provides a framework for developers or integrators to implement any desired policy.</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#usage-notes">Usage Notes</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>Jena Permissions is a SecurityEvaluator interface and a set of dynamic proxies that apply that interface to Jena Graphs, Models, and associated methods and classes. It does not implement any specific security policy but provides a framework for developers or integrators to implement any desired policy.</p>
 <h2 id="documentation">Documentation</h2>
 <ul>
 <li><a href="index.html#overview">Overview</a></li>
@@ -187,6 +198,18 @@
 <p><strong>NOTE:</strong> when creating a model by wrapping a secured graph (e.g. <code>ModelFactory.createModelForGraph( SecuredGraph );</code>) the resulting Model does not have the same security requirements that the standard secured model. For example When creating a list on a secured model calling <code>model.createList( RDFNode[] );</code>, the standard secured model verifies that the user has the right to <strong>update</strong> the triples and allows or denies the entire operation accordingly. The wrapped secured graph does not have visibility to the <code>createList()</code> command and can only operate on the instructions issued by the <code>model.createList()</code> implementation. In the standard implementation the model requests the graph to delete one triple and then insert another. Thus the user must have <strong>delete</strong> and <strong>add</strong> permissions, not the <strong>update</strong> permission.</p>
 <p>There are several other cases where the difference in the layer can trip up the security system. In all known cases the result is a tighter security definition than was requested. For simplicity sake we recommend that the wrapped secured graph only be used in cases where access to the graph as a whole is granted/denied. In these cases the user either has all CRUD capabilities or none.</p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#usage-notes">Usage Notes</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

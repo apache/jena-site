@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,57 @@
             <h1 class="title">Service Enhancer</h1>
             
             
-	<p>The service enhancer (SE) plugin extends the functionality of the SERVICE clause with:</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#namespace">Namespace</a></li>
+    <li><a href="#maven-dependency">Maven Dependency</a></li>
+    <li><a href="#programmatic-setup">Programmatic Setup</a></li>
+    <li><a href="#assembler">Assembler</a>
+      <ul>
+        <li><a href="#configuration-with-fuseki">Configuration with Fuseki</a>
+          <ul>
+            <li><a href="#adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</a></li>
+            <li><a href="#fuseki-assembler-configuration">Fuseki Assembler Configuration</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#context-symbols">Context Symbols</a></li>
+    <li><a href="#service-options">Service Options</a>
+      <ul>
+        <li><a href="#bulk-requests">Bulk Requests</a></li>
+        <li><a href="#correlated-joins">Correlated Joins</a>
+          <ul>
+            <li><a href="#example-of-scoping-in-a-conventional-join">Example of Scoping in a Conventional join</a></li>
+            <li><a href="#example-of-scoping-in-a-correlated-join">Example of Scoping in a Correlated Join</a></li>
+            <li><a href="#programmatic-algebra-transformation">Programmatic Algebra Transformation</a></li>
+          </ul>
+        </li>
+        <li><a href="#caching">Caching</a></li>
+        <li><a href="#sparql-functions">SPARQL Functions</a>
+          <ul>
+            <li><a href="#example-invaliding-all-cache-entries">Example: Invaliding All Cache Entries</a></li>
+            <li><a href="#example-invalidating-specific-cache-entries">Example: Invalidating Specific Cache Entries</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#limitations-troubleshooting-and-pitfalls">Limitations, Troubleshooting and Pitfalls</a>
+      <ul>
+        <li><a href="#storing-caches-to-disk">Storing Caches to Disk</a></li>
+        <li><a href="#caching-with-virtuoso">Caching with Virtuoso</a></li>
+        <li><a href="#order-of-bindings-differ-between-cache-and-remote-reads">Order of Bindings differ between Cache and Remote Reads</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>The service enhancer (SE) plugin extends the functionality of the SERVICE clause with:</p>
 <ul>
 <li>Bulk requests</li>
 <li>Correlated joins also known as lateral joins</li>
@@ -649,6 +698,56 @@ As can be seen from <a href="#example">example</a>, bulk requests result in a un
 However, SPARQL does not mandate stable sorting, therefore this approach may cause bindings with the same serial number to become &lsquo;shuffled&rsquo;.
 The solution is to is to include sort sufficient conditions in the <code>SERVICE</code>'s graph pattern. The bulk query will include those sort conditions after the serial number sort condition.</p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#namespace">Namespace</a></li>
+    <li><a href="#maven-dependency">Maven Dependency</a></li>
+    <li><a href="#programmatic-setup">Programmatic Setup</a></li>
+    <li><a href="#assembler">Assembler</a>
+      <ul>
+        <li><a href="#configuration-with-fuseki">Configuration with Fuseki</a>
+          <ul>
+            <li><a href="#adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</a></li>
+            <li><a href="#fuseki-assembler-configuration">Fuseki Assembler Configuration</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#context-symbols">Context Symbols</a></li>
+    <li><a href="#service-options">Service Options</a>
+      <ul>
+        <li><a href="#bulk-requests">Bulk Requests</a></li>
+        <li><a href="#correlated-joins">Correlated Joins</a>
+          <ul>
+            <li><a href="#example-of-scoping-in-a-conventional-join">Example of Scoping in a Conventional join</a></li>
+            <li><a href="#example-of-scoping-in-a-correlated-join">Example of Scoping in a Correlated Join</a></li>
+            <li><a href="#programmatic-algebra-transformation">Programmatic Algebra Transformation</a></li>
+          </ul>
+        </li>
+        <li><a href="#caching">Caching</a></li>
+        <li><a href="#sparql-functions">SPARQL Functions</a>
+          <ul>
+            <li><a href="#example-invaliding-all-cache-entries">Example: Invaliding All Cache Entries</a></li>
+            <li><a href="#example-invalidating-specific-cache-entries">Example: Invalidating Specific Cache Entries</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#limitations-troubleshooting-and-pitfalls">Limitations, Troubleshooting and Pitfalls</a>
+      <ul>
+        <li><a href="#storing-caches-to-disk">Storing Caches to Disk</a></li>
+        <li><a href="#caching-with-virtuoso">Caching with Virtuoso</a></li>
+        <li><a href="#order-of-bindings-differ-between-cache-and-remote-reads">Order of Bindings differ between Cache and Remote Reads</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

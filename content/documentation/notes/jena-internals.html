@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,87 @@
             <h1 class="title">Notes on Jena internals</h1>
             
             
-	<p><em><strong><span style="font-size:larger;">Note: These notes are not kept up to date.</span></strong></em></p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#enhanced-nodes">Enhanced Nodes</a>
+      <ul>
+        <li><a href="#key-objectives-for-the-enhanced-node-design">Key objectives for the enhanced node design</a></li>
+        <li><a href="#terminology">Terminology</a>
+          <ul>
+            <li><a href="#key-points">Key points</a></li>
+          </ul>
+        </li>
+        <li><a href="#how-an-enhanced-node-is-created">How an enhanced node is created</a>
+          <ul>
+            <li><a href="#creation-from-another-enhanced-node">Creation from another enhanced node</a></li>
+            <li><a href="#creation-from-a-base-node">Creation from a base node</a></li>
+            <li><a href="#internal-operation-of-the-conversion">internal operation of the conversion</a></li>
+          </ul>
+        </li>
+        <li><a href="#how-to-build-an-enhanced-node--graph">How to build an enhanced node &amp; graph</a></li>
+      </ul>
+    </li>
+    <li><a href="#reification-api">Reification API</a>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#presentation-api">Presentation API</a></li>
+        <li><a href="#retrieval">Retrieval</a></li>
+        <li><a href="#creation">Creation</a></li>
+        <li><a href="#equality">Equality</a></li>
+        <li><a href="#isreified">IsReified</a></li>
+        <li><a href="#fetching">Fetching</a></li>
+        <li><a href="#listing">Listing</a></li>
+        <li><a href="#removal">Removal</a></li>
+        <li><a href="#input-and-output">Input and output</a></li>
+        <li><a href="#performance">Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-reification-spi">The Reification SPI</a>
+      <ul>
+        <li><a href="#introduction-1">Introduction</a></li>
+        <li><a href="#graph-operations-for-reification">Graph operations for reification</a>
+          <ul>
+            <li><a href="#graphgetreifier---reifier">Graph.getReifier() -&gt; Reifier</a></li>
+          </ul>
+        </li>
+        <li><a href="#addtriple-deletetriple">add(Triple), delete(Triple)</a></li>
+        <li><a href="#interface-reifier">Interface Reifier</a>
+          <ul>
+            <li><a href="#reifiergethiddentriples---graph">reifier.getHiddenTriples() -&gt; Graph</a></li>
+            <li><a href="#reifiergetparentgraph---graph">reifier.getParentGraph() -&gt; Graph</a></li>
+            <li><a href="#class-alreadyreifiedexception">class AlreadyReifiedException</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierreifyas-triple-t-node-n----node">reifier.reifyAs( Triple t, Node n ) -&gt; Node</a>
+          <ul>
+            <li><a href="#reifierhastriple-triple-t----boolean">reifier.hasTriple( Triple t ) -&gt; boolean</a></li>
+            <li><a href="#reifiergettriple-node-n----triple">reifier.getTriple( Node n ) -&gt; Triple</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierallnodes---extendediterator">reifier.allNodes() -&gt; ExtendedIterator</a>
+          <ul>
+            <li><a href="#reifierallnodes-triple-t----closableiterator">reifier.allNodes( Triple t ) -&gt; ClosableIterator</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierremove-node-n-triple-t-">reifier.remove( Node n, Triple t )</a>
+          <ul>
+            <li><a href="#reifierremove-triple-t-">reifier.remove( Triple t )</a></li>
+            <li><a href="#handledadd-triple-t----boolean">handledAdd( Triple t ) -&gt; boolean</a></li>
+            <li><a href="#handledremove-triple-t-">handledRemove( Triple t )</a></li>
+          </ul>
+        </li>
+        <li><a href="#simplereifier">SimpleReifier</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p><em><strong><span style="font-size:larger;">Note: These notes are not kept up to date.</span></strong></em></p>
 <p><strong>They may be of interest into the original design of the <em>Enhanced Node</em> mechanism.</strong></p>
 <h2 id="enhanced-nodes">Enhanced Nodes</h2>
 <p>This note is a development of the original note on the enhanced
@@ -615,6 +694,86 @@ that triple.
 (If another reification triple for <code>n</code> arrives, then the triple is
 re-exploded into <code>Fragments</code>.)</p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#enhanced-nodes">Enhanced Nodes</a>
+      <ul>
+        <li><a href="#key-objectives-for-the-enhanced-node-design">Key objectives for the enhanced node design</a></li>
+        <li><a href="#terminology">Terminology</a>
+          <ul>
+            <li><a href="#key-points">Key points</a></li>
+          </ul>
+        </li>
+        <li><a href="#how-an-enhanced-node-is-created">How an enhanced node is created</a>
+          <ul>
+            <li><a href="#creation-from-another-enhanced-node">Creation from another enhanced node</a></li>
+            <li><a href="#creation-from-a-base-node">Creation from a base node</a></li>
+            <li><a href="#internal-operation-of-the-conversion">internal operation of the conversion</a></li>
+          </ul>
+        </li>
+        <li><a href="#how-to-build-an-enhanced-node--graph">How to build an enhanced node &amp; graph</a></li>
+      </ul>
+    </li>
+    <li><a href="#reification-api">Reification API</a>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#presentation-api">Presentation API</a></li>
+        <li><a href="#retrieval">Retrieval</a></li>
+        <li><a href="#creation">Creation</a></li>
+        <li><a href="#equality">Equality</a></li>
+        <li><a href="#isreified">IsReified</a></li>
+        <li><a href="#fetching">Fetching</a></li>
+        <li><a href="#listing">Listing</a></li>
+        <li><a href="#removal">Removal</a></li>
+        <li><a href="#input-and-output">Input and output</a></li>
+        <li><a href="#performance">Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-reification-spi">The Reification SPI</a>
+      <ul>
+        <li><a href="#introduction-1">Introduction</a></li>
+        <li><a href="#graph-operations-for-reification">Graph operations for reification</a>
+          <ul>
+            <li><a href="#graphgetreifier---reifier">Graph.getReifier() -&gt; Reifier</a></li>
+          </ul>
+        </li>
+        <li><a href="#addtriple-deletetriple">add(Triple), delete(Triple)</a></li>
+        <li><a href="#interface-reifier">Interface Reifier</a>
+          <ul>
+            <li><a href="#reifiergethiddentriples---graph">reifier.getHiddenTriples() -&gt; Graph</a></li>
+            <li><a href="#reifiergetparentgraph---graph">reifier.getParentGraph() -&gt; Graph</a></li>
+            <li><a href="#class-alreadyreifiedexception">class AlreadyReifiedException</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierreifyas-triple-t-node-n----node">reifier.reifyAs( Triple t, Node n ) -&gt; Node</a>
+          <ul>
+            <li><a href="#reifierhastriple-triple-t----boolean">reifier.hasTriple( Triple t ) -&gt; boolean</a></li>
+            <li><a href="#reifiergettriple-node-n----triple">reifier.getTriple( Node n ) -&gt; Triple</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierallnodes---extendediterator">reifier.allNodes() -&gt; ExtendedIterator</a>
+          <ul>
+            <li><a href="#reifierallnodes-triple-t----closableiterator">reifier.allNodes( Triple t ) -&gt; ClosableIterator</a></li>
+          </ul>
+        </li>
+        <li><a href="#reifierremove-node-n-triple-t-">reifier.remove( Node n, Triple t )</a>
+          <ul>
+            <li><a href="#reifierremove-triple-t-">reifier.remove( Triple t )</a></li>
+            <li><a href="#handledadd-triple-t----boolean">handledAdd( Triple t ) -&gt; boolean</a></li>
+            <li><a href="#handledremove-triple-t-">handledRemove( Triple t )</a></li>
+          </ul>
+        </li>
+        <li><a href="#simplereifier">SimpleReifier</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

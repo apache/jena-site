@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,122 @@
             <h1 class="title">Jena Full Text Search</h1>
             
             
-	<p>This extension to ARQ combines SPARQL and full text search via
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#architecture">Architecture</a>
+      <ul>
+        <li><a href="#one-triple-equals-one-document">One triple equals one document</a></li>
+        <li><a href="#one-document-equals-one-entity">One document equals one entity</a>
+          <ul>
+            <li><a href="#external-content">External content</a></li>
+          </ul>
+        </li>
+        <li><a href="#external-applications">External applications</a></li>
+        <li><a href="#document-structure">Document structure</a></li>
+      </ul>
+    </li>
+    <li><a href="#query-with-sparql">Query with SPARQL</a>
+      <ul>
+        <li><a href="#syntax">Syntax</a>
+          <ul>
+            <li><a href="#input-arguments">Input arguments:</a></li>
+            <li><a href="#output-arguments">Output arguments:</a></li>
+          </ul>
+        </li>
+        <li><a href="#query-strings">Query strings</a>
+          <ul>
+            <li><a href="#simple-queries">Simple queries</a></li>
+            <li><a href="#queries-with-language-tags">Queries with language tags</a></li>
+            <li><a href="#queries-that-retrieve-literals">Queries that retrieve literals</a></li>
+            <li><a href="#queries-with-graphs">Queries with graphs</a></li>
+            <li><a href="#queries-across-multiple-fields">Queries across multiple <code>Field</code>s</a></li>
+            <li><a href="#queries-with-_boolean-operators_-and-_term-modifiers_">Queries with <em>Boolean Operators</em> and <em>Term Modifiers</em></a></li>
+            <li><a href="#highlighting">Highlighting</a></li>
+          </ul>
+        </li>
+        <li><a href="#good-practice">Good practice</a>
+          <ul>
+            <li><a href="#query-pattern-1-ndash-find-in-the-text-index-and-refine-results">Query pattern 1 – Find in the text index and refine results</a></li>
+            <li><a href="#query-pattern-2-ndash-filter-results-via-the-text-index">Query pattern 2 – Filter results via the text index</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#configuration">Configuration</a>
+      <ul>
+        <li><a href="#text-dataset-assembler">Text Dataset Assembler</a>
+          <ul>
+            <li><a href="#lists-of-indexed-properties">Lists of Indexed Properties</a></li>
+          </ul>
+        </li>
+        <li><a href="#entity-map-definition">Entity Map definition</a>
+          <ul>
+            <li><a href="#default-text-field">Default text field</a></li>
+            <li><a href="#entity-field">Entity field</a></li>
+            <li><a href="#uid-field-and-automatic-document-deletion">UID Field and automatic document deletion</a></li>
+            <li><a href="#language-field">Language Field</a></li>
+            <li><a href="#graph-field">Graph Field</a></li>
+            <li><a href="#the-analyzer-map">The Analyzer Map</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuring-an-analyzer">Configuring an Analyzer</a>
+          <ul>
+            <li><a href="#configurableanalyzer">ConfigurableAnalyzer</a></li>
+            <li><a href="#analyzer-for-query">Analyzer for Query</a></li>
+            <li><a href="#alternative-query-parsers">Alternative Query Parsers</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuration-by-code">Configuration by Code</a></li>
+        <li><a href="#graph-specific-indexing">Graph-specific Indexing</a></li>
+        <li><a href="#linguistic-support-with-lucene-index">Linguistic support with Lucene index</a>
+          <ul>
+            <li><a href="#explicit-language-field-in-the-index">Explicit Language Field in the Index</a></li>
+            <li><a href="#sparql-linguistic-clause-forms">SPARQL Linguistic Clause Forms</a></li>
+            <li><a href="#localizedanalyzer">LocalizedAnalyzer</a></li>
+            <li><a href="#multilingual-support">Multilingual Support</a></li>
+          </ul>
+        </li>
+        <li><a href="#generic-and-defined-analyzer-support">Generic and Defined Analyzer Support</a>
+          <ul>
+            <li><a href="#generic-analyzers-tokenizers-and-filters">Generic Analyzers, Tokenizers and Filters</a></li>
+            <li><a href="#defined-analyzers">Defined Analyzers</a></li>
+            <li><a href="#extending-multilingual-support">Extending multilingual support</a></li>
+            <li><a href="#multilingual-enhancements-for-multi-encoding-searches">Multilingual enhancements for multi-encoding searches</a></li>
+            <li><a href="#naming-analyzers-for-later-use">Naming analyzers for later use</a></li>
+          </ul>
+        </li>
+        <li><a href="#storing-literal-values">Storing Literal Values</a></li>
+      </ul>
+    </li>
+    <li><a href="#working-with-fuseki">Working with Fuseki</a></li>
+    <li><a href="#building-a-text-index">Building a Text Index</a>
+      <ul>
+        <li><a href="#step-1---building-a-tdb-dataset">Step 1 - Building a TDB dataset</a></li>
+        <li><a href="#step-2---build-the-text-index">Step 2 - Build the Text Index</a>
+          <ul>
+            <li><a href="#updating-the-index">Updating the index</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#default-behavior">Default Behavior</a>
+      <ul>
+        <li><a href="#example">Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#multiple-fields-per-document">Multiple fields per document</a></li>
+    <li><a href="#maven-dependency">Maven Dependency</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>This extension to ARQ combines SPARQL and full text search via
 <a href="https://lucene.apache.org">Lucene</a>.
 It gives applications the ability to perform indexed full text
 searches within SPARQL queries. Here is a version compatibility table:</p>
@@ -274,91 +388,6 @@ enterprise search application where the full text engine is potentially
 distributed across separate machines.</p>
 <p>This <a href="https://github.com/apache/jena/tree/main/jena-text/src/main/java/examples/">example code</a>
 illustrates creating an in-memory dataset with a Lucene index.</p>
-<h2 id="table-of-contents">Table of Contents</h2>
-<ul>
-<li><a href="#architecture">Architecture</a>
-<ul>
-<li><a href="#one-triple-equals-one-document">One triple equals one document</a></li>
-<li><a href="#one-document-equals-one-entity">One document equals one entity</a>
-<ul>
-<li><a href="#external-content">External Content</a></li>
-</ul>
-</li>
-<li><a href="#external-applications">External applications</a></li>
-<li><a href="#document-structure">Document structure</a></li>
-</ul>
-</li>
-<li><a href="#query-with-sparql">Query with SPARQL</a>
-<ul>
-<li><a href="#syntax">Syntax</a>
-<ul>
-<li><a href="#input-arguments">Input arguments</a></li>
-<li><a href="#output-arguments">Output arguments</a></li>
-</ul>
-</li>
-<li><a href="#query-strings">Query strings</a>
-<ul>
-<li><a href="#simple-queries">Simple queries</a></li>
-<li><a href="#queries-with-language-tags">Queries with language tags</a></li>
-<li><a href="#queries-that-retrieve-literals">Queries that retrieve literals</a></li>
-<li><a href="#queries-with-graphs">Queries with graphs</a></li>
-<li><a href="#queries-across-multiple-fields">Queries across multiple <code>Fields</code></a>
-<ul>
-<li><a href="#multiple-fields-in-the-default-integration-model">Multiple fields in the default integration model</a></li>
-<li><a href="#multiple-fields-in-the-one-document-equals-one-entity-model">Multiple fields in the one document equals one entity model</a></li>
-</ul>
-</li>
-<li><a href="#queries-with-boolean-operators-and-term-modifiers">Queries with <em>Boolean Operators</em> and <em>Term Modifiers</em></a></li>
-<li><a href="#highlighting">Highlighting</a></li>
-</ul>
-</li>
-<li><a href="#good-practice">Good practice</a></li>
-</ul>
-</li>
-<li><a href="#configuration">Configuration</a>
-<ul>
-<li><a href="#text-dataset-assembler">Text Dataset Assembler</a>
-<ul>
-<li><a href="#lists-of-indexed-properties">Lists of Indexed Properties</a></li>
-</ul>
-</li>
-<li><a href="#configuring-an-analyzer">Configuring an analyzer</a></li>
-<li><a href="#configuration-by-code">Configuration by Code</a></li>
-<li><a href="#graph-specific-indexing">Graph-specific Indexing</a></li>
-<li><a href="#linguistic-support-with-lucene-index">Linguistic Support with Lucene Index</a>
-<ul>
-<li><a href="#explicit-language-field-in-the-index">Explicit Language Field in the Index</a></li>
-<li><a href="#sparql-linguistic-clause-forms">SPARQL Linguistic Clause Forms</a></li>
-<li><a href="#localizedanalyzer">LocalizedAnalyzer</a></li>
-<li><a href="#multilingual-support">Multilingual Support</a></li>
-</ul>
-</li>
-<li><a href="#generic-and-defined-analyzer-support">Generic and Defined Analyzer Support</a>
-<ul>
-<li><a href="#generic-analyzers-tokenizers-and-filters">Generic Analyzers, Tokenizers and Filters</a></li>
-<li><a href="#defined-analyzers">Defined Analyzers</a></li>
-<li><a href="#extending0-multilingual-support">Extending multilingual support</a></li>
-<li><a href="#multilingual-enhancements-for-multi-encoding-searches">Multilingual enhancements for multi-encoding searches</a></li>
-<li><a href="#naming-analyzers-for-later-use">Naming analyzers for later use</a></li>
-</ul>
-</li>
-<li><a href="#storing-literal-values">Storing Literal Values</a></li>
-</ul>
-</li>
-<li><a href="#working-with-fuseki">Working with Fuseki</a></li>
-<li><a href="#building-a-text-index">Building a Text Index</a></li>
-<li><a href="#configuring-alternative-textdocproducers">Configuring Alternative TextDocProducers</a>
-<ul>
-<li><a href="#default-behavior">Default behavior</a>
-<ul>
-<li><a href="#example">Example</a></li>
-</ul>
-</li>
-<li><a href="#multiple-fields-per-document">Multiple fields per document</a></li>
-</ul>
-</li>
-<li><a href="#maven-dependency">Maven Dependency</a></li>
-</ul>
 <h2 id="architecture">Architecture</h2>
 <p>In general, a text index engine (Lucene or Elasticsearch) indexes
 <em>documents</em> where each document is a collection of <em>fields</em>, the values
@@ -1908,7 +1937,7 @@ gives rise to this <code>change()</code>).</p>
 multiple searchable fields by extending <code>org.apache.jena.sparql.core.DatasetChangesBatched</code>
 such as with <code>org.apache.jena.query.text.TextDocProducerEntities</code>; however, this form of
 extension is not currently (Jena 3.13.1) functional.</p>
-<h1 id="maven-dependency">Maven Dependency</h1>
+<h2 id="maven-dependency">Maven Dependency</h2>
 <p>The <code>jena-text</code> module is included in Fuseki.  To use it within application code,
 then use the following maven dependency:</p>
 <pre><code>&lt;dependency&gt;
@@ -1928,6 +1957,121 @@ include a compatible version of Lucene.</p>
 </code></pre>
 <p>adjusting the version <code>X.Y.Z</code> as necessary.</p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#architecture">Architecture</a>
+      <ul>
+        <li><a href="#one-triple-equals-one-document">One triple equals one document</a></li>
+        <li><a href="#one-document-equals-one-entity">One document equals one entity</a>
+          <ul>
+            <li><a href="#external-content">External content</a></li>
+          </ul>
+        </li>
+        <li><a href="#external-applications">External applications</a></li>
+        <li><a href="#document-structure">Document structure</a></li>
+      </ul>
+    </li>
+    <li><a href="#query-with-sparql">Query with SPARQL</a>
+      <ul>
+        <li><a href="#syntax">Syntax</a>
+          <ul>
+            <li><a href="#input-arguments">Input arguments:</a></li>
+            <li><a href="#output-arguments">Output arguments:</a></li>
+          </ul>
+        </li>
+        <li><a href="#query-strings">Query strings</a>
+          <ul>
+            <li><a href="#simple-queries">Simple queries</a></li>
+            <li><a href="#queries-with-language-tags">Queries with language tags</a></li>
+            <li><a href="#queries-that-retrieve-literals">Queries that retrieve literals</a></li>
+            <li><a href="#queries-with-graphs">Queries with graphs</a></li>
+            <li><a href="#queries-across-multiple-fields">Queries across multiple <code>Field</code>s</a></li>
+            <li><a href="#queries-with-_boolean-operators_-and-_term-modifiers_">Queries with <em>Boolean Operators</em> and <em>Term Modifiers</em></a></li>
+            <li><a href="#highlighting">Highlighting</a></li>
+          </ul>
+        </li>
+        <li><a href="#good-practice">Good practice</a>
+          <ul>
+            <li><a href="#query-pattern-1-ndash-find-in-the-text-index-and-refine-results">Query pattern 1 – Find in the text index and refine results</a></li>
+            <li><a href="#query-pattern-2-ndash-filter-results-via-the-text-index">Query pattern 2 – Filter results via the text index</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#configuration">Configuration</a>
+      <ul>
+        <li><a href="#text-dataset-assembler">Text Dataset Assembler</a>
+          <ul>
+            <li><a href="#lists-of-indexed-properties">Lists of Indexed Properties</a></li>
+          </ul>
+        </li>
+        <li><a href="#entity-map-definition">Entity Map definition</a>
+          <ul>
+            <li><a href="#default-text-field">Default text field</a></li>
+            <li><a href="#entity-field">Entity field</a></li>
+            <li><a href="#uid-field-and-automatic-document-deletion">UID Field and automatic document deletion</a></li>
+            <li><a href="#language-field">Language Field</a></li>
+            <li><a href="#graph-field">Graph Field</a></li>
+            <li><a href="#the-analyzer-map">The Analyzer Map</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuring-an-analyzer">Configuring an Analyzer</a>
+          <ul>
+            <li><a href="#configurableanalyzer">ConfigurableAnalyzer</a></li>
+            <li><a href="#analyzer-for-query">Analyzer for Query</a></li>
+            <li><a href="#alternative-query-parsers">Alternative Query Parsers</a></li>
+          </ul>
+        </li>
+        <li><a href="#configuration-by-code">Configuration by Code</a></li>
+        <li><a href="#graph-specific-indexing">Graph-specific Indexing</a></li>
+        <li><a href="#linguistic-support-with-lucene-index">Linguistic support with Lucene index</a>
+          <ul>
+            <li><a href="#explicit-language-field-in-the-index">Explicit Language Field in the Index</a></li>
+            <li><a href="#sparql-linguistic-clause-forms">SPARQL Linguistic Clause Forms</a></li>
+            <li><a href="#localizedanalyzer">LocalizedAnalyzer</a></li>
+            <li><a href="#multilingual-support">Multilingual Support</a></li>
+          </ul>
+        </li>
+        <li><a href="#generic-and-defined-analyzer-support">Generic and Defined Analyzer Support</a>
+          <ul>
+            <li><a href="#generic-analyzers-tokenizers-and-filters">Generic Analyzers, Tokenizers and Filters</a></li>
+            <li><a href="#defined-analyzers">Defined Analyzers</a></li>
+            <li><a href="#extending-multilingual-support">Extending multilingual support</a></li>
+            <li><a href="#multilingual-enhancements-for-multi-encoding-searches">Multilingual enhancements for multi-encoding searches</a></li>
+            <li><a href="#naming-analyzers-for-later-use">Naming analyzers for later use</a></li>
+          </ul>
+        </li>
+        <li><a href="#storing-literal-values">Storing Literal Values</a></li>
+      </ul>
+    </li>
+    <li><a href="#working-with-fuseki">Working with Fuseki</a></li>
+    <li><a href="#building-a-text-index">Building a Text Index</a>
+      <ul>
+        <li><a href="#step-1---building-a-tdb-dataset">Step 1 - Building a TDB dataset</a></li>
+        <li><a href="#step-2---build-the-text-index">Step 2 - Build the Text Index</a>
+          <ul>
+            <li><a href="#updating-the-index">Updating the index</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#default-behavior">Default Behavior</a>
+      <ul>
+        <li><a href="#example">Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#multiple-fields-per-document">Multiple fields per document</a></li>
+    <li><a href="#maven-dependency">Maven Dependency</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -174,9 +173,22 @@
             <h1 class="title">Jena Query Builder - A query builder for Jena.</h1>
             
             
-	<h1 id="table-of-contents">Table of Contents</h1>
-<p>{% toc %}</p>
-<h1 id="overview">Overview</h1>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#constructing-expressions">Constructing Expressions</a></li>
+    <li><a href="#update-builder">Update Builder</a></li>
+    <li><a href="#where-builder">Where Builder</a></li>
+    <li><a href="#template-usage">Template Usage</a></li>
+    <li><a href="#prepared-statement-usage">Prepared Statement Usage</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <h2 id="overview">Overview</h2>
 <p>Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions.  The Query Builder module is an extra package and is found in the <code>jena-querybuilder</code> jar.</p>
 <p>Each of the builders has a series of methods to define the query.  Each method returns the builder for easy chaining.  The  example:</p>
 <pre><code>SelectBuilder sb = new SelectBuilder()
@@ -190,7 +202,7 @@ Query q = sb.build() ;
 WHERE
   { ?s ?p ?o }
 </code></pre>
-<h1 id="constructing-expressions">Constructing Expressions</h1>
+<h2 id="constructing-expressions">Constructing Expressions</h2>
 <p>Expressions are primarily used in <code>filter</code> and <code>bind</code> statements as well as in select clauses.  All the standard expressions are implemented in the <code>ExprFactory</code> class.  An <code>ExprFactory</code> can be retrieved from any Builder by calling the <code>getExprFactory()</code> method.  This will create a Factory that has the same prefix mappings and the query.  An alternative is to construct the <code>ExprFactory</code> directly, this factory will not have the prefixes defined in <code>PrefixMapping.Extended</code>.</p>
 <pre><code>SelectBuilder builder = new SelectBuilder();
 ExprFactory exprF = builder.getExprFactory()
@@ -200,7 +212,7 @@ builder.addVar( exprF.floor( ?v ), ?floor )
 
     .addWhere( ?s, &quot;cf:air_temperature&quot;, ?v )
 </code></pre>
-<h1 id="update-builder">Update Builder</h1>
+<h2 id="update-builder">Update Builder</h2>
 <p>The <code>UpdateBuilder</code> is used to create <code>Update</code>, <code>UpdateDeleteWhere</code> or <code>UpdateRequest</code> objects.  When an <code>UpdateRequest</code> is built is contains a single <code>Update</code> object as defined by the <code>UpdateBuilder</code>.  <code>Update</code> objects can  be added to an UpdateRequest using the <code>appendTo()</code> method.</p>
 <pre><code>Var subj = Var.alloc( &quot;s&quot; );
 Var obj = Var.alloc( &quot;o&quot; );
@@ -217,7 +229,7 @@ UpdateBuilder builder2 = new UpdateBuilder()
     .where( subj, dc:creator, &quot;me&quot;)
     .appendTo( req );
 </code></pre>
-<h1 id="where-builder">Where Builder</h1>
+<h2 id="where-builder">Where Builder</h2>
 <p>In some use cases it is desirable to create a where clause without constructing an entire query.  The <code>WhereBuilder</code> is designed to fit this need.  For example to construct the query:</p>
 <pre><code>PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
@@ -267,7 +279,7 @@ SelectBuilder builder = new SelectBuilder()
       )
   );
 </code></pre>
-<h1 id="template-usage">Template Usage</h1>
+<h2 id="template-usage">Template Usage</h2>
 <p>In addition to making it easier to build valid queries the QueryBuilder has a clone method.
 Using this a developer can create as &ldquo;Template&rdquo; query and add to it as necessary.</p>
 <p>For example using the above query as the &ldquo;template&rdquo; with this code:</p>
@@ -283,7 +295,7 @@ WHERE
     ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; foaf:person .
   }
 </code></pre>
-<h1 id="prepared-statement-usage">Prepared Statement Usage</h1>
+<h2 id="prepared-statement-usage">Prepared Statement Usage</h2>
 <p>The query builders have the ability to replace variables with other values.  This can be</p>
 <pre><code>SelectBuilder sb = new SelectBuilder()
     .addVar( &quot;*&quot; )
@@ -298,6 +310,21 @@ WHERE
   { ?s ?p &lt;http://xmlns.com/foaf/0.1/Person&gt; }
 </code></pre>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#constructing-expressions">Constructing Expressions</a></li>
+    <li><a href="#update-builder">Update Builder</a></li>
+    <li><a href="#where-builder">Where Builder</a></li>
+    <li><a href="#template-usage">Template Usage</a></li>
+    <li><a href="#prepared-statement-usage">Prepared Statement Usage</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

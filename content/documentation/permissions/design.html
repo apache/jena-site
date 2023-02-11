@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,22 @@
             <h1 class="title">Jena Permissions - Design</h1>
             
             
-	<p>Jena Permissions is designed to allow integrators to implement almost any security policy. Fundamentally it works by implementing dynamic proxies on top of the Jena Graph and Model interfaces as well as objects returned by those interfaces. The proxy verifies that the actions on those objects are permitted by the policy before allowing the actions to proceed.</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#securityevaluatorfuture">SecurityEvaluator.FUTURE</a></li>
+    <li><a href="#securityevaluatorvariable">SecurityEvaluator.VARIABLE</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#secured-listeners">Secured Listeners</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>Jena Permissions is designed to allow integrators to implement almost any security policy. Fundamentally it works by implementing dynamic proxies on top of the Jena Graph and Model interfaces as well as objects returned by those interfaces. The proxy verifies that the actions on those objects are permitted by the policy before allowing the actions to proceed.</p>
 <p>The graph or model is created by the <code>org.apache.jena.permissions.Factory</code> object by wrapping a Graph or Model implementation and associating it with a URI (<code>graphIRI</code>) and a SecurityEvaluator implementation. The <code>graphIRI</code> is the URI that will be used to identify the graph/model to the security evaluator.</p>
 <p>The SecurityEvaluator is an object implemented by the integrator to perform the necessary permission checks. A discussion of the SecurityEvaluator implementation can be found in the <a href="evaluator.html">Security Evaluator</a> documentation.</p>
 <p>Access to methods in secured objects are determined by the CRUD (Create, Read, Update and Delete) permissions assigned to the user.</p>
@@ -214,6 +228,21 @@ returns <code>false</code>. In general this type is used in query evaluation to 
 <h1 id="proxy-implementation">Proxy Implementation</h1>
 <p>The proxy implementation uses a reflection <code>InvocationHandler</code> strategy. This strategy results in a proxy that implements all the interfaces of the original object. The original object along with its <code>InvocationHandler</code> instance are kept together in an <code>ItemHolder</code> instance variable in the secured instance. When the invoker is called it determines if the called method is on the secured interface or not. If the method is on the secured interface the invocation handler method is called, otherwise the method on the base class is called.</p>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#securityevaluatorfuture">SecurityEvaluator.FUTURE</a></li>
+    <li><a href="#securityevaluatorvariable">SecurityEvaluator.VARIABLE</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#secured-listeners">Secured Listeners</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

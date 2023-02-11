@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,51 @@
             <h1 class="title">Jena schemagen HOWTO</h1>
             
             
-	<p>The <code>schemagen</code> provided with Jena is used to convert an OWL or RDFS vocabulary into a Java class file that contains static
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary-of-configuration-options">Summary of configuration options</a></li>
+    <li><a href="#what-does-schemagen-do">What does schemagen do?</a>
+      <ul>
+        <li><a href="#example">Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#general-principles">General principles</a>
+      <ul>
+        <li><a href="#specifying-command-line-options">Specifying command line options</a></li>
+        <li><a href="#specifying-options-in-an-rdf-file">Specifying options in an RDF file</a></li>
+        <li><a href="#using-templates">Using templates</a></li>
+      </ul>
+    </li>
+    <li><a href="#details-of-schemagen-options">Details of schemagen options</a>
+      <ul>
+        <li><a href="#note-on-legal-java-identifiers">Note on legal Java identifiers</a></li>
+        <li><a href="#specifying-the-configuration-file">Specifying the configuration file</a></li>
+        <li><a href="#specifying-the-configuration-root-in-the-configuration-file">Specifying the configuration root in the configuration file</a></li>
+        <li><a href="#specifying-the-input-document">Specifying the input document</a></li>
+        <li><a href="#specifying-the-output-location">Specifying the output location</a></li>
+        <li><a href="#specifying-the-class-name">Specifying the class name</a></li>
+        <li><a href="#specifying-the-vocabulary-namespace">Specifying the vocabulary namespace</a></li>
+        <li><a href="#specifying-the-syntax-encoding-of-the-input-document">Specifying the syntax (encoding) of the input document</a></li>
+        <li><a href="#choosing-the-style-of-the-generated-class-ontology-or-plain-rdf">Choosing the style of the generated class: ontology or plain RDF</a></li>
+        <li><a href="#specifying-the-java-package">Specifying the Java package</a></li>
+        <li><a href="#additional-decorations-on-the-main-class-declaration">Additional decorations on the main class declaration</a></li>
+        <li><a href="#adding-general-declarations-within-the-generated-class">Adding general declarations within the generated class</a></li>
+        <li><a href="#omitting-sections-of-the-generated-vocabulary">Omitting sections of the generated vocabulary</a></li>
+        <li><a href="#section-header-comments">Section header comments</a></li>
+        <li><a href="#include-vocabulary-source-code">Include vocabulary source code</a></li>
+      </ul>
+    </li>
+    <li><a href="#using-schemagen-with-maven">Using schemagen with Maven</a></li>
+    <li><a href="#using-schemagen-with-ant">Using schemagen with Ant</a></li>
+    <li><a href="#appendix-a-complete-example-configuration-file">Appendix A: Complete example configuration file</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>The <code>schemagen</code> provided with Jena is used to convert an OWL or RDFS vocabulary into a Java class file that contains static
 constants for the terms in the vocabulary. This documents outlines
 the use of schemagen, and the various options and templates that
 may be used to control the output.</p>
@@ -1457,6 +1500,50 @@ blue.</p>
 &lt;/rdf:RDF&gt;
 </code></pre>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary-of-configuration-options">Summary of configuration options</a></li>
+    <li><a href="#what-does-schemagen-do">What does schemagen do?</a>
+      <ul>
+        <li><a href="#example">Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#general-principles">General principles</a>
+      <ul>
+        <li><a href="#specifying-command-line-options">Specifying command line options</a></li>
+        <li><a href="#specifying-options-in-an-rdf-file">Specifying options in an RDF file</a></li>
+        <li><a href="#using-templates">Using templates</a></li>
+      </ul>
+    </li>
+    <li><a href="#details-of-schemagen-options">Details of schemagen options</a>
+      <ul>
+        <li><a href="#note-on-legal-java-identifiers">Note on legal Java identifiers</a></li>
+        <li><a href="#specifying-the-configuration-file">Specifying the configuration file</a></li>
+        <li><a href="#specifying-the-configuration-root-in-the-configuration-file">Specifying the configuration root in the configuration file</a></li>
+        <li><a href="#specifying-the-input-document">Specifying the input document</a></li>
+        <li><a href="#specifying-the-output-location">Specifying the output location</a></li>
+        <li><a href="#specifying-the-class-name">Specifying the class name</a></li>
+        <li><a href="#specifying-the-vocabulary-namespace">Specifying the vocabulary namespace</a></li>
+        <li><a href="#specifying-the-syntax-encoding-of-the-input-document">Specifying the syntax (encoding) of the input document</a></li>
+        <li><a href="#choosing-the-style-of-the-generated-class-ontology-or-plain-rdf">Choosing the style of the generated class: ontology or plain RDF</a></li>
+        <li><a href="#specifying-the-java-package">Specifying the Java package</a></li>
+        <li><a href="#additional-decorations-on-the-main-class-declaration">Additional decorations on the main class declaration</a></li>
+        <li><a href="#adding-general-declarations-within-the-generated-class">Adding general declarations within the generated class</a></li>
+        <li><a href="#omitting-sections-of-the-generated-vocabulary">Omitting sections of the generated vocabulary</a></li>
+        <li><a href="#section-header-comments">Section header comments</a></li>
+        <li><a href="#include-vocabulary-source-code">Include vocabulary source code</a></li>
+      </ul>
+    </li>
+    <li><a href="#using-schemagen-with-maven">Using schemagen with Maven</a></li>
+    <li><a href="#using-schemagen-with-ant">Using schemagen with Ant</a></li>
+    <li><a href="#appendix-a-complete-example-configuration-file">Appendix A: Complete example configuration file</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -179,7 +178,97 @@
             <h1 class="title">Jena Eyeball manual</h1>
             
             
-	<p><b>This page is historical &ldquo;for information only&rdquo; - there is no Apache
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#command-line-operation">Command line operation</a>
+      <ul>
+        <li><a href="#examples-of-command-line-use">Examples of command-line use</a></li>
+        <li><a href="#-check-specialurl">-check specialURL+</a></li>
+        <li><a href="#-config-fileorurl-and--root-rooturi">-config fileOrURL and -root rootURI</a></li>
+        <li><a href="#-set-setting">-set Setting*</a></li>
+        <li><a href="#-include-exclude-shortnames">-include/-exclude shortNames</a></li>
+        <li><a href="#-assume-reference">-assume Reference</a></li>
+        <li><a href="#-sign-and--accept-experimental">-sign and -accept (experimental)</a></li>
+        <li><a href="#-version">-version</a></li>
+        <li><a href="#-remark">-remark</a></li>
+        <li><a href="#-repair-and--analyse-experimental">-repair and -analyse (experimental)</a></li>
+        <li><a href="#-render-name">-render Name</a></li>
+        <li><a href="#setting-the-proxy">setting the proxy</a></li>
+      </ul>
+    </li>
+    <li><a href="#inspectors-shipped-with-eyeball">Inspectors shipped with Eyeball</a>
+      <ul>
+        <li><a href="#propertyinspector-short-name-property">PropertyInspector (short name: &ldquo;property&rdquo;)</a></li>
+        <li><a href="#classinspector-short-name-presumed-class">ClassInspector (short name: &ldquo;presumed-class&rdquo;)</a></li>
+        <li><a href="#uriinspector-short-name-uri">URIInspector (short name: &ldquo;URI&rdquo;)</a></li>
+        <li><a href="#literalinspector-short-name-literal">LiteralInspector (short name: &ldquo;literal&rdquo;)</a></li>
+        <li><a href="#prefixinspector-short-name-prefix">PrefixInspector (short name: &ldquo;prefix&rdquo;)</a></li>
+        <li><a href="#vocabularyinspector-short-name-vocabulary">VocabularyInspector (short name: &ldquo;vocabulary&rdquo;)</a></li>
+        <li><a href="#owlsyntaxinspector-short-name-owl">OwlSyntaxInspector (short name: &ldquo;owl&rdquo;)</a></li>
+        <li><a href="#sparqldriveninspector-short-name-sparql">SparqlDrivenInspector (short name: &ldquo;sparql&rdquo;)</a></li>
+        <li><a href="#alltypedinspector-short-name-all-typed">AllTypedInspector (short name: &ldquo;all-typed&rdquo;)</a></li>
+        <li><a href="#consistenttypeinspector-short-name-consistent-type">ConsistentTypeInspector (short name: &ldquo;consistent-type&rdquo;)</a></li>
+        <li><a href="#cardinalityinspector-short-name-cardinality">CardinalityInspector (short name: &ldquo;cardinality&rdquo;)</a></li>
+        <li><a href="#listinspector-short-name-list">ListInspector (short name: &ldquo;list&rdquo;)</a></li>
+      </ul>
+    </li>
+    <li><a href="#eyeball-problem-reports">Eyeball problem reports</a>
+      <ul>
+        <li><a href="#propertyinspector-predicate-not-declared">PropertyInspector: predicate not declared</a></li>
+        <li><a href="#classinspector-class-not-declared">ClassInspector: class not declared</a></li>
+        <li><a href="#uriinspector-bad-uri">URIInspector: bad URI</a></li>
+        <li><a href="#literalinspector-illegal-language-code">LiteralInspector: illegal language code</a></li>
+        <li><a href="#literalinspector-bad-datatype-uri">LiteralInspector: bad datatype URI</a></li>
+        <li><a href="#literalinspector-bad-lexical-form">LiteralInspector: bad lexical form</a></li>
+        <li><a href="#prefixinspector-bad-namespace-uri">PrefixInspector: bad namespace URI</a></li>
+        <li><a href="#prefixinspector-jena-prefix-found">PrefixInspector: Jena prefix found</a></li>
+        <li><a href="#prefixinspector-multiple-prefixes-for-namespace">PrefixInspector: multiple prefixes for namespace</a></li>
+        <li><a href="#vocabularyinspector-not-from-schema">VocabularyInspector: not from schema</a></li>
+        <li><a href="#owlsyntaxinspector-suspicious-restriction">OwlSyntaxInspector: suspicious restriction</a></li>
+        <li><a href="#sparqldriveninspector-require-failed">SparqlDrivenInspector: require failed</a></li>
+        <li><a href="#sparqldriveninspector-prohibit-failed">SparqlDrivenInspector: prohibit failed</a></li>
+        <li><a href="#alltypedinspector-should-have-type">AllTypedInspector: should have type</a></li>
+        <li><a href="#consistenttypeinspector-inconsistent-types-for-resource">ConsistentTypeInspector: inconsistent types for resource</a></li>
+        <li><a href="#cardinalityinspector-cardinality-failure">CardinalityInspector: cardinality failure</a></li>
+        <li><a href="#listinspector-ill-formed-list">ListInspector: ill-formed list</a></li>
+        <li><a href="#listinspector-suspect-list-idiom">ListInspector: suspect list idiom</a></li>
+      </ul>
+    </li>
+    <li><a href="#inside-the-eyeball-configuration-file">Inside the Eyeball configuration file</a>
+      <ul>
+        <li><a href="#configuration-files">Configuration files</a></li>
+        <li><a href="#configuring-schema-names">Configuring schema names</a></li>
+        <li><a href="#configuring-inspectors">Configuring inspectors</a></li>
+        <li><a href="#configuring-the-uri-inspector">Configuring the URI inspector</a></li>
+        <li><a href="#configuring-the-vocabulary-inspector">Configuring the vocabulary inspector</a></li>
+        <li><a href="#configuring-the-sparql-driven-inspector">Configuring the SPARQL-driven inspector</a></li>
+        <li><a href="#configuring-renderers">Configuring renderers</a></li>
+      </ul>
+    </li>
+    <li><a href="#inside-the-eyeball-code">Inside the Eyeball code</a>
+      <ul>
+        <li><a href="#creating-an-eyeball">Creating an Eyeball</a></li>
+        <li><a href="#to-eyeball-a-model">To eyeball a model</a></li>
+      </ul>
+    </li>
+    <li><a href="#rebuilding-eyeball">Rebuilding Eyeball</a></li>
+    <li><a href="#creating-and-configuring-an-inspector">Creating and configuring an inspector</a>
+      <ul>
+        <li><a href="#creating-an-inspector">Creating an Inspector</a></li>
+        <li><a href="#reports-and-report-properties">Reports and report properties</a></li>
+        <li><a href="#configuring-an-inspector">Configuring an inspector</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p><b>This page is historical &ldquo;for information only&rdquo; - there is no Apache
 release of Eyeball and the code has not been updated for Jena3.<br>
 <br/>
 The <a href="https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/">original source code is available</a>.
@@ -993,6 +1082,96 @@ as an <code>eye:inspector</code> property of the configuration root, <em>eg</em>
     ...
 </code></pre>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#command-line-operation">Command line operation</a>
+      <ul>
+        <li><a href="#examples-of-command-line-use">Examples of command-line use</a></li>
+        <li><a href="#-check-specialurl">-check specialURL+</a></li>
+        <li><a href="#-config-fileorurl-and--root-rooturi">-config fileOrURL and -root rootURI</a></li>
+        <li><a href="#-set-setting">-set Setting*</a></li>
+        <li><a href="#-include-exclude-shortnames">-include/-exclude shortNames</a></li>
+        <li><a href="#-assume-reference">-assume Reference</a></li>
+        <li><a href="#-sign-and--accept-experimental">-sign and -accept (experimental)</a></li>
+        <li><a href="#-version">-version</a></li>
+        <li><a href="#-remark">-remark</a></li>
+        <li><a href="#-repair-and--analyse-experimental">-repair and -analyse (experimental)</a></li>
+        <li><a href="#-render-name">-render Name</a></li>
+        <li><a href="#setting-the-proxy">setting the proxy</a></li>
+      </ul>
+    </li>
+    <li><a href="#inspectors-shipped-with-eyeball">Inspectors shipped with Eyeball</a>
+      <ul>
+        <li><a href="#propertyinspector-short-name-property">PropertyInspector (short name: &ldquo;property&rdquo;)</a></li>
+        <li><a href="#classinspector-short-name-presumed-class">ClassInspector (short name: &ldquo;presumed-class&rdquo;)</a></li>
+        <li><a href="#uriinspector-short-name-uri">URIInspector (short name: &ldquo;URI&rdquo;)</a></li>
+        <li><a href="#literalinspector-short-name-literal">LiteralInspector (short name: &ldquo;literal&rdquo;)</a></li>
+        <li><a href="#prefixinspector-short-name-prefix">PrefixInspector (short name: &ldquo;prefix&rdquo;)</a></li>
+        <li><a href="#vocabularyinspector-short-name-vocabulary">VocabularyInspector (short name: &ldquo;vocabulary&rdquo;)</a></li>
+        <li><a href="#owlsyntaxinspector-short-name-owl">OwlSyntaxInspector (short name: &ldquo;owl&rdquo;)</a></li>
+        <li><a href="#sparqldriveninspector-short-name-sparql">SparqlDrivenInspector (short name: &ldquo;sparql&rdquo;)</a></li>
+        <li><a href="#alltypedinspector-short-name-all-typed">AllTypedInspector (short name: &ldquo;all-typed&rdquo;)</a></li>
+        <li><a href="#consistenttypeinspector-short-name-consistent-type">ConsistentTypeInspector (short name: &ldquo;consistent-type&rdquo;)</a></li>
+        <li><a href="#cardinalityinspector-short-name-cardinality">CardinalityInspector (short name: &ldquo;cardinality&rdquo;)</a></li>
+        <li><a href="#listinspector-short-name-list">ListInspector (short name: &ldquo;list&rdquo;)</a></li>
+      </ul>
+    </li>
+    <li><a href="#eyeball-problem-reports">Eyeball problem reports</a>
+      <ul>
+        <li><a href="#propertyinspector-predicate-not-declared">PropertyInspector: predicate not declared</a></li>
+        <li><a href="#classinspector-class-not-declared">ClassInspector: class not declared</a></li>
+        <li><a href="#uriinspector-bad-uri">URIInspector: bad URI</a></li>
+        <li><a href="#literalinspector-illegal-language-code">LiteralInspector: illegal language code</a></li>
+        <li><a href="#literalinspector-bad-datatype-uri">LiteralInspector: bad datatype URI</a></li>
+        <li><a href="#literalinspector-bad-lexical-form">LiteralInspector: bad lexical form</a></li>
+        <li><a href="#prefixinspector-bad-namespace-uri">PrefixInspector: bad namespace URI</a></li>
+        <li><a href="#prefixinspector-jena-prefix-found">PrefixInspector: Jena prefix found</a></li>
+        <li><a href="#prefixinspector-multiple-prefixes-for-namespace">PrefixInspector: multiple prefixes for namespace</a></li>
+        <li><a href="#vocabularyinspector-not-from-schema">VocabularyInspector: not from schema</a></li>
+        <li><a href="#owlsyntaxinspector-suspicious-restriction">OwlSyntaxInspector: suspicious restriction</a></li>
+        <li><a href="#sparqldriveninspector-require-failed">SparqlDrivenInspector: require failed</a></li>
+        <li><a href="#sparqldriveninspector-prohibit-failed">SparqlDrivenInspector: prohibit failed</a></li>
+        <li><a href="#alltypedinspector-should-have-type">AllTypedInspector: should have type</a></li>
+        <li><a href="#consistenttypeinspector-inconsistent-types-for-resource">ConsistentTypeInspector: inconsistent types for resource</a></li>
+        <li><a href="#cardinalityinspector-cardinality-failure">CardinalityInspector: cardinality failure</a></li>
+        <li><a href="#listinspector-ill-formed-list">ListInspector: ill-formed list</a></li>
+        <li><a href="#listinspector-suspect-list-idiom">ListInspector: suspect list idiom</a></li>
+      </ul>
+    </li>
+    <li><a href="#inside-the-eyeball-configuration-file">Inside the Eyeball configuration file</a>
+      <ul>
+        <li><a href="#configuration-files">Configuration files</a></li>
+        <li><a href="#configuring-schema-names">Configuring schema names</a></li>
+        <li><a href="#configuring-inspectors">Configuring inspectors</a></li>
+        <li><a href="#configuring-the-uri-inspector">Configuring the URI inspector</a></li>
+        <li><a href="#configuring-the-vocabulary-inspector">Configuring the vocabulary inspector</a></li>
+        <li><a href="#configuring-the-sparql-driven-inspector">Configuring the SPARQL-driven inspector</a></li>
+        <li><a href="#configuring-renderers">Configuring renderers</a></li>
+      </ul>
+    </li>
+    <li><a href="#inside-the-eyeball-code">Inside the Eyeball code</a>
+      <ul>
+        <li><a href="#creating-an-eyeball">Creating an Eyeball</a></li>
+        <li><a href="#to-eyeball-a-model">To eyeball a model</a></li>
+      </ul>
+    </li>
+    <li><a href="#rebuilding-eyeball">Rebuilding Eyeball</a></li>
+    <li><a href="#creating-and-configuring-an-inspector">Creating and configuring an inspector</a>
+      <ul>
+        <li><a href="#creating-an-inspector">Creating an Inspector</a></li>
+        <li><a href="#reports-and-report-properties">Reports and report properties</a></li>
+        <li><a href="#configuring-an-inspector">Configuring an inspector</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>

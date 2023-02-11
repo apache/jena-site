@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen">
-    <link href="/css/jena.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +170,54 @@
             <h1 class="title">GeoSPARQL Fuseki</h1>
             
             
-	<p>This application provides a HTTP server compliant with the GeoSPARQL standard.</p>
+<main class="d-flex flex-xl-row flex-column">
+  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#jena-fuseki-geosparql"><code>jena-fuseki-geosparql</code></a></li>
+    <li><a href="#clarifications-on-geosparql">Clarifications on GeoSPARQL</a>
+      <ul>
+        <li><a href="#geographic-markup-language-gml">Geographic Markup Language (GML)</a></li>
+        <li><a href="#geo-predicates-latlon">Geo Predicates Lat/Lon</a></li>
+        <li><a href="#command-line">Command Line</a>
+          <ul>
+            <li><a href="#examples">Examples</a></li>
+          </ul>
+        </li>
+        <li><a href="#embedded-server">Embedded Server</a></li>
+      </ul>
+    </li>
+    <li><a href="#sparql-query-example">SPARQL Query Example</a></li>
+    <li><a href="#sis_data-environment-variable">SIS_DATA Environment Variable</a></li>
+    <li><a href="#command-line-arguments">Command Line Arguments</a>
+      <ul>
+        <li><a href="#1-port">1) Port</a></li>
+        <li><a href="#2-dataset-name">2) Dataset name</a></li>
+        <li><a href="#3-loopback-only">3) Loopback only</a></li>
+        <li><a href="#4-sparql-update-allowed">4) SPARQL update allowed</a></li>
+        <li><a href="#5-tdb-folder">5) TDB folder</a></li>
+        <li><a href="#6-load-rdf-file-into-dataset">6) Load RDF file into dataset</a></li>
+        <li><a href="#7-load-tabular-file-into-dataset">7) Load Tabular file into dataset</a></li>
+        <li><a href="#8-geosparql-rdfs-inference">8) GeoSPARQL RDFS inference</a></li>
+        <li><a href="#9-apply-hasdefaultgeometry">9) Apply hasDefaultGeometry</a></li>
+        <li><a href="#10-validate-geometry-literals">10) Validate Geometry Literals</a></li>
+        <li><a href="#11-convert-geo-predicates">11) Convert Geo predicates</a></li>
+        <li><a href="#12--remove-geo-predicates">12)  Remove Geo predicates</a></li>
+        <li><a href="#13-query-rewrite-enabled">13) Query Rewrite enabled</a></li>
+        <li><a href="#14-indexing-enabled">14) Indexing enabled</a></li>
+        <li><a href="#15-index-sizes">15) Index sizes</a></li>
+        <li><a href="#16-index-expiries">16) Index expiries</a></li>
+        <li><a href="#17-spatial-index-file">17) Spatial Index file</a></li>
+        <li><a href="#18-properties-file">18) Properties File</a></li>
+      </ul>
+    </li>
+    <li><a href="#future-work">Future Work</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <p>This application provides a HTTP server compliant with the GeoSPARQL standard.</p>
 <p>GeoSPARQL can also be integrated with Fuseki using the
 <a href="#fuseki-assembler">GeoSPARQL assembler</a> with a general Fuseki server.</p>
 <h2 id="jena-fuseki-geosparql"><code>jena-fuseki-geosparql</code></h2>
@@ -401,6 +447,53 @@ See <a href="index">GeoSPARQL Jena project</a> for more details.</p>
 <li>GUI to assist users when querying a dataset.</li>
 </ul>
 
+  </article>
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 my-2">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#jena-fuseki-geosparql"><code>jena-fuseki-geosparql</code></a></li>
+    <li><a href="#clarifications-on-geosparql">Clarifications on GeoSPARQL</a>
+      <ul>
+        <li><a href="#geographic-markup-language-gml">Geographic Markup Language (GML)</a></li>
+        <li><a href="#geo-predicates-latlon">Geo Predicates Lat/Lon</a></li>
+        <li><a href="#command-line">Command Line</a>
+          <ul>
+            <li><a href="#examples">Examples</a></li>
+          </ul>
+        </li>
+        <li><a href="#embedded-server">Embedded Server</a></li>
+      </ul>
+    </li>
+    <li><a href="#sparql-query-example">SPARQL Query Example</a></li>
+    <li><a href="#sis_data-environment-variable">SIS_DATA Environment Variable</a></li>
+    <li><a href="#command-line-arguments">Command Line Arguments</a>
+      <ul>
+        <li><a href="#1-port">1) Port</a></li>
+        <li><a href="#2-dataset-name">2) Dataset name</a></li>
+        <li><a href="#3-loopback-only">3) Loopback only</a></li>
+        <li><a href="#4-sparql-update-allowed">4) SPARQL update allowed</a></li>
+        <li><a href="#5-tdb-folder">5) TDB folder</a></li>
+        <li><a href="#6-load-rdf-file-into-dataset">6) Load RDF file into dataset</a></li>
+        <li><a href="#7-load-tabular-file-into-dataset">7) Load Tabular file into dataset</a></li>
+        <li><a href="#8-geosparql-rdfs-inference">8) GeoSPARQL RDFS inference</a></li>
+        <li><a href="#9-apply-hasdefaultgeometry">9) Apply hasDefaultGeometry</a></li>
+        <li><a href="#10-validate-geometry-literals">10) Validate Geometry Literals</a></li>
+        <li><a href="#11-convert-geo-predicates">11) Convert Geo predicates</a></li>
+        <li><a href="#12--remove-geo-predicates">12)  Remove Geo predicates</a></li>
+        <li><a href="#13-query-rewrite-enabled">13) Query Rewrite enabled</a></li>
+        <li><a href="#14-indexing-enabled">14) Indexing enabled</a></li>
+        <li><a href="#15-index-sizes">15) Index sizes</a></li>
+        <li><a href="#16-index-expiries">16) Index expiries</a></li>
+        <li><a href="#17-spatial-index-file">17) Spatial Index file</a></li>
+        <li><a href="#18-properties-file">18) Properties File</a></li>
+      </ul>
+    </li>
+    <li><a href="#future-work">Future Work</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>
