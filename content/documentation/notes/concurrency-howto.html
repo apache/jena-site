@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.b3d54b16bfe962c04fadadba0d389c811e2e445a37f0cfc93a79851749145537.css" integrity="sha256-s9VLFr/pYsBPra26DTicgR4uRFo38M/JOnmFF0kUVTc=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.8eddb17125a9203f3381ffcfb0cfa8dce63a381e136339a4ea8001dfd8fa9d82.css" integrity="sha256-jt2xcSWpID8zgf/PsM&#43;o3OY6OB4TYzmk6oAB39j6nYI=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -171,7 +171,8 @@
             
             
 <main class="d-flex flex-xl-row flex-column">
-  <aside class="text-muted align-self-start mb-3 px-2 d-xl-none d-block">
+  
+  <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
     <h2 class="h6 my-2">On this page</h2>
     <nav id="TableOfContents">
   <ul>
@@ -238,8 +239,9 @@ in the model or graph implementation itself. It is not possible to
 safely pass these out of critical sections.</p>
 
   </article>
-  <aside class="text-muted align-self-start mb-3 mb-xl-5 px-2 d-none d-xl-flex flex-column sticky-top">
-    <h2 class="h6 my-2">On this page</h2>
+  
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#locks">Locks</a></li>
@@ -274,15 +276,36 @@ safely pass these out of critical sections.</p>
 <script src="/js/improve.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-const link = document.querySelector(`a[href="${window.location.pathname}"]`);
-if (link !== undefined && link !== null) {
-    const parents = link.parentElement
-    for (const parent of parents) {
-        if (parent.tagName === 'ul' ||  parent.tagName === 'li') {
-            parent.style += 'active';
+(function() {
+    'use strict'
+    
+
+    const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)
+    if (links !== undefined && links !== null) {
+        for (const link of links) {
+            
+            link.classList.add('active')
+            let parentElement = link.parentElement
+            let count = 0
+            const levelsLimit = 4
+            
+            
+            
+            
+            
+            while (['UL', 'LI'].includes(parentElement.tagName) && count <= levelsLimit) {
+                if (parentElement.tagName === 'LI') {
+                    
+                    
+                    
+                    parentElement.querySelector('a:first-child').classList.add('active')
+                }
+                parentElement = parentElement.parentElement
+                count++
+            }
         }
     }
-}
+})()
 </script>
 
 </body>
