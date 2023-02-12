@@ -21,20 +21,37 @@
   <script type="text/javascript">
     (function() {
       const summaryInclude = 180;
+      // See: https://fusejs.io/api/options.html
       const fuseOptions = {
+        // Whether to sort the result list, by score.
         shouldSort: true,
+        // Whether the matches should be included in the result set.
+        // When true, each record in the result set will include the indices of the matched characters.
+        // These can consequently be used for highlighting purposes.
         includeMatches: true,
+        // Whether the score should be included in the result set.
+        // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
         includeScore: true,
-        tokenize: true,
+        // Determines approximately where in the text is the pattern expected to be found.
         location: 0,
+        // Determines how close the match must be to the fuzzy location (specified by location).
+        // An exact letter match which is distance characters away from the fuzzy location would
+        // score as a complete mismatch.
+        // A distance of 0 requires the match be at the exact location specified.
+        // A distance of 1000 would require a perfect match to be within 800 characters of the
+        // location to be found using a threshold of 0.8.
         distance: 100,
-        minMatchCharLength: 1,
+        // Only the matches whose length exceeds this value will be returned.
+        // (For instance, if you want to ignore single character matches in the result, set it to 2).
+        minMatchCharLength: 2,
+        // List of keys that will be searched.
+        // This supports nested paths, weighted search, searching in arrays of strings and objects.
         keys: [
-          {name: "title", weight: 0.45},
+          {name: "title", weight: 0.5},
           {name: "contents", weight: 0.4},
-          {name: "tags", weight: 0.1},
+          {name: "tags", weight: 0.95},
           {name: "categories", weight: 0.05}
-        ]
+        ],
       };
 
       // =============================
@@ -82,6 +99,8 @@
 
         const searchQuery = document.getElementById("search-query").value;
         const searchResults = document.getElementById("search-results");
+
+        searchResults.innerHTML += `<p>Search returned ${results.length} matches.</p>`;
 
         // pull template from hugo template definition
         const templateDefinition = document.getElementById("search-result-template").innerHTML;
