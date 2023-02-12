@@ -7,7 +7,8 @@
   <script id="search-result-template" type="text/x-js-template">
     <div id="summary-${key}">
       <h3><a href="${link}">${title}</a></h3>
-      <p>${snippet}</p>
+      <p class="pb-0 mb-0">${snippet}</p>
+      <p class="opacity-50 pt-0 mt-0"><small>Score: ${score}</small></p>
       <p>
         <small>
           ${ isset tags }Tags: ${tags}<br>${ end }
@@ -23,35 +24,51 @@
       const summaryInclude = 180;
       // See: https://fusejs.io/api/options.html
       const fuseOptions = {
-        // Whether to sort the result list, by score.
-        shouldSort: true,
+        // Indicates whether comparisons should be case sensitive.
+        isCaseSensitive: false,
+        // Whether the score should be included in the result set.
+        // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
+        includeScore: true,
         // Whether the matches should be included in the result set.
         // When true, each record in the result set will include the indices of the matched characters.
         // These can consequently be used for highlighting purposes.
         includeMatches: true,
-        // Whether the score should be included in the result set.
-        // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
-        includeScore: true,
-        // Determines approximately where in the text is the pattern expected to be found.
-        location: 0,
-        // Determines how close the match must be to the fuzzy location (specified by location).
-        // An exact letter match which is distance characters away from the fuzzy location would
-        // score as a complete mismatch.
-        // A distance of 0 requires the match be at the exact location specified.
-        // A distance of 1000 would require a perfect match to be within 800 characters of the
-        // location to be found using a threshold of 0.8.
-        distance: 100,
         // Only the matches whose length exceeds this value will be returned.
         // (For instance, if you want to ignore single character matches in the result, set it to 2).
         minMatchCharLength: 2,
+        // Whether to sort the result list, by score.
+        shouldSort: true,
         // List of keys that will be searched.
         // This supports nested paths, weighted search, searching in arrays of strings and objects.
         keys: [
-          {name: "title", weight: 0.5},
-          {name: "contents", weight: 0.4},
-          {name: "tags", weight: 0.95},
-          {name: "categories", weight: 0.05}
+          {name: "title", weight: 0.8},
+          {name: "contents", weight: 0.7},
+          // {name: "tags", weight: 0.95},
+          // {name: "categories", weight: 0.05}
         ],
+        // --- Fuzzy Matching Options
+        // Determines approximately where in the text is the pattern expected to be found.
+        location: 0,
+        // At what point does the match algorithm give up.
+        // A threshold of 0.0 requires a perfect match (of both letters and location),
+        // a threshold of 1.0 would match anything.
+        threshold: 0.2,
+        // Determines how close the match must be to the fuzzy location (specified by location).
+        // An exact letter match which is distance characters away from the fuzzy location would
+        // score as a complete mismatch. A distance of 0 requires the match be at the exact
+        // location specified. A distance of 1000 would require a perfect match to be within 800
+        // characters of the location to be found using a threshold of 0.8.
+        distance: 100,
+        // When true, search will ignore location and distance, so it won't matter where in
+        // the string the pattern appears.
+        //
+        // NOTE: These settings are used to calculate the Fuzziness Score (Bitap algorithm) in Fuse.js.
+        //       It calculates threshold (default 0.6) * distance (default (100), which gives 60 by
+        //       default, meaning it will search for the query-term within 60 characters from the location
+        //       (default 0). Since Jena docs may have very long text that includes the query term anywhere
+        //       we disable it with ignoreLocation: true.
+        //       For more: https://fusejs.io/concepts/scoring-theory.html#scoring-theory
+        ignoreLocation: true,
       };
 
       // =============================
@@ -106,7 +123,6 @@
         const templateDefinition = document.getElementById("search-result-template").innerHTML;
 
         results.forEach(function (value, key) {
-
           const contents = value.item.contents;
           let snippet = "";
           const snippetHighlights = [];
@@ -128,7 +144,8 @@
             link: value.item.permalink,
             tags: tags,
             categories: value.item.categories,
-            snippet: snippet
+            snippet: snippet,
+            score: value.score
           });
           searchResults.innerHTML += output;
 
