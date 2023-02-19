@@ -11,6 +11,10 @@ XSD datatypes for strings, numbers and booleans are converted to the
 native JavaScript datatypes. RDFterms that do not fit easily into
 JavaScript datatypes are handled with a object class `NV`.
 
+Applications should be aware that there are risks in exposing a script engine
+with full computational capabilities through SPARQL.  Script functions are only
+as secure as the script engine environment they run in.
+
 ## Requirements
 
 ARQ requires a javascript engine such as [GraalVM](https://www.graalvm.org/) to
@@ -35,21 +39,30 @@ be added to the classpath.
       <version>${ver.graalvm}</version>
     </dependency>
 ```
-    
-## Loading JavaScript functions
+
+## Enabling and Loading JavaScript functions
 
 JavaScript is loaded from an external file using the context setting
 "http://jena.apache.org/ARQ#js-library". This can be written as
 `arq:js-library` for commands and Fuseki configuration files.
 
+Access to the script engine must be enabled at runtime.
+The Java system property to do this is `jena:scripting`.
+
 Example:
 
+    export JVM_ARGS=-Djena:scripting=true
+    sparql --set arq:js-library=SomeFile.js --data ... --query ...
+
+and for MS Windows:
+
+    set JVM_ARGS=-Djena:scripting=true
     sparql --set arq:js-library=SomeFile.js --data ... --query ...
 
 will execute on the data with the JavaScript functions from file
 "SomeFile.js" available.
 
-JavScript functions can also be set from a string directly from within Java using constant
+JavaScript functions can also be set from a string directly from within Java using constant
 `ARQ.symJavaScriptFunctions` ("http://jena.apache.org/ARQ#js-functions").
 
 ## Using JavaScript functions
@@ -97,9 +110,10 @@ For example, "some words to process " becomes "someWordsToProcess".
     // Words to be combined are separated by a space in the string.
     
     function toCamelCase(str) {
-        return str.split(' ')
-    	.map(cc)
-    	.join('');
+        return str
+                  .split(' ')
+                  .map(cc)
+                  .join('');
     }
     
     function ucFirst(word)    {
@@ -123,11 +137,7 @@ and the query `Q.rq`
         VALUES ?input { "some woRDs to PROCESS" }
     }
 
-which can be executed with:
-
-    sparql --set arq:js-library=functions.js --query Q.rq
-
-and it results in:
+which results in:
 
     --------------------------------------------------
     | input                   | X                    |
@@ -140,6 +150,7 @@ and it results in:
 The context setting can be provided on the command line starting the
 server, for example:
 
+    export JVM_ARGS=-Djena:scripting=true
     fuseki --set arq:js-library=functions.js --mem /ds
 
 or it can be specified in the server configuration file `config.ttl`:
@@ -171,4 +182,5 @@ or it can be specified in the server configuration file `config.ttl`:
 
 and used as:
 
+    export JVM_ARGS=-Djena:scripting=true    
     fuseki --conf config.ttl
