@@ -96,7 +96,7 @@ an `StreamRDF` backed by a stream-based writer
 which can be done as:
 
     StreamRDF writer = StreamRDFWriter.getWriterStream(output, lang) ;
-    StreamRDFOps.graphToStream(writer, model.getGraph()) ;
+    StreamRDFOps.graphToStream(model.getGraph(), writer) ;
 
 N-Triples and N-Quads are always written as a stream.
 
