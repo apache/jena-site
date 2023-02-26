@@ -16,15 +16,17 @@ different packages. The base package name for TDB2 is `org.apache.jena.tdb2`.
 
 Example code: **`TDB2Factory`**
 
-    import org.apache.jena.tdb2.TDB2Factory;
-    ...
+```java
+import org.apache.jena.tdb2.TDB2Factory;
+...
 
-      public static void main(String[] args) {
-           Dataset ds = TDB2Factory.createDataset() ;
-           Txn.execWrite(ds, ()->{
-                RDFDataMgr.read(ds, "SomeData.ttl");
-           }) ;
-            Txn.execRead(dsg, ()->{
-               RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
-           }) ;
-      }
+    public static void main(String[] args) {
+       Dataset ds = TDB2Factory.createDataset() ;
+       Txn.execWrite(ds, ()->{
+            RDFDataMgr.read(ds, "SomeData.ttl");
+       }) ;
+        Txn.execRead(dsg, ()->{
+           RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
+       }) ;
+    }
+```
