@@ -38,9 +38,11 @@ The argument `--explain` is equivalent to `--print=query --print=opt`
 
 Examples:
 
-    arq.qparse --explain --query Q.rq
+```bash
+arq.qparse --explain --query Q.rq
 
-    arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+```
 
 ## Execution Logging
 
@@ -50,7 +52,9 @@ logger level controls.
 
 From command line:
 
-    arq.sparql --explain --data ... --query ...
+```bash
+arq.sparql --explain --data ... --query ...
+```
 
 Explanatory messages are controlled by the `Explain.InfoLevel` level in
 the execution context.
@@ -63,27 +67,35 @@ The logger used is called `org.apache.jena.arq.exec`. Message are sent
 at level "info". So for log4j2, the following can be set in the
 `log4j2.properties` file:
 
-    logger.arq-exec.name  = org.apache.jena.arq.exec
-    logger.arq-exec.level = INFO
+```properties
+logger.arq-exec.name  = org.apache.jena.arq.exec
+logger.arq-exec.level = INFO
+```
 
 The context setting is for key (Java constant) `ARQ.symLogExec`. To set
 globally:
 
-    ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+```java
+ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+```
 
 and it may also be set on an individual query execution using its local
 context.
 
-     try(QueryExecution qExec = QueryExecution.create() ... .set(ARQ.symLogExec, Explain.InfoLevel.ALL).build() ) {
-         ResultSet rs = qExec.execSelect() ;
-         ...
-     }
+```java
+try(QueryExecution qExec = QueryExecution.create() ... .set(ARQ.symLogExec, Explain.InfoLevel.ALL).build() ) {
+   ResultSet rs = qExec.execSelect() ;
+   ...
+}
+```
 
 On the command line:
 
-     arq.query --explain --data data file --query=queryfile
+```bash
+ arq.query --explain --data data file --query=queryfile
+ ```
 
-The command tdbquery takes the same --explain argument.
+The command `tdbquery` takes the same --explain argument.
 
 Logging information levels: see the [logging page](logging.html)
 

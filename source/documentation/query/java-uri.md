@@ -1,5 +1,5 @@
 ---
-title: ARQ - The `java:` URI scheme
+title: "ARQ - The java: URI scheme"
 ---
 
 ARQ uses URIs of the form `<java:<i>package.class</i>>` to provide
@@ -23,10 +23,12 @@ Classes can be mor conveniently named in queries using SPARQL
 prefixed name, all the package name and the final dot must be in
 the `PREFIX` declaration.
 
-    PREFIX fn: <java:org.example.functions.>    # Including the final dot
-    ...
-      FILTER fn:alter(?x)
-    ...
+```sparql
+PREFIX fn: <java:org.example.functions.>    # Including the final dot
+...
+  FILTER fn:alter(?x)
+...
+```
 
 ## Remapping
 

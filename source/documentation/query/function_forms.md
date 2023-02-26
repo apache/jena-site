@@ -23,18 +23,22 @@ boolean result is true, and the third argument if it is false.
 
 Examples:
 
-    IF ( ?x<0 , "negative" , "positive" )
+```sparql
+IF ( ?x<0 , "negative" , "positive" )
 
-    # A possible way to do default values.
-    LET( ?z := IF(bound(?z) , ?z , "DftValue" ) )
+# A possible way to do default values.
+LET( ?z := IF(bound(?z) , ?z , "DftValue" ) )
+```
 
 ## COALESCE
 
 The `COALESCE`form returns the first argument of its argument list
 that is bound.
 
-    # Suppose ?y is bound to "y" and ?z to "z" but ?x is not.
-    COALESCE(?x , ?y , ?z) # return "y"
+```sparql
+# Suppose ?y is bound to "y" and ?z to "z" but ?x is not.
+COALESCE(?x , ?y , ?z) # return "y"
+```
 
 
 [ARQ documentation index](index.html)

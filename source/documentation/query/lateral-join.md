@@ -16,22 +16,26 @@ sub-patterns.
 Another way to think of a lateral join is as a `flatmap`.
 
 Examples:
-```
+
+```sparql
 ## Get exactly one label for each subject with type `:T`
 SELECT * {
-   ?s rdf:type :T
-   LATERAL {
-     SELECT * { ?s rdfs:label ?label } LIMIT 1
-   }
+  ?s rdf:type :T
+  LATERAL {
+    SELECT * { ?s rdfs:label ?label } LIMIT 1
+  }
 }
 ```
 
-```
+```sparql
 ## Get zero or one labels for each subject.
 SELECT * {
-   ?s ?p ?o
-   LATERAL { OPTIONAL { SELECT * ?s rdfs:label ?label } LIMIT 1}
-   }
+  ?s ?p ?o
+  LATERAL {
+    OPTIONAL {
+      SELECT * { ?s rdfs:label ?label } LIMIT 1
+    }
+  }
 }
 ```
 
@@ -55,11 +59,11 @@ the LHS.
 Such a variable assignment would conflict with the variable being set in
 variables of the row being joined.
 
-```
+```sparql
 ## ** Illegal **
 SELECT * {
-   ?s ?p ?o
-   LATERAL { BIND( 123 AS ?o) }
+  ?s ?p ?o
+  LATERAL { BIND( 123 AS ?o) }
 }
 ```
 
@@ -71,33 +75,42 @@ In ARQ, [LET](assignment.html) would work.
 #### Variable Scopes
 
 In looping on the input, a lateral join makes the bindings of variables in the current row
-available to the right hand side pattern, setting their value from the top down.
+available to the right-hand side pattern, setting their value from the top down.
 
 In SPARQL, it is possible to have variables of the same name which are not
 exposed within a sub-select. These are not lateral-joined to a variable of the
 same name from the LHS.
 
-This is not speciifc to lateral joins. In
-```
+This is not specific to lateral joins. In
+
+```sparql
 SELECT * {
   ?s rdf:type :T 
-  { SELECT ?label { ?s rdfs:label ?label } }
+  {
+    SELECT ?label { ?s rdfs:label ?label }
+  }
+}
 ```
 the inner `?s` can be replaced by `?z` without changing the results because the
 inner `?s` is not joined to the outer `?s` but instead is hidden by the `SELECT ?label`.
-```
+
+```sparql
 SELECT * {
   ?s rdf:type :T 
-  { SELECT ?label { ?z rdfs:label ?label } }
+  {
+    SELECT ?label { ?z rdfs:label ?label }
+  }
+}
 ```
 
 The same rule applies to lateral joins.
-```
+
+```sparql
 SELECT * {
-   ?s rdf:type :T 
-   LATERAL {
-     SELECT ?label { ?s rdfs:label ?label } LIMIT 1
-   }
+  ?s rdf:type :T 
+  LATERAL {
+    SELECT ?label { ?s rdfs:label ?label } LIMIT 1
+  }
 }
 ```
 
@@ -118,28 +131,29 @@ available to "pattern". This is similar to an SQL
 
 `LATERAL` is added to the SPARQL grammar at rule `[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)`. As a syntax form, it is similar to `OPTIONAL`.
 
-```
-[56]  	GraphPatternNotTriples	  ::=  	GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
-[57]  	OptionalGraphPattern	  ::=  	'OPTIONAL' GroupGraphPattern
-[  ]  	LateralGraphPattern	  ::=  	'LATERAL' GroupGraphPattern
+```ebnf
+[56]    GraphPatternNotTriples    ::=    GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
+[57]    OptionalGraphPattern      ::=    'OPTIONAL' GroupGraphPattern
+[  ]    LateralGraphPattern       ::=    'LATERAL' GroupGraphPattern
 ```
 
 ### Algebra
 
 The new algebra operator is `lateral` which takes two expressions
 
-```
-  SELECT * {
-    ?s  ?p  ?o
-    LATERAL
-      { ?a  ?b  ?c }
+```sparql
+SELECT * {
+  ?s  ?p  ?o
+  LATERAL
+  { ?a  ?b  ?c }
 }
 ```
 is translated to:
-```
-  (lateral
-    (bgp (triple ?s ?p ?o))
-    (bgp (triple ?a ?b ?c)))
+
+```lisp
+(lateral
+  (bgp (triple ?s ?p ?o))
+  (bgp (triple ?a ?b ?c)))
 ```
 
 ### Evaluation
@@ -148,11 +162,12 @@ To evaluate `lateral`:
 
 * Evaluate the first argument (left-hand side from syntax) to get a multiset of solution mappings.
 * For each solution mapping ("row"),
-    inject variable bindings into the second argument
-    Evaluate this pattern
-    Add to results
+    - inject variable bindings into the second argument
+    - Evaluate this pattern
+    - Add to results
 
 Outline:
+
 ```
 Definition: Lateral
 
@@ -162,8 +177,8 @@ Lateral(Ω, P) = { μ | union of Ω1 where
            foreach μ1 in Ω:
                pattern2 = inject(pattern, μ1)
                Ω1 = eval(D(G), pattern2)
-	       result Ω1
-	   }
+         result Ω1
+     }
 ```
 where `inject` is the [corrected `substitute`](https://afs.github.io/substitute.html) 
 operation.
