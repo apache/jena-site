@@ -26,13 +26,13 @@ be added to the classpath.
     <dependency>
       <groupId>org.graalvm.js</groupId>
       <artifactId>js</artifactId>
-      <version>${ver.graalvm}/version>
+      <version>${ver.graalvm}</version>
     </dependency>
 
     <dependency>
       <groupId>org.graalvm.js</groupId>
       <artifactId>js-scriptengine</artifactId>
-      <version>${ver.graalvm}/version>
+      <version>${ver.graalvm}</version>
     </dependency>
 ```
     
