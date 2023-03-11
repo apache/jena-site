@@ -132,8 +132,8 @@ To use it you will first need to build it from source or download the relevant M
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/fuseki2/</guid>
-      <description>Apache Jena Fuseki is a SPARQL server. It can run as a operating system service, as a Java web application (WAR file), and as a standalone server.
-Fuseki comes in in two forms, a single system &amp;ldquo;webapp&amp;rdquo;, combined with a UI for admin and query, and as &amp;ldquo;main&amp;rdquo;, a server suitable to run as part of a larger deployment, including with Docker or running embedded. Both forms use the same core protocol engine and same configuration file format.</description>
+      <description>Apache Jena Fuseki is a SPARQL server. It can run as an operating system service, as a Java web application (WAR file), and as a standalone server.
+Fuseki comes in two forms, a single system &amp;ldquo;webapp&amp;rdquo;, combined with a UI for admin and query, and as &amp;ldquo;main&amp;rdquo;, a server suitable to run as part of a larger deployment, including with Docker or running embedded. Both forms use the same core protocol engine and same configuration file format.</description>
     </item>
     
     <item>
@@ -154,11 +154,11 @@ Getting Started GeoSPARQL Jena can be accessed as a library using Maven etc. fro
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/notes/system-initialization.html</guid>
-      <description>Jena has a simple initialization sequence that is used to setup components available at runtime.
-Application code is welcome to also use this mechanism. This must be done with care. Java initialization can lead to visibility of uninitialized data.
+      <description>Jena has an initialization sequence that is used to setup components available at runtime.
+Application code is welcome to also use this mechanism. This must be done with care. During Jena initialization, there can be visibility of uninitialized data in class static members.
 The standard initialization sequence is
 Core -&amp;gt; RIOT -&amp;gt; ARQ -&amp;gt; TDB -&amp;gt; other (including jena text)
-The sequence from core to TDB should be executed before application components. See below for how to control the order.</description>
+The sequence from 0 to level 500 is the Jena platform initialization.</description>
     </item>
     
     <item>
@@ -190,7 +190,7 @@ Apache Jena Release Source release: this forms the official release of Apache Je
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/</guid>
-      <description>  The Jena SDB module has been retired. The last release of Jena with this module is Jena 3.17.0. See jena-sdb/README.md. The original documentation.
+      <description>  The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0. The original documentation.
   </description>
     </item>
     
@@ -414,6 +414,17 @@ ARQ consists of the following parts:
       <description>ARQ supports writing custom SPARQL functions in JavaScript. These functions can be used in FILTERs and for calculating values to assign with AS in BIND and SELECT expressions.
 XSD datatypes for strings, numbers and booleans are converted to the native JavaScript datatypes. RDFterms that do not fit easily into JavaScript datatypes are handled with a object class NV.
 Requirements ARQ requires a javascript engine such as GraalVM to be added to the classpath.</description>
+    </item>
+    
+    <item>
+      <title>ARQ - Lateral Join</title>
+      <link>https://jena.apache.org/documentation/query/lateral-join.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/query/lateral-join.html</guid>
+      <description>Lateral joins using the keyword LATERAL were introduced in Apache Jena 4.7.0.
+A LATERAL join is like a foreach loop, looping on the results from the left-hand side (LHS), the pattern before the LATERAL keyword, and executing the right-hand side (RHS) query pattern once for each row, with the variables from the input LHS in-scope during each RHS evaluation.
+A regular join only executes the RHS once, and the variables from the LHS are used for the join condition after evaluation of the left and right sub-patterns.</description>
     </item>
     
     <item>
@@ -855,7 +866,7 @@ FUSEKI_HOME - this contains the fixed files from the distribution and is used fo
       <guid>https://jena.apache.org/documentation/fuseki2/fuseki-logging.html</guid>
       <description>Fuseki logs operation details and also provides a standard NCSA request log.
 Logging is via SLF4J over Apache Log4J2, or by the Tomcat configuration if running the WAR file.
-   Full Log name Usage     org.apache.jena.fuseki.Server General Server Messages   org.apache.jena.fuseki.Request NCSA request Log.   org.apache.jena.fuseki.Fuseki The HTTP request log   org.apache.jena.fuseki.Admin Administration operations   org.apache.jena.fuseki.Builder Dataset and service build operations   org.</description>
+   Full Log name Usage     org.apache.jena.fuseki.Server General Server Messages   org.apache.jena.fuseki.Request NCSA request Log   org.apache.jena.fuseki.Fuseki The HTTP request log   org.apache.jena.fuseki.Admin Administration operations   org.apache.jena.fuseki.Builder Dataset and service build operations   org.</description>
     </item>
     
     <item>
@@ -911,7 +922,7 @@ Endpoints The following servers endpoints are available. They are present in Fus
       <description>See the Fuseki2 documentation.   This page covers Fuseki v1. Fuseki1 is deprecated and has been retired. The last release of Jena with this module is Jena 3.9.0.
   Fuseki is a SPARQL server. It provides REST-style SPARQL HTTP Update, SPARQL Query, and SPARQL Update using the SPARQL protocol over HTTP.
 The relevant SPARQL standards are:
- SPARQL 1.1 Query SPARQL 1.1 Update SPARQL 1.1 Protocol SPARQL 1.1 Graph Store HTTP Protocol  Contents  Download Getting Started Security Logging Server URI scheme Running a Fuseki Server Fuseki Configuration File SPARQL Over HTTP Use from Java Development System  Download Fuseki1 Binaries for Fuseki1 are available from the maven repositories.</description>
+ SPARQL 1.1 Query SPARQL 1.1 Update SPARQL 1.1 Protocol SPARQL 1.1 Graph Store HTTP Protocol  Download Fuseki1 Binaries for Fuseki1 are available from the maven repositories.</description>
     </item>
     
     <item>
@@ -989,7 +1000,7 @@ You can discuss your contribution, before or after adding it to Jira, on the dev
       
       <guid>https://jena.apache.org/getting_started/</guid>
       <description>Apache Jena (or Jena in short) is a free and open source Java framework for building semantic web and Linked Data applications. The framework is composed of different APIs interacting together to process RDF data. If you are new here, you might want to get started by following one of the tutorials. You can also browse the documentation if you are interested in a particular topic.
-Tutorials  RDF API tutorial - you will learn the essence of the semantic web and the graph representation behind RDF.</description>
+ Tutorials  RDF API tutorial - you will learn the essence of the semantic web and the graph representation behind RDF.</description>
     </item>
     
     <item>
@@ -1105,7 +1116,7 @@ Throughout this document, the prefix eye: stands for the URL http://jena.</descr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/javadoc.html</guid>
-      <description> Jena Core JavaDoc ARQ JavaDoc (SPARQL) TDB JavaDoc RDF Connection Fuseki JavaDoc  Fuseki2 Webapp Fuseki2 Main   Text search SHACL ShEx GeoSPARQL Query Builder Service Enhancer Security Permissions JavaDoc JDBC JavaDoc  </description>
+      <description> Jena Core JavaDoc ARQ JavaDoc (SPARQL) TDB JavaDoc RDF Connection Fuseki JavaDoc  Fuseki2 Webapp Fuseki2 Main   Text search SHACL ShEx RDF Patch GeoSPARQL Query Builder Service Enhancer Security Permissions JavaDoc JDBC JavaDoc  </description>
     </item>
     
     <item>
@@ -1200,10 +1211,9 @@ NOTE The permissions system caches intermediate results and will only call the e
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/extras/querybuilder/</guid>
-      <description>Table of Contents {% toc %}
-Overview Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions. The Query Builder module is an extra package and is found in the jena-querybuilder jar.
+      <description>Overview Query Builder provides implementations of Ask, Construct, Select and Update builders that allow developers to create queries without resorting to StringBuilders or similar solutions. The Query Builder module is an extra package and is found in the jena-querybuilder jar.
 Each of the builders has a series of methods to define the query. Each method returns the builder for easy chaining. The example:
-SelectBuilder sb = new SelectBuilder() .</description>
+SelectBuilder sb = new SelectBuilder() .addVar( &amp;quot;*&amp;quot; ) .</description>
     </item>
     
     <item>
@@ -1213,7 +1223,8 @@ SelectBuilder sb = new SelectBuilder() .</description>
       
       <guid>https://jena.apache.org/documentation/io/rdfxml_howto.html</guid>
       <description>This is a guide to the RDF/XML I/O subsystem of Jena, ARP. The first section gives a quick introduction to the I/O subsystem. The other sections are aimed at users wishing to use advanced features within the RDF/XML I/O subsystem.
-Contents  Quick Introduction RDF/XML, RDF/XML-ABBREV Character Encoding Issues  Encodings Supported in Jena 2.2 and later   When to Use Reader and Writer? Introduction to Advanced Jena I/O Advanced RDF/XML Input  ARP properties Interrupting ARP   Advanced RDF/XML Output Conformance Faster RDF/XML I/O Details of ARP, the Jena RDF/XML parser  Quick Introduction The main I/O methods in Jena use InputStreams and OutputStreams.</description>
+Other content related to Jena RDF/XML How-To includes:
+ Details of ARP, the Jena RDF/XML parser  Quick Introduction The main I/O methods in Jena use InputStreams and OutputStreams. This is import to correctly handle character sets.</description>
     </item>
     
     <item>
@@ -1234,6 +1245,17 @@ Patches and other contributions welcome!</description>
       <guid>https://jena.apache.org/documentation/tools/schemagen.html</guid>
       <description>The schemagen provided with Jena is used to convert an OWL or RDFS vocabulary into a Java class file that contains static constants for the terms in the vocabulary. This documents outlines the use of schemagen, and the various options and templates that may be used to control the output.
 Schemagen is typically invoked from the command line or from a built script (such as Ant). Synopsis of the command:</description>
+    </item>
+    
+    <item>
+      <title>Jena Security Advisories</title>
+      <link>https://jena.apache.org/about_jena/security-advisories.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/about_jena/security-advisories.html</guid>
+      <description>The Jena project has issued a number of security advisories during the lifetime of the project. On this page you&amp;rsquo;ll find details of our security issue process, as well as a listing of our past CVEs as well as relevant Dependency CVEs.
+Process Jena follows the standard ASF Security for Committers policy for reporting and addressing security issues.
+If you think you have identified a Security issue in our project please refer to that policy for how to report it, and the process that the Jena Project Management Committee (PMC) will follow in addressing the issue.</description>
     </item>
     
     <item>
@@ -1277,7 +1299,7 @@ Read transactions These are used for SPARQL queries and code using the Jena API 
       <guid>https://jena.apache.org/about_jena/contributions.html</guid>
       <description>This page lists various projects and tools related to Jena - classes, packages, libraries, applications, or ontologies that enhance Jena or are built on top of it. These projects are not part of the Jena project itself, but may be useful to Jena users.
 This list is provided for information purposes only, and is not meant as an endorsement of the mentioned projects by the Jena team.
-If you wish your contribution to appear on this page, please raise a Jira issue with the details to be published.</description>
+If you wish your contribution to appear on this page, please raise a GitHub or JIRA issue with the details to be published.</description>
     </item>
     
     <item>
@@ -1411,6 +1433,17 @@ Outline RDFConnection provides a number of different styles for working with RDF
     </item>
     
     <item>
+      <title>RDF Patch</title>
+      <link>https://jena.apache.org/documentation/rdf-patch/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/rdf-patch/</guid>
+      <description>This page describes RDF Patch. An RDF Patch is a set of changes to an RDF dataset. The change are for triples, quads and prefixes.
+Changes to triples involving blank nodes are handled by using their system identifier which uniquely identifies a blank node. Unlike RDF syntaxes, blank nodes are not generated afresh each time the document is parsed.
+Example This example ensures certain prefixes are in the dataset and adds some basic triples for a new subclass of &amp;lt;http://example/SUPER_CLASS&amp;gt;.</description>
+    </item>
+    
+    <item>
       <title>RDF/XML Handling in Jena</title>
       <link>https://jena.apache.org/documentation/io/arp.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1492,9 +1525,10 @@ Sometimes, this is not desirable. For example, in an application that reifies la
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/help_and_support/bugs_and_suggestions.html</guid>
-      <description>Please report bugs using ASF&amp;rsquo;s JIRA instance for Jena. General suggestions or requests for changes can also be discussed on the user list, but are less likely to be accidentally forgotten if you log them into JIRA.
-Patches and other code contributions should also be attached to issues in JIRA (click on More Actions &amp;gt; Attach Files) or made via git pull requests. See &amp;lsquo;Getting Involved&amp;rsquo;
-Please note that ASF requires that all contributions must be covered by an appropriate license.</description>
+      <description>Please report bugs using Jena&amp;rsquo;s GitHub Issues or ASF&amp;rsquo;s JIRA instance for Jena.
+General suggestions or requests for changes can also be discussed on the user list or Jena&amp;rsquo;s GitHub Discussions but are less likely to be accidentally forgotten if you log them into JIRA or a GitHub Issue.
+For any security issues please refer to our Security Advisories page for how those should be reported and handled.
+Patches and other code contributions should also be attached to issues in JIRA (click on More Actions &amp;gt; Attach Files) or made via git pull requests.</description>
     </item>
     
     <item>
@@ -1525,7 +1559,7 @@ Patch Guidelines When reviewing contributed patches to Jena the committers are g
       
       <guid>https://jena.apache.org/documentation/io/arp_sax.html</guid>
       <description>Normally, both ARP and Jena are used to read files either from the local machine or from the Web. A different use case, addressed here, is when the XML source is available in-memory in some way. In these cases, ARP and Jena can be used as a SAX event handler, turning SAX events into triples, or a DOM tree can be parsed into a Jena Model.
-Contents  Overview Sample Code Initializing SAX event source Error Handler Options XML Lang and Namespaces Using your own triple handler Using a DOM as input  1.</description>
+1. Overview To read an arbitrary SAX source as triples to be added into a Jena model, it is not possible to use a Model.</description>
     </item>
     
     <item>
@@ -1543,11 +1577,10 @@ Contents  Overview Sample Code Initializing SAX event source Error Handler Optio
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/sdb_index.html</guid>
-      <description>SDB uses an SQL database for the storage and query of RDF data. Many databases are supported, both Open Source and proprietary.
+      <description>The Apache Jena SDB module has been retired and no longer supported. The last release of Jena with this module is Jena 3.17.0.
+  SDB uses an SQL database for the storage and query of RDF data. Many databases are supported, both Open Source and proprietary.
 An SDB store can be accessed and managed with the provided command line scripts and via the Jena API.
-  Use of SDB for new applications is not recommended.   This component is &amp;ldquo;maintenance only&amp;rdquo;.
-TDB is faster, more scalable and better supported than SDB.
-Status As of June 2013 the Jena developers agreed to treat SDB as being only maintained where possible.</description>
+  Use of SDB for new applications is not recommended.</description>
     </item>
     
     <item>
@@ -1556,8 +1589,9 @@ Status As of June 2013 the Jena developers agreed to treat SDB as being only mai
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/configuration.html</guid>
-      <description>This page describes the configuration options available. These are options for query processing, not for the database layout and storage, which is controlled by store descriptions.
-Contents  Setting Options Current Options  Queries over all Named Graphs Streaming over JDBC Annotated SQL    Setting Options Options can be set globally, throughout the JVM, or on a per query execution basis. SDB uses the same mechanism as ARQ.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  This page describes the configuration options available. These are options for query processing, not for the database layout and storage, which is controlled by store descriptions.
+Setting Options Options can be set globally, throughout the JVM, or on a per query execution basis.</description>
     </item>
     
     <item>
@@ -1566,10 +1600,10 @@ Contents  Setting Options Current Options  Queries over all Named Graphs Streami
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/database_layouts.html</guid>
-      <description>SDB does not have a single database layout. This page is an informal overview of the two main types (&amp;ldquo;layout2/hash&amp;rdquo; and &amp;ldquo;layout2/index&amp;rdquo;).
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  SDB does not have a single database layout. This page is an informal overview of the two main types (&amp;ldquo;layout2/hash&amp;rdquo; and &amp;ldquo;layout2/index&amp;rdquo;).
 In SDB one store is one RDF dataset is one SQL database.
-Databases of type layout2 have a triples table for the default graph, a quads table for the named graphs. In the triples and quads tables, the columns are integers referencing a nodes table.
-In the hash form, the integers are 8-byte hashes of the node.</description>
+Databases of type layout2 have a triples table for the default graph, a quads table for the named graphs.</description>
     </item>
     
     <item>
@@ -1578,9 +1612,9 @@ In the hash form, the integers are 8-byte hashes of the node.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/db_notes.html</guid>
-      <description>DB2 Derby MS SQL MySQL PostgresQL  DB2 Database creation The database should be created with code set UTF-8 so unicode is enabled (SDB creates tables CCSID UNICODE for full internationalization support).
-Derby Loading Restriction Only one load operation can be active at any one time. Limitations on temporary tables in Derby mean the loader tables are not temporary and hence are shared by all connections.
-MS SQL The collation sequence for the database must be one that is binary (BIN in the name).</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+   DB2 Derby MS SQL MySQL PostgresQL  DB2 Database creation The database should be created with code set UTF-8 so unicode is enabled (SDB creates tables CCSID UNICODE for full internationalization support).
+Derby Loading Restriction Only one load operation can be active at any one time.</description>
     </item>
     
     <item>
@@ -1589,8 +1623,8 @@ MS SQL The collation sequence for the database must be one that is binary (BIN i
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/databases_supported.html</guid>
-      <description>Product Version     Oracle 10g Including OracleXE   Microsoft SQL Server 2005 Including MS SQL Express   DB2 9 Including DB2 9 Express   PostgreSQL v8.2   MySQL v5.0.22   Apache Derby v10.2.2.0   H2 1.0.71   HSQLDB 1.8.0    Support for a version implies support for later versions unless otherwise stated.
-Microsoft SQL Server 2000 is also reported to work.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+     Product Version     Oracle 10g Including OracleXE   Microsoft SQL Server 2005 Including MS SQL Express   DB2 9 Including DB2 9 Express   PostgreSQL v8.2   MySQL v5.0.22   Apache Derby v10.</description>
     </item>
     
     <item>
@@ -1599,9 +1633,8 @@ Microsoft SQL Server 2000 is also reported to work.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/dataset_description.html</guid>
-      <description>Assembler descriptions for RDF Datasets and individual models are built from Store Descriptions. A dataset assembler just points to the store to use; a model assembler points to the store and identifies the model within the store to use (or use the default model).
-Datasets The example below creates an in-memory store implemented by HSQLDB.
-PREFIX rdfs: &amp;lt;http://www.w3.org/2000/01/rdf-schema#&amp;gt; PREFIX rdf: &amp;lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&amp;gt; PREFIX xsd: &amp;lt;http://www.w3.org/2001/XMLSchema#&amp;gt; PREFIX ja: &amp;lt;http://jena.hpl.hp.com/2005/11/Assembler#&amp;gt; PREFIX sdb: &amp;lt;http://jena.hpl.hp.com/2007/sdb#&amp;gt; sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  Assembler descriptions for RDF Datasets and individual models are built from Store Descriptions. A dataset assembler just points to the store to use; a model assembler points to the store and identifies the model within the store to use (or use the default model).</description>
     </item>
     
     <item>
@@ -1610,9 +1643,9 @@ PREFIX rdfs: &amp;lt;http://www.w3.org/2000/01/rdf-schema#&amp;gt; PREFIX rdf: &
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/faq.html</guid>
-      <description>Tune your database Database performance depends on the database being tuned. Some databases default to &amp;ldquo;developer setup&amp;rdquo; which does not use much of the RAM but is only for functional testing.
-Improving loading rates For a large bulk load into an existing store, dropping the indexes, doing the load and then recreating the indexes can be noticeably faster.
- sdbconfig --drop sdbload file sdbconfig --index  For a large bulk load into a new store, just format it, and not create the indexes, do the load and then recreating the indexes can be noticeably faster.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  Tune your database Database performance depends on the database being tuned. Some databases default to &amp;ldquo;developer setup&amp;rdquo; which does not use much of the RAM but is only for functional testing.
+Improving loading rates For a large bulk load into an existing store, dropping the indexes, doing the load and then recreating the indexes can be noticeably faster.</description>
     </item>
     
     <item>
@@ -1621,9 +1654,9 @@ Improving loading rates For a large bulk load into an existing store, dropping t
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/fuseki_integration.html</guid>
-      <description>Fuseki is a server that implements the SPARQL protocol for HTTP. It can be used to give a SPARQL interface to an SDB installation.
-The Fuseki server needs the SDB jar files on its classpath. The Fuseki server configuration file needs to contain two triples to integrate SDB:
-[] rdf:type fuseki:Server ; fuseki:services ( &amp;lt;#service1&amp;gt; ) . ## Declare that sdb:DatasetStore is an implementation of ja:RDFDataset . sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  Fuseki is a server that implements the SPARQL protocol for HTTP. It can be used to give a SPARQL interface to an SDB installation.
+The Fuseki server needs the SDB jar files on its classpath. The Fuseki server configuration file needs to contain two triples to integrate SDB:</description>
     </item>
     
     <item>
@@ -1632,11 +1665,10 @@ The Fuseki server needs the SDB jar files on its classpath. The Fuseki server co
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/installation.html</guid>
-      <description>A suitable database must be installed separately. Any database installation should be tuned according to the database documentation.
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  A suitable database must be installed separately. Any database installation should be tuned according to the database documentation.
 The SDB distribution is zip file of a directory hierarchy.
-Unzip this. You may need to run chmod u+x on the scripts in the bin/ directory.
-Write a sdb.ttl store description: there are examples in the Store/ directory.
-A database must be created before the tests can be run. Microsoft SQL server and PostgreSQL need specific database options set when a database is created.</description>
+Unzip this. You may need to run chmod u+x on the scripts in the bin/ directory.</description>
     </item>
     
     <item>
@@ -1645,9 +1677,10 @@ A database must be created before the tests can be run. Microsoft SQL server and
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/javaapi.html</guid>
-      <description>This page describes how to use SDB from Java.
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  This page describes how to use SDB from Java.
 Code examples are in src-examples/ in the SDB distribution.
-Contents  Concepts Obtaining the Store  From a configuration file In Java code Database User and Password   Connection Management Formatting or Emptying the Store Loading data Executing Queries Using the Jena Model API with SDB  Concepts  Store SDBFactory SDBConnection  SDB loads and queries data based on the unit of a Store.</description>
+Concepts  Store SDBFactory SDBConnection  SDB loads and queries data based on the unit of a Store. The Store object has all the information for formatting, loading and accessing an SDB database.</description>
     </item>
     
     <item>
@@ -1656,11 +1689,9 @@ Contents  Concepts Obtaining the Store  From a configuration file In Java code D
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/loading_data.html</guid>
-      <description>There are three ways to load data into SDB:
- Use the command utility sdbload Use one of the Jena model.read operations Use the Jena model.add  The last one of these requires the application to signal the beginning and end of batches.
-Loading with Model.read A Jena Model obtained from SDB via:
-SDBFactory.connectModel(store)  will automatically bulk load data for each call of one of the Model.read operations.
-Loading with Model.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  There are three ways to load data into SDB:
+ Use the command utility sdbload Use one of the Jena model.read operations Use the Jena model.add  The last one of these requires the application to signal the beginning and end of batches.</description>
     </item>
     
     <item>
@@ -1669,7 +1700,8 @@ Loading with Model.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/loading_performance.html</guid>
-      <description>Introduction The Databases and Hardware  Hardware Windows setup Linux setup   The Dataset and Queries  LUBM dbpedia   Loading Results Uniprot 700m loading: Tuning Helps  Introduction Performance reporting is an area prone to misinterpretation, and such reports should be liberally decorated with disclaimers. In our case there are an alarming number of variables: the hardware, the operating system, the database engine and its myriad parameters, the data itself, the queries, and planetary alignment.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+   Introduction The Databases and Hardware  Hardware Windows setup Linux setup   The Dataset and Queries  LUBM dbpedia   Loading Results Uniprot 700m loading: Tuning Helps  Introduction Performance reporting is an area prone to misinterpretation, and such reports should be liberally decorated with disclaimers.</description>
     </item>
     
     <item>
@@ -1678,8 +1710,8 @@ Loading with Model.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/query_performance.html</guid>
-      <description>This page compares the effect of SDB with RDB, Jena&amp;rsquo;s usual database layout. RDB was designed for supporting the fine-grained API calls as well as having some support for basic graph patterns. Therefore, the RDB design goals were not those of SDB.
-RDB uses a denormalised database layout in order that all statement-level operations do not require additional joins. The SDB layout is normalised so that the triple table is narrower and uses integers for RDF nodes, then does do joins to get the node representation.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  This page compares the effect of SDB with RDB, Jena&amp;rsquo;s usual database layout. RDB was designed for supporting the fine-grained API calls as well as having some support for basic graph patterns. Therefore, the RDB design goals were not those of SDB.</description>
     </item>
     
     <item>
@@ -1688,8 +1720,8 @@ RDB uses a denormalised database layout in order that all statement-level operat
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/quickstart.html</guid>
-      <description>SDB provides some command line tools to work with SDB triple stores. In the following it assumed that you have a store description set up for your database (sdb.ttl). See the store description format for details. The Store/ directory for some examples.
-Setting up your environment $ export SDBROOT=/path/to/sdb $ export PATH=$SDBROOT/bin:$PATH $ export SDB_USER=YourDatabaseUserName $ export SDB_PASSWORD=YourDatabasePassword $ export SDB_JDBC=YourJDBCdriver  Initialising the database Be aware that this will wipe existing data from the database.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  SDB provides some command line tools to work with SDB triple stores. In the following it assumed that you have a store description set up for your database (sdb.ttl). See the store description format for details. The Store/ directory for some examples.</description>
     </item>
     
     <item>
@@ -1698,10 +1730,10 @@ Setting up your environment $ export SDBROOT=/path/to/sdb $ export PATH=$SDBROOT
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/store_description.html</guid>
-      <description>Use of an SDB store requires a Store object which is described in two parts:
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  Use of an SDB store requires a Store object which is described in two parts:
  a connection to the database a description of the store configuration  These can be built from a Jena assembler description.
-Store objects themselves are lightweight so connections to an SDB database can be created on a per-request basis as required for use in J2EE application servers.
-Contents  Store Descriptions SDB Connections Example Vocabulary  Store Connection    Store Descriptions A store description identifies which storage layout is being used, the connection to use and the database type.</description>
+Store objects themselves are lightweight so connections to an SDB database can be created on a per-request basis as required for use in J2EE application servers.</description>
     </item>
     
     <item>
@@ -1710,11 +1742,9 @@ Contents  Store Descriptions SDB Connections Example Vocabulary  Store Connectio
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/archive/sdb/commands.html</guid>
-      <description>This page describes the command line programs that can be used to create an SDB store, load data into it and to issue queries.
-Contents   Scripts
- Script set up Argument Structure    Store Description
- Modifying the Store Description Logging and Monitoring    SDB Commands
- Database creation Loading data Query Testing Other    Scripts The directory bin/ contains shell scripts to run the commands from the command line.</description>
+      <description>The Apache Jena SDB module has been retired and is no longer supported. The last release of Jena with this module was Apache Jena 3.17.0.
+  This page describes the command line programs that can be used to create an SDB store, load data into it and to issue queries.
+Scripts The directory bin/ contains shell scripts to run the commands from the command line. The scripts are bash scripts which also run over Cygwin.</description>
     </item>
     
     <item>
@@ -1745,7 +1775,7 @@ Serving RDF For any use of users-password information, and especially HTTP basic
       
       <guid>https://jena.apache.org/documentation/query/service_enhancer.html</guid>
       <description>The service enhancer (SE) plugin extends the functionality of the SERVICE clause with:
- Bulk requests Correlated joins also known as lateral joins A streaming cache for SERVICE requests results which can also cope with bulk requests and correlated joins. Furthermore, queries that only differ in limit and offset will result in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory caching provider.  As a fundamental principle, a request making use of cache and bulk should return the exact same result as if those settings were omitted.</description>
+ Bulk requests Correlated joins also known as lateral joins A streaming cache for SERVICE requests results which can also cope with bulk requests and correlated joins. Furthermore, queries that only differ in limit and offset will result in cache hits for overlapping ranges. At present, the plugin only ships with an in-memory cache provider.  As a fundamental principle, a request making use of cache and bulk should return the exact same result as if those settings were omitted.</description>
     </item>
     
     <item>
@@ -1778,7 +1808,8 @@ Next: @@</description>
       <guid>https://jena.apache.org/documentation/notes/sse.html</guid>
       <description>A way to write down data structures in an RDF-centric syntax.
 But not an idea for another RDF serialization format.
-Contents  Need Design Intent Other Approaches  RDF Lisp XML JSON   Design  Tokens SSE Comments SSE Escapes Structures   Tagged Structures  IRI resolution  base prefix Nesting   Links   Building Java Objects  SSE Factory   Mapping to RDF SSE Files Longer Examples  Query 1 Complete SPARQL Execution   SSE Grammar  Need The SPARQL algebra defines the semantics of a SPARQL graph pattern.</description>
+Need The SPARQL algebra defines the semantics of a SPARQL graph pattern. Every SPARQL query string (the syntax) is mapped to a SPARQL algebra expression.
+It is convenient to be able to print out such algebra expressions for discussion between people and for debugging. Further, if algebra expressions can be read back in as well, testing of specific parts of an implementation is also easier.</description>
     </item>
     
     <item>
@@ -1977,7 +2008,7 @@ Setting Store Parameters In TDB, there is exactly one internal object for each d
       
       <guid>https://jena.apache.org/documentation/tdb/architecture.html</guid>
       <description>This page gives an overview of the TDB architecture. It applies to TDB1 and TDB2 with differences noted.
-Contents  Terminology Design  The Node Table Triple and Quad indexes Prefixes Table TDB B+Trees Transactions   Inline values Query Processing Caching on 32 and 64 bit Java systems  Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
+Terminology Terms like &amp;ldquo;table&amp;rdquo; and &amp;ldquo;index&amp;rdquo; are used in this description. They don&amp;rsquo;t directly correspond to concepts in SQL, For example, in SQL terms, there is no triple table; that can be seen as just having indexes for the table or, alternatively, there are 3 tables, each of which has a primary key and TDB manages the relationship between them.</description>
     </item>
     
     <item>
@@ -1997,7 +2028,8 @@ Having the description in a file means that the data that the application is goi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/tdb/commands.html</guid>
-      <description>Contents  Installation Scripts  Script set up - bash scripts Script set up - Windows batch files   Command line script arguments  Setting options from the command line   TDB Commands  Store description tdbloader TDB xloader tdbquery tdbdump tdbstats    Installation From Apache Jena version 2.7.x onwards, TDB is now installed as part of a single integrated Jena package. There is no longer a need to install a separate TDB package to run the TDB command line tools, or to use TDB in your Java programs.</description>
+      <description>Installation From Apache Jena version 2.7.x onwards, TDB is now installed as part of a single integrated Jena package. There is no longer a need to install a separate TDB package to run the TDB command line tools, or to use TDB in your Java programs. See the downloads page for details on getting the latest Jena release.
+Scripts From the location The directory bin/ contains shell scripts to run the commands from the command line.</description>
     </item>
     
     <item>
@@ -2007,7 +2039,8 @@ Having the description in a file means that the data that the application is goi
       
       <guid>https://jena.apache.org/documentation/tdb/configuration.html</guid>
       <description>There are a number of configuration options that affect the operation of TDB.
-Contents  Setting Options  Setting from the command line Setting with Java System properties   Query of the union of named graphs Logging Query Execution Dataset Caching File Access Mode TDB Configuration Symbols Advanced Store Configuration  Setting Options Options can be set globally, through out the JVM, or on a per query execution basis. TDB uses the same mechanism as ARQ.</description>
+Setting Options Options can be set globally, through out the JVM, or on a per query execution basis. TDB uses the same mechanism as ARQ.
+There is a global context, which is give to each query execution as it is created. Modifications to the global context after the query execution is created are not seen by the query execution.</description>
     </item>
     
     <item>
@@ -2047,8 +2080,8 @@ SPARQL has the concept of a dataset description. In a query string, the clauses 
       
       <guid>https://jena.apache.org/documentation/tdb/java_api.html</guid>
       <description>All the operations of the Jena API including the SPARQL query and SPARQL Update are supported. The application obtains a model or RDF datasets from TDB then uses it as for any other model or dataset.
-Contents  Constructing a model or dataset  Using a directory name Using an assembler file   Bulkloader Concurrency Caching and synchronization  TDB also supports transactions.
-Constructing a model or dataset The class TDBFactory contains the static factory methods for creating and connecting to a TDB-backed graph or an RDF dataset.</description>
+TDB also supports transactions.
+Constructing a model or dataset The class TDBFactory contains the static factory methods for creating and connecting to a TDB-backed graph or an RDF dataset. Models and datasets should be closed after use.</description>
     </item>
     
     <item>
@@ -2092,7 +2125,8 @@ On 32 bit platforms, TDB uses in-heap caching of file data. In practice, the JVM
       <description>TDB provides ACID transaction support through the use of write-ahead-logging in TDB1 and copy-on-write MVCC structures in TDB2.
 Use of transactions protects a TDB dataset against data corruption, unexpected process termination and system crashes.
 Non-transactional use of TDB1 should be avoided; TDB2 only operates with transactions.
-Contents  Overview Limitations API for Transactions  Read transactions Write transactions   Multi-threaded use Bulk loading Multi JVM  Overview TDB2 uses MVCC via a copy-on-write mechanism.</description>
+Overview TDB2 uses MVCC via a copy-on-write mechanism. Update transactions can be of any size.
+The TDB1 transaction mechanism is based on write-ahead-logging. All changes made inside a write-transaction are written to journals, then propagated to the main database at a suitable moment.</description>
     </item>
     
     <item>
@@ -2396,8 +2430,8 @@ Configurando seu ambiente O primeiro passo é instalar o Java JDK 1.8.x. As inst
       
       <guid>https://jena.apache.org/documentation/io/arp_standalone.html</guid>
       <description>ARP can be used both as a Jena subsystem, or as a standalone RDF/XML parser. This document gives a quick guide to using ARP standalone.
-Contents  Overview Sample Code ARP Event Handling Configuring ARP Interrupting ARP Using Other SAX Sources Memory usage  Overview To load an RDF file:
- Create an ARP instance. Set parse options, particularly error detection control, using getOptions or setOptionsWith. Set its handlers, by calling the getHandlers or setHandlersWith methods, and then.</description>
+Overview To load an RDF file:
+ Create an ARP instance. Set parse options, particularly error detection control, using getOptions or setOptionsWith. Set its handlers, by calling the getHandlers or setHandlersWith methods, and then.  Setting the statement handler. Optionally setting the other handlers.   Call a load method  Xerces is used for parsing the XML.</description>
     </item>
     
     <item>
