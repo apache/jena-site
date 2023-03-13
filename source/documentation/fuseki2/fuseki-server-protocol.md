@@ -24,30 +24,37 @@ Replace `{name}` with a dataset name: e.g. `/$/backup/myDataset`.
 | Method          |  URL pattern           | Description   |
 |-----------------|------------------------|---------------|
 ||
-| <tt>GET</tt>    | `/$/ping`              |               | 
+| <tt>GET</tt>    | `/$/ping`              | Check if server is alive | 
 | <tt>POST</tt>   | `/$/ping`              |               | 
-| <tt>GET</tt>    | `/$/server`            |               | 
+| <tt>GET</tt>    | `/$/server`            | Get basic information (version, uptime, datasets...) | 
 | <tt>POST</tt>   | `/$/server`            |               | 
+| <tt>GET</tt>    | `/$/status`            | Alias of `/$/server` | 
 ||
-| <tt>POST</tt>   | `/$/datasets`          |               | 
-| <tt>GET</tt>    | `/$/datasets`          |               |
-| <tt>DELETE</tt> | `/$/datasets/{name}`   |               |
-| <tt>GET</tt>    | `/$/datasets/{name}`   |               |
-| <tt>POST</tt>   | `/$/datasets/{name}?state=offline` |               |
-| <tt>POST</tt>   | `/$/datasets/{name}?state=active`  |               |
+| <tt>POST</tt>   | `/$/datasets`          | Create a new dataset | 
+| <tt>GET</tt>    | `/$/datasets`          | Get a list of datasets |
+| <tt>DELETE</tt> | `/$/datasets/{name}`   | Remove a dataset |
+| <tt>GET</tt>    | `/$/datasets/{name}`   | Get information about a dataset |
+| <tt>POST</tt>   | `/$/datasets/{name}?state=offline` | Switch state of dataset to offline |
+| <tt>POST</tt>   | `/$/datasets/{name}?state=active`  | Switch state of dataset to online |
 ||
-| <tt>POST</tt>   | `/$/server/shutdown`   | Not yet implemented  | 
+| <tt>POST</tt>   | `/$/server/shutdown`   | Not implemented yet  | 
 ||
-| <tt>GET</tt>    | `/$/stats`             |               | 
-| <tt>GET</tt>    | `/$/stats/{name}`      |               |
+| <tt>GET</tt>    | `/$/stats`             | Get request statistics for all datasets | 
+| <tt>GET</tt>    | `/$/stats/{name}`      | Get request statistics for a dataset |
 ||
 | <tt>POST</tt>   | `/$/backup/{name}`     |               |
+| <tt>POST</tt>   | `/$/backups/{name}`     | Alias of `/$/backup/{name}` |
 | <tt>GET</tt>    | `/$/backups-list`      |               |
 | <tt>POST</tt>   | `/$/compact/{name}?deleteOld=true` |               |
 | <tt>POST</tt>   | `/$/sleep`             |               |
 ||
 | <tt>GET</tt>    | `/$/tasks`             |               | 
 | <tt>GET</tt>    | `/$/tasks/{name}`      |               |
+||
+| <tt>GET</tt>    | `/$/metrics`           |               |
+||
+| <tt>GET</tt>    | `/$/logs`           | Not implemented yet |
+
 
 ## Ping
 Pattern: `/$/ping`
@@ -56,7 +63,7 @@ The URL `/$/ping` is a guaranteed low cost point to test whether a server
 is running or not.  It returns no other information other than to respond to the
 request over `GET` or `POST` (to avoid any HTTP caching) with a 200 response.
 
-Return: empty body
+Return: current timestamp
 
 ## Server Information 
 Pattern: `/$/server`
@@ -133,7 +140,7 @@ any persistent data can be manipulated outside the server.
 Datasets are initially "active".  The transition from "active" to "offline" is graceful - all outstanding requests are completed.
 
 ## Statistics
-> **`/$/stats/{name}`**
+Pattern: `/$/stats/{name}`
 
 Statistics can be obtained for each dataset or all datasets in a single response.
 `/$/stats` is  treated as a container for this information.
@@ -236,4 +243,9 @@ Pattern: `/$/tasks/1` : example:
 ]
 ```
 This is inside an array to make the format returned the same as `/$/tasks`.
+
+## Metrics
+Pattern: `/$/metrics`
+
+> _@@_
 
