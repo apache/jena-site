@@ -2,6 +2,10 @@
 title: Jena RDF/XML How-To
 ---
 
+_Legacy Documentation : may not be up-to-date_
+
+---
+
 This is a guide to the RDF/XML I/O subsystem of Jena, ARP.
 The first section gives a quick introduction to the
 I/O subsystem. The other sections are aimed at users wishing to use

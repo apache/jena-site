@@ -1,5 +1,5 @@
 ---
-title: RDF/XML Handling in Jena
+title: RDF/XML Input in Jena
 ---
 
 This section details the Jena RDF/XML parser.
