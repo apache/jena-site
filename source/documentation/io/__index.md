@@ -10,7 +10,7 @@ This page details the setup of RDF I/O technology (RIOT).
 * [Reading RDF in Jena](rdf-input.html)
 * [Writing RDF in Jena](rdf-output.html)
 * [Working with RDF Streams](streaming-io.html)
-* [Additional details on working with RDF/XML](rdfxml_howto.html)
+* [Additional details on working with RDF/XML](rdfxml-io.html)
 
 ## Formats
 
