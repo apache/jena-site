@@ -150,7 +150,7 @@ graph of data.
 
 The standard SPARQL operations can also be defined on the dataset URL with no secondary service name:
 
-<#service2> rdf:type fuseki:Service ;
+    <#service2> rdf:type fuseki:Service ;
         fuseki:name     "/dataset" ;
         fuseki:endpoint  [ fuseki:operation fuseki:query ];
         fuseki:endpoint  [ fuseki:operation fuseki:gsp_r ];
