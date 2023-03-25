@@ -232,18 +232,16 @@ which applies all optimizations.</p>
 </table>
 <p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
 <p>Examples:</p>
-<pre><code>arq.qparse --explain --query Q.rq
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">arq.qparse --explain --query Q.rq
 
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
-</code></pre>
-<h2 id="execution-logging">Execution Logging</h2>
+arq.qparse --explain <span style="color:#b44">&#39;SELECT * { ?s ?p ?o }&#39;</span>
+</code></pre></div><h2 id="execution-logging">Execution Logging</h2>
 <p>ARQ can log query and update execution details globally or for an
 individual operations. This adds another level of control on top of the
 logger level controls.</p>
 <p>From command line:</p>
-<pre><code>arq.sparql --explain --data ... --query ...
-</code></pre>
-<p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">arq.sparql --explain --data ... --query ...
+</code></pre></div><p>Explanatory messages are controlled by the <code>Explain.InfoLevel</code> level in
 the execution context.</p>
 <p>Execution logging at level <code>ALL</code> can cause a significant slowdown in
 query execution speeds but the order of operations logged will be
@@ -251,24 +249,20 @@ correct.</p>
 <p>The logger used is called <code>org.apache.jena.arq.exec</code>. Message are sent
 at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
 <code>log4j2.properties</code> file:</p>
-<pre><code>logger.arq-exec.name  = org.apache.jena.arq.exec
+<pre><code class="language-properties" data-lang="properties">logger.arq-exec.name  = org.apache.jena.arq.exec
 logger.arq-exec.level = INFO
-</code></pre>
-<p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
+</code></pre><p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
 globally:</p>
-<pre><code>ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
-</code></pre>
-<p>and it may also be set on an individual query execution using its local
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ARQ<span style="color:#666">.</span><span style="color:#b44">setExecutionLogging</span><span style="color:#666">(</span>Explain<span style="color:#666">.</span><span style="color:#b44">InfoLevel</span><span style="color:#666">.</span><span style="color:#b44">ALL</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</code></pre></div><p>and it may also be set on an individual query execution using its local
 context.</p>
-<pre><code> try(QueryExecution qExec = QueryExecution.create() ... .set(ARQ.symLogExec, Explain.InfoLevel.ALL).build() ) {
-     ResultSet rs = qExec.execSelect() ;
-     ...
- }
-</code></pre>
-<p>On the command line:</p>
-<pre><code> arq.query --explain --data data file --query=queryfile
-</code></pre>
-<p>The command tdbquery takes the same &ndash;explain argument.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">()</span> <span style="color:#666">...</span> <span style="color:#666">.</span><span style="color:#b44">set</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">symLogExec</span><span style="color:#666">,</span> Explain<span style="color:#666">.</span><span style="color:#b44">InfoLevel</span><span style="color:#666">.</span><span style="color:#b44">ALL</span><span style="color:#666">).</span><span style="color:#b44">build</span><span style="color:#666">()</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+   ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+   <span style="color:#666">...</span>
+<span style="color:#666">}</span>
+</code></pre></div><p>On the command line:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> arq.query --explain --data data file --query<span style="color:#666">=</span>queryfile
+</code></pre></div><p>The command <code>tdbquery</code> takes the same &ndash;explain argument.</p>
 <p>Logging information levels: see the <a href="logging.html">logging page</a></p>
 <p>To get ARQ query explanation in Fuseki logs see <a href="/documentation/fuseki2/fuseki-logging.html">Fuseki logging</a></p>
 

@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - ARQ - The java: URI scheme</title>
+    <title>Apache Jena - Jena RDF XML</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -114,7 +114,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/query/java-uri.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/rdfxml-io.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -148,7 +148,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/documentation/query'>QUERY</a></li>
+                <li class="breadcrumb-item"><a href='/documentation/io'>IO</a></li>
             
             
         
@@ -156,7 +156,7 @@
         
         
             
-                <li class="breadcrumb-item active">JAVA URI</li>
+                <li class="breadcrumb-item active">RDFXML IO</li>
             
             
         
@@ -167,7 +167,7 @@
 
 
             </div>
-            <h1 class="title">ARQ - The java: URI scheme</h1>
+            <h1 class="title">Jena RDF XML</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
@@ -176,42 +176,65 @@
     <h2 class="h6 my-2">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#dynamic-code-loading">Dynamic Code Loading</a></li>
-    <li><a href="#remapping">Remapping</a></li>
+    <li><a href="#rdfxml-input">RDF/XML Input</a></li>
+    <li><a href="#rdfxml-output">RDF/XML Output</a></li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>ARQ uses URIs of the form <code>&lt;java:&lt;i&gt;package.class&lt;/i&gt;&gt;</code> to provide
-dynamic loading of code for
-<a href="extension.html#valueFunctions">value functions</a> and
-<a href="extension.html#propertyFunctions">property functions</a>. ARQ loads
-the class when needed. For functions and property functions, it
-also wraps it in the necessary factory code. A new instance of the
-function or property function is created for each mention of the
-name in each query.</p>
-<h2 id="dynamic-code-loading">Dynamic Code Loading</h2>
-<p>Any classes loaded by ARQ must already be on the java classpath.
-ARQ does not create any new class loaders, nor modify the Java
-class path in any way. The class path must be set up to include any
-class files or jar files for dynamically loaded code.</p>
-<p>Classes can be mor conveniently named in queries using SPARQL
-<code>PREFIX</code>es but because dots can&rsquo;t appear in the local part of a
-prefixed name, all the package name and the final dot must be in
-the <code>PREFIX</code> declaration.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">fn</span>: <span style="color:#a0a000">&lt;java:org.example.functions.&gt;</span>    <span style="color:#080;font-style:italic"># Including the final dot</span>
-...
-  <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00f;font-weight:bold">fn</span>:<span style="color:#008000;font-weight:bold">alter</span>(<span style="color:#b8860b">?x</span>)
-...
-</code></pre></div><h2 id="remapping">Remapping</h2>
-<p>All code loading is performed via the <code>MappedLoader</code> class. Before
-actually loading the code, the mapped loader applies any
-transformation of URIs. For example, the ARQ function library has a
-namespace of <code>&lt;http://jena.apache.org/ARQ/function#&gt;</code> and resides
-in the Java package org.apache.jena.sparql.function.library. The
-mapped loader includes a partial rewrite rule turning http URLs
-starting with that namespace into java: URIs using the package
-name.</p>
+    <p>This is a guide to the RDF/XML I/O subsystem of Jena.</p>
+<p>The RDF/XML parser is designed for use with RIOT and to have the same handling
+of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.</p>
+<h2 id="rdfxml-input">RDF/XML Input</h2>
+<p>The usual way to access the RDF/XML parser is via <code>RDFDataMgr</code> or <code>RDFParser</code>.</p>
+<pre><code>Model model = RDFDataMgr.loadModel(&quot;data.rdf&quot;);
+</code></pre>
+<p>or</p>
+<pre><code>Model model = RDFParser.source(&quot;data.rdf&quot;).toModel();
+</code></pre>
+<p>The original &ldquo;ARP&rdquo; parser is still available bu tmaybe pahsed out.  To access
+the legacy parser, use the context symbol <code>RIOT.symRDFXML0</code> to <code>true</code> or
+`&quot;true&rdquo;.</p>
+<pre><code>Model model = RDFParser.source(&quot;&quot;data.rdf&quot;)
+                       .set(RIOT.symRDFXML0, true)
+                       .parse(dest);
+</code></pre>
+<p>This applies to the command line:</p>
+<pre><code>riot --set rdfxml:rdfxml0=true data.rdf
+</code></pre>
+<p>This can be set globally in the JVM:</p>
+<pre><code>RIOT.getContext().set(RIOT.symRDFXML0, &quot;true&quot;);
+</code></pre>
+<p>Details of <a href="rdfxml-input.html">legacy RDF/XML input</a>.</p>
+<p>Details of the original Jena RDF/XML parser, <a href="arp/arp.html">ARP</a>.</p>
+<h2 id="rdfxml-output">RDF/XML Output</h2>
+<p>Two forms for output are provided:</p>
+<ul>
+<li>
+<p>The default output <code>Lang.RDFXML</code>, historically called &ldquo;RDF/XML-ABBREV&rdquo;, which
+also has a format name <code>RDFFormat.RDFXML_PRETTY</code>. It produces readable
+output. It requires working memory to analyse the data to be written and it is
+not streaming.</p>
+</li>
+<li>
+<p>For efficient, streaming output, the basic RDF/XML <code>RDFFormat.RDFXML_PLAIN</code>
+works for data of any size. It outputs each subject together with all property
+values without using the full features of RDF/XML.</p>
+</li>
+</ul>
+<p>For &ldquo;RDF/XML-ABBREV&rdquo;:</p>
+<pre><code>RDFDataMgr.write(System.out, model, Lang.RDFXML);
+</code></pre>
+<p>or</p>
+<pre><code>RDFWriter.source(model).lang(Lang.RDFXML).output(System.out);
+</code></pre>
+<p>and for plain RDF/XML:</p>
+<pre><code>RDFDataMgr.write(System.out, model, RDFFormat.RDFXML_PLAIN);
+</code></pre>
+<p>or</p>
+<pre><code>RDFWriter.source(model).format(RDFFormat.RDFXML_PLAIN).output(System.out);
+</code></pre>
+<p>Details of <a href="rdfxml-output.html">legacy RDF/XML output</a>.</p>
 
   </article>
   
@@ -219,8 +242,8 @@ name.</p>
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#dynamic-code-loading">Dynamic Code Loading</a></li>
-    <li><a href="#remapping">Remapping</a></li>
+    <li><a href="#rdfxml-input">RDF/XML Input</a></li>
+    <li><a href="#rdfxml-output">RDF/XML Output</a></li>
   </ul>
 </nav>
   </aside>

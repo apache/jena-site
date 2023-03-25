@@ -199,6 +199,7 @@
       </ul>
     </li>
     <li><a href="#tasks">Tasks</a></li>
+    <li><a href="#metrics">Metrics</a></li>
   </ul>
 </nav>
   </aside>
@@ -239,7 +240,7 @@ Further operations may be added within this naming scheme.</p>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/ping</code></td>
-<td></td>
+<td>Check if server is alive</td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
@@ -249,7 +250,7 @@ Further operations may be added within this naming scheme.</p>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/server</code></td>
-<td></td>
+<td>Get basic information (version, uptime, datasets&hellip;)</td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
@@ -257,6 +258,11 @@ Further operations may be added within this naming scheme.</p>
 <td></td>
 </tr>
 <tr>
+<td><tt>GET</tt></td>
+<td><code>/$/status</code></td>
+<td>Alias of <code>/$/server</code></td>
+</tr>
+<tr>
 <td></td>
 <td></td>
 <td></td>
@@ -264,32 +270,32 @@ Further operations may be added within this naming scheme.</p>
 <tr>
 <td><tt>POST</tt></td>
 <td><code>/$/datasets</code></td>
-<td></td>
+<td>Create a new dataset</td>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/datasets</code></td>
-<td></td>
+<td>Get a list of datasets</td>
 </tr>
 <tr>
 <td><tt>DELETE</tt></td>
 <td><code>/$/datasets/{name}</code></td>
-<td></td>
+<td>Remove a dataset</td>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/datasets/{name}</code></td>
-<td></td>
+<td>Get information about a dataset</td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
 <td><code>/$/datasets/{name}?state=offline</code></td>
-<td></td>
+<td>Switch state of dataset to offline</td>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
 <td><code>/$/datasets/{name}?state=active</code></td>
-<td></td>
+<td>Switch state of dataset to online</td>
 </tr>
 <tr>
 <td></td>
@@ -299,7 +305,7 @@ Further operations may be added within this naming scheme.</p>
 <tr>
 <td><tt>POST</tt></td>
 <td><code>/$/server/shutdown</code></td>
-<td>Not yet implemented</td>
+<td>Not implemented yet</td>
 </tr>
 <tr>
 <td></td>
@@ -309,12 +315,12 @@ Further operations may be added within this naming scheme.</p>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/stats</code></td>
-<td></td>
+<td>Get request statistics for all datasets</td>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
 <td><code>/$/stats/{name}</code></td>
-<td></td>
+<td>Get request statistics for a dataset</td>
 </tr>
 <tr>
 <td></td>
@@ -325,6 +331,11 @@ Further operations may be added within this naming scheme.</p>
 <td><tt>POST</tt></td>
 <td><code>/$/backup/{name}</code></td>
 <td></td>
+</tr>
+<tr>
+<td><tt>POST</tt></td>
+<td><code>/$/backups/{name}</code></td>
+<td>Alias of <code>/$/backup/{name}</code></td>
 </tr>
 <tr>
 <td><tt>GET</tt></td>
@@ -356,6 +367,26 @@ Further operations may be added within this naming scheme.</p>
 <td><code>/$/tasks/{name}</code></td>
 <td></td>
 </tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/metrics</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><tt>GET</tt></td>
+<td><code>/$/logs</code></td>
+<td>Not implemented yet</td>
+</tr>
 </tbody>
 </table>
 <h2 id="ping">Ping</h2>
@@ -363,7 +394,7 @@ Further operations may be added within this naming scheme.</p>
 <p>The URL <code>/$/ping</code> is a guaranteed low cost point to test whether a server
 is running or not.  It returns no other information other than to respond to the
 request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) with a 200 response.</p>
-<p>Return: empty body</p>
+<p>Return: current timestamp</p>
 <h2 id="server-information">Server Information</h2>
 <p>Pattern: <code>/$/server</code></p>
 <p>The URL <code>/$/server</code> returns details about the server and it&rsquo;s current status in JSON.</p>
@@ -431,9 +462,7 @@ is known about by the server but the dataset is not attached to the server.  Whe
 any persistent data can be manipulated outside the server.</p>
 <p>Datasets are initially &ldquo;active&rdquo;.  The transition from &ldquo;active&rdquo; to &ldquo;offline&rdquo; is graceful - all outstanding requests are completed.</p>
 <h2 id="statistics">Statistics</h2>
-<blockquote>
-<p><strong><code>/$/stats/{name}</code></strong></p>
-</blockquote>
+<p>Pattern: <code>/$/stats/{name}</code></p>
 <p>Statistics can be obtained for each dataset or all datasets in a single response.
 <code>/$/stats</code> is  treated as a container for this information.</p>
 <blockquote>
@@ -505,6 +534,11 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
   }
 ]
 </code></pre><p>This is inside an array to make the format returned the same as <code>/$/tasks</code>.</p>
+<h2 id="metrics">Metrics</h2>
+<p>Pattern: <code>/$/metrics</code></p>
+<blockquote>
+<p><em>@@</em></p>
+</blockquote>
 
   </article>
   
@@ -535,6 +569,7 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
       </ul>
     </li>
     <li><a href="#tasks">Tasks</a></li>
+    <li><a href="#metrics">Metrics</a></li>
   </ul>
 </nav>
   </aside>
