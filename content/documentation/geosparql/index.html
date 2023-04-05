@@ -955,19 +955,30 @@ implementation based on reviewing several alternatives.</p>
 <tbody>
 <tr>
 <td>Implements all six components of the GeoSPARQL standard.</td>
-<td>Generally partially implement the Geometry Topology and Geometry Extensions. Do not implement the Query Rewrite</td>
+<td>Generally partially implement the Geometry Topology and Geometry Extensions. Do not implement the Query Rewrite Extension.</td>
 </tr>
 <tr>
-<td>Extension.</td>
-<td></td>
+<td>Pure Java and does not require a supporting relational database. Configuration requires a single line of code (although Apache SIS may need some setting up, see above).</td>
+<td>Require setting up a database, configuring a geospatial extension and setting environment variables.</td>
+</tr>
+<tr>
+<td>Uses Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.</td>
+<td>Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.</td>
+</tr>
+<tr>
+<td>Automatically determines geometry properties and handles mixed cases of units or coordinate reference systems. The GeoSPARQL standard suggests this approach but does not require it.</td>
+<td>Tend to produce errors or no results in these situations.</td>
+</tr>
+<tr>
+<td>Performs indexing and caching on-demand which reduces set-up time and only performs calculations that are required.</td>
+<td>Perform indexing in the data loading phase and initialisation phase, which can lead to lengthy delays (even on relatively small datasets).</td>
+</tr>
+<tr>
+<td>Uses JTS which does not truncate coordinate precision and applies spatial equality.</td>
+<td>May truncate coordinate precision and apply lexical equality, which is quicker but does not comply with the GeoSPARQL standard.</td>
 </tr>
 </tbody>
 </table>
-<p>Pure Java and does not require a supporting relational database. Configuration requires a single line of code (although Apache SIS may need some setting up, see above).|Require setting up a database, configuring a geospatial extension and setting environment variables.
-Uses Jena, which conforms to the W3C standards for RDF and SPARQL. New versions of the standards will quickly feed through.|Not fully RDF and SPARQL compliant, e.g. RDFS/OWL inferencing or SPARQL syntax. Adding your own schema may not produce inferences.
-Automatically determines geometry properties and handles mixed cases of units or coordinate reference systems. The GeoSPARQL standard suggests this approach but does not require it.|Tend to produce errors or no results in these situations.
-Performs indexing and caching on-demand which reduces set-up time and only performs calculations that are required.|Perform indexing in the data loading phase and initialisation phase, which can lead to lengthy delays (even on relatively small datasets).
-Uses JTS which does not truncate coordinate precision and applies spatial equality.|May truncate coordinate precision and apply lexical equality, which is quicker but does not comply with the GeoSPARQL standard.</p>
 
   </article>
   
