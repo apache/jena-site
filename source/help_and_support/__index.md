@@ -55,7 +55,7 @@ Asking good questions is **the best way to get good answers**. Try to follow the
   is often enough for you to figure out the problem yourself, which is always satisfying!
 
   - **Don't re-post your question** after only a few hours. People are busy, and may be in a different timezone
-  to you. If you're not sure if your question made it to the list, [look in the archive](https://markmail.org/search/?q=list:org.apache.jena.*).
+  to you. If you're not sure if your question made it to the list, [look in the archive](https://jena.markmail.org/search/?q=-list%3Aorg.apache.incubator.jena-commits).
 
   - **Adding lots of exclamation marks** or other punctuation will **not** move your question up the queue. Quite the
   reverse, in fact.
