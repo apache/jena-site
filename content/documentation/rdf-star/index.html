@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -189,8 +196,8 @@ a way for one triple to refer to another triple. RDF* is the name of the
 original work which is described in
 <a href="https://blog.liu.se/olafhartig/2019/01/10/position-statement-rdf-star-and-sparql-star/">Olaf Hartig&rsquo;s blog entry</a>.</p>
 <p>Example:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-turtle" data-lang="turtle"><span style="">&lt;&lt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">john</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span><span style="">&gt;&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dct:</span><span style="color:#008000;font-weight:bold">source</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://example/directory&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
-</span></code></pre></div><p>The part <code>&lt;&lt; :john foaf:name &quot;John Smith&quot; &gt;&gt;</code> is a quoted triple and refers to the triple with subject <code>:john</code>, property <code>foaf:name</code> and object <code>&quot;John Smith&quot;</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">&lt;&lt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">john</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span><span style="">&gt;&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dct:</span><span style="color:#008000;font-weight:bold">source</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://example/directory&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The part <code>&lt;&lt; :john foaf:name &quot;John Smith&quot; &gt;&gt;</code> is a quoted triple and refers to the triple with subject <code>:john</code>, property <code>foaf:name</code> and object <code>&quot;John Smith&quot;</code>.</p>
 <p>Triple terms can be in the subject or object position.</p>
 <p>Jena provides support for RDF-star and the related SPARQL-star.</p>
 <ul>
@@ -210,23 +217,23 @@ as well as in-memory databases is supported.</p>
 <p>Datasets may have graphs that have quoted triples that refer to triples anywhere, not just in the same graph.</p>
 <h2 id="sparql-star">SPARQL-star</h2>
 <p>Matches for quoted triples:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> { <span style="color:#666">&lt;&lt;</span>:<span style="color:#008000;font-weight:bold">john</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name</span> <span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
-</code></pre></div><p>Insert triples terms into the default graph to record the graph source.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">INSERT</span> { <span style="color:#666">&lt;&lt;</span><span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
-<span style="color:#a2f;font-weight:bold">WHERE</span> {
-    <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> {
-        <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
-    }
-}
-</code></pre></div><p>Use in expressions:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?t</span> {
-   <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> 
-   <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">&lt;&lt;</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?t</span>)
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#666">&lt;&lt;</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?t</span>) {
-   <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> 
-}
-</code></pre></div><h3 id="sparql-functions-related-to-quoted-triples">SPARQL Functions related to quoted triples</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> { <span style="color:#666">&lt;&lt;</span>:<span style="color:#008000;font-weight:bold">john</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name</span> <span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
+</span></span></code></pre></div><p>Insert triples terms into the default graph to record the graph source.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">INSERT</span> { <span style="color:#666">&lt;&lt;</span><span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#00f;font-weight:bold">dct</span>:<span style="color:#008000;font-weight:bold">source</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> }
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#a0a000">&lt;http://example/directory&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Use in expressions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?t</span> {
+</span></span><span style="display:flex;"><span>   <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#666">&lt;&lt;</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?t</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> (<span style="color:#666">&lt;&lt;</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span><span style="color:#666">&gt;&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?t</span>) {
+</span></span><span style="display:flex;"><span>   <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="sparql-functions-related-to-quoted-triples">SPARQL Functions related to quoted triples</h3>
 <p>These functions cause an expression error if passed the wrong type of arguments.</p>
 <table>
 <thead>
@@ -263,26 +270,26 @@ as well as in-memory databases is supported.</p>
 <code>application/sparql-results+xml</code> are extended to include quoted triples:</p>
 <p>The quoted triple <code>&lt;&lt; _:b0 &lt;http://example/p&gt; 123  &gt;&gt;</code> is encoded, in
 <code>application/sparql-results+json</code> as:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">    {
-      <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;triple&#34;</span> ,
-      <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: {
-        <span style="color:#008000;font-weight:bold">&#34;subject&#34;</span>:    { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;bnode&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;b0&#34;</span> } ,
-        <span style="color:#008000;font-weight:bold">&#34;predicate&#34;</span>:  { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;uri&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;http://example/p&#34;</span> } ,
-        <span style="color:#008000;font-weight:bold">&#34;object&#34;</span>:     { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;literal&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;datatype&#34;</span>: <span style="color:#b44">&#34;http://www.w3.org/2001/XMLSchema#integer&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;123&#34;</span> }
-    }
-</code></pre></div><p>and similarly in <code>application/sparql-results+xml</code>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#008000;font-weight:bold">&lt;triple&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;subject&gt;</span>
-        <span style="color:#008000;font-weight:bold">&lt;bnode&gt;</span>b0<span style="color:#008000;font-weight:bold">&lt;/bnode&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;/subject&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;predicate&gt;</span>
-        <span style="color:#008000;font-weight:bold">&lt;uri&gt;</span>http://example/p<span style="color:#008000;font-weight:bold">&lt;/uri&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;/predicate&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;object&gt;</span>
-        <span style="color:#008000;font-weight:bold">&lt;literal</span> <span style="color:#b44">datatype=</span><span style="color:#b44">&#34;http://www.w3.org/2001/XMLSchema#integer&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>123<span style="color:#008000;font-weight:bold">&lt;/literal&gt;</span>
-      <span style="color:#008000;font-weight:bold">&lt;/object&gt;</span>
-    <span style="color:#008000;font-weight:bold">&lt;/triple&gt;</span>
-</code></pre></div><h2 id="model-api">Model API</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;triple&#34;</span> ,
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&#34;subject&#34;</span>:    { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;bnode&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;b0&#34;</span> } ,
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&#34;predicate&#34;</span>:  { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;uri&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;http://example/p&#34;</span> } ,
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&#34;object&#34;</span>:     { <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;literal&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;datatype&#34;</span>: <span style="color:#b44">&#34;http://www.w3.org/2001/XMLSchema#integer&#34;</span> , <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#b44">&#34;123&#34;</span> }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>and similarly in <code>application/sparql-results+xml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;triple&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;subject&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&lt;bnode&gt;</span>b0<span style="color:#008000;font-weight:bold">&lt;/bnode&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;/subject&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;predicate&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&lt;uri&gt;</span>http://example/p<span style="color:#008000;font-weight:bold">&lt;/uri&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;/predicate&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;object&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&lt;literal</span> <span style="color:#b44">datatype=</span><span style="color:#b44">&#34;http://www.w3.org/2001/XMLSchema#integer&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>123<span style="color:#008000;font-weight:bold">&lt;/literal&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;/object&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;/triple&gt;</span>
+</span></span></code></pre></div><h2 id="model-api">Model API</h2>
 <p>RDF-star quoted triples are treated as <code>Resource</code> to preserve the typed Model API.
 They occur in the subject and object positions.</p>
 <p>A <code>Resource</code> contains a <code>Statement</code> object if the underlying RDF term is an RDF-star quoted triple.</p>
@@ -345,6 +352,7 @@ only one reification for each unique quoted triple term.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

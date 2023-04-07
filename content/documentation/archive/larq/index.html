@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -263,7 +270,7 @@ LARQ.setDefaultIndex(qExec.getContext(), index) ;
 </code></pre>
 <p>In both these cases, the default index is set, which is the one expected by property function <code>pf:textMatch</code>. Use of multiple indexes in the same query can be achieved by introducing new properties.  The application can subclass the search class <code>org.apache.jena.larq.LuceneSearch</code> to set different indexes with different property names.</p>
 <h2 id="query-using-a-lucene-index">Query using a Lucene index</h2>
-<p>Query execution is as usual using the property function pf:textMatch. &ldquo;textMatch&rdquo; can be thought of as an implied relationship in the data. Note the prefix ends in &ldquo;.&quot;.</p>
+<p>Query execution is as usual using the property function pf:textMatch. &ldquo;textMatch&rdquo; can be thought of as an implied relationship in the data. Note the prefix ends in &ldquo;.&rdquo;.</p>
 <pre><code>String queryString = StringUtils.join(&quot;\n&quot;, new String[]{
         &quot;PREFIX pf: &lt;http://jena.hpl.hp.com/ARQ/property#&gt;&quot;,
         &quot;SELECT * {&quot; ,
@@ -384,6 +391,7 @@ You can also search the jena-users mailing list archives <a href="http://markmai
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

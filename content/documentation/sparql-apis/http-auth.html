@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -227,51 +234,51 @@ recommended and should only be used if necessary because the password is
 in-clear in the SPARQL query.</p>
 <p>Jena also has <a href="#bearer-authentication">support for bearer authentication</a>.</p>
 <h3 id="jdk-httpclientauthenticator">JDK HttpClient.authenticator</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Basic or Digest - determined when the challenge happens.
-</span><span style="color:#080;font-style:italic"></span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataURL<span style="color:#666">),</span> <span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-    <span style="color:#666">}</span>
-</code></pre></div><p>alternatively, the java platform provides basic authentication.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// Basic or Digest - determined when the challenge happens.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataURL<span style="color:#666">),</span> <span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span></code></pre></div><p>alternatively, the java platform provides basic authentication.
 This is not challenge based - any request sent using a <code>HttpClient</code> configured
 with an authenticator will include the authentication details.
 (Caution - including sending username/password to the wrong site!).
 Digest authentication must use <code>AuthEnv.get().registerUsernamePassword</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    Authenticator authenticator <span style="color:#666">=</span> AuthLib<span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span><span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-    HttpClient httpClient <span style="color:#666">=</span> HttpClient<span style="color:#666">.</span><span style="color:#b44">newBuilder</span><span style="color:#666">()</span>
-            <span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span>authenticator<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">();</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#080;font-style:italic">// Use with RDFConnection      
-</span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
-    <span style="color:#666">}</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-    <span style="color:#666">}</span>
-</code></pre></div><h3 id="challenge-registration">Challenge registration</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    Authenticator authenticator <span style="color:#666">=</span> AuthLib<span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span><span style="color:#b44">&#34;user&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    HttpClient httpClient <span style="color:#666">=</span> HttpClient<span style="color:#666">.</span><span style="color:#b44">newBuilder</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">authenticator</span><span style="color:#666">(</span>authenticator<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">();</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// Use with RDFConnection      
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnectionRemote<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        conn<span style="color:#666">.</span><span style="color:#b44">queryAsk</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">httpClient</span><span style="color:#666">(</span>httpClient<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span></code></pre></div><h3 id="challenge-registration">Challenge registration</h3>
 <p><code>AuthEnv</code> maintains a registry of credentials and also a registry of which service URLs
 the credentials should be used. It supports registration of endpoint prefixes so that one
 registration will apply to all URLs starting with a common root.</p>
 <p>The main function is <code>AuthEnv.get().registerUsernamePassword</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#080;font-style:italic">// Application setup code 
-</span><span style="color:#080;font-style:italic"></span>   AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span><span style="color:#b44">&#34;username&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#666">...</span>
-   <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
-        <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-       qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
-   <span style="color:#666">}</span>
-</code></pre></div><p>When an HTTP 401 response with an <code>WWW-Authenticate</code> header is received, the Jena http handling code
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>   <span style="color:#080;font-style:italic">// Application setup code 
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span><span style="color:#b44">&#34;username&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;password&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>   <span style="color:#666">...</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecutionHTTP<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">.</span><span style="color:#b44">endpoint</span><span style="color:#666">(</span>dataURL<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">.</span><span style="color:#b44">queryString</span><span style="color:#666">(</span><span style="color:#b44">&#34;ASK{}&#34;</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">.</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>       qExec<span style="color:#666">.</span><span style="color:#b44">execAsk</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#666">}</span>
+</span></span></code></pre></div><p>When an HTTP 401 response with an <code>WWW-Authenticate</code> header is received, the Jena http handling code
 will will look for a suitable authentication registration (exact or longest prefix), and retry the
 request. If it succeeds, a modifier is installed so all subsequent request to the same endpoint will
 have the authentication header added and there is no challenge round-trip.</p>
@@ -282,15 +289,15 @@ the registry is consulted and authentication applied.</p>
 that user name is used to look in the authentication registry.</p>
 <p>If the <code>userinfo</code> is of the form &ldquo;username:password&rdquo; then the information as given in the URL is
 used.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://host/sparql&#34;</span><span style="color:#666">),</span> <span style="color:#b44">&#34;u&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;p&#34;</span><span style="color:#666">);</span>
-     <span style="color:#080;font-style:italic">// Registration applies to SERVICE.
-</span><span style="color:#080;font-style:italic"></span>    Query query <span style="color:#666">=</span> QueryFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&#34;</span><span style="color:#666">);</span>
-    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">().</span><span style="color:#b44">query</span><span style="color:#666">(</span>query<span style="color:#666">).</span><span style="color:#b44">dataset</span><span style="color:#666">(...).</span><span style="color:#b44">build</span><span style="color:#666">()</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
-        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Call using SERVICE...&#34;</span><span style="color:#666">);</span>
-        ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">();</span>
-        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>rs<span style="color:#666">);</span>
-    <span style="color:#666">}</span>
-</code></pre></div><h2 id="authentication-examples">Authentication Examples</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    AuthEnv<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">registerUsernamePassword</span><span style="color:#666">(</span>URI<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://host/sparql&#34;</span><span style="color:#666">),</span> <span style="color:#b44">&#34;u&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;p&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#080;font-style:italic">// Registration applies to SERVICE.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Query query <span style="color:#666">=</span> QueryFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT * { SERVICE &lt;http://host/sparql&gt; { ?s ?p ?o } }&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">().</span><span style="color:#b44">query</span><span style="color:#666">(</span>query<span style="color:#666">).</span><span style="color:#b44">dataset</span><span style="color:#666">(...).</span><span style="color:#b44">build</span><span style="color:#666">()</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Call using SERVICE...&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>        ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>rs<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span></code></pre></div><h2 id="authentication-examples">Authentication Examples</h2>
 <p><a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/auth">jena-examples:arq/examples/auth/</a>.</p>
 <h2 id="bearer-authentication">Bearer Authentication</h2>
 <p>Bearer authentication requires that the application to obtain a token to present
@@ -303,9 +310,9 @@ to the server.</p>
 </ul>
 <p>How this token is obtained depends on the deployment environment.</p>
 <p>The application can either register the token to be used:</p>
-<pre><code>    AuthEnv.get().addBearerToken(targetURL, jwtString);
+<pre tabindex="0"><code>    AuthEnv.get().addBearerToken(targetURL, jwtString);
 </code></pre><p>or can provide a token provider for 401 challeneges stating bearer authentication.</p>
-<pre><code>    AuthEnv.get().setBearerTokenProvider( 
+<pre tabindex="0"><code>    AuthEnv.get().setBearerTokenProvider( 
         (uri, challenge)-&gt;{ ... ; return jwtString; });
 </code></pre>
   </article>
@@ -355,6 +362,7 @@ to the server.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

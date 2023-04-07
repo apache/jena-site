@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -475,9 +482,9 @@ See <a href="fuseki-server-info.html">Fuseki Server Information</a> for details 
 <p>Backups are written to the server local directory &lsquo;backups&rsquo; as gzip-compressed N-Quads files.</p>
 <p>See <a href="#tasks">Tasks</a> for how to monitor a backups progress.</p>
 <p>Return: A task is allocated a identifier (usually, a number).</p>
-<pre><code>{ &quot;taskId&quot; : &quot;{taskId}&quot; }
+<pre tabindex="0"><code>{ &#34;taskId&#34; : &#34;{taskId}&#34; }
 </code></pre><p>The task id can be used to construct a URL to get details of the task:</p>
-<pre><code>/$/tasks/{taskId}
+<pre tabindex="0"><code>/$/tasks/{taskId}
 </code></pre><p>Pattern: <code>/$/backups-list</code></p>
 <p>Returns a list of all the files in the backup area of the server. This is
 useful for managing the files externally.</p>
@@ -509,28 +516,28 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
 <p>Each background task has an id.  The URL <code>/$/tasks/{taskId}</code> gets a description about one single task.</p>
 <p>Details of the last few completed tasks are retained, up to a fixed number. The records will eventually be removed as later tasks complete, and the task URL will then return 404.</p>
 <p>Pattern: <code>/$/tasks</code> ; example:</p>
-<pre><code>[ { 
-    &quot;finished&quot; : &quot;2014-05-28T12:52:51.860+01:00&quot; ,
-    &quot;started&quot; : &quot;2014-05-28T12:52:50.859+01:00&quot; ,
-    &quot;task&quot; : &quot;sleep&quot; ,
-    &quot;taskId&quot; : &quot;1&quot; ,
-    &quot;success&quot; : true
+<pre tabindex="0"><code>[ { 
+    &#34;finished&#34; : &#34;2014-05-28T12:52:51.860+01:00&#34; ,
+    &#34;started&#34; : &#34;2014-05-28T12:52:50.859+01:00&#34; ,
+    &#34;task&#34; : &#34;sleep&#34; ,
+    &#34;taskId&#34; : &#34;1&#34; ,
+    &#34;success&#34; : true
   } ,
   { 
-    &quot;finished&quot; : &quot;2014-05-28T12:53:24.718+01:00&quot; ,
-    &quot;started&quot; : &quot;2014-05-28T12:53:14.717+01:00&quot; ,
-    &quot;task&quot; : &quot;sleep&quot; ,
-    &quot;taskId&quot; : &quot;2&quot; ,
-    &quot;success&quot; : true
+    &#34;finished&#34; : &#34;2014-05-28T12:53:24.718+01:00&#34; ,
+    &#34;started&#34; : &#34;2014-05-28T12:53:14.717+01:00&#34; ,
+    &#34;task&#34; : &#34;sleep&#34; ,
+    &#34;taskId&#34; : &#34;2&#34; ,
+    &#34;success&#34; : true
   }
 ]
 </code></pre><p>Pattern: <code>/$/tasks/1</code> : example:</p>
-<pre><code>[ { 
-    &quot;finished&quot; : &quot;2014-05-28T13:54:13.608+01:00&quot; ,
-    &quot;started&quot; : &quot;2014-05-28T13:54:03.607+01:00&quot; ,
-    &quot;task&quot; : &quot;backup&quot; ,
-    &quot;taskId&quot; : &quot;1&quot; ,
-    &quot;success&quot; : false
+<pre tabindex="0"><code>[ { 
+    &#34;finished&#34; : &#34;2014-05-28T13:54:13.608+01:00&#34; ,
+    &#34;started&#34; : &#34;2014-05-28T13:54:03.607+01:00&#34; ,
+    &#34;task&#34; : &#34;backup&#34; ,
+    &#34;taskId&#34; : &#34;1&#34; ,
+    &#34;success&#34; : false
   }
 ]
 </code></pre><p>This is inside an array to make the format returned the same as <code>/$/tasks</code>.</p>
@@ -602,6 +609,7 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

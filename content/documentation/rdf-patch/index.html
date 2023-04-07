@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -199,13 +206,13 @@ nodes are not generated afresh each time the document is parsed.</p>
 <h2 id="example">Example</h2>
 <p>This example ensures certain prefixes are in the dataset and adds some
 basic triples for a new subclass of <code>&lt;http://example/SUPER_CLASS&gt;</code>.</p>
-<pre><code>TX .
-PA &quot;rdf&quot; &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; .
-PA &quot;owl&quot; &quot;http://www.w3.org/2002/07/owl#&quot; .
-PA &quot;rdfs&quot; &quot;http://www.w3.org/2000/01/rdf-schema#&quot; .
+<pre tabindex="0"><code>TX .
+PA &#34;rdf&#34; &#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34; .
+PA &#34;owl&#34; &#34;http://www.w3.org/2002/07/owl#&#34; .
+PA &#34;rdfs&#34; &#34;http://www.w3.org/2000/01/rdf-schema#&#34; .
 A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
 A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;http://example/SUPER_CLASS&gt; .
-A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SubClass&quot; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &#34;SubClass&#34; .
 TC .
 </code></pre><h2 id="structure">Structure</h2>
 <p>The text format for an RDF Patch is N-Triples-like: it is a series of
@@ -246,7 +253,7 @@ number of change blocks.</p>
 <p>Each change block is a transaction. Transactions can be explicit recorded (&lsquo;TX&rsquo;
 start, <code>TC</code> commit) to include multiple transaction in one patch. They are not
 required. If not present, the patch should be applied atomically to the data.</p>
-<pre><code>header
+<pre tabindex="0"><code>header
 TX
 Quad, triple or prefix changes
 TC or TA
@@ -265,23 +272,23 @@ it create a log and patches can be applied in the right order.</p>
 <p>A header section can be used to provide additional information. In this example
 a patch has an identifier and refers to a previous patch. This might be used to
 create a log of patches, a log being a sequnce of chnages to apply in-order.</p>
-<pre><code>H id &lt;uuid:0686c69d-8f89-4496-acb5-744f0157a8db&gt; .
+<pre tabindex="0"><code>H id &lt;uuid:0686c69d-8f89-4496-acb5-744f0157a8db&gt; .
 H prev &lt;uuid:3ee0eca0-6d5f-4b4d-85db-f69ab1167eb1&gt; .
 TX .
-PA &quot;rdf&quot; &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; .
-PA &quot;owl&quot; &quot;http://www.w3.org/2002/07/owl#&quot; .
-PA &quot;rdfs&quot; &quot;http://www.w3.org/2000/01/rdf-schema#&quot; .
+PA &#34;rdf&#34; &#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34; .
+PA &#34;owl&#34; &#34;http://www.w3.org/2002/07/owl#&#34; .
+PA &#34;rdfs&#34; &#34;http://www.w3.org/2000/01/rdf-schema#&#34; .
 A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
 A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; &lt;http://example/SUPER_CLASS&gt; .
-A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SubClass&quot; .
+A &lt;http://example/SubClass&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &#34;SubClass&#34; .
 TC .
 </code></pre><p>Header format:</p>
-<pre><code>H word RDFTerm .
+<pre tabindex="0"><code>H word RDFTerm .
 </code></pre><p>where <code>word</code> is a string in quotes, or an unquoted string (no spaces, starts with a letter,
 same as a prefix without the colon).</p>
 <p>The header is ended by the first non <code>H</code> line or the end of the patch.</p>
 <h3 id="transactions">Transactions</h3>
-<pre><code>TX .
+<pre tabindex="0"><code>TX .
 TC .
 </code></pre><p>These delimit a block of quad, triple and prefix changes.</p>
 <p>Abort, <code>TA</code> is provided so that changes can be streamed, not obliging the
@@ -296,14 +303,14 @@ changes to the data the patch is applied to.</p>
 <p>The prefix name is without the trailing colon. It can be given as a
 quoted string or unquoted string (keyword) with the same limitations as
 Turtle on the prefix name.</p>
-<pre><code>PA rdf &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+<pre tabindex="0"><code>PA rdf &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 </code></pre><p><code>PA</code> is adding a prefix, <code>PD</code> is deleting a prefix.</p>
 <h4 id="quads-and-triples">Quads and Triples</h4>
 <p>Triples and quads are written like N-Quads, 3 or 4 RDF terms,
 with the addition of an initial <code>A</code> or <code>D</code> for &ldquo;add&rdquo; or &ldquo;delete&rdquo;.
 Triples are in the order S-P-O, quads are S-P-O-G.</p>
 <p>Add a triple:</p>
-<pre><code>A  &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
+<pre tabindex="0"><code>A  &lt;http://example/SubClass&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2002/07/owl#Class&gt; .
 </code></pre><h2 id="blank-nodes">Blank nodes</h2>
 <p>In order to synchronize datasets, changes involving blank nodes may need
 to refer to a blank node already in the data.  RDF Patch deals with this
@@ -392,6 +399,7 @@ should be at the start of the file, before any <code>TX</code>.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

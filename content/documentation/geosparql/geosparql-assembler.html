@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -190,7 +197,7 @@ must be on the Fuseki server classpath, along with its dependencies.</p>
 <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-geosparql/">Maven central repository org/apache/jena/jena-geosparql</a></p>
 <p>The GeoSPARQL assembler can be used in a Fuseki configuration file.</p>
 <p>This example is of a read-only:</p>
-<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+<pre tabindex="0"><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
 PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX tdb2:      &lt;http://jena.apache.org/2016/tdb#&gt;
@@ -199,21 +206,21 @@ PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
 
 &lt;#service&gt; rdf:type fuseki:Service;
-    fuseki:name &quot;geo&quot;;
+    fuseki:name &#34;geo&#34;;
     fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
     fuseki:dataset &lt;#geo_ds&gt; .
 
 &lt;#geo_ds&gt; rdf:type geosparql:geosparqlDataset ;
-    geosparql:spatialIndexFile     &quot;DB/spatial.index&quot;;
+    geosparql:spatialIndexFile     &#34;DB/spatial.index&#34;;
     geosparql:dataset &lt;#baseDataset&gt; ;
     .
 
 &lt;#baseDataset&gt; rdf:type tdb2:DatasetTDB2 ;
-    tdb2:location &quot;DB/&quot; ;
+    tdb2:location &#34;DB/&#34; ;
     .
 </code></pre><p>It is possible to run with a data file loaded into memory and
 an spatial in-memory index:</p>
-<pre><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
+<pre tabindex="0"><code>PREFIX fuseki:    &lt;http://jena.apache.org/fuseki#&gt;
 PREFIX rdf:       &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
@@ -221,7 +228,7 @@ PREFIX ja:        &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
 
 &lt;#service&gt; rdf:type fuseki:Service;
-    fuseki:name &quot;ds&quot;;
+    fuseki:name &#34;ds&#34;;
     fuseki:endpoint [ fuseki:operation fuseki:query; ] ;
     fuseki:dataset &lt;#geo_ds&gt; .
 
@@ -234,9 +241,9 @@ PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
     ja:data &lt;file:geosparql_data.ttl&gt; ;
     .
 </code></pre><p>The full assembler properties with the default settings is:</p>
-<pre><code>&lt;#geo_ds&gt; rdf:type geosparql:GeosparqlDataset ;
+<pre tabindex="0"><code>&lt;#geo_ds&gt; rdf:type geosparql:GeosparqlDataset ;
     # Build in-memory is absent.
-    geosparql:spatialIndexFile     &quot;spatial.index&quot;;
+    geosparql:spatialIndexFile     &#34;spatial.index&#34;;
 
     ## Default settings. See documentation for meanings.
     geosparql:inference            true ;
@@ -245,8 +252,8 @@ PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
     geosparql:applyDefaultGeometry false ;
     
     # 3 item lists: [Geometry Literal, Geometry Transform, Query Rewrite]
-    geosparql:indexSizes           &quot;-1,-1,-1&quot; ;       # Default - unlimited.
-    geosparql:indexExpires         &quot;5000,5000,5000&quot; ; # Default - time in milliseconds.
+    geosparql:indexSizes           &#34;-1,-1,-1&#34; ;       # Default - unlimited.
+    geosparql:indexExpires         &#34;5000,5000,5000&#34; ; # Default - time in milliseconds.
 
     ## Required setting - data over which GeoSPARQL is applied.
     geosparql:dataset &lt;#baseDataset&gt; ;
@@ -287,6 +294,7 @@ PREFIX geosparql: &lt;http://jena.apache.org/geosparql#&gt;
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

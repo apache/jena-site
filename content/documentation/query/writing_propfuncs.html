@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -244,18 +251,18 @@ has other <code>put</code> methods that allow registration by passing a <code>Cl
 at their disposal to do so. For example, if we wished to create a Property Function that returns no results
 regardless of their arguments we could do so as follows:</p>
 <pre><code>public class ExamplePropertyFunctionFactory implements PropertyFunctionFactory {
-    @Override
-    public PropertyFunction create(final String uri)
-    {	
-        return new PFuncSimple()
-        {
-            @Override
-            public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCtx) 
-            {	
+	@Override
+	public PropertyFunction create(final String uri)
+	{	
+		return new PFuncSimple()
+		{
+			@Override
+			public QueryIterator execEvaluated(final Binding parent, final Node subject, final Node predicate, final Node object, final ExecutionContext execCtx) 
+			{	
                 return QueryIterNullIterator.create(execCtx);
-            }
-        };
-    }
+			}
+		};
+	}
 }
 </code></pre>
 <p><code>Node</code> and <code>PropFuncArg</code> objects allow the developer to reflect on the state of the arguments, and choose what
@@ -339,6 +346,7 @@ Once retrieved the Graph can be operated upon directly, queried or wrapped in a 
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

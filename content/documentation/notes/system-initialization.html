@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -204,12 +211,12 @@ with <code>ServiceLoader</code> files in repacked jars.</p>
 itself extends <code>SubsystemLifecycle</code>.</p>
 <p>For use in the default initialization, the class must have a zero-argument
 constructor and implement:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">JenaSubsystemLifecycle</span> <span style="color:#666">{</span>
-        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-        <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> <span style="color:#00a000">level</span><span style="color:#666">()</span> <span style="color:#666">{</span> <span style="color:#a2f;font-weight:bold">return</span> 9999 <span style="color:#666">;</span> <span style="color:#666">}</span>
-    <span style="color:#666">}</span>
-</code></pre></div><p>The code should supply a level, indicating its place in the order of initialization.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">JenaSubsystemLifecycle</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> <span style="color:#00a000">level</span><span style="color:#666">()</span> <span style="color:#666">{</span> <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#666">9999</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span></code></pre></div><p>The code should supply a level, indicating its place in the order of initialization.
 The levels used by Jena are:</p>
 <ul>
 <li>0 - reserved</li>
@@ -289,6 +296,7 @@ intended for runtime logging.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

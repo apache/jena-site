@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -1480,7 +1487,7 @@ or   prefix:localname          // e.g. rdf:type
 or   &lt;<i>uri-ref</i>&gt;          // e.g. &lt;myscheme:myuri&gt;
 or   ?<i>varname                    </i>// variable
 or   &lsquo;a literal&rsquo;                 // a plain string literal
-or   &lsquo;lex'^^typeURI              // a typed literal, xsd:* type names supported
+or   &rsquo;lex&rsquo;^^typeURI              // a typed literal, xsd:* type names supported
 or   number                      // e.g. 42 or 25.5</pre></p>
 <p>The &quot;,&quot; separators are optional.</p>
 <p>The difference between the forward and backward rule syntax is only relevant
@@ -2083,7 +2090,7 @@ Property p = data.getProperty(demoURI, &ldquo;p&rdquo;);
 Resource a = data.getResource(demoURI + &ldquo;a&rdquo;);
 StmtIterator i = infmodel.listStatements(a, p, (RDFNode)null);
 while (i.hasNext()) {
-System.out.println(&rdquo; - &quot; + PrintUtil.print(i.nextStatement()));
+System.out.println(&quot; - &quot; + PrintUtil.print(i.nextStatement()));
 }</pre></p>
 <p>Here is file <code>data/demo.rules</code> which defines property <code>demo:p</code>
   as being both symmetric and transitive using pure forward rules:</p>
@@ -2394,6 +2401,7 @@ InfModel inf = ModelFactory.createInfModel(reasoner, data);
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

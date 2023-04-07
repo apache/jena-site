@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -351,9 +358,9 @@ PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
 SELECT ?s ?lbl
 WHERE { 
-    ?s a ex:Product ;
-       rdfs:label ?lbl
-    FILTER regex(?lbl, &quot;printer&quot;, &quot;i&quot;)
+	?s a ex:Product ;
+	   rdfs:label ?lbl
+	FILTER regex(?lbl, &quot;printer&quot;, &quot;i&quot;)
 }
 </code></pre>
 <p>then the search will need to examine <em>all</em> selected <code>rdfs:label</code>
@@ -374,9 +381,9 @@ PREFIX text: &lt;http://jena.apache.org/text#&gt;
 
 SELECT ?s ?lbl
 WHERE { 
-    ?s a ex:Product ;
-       text:query (rdfs:label 'printer') ;
-       rdfs:label ?lbl
+	?s a ex:Product ;
+	   text:query (rdfs:label 'printer') ;
+	   rdfs:label ?lbl
 }
 </code></pre>
 <p>This query makes a text query for <code>'printer'</code> on the <code>rdfs:label</code>
@@ -944,7 +951,7 @@ used to restrict the items found still further.</p>
 <h2 id="configuration">Configuration</h2>
 <p>The usual way to describe a text index is with a
 <a href="../assembler/index.html">Jena assembler description</a>.  Configurations can
-also be built with code. The assembler describes a &lsquo;text
+also be built with code. The assembler describes a &rsquo;text
 dataset&rsquo; which has an underlying RDF dataset and a text index. The text
 index describes the text index technology (Lucene or Elasticsearch) and the details
 needed for each.</p>
@@ -1220,7 +1227,7 @@ Lucene index.  For example:</p>
          ]
          ) .
 </code></pre>
-<p>will configure the index to analyze values of the &lsquo;text&rsquo; field
+<p>will configure the index to analyze values of the &rsquo;text&rsquo; field
 using a <code>StandardAnalyzer</code> with the given list of stop words.</p>
 <p>Other analyzer types that may be specified are <code>SimpleAnalyzer</code> and
 <code>KeywordAnalyzer</code>, neither of which has any configuration parameters. See
@@ -1292,7 +1299,7 @@ is useful in combination with accent-insensitive wildcard queries.</p>
 </li>
 <li>
 <p><code>ComplexPhraseQueryParser</code>: Permits complex phrase query syntax. Eg:
-&ldquo;(john jon jonathan~) peters*&quot;.  This is useful for performing wildcard
+&ldquo;(john jon jonathan~) peters*&rdquo;.  This is useful for performing wildcard
 or fuzzy queries on individual terms in a phrase.</p>
 </li>
 <li>
@@ -1884,10 +1891,10 @@ for use in composing a single multi-fielded Lucene document. <a href="#multiple-
 <p>To configure a <code>TextDocProducer</code>, say <code>net.code.MyProducer</code> in a dataset assembly,
 use the property <code>textDocProducer</code>, eg:</p>
 <pre><code>&lt;#ds-with-lucene&gt; rdf:type text:TextDataset;
-    text:index &lt;#indexLucene&gt; ;
-    text:dataset &lt;#ds&gt; ;
-    text:textDocProducer &lt;java:net.code.MyProducer&gt; ;
-    .
+	text:index &lt;#indexLucene&gt; ;
+	text:dataset &lt;#ds&gt; ;
+	text:textDocProducer &lt;java:net.code.MyProducer&gt; ;
+	.
 </code></pre>
 <p>where <code>CLASSNAME</code> is the full java class name. It must have either
 a single-argument constructor of type <code>TextIndex</code>, or a two-argument
@@ -2102,6 +2109,7 @@ include a compatible version of Lucene.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

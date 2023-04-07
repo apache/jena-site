@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -197,7 +204,7 @@ sure the <code>ServicesResourceTransformer</code> is used. The module must have 
 argument constructor.</p>
 <p>If using Fuseki as an <a href="./fuseki-embedded.html">embedded server</a>, the module is
 added in code as:</p>
-<pre><code>    FusekiModule module = new MyModule();
+<pre tabindex="0"><code>    FusekiModule module = new MyModule();
     FusekiModules.add(module);
 </code></pre><p>The method <code>start</code> is called when the module is loaded. Custom operations can
 be globally registered at this point (see the <a href="https://github.com/apache/jena/tree/main/jena-fuseki2/jena-fuseki-main/src/test/java/org/apache/jena/fuseki/main/examples">Fuseki
@@ -225,68 +232,68 @@ contains assembler descriptions not directly linked to the server).</p>
 Module</a>
 in the Fuseki examples directory.</p>
 <p><code>FusekiModule</code> interface:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic"> * Module interface for Fuseki.
-</span><span style="color:#080;font-style:italic"> * &lt;p&gt;
-</span><span style="color:#080;font-style:italic"> * A module is additional code, usually in a separate jar, 
-</span><span style="color:#080;font-style:italic"> * but can also be part of the application code.
-</span><span style="color:#080;font-style:italic"> */</span>
-<span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">FusekiModule</span> <span style="color:#a2f;font-weight:bold">extends</span> SubsystemLifecycle <span style="color:#666">{</span>
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * Unique (within this server) name to identify this module.
-</span><span style="color:#080;font-style:italic">     * The default is to generate an UUID.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> String <span style="color:#00a000">name</span><span style="color:#666">();</span>
-
-    <span style="color:#080;font-style:italic">/** Module loaded */</span>
-    <span style="color:#a2f">@Override</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">{}</span>
-
-    <span style="color:#080;font-style:italic">// ---- Build cycle
-</span><span style="color:#080;font-style:italic"></span>
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * Called at the start of &#34;build&#34; step. The builder has been set according to the
-</span><span style="color:#080;font-style:italic">     * configuration. The &#34;configModel&#34; parameter is set if a configuration file was
-</span><span style="color:#080;font-style:italic">     * used otherwise it is null.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">configuration</span><span style="color:#666">(</span>FusekiServer<span style="color:#666">.</span><span style="color:#b44">Builder</span> builder<span style="color:#666">,</span> DataAccessPointRegistry dapRegistry<span style="color:#666">,</span> Model configModel<span style="color:#666">)</span> <span style="color:#666">{</span>
-        dapRegistry<span style="color:#666">.</span><span style="color:#b44">accessPoints</span><span style="color:#666">().</span><span style="color:#b44">forEach</span><span style="color:#666">(</span>accessPoint<span style="color:#666">-&gt;</span>configDataAccessPoint<span style="color:#666">(</span>builder<span style="color:#666">,</span> accessPoint<span style="color:#666">,</span> configModel<span style="color:#666">));</span>
-    <span style="color:#666">}</span>
-
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * This method is called for each {@link DataAccessPoint}
-</span><span style="color:#080;font-style:italic">     * by the default implementation of {@link #configuration}.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">configDataAccessPoint</span><span style="color:#666">(</span>FusekiServer<span style="color:#666">.</span><span style="color:#b44">Builder</span> builder<span style="color:#666">,</span> DataAccessPoint dap<span style="color:#666">,</span> Model configModel<span style="color:#666">)</span> <span style="color:#666">{}</span>
-
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * Built, not started, about to be returned to the builder caller.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">server</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
-
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * Server starting - called just before server.start happens.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverBeforeStarting</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
-
-    <span style="color:#080;font-style:italic">/**
-</span><span style="color:#080;font-style:italic">     * Server started - called just after server.start happens, and before server
-</span><span style="color:#080;font-style:italic">     * .start() returns to the application.
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverAfterStarting</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
-
-    <span style="color:#080;font-style:italic">/** Server stopping.
-</span><span style="color:#080;font-style:italic">     * Do not rely on this to clear up external resources.
-</span><span style="color:#080;font-style:italic">     * Usually there is no stop phase and the JVM just exits or is killed externally.
-</span><span style="color:#080;font-style:italic">     *
-</span><span style="color:#080;font-style:italic">     */</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverStopped</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
-
-    <span style="color:#080;font-style:italic">/** Module unloaded */</span>
-    <span style="color:#a2f">@Override</span>
-    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">{}</span>
-<span style="color:#666">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"> * Module interface for Fuseki.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"> * &lt;p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"> * A module is additional code, usually in a separate jar, 
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"> * but can also be part of the application code.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">interface</span> <span style="color:#00f">FusekiModule</span> <span style="color:#a2f;font-weight:bold">extends</span> SubsystemLifecycle <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Unique (within this server) name to identify this module.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * The default is to generate an UUID.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> String <span style="color:#00a000">name</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/** Module loaded */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">{}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// ---- Build cycle
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Called at the start of &#34;build&#34; step. The builder has been set according to the
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * configuration. The &#34;configModel&#34; parameter is set if a configuration file was
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * used otherwise it is null.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">configuration</span><span style="color:#666">(</span>FusekiServer<span style="color:#666">.</span><span style="color:#b44">Builder</span> builder<span style="color:#666">,</span> DataAccessPointRegistry dapRegistry<span style="color:#666">,</span> Model configModel<span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        dapRegistry<span style="color:#666">.</span><span style="color:#b44">accessPoints</span><span style="color:#666">().</span><span style="color:#b44">forEach</span><span style="color:#666">(</span>accessPoint<span style="color:#666">-&gt;</span>configDataAccessPoint<span style="color:#666">(</span>builder<span style="color:#666">,</span> accessPoint<span style="color:#666">,</span> configModel<span style="color:#666">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * This method is called for each {@link DataAccessPoint}
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * by the default implementation of {@link #configuration}.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">configDataAccessPoint</span><span style="color:#666">(</span>FusekiServer<span style="color:#666">.</span><span style="color:#b44">Builder</span> builder<span style="color:#666">,</span> DataAccessPoint dap<span style="color:#666">,</span> Model configModel<span style="color:#666">)</span> <span style="color:#666">{}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Built, not started, about to be returned to the builder caller.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">server</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Server starting - called just before server.start happens.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverBeforeStarting</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Server started - called just after server.start happens, and before server
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * .start() returns to the application.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverAfterStarting</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/** Server stopping.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Do not rely on this to clear up external resources.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Usually there is no stop phase and the JVM just exits or is killed externally.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverStopped</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/** Module unloaded */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">{}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div>
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
@@ -322,6 +329,7 @@ in the Fuseki examples directory.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)
