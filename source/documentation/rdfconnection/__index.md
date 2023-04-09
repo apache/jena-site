@@ -4,16 +4,12 @@ slug: index
 ---
 
 `RDFConnection` provides a unified set of operations for working on RDF
-with SPARQL operations. It provides <a
-href="https://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a
-href="https://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a
-href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
-Store</a> operations.  The interface is uniform - the same interface
-applies to local data and to remote data using HTTP and the SPARQL
-protocols ( <a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL
-protocol</a> and <a
-href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
-Protocol</a>).
+with SPARQL operations. It provides [SPARQL Query](https://www.w3.org/TR/sparql11-query/),
+[SPARQL Update](https://www.w3.org/TR/sparql11-update/) and the
+[SPARQL Graph Store](https://www.w3.org/TR/sparql11-http-rdf-update/) operations.
+The interface is uniform - the same interface applies to local data and to remote
+data using HTTP and the SPARQL protocols ([SPARQL protocol](https://www.w3.org/TR/sparql11-protocol/))
+and [SPARQL Graph Store Protocol](https://www.w3.org/TR/sparql11-http-rdf-update/)).
 
 ## Outline
 
@@ -24,28 +20,32 @@ passing styles, as well the more basic sequence of methods calls.
 For example: using `try-resources` to manage the connection, and perform two operations, one to load
 some data, and one to make a query can be written as:
 
-    try ( RDFConnection conn = RDFConnection.connect(...) ) {
-        conn.load("data.ttl") ;
-        conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
-           Resource subject = qs.getResource("s") ;
-           System.out.println("Subject: " + subject) ;
-        }) ;
-    }
+```java
+try ( RDFConnection conn = RDFConnection.connect(...) ) {
+  conn.load("data.ttl") ;
+  conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
+     Resource subject = qs.getResource("s") ;
+     System.out.println("Subject: " + subject) ;
+  }) ;
+}
+```
 
 This could have been written as (approximately -- the error handling is better
 in the example above):
 
-    RDFConnection conn = RDFConnection.connect(...)
-    conn.load("data.ttl") ;
-    QueryExecution qExec = conn.query("SELECT DISTINCT ?s { ?s ?p ?o }") ;
-    ResultSet rs = qExec.execSelect() ;
-    while(rs.hasNext()) {
-        QuerySolution qs = rs.next() ;
-        Resource subject = qs.getResource("s") ;
-        System.out.println("Subject: " + subject) ;
-    }
-    qExec.close() ;
-    conn.close() ;
+```java
+RDFConnection conn = RDFConnection.connect(...)
+conn.load("data.ttl") ;
+QueryExecution qExec = conn.query("SELECT DISTINCT ?s { ?s ?p ?o }") ;
+ResultSet rs = qExec.execSelect() ;
+while(rs.hasNext()) {
+  QuerySolution qs = rs.next() ;
+  Resource subject = qs.getResource("s") ;
+  System.out.println("Subject: " + subject) ;
+}
+qExec.close() ;
+conn.close() ;
+```
 
 ## Transactions
 
@@ -58,31 +58,35 @@ to excessive overhead.
 The `Txn` class provides a Java8-style transaction API.  Transactions are
 code passed in the `Txn` library that handles the transaction lifecycle.
 
-    try ( RDFConnection conn = RDFConnection.connect(...) ) {
-        Txn.execWrite(conn, () -> {
-            conn.load("data1.ttl") ;
-            conn.load("data2.ttl") ;
-            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) ->
-               Resource subject = qs.getResource("s") ;
-               System.out.println("Subject: " + subject) ;
-            }) ;
-        }) ;
-    }
+```java
+try ( RDFConnection conn = RDFConnection.connect(...) ) {
+  Txn.execWrite(conn, () -> {
+      conn.load("data1.ttl") ;
+      conn.load("data2.ttl") ;
+      conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) ->
+         Resource subject = qs.getResource("s") ;
+         System.out.println("Subject: " + subject) ;
+      }) ;
+  }) ;
+}
+```
 
 The traditional style of explicit `begin`, `commit`, `abort` is also available.
 
-    try ( RDFConnection conn = RDFConnection.connect(...) ) {
-        conn.begin(ReadWrite.WRITE) ;
-        try {
-            conn.load("data1.ttl") ;
-            conn.load("data2.ttl") ;
-            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
-               Resource subject = qs.getResource("s") ;
-               System.out.println("Subject: " + subject) ;
-            }) ;
-            conn.commit() ;
-        } finally { conn.end() ; }
-    }
+```java
+try ( RDFConnection conn = RDFConnection.connect(...) ) {
+    conn.begin(ReadWrite.WRITE) ;
+    try {
+        conn.load("data1.ttl") ;
+        conn.load("data2.ttl") ;
+        conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
+           Resource subject = qs.getResource("s") ;
+           System.out.println("Subject: " + subject) ;
+        }) ;
+        conn.commit() ;
+    } finally { conn.end() ; }
+}
+```
 
 The use of `try-finally` ensures that transactions are properly finished.
 The `conn.end()` provides an abort in case an exception occurs in the
@@ -111,8 +115,10 @@ builder to construct `RDFConnectionRemote`s.
 
 At its simplest, it is:
 
-    RDFConnectionRemoteBuilder builder = RDFConnection.create()
-                .destination("http://host/triplestore");
+```java
+RDFConnectionRemoteBuilder builder = RDFConnection.create()
+          .destination("http://host/triplestore");
+```
 
 which uses default settings used by `RDFConenctionFactory.connect`.
 
@@ -128,11 +134,13 @@ and providing detailed configuration with
 
 ### Fuseki Specific Connection
 
-If the remote destination is a Apache Jena Fuseki server, then the
-default general settings work but it is possible to have a specialised connection
+If the remote destination is an Apache Jena Fuseki server, then the
+default general settings work, but it is possible to have a specialised connection
 
-        RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
-              .destination("http://host/fuseki");
+```java
+RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
+     .destination("http://host/fuseki");
+```
 
 which uses settings tuned to Fuseki, including round-trip handling of
 blank nodes.
@@ -142,8 +150,8 @@ See [example
 
 ## Graph Store Protocol
 
-The <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
-Store Protocol</a> (GSP) is a set of operations to work on whole graphs in a
+The [SPARQL Graph Store Protocol](https://www.w3.org/TR/sparql11-http-rdf-update/)
+(GSP) is a set of operations to work on whole graphs in a
 dataset.  It provides a standardised way to manage the data in a dataset.
 
 The operations are to fetch a graph, set the RDF data in a graph,
@@ -151,10 +159,12 @@ add more RDF data into a graph, and delete a graph from a dataset.
 
 For example: load two files:
 
-    try ( RDFConnection conn = RDFConnection.connect(...) ) {
-        conn.load("data1.ttl") ;
-        conn.load("data2.nt") ;
-    }
+```java
+try ( RDFConnection conn = RDFConnection.connect(...) ) {
+    conn.load("data1.ttl") ;
+    conn.load("data2.nt") ;
+}
+```
 
 The file extension is used to determine the syntax.
 
@@ -167,7 +177,9 @@ In addition, `RDFConnection` provides an extension to give the same style
 of operation to work on a whole dataset (deleting the dataset is not
 provided).
 
-    conn.loadDataset("data-complete.trig") ;
+```java
+conn.loadDataset("data-complete.trig") ;
+```
 
 ### Local vs Remote
 
@@ -181,11 +193,11 @@ a remote connection and is useful for testing.
 * Read-only &ndash; the models and datasets are made read-only but any changes
 to the underlying RDF data by changes by another route will be visible.
 This provides a form of checking for large datasets when "copy" is impractical.
-* None &ndash; the models and datasets are passed back with no additional wrappers
+* None &ndash; the models and datasets are passed back with no additional wrappers,
 and they can be updated with the changes being made the underlying dataset.
 
 The default for a local `RDFConnection` is "none". When used with TDB,
-accessing returned models must be done with <a href="../txn">transactions</a>
+accessing returned models must be done with [transactions](../txn)
 in this mode.
 
 ## Query Usage
@@ -200,29 +212,33 @@ retain it across the lifetime of the transaction or `QueryExecution`, then
 the application should create a copy which is not attached to any external system
 with `ResultSetFactory.copyResults`.
 
-      try ( RDFConnection conn = RDFConnection.connect("https://...") ) {
-          ResultSet safeCopy =
-              Txn.execReadReturn(conn, () -> {
-                  // Process results by row:
-                  conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
-                      Resource subject = qs.getResource("s") ;
-                      System.out.println("Subject: "+subject) ;
-                  }) ;
-                  ResultSet rs = conn.query("SELECT * { ?s ?p ?o }").execSelect() ;
-                  return ResultSetFactory.copyResults(rs) ;
-              }) ;
-      }
+```java
+try ( RDFConnection conn = RDFConnection.connect("https://...") ) {
+    ResultSet safeCopy =
+        Txn.execReadReturn(conn, () -> {
+            // Process results by row:
+            conn.querySelect("SELECT DISTINCT ?s { ?s ?p ?o }", (qs) -> {
+                Resource subject = qs.getResource("s") ;
+                System.out.println("Subject: "+subject) ;
+            }) ;
+            ResultSet rs = conn.query("SELECT * { ?s ?p ?o }").execSelect() ;
+            return ResultSetFactory.copyResults(rs) ;
+        }) ;
+}
+```
 
 ## Update Usage
 
 SPARQL Update operations can be performed and mixed with other operations.
 
-      try ( RDFConnection conn = RDFConnection.connect(...) ) {
-          Txn.execWrite(conn, () -> {
-             conn.update("DELETE DATA { ... }" ) ;
-             conn.load("data.ttl") ;
-          }) ;
-      }
+```java
+try ( RDFConnection conn = RDFConnection.connect(...) ) {
+    Txn.execWrite(conn, () -> {
+       conn.update("DELETE DATA { ... }" ) ;
+       conn.load("data.ttl") ;
+    }) ;
+}
+```
 
 ## Dataset operations
 
@@ -246,5 +262,5 @@ operations are visible to the called code.
 
 ## Examples
 
-* for simple usage examples see <a href="https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a>.
-* for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a>.
+* for simple usage examples see <https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples>.
+* for example of how to use with StreamRDF see <https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java>.

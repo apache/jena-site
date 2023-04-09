@@ -6,11 +6,8 @@ slug: index
 `jena-shex` is an implementation of the 
 [ShEx (Shape Expressions)](https://shex.io) language.
 
-<p>
-<i>This implementation is experimental, starting with Jena 4.2.0.
-Please send usage reports and experience to </i>
-<tt>users@jena.apache.org</tt>.
-</p>
+This implementation is experimental, starting with Jena 4.2.0.
+Please send usage reports and experience to <tt>users@jena.apache.org</tt>.
 
 ## Status
 
@@ -25,18 +22,22 @@ scoped to the file, and not retained after the file has been read.
 
 ## Command line
 
-The command `shex` introduces shex operations; it takes a sub-command
+The command `shex` introduces ShEx operations; it takes a sub-command
 argument.
 
 To validate:
 
-<pre>shex validate --schema SCHEMA.shex --map MAP.smap --data DATA.ttl</pre>
-<pre>shex v -s SCHEMA.shex -m MAP.smap -d data.ttl</pre>
+```bash
+shex validate --schema SCHEMA.shex --map MAP.smap --data DATA.ttl
+shex v -s SCHEMA.shex -m MAP.smap -d data.ttl
+```
 
 To parse a file:
 
-<pre>shex parse <i>FILE</i></pre>
-<pre>shex p <i>FILE</i></pre>
+```bash
+shex parse FILE
+shex p FILE
+````
 
 which writes out the parser results in a text format.
 
@@ -57,30 +58,30 @@ The package `org.apache.jena.shex` has the main classes.
 
 Examples:
 
-https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/examples/
+<https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/examples/>
 
-```
-    public static void main(String ...args) {
-        String SHAPES     = "examples/schema.shex";
-        String SHAPES_MAP = "examples/shape-map.shexmap";
-        String DATA       = "examples/data.ttl";
+```java
+public static void main(String ...args) {
+    String SHAPES     = "examples/schema.shex";
+    String SHAPES_MAP = "examples/shape-map.shexmap";
+    String DATA       = "examples/data.ttl";
 
-        System.out.println("Read data");
-        Graph dataGraph = RDFDataMgr.loadGraph(DATA);
+    System.out.println("Read data");
+    Graph dataGraph = RDFDataMgr.loadGraph(DATA);
 
-        System.out.println("Read schema");
-        ShexSchema shapes = Shex.readSchema(SHAPES);
+    System.out.println("Read schema");
+    ShexSchema shapes = Shex.readSchema(SHAPES);
 
-        // Shapes map.
-        System.out.println("Read shapes map");
-        ShapeMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
+    // Shapes map.
+    System.out.println("Read shapes map");
+    ShapeMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
 
-        // ShexReport
-        System.out.println("Validate");
-        ShexReport report = ShexValidator.get().validate(dataGraph, shapes, shapeMap);
+    // ShexReport
+    System.out.println("Validate");
+    ShexReport report = ShexValidator.get().validate(dataGraph, shapes, shapeMap);
 
-        System.out.println();
-        // Print report.
-        ShexLib.printReport(report);
-    }
+    System.out.println();
+    // Print report.
+    ShexLib.printReport(report);
+}
 ```
