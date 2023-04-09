@@ -6,9 +6,6 @@ slug: index
 `jena-shex` is an implementation of the 
 [ShEx (Shape Expressions)](https://shex.io) language.
 
-This implementation is experimental, starting with Jena 4.2.0.
-Please send usage reports and experience to <tt>users@jena.apache.org</tt>.
-
 ## Status
 
 `jena-shex` reads ShExC (the compact syntax) files.

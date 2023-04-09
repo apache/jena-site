@@ -65,7 +65,7 @@ site, using the content from the `asf-site` and `javadoc` branches.
 The `Jenkinsfile` was contributed in https://github.com/apache/jena-site/pull/17
 (July 2020).
 
-Steps to do to setup the Jenkins job:
+Steps to set up the Jenkins job:
 
 * Create a new multibranch pipeline (e.g. 'Jena_Site').
 
