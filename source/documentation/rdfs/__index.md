@@ -21,29 +21,29 @@ The vocabulary can not be changed during the lifetime of the RDFS dataset.
 The API provides operation to build RDF-enabled datasets from data storage and vocabularies:
     
 Example:
-```
-    DatasetGraph data = ...
-    // Load the vocabulary
-    Graph vocab = RDFDataMgr.loadGraph("vocabulary.ttl");
-    // Create a DatasetGraph with RDFS
-    DatasetGraph dsg = datasetRDFS(DatasetGraph data, Graph vocab );
-    // (Optional) Present as a Dataset.
-    Dataset dataset = DatasetFactory.wrap(dsg);
+```java
+DatasetGraph data = ...
+// Load the vocabulary
+Graph vocab = RDFDataMgr.loadGraph("vocabulary.ttl");
+// Create a DatasetGraph with RDFS
+DatasetGraph dsg = datasetRDFS(DatasetGraph data, Graph vocab );
+// (Optional) Present as a Dataset.
+Dataset dataset = DatasetFactory.wrap(dsg);
 ```
 
 The vocabulary is processed to produce datastructure needed for processing the
-data eficiently at run time. This is the `SetupRDFS` class that can be created
+data efficiently at run time. This is the `SetupRDFS` class that can be created
 and shared; it is thread-safe.
 
-```
-    SetupRDFS setup = setupRDFS(vocab);
+```java
+SetupRDFS setup = setupRDFS(vocab);
 ```
 
 ### Assembler: RDFS Dataset
 
 Datasets with RDFS can be built with an assembler:
 
-```
+```turtle
 <#rdfsDS> rdf:type ja:DatasetRDFS ;
       ja:rdfsSchema <vocabulary.ttl>;
       ja:dataset <#baseDataset> ;
@@ -59,14 +59,14 @@ where `<#baseDataset>` is the definition of the dataset to be enriched.
 
 It is possible to build a single `Model`:
 
-```
-  <#rdfsGraph> rdf:type ja:GraphRDFS ;
-      ja:rdfsSchema <vocabulary.ttl>;
-      ja:graph <#baseGraph> ;
-      .
+```turtle
+<#rdfsGraph> rdf:type ja:GraphRDFS ;
+    ja:rdfsSchema <vocabulary.ttl>;
+    ja:graph <#baseGraph> ;
+    .
 
-  <#baseGraph> rdf:type ja:MemoryModel;
-      ...
+<#baseGraph> rdf:type ja:MemoryModel;
+    ...
 ```
 
 More generally, inference models can be defined using the Jena Inference and Rule
@@ -79,13 +79,14 @@ The files for this example are available at:
 [jena-fuseki2/examples/rdfs](https://github.com/apache/jena/tree/main/jena-fuseki2/examples/rdfs).
 
 From the command line (here, loading data from a file into an in-memory dataset):
-```
+
+```bash
 fuseki-server --data data.trig --rdfs vocabulary.ttl /dataset
 ```
 
 or from a configuration file with an RDFS Dataset:
 
-```
+```turtle
 PREFIX :        <#>
 PREFIX fuseki:  <http://jena.apache.org/fuseki#>
 PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -122,13 +123,14 @@ PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
 
 With the [SOH](/documentation/fuseki2/soh.html) tools, a query (asking for plain
 text output):
-```
+
+```bash
 s-query --service http://localhost:3030/dataset --output=text --file query.rq 
 ```
 
 or with `curl`:
 
-```
+```bash
 curl --data @query.rq \
       --header 'Accept: text/plain' \
       --header 'Content-type: application/sparql-query' \
@@ -151,8 +153,9 @@ will return:
 
 ### Files
 
-data.trig:
-```
+`data.trig`:
+
+```turtle
 PREFIX :        <http://example/>
 PREFIX ns:      <http://example/ns#>
 
@@ -161,7 +164,7 @@ PREFIX ns:      <http://example/ns#>
 
 `vocabulary.ttl`:
 
-```
+```turtle
 PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
@@ -178,7 +181,8 @@ ns:p rdfs:range  ns:T1 .
 ```
 
 `query.rq`:
-```
+
+```sparql
 PREFIX :      <http://example/>
 PREFIX ns:    <http://example/ns#>
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

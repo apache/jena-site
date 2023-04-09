@@ -18,8 +18,10 @@ argument.
 
 To validate:
 
-<pre>shacl validate --shapes <i>SHAPES.ttl</i> --data <i>DATA.ttl</i></pre>
-<pre>shacl v -s <i>SHAPES.ttl</i> -d <i>DATA.ttl</i></pre>
+```bash
+shacl validate --shapes SHAPES.ttl --data DATA.ttl
+shacl v -s SHAPES.ttl -d DATA.ttl
+```
 
 The shapes and data files can be the same; the `--shapes` is optional and
 defaults to the same as `--data`.  This includes running individual W3C Working
@@ -27,12 +29,16 @@ Group tests.
 
 To parse a file:
 
-<pre>shacl parse <i>FILE</i></pre>
-<pre>shacl p <i>FILE</i></pre>
+```bash
+shacl parse FILE
+shacl p FILE
+```
 
 which writes out a text format.
 
-<pre>shacl p <i>--out=FMT</i> <i>FILE</i></pre>
+```bash
+shacl p --out=FMT FILE
+```
 
 writes out in `text`(`t`), `compact`(`c`), `rdf`(`r`) formats. Multiple formats can be given,
 separated by "," and format `all` outputs all 3 formats.
@@ -41,24 +47,26 @@ separated by "," and format `all` outputs all 3 formats.
 
 Fuseki has a new service operation `fuseki:shacl`:
 
-<pre>
-&lt;#serviceWithShacl&gt; rdf:type fuseki:Service ;
+```turtle
+<#serviceWithShacl>; rdf:type fuseki:Service ;
     rdfs:label                   "Dataset with SHACL validation" ;
     fuseki:name                  "<i>ds</i>" ;
     fuseki:serviceReadWriteGraphStore "" ;
     fuseki:endpoint [ fuseki:operation fuseki:shacl ; fuseki:name "shacl" ] ;
-    fuseki:dataset &lt;#dataset&gt; ;
+    fuseki:dataset <#dataset> ;
     .
-</pre>
+```
 
 This requires a "new style" endpoint declaration:  see
 "[Fuseki Endpoint Configuration](/documentation/fuseki2/fuseki-config-endpoint.html)".
 
 This is not installed into a dataset setup by default; a configuration file using
-```
+
+```turtle
 fuseki:endpoint [ fuseki:operation fuseki:shacl ;
                   fuseki:name "shacl" ];
 ```
+
 is necessary (or programmatic setup for Fuseki Main).
 
 The service accepts a shapes graph posted as RDF to <tt>/<i>ds</i>/shacl</tt> with
@@ -73,15 +81,19 @@ Further, an argument <tt>target=<i>uri</i></tt> validates a specific node in the
 
 Upload data in file `fu-data.ttl`:
 
-    curl -XPOST --data-binary @fu-data.ttl    \  
-         --header 'Content-type: text/turtle' \  
-         'http://localhost:3030/ds?default'
+```bash
+curl -XPOST --data-binary @fu-data.ttl    \  
+     --header 'Content-type: text/turtle' \  
+     'http://localhost:3030/ds?default'
+```
 
 Validate with shapes in `fu-shapes.ttl` and get back a validation report:
 
-    curl -XPOST --data-binary @fu-shapes.ttl  \  
-         --header 'Content-type: text/turtle' \  
-         'http://localhost:3030/ds/shacl?graph=default'
+```bash
+curl -XPOST --data-binary @fu-shapes.ttl  \  
+     --header 'Content-type: text/turtle' \  
+     'http://localhost:3030/ds/shacl?graph=default'
+```
 
 ## API
 
@@ -92,27 +104,29 @@ The package `org.apache.jena.shacl` has the main classes.
 
 ## API Examples
 
-https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shacl/examples/
+<https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shacl/examples/>
 
 Example
 [`Shacl01_validateGraph`](
 https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl01_validateGraph.java)
 shows validation and printing of the validation report in a text form and in RDF:
 
-    public static void main(String ...args) {
-        String SHAPES = "shapes.ttl";
-        String DATA = "data1.ttl";
+```java
+public static void main(String ...args) {
+    String SHAPES = "shapes.ttl";
+    String DATA = "data1.ttl";
 
-        Graph shapesGraph = RDFDataMgr.loadGraph(SHAPES);
-        Graph dataGraph = RDFDataMgr.loadGraph(DATA);
+    Graph shapesGraph = RDFDataMgr.loadGraph(SHAPES);
+    Graph dataGraph = RDFDataMgr.loadGraph(DATA);
 
-        Shapes shapes = Shapes.parse(shapesGraph);
+    Shapes shapes = Shapes.parse(shapesGraph);
 
-        ValidationReport report = ShaclValidator.get().validate(shapes, dataGraph);
-        ShLib.printReport(report);
-        System.out.println();
-        RDFDataMgr.write(System.out, report.getModel(), Lang.TTL);
-    }
+    ValidationReport report = ShaclValidator.get().validate(shapes, dataGraph);
+    ShLib.printReport(report);
+    System.out.println();
+    RDFDataMgr.write(System.out, report.getModel(), Lang.TTL);
+}
+```
 
 Example
 [`Shacl02_validateTransaction`](https://github.com/apache/jena/tree/main/jena-shacl/src/main/java/org/apache/jena/shacl/examples/Shacl02_validateTransaction.java)
@@ -128,11 +142,13 @@ for both reading and writing.
 The file extensions for SHACL-C are `.shc` and `.shaclc` and there is a registered language
 constant `Lang.SHACLC`.
 
-    RDFDataMgr.load("shapes.shc");
+```java
+RDFDataMgr.load("shapes.shc");
 
-    RDFDataMgr.read("file:compactShapes", Lang.SHACLC);
+RDFDataMgr.read("file:compactShapes", Lang.SHACLC);
 
-    RDFDataMgr.write(System.out, shapesGraph, Lang.SHACLC);
+RDFDataMgr.write(System.out, shapesGraph, Lang.SHACLC);
+```
 
 SHACL-C is managed by the SHACL Community Group. It does not cover all possible shapes.
 When outputting SHACL-C, SHACL shapes not expressible in SHACL-C will cause an
@@ -158,7 +174,7 @@ SPARQL-based targets allow the target nodes to be calculated with a SPARQL
 See [SPARQL-based targets](https://w3c.github.io/shacl/shacl-af/#SPARQLTarget)
 for details.
 
-```
+```turtle
 ex:example
     sh:target [
         a sh:SPARQLTarget ;
@@ -178,7 +194,8 @@ When given a `ValidationListener` the SHACL validation code emits events at each
 * when validation of a constraint begins, ends and yields positive or negative results
 
 For example, the following listener will just record all events in a List:
-```
+
+```java
 public class RecordingValidationListener implements ValidationListener {
         private final List<ValidationEvent> events = new ArrayList<>();
 
@@ -191,47 +208,52 @@ public class RecordingValidationListener implements ValidationListener {
         }
     }
 ```
+
 The listener must be passed to the constructor of the `ValidationContext`. 
 The following example validates the `dataGraph` according to the `shapesGraph` using the ValidationListener above:
-```
-    Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
-    Graph dataGraph = RDFDataMgr.loadGraph(dataGraphUri); //assuming dataGraphUri points to an RDF file
-    RecordingValidationListener listener = new RecordingValidationListener();  // see above
-    Shapes shapes = Shapes.parse(shapesGraph);
-    ValidationContext vCtx = ValidationContext.create(shapes, dataGraph, listener); // pass listener here
-    for (Shape shape : shapes.getTargetShapes()) {
-        Collection<Node> focusNodes = VLib.focusNodes(dataGraph, shape);
-        for (Node focusNode : focusNodes) {
-            VLib.validateShape(vCtx, dataGraph, shape, focusNode);
-        }
+
+```java
+Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
+Graph dataGraph = RDFDataMgr.loadGraph(dataGraphUri); //assuming dataGraphUri points to an RDF file
+RecordingValidationListener listener = new RecordingValidationListener();  // see above
+Shapes shapes = Shapes.parse(shapesGraph);
+ValidationContext vCtx = ValidationContext.create(shapes, dataGraph, listener); // pass listener here
+for (Shape shape : shapes.getTargetShapes()) {
+    Collection<Node> focusNodes = VLib.focusNodes(dataGraph, shape);
+    for (Node focusNode : focusNodes) {
+        VLib.validateShape(vCtx, dataGraph, shape, focusNode);
     }
-    List<ValidationEvent> actualEvents = listener.getEvents(); // all events have been recorded
+}
+List<ValidationEvent> actualEvents = listener.getEvents(); // all events have been recorded
 ```        
 
 The events thus generated might look like this (`event.toString()`, one per line):
-```
- FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
- ConstraintEvaluationForNodeShapeStartedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
- ConstraintEvaluatedOnFocusNodeEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape], valid=true}
- ConstraintEvaluationForNodeShapeFinishedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
- FocusNodeValidationFinishedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+
+```turtle
+FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ConstraintEvaluationForNodeShapeStartedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+ConstraintEvaluatedOnFocusNodeEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape], valid=true}
+ConstraintEvaluationForNodeShapeFinishedEvent{constraint=ClassConstraint[<http://datashapes.org/sh/tests/core/node/class-001.test#Person>], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+FocusNodeValidationFinishedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
 [...]    
 ```
+
 Many use cases can be addressed with the `HandlerBasedValidationListener`, which allows for registering event handlers on a per-event basis. 
 For example:
-```
-    ValidationListener myListener = HandlerBasedValidationListener
-        .builder()
-        .forEventType(FocusNodeValidationStartedEvent.class)
-        .addSimpleHandler(e -> {
-           // ... 
+
+```java
+ValidationListener myListener = HandlerBasedValidationListener
+    .builder()
+    .forEventType(FocusNodeValidationStartedEvent.class)
+    .addSimpleHandler(e -> {
+       // ... 
+    })
+    .forEventType(ConstraintEvaluatedEvent.class)
+    .addHandler(c -> c
+        .iff(EventPredicates.isValid()) // use a Predicate<ValidationEvent> to select events
+        .handle(e -> {
+            // ...
         })
-        .forEventType(ConstraintEvaluatedEvent.class)
-        .addHandler(c -> c
-            .iff(EventPredicates.isValid()) // use a Predicate<ValidationEvent> to select events
-            .handle(e -> {
-                // ...
-            })
-        )
-        .build();
+    )
+    .build();
 ```
