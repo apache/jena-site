@@ -16,31 +16,35 @@ to make a SPARQL protocol to another SPARQL endpoint.
 
 ## Syntax
 
-    PREFIX : <http://example/>
-    PREFIX  dc:     <http://purl.org/dc/elements/1.1/>
+```sparql
+PREFIX : <http://example/>
+PREFIX  dc:     <http://purl.org/dc/elements/1.1/>
 
-    SELECT ?a
-    FROM <mybooks.rdf>
-    {
-      ?b dc:title ?title .
-      SERVICE <http://sparql.org/books>
-         { ?s dc:title ?title . ?s dc:creator ?a }
-    }
+SELECT ?a
+FROM <mybooks.rdf>
+{
+  ?b dc:title ?title .
+  SERVICE <http://sparql.org/books>
+     { ?s dc:title ?title . ?s dc:creator ?a }
+}
+```
 
 ## Algebra
 
 There is an operator in the algebra.
 
-    (prefix ((dc: <http://purl.org/dc/elements/1.1/>))
-      (project (?a)
-        (join
-          (BGP [triple ?b dc:title ?title])
-          (service <http://sparql.org/books>
-              (BGP
-                [triple ?s dc:title ?title]
-                [triple ?s dc:creator ?a]
-              ))
-          )))
+```sparql
+(prefix ((dc: <http://purl.org/dc/elements/1.1/>))
+  (project (?a)
+    (join
+      (BGP [triple ?b dc:title ?title])
+      (service <http://sparql.org/books>
+          (BGP
+            [triple ?s dc:title ?title]
+            [triple ?s dc:creator ?a]
+          ))
+      )))
+```
 
 ## Performance Considerations
 

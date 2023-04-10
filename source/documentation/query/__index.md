@@ -72,8 +72,8 @@ Feature of ARQ that go beyond SPARQL syntax.
 - [LATERAL Join](lateral-join.html)
 - [RDF-star](https://w3c.github.io/rdf-star/)
 - Operators and functions
-    `[MOD](https://www.w3.org/TR/xpath-functions/#func-numeric-mod)`
-    and `[IDIV](https://www.w3.org/TR/xpath-functions/#func-numeric-integer-divide)` for modulus and integer division.
+    [`MOD`](https://www.w3.org/TR/xpath-functions/#func-numeric-mod)
+    and [`IDIV`](https://www.w3.org/TR/xpath-functions/#func-numeric-integer-divide) for modulus and integer division.
 - [LET variable assignment](assignment.html)
 - [Order results using a Collation](collation.html)
 - [Construct Quad](construct-quad.html)
