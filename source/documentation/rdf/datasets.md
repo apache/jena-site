@@ -8,10 +8,6 @@ readers and a concurrent writer together with full snapshot isolation of
 the dataset.  Readers see an unchanging, consistent dataset where aggregate
 operations return stable results.
 
-First introduced in Jena version 3.0.1 as a beta, then in 3.1.0.
-
-During the beta phase, please log any issues with [Apache Jena JIRA](https://issues.apache.org/jira/issues/?jql=project%20%3D%20JENA%20ORDER%20BY%20key%20DESC%2C%20priority%20DESC).
-
 ### API use
 
 A new instance of the class is obtained by a call to `DatasetFactory.createTxnMem()`:
