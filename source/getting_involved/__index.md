@@ -10,7 +10,8 @@ If you need help using Jena, please see our [getting help](../help_and_support) 
 
 ### How to contribute
 
-You can help us sending your suggestions, feature requests and bug reports (as well as patches) using the [Jena issue tracker](https://issues.apache.org/jira/browse/JENA).
+You can help us sending your suggestions, feature requests and bug reports (as well as patches) using
+[Jena's GitHub Issues](https://github.com/apache/jena/issues) or [Jena JIRA](https://issues.apache.org/jira/browse/JENA).
 
 You can discuss your contribution, before or after adding it to Jira, on the [`dev@jena.apache.org`](mailto:dev@jena.apache.org) mailing list.
 You can also help other users by answering their questions on the [`users@jena.apache.org`](mailto:users@jena.apache.org) mailing list.
