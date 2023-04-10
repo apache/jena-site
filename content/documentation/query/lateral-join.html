@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -210,23 +217,23 @@ used for the join condition after evaluation of the left and right
 sub-patterns.</p>
 <p>Another way to think of a lateral join is as a <code>flatmap</code>.</p>
 <p>Examples:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#080;font-style:italic">## Get exactly one label for each subject with type `:T`</span>
-<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span>
-  <span style="">LATERAL</span> {
-    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
-  }
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#080;font-style:italic">## Get zero or one labels for each subject.</span>
-<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
-  <span style="">LATERAL</span> {
-    <span style="color:#a2f;font-weight:bold">OPTIONAL</span> {
-      <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
-    }
-  }
-}
-</code></pre></div><h4 id="syntax">Syntax</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#080;font-style:italic">## Get exactly one label for each subject with type `:T`</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span>
+</span></span><span style="display:flex;"><span>  <span style="">LATERAL</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#080;font-style:italic">## Get zero or one labels for each subject.</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
+</span></span><span style="display:flex;"><span>  <span style="">LATERAL</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">OPTIONAL</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="syntax">Syntax</h4>
 <p>The <code>LATERAL</code> keyword which takes the graph pattern so far in the group, from
 the <code>{</code> starting of the current block, and a <code>{ }</code> block afterwards.</p>
 <h4 id="evaluation">Evaluation</h4>
@@ -239,12 +246,12 @@ the <code>{</code> starting of the current block, and a <code>{ }</code> block a
 the LHS.</p>
 <p>Such a variable assignment would conflict with the variable being set in
 variables of the row being joined.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#080;font-style:italic">## ** Illegal **</span>
-<span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
-  <span style="">LATERAL</span> { <span style="color:#a2f;font-weight:bold">BIND</span>( <span style="color:#666">123</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?o</span>) }
-}
-</code></pre></div><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#080;font-style:italic">## ** Illegal **</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>
+</span></span><span style="display:flex;"><span>  <span style="">LATERAL</span> { <span style="color:#a2f;font-weight:bold">BIND</span>( <span style="color:#666">123</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?o</span>) }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>See <a href="https://www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL Grammar note 12</a>.</p>
 <p>In ARQ, <a href="assignment.html">LET</a> would work.
 <code>LET</code> for a variable that is bound acts like a filter.</p>
 <h4 id="variable-scopes">Variable Scopes</h4>
@@ -254,28 +261,28 @@ available to the right-hand side pattern, setting their value from the top down.
 exposed within a sub-select. These are not lateral-joined to a variable of the
 same name from the LHS.</p>
 <p>This is not specific to lateral joins. In</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
-  {
-    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> }
-  }
-}
-</code></pre></div><p>the inner <code>?s</code> can be replaced by <code>?z</code> without changing the results because the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>the inner <code>?s</code> can be replaced by <code>?z</code> without changing the results because the
 inner <code>?s</code> is not joined to the outer <code>?s</code> but instead is hidden by the <code>SELECT ?label</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
-  {
-    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?z</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> }
-  }
-}
-</code></pre></div><p>The same rule applies to lateral joins.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
-  <span style="">LATERAL</span> {
-    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
-  }
-}
-</code></pre></div><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?z</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The same rule applies to lateral joins.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> :<span style="color:#008000;font-weight:bold">T</span> 
+</span></span><span style="display:flex;"><span>  <span style="">LATERAL</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?label</span> { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">rdfs</span>:<span style="color:#008000;font-weight:bold">label</span> <span style="color:#b8860b">?label</span> } <span style="color:#a2f;font-weight:bold">LIMIT</span> <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The inner <code>?s</code> in the <code>SELECT ?label</code> is not the outer <code>?s</code> because the <code>SELECT ?label</code> does not pass out <code>?s</code>. As a sub-query the <code>?s</code> could be any name except
 <code>?label</code> for the same results.</p>
 <h3 id="notes">Notes</h3>
 <p>There is a similarity to filter <code>NOT EXISTS</code>/<code>EXISTS</code> expressed as the non-legal
@@ -285,21 +292,21 @@ available to &ldquo;pattern&rdquo;. This is similar to an SQL
 <h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
 <h3 id="syntax-1">Syntax</h3>
 <p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ebnf" data-lang="ebnf"><span style="">[56]</span>    <span style="color:#a2f;font-weight:bold">GraphPatternNotTriples    </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#a2f;font-weight:bold">GroupOrUnionGraphPattern </span>| <span style="color:#a2f;font-weight:bold">OptionalGraphPattern </span>| <span style="color:#a2f;font-weight:bold">LateralGraphPattern </span>| .<span style="">..</span>
-<span style="">[57]</span>    <span style="color:#a2f;font-weight:bold">OptionalGraphPattern      </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#b44">&#39;OPTIONAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
-[  ]    <span style="color:#a2f;font-weight:bold">LateralGraphPattern       </span><span style="">::=</span>    <span style="color:#b44">&#39;LATERAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
-</code></pre></div><h3 id="algebra">Algebra</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ebnf" data-lang="ebnf"><span style="display:flex;"><span><span style="">[56]</span>    <span style="color:#a2f;font-weight:bold">GraphPatternNotTriples    </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#a2f;font-weight:bold">GroupOrUnionGraphPattern </span>| <span style="color:#a2f;font-weight:bold">OptionalGraphPattern </span>| <span style="color:#a2f;font-weight:bold">LateralGraphPattern </span>| .<span style="">..</span>
+</span></span><span style="display:flex;"><span><span style="">[57]</span>    <span style="color:#a2f;font-weight:bold">OptionalGraphPattern      </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#b44">&#39;OPTIONAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
+</span></span><span style="display:flex;"><span>[  ]    <span style="color:#a2f;font-weight:bold">LateralGraphPattern       </span><span style="">::=</span>    <span style="color:#b44">&#39;LATERAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
+</span></span></code></pre></div><h3 id="algebra">Algebra</h3>
 <p>The new algebra operator is <code>lateral</code> which takes two expressions</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sparql" data-lang="sparql"><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
-  <span style="color:#b8860b">?s</span>  <span style="color:#b8860b">?p</span>  <span style="color:#b8860b">?o</span>
-  <span style="">LATERAL</span>
-  { <span style="color:#b8860b">?a</span>  <span style="color:#b8860b">?b</span>  <span style="color:#b8860b">?c</span> }
-}
-</code></pre></div><p>is translated to:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lisp" data-lang="lisp">(<span style="color:#b8860b">lateral</span>
-  (<span style="color:#b8860b">bgp</span> (<span style="color:#b8860b">triple</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>))
-  (<span style="color:#b8860b">bgp</span> (<span style="color:#b8860b">triple</span> <span style="color:#b8860b">?a</span> <span style="color:#b8860b">?b</span> <span style="color:#b8860b">?c</span>)))
-</code></pre></div><h3 id="evaluation-1">Evaluation</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span>  <span style="color:#b8860b">?p</span>  <span style="color:#b8860b">?o</span>
+</span></span><span style="display:flex;"><span>  <span style="">LATERAL</span>
+</span></span><span style="display:flex;"><span>  { <span style="color:#b8860b">?a</span>  <span style="color:#b8860b">?b</span>  <span style="color:#b8860b">?c</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>is translated to:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lisp" data-lang="lisp"><span style="display:flex;"><span>(<span style="color:#b8860b">lateral</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#b8860b">bgp</span> (<span style="color:#b8860b">triple</span> <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span>))
+</span></span><span style="display:flex;"><span>  (<span style="color:#b8860b">bgp</span> (<span style="color:#b8860b">triple</span> <span style="color:#b8860b">?a</span> <span style="color:#b8860b">?b</span> <span style="color:#b8860b">?c</span>)))
+</span></span></code></pre></div><h3 id="evaluation-1">Evaluation</h3>
 <p>To evaluate <code>lateral</code>:</p>
 <ul>
 <li>Evaluate the first argument (left-hand side from syntax) to get a multiset of solution mappings.</li>
@@ -312,7 +319,7 @@ available to &ldquo;pattern&rdquo;. This is similar to an SQL
 </li>
 </ul>
 <p>Outline:</p>
-<pre><code>Definition: Lateral
+<pre tabindex="0"><code>Definition: Lateral
 
 Let Ω be a multiset of solution mappings. We define:
 
@@ -326,7 +333,7 @@ Lateral(Ω, P) = { μ | union of Ω1 where
 operation.</p>
 <p>An alternative style is to define Lateral more like &ldquo;evaluate P such that μ is
 in-scope&rdquo; in some way, rather than rely on <code>inject</code> which is a mechanism.</p>
-<pre><code>Definition: Evaluation of Lateral
+<pre tabindex="0"><code>Definition: Evaluation of Lateral
 
 eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)
 </code></pre>
@@ -388,6 +395,7 @@ eval(D(G), Lateral(P1, P2) = Lateral(eval(D(G), P1), P2)
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

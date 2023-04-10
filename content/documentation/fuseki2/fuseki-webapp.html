@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -258,10 +265,10 @@ made available and described on the
 logging configuration comes from the file <code>log4j2.properties</code> in the root of the
 unpacked war file, e.g. <code>/var/lib/tomcat9/webapps/fuseki/log4j2.properties</code>.</p>
 <p>The name of the file is taken from <code>web.xml</code>:</p>
-<p><context-param>
-<param-name>log4jConfiguration</param-name>
-<param-value>log4j2.properties</param-value>
-</context-param></p>
+  <context-param>
+    <param-name>log4jConfiguration</param-name>
+    <param-value>log4j2.properties</param-value>
+  </context-param>
 <p>This only applies when running in a webapp container. When run from the command
 line, the server looks for <code>log4j2.properties</code> in the current directory and if
 not found, uses a built-in configuration.</p>
@@ -272,10 +279,10 @@ be writable to Fuseki. To enable this area, add <code>ReadWritePaths=/etc/fuseki
 the file <code>/etc/systemd/system/tomcat9.service.d/override.conf</code>,
 creating the file if necessary.</p>
 <p><code>systemd</code> also captures standard out and routes it to the system journal:</p>
-<pre><code>  journalctl -u tomcat9
+<pre tabindex="0"><code>  journalctl -u tomcat9
 </code></pre><p>To direct the output to the traditional location of
 /var/log/tomcat9/catalina.out use the <code>StandardOutput</code> setting in <code>override.conf</code>:</p>
-<pre><code>    [Service]
+<pre tabindex="0"><code>    [Service]
    
     # Allow access to the Fuseki area
     ReadWritePaths=/etc/fuseki/
@@ -325,6 +332,7 @@ creating the file if necessary.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

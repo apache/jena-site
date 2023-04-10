@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Jena RDF/XML Input How-To</title>
+    <title>Apache Jena - Search Results</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -114,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/rdfxml-input.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/search/__index.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -130,6 +137,9 @@
 
 
 
+    
+    
+
 
 <ol class="breadcrumb mt-4 p-2 bg-body-tertiary">
     
@@ -140,23 +150,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item"><a href='/documentation/io'>IO</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item active">RDFXML INPUT</li>
+                <li class="breadcrumb-item active">SEARCH</li>
             
             
         
@@ -167,189 +161,207 @@
 
 
             </div>
-            <h1 class="title">Jena RDF/XML Input How-To</h1>
+            <h1 class="title">Search Results</h1>
             
             
-<main class="d-flex flex-xl-row flex-column">
-  
-  <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
-    <h2 class="h6 my-2">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#advanced-rdfxml-input">Advanced RDF/XML Input</a>
-      <ul>
-        <li><a href="#arp-properties">ARP properties</a></li>
-      </ul>
-    </li>
-    <li><a href="#further-details">Further details</a></li>
-  </ul>
-</nav>
-  </aside>
-  <article class="flex-column me-lg-4">
-    <p><em>Legacy Documentation : may not be up-to-date</em></p>
-<p>Original <a href="rdfxml_howto.html">RDF/XML HowTo</a>.</p>
-<hr>
-<p>This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.</p>
-<h2 id="advanced-rdfxml-input">Advanced RDF/XML Input</h2>
-<p>For access to these advanced features, first get an <code>RDFReader</code>
-object that is an instance of an ARP parser, by using the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReaderF.html#getReader()"><code>getReader</code></a><code>()</code>
-method on any <code>Model</code>. It is then configured using the
-[<code>setProperty</code>](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))<code>(String, Object)</code>
-method. This changes the properties for parsing RDF/XML. Many of
-the properties change the RDF parser, some change the XML parser.
-(The Jena RDF/XML parser, ARP, implements the
-<a href="http://www.w3.org/TR/rdf-syntax-grammar/#section-Infoset-Grammar">RDF grammar</a>
-over a <a href="http://xml.apache.org/xerces2-j/index.html">Xerces2-J</a> XML
-parser). However, changing the features and properties of the XML
-parser is not likely to be useful, but was easy to implement.</p>
-<p>[<code>setProperty</code>](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))<code>(String, Object)</code>
-can be used to set and get:</p>
-<ul>
-<li>ARP properties
-<br /> These allow fine grain control over the extensive error
-reporting capabilities of ARP. And are detailed directly below.</li>
-<li>SAX2 features
-<br />See
-<a href="http://xml.apache.org/xerces2-j/features.html">Xerces features</a>.
-Value should be given as a String <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code> or a <code>Boolean</code>.</li>
-<li>SAX2 properties
-<br /> See <a href="http://xml.apache.org/xerces2-j/properties.html">Xerces properties</a>.</li>
-<li>Xerces features
-<br /> See <a href="http://xml.apache.org/xerces2-j/features.html">Xerces features</a>.
-Value should be given as a String <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code> or a <code>Boolean</code>.</li>
-<li>Xerces properties
-<br /> See <a href="http://xml.apache.org/xerces2-j/properties.html">Xerces properties</a>.</li>
-</ul>
-<h3 id="arp-properties">ARP properties</h3>
-<p>An ARP property is referred to either by its property name, (see
-below) or by an absolute URL of the form
-<code>http://jena.hpl.hp.com/arp/properties/&lt;PropertyName&gt;</code>. The value
-should be a String, an Integer or a Boolean depending on the
-property.</p>
-<p>ARP property names and string values are case insensitive.</p>
-<table>
-<thead>
-<tr>
-<th>Property Name</th>
-<th>Description</th>
-<th>Value class</th>
-<th>Legal Values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>iri-rules</code></td>
-<td>Set the engine for checking and resolving. <code>&quot;strict&quot;</code> sets the IRI engine with rules for valid IRIs, XLink and RDF; it does not permit spaces in IRIs. <code>&quot;iri&quot;</code>sets the IRI engine to IRI (<a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a>, <a href="http://www.ietf.org/rfc/rfc3987.txt">RFC 3987</a>) <code>.</code> The default is <code>&quot;lax&quot;</code>(for backwards compatibility)<code>,</code> the rules for RDF URI references only, which does permit spaces although the use of spaces is not good practice.</td>
-<td>String</td>
-<td><code>lax</code><br /><code>strict</code><br /><code>iri</code></td>
-</tr>
-<tr>
-<td><code>error-mode</code></td>
-<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setDefaultErrorMode()"><code>ARPOptions.setDefaultErrorMode()</code></a> <br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setLaxErrorMode()"><code>ARPOptions.setLaxErrorMode()</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode()"><code>ARPOptions.setStrictErrorMode()</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode(int)"><code>ARPOptions.setStrictErrorMode(int)</code></a><br />  This allows a coarse-grained approach to control of error handling. Setting this property is equivalent to setting many of the fine-grained error handling properties.</td>
-<td><code>String</code></td>
-<td><code>default</code><br /><code>lax</code><br /><code>strict</code><br /><code>strict-ignore</code><br /><code>strict-warning</code><br /><code>strict-error</code><br /><code>strict-fatal</code></td>
-</tr>
-<tr>
-<td><code>embedding</code></td>
-<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setEmbedding(boolean)"><code>ARPOptions.setEmbedding(boolean)</code></a> <br />This sets ARP to look for RDF embedded within an enclosing XML document.</td>
-<td><code>String</code> or <code>Boolean</code></td>
-<td><code>true</code><br /><code>false</code></td>
-</tr>
-<tr>
-<td><code>ERR_&lt;XXX&gt;</code> <br /><code>WARN_&lt;XXX&gt;</code><br /><code>IGN_&lt;XXX&gt;</code></td>
-<td>See <a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html"><code>ARPErrorNumbers</code></a> for a complete list of the error conditions detected. Setting one of these properties is equivalent to the method <a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setErrorMode(int,%20int)"><code>ARPOptions.setErrorMode(int, int)</code></a>. Thus fine-grained control over the behaviour in response to specific error conditions is possible.</td>
-<td><code>String</code> or <code>Integer</code></td>
-<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_IGNORE"><code>EM_IGNORE</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_WARNING"><code>EM_WARNING</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_ERROR"><code>EM_ERROR</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_FATAL"><code>EM_FATAL</code></a></td>
-</tr>
-</tbody>
-</table>
-<p>To set ARP properties, create a map of values to be set and put this in parser context:</p>
-<pre><code>    Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
-    // See class ARPErrorNumbers for the possible ARP properties.
-    properties.put(&quot;WARN_BAD_NAME&quot;, &quot;EM_IGNORE&quot;);
 
-    // Build and run a parser
-    Model model = RDFParser.create()
-        .lang(Lang.RDFXML)
-        .source(...)
-        .set(SysRIOT.sysRdfReaderProperties, properties)
-        .base(&quot;http://base/&quot;)
-        .toModel();
-    System.out.println(&quot;== Parsed data output in Turtle&quot;);
-    RDFDataMgr.write(System.out,  model, Lang.TURTLE);
-</code></pre><p>See example
-<a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_ReaderProperties.java">ExRIOT_RDFXML_ReaderProperties.java</a>.</p>
-<p><b>Legacy Example</b></p>
-<p>As an example, if you are working in an environment with legacy RDF
-data that uses unqualified RDF attributes such as &ldquo;about&rdquo; instead
-of &ldquo;rdf:about&rdquo;, then the following code is appropriate:</p>
-<pre><code>Model m = ModelFactory.createDefaultModel();
-RDFReader arp = m.getReader();
-m = null; // m is no longer needed.
-// initialize arp
-// Do not warn on use of unqualified RDF attributes.
-arp.setProperty(&quot;WARN_UNQUALIFIED_RDF_ATTRIBUTE&quot;,&quot;EM_IGNORE&quot;);
+<main>
+  <div id="search-results"></div>
+  <div class="search-loading">Loading...</div>
 
-…
+  <script id="search-result-template" type="text/x-js-template">
+    <div id="summary-${key}">
+      <h3><a href="${link}">${title}</a></h3>
+      <p class="pb-0 mb-0">${snippet}</p>
+      <p class="opacity-50 pt-0 mt-0"><small>Score: ${score}</small></p>
+      <p>
+        <small>
+          ${ isset tags }Tags: ${tags}<br>${ end }
+        </small>
+      </p>
+    </div>
+  </script>
 
-InputStream in = new FileInputStream(fname);
-arp.read(m,in,url);
-in.close();
-</code></pre>
-<p>As a second example, suppose you wish to work in strict mode, but
-allow <code>&quot;daml:collection&quot;</code>, the following works:</p>
-<pre><code> …
- arp.setProperty(&quot;error-mode&quot;, &quot;strict&quot; );
- arp.setProperty(&quot;IGN_DAML_COLLECTION&quot;,&quot;EM_IGNORE&quot;);
- …
-</code></pre>
-<p>The other way round does not work.</p>
-<pre><code> …
- arp.setProperty(&quot;IGN_DAML_COLLECTION&quot;,&quot;EM_IGNORE&quot;);
- arp.setProperty(&quot;error-mode&quot;, &quot;strict&quot; );
- …
-</code></pre>
-<p>This is because in strict mode
-<a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#IGN_DAML_COLLECTION"><code>IGN_DAML_COLLECTION</code></a>
-is treated as an error, and so the second call to <code>setProperty</code>
-overwrites the effect of the first.</p>
-<p>The IRI rules and resolver can be set on a per-reader basis:</p>
-<pre><code>InputStream in = ... ;
-String baseURI = ... ;
-Model model = ModelFactory.createDefaultModel();
-RDFReader r = model.getReader(&quot;RDF/XML&quot;);
-r.setProperty(&quot;iri-rules&quot;, &quot;strict&quot;) ;
-r.setProperty(&quot;error-mode&quot;, &quot;strict&quot;) ; // Warning will be errors.
+  <script src="/js/fuse.min.js" type="text/javascript" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/mark.min.js" type="text/javascript" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+    (function() {
+      const summaryInclude = 180;
+      
+      const fuseOptions = {
+        
+        isCaseSensitive: false,
+        
+        
+        includeScore: true,
+        
+        
+        
+        includeMatches: true,
+        
+        
+        minMatchCharLength: 2,
+        
+        shouldSort: true,
+        
+        
+        keys: [
+          {name: "title", weight: 0.8},
+          {name: "contents", weight: 0.7},
+          
+          
+        ],
+        
+        
+        location: 0,
+        
+        
+        
+        threshold: 0.2,
+        
+        
+        
+        
+        
+        distance: 100,
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ignoreLocation: true,
+      };
 
-// Alternative to the above &quot;error-mode&quot;: set specific warning to be an error.
-//r.setProperty( &quot;WARN_MALFORMED_URI&quot;, ARPErrorNumbers.EM_ERROR) ;
-r.read(model, in, baseURI) ;
-in.close();
-</code></pre>
-<p>The global default IRI engine can be set with:</p>
-<pre><code>ARPOptions.setIRIFactoryGlobal(IRIFactory.iriImplementation()) ;
-</code></pre>
-<p>or other IRI rule engine from <code>IRIFactory</code>.</p>
-<h2 id="further-details">Further details</h2>
-<p><a href="arp/arp.html">Details of ARP, the Jena RDF/XML parser</a></p>
+      
+      
+      
 
-  </article>
-  
-  <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
-    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#advanced-rdfxml-input">Advanced RDF/XML Input</a>
-      <ul>
-        <li><a href="#arp-properties">ARP properties</a></li>
-      </ul>
-    </li>
-    <li><a href="#further-details">Further details</a></li>
-  </ul>
-</nav>
-  </aside>
+      const inputBox = document.getElementById('search-query');
+      if (inputBox !== null) {
+        const searchQuery = param("q");
+        if (searchQuery) {
+          inputBox.value = searchQuery || "";
+          executeSearch(searchQuery, false);
+        } else {
+          document.getElementById('search-results').innerHTML = '<p class="search-results-empty">Please enter a word or phrase above, or see <a href="/tags/">all tags</a>.</p>';
+        }
+      }
+
+      function executeSearch(searchQuery) {
+
+        show(document.querySelector('.search-loading'));
+
+        fetch('/index.json').then(function (response) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' + response.status);
+            return;
+          }
+          
+          response.json().then(function (pages) {
+            const fuse = new Fuse(pages, fuseOptions);
+            const result = fuse.search(searchQuery);
+            if (result.length > 0) {
+              populateResults(result);
+            } else {
+              document.getElementById('search-results').innerHTML = '<p class=\"search-results-empty\">No matches found</p>';
+            }
+            hide(document.querySelector('.search-loading'));
+          })
+            .catch(function (err) {
+              console.log('Fetch Error :-S', err);
+            });
+        });
+      }
+
+      function populateResults(results) {
+
+        const searchQuery = document.getElementById("search-query").value;
+        const searchResults = document.getElementById("search-results");
+
+        searchResults.innerHTML += `<p>Search returned ${results.length} matches.</p>`;
+
+        // pull template from hugo template definition
+        const templateDefinition = document.getElementById("search-result-template").innerHTML;
+
+        results.forEach(function (value, key) {
+          const contents = value.item.contents;
+          let snippet = "";
+          const snippetHighlights = [];
+
+          snippetHighlights.push(searchQuery);
+          snippet = contents.substring(0, summaryInclude * 2) + '&hellip;';
+
+          
+          let tags = ""
+          if (value.item.tags) {
+            value.item.tags.forEach(function (element) {
+              tags = tags + "<a href='/tags/" + element + "'>" + "#" + element + "</a> "
+            });
+          }
+
+          const output = render(templateDefinition, {
+            key: key,
+            title: value.item.title,
+            link: value.item.permalink,
+            tags: tags,
+            categories: value.item.categories,
+            snippet: snippet,
+            score: value.score
+          });
+          searchResults.innerHTML += output;
+
+          snippetHighlights.forEach(function (snipvalue, snipkey) {
+            const instance = new Mark(document.getElementById('summary-' + key));
+            instance.mark(snipvalue);
+          });
+
+        });
+      }
+
+      function render(templateString, data) {
+        let conditionalMatches, conditionalPattern, copy;
+        conditionalPattern = /\$\{\s*isset ([a-zA-Z]*) \s*\}(.*)\$\{\s*end\s*}/g;
+        
+        copy = templateString;
+        while ((conditionalMatches = conditionalPattern.exec(templateString)) !== null) {
+          if (data[conditionalMatches[1]]) {
+            
+            copy = copy.replace(conditionalMatches[0], conditionalMatches[2]);
+          } else {
+            
+            copy = copy.replace(conditionalMatches[0], '');
+          }
+        }
+        templateString = copy;
+        
+        let key, find, re;
+        for (key in data) {
+          find = '\\$\\{\\s*' + key + '\\s*\\}';
+          re = new RegExp(find, 'g');
+          templateString = templateString.replace(re, data[key]);
+        }
+        return templateString;
+      }
+
+      
+      function show(elem) {
+        elem.style.display = 'block';
+      }
+      function hide(elem) {
+        elem.style.display = 'none';
+      }
+      function param(name) {
+        return decodeURIComponent((location.search.split(name + '=')[1] || '').split('&')[0]).replace(/\+/g, ' ');
+      }
+
+    })()
+  </script>
 </main>
+
 
         </div>
     </div>
@@ -378,6 +390,7 @@ in.close();
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

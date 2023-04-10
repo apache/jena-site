@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - RDF/XML Input in Jena</title>
+    <title>Apache Jena - Searches</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -114,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/arp/arp.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/search" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
             </ul>
         </div>
     </div>
@@ -140,31 +147,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item"><a href='/documentation/io'>IO</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item"><a href='/documentation/io/arp'>ARP</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item active">ARP</li>
+                <li class="breadcrumb-item active">SEARCH.HTML</li>
             
             
         
@@ -175,88 +158,207 @@
 
 
             </div>
-            <h1 class="title">RDF/XML Input in Jena</h1>
+            <h1 class="title">Searches</h1>
             
             
-<main class="d-flex flex-xl-row flex-column">
-  
-  <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
-    <h2 class="h6 my-2">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#arp-features">ARP Features</a></li>
-  </ul>
-</nav>
-  </aside>
-  <article class="flex-column me-lg-4">
-    <p>This section details the Jena RDF/XML parser.
-ARP is the parsing subsystem in Jena for handling the RDF/XML syntax.</p>
-<ul>
-<li><a href="#arp-features">ARP Features</a></li>
-<li><a href="arp_standalone.html">Using ARP without Jena</a></li>
-<li><a href="arp_sax.html">Using other SAX and DOM XML sources</a></li>
-</ul>
-<h2 id="arp-features">ARP Features</h2>
-<ul>
-<li>Java based RDF parser.</li>
-<li>Compliant with
-<a href="http://www.w3.org/TR/rdf-syntax-grammar">RDF Syntax</a> and
-<a href="http://www.w3.org/TR/rdf-testcases">RDF Test Cases</a>
-Recommendations.</li>
-<li>Compliant with following standards and recommendations:
-<ul>
-<li><strong>xml:lang</strong><br />
-<a href="http://www.w3.org/TR/REC-xml#sec-lang-tag">xml:lang</a> is fully
-supported, both in RDF/XML and any document embedding RDF/XML.
-Moreover, the language tags are checked against
-<a href="http://www.isi.edu/in-notes/rfc1766.txt">RFC1766</a>,
-<a href="http://www.isi.edu/in-notes/rfc3066.txt">RFC3066</a>, ISO639-1,
-<a href="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/db_en.html">ISO3166</a>.</li>
-<li><strong>xml:base</strong><br />
-<a href="http://www.w3.org/TR/xmlbase/">xml:base</a> is fully supported,
-both in RDF/XML and any document embedding RDF/XML.</li>
-<li><strong>URI</strong><br />
-All URI references are checked against
-<a href="http://www.isi.edu/in-notes/rfc2396.txt">RFC2396</a>. The treatment
-of international URIs implements the concept of
-<a href="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI Reference</a>.</li>
-<li><strong>XML Names</strong><br />
-All rdf:ID&rsquo;s are checked against the
-<a href="http://www.w3.org/TR/REC-xml#dt-name">XML Names</a> specification.</li>
-<li><strong>Unicode Normal Form C</strong><br />
-String literals are checked for conformance with an early
-uniform normalization processing model.</li>
-<li><strong>XML Literals</strong><br />
-<code>rdf:parseType='Literal'</code> is processed respecting namespaces,
-processing instructions and XML comments. This follows the XML
-exclusive canonicalizations recommendation with comments.</li>
-<li><strong>Relative Namespace URI references</strong><br />
-Namespace URI references are checked in light of the
-<a href="http://www.w3.org/2000/09/xppa">W3C XML Plenary decision</a>.</li>
-</ul>
-</li>
-<li>Command-line RDF/XML error checking.</li>
-<li>Can be used independently of Jena, with customizable
-<code>StatementHandler</code>.</li>
-<li>Highly configurable error processing.</li>
-<li>Xerces based XML parsing.</li>
-<li>Processes both standalone and embedded RDF/XML.</li>
-<li>Streaming parser, suitable for large files.</li>
-<li>Supports SAX and DOM, for integration with non-file XML
-sources.</li>
-</ul>
 
-  </article>
-  
-  <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
-    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#arp-features">ARP Features</a></li>
-  </ul>
-</nav>
-  </aside>
+<main>
+  <div id="search-results"></div>
+  <div class="search-loading">Loading...</div>
+
+  <script id="search-result-template" type="text/x-js-template">
+    <div id="summary-${key}">
+      <h3><a href="${link}">${title}</a></h3>
+      <p class="pb-0 mb-0">${snippet}</p>
+      <p class="opacity-50 pt-0 mt-0"><small>Score: ${score}</small></p>
+      <p>
+        <small>
+          ${ isset tags }Tags: ${tags}<br>${ end }
+        </small>
+      </p>
+    </div>
+  </script>
+
+  <script src="/js/fuse.min.js" type="text/javascript" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/mark.min.js" type="text/javascript" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+    (function() {
+      const summaryInclude = 180;
+      
+      const fuseOptions = {
+        
+        isCaseSensitive: false,
+        
+        
+        includeScore: true,
+        
+        
+        
+        includeMatches: true,
+        
+        
+        minMatchCharLength: 2,
+        
+        shouldSort: true,
+        
+        
+        keys: [
+          {name: "title", weight: 0.8},
+          {name: "contents", weight: 0.7},
+          
+          
+        ],
+        
+        
+        location: 0,
+        
+        
+        
+        threshold: 0.2,
+        
+        
+        
+        
+        
+        distance: 100,
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ignoreLocation: true,
+      };
+
+      
+      
+      
+
+      const inputBox = document.getElementById('search-query');
+      if (inputBox !== null) {
+        const searchQuery = param("q");
+        if (searchQuery) {
+          inputBox.value = searchQuery || "";
+          executeSearch(searchQuery, false);
+        } else {
+          document.getElementById('search-results').innerHTML = '<p class="search-results-empty">Please enter a word or phrase above, or see <a href="/tags/">all tags</a>.</p>';
+        }
+      }
+
+      function executeSearch(searchQuery) {
+
+        show(document.querySelector('.search-loading'));
+
+        fetch('/index.json').then(function (response) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' + response.status);
+            return;
+          }
+          
+          response.json().then(function (pages) {
+            const fuse = new Fuse(pages, fuseOptions);
+            const result = fuse.search(searchQuery);
+            if (result.length > 0) {
+              populateResults(result);
+            } else {
+              document.getElementById('search-results').innerHTML = '<p class=\"search-results-empty\">No matches found</p>';
+            }
+            hide(document.querySelector('.search-loading'));
+          })
+            .catch(function (err) {
+              console.log('Fetch Error :-S', err);
+            });
+        });
+      }
+
+      function populateResults(results) {
+
+        const searchQuery = document.getElementById("search-query").value;
+        const searchResults = document.getElementById("search-results");
+
+        searchResults.innerHTML += `<p>Search returned ${results.length} matches.</p>`;
+
+        // pull template from hugo template definition
+        const templateDefinition = document.getElementById("search-result-template").innerHTML;
+
+        results.forEach(function (value, key) {
+          const contents = value.item.contents;
+          let snippet = "";
+          const snippetHighlights = [];
+
+          snippetHighlights.push(searchQuery);
+          snippet = contents.substring(0, summaryInclude * 2) + '&hellip;';
+
+          
+          let tags = ""
+          if (value.item.tags) {
+            value.item.tags.forEach(function (element) {
+              tags = tags + "<a href='/tags/" + element + "'>" + "#" + element + "</a> "
+            });
+          }
+
+          const output = render(templateDefinition, {
+            key: key,
+            title: value.item.title,
+            link: value.item.permalink,
+            tags: tags,
+            categories: value.item.categories,
+            snippet: snippet,
+            score: value.score
+          });
+          searchResults.innerHTML += output;
+
+          snippetHighlights.forEach(function (snipvalue, snipkey) {
+            const instance = new Mark(document.getElementById('summary-' + key));
+            instance.mark(snipvalue);
+          });
+
+        });
+      }
+
+      function render(templateString, data) {
+        let conditionalMatches, conditionalPattern, copy;
+        conditionalPattern = /\$\{\s*isset ([a-zA-Z]*) \s*\}(.*)\$\{\s*end\s*}/g;
+        
+        copy = templateString;
+        while ((conditionalMatches = conditionalPattern.exec(templateString)) !== null) {
+          if (data[conditionalMatches[1]]) {
+            
+            copy = copy.replace(conditionalMatches[0], conditionalMatches[2]);
+          } else {
+            
+            copy = copy.replace(conditionalMatches[0], '');
+          }
+        }
+        templateString = copy;
+        
+        let key, find, re;
+        for (key in data) {
+          find = '\\$\\{\\s*' + key + '\\s*\\}';
+          re = new RegExp(find, 'g');
+          templateString = templateString.replace(re, data[key]);
+        }
+        return templateString;
+      }
+
+      
+      function show(elem) {
+        elem.style.display = 'block';
+      }
+      function hide(elem) {
+        elem.style.display = 'none';
+      }
+      function param(name) {
+        return decodeURIComponent((location.search.split(name + '=')[1] || '').split('&')[0]).replace(/\+/g, ' ');
+      }
+
+    })()
+  </script>
 </main>
+
 
         </div>
     </div>
@@ -285,6 +387,7 @@ sources.</li>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

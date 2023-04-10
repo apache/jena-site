@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -372,9 +379,9 @@ that is correct syntax. This means it does not apply to <code>INSERT DATA</code>
 <code>DELETE { ?s ?p ?o } WHERE {}</code>.</p>
 <p>Full example:
 <a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/ExQuerySubstitute_01.java">ExQuerySubstitute_01.java</a>.</p>
-<pre><code>    ResultSet resultSet1 = QueryExecution.dataset(dataset)
-            .query(prefixes+&quot;SELECT * { ?person foaf:name ?name }&quot;)
-            .substitution(&quot;name&quot;, name1)
+<pre tabindex="0"><code>    ResultSet resultSet1 = QueryExecution.dataset(dataset)
+            .query(prefixes+&#34;SELECT * { ?person foaf:name ?name }&#34;)
+            .substitution(&#34;name&#34;, name1)
             .select();
     ResultSetFormatter.out(resultSet1);
 </code></pre><p>Substitution is to be preferred over &ldquo;initial bindings&rdquo; because it is clearly
@@ -388,19 +395,19 @@ defined and applies to both query and update in both local and remote uses.</p>
 <p>which provide different ways to build a query.</p>
 <h2 id="ttrdfconnectiontt"><tt>RDFConnection</tt></h2>
 <p><a href="../rdfconnection/">RDFConnection</a></p>
-<pre><code>    try ( RDFConnection conn = RDFConnectionRemote.service(dataURL).build()) {
-        conn.update(&quot;INSERT DATA{}&quot;);
-        conn.queryAsk(&quot;ASK{}&quot;);
+<pre tabindex="0"><code>    try ( RDFConnection conn = RDFConnectionRemote.service(dataURL).build()) {
+        conn.update(&#34;INSERT DATA{}&#34;);
+        conn.queryAsk(&#34;ASK{}&#34;);
     }
 </code></pre><p>or the less flexible:</p>
-<pre><code>    try ( RDFConnection conn = RDFConnection.connect(dataURL) ) {
-        conn.update(&quot;INSERT DATA{}&quot;);
-        conn.queryAsk(&quot;ASK{}&quot;);
+<pre tabindex="0"><code>    try ( RDFConnection conn = RDFConnection.connect(dataURL) ) {
+        conn.update(&#34;INSERT DATA{}&#34;);
+        conn.queryAsk(&#34;ASK{}&#34;);
     }
 </code></pre><h2 id="query-execution">Query Execution</h2>
 <p>Builder Examples
 Builders are reusable and modifiable after a &ldquo;build&rdquo; operation.</p>
-<pre><code>Dataset dataset = ...
+<pre tabindex="0"><code>Dataset dataset = ...
 Query query = ...
 try ( QueryExecution qExec = QueryExecution.create()
                                  .dataset(dataset)
@@ -410,27 +417,27 @@ try ( QueryExecution qExec = QueryExecution.create()
     ... use results ...
 }
 </code></pre><p>and remote calls:</p>
-<pre><code>try ( QueryExecution qExec = QueryExecutionHTTP.service(&quot;http://....&quot;)
+<pre tabindex="0"><code>try ( QueryExecution qExec = QueryExecutionHTTP.service(&#34;http://....&#34;)
                                  .query(query)
                                  .build() ) {
     ResultSet results = qExec.execSelect();
     ... use results ...
 }
 </code></pre><p>Factory Examples</p>
-<pre><code>  Dataset dataset = ...
+<pre tabindex="0"><code>  Dataset dataset = ...
   Query query = ...
   try ( QueryExecution qExec = QueryExecutionFactory.create(query, dataset) ) {
        ResultSet results = qExec.execSelect();
        ... use results ...
   }
 </code></pre><p>More complex setup:</p>
-<pre><code>// JDK HttpClient
+<pre tabindex="0"><code>// JDK HttpClient
 HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))  // Timeout to connect
                 .followRedirects(Redirect.NORMAL)
                 .build();
 try ( QueryExecution qExec = QueryExecutionHTTP.create()
-                                 .service(&quot;http:// ....&quot;)
+                                 .service(&#34;http:// ....&#34;)
                                  .httpClient(httpClient)
                                  .query(query)
                                  .sendMode(QuerySendMode.asPost)
@@ -443,11 +450,11 @@ try ( QueryExecution qExec = QueryExecutionHTTP.create()
 connect&rdquo; is handled by the JDK <code>HttpClient</code>. Timeouts for local execution are
 &ldquo;time to first result&rdquo; and &ldquo;time to all results&rdquo; as before.</p>
 <h2 id="ttmodelstorett-and-ttgsptt"><tt>ModelStore</tt> and <tt>GSP</tt></h2>
-<pre><code>   Model model = ModelStore.service(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
-</code></pre><pre><code>   Graph graph = GSP.service(&quot;http://fuseki/dataset&quot;).defaultGraph().GET();
-</code></pre><pre><code>  Graph graph = ... ; 
-  GSP.request(&quot;http://fuseki/dataset&quot;).graphName(&quot;http;//data/myGraph&quot;).POST(graph);
-</code></pre><pre><code>  DatasetGraph dataset = GSP.request(&quot;http://fuseki/dataset&quot;).getDataset();
+<pre tabindex="0"><code>   Model model = ModelStore.service(&#34;http://fuseki/dataset&#34;).defaultGraph().GET();
+</code></pre><pre tabindex="0"><code>   Graph graph = GSP.service(&#34;http://fuseki/dataset&#34;).defaultGraph().GET();
+</code></pre><pre tabindex="0"><code>  Graph graph = ... ; 
+  GSP.request(&#34;http://fuseki/dataset&#34;).graphName(&#34;http;//data/myGraph&#34;).POST(graph);
+</code></pre><pre tabindex="0"><code>  DatasetGraph dataset = GSP.request(&#34;http://fuseki/dataset&#34;).getDataset();
 </code></pre><h2 id="ttservicett"><tt>SERVICE</tt></h2>
 <p><a href="../query/service.html">Old documentation </a> - configuration, especially for
 authentication, has changed.</p>
@@ -489,15 +496,15 @@ code.</p>
 <p>There is a mechanism to modify HTTP requests to specific endpoints or to a
 collection of endpoints with the same prefix.</p>
 <p>For example, to add a header <code>X-Tracker</code> to each request to a particular server:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    AtomicLong counter <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> AtomicLong<span style="color:#666">(</span>0<span style="color:#666">);</span>
-
-    HttpRequestModifier modifier <span style="color:#666">=</span> <span style="color:#666">(</span>params<span style="color:#666">,</span> headers<span style="color:#666">)-&gt;{</span>
-        <span style="color:#0b0;font-weight:bold">long</span> x <span style="color:#666">=</span> counter<span style="color:#666">.</span><span style="color:#b44">incrementAndGet</span><span style="color:#666">();</span>
-        headers<span style="color:#666">.</span><span style="color:#b44">put</span><span style="color:#666">(</span><span style="color:#b44">&#34;X-Tracker&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Call=&#34;</span><span style="color:#666">+</span>x<span style="color:#666">);</span>
-    <span style="color:#666">};</span>
-    <span style="color:#080;font-style:italic">// serverURL is the HTTP URL for the server or part of the server HTTP space.
-</span><span style="color:#080;font-style:italic"></span>    RegistryRequestModifier<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">addPrefix</span><span style="color:#666">(</span>serverURL<span style="color:#666">,</span> modifier<span style="color:#666">);</span>
-</code></pre></div><p>The <code>RegistryRequestModifier</code> registry is checked on each HTTP operation. It
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    AtomicLong counter <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> AtomicLong<span style="color:#666">(</span><span style="color:#666">0</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    HttpRequestModifier modifier <span style="color:#666">=</span> <span style="color:#666">(</span>params<span style="color:#666">,</span> headers<span style="color:#666">)-&gt;{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0b0;font-weight:bold">long</span> x <span style="color:#666">=</span> counter<span style="color:#666">.</span><span style="color:#b44">incrementAndGet</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        headers<span style="color:#666">.</span><span style="color:#b44">put</span><span style="color:#666">(</span><span style="color:#b44">&#34;X-Tracker&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Call=&#34;</span><span style="color:#666">+</span>x<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">};</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// serverURL is the HTTP URL for the server or part of the server HTTP space.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    RegistryRequestModifier<span style="color:#666">.</span><span style="color:#b44">get</span><span style="color:#666">().</span><span style="color:#b44">addPrefix</span><span style="color:#666">(</span>serverURL<span style="color:#666">,</span> modifier<span style="color:#666">);</span>
+</span></span></code></pre></div><p>The <code>RegistryRequestModifier</code> registry is checked on each HTTP operation. It
 maps URLs or prefix of URLs to a function of interface <code>HttpRequestModifier</code>
 which has access to the headers and the query string parameters of the request.</p>
 <h2 id="auth">Authentication</h2>
@@ -556,6 +563,7 @@ which has access to the headers and the query string parameters of the request.<
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -315,7 +322,7 @@ RDFS inferencing is applied using the GeoSPARQL schema to infer additional relat
 </li>
 </ul>
 <p>See <a href="https://github.com/galbiston/rdf-tables">rdf-tables</a> in <em>Output Formats/Serialisations</em> for supported RDF format keywords.</p>
-<p><strong>N.B.</strong> Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. &ldquo;&ldquo;&ldquo;test.rdf&rdquo;&quot;&quot;. Otherwise, logging output will be sent to a file called &ldquo;xml&rdquo;. Also, &ldquo;The input line is too long&rdquo; error can mean the path to the  exceeds the character limit and needs shortening.</p>
+<p><strong>N.B.</strong> Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. &ldquo;&ldquo;&ldquo;test.rdf&rdquo;&rdquo;&rdquo;. Otherwise, logging output will be sent to a file called &ldquo;xml&rdquo;. Also, &ldquo;The input line is too long&rdquo; error can mean the path to the  exceeds the character limit and needs shortening.</p>
 <h3 id="embedded-server">Embedded Server</h3>
 <p>Run within a Java application to provide GeoSPARQL support over HTTP to other applications:</p>
 <pre><code>FusekiLogging.setLogging();
@@ -389,7 +396,7 @@ e.g. <code>test.rdf#test&amp;xml,test2.rdf</code> will load <em>test.rdf</em> fi
 <h3 id="7-load-tabular-file-into-dataset">7) Load Tabular file into dataset</h3>
 <pre><code>--tabular_file, -tf
 </code></pre>
-<p>Comma separated list of [Tabular file path#graph name|delimiter] to load into dataset. See RDF Tables for table formatting. Graph name is optional and will use default graph. Column delimiter is optional and will default to COMMA. Any character except &lsquo;:', &lsquo;^&rsquo; and &lsquo;|&rsquo;. Keywords TAB, SPACE and COMMA are also supported.
+<p>Comma separated list of [Tabular file path#graph name|delimiter] to load into dataset. See RDF Tables for table formatting. Graph name is optional and will use default graph. Column delimiter is optional and will default to COMMA. Any character except &lsquo;:&rsquo;, &lsquo;^&rsquo; and &lsquo;|&rsquo;. Keywords TAB, SPACE and COMMA are also supported.
 e.g. <code>test.rdf#test|TAB,test2.rdf</code> will load <em>test.rdf</em> file into <em>test</em> graph as <em>TAB</em> delimited and <em>test2.rdf</em> into <em>default</em> graph as <em>COMMA</em> delimited.</p>
 <p>See RDF Tables project (<a href="https://github.com/galbiston/rdf-tables">https://github.com/galbiston/rdf-tables</a>) for more details on tabular format.</p>
 <p>Consider the <code>--inference</code>, <code>--default_geometry</code> and <code>--validate</code> options. These operations may add additional statements to the dataset.</p>
@@ -524,6 +531,7 @@ See <a href="index">GeoSPARQL Jena project</a> for more details.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

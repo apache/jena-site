@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -218,10 +225,10 @@ separated by &ldquo;,&rdquo; and format <code>all</code> outputs all 3 formats.<
     .
 </pre>
 <p>This requires a &ldquo;new style&rdquo; endpoint declaration:  see
-&ldquo;<a href="/documentation/fuseki2/fuseki-config-endpoint.html">Fuseki Endpoint Configuration</a>&quot;.</p>
+&ldquo;<a href="/documentation/fuseki2/fuseki-config-endpoint.html">Fuseki Endpoint Configuration</a>&rdquo;.</p>
 <p>This is not installed into a dataset setup by default; a configuration file using</p>
-<pre><code>fuseki:endpoint [ fuseki:operation fuseki:shacl ;
-                  fuseki:name &quot;shacl&quot; ];
+<pre tabindex="0"><code>fuseki:endpoint [ fuseki:operation fuseki:shacl ;
+                  fuseki:name &#34;shacl&#34; ];
 </code></pre><p>is necessary (or programmatic setup for Fuseki Main).</p>
 <p>The service accepts a shapes graph posted as RDF to <tt>/<i>ds</i>/shacl</tt> with
 content negotiation.</p>
@@ -301,15 +308,15 @@ with the shorthand <code>-&gt;</code>) as well as the defined
 <code>SELECT</code> query.</p>
 <p>See <a href="https://w3c.github.io/shacl/shacl-af/#SPARQLTarget">SPARQL-based targets</a>
 for details.</p>
-<pre><code>ex:example
+<pre tabindex="0"><code>ex:example
     sh:target [
         a sh:SPARQLTarget ;
-        sh:select &quot;&quot;&quot;
+        sh:select &#34;&#34;&#34;
             SELECT ?this
             WHERE {
               ...
             }
-            &quot;&quot;&quot; ;
+            &#34;&#34;&#34; ;
     ] ;
 </code></pre><h2 id="validationlistener">ValidationListener</h2>
 <p>When given a <code>ValidationListener</code> the SHACL validation code emits events at each step of validation:</p>
@@ -319,7 +326,7 @@ for details.</p>
 <li>when validation of a constraint begins, ends and yields positive or negative results</li>
 </ul>
 <p>For example, the following listener will just record all events in a List:</p>
-<pre><code>public class RecordingValidationListener implements ValidationListener {
+<pre tabindex="0"><code>public class RecordingValidationListener implements ValidationListener {
         private final List&lt;ValidationEvent&gt; events = new ArrayList&lt;&gt;();
 
         @Override public void onValidationEvent(ValidationEvent e) {
@@ -332,7 +339,7 @@ for details.</p>
     }
 </code></pre><p>The listener must be passed to the constructor of the <code>ValidationContext</code>.
 The following example validates the <code>dataGraph</code> according to the <code>shapesGraph</code> using the ValidationListener above:</p>
-<pre><code>    Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
+<pre tabindex="0"><code>    Graph shapesGraph = RDFDataMgr.loadGraph(shapesGraphUri); //assuming shapesGraphUri points to an RDF file
     Graph dataGraph = RDFDataMgr.loadGraph(dataGraphUri); //assuming dataGraphUri points to an RDF file
     RecordingValidationListener listener = new RecordingValidationListener();  // see above
     Shapes shapes = Shapes.parse(shapesGraph);
@@ -345,7 +352,7 @@ The following example validates the <code>dataGraph</code> according to the <cod
     }
     List&lt;ValidationEvent&gt; actualEvents = listener.getEvents(); // all events have been recorded
 </code></pre><p>The events thus generated might look like this (<code>event.toString()</code>, one per line):</p>
-<pre><code> FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
+<pre tabindex="0"><code> FocusNodeValidationStartedEvent{focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
  ConstraintEvaluationForNodeShapeStartedEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
  ConstraintEvaluatedOnFocusNodeEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape], valid=true}
  ConstraintEvaluationForNodeShapeFinishedEvent{constraint=ClassConstraint[&lt;http://datashapes.org/sh/tests/core/node/class-001.test#Person&gt;], focusNode=http://datashapes.org/sh/tests/core/node/class-001.test#Someone, shape=NodeShape[http://datashapes.org/sh/tests/core/node/class-001.test#TestShape]}
@@ -353,7 +360,7 @@ The following example validates the <code>dataGraph</code> according to the <cod
 [...]    
 </code></pre><p>Many use cases can be addressed with the <code>HandlerBasedValidationListener</code>, which allows for registering event handlers on a per-event basis.
 For example:</p>
-<pre><code>    ValidationListener myListener = HandlerBasedValidationListener
+<pre tabindex="0"><code>    ValidationListener myListener = HandlerBasedValidationListener
         .builder()
         .forEventType(FocusNodeValidationStartedEvent.class)
         .addSimpleHandler(e -&gt; {
@@ -413,6 +420,7 @@ For example:</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

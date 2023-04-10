@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -219,23 +226,23 @@ can be given, separated by "," and format `all` outputs all 3 formats.
 <h2 id="api-examples">API Examples</h2>
 <p>Examples:</p>
 <p><a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/examples/">https://github.com/apache/jena/tree/main/jena-examples/src/main/java/shex/examples/</a></p>
-<pre><code>    public static void main(String ...args) {
-        String SHAPES     = &quot;examples/schema.shex&quot;;
-        String SHAPES_MAP = &quot;examples/shape-map.shexmap&quot;;
-        String DATA       = &quot;examples/data.ttl&quot;;
+<pre tabindex="0"><code>    public static void main(String ...args) {
+        String SHAPES     = &#34;examples/schema.shex&#34;;
+        String SHAPES_MAP = &#34;examples/shape-map.shexmap&#34;;
+        String DATA       = &#34;examples/data.ttl&#34;;
 
-        System.out.println(&quot;Read data&quot;);
+        System.out.println(&#34;Read data&#34;);
         Graph dataGraph = RDFDataMgr.loadGraph(DATA);
 
-        System.out.println(&quot;Read schema&quot;);
+        System.out.println(&#34;Read schema&#34;);
         ShexSchema shapes = Shex.readSchema(SHAPES);
 
         // Shapes map.
-        System.out.println(&quot;Read shapes map&quot;);
+        System.out.println(&#34;Read shapes map&#34;);
         ShapeMap shapeMap = Shex.readShapeMap(SHAPES_MAP);
 
         // ShexReport
-        System.out.println(&quot;Validate&quot;);
+        System.out.println(&#34;Validate&#34;);
         ShexReport report = ShexValidator.get().validate(dataGraph, shapes, shapeMap);
 
         System.out.println();
@@ -285,6 +292,7 @@ can be given, separated by "," and format `all` outputs all 3 formats.
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

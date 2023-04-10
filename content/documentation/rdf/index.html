@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -194,14 +201,14 @@ contained in a data structure called a <code>Model</code>. The model denotes an
 <em>RDF graph</em>, so called because it contains a collection of <em>RDF nodes</em>,
 attached to each other by labelled relations. Each relationship goes
 only in one direction, so the triple:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-turtle" data-lang="turtle"><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Ian&#34;</span><span style="color:#bbb">
-</span></code></pre></div><p>can be read as &lsquo;<em>resource</em> <code>example:ijd</code> <em>has property</em> <code>foaf:name</code> <em>with value</em> <code>&quot;Ian&quot;</code>&rsquo;.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Ian&#34;</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>can be read as &lsquo;<em>resource</em> <code>example:ijd</code> <em>has property</em> <code>foaf:name</code> <em>with value</em> <code>&quot;Ian&quot;</code>&rsquo;.
 Clearly the reverse is not true. Mathematically, this makes the model an instance of a
 <a href="http://en.wikipedia.org/wiki/Directed_graph">directed graph</a>.</p>
 <p>In Java terms, we use the class <code>Model</code> as the primary container of RDF information
 contained in graph form. <code>Model</code> is designed to have a rich API, with many methods
 intended to make it easier to write RDF-based programs and applications. One of
-<code>Model</code>'s other roles is to provide an abstraction over different ways of storing
+<code>Model</code>&rsquo;s other roles is to provide an abstraction over different ways of storing
 the RDF nodes and relations: in-memory data structures, disk-based persistent stores
 and inference engines, for example, all provide <code>Model</code> as a core API.</p>
 <p>While this common abstraction is appealing to API users, it is less convenient when trying
@@ -251,9 +258,9 @@ as nodes in a graph, the common interface <code>RDFNode</code> is a super-class 
 <h3 id="triples">Triples</h3>
 <p>In an RDF graph, the relationships always connect one subject resource to one other resource or
 one literal. For example:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-turtle" data-lang="turtle"><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">firstName</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Ian&#34;</span>.<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">knows</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">mary</span>.<span style="color:#bbb">
-</span></code></pre></div><p>The relationship, or <em>predicate</em>, always connects two nodes (formally, it has <em>arity</em> two). The first
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">firstName</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Ian&#34;</span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">ijd</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">knows</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">example:</span><span style="color:#008000;font-weight:bold">mary</span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The relationship, or <em>predicate</em>, always connects two nodes (formally, it has <em>arity</em> two). The first
 argument of the predicate is node we are linking <em>from</em>, and the second is the node we are linking
 <em>to</em>. We will often refer to these as the <em>subject</em> and <em>object</em> of the RDF statement, respectively.
 The pattern subject-predicate-object is sufficiently commonplace that we will sometimes use the
@@ -291,20 +298,20 @@ distinction.</p>
 <p>Fortunately, RDF specifies that a property is identified by a URI, and &lsquo;price&rsquo; on its own is not a URI.
 A logical solution is for both Acme and Emca to use their own web spaces to provide different
 base URIs on which to construct the URI for the property:</p>
-<pre><code>http://acme.example/schema/products#price
+<pre tabindex="0"><code>http://acme.example/schema/products#price
 http://emca.example/ontology/catalogue/price
 </code></pre><p>These are clearly now two distinct identities, and so each company can define the semantics of the
 price property without interfering with the other. Writing out such long strings each time, however,
 can be unwieldy and a source of error. A <em>compact URI</em> or <a href="http://www.w3.org/TR/curie/"><em>curie</em></a>
 is an abbreviated form in which a namespace and name are separated by a colon character:</p>
-<pre><code>acme-product:price
+<pre tabindex="0"><code>acme-product:price
 emca-catalogue:price
 </code></pre><p>where <code>acme-product</code> is defined to be <code>http://acme.example/schema/products#</code>. This can be defined,
 for example, in Turtle:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-turtle" data-lang="turtle"><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://acme.example/schema/products#&gt;</span>.<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#008000;font-weight:bold">widget</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#008000;font-weight:bold">price</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;44.99&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:decimal</span>.<span style="color:#bbb">
-</span></code></pre></div><p>The datatype <code>xsd:decimal</code> is another example of an abbreviated URI. Note that no <code>@prefix</code> rules
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://acme.example/schema/products#&gt;</span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#008000;font-weight:bold">widget</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">acme-product:</span><span style="color:#008000;font-weight:bold">price</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;44.99&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:decimal</span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The datatype <code>xsd:decimal</code> is another example of an abbreviated URI. Note that no <code>@prefix</code> rules
 are defined by RDF or Turtle: authors of RDF content should ensure that all prefixes used in curies
 are defined before use.</p>
 <p><strong>Note</strong></p>
@@ -427,6 +434,7 @@ For brevity, we shorten <code>org.apache.jena</code> to <code>oaj</code>.</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

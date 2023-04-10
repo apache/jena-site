@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -403,7 +410,7 @@ dealt with by the Model transparently and appropriately.</p>
 <h3 id="context">Context</h3>
 <p>The first Jena implementation made some attempt to optimise the
 representation of reification. In particular it tried to avoid so
-called &lsquo;triple bloat&rsquo;, <em>ie</em> requiring four triples to represent the
+called &rsquo;triple bloat&rsquo;, <em>ie</em> requiring four triples to represent the
 reification of a statement. The approach taken was to make a
 <em>Statement</em> a subclass of <em>Resource</em> so that properties could be
 directly attached to statement objects.</p>
@@ -463,12 +470,12 @@ public interface Statement
 &hellip;
 public ReifiedStatement createReifiedStatement();
 public ReifiedStatement createReifiedStatement(String URI);
-/* */
+/* <em>/
 public boolean isReified();
 public ReifiedStatement getAnyReifiedStatement();
-/* */
+/</em> <em>/
 public RSIterator listReifiedStatements();
-/* */
+/</em> */
 public void removeAllReifications();
 &hellip;</p>
 <p><em>RSIterator</em> is a new iterator which returns <em>ReifiedStatement</em>s.
@@ -804,6 +811,7 @@ re-exploded into <code>Fragments</code>.)</p>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

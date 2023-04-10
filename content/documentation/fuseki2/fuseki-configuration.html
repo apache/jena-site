@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -327,13 +334,12 @@ graph of data.</p>
 </code></pre>
 <h3 id="data-services-on-the-dataset">Data services on the dataset</h3>
 <p>The standard SPARQL operations can also be defined on the dataset URL with no secondary service name:</p>
-<pre><code>&lt;#service2&gt; rdf:type fuseki:Service ;
-    fuseki:name     &quot;/dataset&quot; ;
-    fuseki:endpoint  [ fuseki:operation fuseki:query ];
-    fuseki:endpoint  [ fuseki:operation fuseki:gsp_r ];
-    fuseki:dataset  &lt;#dataset&gt; ;
-    .
-</code></pre>
+<p>&lt;#service2&gt; rdf:type fuseki:Service ;
+fuseki:name     &ldquo;/dataset&rdquo; ;
+fuseki:endpoint  [ fuseki:operation fuseki:query ];
+fuseki:endpoint  [ fuseki:operation fuseki:gsp_r ];
+fuseki:dataset  &lt;#dataset&gt; ;
+.</p>
 <p>HTTP requests use the URL of the dataset.</p>
 <ul>
 <li>SPARQL Query: <tt>http://<i>host:port</i>/dataset?query=...</tt></li>
@@ -518,6 +524,7 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)

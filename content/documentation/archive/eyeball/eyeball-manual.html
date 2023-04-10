@@ -83,7 +83,14 @@
                     </ul>
                 </li>
             </ul>
-
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <button class="btn btn-outline-secondary border-start-0 border" type="submit">
+                        <i class="bi-search"></i>
+                    </button>
+                </div>
+            </form>
             <ul class="navbar-nav ms-auto">
                 <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
 
@@ -276,7 +283,7 @@ The <a href="https://svn.apache.org/viewvc/jena/Scratch/Eyeball/trunk/">original
 </b></p>
 <p>This document describes Eyeball, an
 &ldquo;<a href="http://www.w3.org/RDF/">RDF</a>
-<a href="http://en.wikipedia.org/wiki/Lint_programming_tool">lint</a>&quot;.
+<a href="http://en.wikipedia.org/wiki/Lint_programming_tool">lint</a>&rdquo;.
 See
 the release notes for descriptions of changes
 from previous versions. Eyeball was a part of the
@@ -448,7 +455,7 @@ as though the prefix <code>eye:</code> had been used.</li>
 URIs with empty local names, use:</p>
 <pre><code>-set URIInspector.reportEmptyLocalNames=&quot;'true'&quot;
 </code></pre>
-<p>Note the nested different quotes required to pass &lsquo;true&rsquo; to Eyeball
+<p>Note the nested different quotes required to pass &rsquo;true&rsquo; to Eyeball
 so that it can interpret this as a literal.</p>
 <h3 id="-include-exclude-shortnames">-include/-exclude shortNames</h3>
 <p>The various Eyeball inspectors are given <em>short names</em> in the
@@ -497,7 +504,7 @@ validation checks every time a model is loaded.</p>
 not for security against malicious users.</p>
 <h3 id="-version">-version</h3>
 <p>Eyeball will print its version on the standard error stream
-(currently &ldquo;<em>Eyeball 2.1 (Nova Embers)</em>&quot;).</p>
+(currently &ldquo;<em>Eyeball 2.1 (Nova Embers)</em>&rdquo;).</p>
 <h3 id="-remark">-remark</h3>
 <p>Normally Eyeball issues its report or signed model to the standard
 output and exits with code 0 (success) or 1 (failure) with no
@@ -696,14 +703,14 @@ string identifying the reason.</p>
 </tr>
 <tr>
 <td>eye:uriHasNoLocalname</td>
-<td>a URI has no local name according to the XML name-splitting rules. (For example, the URI <em>http://x.com/foo#12345</em> has no local name because a local name cannot start with a digit.)</td>
+<td>a URI has no local name according to the XML name-splitting rules. (For example, the URI <em><a href="http://x.com/foo">http://x.com/foo</a>#12345</em> has no local name because a local name cannot start with a digit.)</td>
 </tr>
 <tr>
-<td>&ldquo;did not match required pattern <em>Tail<sub>i</sub></em> for prefix <em>Head</em>&quot;.</td>
-<td>This badURI starts with <em>Head</em>, but the remainder doesn&rsquo;t match any of the <em>Tail<sub>i</sub></em>s associated with that prefix.</td>
+<td>&ldquo;did not match required pattern <em>Tail<sub>i</sub></em> for prefix <em>Head</em>&rdquo;.</td>
+<td>This badURI starts with <em>Head</em>, but the remainder doesn&rsquo;t match any of the *Tail<sub>i</sub>*s associated with that prefix.</td>
 </tr>
 <tr>
-<td>&ldquo;matched prohibited pattern <em>Tail</em> for prefix <em>Head</em>&quot;.</td>
+<td>&ldquo;matched prohibited pattern <em>Tail</em> for prefix <em>Head</em>&rdquo;.</td>
 <td>This badURI starts with <em>Head</em>, and the remainder matched a prohibited <em>Tail</em> associated with that prefix.</td>
 </tr>
 </tbody>
@@ -936,9 +943,9 @@ a file containing the query, rather than the entire query.</p>
 <pre><code>eye:require &quot;@'/home/kers/example/query-one.sparql'&quot;
 </code></pre>
 <p>The quoted filename is read using the Jena file manager and so
-respects any filename mappings. &ldquo;@&rdquo; characters not followed by &ldquo;'&rdquo;
+respects any filename mappings. &ldquo;@&rdquo; characters not followed by &ldquo;&rsquo;&rdquo;
 are not subject to substitution, except that the sequence &ldquo;@@&rdquo; is
-replaced by &ldquo;@&quot;.</p>
+replaced by &ldquo;@&rdquo;.</p>
 <p>Using <code>eye:prohibit</code> rather than <code>eye:require</code> means that the
 problem is reported if the query succeeds, rather than if it
 fails.</p>
@@ -1202,6 +1209,7 @@ as an <code>eye:inspector</code> property of the configuration root, <em>eg</em>
 <script type="text/javascript">
 (function() {
     'use strict'
+    
     
 
     const links = document.querySelectorAll(`a[href="${window.location.pathname}"]`)
