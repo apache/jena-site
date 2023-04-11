@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.8eddb17125a9203f3381ffcfb0cfa8dce63a381e136339a4ea8001dfd8fa9d82.css" integrity="sha256-jt2xcSWpID8zgf/PsM&#43;o3OY6OB4TYzmk6oAB39j6nYI=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.1b17c39a117e22b46db4c66f6395dc27c134a60377d87d2d5745b8600eb69722.css" integrity="sha256-GxfDmhF&#43;IrRttMZvY5XcJ8E0pgN32H0tV0W4YA62lyI=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -85,17 +85,17 @@
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
                 <div class="input-group">
-                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search" style="width: 10rem;">
                     <button class="btn btn-outline-secondary border-start-0 border" type="submit">
                         <i class="bi-search"></i>
                     </button>
                 </div>
             </form>
-            <ul class="navbar-nav ms-auto">
-                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
+            <ul class="navbar-nav">
+                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html" title="Ask"><span class="bi-patch-question"></span><span class="text-body d-none d-xxl-inline"> Ask</span></a></li>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span> Get involved <b class="caret"></b></a>
+                    <a href="#" title="Get involved" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span><span class="text-body d-none d-xxl-inline"> Get involved </span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/getting_involved/index.html">Contribute</a></li>
                         <li><a class="dropdown-item" href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
@@ -121,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/query/service.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/query/service.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -180,7 +180,7 @@
 <main class="d-flex flex-xl-row flex-column">
   
   <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
-    <h2 class="h6 my-2">On this page</h2>
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#syntax">Syntax</a></li>
@@ -224,31 +224,29 @@ or even a <a href="http://www.w3.org/TR/rdf-sparql-json-res/">JSON one</a>).</p>
 <p><code>SERVICE</code> is a feature of SPARQL 1.1 that allows an executing query
 to make a SPARQL protocol to another SPARQL endpoint.</p>
 <h2 id="syntax">Syntax</h2>
-<pre><code>PREFIX : &lt;http://example/&gt;
-PREFIX  dc:     &lt;http://purl.org/dc/elements/1.1/&gt;
-
-SELECT ?a
-FROM &lt;mybooks.rdf&gt;
-{
-  ?b dc:title ?title .
-  SERVICE &lt;http://sparql.org/books&gt;
-     { ?s dc:title ?title . ?s dc:creator ?a }
-}
-</code></pre>
-<h2 id="algebra">Algebra</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> : <span style="color:#a0a000">&lt;http://example/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  <span style="color:#00f;font-weight:bold">dc</span>:     <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?a</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FROM</span> <span style="color:#a0a000">&lt;mybooks.rdf&gt;</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?b</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span> .
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">SERVICE</span> <span style="color:#a0a000">&lt;http://sparql.org/books&gt;</span>
+</span></span><span style="display:flex;"><span>     { <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span> . <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">creator</span> <span style="color:#b8860b">?a</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="algebra">Algebra</h2>
 <p>There is an operator in the algebra.</p>
-<pre><code>(prefix ((dc: &lt;http://purl.org/dc/elements/1.1/&gt;))
-  (project (?a)
-    (join
-      (BGP [triple ?b dc:title ?title])
-      (service &lt;http://sparql.org/books&gt;
-          (BGP
-            [triple ?s dc:title ?title]
-            [triple ?s dc:creator ?a]
-          ))
-      )))
-</code></pre>
-<h2 id="performance-considerations">Performance Considerations</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span>(<span style="color:#a2f;font-weight:bold">prefix</span> ((<span style="color:#00f;font-weight:bold">dc</span>: <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>))
+</span></span><span style="display:flex;"><span>  (<span style="">project</span> (<span style="color:#b8860b">?a</span>)
+</span></span><span style="display:flex;"><span>    (<span style="">jo</span><span style="color:#a2f;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>      (<span style="">BGP</span> [<span style="">triple</span> <span style="color:#b8860b">?b</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span>])
+</span></span><span style="display:flex;"><span>      (<span style="color:#a2f;font-weight:bold">service</span> <span style="color:#a0a000">&lt;http://sparql.org/books&gt;</span>
+</span></span><span style="display:flex;"><span>          (<span style="">BGP</span>
+</span></span><span style="display:flex;"><span>            [<span style="">triple</span> <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span>]
+</span></span><span style="display:flex;"><span>            [<span style="">triple</span> <span style="color:#b8860b">?s</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">creator</span> <span style="color:#b8860b">?a</span>]
+</span></span><span style="display:flex;"><span>          ))
+</span></span><span style="display:flex;"><span>      )))
+</span></span></code></pre></div><h2 id="performance-considerations">Performance Considerations</h2>
 <p>This feature is a basic building block to allow remote access in
 the middle of a query, not a general solution to the issues in
 distributed query evaluation. The algebra operation is executed
