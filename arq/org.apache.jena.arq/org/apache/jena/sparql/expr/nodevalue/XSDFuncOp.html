@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#defaultTimezone" class="member-name-link">defaultTimezone</a></code></div>
+<div class="col-second even-row-color"><code><a href="#implicitTimezoneStr" class="member-name-link">implicitTimezoneStr</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.xml/javax/xml/datatype/Duration.html" title="class or interface in javax.xml.datatype" class="external-link">Duration</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#zeroDuration" class="member-name-link">zeroDuration</a></code></div>
@@ -118,9 +118,11 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#abs(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">abs</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#adjustDatetimeToTimezone(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">adjustDatetimeToTimezone</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#adjustToTimezone(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">adjustToTimezone</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Adjust xsd:dateTime/xsd:date/xsd:time to a timezone.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#booleanEffectiveValue(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">booleanEffectiveValue</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
@@ -162,6 +164,18 @@ loadScripts(document, 'script');</script>
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareDateTimeFO(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">compareDateTimeFO</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Strict F&amp;O handling of compare date(times).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareDateTimeXSD(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">compareDateTimeXSD</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Compare two date/times by XSD rules (dateTimes, one with and one without timezone can be indeterminate)</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareDuration(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">compareDuration</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
@@ -173,99 +187,113 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareString(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">compareString</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dateTimeCast(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.datatypes.xsd.XSDDatatype)" class="member-name-link">dateTimeCast</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv,
- <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/xsd/XSDDatatype.html" title="class or interface in org.apache.jena.datatypes.xsd" class="external-link">XSDDatatype</a>&nbsp;xsd)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#compareXSDDateTime(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">compareXSDDateTime</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Compare date times, including "indeterminate" rather than applying locale timezone</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dateTimeCast(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.datatypes.xsd.XSDDatatype)" class="member-name-link">dateTimeCast</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv,
+ <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/xsd/XSDDatatype.html" title="class or interface in org.apache.jena.datatypes.xsd" class="external-link">XSDDatatype</a>&nbsp;xsd)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Cast a NodeValue to a date/time type (xsd dateTime, date, time, g*) according to F&amp;O
  <a href="http://www.w3.org/TR/xpath-functions/#casting-to-datetimes">17.1.5 Casting to date and time types</a>
  Throws an exception on incorrect case.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtDateTime(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtDateTime</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtDateTime(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtDateTime</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetDay(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetDay</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetMonth(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetMonth</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetTimezone(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetTimezone</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetTZ(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetTZ</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetYear(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetYear</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetDays(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetDays</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetMonths(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetMonths</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetSign(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetSign</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetYears(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetYears</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#floor(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">floor</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;v)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fnConcat(java.util.List)" class="member-name-link">fnConcat</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&gt;&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">F&amp;O fn:concat (implicit cast to strings).</div>
+<div class="block">Create an xsd:dateTime from an xsd:date and an xsd:time.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#formatNumber(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">formatNumber</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetDay(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetDay</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetMonth(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetMonth</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetTimezone(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetTimezone</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetTZ(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetTZ</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dtGetYear(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">dtGetYear</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetDays(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetDays</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetMonths(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetMonths</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetSign(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetSign</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#durGetYears(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">durGetYears</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#floor(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">floor</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;v)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fnConcat(java.util.List)" class="member-name-link">fnConcat</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&gt;&nbsp;args)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">F&amp;O fn:concat (implicit cast to strings).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#formatNumber(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">formatNumber</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;picture,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nvLocale)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">fn:format-number
 
  The 3rd argument, if present, called decimal-format-name, is here a
  IETF BCP 47 language tag string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDay(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getDay</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDay(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getDay</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getHours(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getHours</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMonth(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getMonth</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMinutes(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getMinutes</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMonth(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getMonth</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getYear(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getYear</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSeconds(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getSeconds</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getYear(org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">getYear</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#implicitTimezone()" class="member-name-link">implicitTimezone</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a href="https://www.w3.org/TR/xpath-functions-3/#func-implicit-timezone">Implciit Timezone</a>
+ // https://www.w3.org/TR/xpath-functions-3/#comp.datetime</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isBinaryDatatype(org.apache.jena.datatypes.xsd.XSDDatatype)" class="member-name-link">isBinaryDatatype</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/xsd/XSDDatatype.html" title="class or interface in org.apache.jena.datatypes.xsd" class="external-link">XSDDatatype</a>&nbsp;datatype)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
@@ -307,8 +335,10 @@ loadScripts(document, 'script');</script>
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nvFinish)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#localTimezone()" class="member-name-link">localTimezone</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#localSystemTimezone()" class="member-name-link">localSystemTimezone</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Local timezone of the query engine: afn:system-timezone</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#max(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)" class="member-name-link">max</a><wbr>(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</code></div>
@@ -454,23 +484,23 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="defaultTimezone">
-<h3>defaultTimezone</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultTimezone</span></div>
+<section class="detail" id="zeroDuration">
+<h3>zeroDuration</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.xml/javax/xml/datatype/Duration.html" title="class or interface in javax.xml.datatype" class="external-link">Duration</a></span>&nbsp;<span class="element-name">zeroDuration</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="implicitTimezoneStr">
+<h3>implicitTimezoneStr</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">implicitTimezoneStr</span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.apache.jena.sparql.expr.nodevalue.XSDFuncOp.defaultTimezone">Constant Field Values</a></li>
+<li><a href="../../../../../../../constant-values.html#org.apache.jena.sparql.expr.nodevalue.XSDFuncOp.implicitTimezoneStr">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="zeroDuration">
-<h3>zeroDuration</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.xml/javax/xml/datatype/Duration.html" title="class or interface in javax.xml.datatype" class="external-link">Duration</a></span>&nbsp;<span class="element-name">zeroDuration</span></div>
 </section>
 </li>
 </ul>
@@ -860,10 +890,30 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="compareDuration(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
-<h3>compareDuration</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareDuration</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+<section class="detail" id="compareDateTimeXSD(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
+<h3>compareDateTimeXSD</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareDateTimeXSD</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
+<div class="block">Compare two date/times by XSD rules (dateTimes, one with and one without timezone can be indeterminate)</div>
+</section>
+</li>
+<li>
+<section class="detail" id="compareDateTimeFO(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
+<h3>compareDateTimeFO</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareDateTimeFO</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
+<div class="block">Strict F&amp;O handling of compare date(times).
+ But that means applying the "local" timezone if there is no TZ.
+ The data may have come from different timezones to the query.
+ We use a fixed locale timezone of UTC/00:00.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="compareXSDDateTime(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
+<h3>compareXSDDateTime</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareXSDDateTime</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
+<div class="block">Compare date times, including "indeterminate" rather than applying locale timezone</div>
 </section>
 </li>
 <li>
@@ -928,6 +978,7 @@ loadScripts(document, 'script');</script>
 <h3>dtDateTime</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">dtDateTime</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
+<div class="block">Create an xsd:dateTime from an xsd:date and an xsd:time.</div>
 </section>
 </li>
 <li>
@@ -1033,16 +1084,37 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="localTimezone()">
-<h3>localTimezone</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">localTimezone</span>()</div>
+<section class="detail" id="compareDuration(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
+<h3>compareDuration</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareDuration</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+ <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="adjustDatetimeToTimezone(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
-<h3>adjustDatetimeToTimezone</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">adjustDatetimeToTimezone</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
+<section class="detail" id="implicitTimezone()">
+<h3>implicitTimezone</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">implicitTimezone</span>()</div>
+<div class="block"><a href="https://www.w3.org/TR/xpath-functions-3/#func-implicit-timezone">Implciit Timezone</a>
+ // https://www.w3.org/TR/xpath-functions-3/#comp.datetime</div>
+</section>
+</li>
+<li>
+<section class="detail" id="localSystemTimezone()">
+<h3>localSystemTimezone</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">localSystemTimezone</span>()</div>
+<div class="block">Local timezone of the query engine: afn:system-timezone</div>
+</section>
+</li>
+<li>
+<section class="detail" id="adjustToTimezone(org.apache.jena.sparql.expr.NodeValue,org.apache.jena.sparql.expr.NodeValue)">
+<h3>adjustToTimezone</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a></span>&nbsp;<span class="element-name">adjustToTimezone</span><wbr><span class="parameters">(<a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv1,
  <a href="../NodeValue.html" title="class in org.apache.jena.sparql.expr">NodeValue</a>&nbsp;nv2)</span></div>
+<div class="block">Adjust xsd:dateTime/xsd:date/xsd:time to a timezone.
+ This covers fn:adjust-dateTime-to-timezone, fn:adjust-date-to-timezone and fn:adjust-time-to-timezone.
+ via <code>ADJUST</code> (<a href="../E_AdjustToTimezone.html" title="class in org.apache.jena.sparql.expr"><code>E_AdjustToTimezone</code></a>).
+ If the second argument is null, use implicit timezone.
+ In Jena, the implicit timezone is fixed to UTC.</div>
 </section>
 </li>
 <li>
