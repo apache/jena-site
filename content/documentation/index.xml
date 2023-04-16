@@ -164,10 +164,12 @@ shacl validate --shapes SHAPES.ttl --data DATA.ttl shacl v -s SHAPES.ttl -d DATA
       
       <guid>https://jena.apache.org/documentation/shex/</guid>
       <description>jena-shex is an implementation of the ShEx (Shape Expressions) language.
-This implementation is experimental, starting with Jena 4.2.0. Please send usage reports and experience to users@jena.apache.org. Status jena-shex reads ShExC (the compact syntax) files.
+Status jena-shex reads ShExC (the compact syntax) files.
 Not currently supported:
 semantic actions EXTERNAL Blank node label validation is meaningless in Jena because a blank node label is scoped to the file, and not retained after the file has been read.
-Command line The command shex introduces shex operations; it takes a sub-command argument.</description>
+Command line The command shex introduces ShEx operations; it takes a sub-command argument.
+To validate:
+shex validate --schema SCHEMA.shex --map MAP.</description>
     </item>
     
     <item>
@@ -365,7 +367,7 @@ SPARQL protocol client - remote HTTP requests Reference engine - direct implemen
       <guid>https://jena.apache.org/documentation/query/javascript-functions.html</guid>
       <description>ARQ supports writing custom SPARQL functions in JavaScript. These functions can be used in FILTERs and for calculating values to assign with AS in BIND and SELECT expressions.
 XSD datatypes for strings, numbers and booleans are converted to the native JavaScript datatypes. RDFterms that do not fit easily into JavaScript datatypes are handled with a object class NV.
-Requirements ARQ requires a javascript engine such as GraalVM to be added to the classpath.</description>
+Applications should be aware that there are risks in exposing a script engine with full computational capabilities through SPARQL.</description>
     </item>
     
     <item>
@@ -1106,14 +1108,53 @@ SelectBuilder sb = new SelectBuilder() .addVar( &amp;quot;*&amp;quot; ) .</descr
     </item>
     
     <item>
+      <title>Jena RDF XML</title>
+      <link>https://jena.apache.org/documentation/io/rdfxml-io.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/io/rdfxml-io.html</guid>
+      <description>This is a guide to the RDF/XML I/O subsystem of Jena.
+The RDF/XML parser is designed for use with RIOT and to have the same handling of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.
+RDF/XML Input The usual way to access the RDF/XML parser is via RDFDataMgr or RDFParser.
+Model model = RDFDataMgr.loadModel(&amp;quot;data.rdf&amp;quot;); or
+Model model = RDFParser.source(&amp;quot;data.rdf&amp;quot;).toModel(); The original &amp;ldquo;ARP&amp;rdquo; parser is still available bu tmaybe pahsed out.</description>
+    </item>
+    
+    <item>
       <title>Jena RDF/XML How-To</title>
       <link>https://jena.apache.org/documentation/io/rdfxml_howto.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/rdfxml_howto.html</guid>
-      <description>This is a guide to the RDF/XML I/O subsystem of Jena, ARP. The first section gives a quick introduction to the I/O subsystem. The other sections are aimed at users wishing to use advanced features within the RDF/XML I/O subsystem.
+      <description>Legacy Documentation : may not be up-to-date
+This is a guide to the RDF/XML I/O subsystem of Jena, ARP. The first section gives a quick introduction to the I/O subsystem. The other sections are aimed at users wishing to use advanced features within the RDF/XML I/O subsystem.
 Other content related to Jena RDF/XML How-To includes:
-Details of ARP, the Jena RDF/XML parser Quick Introduction The main I/O methods in Jena use InputStreams and OutputStreams. This is import to correctly handle character sets.</description>
+Details of ARP, the Jena RDF/XML parser Quick Introduction The main I/O methods in Jena use InputStreams and OutputStreams.</description>
+    </item>
+    
+    <item>
+      <title>Jena RDF/XML Input How-To</title>
+      <link>https://jena.apache.org/documentation/io/rdfxml-input.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/io/rdfxml-input.html</guid>
+      <description>Legacy Documentation : may not be up-to-date
+Original RDF/XML HowTo.
+This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.
+Advanced RDF/XML Input For access to these advanced features, first get an RDFReader object that is an instance of an ARP parser, by using the getReader() method on any Model. It is then configured using the [setProperty](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))(String, Object) method. This changes the properties for parsing RDF/XML. Many of the properties change the RDF parser, some change the XML parser.</description>
+    </item>
+    
+    <item>
+      <title>Jena RDF/XML Output How-To</title>
+      <link>https://jena.apache.org/documentation/io/rdfxml-output.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jena.apache.org/documentation/io/rdfxml-output.html</guid>
+      <description>Legacy Documentation : may not be up-to-date
+Original RDF/XML HowTo.
+Advanced RDF/XML Output Two forms for output are provided: pretty printed RDF/XML (&amp;ldquo;RDF/XML-ABBREV&amp;rdquo;) or plain RDF/XML
+While some of the code is shared, these two writers are really very different, resulting in different but equivalent output. &amp;ldquo;RDF/XML-ABBREV&amp;rdquo; is slower, but should produce more readable XML.
+Properties to Control RDF/XML Output Property NameDescriptionValue classLegal Values xmlbase The value to be included for an xml:base attribute on the root element in the file.</description>
     </item>
     
     <item>
@@ -1254,8 +1295,8 @@ Binary formats are faster to process - they do not incur the parsing costs of te
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/rdfconnection/</guid>
-      <description>RDFConnection provides a unified set of operations for working on RDF with SPARQL operations. It provides SPARQL Query, SPARQL Update and the SPARQL Graph Store operations. The interface is uniform - the same interface applies to local data and to remote data using HTTP and the SPARQL protocols ( SPARQL protocol and SPARQL Graph Store Protocol).
-Outline RDFConnection provides a number of different styles for working with RDF data in Java.</description>
+      <description>RDFConnection provides a unified set of operations for working on RDF with SPARQL operations. It provides SPARQL Query, SPARQL Update and the SPARQL Graph Store operations. The interface is uniform - the same interface applies to local data and to remote data using HTTP and the SPARQL protocols (SPARQL protocol) and SPARQL Graph Store Protocol).
+Outline RDFConnection provides a number of different styles for working with RDF data in Java. It provides support for try-resource and functional code passing styles, as well the more basic sequence of methods calls.</description>
     </item>
     
     <item>
@@ -1270,11 +1311,11 @@ Example This example ensures certain prefixes are in the dataset and adds some b
     </item>
     
     <item>
-      <title>RDF/XML Handling in Jena</title>
-      <link>https://jena.apache.org/documentation/io/arp.html</link>
+      <title>RDF/XML Input in Jena</title>
+      <link>https://jena.apache.org/documentation/io/arp/arp.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/io/arp.html</guid>
+      <guid>https://jena.apache.org/documentation/io/arp/arp.html</guid>
       <description>This section details the Jena RDF/XML parser. ARP is the parsing subsystem in Jena for handling the RDF/XML syntax.
 ARP Features Using ARP without Jena Using other SAX and DOM XML sources ARP Features Java based RDF parser. Compliant with RDF Syntax and RDF Test Cases Recommendations. Compliant with following standards and recommendations: xml:lang
 xml:lang is fully supported, both in RDF/XML and any document embedding RDF/XML. Moreover, the language tags are checked against RFC1766, RFC3066, ISO639-1, ISO3166.</description>
@@ -1356,10 +1397,10 @@ As a standalone server As a service run by the operation system, for example, st
     
     <item>
       <title>SAX Input into Jena and ARP</title>
-      <link>https://jena.apache.org/documentation/io/arp_sax.html</link>
+      <link>https://jena.apache.org/documentation/io/arp/arp_sax.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/io/arp_sax.html</guid>
+      <guid>https://jena.apache.org/documentation/io/arp/arp_sax.html</guid>
       <description>Normally, both ARP and Jena are used to read files either from the local machine or from the Web. A different use case, addressed here, is when the XML source is available in-memory in some way. In these cases, ARP and Jena can be used as a SAX event handler, turning SAX events into triples, or a DOM tree can be parsed into a Jena Model.
 1. Overview To read an arbitrary SAX source as triples to be added into a Jena model, it is not possible to use a Model.</description>
     </item>
@@ -2039,10 +2080,10 @@ Part of the remit for the 2001 RDF Core working group was to add to RDF support 
     
     <item>
       <title>Using ARP Without Jena</title>
-      <link>https://jena.apache.org/documentation/io/arp_standalone.html</link>
+      <link>https://jena.apache.org/documentation/io/arp/arp_standalone.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jena.apache.org/documentation/io/arp_standalone.html</guid>
+      <guid>https://jena.apache.org/documentation/io/arp/arp_standalone.html</guid>
       <description>ARP can be used both as a Jena subsystem, or as a standalone RDF/XML parser. This document gives a quick guide to using ARP standalone.
 Overview To load an RDF file:
 Create an ARP instance. Set parse options, particularly error detection control, using getOptions or setOptionsWith. Set its handlers, by calling the getHandlers or setHandlersWith methods, and then. Setting the statement handler. Optionally setting the other handlers. Call a load method Xerces is used for parsing the XML.</description>

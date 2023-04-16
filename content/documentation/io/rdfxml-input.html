@@ -3,12 +3,12 @@
 <head>
     
 
-    <title>Apache Jena - Using ARP Without Jena</title>
+    <title>Apache Jena - Jena RDF/XML Input How-To</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.8eddb17125a9203f3381ffcfb0cfa8dce63a381e136339a4ea8001dfd8fa9d82.css" integrity="sha256-jt2xcSWpID8zgf/PsM&#43;o3OY6OB4TYzmk6oAB39j6nYI=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.1b17c39a117e22b46db4c66f6395dc27c134a60377d87d2d5745b8600eb69722.css" integrity="sha256-GxfDmhF&#43;IrRttMZvY5XcJ8E0pgN32H0tV0W4YA62lyI=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -85,17 +85,17 @@
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
                 <div class="input-group">
-                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search" style="width: 10rem;">
                     <button class="btn btn-outline-secondary border-start-0 border" type="submit">
                         <i class="bi-search"></i>
                     </button>
                 </div>
             </form>
-            <ul class="navbar-nav ms-auto">
-                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
+            <ul class="navbar-nav">
+                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html" title="Ask"><span class="bi-patch-question"></span><span class="text-body d-none d-xxl-inline"> Ask</span></a></li>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span> Get involved <b class="caret"></b></a>
+                    <a href="#" title="Get involved" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span><span class="text-body d-none d-xxl-inline"> Get involved </span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/getting_involved/index.html">Contribute</a></li>
                         <li><a class="dropdown-item" href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
@@ -121,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/arp_standalone.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/rdfxml-input.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -163,7 +163,7 @@
         
         
             
-                <li class="breadcrumb-item active">ARP STANDALONE</li>
+                <li class="breadcrumb-item active">RDFXML INPUT</li>
             
             
         
@@ -174,185 +174,172 @@
 
 
             </div>
-            <h1 class="title">Using ARP Without Jena</h1>
+            <h1 class="title">Jena RDF/XML Input How-To</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
   
   <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
-    <h2 class="h6 my-2">On this page</h2>
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#sample-code">Sample Code</a></li>
-    <li><a href="#arp-event-handling">ARP Event Handling</a></li>
-    <li><a href="#configuring-arp">Configuring ARP</a></li>
-    <li><a href="#interrupting-arp">Interrupting ARP</a></li>
-    <li><a href="#using-other-sax-sources">Using Other SAX Sources</a></li>
-    <li><a href="#memory-usage">Memory usage</a></li>
+    <li><a href="#advanced-rdfxml-input">Advanced RDF/XML Input</a>
+      <ul>
+        <li><a href="#arp-properties">ARP properties</a></li>
+      </ul>
+    </li>
+    <li><a href="#further-details">Further details</a></li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>ARP can be used both as a Jena subsystem, or as a standalone
-RDF/XML parser. This document gives a quick guide to using ARP
-standalone.</p>
-<h2 id="overview">Overview</h2>
-<p>To load an RDF file:</p>
-<ol>
-<li>Create an
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#ARP()">ARP</a> instance.</li>
-<li>Set parse options, particularly error detection control, using
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()">getOptions</a>
-or
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setOptionsWith(org.apache.jena.rdf.arp.ARPOptions)">setOptionsWith</a>.</li>
-<li>Set its handlers, by calling the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
-or
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
-methods, and then.
+    <p><em>Legacy Documentation : may not be up-to-date</em></p>
+<p>Original <a href="rdfxml_howto.html">RDF/XML HowTo</a>.</p>
+<hr>
+<p>This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.</p>
+<h2 id="advanced-rdfxml-input">Advanced RDF/XML Input</h2>
+<p>For access to these advanced features, first get an <code>RDFReader</code>
+object that is an instance of an ARP parser, by using the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReaderF.html#getReader()"><code>getReader</code></a><code>()</code>
+method on any <code>Model</code>. It is then configured using the
+[<code>setProperty</code>](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))<code>(String, Object)</code>
+method. This changes the properties for parsing RDF/XML. Many of
+the properties change the RDF parser, some change the XML parser.
+(The Jena RDF/XML parser, ARP, implements the
+<a href="http://www.w3.org/TR/rdf-syntax-grammar/#section-Infoset-Grammar">RDF grammar</a>
+over a <a href="http://xml.apache.org/xerces2-j/index.html">Xerces2-J</a> XML
+parser). However, changing the features and properties of the XML
+parser is not likely to be useful, but was easy to implement.</p>
+<p>[<code>setProperty</code>](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))<code>(String, Object)</code>
+can be used to set and get:</p>
 <ul>
-<li>Setting the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">statement handler</a>.</li>
-<li>Optionally setting the other handlers.</li>
+<li>ARP properties
+<br /> These allow fine grain control over the extensive error
+reporting capabilities of ARP. And are detailed directly below.</li>
+<li>SAX2 features
+<br />See
+<a href="http://xml.apache.org/xerces2-j/features.html">Xerces features</a>.
+Value should be given as a String <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code> or a <code>Boolean</code>.</li>
+<li>SAX2 properties
+<br /> See <a href="http://xml.apache.org/xerces2-j/properties.html">Xerces properties</a>.</li>
+<li>Xerces features
+<br /> See <a href="http://xml.apache.org/xerces2-j/features.html">Xerces features</a>.
+Value should be given as a String <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code> or a <code>Boolean</code>.</li>
+<li>Xerces properties
+<br /> See <a href="http://xml.apache.org/xerces2-j/properties.html">Xerces properties</a>.</li>
 </ul>
-</li>
-<li>Call a
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#load(java.io.InputStream,%20java.lang.String)">load</a>
-method</li>
-</ol>
-<p>Xerces is used for parsing the XML. The SAXEvents generated by
-Xerces are then analysed as RDF by ARP. It is possible to use a
-different source of SAX events.</p>
-<p>Errors may occur in either the XML or the RDF part.</p>
-<h2 id="sample-code">Sample Code</h2>
-<pre><code>ARP arp = new ARP();
+<h3 id="arp-properties">ARP properties</h3>
+<p>An ARP property is referred to either by its property name, (see
+below) or by an absolute URL of the form
+<code>http://jena.hpl.hp.com/arp/properties/&lt;PropertyName&gt;</code>. The value
+should be a String, an Integer or a Boolean depending on the
+property.</p>
+<p>ARP property names and string values are case insensitive.</p>
+<table>
+<thead>
+<tr>
+<th>Property Name</th>
+<th>Description</th>
+<th>Value class</th>
+<th>Legal Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iri-rules</code></td>
+<td>Set the engine for checking and resolving. <code>&quot;strict&quot;</code> sets the IRI engine with rules for valid IRIs, XLink and RDF; it does not permit spaces in IRIs. <code>&quot;iri&quot;</code>sets the IRI engine to IRI (<a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a>, <a href="http://www.ietf.org/rfc/rfc3987.txt">RFC 3987</a>) <code>.</code> The default is <code>&quot;lax&quot;</code>(for backwards compatibility)<code>,</code> the rules for RDF URI references only, which does permit spaces although the use of spaces is not good practice.</td>
+<td>String</td>
+<td><code>lax</code><br /><code>strict</code><br /><code>iri</code></td>
+</tr>
+<tr>
+<td><code>error-mode</code></td>
+<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setDefaultErrorMode()"><code>ARPOptions.setDefaultErrorMode()</code></a> <br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setLaxErrorMode()"><code>ARPOptions.setLaxErrorMode()</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode()"><code>ARPOptions.setStrictErrorMode()</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode(int)"><code>ARPOptions.setStrictErrorMode(int)</code></a><br />  This allows a coarse-grained approach to control of error handling. Setting this property is equivalent to setting many of the fine-grained error handling properties.</td>
+<td><code>String</code></td>
+<td><code>default</code><br /><code>lax</code><br /><code>strict</code><br /><code>strict-ignore</code><br /><code>strict-warning</code><br /><code>strict-error</code><br /><code>strict-fatal</code></td>
+</tr>
+<tr>
+<td><code>embedding</code></td>
+<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setEmbedding(boolean)"><code>ARPOptions.setEmbedding(boolean)</code></a> <br />This sets ARP to look for RDF embedded within an enclosing XML document.</td>
+<td><code>String</code> or <code>Boolean</code></td>
+<td><code>true</code><br /><code>false</code></td>
+</tr>
+<tr>
+<td><code>ERR_&lt;XXX&gt;</code> <br /><code>WARN_&lt;XXX&gt;</code><br /><code>IGN_&lt;XXX&gt;</code></td>
+<td>See <a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html"><code>ARPErrorNumbers</code></a> for a complete list of the error conditions detected. Setting one of these properties is equivalent to the method <a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setErrorMode(int,%20int)"><code>ARPOptions.setErrorMode(int, int)</code></a>. Thus fine-grained control over the behaviour in response to specific error conditions is possible.</td>
+<td><code>String</code> or <code>Integer</code></td>
+<td><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_IGNORE"><code>EM_IGNORE</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_WARNING"><code>EM_WARNING</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_ERROR"><code>EM_ERROR</code></a><br /><a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_FATAL"><code>EM_FATAL</code></a></td>
+</tr>
+</tbody>
+</table>
+<p>To set ARP properties, create a map of values to be set and put this in parser context:</p>
+<pre tabindex="0"><code>    Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
+    // See class ARPErrorNumbers for the possible ARP properties.
+    properties.put(&#34;WARN_BAD_NAME&#34;, &#34;EM_IGNORE&#34;);
 
-// initialisation - uses ARPConfig interface only.
-arp.getOptions().setLaxErrorMode();
+    // Build and run a parser
+    Model model = RDFParser.create()
+        .lang(Lang.RDFXML)
+        .source(...)
+        .set(SysRIOT.sysRdfReaderProperties, properties)
+        .base(&#34;http://base/&#34;)
+        .toModel();
+    System.out.println(&#34;== Parsed data output in Turtle&#34;);
+    RDFDataMgr.write(System.out,  model, Lang.TURTLE);
+</code></pre><p>See example
+<a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_ReaderProperties.java">ExRIOT_RDFXML_ReaderProperties.java</a>.</p>
+<p><b>Legacy Example</b></p>
+<p>As an example, if you are working in an environment with legacy RDF
+data that uses unqualified RDF attributes such as &ldquo;about&rdquo; instead
+of &ldquo;rdf:about&rdquo;, then the following code is appropriate:</p>
+<pre><code>Model m = ModelFactory.createDefaultModel();
+RDFReader arp = m.getReader();
+m = null; // m is no longer needed.
+// initialize arp
+// Do not warn on use of unqualified RDF attributes.
+arp.setProperty(&quot;WARN_UNQUALIFIED_RDF_ATTRIBUTE&quot;,&quot;EM_IGNORE&quot;);
 
-arp.getHandlers().setErrorHandler(new ErrorHandler(){
-    public void fatalError(SAXParseException e){
-           // TODO code
-    }
-    public void error(SAXParseException e){
-            // TODO code
-    }
-    public void warning(SAXParseException e){
-            // TODO code
-    }
-});
-arp.getHandlers().setStatementHandler(new StatementHandler(){
-    public void statement(AResource a, AResource b, ALiteral l){
-            // TODO code
-    }
-    public void statement(AResource a, AResource b, AResource l){
-            // TODO code
-    }
-});
+…
 
-// parsing.
-
-try {
-    // Loading fixed input ...
-    arp.load(new StringReader(
-        &quot;&lt;rdf:RDF  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'&gt;\n&quot;
-        +&quot;&lt;rdf:Description&gt;&lt;rdf:value rdf:parseType='Literal'&gt;&quot;
-        +&quot;&lt;b&gt;hello&lt;/b&gt;&lt;/rdf:value&gt;\n&quot;
-        +&quot;&lt;/rdf:Description&gt;&lt;/rdf:RDF&gt;&quot;
-    ));
-
-}
-catch (IOException ioe){
-    // something unexpected went wrong
-}
-catch (SAXParseException s){
-    // This error will have been reported
-}
-catch (SAXException ss) {
-    // This error will not have been reported.
-}
+InputStream in = new FileInputStream(fname);
+arp.read(m,in,url);
+in.close();
 </code></pre>
-<h2 id="arp-event-handling">ARP Event Handling</h2>
-<p>ARP reports events concerning:</p>
-<ul>
-<li>Triples found in the input.</li>
-<li>Errors in the input.</li>
-<li>Namespace declarations.</li>
-<li>Scope of blank nodes.</li>
-</ul>
-<p>User code is needed to respond to any of these events of interest.
-This is written by implementing any of the relevant interfaces:
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/StatementHandler.html">StatementHandler</a>,
-org.xml.sax.ErrorHandler,
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/NamespaceHandler.html">NamespaceHandler</a>,
-and
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html">ExtendedHandler</a>.</p>
-<p>An individual handler is set by calling the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
-method on the ARP instance. This returns an encapsulation of all
-the handlers being used. A specific handler is set by calling the
-appropriate set&hellip;Handler method on that object, e.g.
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">setStatementHandler</a>.</p>
-<p>All the handlers can be copied from one ARP instance to another by
-using the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
-method:</p>
-<pre><code> ARP from, to;
- // initialize from and to
- // ...
-
- to.setHandlersWith(from.getHandlers());
+<p>As a second example, suppose you wish to work in strict mode, but
+allow <code>&quot;daml:collection&quot;</code>, the following works:</p>
+<pre><code> …
+ arp.setProperty(&quot;error-mode&quot;, &quot;strict&quot; );
+ arp.setProperty(&quot;IGN_DAML_COLLECTION&quot;,&quot;EM_IGNORE&quot;);
+ …
 </code></pre>
-<p>The error handler reports both XML and RDF errors, the former
-detected by Xerces. See
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setErrorHandler(org.xml.sax.ErrorHandler)">ARPHandlers.setErrorHandler</a>
-for details of how to distinguish between them.</p>
-<h2 id="configuring-arp">Configuring ARP</h2>
-<p>ARP can be configured to treat most error conditions as warnings or
-to be ignored, and to treat some non-error conditions as warnings
-or errors.</p>
-<p>In addition, the behaviour in response to input that does not have
-an <code>&lt;rdf:RDF&gt;</code> root element is configurable: either to treat the
-whole file as RDF anyway, or to scan the file looking for embedded
-<code>&lt;rdf:RDF&gt;</code> elements.</p>
-<p>As with the handlers, there is an options object that encapsulates
-these settings. It can be accessed using
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()"><code>getOptions</code></a>,
-and then individual settings can be made using the methods in
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPOptions.html"><code>ARPOptions</code></a>.</p>
-<p>It is also possible to copy all the option settings from one ARP
-instance to another:</p>
-<pre><code> ARP from, to;
- // initialize from and to ...
-
- to.setOptionsWith(from.getOptions());
+<p>The other way round does not work.</p>
+<pre><code> …
+ arp.setProperty(&quot;IGN_DAML_COLLECTION&quot;,&quot;EM_IGNORE&quot;);
+ arp.setProperty(&quot;error-mode&quot;, &quot;strict&quot; );
+ …
 </code></pre>
-<p>The <a href="iohowto.html#arp_properties">I/O how-to</a> gives some more
-detail about the options settings, although it assumes the use of
-the Jena <code>RDFReader</code> interface.</p>
-<h2 id="interrupting-arp">Interrupting ARP</h2>
-<p>It is possible to interrupt an ARP thread. See the
-<a href="iohowto.html#interrupting_arp">I/O how-to</a> for details.</p>
-<h2 id="using-other-sax-sources">Using Other SAX Sources</h2>
-<p>It is possible to use ARP with other SAX input sources, e.g. from a
-non-Xerces parser, or from an in-memory XML source, such as a DOM
-tree.</p>
-<p>Instead of an ARP instance, you create an instance of
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html">SAX2RDF</a> using
-the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#newInstance(java.lang.String)">newInstance</a>
-method. This can be configured just like an ARP instance, following
-the initialization section of the <a href="#sample">sample code</a>.</p>
-<p>This is used like a SAX2Model instance as
-<a href="sax.html">described elsewhere</a>.</p>
-<h2 id="memory-usage">Memory usage</h2>
-<p>For very large files, ARP does not use any additional memory except
-when either the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html#discardNodesWithNodeID()">ExtendedHandler.discardNodesWithNodeID</a>
-returns false or when the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/AResource.html#setUserData(java.lang.Object)">AResource.setUserData</a>
-method has been used. In these cases ARP needs to remember the
-<code>rdf:nodeID</code> usage through the file life time.</p>
+<p>This is because in strict mode
+<a href="/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#IGN_DAML_COLLECTION"><code>IGN_DAML_COLLECTION</code></a>
+is treated as an error, and so the second call to <code>setProperty</code>
+overwrites the effect of the first.</p>
+<p>The IRI rules and resolver can be set on a per-reader basis:</p>
+<pre><code>InputStream in = ... ;
+String baseURI = ... ;
+Model model = ModelFactory.createDefaultModel();
+RDFReader r = model.getReader(&quot;RDF/XML&quot;);
+r.setProperty(&quot;iri-rules&quot;, &quot;strict&quot;) ;
+r.setProperty(&quot;error-mode&quot;, &quot;strict&quot;) ; // Warning will be errors.
+
+// Alternative to the above &quot;error-mode&quot;: set specific warning to be an error.
+//r.setProperty( &quot;WARN_MALFORMED_URI&quot;, ARPErrorNumbers.EM_ERROR) ;
+r.read(model, in, baseURI) ;
+in.close();
+</code></pre>
+<p>The global default IRI engine can be set with:</p>
+<pre><code>ARPOptions.setIRIFactoryGlobal(IRIFactory.iriImplementation()) ;
+</code></pre>
+<p>or other IRI rule engine from <code>IRIFactory</code>.</p>
+<h2 id="further-details">Further details</h2>
+<p><a href="arp/arp.html">Details of ARP, the Jena RDF/XML parser</a></p>
 
   </article>
   
@@ -360,13 +347,12 @@ method has been used. In these cases ARP needs to remember the
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#sample-code">Sample Code</a></li>
-    <li><a href="#arp-event-handling">ARP Event Handling</a></li>
-    <li><a href="#configuring-arp">Configuring ARP</a></li>
-    <li><a href="#interrupting-arp">Interrupting ARP</a></li>
-    <li><a href="#using-other-sax-sources">Using Other SAX Sources</a></li>
-    <li><a href="#memory-usage">Memory usage</a></li>
+    <li><a href="#advanced-rdfxml-input">Advanced RDF/XML Input</a>
+      <ul>
+        <li><a href="#arp-properties">ARP properties</a></li>
+      </ul>
+    </li>
+    <li><a href="#further-details">Further details</a></li>
   </ul>
 </nav>
   </aside>

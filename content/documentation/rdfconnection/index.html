@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.8eddb17125a9203f3381ffcfb0cfa8dce63a381e136339a4ea8001dfd8fa9d82.css" integrity="sha256-jt2xcSWpID8zgf/PsM&#43;o3OY6OB4TYzmk6oAB39j6nYI=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.1b17c39a117e22b46db4c66f6395dc27c134a60377d87d2d5745b8600eb69722.css" integrity="sha256-GxfDmhF&#43;IrRttMZvY5XcJ8E0pgN32H0tV0W4YA62lyI=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -85,17 +85,17 @@
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
                 <div class="input-group">
-                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search">
+                    <input class="form-control border-end-0 border m-0" type="search" name="q" id="search-query" placeholder="Search...." aria-label="Search" style="width: 10rem;">
                     <button class="btn btn-outline-secondary border-start-0 border" type="submit">
                         <i class="bi-search"></i>
                     </button>
                 </div>
             </form>
-            <ul class="navbar-nav ms-auto">
-                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html"><span class="bi-patch-question"></span> Ask</a></li>
+            <ul class="navbar-nav">
+                <li id="ask" class="nav-item"><a class="nav-link" href="/help_and_support/index.html" title="Ask"><span class="bi-patch-question"></span><span class="text-body d-none d-xxl-inline"> Ask</span></a></li>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span> Get involved <b class="caret"></b></a>
+                    <a href="#" title="Get involved" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-megaphone"></span><span class="text-body d-none d-xxl-inline"> Get involved </span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/getting_involved/index.html">Contribute</a></li>
                         <li><a class="dropdown-item" href="/help_and_support/bugs_and_suggestions.html">Report a bug</a></li>
@@ -121,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/rdfconnection/__index.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span> Edit this page</a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/rdfconnection/__index.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -175,7 +175,7 @@
 <main class="d-flex flex-xl-row flex-column">
   
   <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
-    <h2 class="h6 my-2">On this page</h2>
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#outline">Outline</a></li>
@@ -204,45 +204,39 @@
   </aside>
   <article class="flex-column me-lg-4">
     <p><code>RDFConnection</code> provides a unified set of operations for working on RDF
-with SPARQL operations. It provides <a
-href="https://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a
-href="https://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a
-href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
-Store</a> operations.  The interface is uniform - the same interface
-applies to local data and to remote data using HTTP and the SPARQL
-protocols ( <a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL
-protocol</a> and <a
-href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
-Protocol</a>).</p>
+with SPARQL operations. It provides <a href="https://www.w3.org/TR/sparql11-query/">SPARQL Query</a>,
+<a href="https://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the
+<a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store</a> operations.
+The interface is uniform - the same interface applies to local data and to remote
+data using HTTP and the SPARQL protocols (<a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL protocol</a>)
+and <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a>).</p>
 <h2 id="outline">Outline</h2>
 <p><code>RDFConnection</code> provides a number of different styles for working with RDF
 data in Java.  It provides support for try-resource and functional code
 passing styles, as well the more basic sequence of methods calls.</p>
 <p>For example: using <code>try-resources</code> to manage the connection, and perform two operations, one to load
 some data, and one to make a query can be written as:</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
-    conn.load(&quot;data.ttl&quot;) ;
-    conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
-       Resource subject = qs.getResource(&quot;s&quot;) ;
-       System.out.println(&quot;Subject: &quot; + subject) ;
-    }) ;
-}
-</code></pre>
-<p>This could have been written as (approximately &ndash; the error handling is better
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>  conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>  conn<span style="color:#666">.</span><span style="color:#b44">querySelect</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT DISTINCT ?s { ?s ?p ?o }&#34;</span><span style="color:#666">,</span> <span style="color:#666">(</span>qs<span style="color:#666">)</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>     Resource subject <span style="color:#666">=</span> qs<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;s&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>     System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Subject: &#34;</span> <span style="color:#666">+</span> subject<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>This could have been written as (approximately &ndash; the error handling is better
 in the example above):</p>
-<pre><code>RDFConnection conn = RDFConnection.connect(...)
-conn.load(&quot;data.ttl&quot;) ;
-QueryExecution qExec = conn.query(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;) ;
-ResultSet rs = qExec.execSelect() ;
-while(rs.hasNext()) {
-    QuerySolution qs = rs.next() ;
-    Resource subject = qs.getResource(&quot;s&quot;) ;
-    System.out.println(&quot;Subject: &quot; + subject) ;
-}
-qExec.close() ;
-conn.close() ;
-</code></pre>
-<h2 id="transactions">Transactions</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span>
+</span></span><span style="display:flex;"><span>conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>QueryExecution qExec <span style="color:#666">=</span> conn<span style="color:#666">.</span><span style="color:#b44">query</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT DISTINCT ?s { ?s ?p ?o }&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">while</span><span style="color:#666">(</span>rs<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>  QuerySolution qs <span style="color:#666">=</span> rs<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>  Resource subject <span style="color:#666">=</span> qs<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;s&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>  System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Subject: &#34;</span> <span style="color:#666">+</span> subject<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>qExec<span style="color:#666">.</span><span style="color:#b44">close</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>conn<span style="color:#666">.</span><span style="color:#b44">close</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span></code></pre></div><h2 id="transactions">Transactions</h2>
 <p>Transactions are the preferred way to work with RDF data.
 Operations on an <code>RDFConnection</code> outside of an application-controlled
 transaction will cause the system to add one for the duration of the
@@ -250,32 +244,30 @@ operation. This &ldquo;autocommit&rdquo; feature may lead to inefficient operati
 to excessive overhead.</p>
 <p>The <code>Txn</code> class provides a Java8-style transaction API.  Transactions are
 code passed in the <code>Txn</code> library that handles the transaction lifecycle.</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
-    Txn.execWrite(conn, () -&gt; {
-        conn.load(&quot;data1.ttl&quot;) ;
-        conn.load(&quot;data2.ttl&quot;) ;
-        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt;
-           Resource subject = qs.getResource(&quot;s&quot;) ;
-           System.out.println(&quot;Subject: &quot; + subject) ;
-        }) ;
-    }) ;
-}
-</code></pre>
-<p>The traditional style of explicit <code>begin</code>, <code>commit</code>, <code>abort</code> is also available.</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
-    conn.begin(ReadWrite.WRITE) ;
-    try {
-        conn.load(&quot;data1.ttl&quot;) ;
-        conn.load(&quot;data2.ttl&quot;) ;
-        conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
-           Resource subject = qs.getResource(&quot;s&quot;) ;
-           System.out.println(&quot;Subject: &quot; + subject) ;
-        }) ;
-        conn.commit() ;
-    } finally { conn.end() ; }
-}
-</code></pre>
-<p>The use of <code>try-finally</code> ensures that transactions are properly finished.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>  Txn<span style="color:#666">.</span><span style="color:#b44">execWrite</span><span style="color:#666">(</span>conn<span style="color:#666">,</span> <span style="color:#666">()</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>      conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data1.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>      conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data2.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>      conn<span style="color:#666">.</span><span style="color:#b44">querySelect</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT DISTINCT ?s { ?s ?p ?o }&#34;</span><span style="color:#666">,</span> <span style="color:#666">(</span>qs<span style="color:#666">)</span> <span style="color:#666">-&gt;</span>
+</span></span><span style="display:flex;"><span>         Resource subject <span style="color:#666">=</span> qs<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;s&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>         System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Subject: &#34;</span> <span style="color:#666">+</span> subject<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>The traditional style of explicit <code>begin</code>, <code>commit</code>, <code>abort</code> is also available.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data1.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data2.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        conn<span style="color:#666">.</span><span style="color:#b44">querySelect</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT DISTINCT ?s { ?s ?p ?o }&#34;</span><span style="color:#666">,</span> <span style="color:#666">(</span>qs<span style="color:#666">)</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>           Resource subject <span style="color:#666">=</span> qs<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;s&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Subject: &#34;</span> <span style="color:#666">+</span> subject<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        conn<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> conn<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>The use of <code>try-finally</code> ensures that transactions are properly finished.
 The <code>conn.end()</code> provides an abort in case an exception occurs in the
 transaction and a commit has not been issued.  The use of <code>try-finally</code>
 ensures that transactions are properly finished.</p>
@@ -294,10 +286,9 @@ triple store endpoint which supports HTTP content negotiation. Sometimes
 different settings are desirable or required and <code>RDFConnectionRemote</code> provides a
 builder to construct <code>RDFConnectionRemote</code>s.</p>
 <p>At its simplest, it is:</p>
-<pre><code>RDFConnectionRemoteBuilder builder = RDFConnection.create()
-            .destination(&quot;http://host/triplestore&quot;);
-</code></pre>
-<p>which uses default settings used by <code>RDFConenctionFactory.connect</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>RDFConnectionRemoteBuilder builder <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#666">.</span><span style="color:#b44">destination</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://host/triplestore&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>which uses default settings used by <code>RDFConenctionFactory.connect</code>.</p>
 <p>See <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample4.java">example
 4</a>
 and <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample5.java">example
@@ -307,28 +298,26 @@ and <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/jav
 and providing detailed configuration with
 <a href="https://hc.apache.org/httpcomponents-client-ga/">Apache HttpComponents HttpClient</a>.</p>
 <h3 id="fuseki-specific-connection">Fuseki Specific Connection</h3>
-<p>If the remote destination is a Apache Jena Fuseki server, then the
-default general settings work but it is possible to have a specialised connection</p>
-<pre><code>    RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create()
-          .destination(&quot;http://host/fuseki&quot;);
-</code></pre>
-<p>which uses settings tuned to Fuseki, including round-trip handling of
+<p>If the remote destination is an Apache Jena Fuseki server, then the
+default general settings work, but it is possible to have a specialised connection</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>RDFConnectionRemoteBuilder builder <span style="color:#666">=</span> RDFConnectionFuseki<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#666">.</span><span style="color:#b44">destination</span><span style="color:#666">(</span><span style="color:#b44">&#34;http://host/fuseki&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>which uses settings tuned to Fuseki, including round-trip handling of
 blank nodes.</p>
 <p>See <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample6.java">example
 6</a>.</p>
 <h2 id="graph-store-protocol">Graph Store Protocol</h2>
-<p>The <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph
-Store Protocol</a> (GSP) is a set of operations to work on whole graphs in a
+<p>The <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a>
+(GSP) is a set of operations to work on whole graphs in a
 dataset.  It provides a standardised way to manage the data in a dataset.</p>
 <p>The operations are to fetch a graph, set the RDF data in a graph,
 add more RDF data into a graph, and delete a graph from a dataset.</p>
 <p>For example: load two files:</p>
-<pre><code>try ( RDFConnection conn = RDFConnection.connect(...) ) {
-    conn.load(&quot;data1.ttl&quot;) ;
-    conn.load(&quot;data2.nt&quot;) ;
-}
-</code></pre>
-<p>The file extension is used to determine the syntax.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data1.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data2.nt&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>The file extension is used to determine the syntax.</p>
 <p>There is also a set of scripts to help do these operations from the command
 line with <a href="/documentation/fuseki2/soh.html">SOH</a>.
 It is possible to write curl scripts as well.  The SPARQL Graph
@@ -336,9 +325,8 @@ Store Protocol provides a standardised way to manage the data in a dataset.</p>
 <p>In addition, <code>RDFConnection</code> provides an extension to give the same style
 of operation to work on a whole dataset (deleting the dataset is not
 provided).</p>
-<pre><code>conn.loadDataset(&quot;data-complete.trig&quot;) ;
-</code></pre>
-<h3 id="local-vs-remote">Local vs Remote</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>conn<span style="color:#666">.</span><span style="color:#b44">loadDataset</span><span style="color:#666">(</span><span style="color:#b44">&#34;data-complete.trig&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span></code></pre></div><h3 id="local-vs-remote">Local vs Remote</h3>
 <p>GSP operations work on whole models and datasets. When used on a remote connection,
 the result of a GSP operation is a separate copy of the remote RDF data.  When working
 with local connections, 3 isolation modes are available:</p>
@@ -349,7 +337,7 @@ a remote connection and is useful for testing.</li>
 <li>Read-only – the models and datasets are made read-only but any changes
 to the underlying RDF data by changes by another route will be visible.
 This provides a form of checking for large datasets when &ldquo;copy&rdquo; is impractical.</li>
-<li>None – the models and datasets are passed back with no additional wrappers
+<li>None – the models and datasets are passed back with no additional wrappers,
 and they can be updated with the changes being made the underlying dataset.</li>
 </ul>
 <p>The default for a local <code>RDFConnection</code> is &ldquo;none&rdquo;. When used with TDB,
@@ -364,29 +352,27 @@ in this mode.</p>
 retain it across the lifetime of the transaction or <code>QueryExecution</code>, then
 the application should create a copy which is not attached to any external system
 with <code>ResultSetFactory.copyResults</code>.</p>
-<pre><code>  try ( RDFConnection conn = RDFConnection.connect(&quot;https://...&quot;) ) {
-      ResultSet safeCopy =
-          Txn.execReadReturn(conn, () -&gt; {
-              // Process results by row:
-              conn.querySelect(&quot;SELECT DISTINCT ?s { ?s ?p ?o }&quot;, (qs) -&gt; {
-                  Resource subject = qs.getResource(&quot;s&quot;) ;
-                  System.out.println(&quot;Subject: &quot;+subject) ;
-              }) ;
-              ResultSet rs = conn.query(&quot;SELECT * { ?s ?p ?o }&quot;).execSelect() ;
-              return ResultSetFactory.copyResults(rs) ;
-          }) ;
-  }
-</code></pre>
-<h2 id="update-usage">Update Usage</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(</span><span style="color:#b44">&#34;https://...&#34;</span><span style="color:#666">)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    ResultSet safeCopy <span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>        Txn<span style="color:#666">.</span><span style="color:#b44">execReadReturn</span><span style="color:#666">(</span>conn<span style="color:#666">,</span> <span style="color:#666">()</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-style:italic">// Process results by row:
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>            conn<span style="color:#666">.</span><span style="color:#b44">querySelect</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT DISTINCT ?s { ?s ?p ?o }&#34;</span><span style="color:#666">,</span> <span style="color:#666">(</span>qs<span style="color:#666">)</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>                Resource subject <span style="color:#666">=</span> qs<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;s&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>                System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Subject: &#34;</span><span style="color:#666">+</span>subject<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>            ResultSet rs <span style="color:#666">=</span> conn<span style="color:#666">.</span><span style="color:#b44">query</span><span style="color:#666">(</span><span style="color:#b44">&#34;SELECT * { ?s ?p ?o }&#34;</span><span style="color:#666">).</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a2f;font-weight:bold">return</span> ResultSetFactory<span style="color:#666">.</span><span style="color:#b44">copyResults</span><span style="color:#666">(</span>rs<span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><h2 id="update-usage">Update Usage</h2>
 <p>SPARQL Update operations can be performed and mixed with other operations.</p>
-<pre><code>  try ( RDFConnection conn = RDFConnection.connect(...) ) {
-      Txn.execWrite(conn, () -&gt; {
-         conn.update(&quot;DELETE DATA { ... }&quot; ) ;
-         conn.load(&quot;data.ttl&quot;) ;
-      }) ;
-  }
-</code></pre>
-<h2 id="dataset-operations">Dataset operations</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span> RDFConnection conn <span style="color:#666">=</span> RDFConnection<span style="color:#666">.</span><span style="color:#b44">connect</span><span style="color:#666">(...)</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    Txn<span style="color:#666">.</span><span style="color:#b44">execWrite</span><span style="color:#666">(</span>conn<span style="color:#666">,</span> <span style="color:#666">()</span> <span style="color:#666">-&gt;</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>       conn<span style="color:#666">.</span><span style="color:#b44">update</span><span style="color:#666">(</span><span style="color:#b44">&#34;DELETE DATA { ... }&#34;</span> <span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>       conn<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;data.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">})</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><h2 id="dataset-operations">Dataset operations</h2>
 <p>In addition to the SPARQL Graph Store Protocol, operations on whole
 datasets are provided for fetching (HTTP GET), adding data (HTTP POST) and
 setting the data (HTTP PUT) on a dataset URL.  This assumes the remote
@@ -405,8 +391,8 @@ and <code>RDFDatasetConnection</code> (read and write operations).</li>
 </ul>
 <h2 id="examples">Examples</h2>
 <ul>
-<li>for simple usage examples see <a href="https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples"><a href="https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a></a>.</li>
-<li>for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java"><a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a></a>.</li>
+<li>for simple usage examples see <a href="https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples">https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples</a>.</li>
+<li>for example of how to use with StreamRDF see <a href="https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java">https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java</a>.</li>
 </ul>
 
   </article>

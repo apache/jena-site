@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Jena Roadmap</title>
+    <title>Apache Jena - Jena RDF XML</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -121,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/about_jena/roadmap.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/rdfxml-io.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -147,7 +147,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/about_jena'>ABOUT JENA</a></li>
+                <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
             
         
@@ -155,7 +155,15 @@
         
         
             
-                <li class="breadcrumb-item active">ROADMAP.HTML</li>
+                <li class="breadcrumb-item"><a href='/documentation/io'>IO</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item active">RDFXML IO</li>
             
             
         
@@ -166,26 +174,85 @@
 
 
             </div>
-            <h1 class="title">Jena Roadmap</h1>
+            <h1 class="title">Jena RDF XML</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
   
   <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#rdfxml-input">RDF/XML Input</a></li>
+    <li><a href="#rdfxml-output">RDF/XML Output</a></li>
+  </ul>
+</nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>You can view a list of the <a href="https://github.com/apache/jena/issues">open issues on Github</a>
-and <a href="https://issues.apache.org/jira/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+JENA+AND+status+%3D+Open+ORDER+BY+priority+DESC&amp;mode=hide">older open issues</a> on JIRA.
-priority)</p>
-<p>Pull requests, patches and other contributions welcome!</p>
+    <p>This is a guide to the RDF/XML I/O subsystem of Jena.</p>
+<p>The RDF/XML parser is designed for use with RIOT and to have the same handling
+of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.</p>
+<h2 id="rdfxml-input">RDF/XML Input</h2>
+<p>The usual way to access the RDF/XML parser is via <code>RDFDataMgr</code> or <code>RDFParser</code>.</p>
+<pre><code>Model model = RDFDataMgr.loadModel(&quot;data.rdf&quot;);
+</code></pre>
+<p>or</p>
+<pre><code>Model model = RDFParser.source(&quot;data.rdf&quot;).toModel();
+</code></pre>
+<p>The original &ldquo;ARP&rdquo; parser is still available bu tmaybe pahsed out.  To access
+the legacy parser, use the context symbol <code>RIOT.symRDFXML0</code> to <code>true</code> or
+`&ldquo;true&rdquo;.</p>
+<pre><code>Model model = RDFParser.source(&quot;&quot;data.rdf&quot;)
+                       .set(RIOT.symRDFXML0, true)
+                       .parse(dest);
+</code></pre>
+<p>This applies to the command line:</p>
+<pre><code>riot --set rdfxml:rdfxml0=true data.rdf
+</code></pre>
+<p>This can be set globally in the JVM:</p>
+<pre><code>RIOT.getContext().set(RIOT.symRDFXML0, &quot;true&quot;);
+</code></pre>
+<p>Details of <a href="rdfxml-input.html">legacy RDF/XML input</a>.</p>
+<p>Details of the original Jena RDF/XML parser, <a href="arp/arp.html">ARP</a>.</p>
+<h2 id="rdfxml-output">RDF/XML Output</h2>
+<p>Two forms for output are provided:</p>
+<ul>
+<li>
+<p>The default output <code>Lang.RDFXML</code>, historically called &ldquo;RDF/XML-ABBREV&rdquo;, which
+also has a format name <code>RDFFormat.RDFXML_PRETTY</code>. It produces readable
+output. It requires working memory to analyse the data to be written and it is
+not streaming.</p>
+</li>
+<li>
+<p>For efficient, streaming output, the basic RDF/XML <code>RDFFormat.RDFXML_PLAIN</code>
+works for data of any size. It outputs each subject together with all property
+values without using the full features of RDF/XML.</p>
+</li>
+</ul>
+<p>For &ldquo;RDF/XML-ABBREV&rdquo;:</p>
+<pre><code>RDFDataMgr.write(System.out, model, Lang.RDFXML);
+</code></pre>
+<p>or</p>
+<pre><code>RDFWriter.source(model).lang(Lang.RDFXML).output(System.out);
+</code></pre>
+<p>and for plain RDF/XML:</p>
+<pre><code>RDFDataMgr.write(System.out, model, RDFFormat.RDFXML_PLAIN);
+</code></pre>
+<p>or</p>
+<pre><code>RDFWriter.source(model).format(RDFFormat.RDFXML_PLAIN).output(System.out);
+</code></pre>
+<p>Details of <a href="rdfxml-output.html">legacy RDF/XML output</a>.</p>
 
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#rdfxml-input">RDF/XML Input</a></li>
+    <li><a href="#rdfxml-output">RDF/XML Output</a></li>
+  </ul>
+</nav>
   </aside>
 </main>
 
