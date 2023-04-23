@@ -184,7 +184,7 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#requirements">Requirements</a></li>
-    <li><a href="#loading-javascript-functions">Loading JavaScript functions</a></li>
+    <li><a href="#enabling-and-loading-javascript-functions">Enabling and Loading JavaScript functions</a></li>
     <li><a href="#using-javascript-functions">Using JavaScript functions</a>
       <ul>
         <li><a href="#arguments-and-function-results">Arguments and Function Results</a></li>
@@ -203,6 +203,9 @@ values to assign with AS in BIND and SELECT expressions.</p>
 <p>XSD datatypes for strings, numbers and booleans are converted to the
 native JavaScript datatypes. RDFterms that do not fit easily into
 JavaScript datatypes are handled with a object class <code>NV</code>.</p>
+<p>Applications should be aware that there are risks in exposing a script engine
+with full computational capabilities through SPARQL.  Script functions are only
+as secure as the script engine environment they run in.</p>
 <h2 id="requirements">Requirements</h2>
 <p>ARQ requires a javascript engine such as <a href="https://www.graalvm.org/">GraalVM</a> to
 be added to the classpath.</p>
@@ -220,16 +223,23 @@ be added to the classpath.</p>
       &lt;artifactId&gt;js-scriptengine&lt;/artifactId&gt;
       &lt;version&gt;${ver.graalvm}&lt;/version&gt;
     &lt;/dependency&gt;
-</code></pre><h2 id="loading-javascript-functions">Loading JavaScript functions</h2>
+</code></pre><h2 id="enabling-and-loading-javascript-functions">Enabling and Loading JavaScript functions</h2>
 <p>JavaScript is loaded from an external file using the context setting
 &ldquo;<a href="http://jena.apache.org/ARQ#js-library%22">http://jena.apache.org/ARQ#js-library&quot;</a>. This can be written as
 <code>arq:js-library</code> for commands and Fuseki configuration files.</p>
+<p>Access to the script engine must be enabled at runtime.
+The Java system property to do this is <code>jena:scripting</code>.</p>
 <p>Example:</p>
-<pre><code>sparql --set arq:js-library=SomeFile.js --data ... --query ...
+<pre><code>export JVM_ARGS=-Djena:scripting=true
+sparql --set arq:js-library=SomeFile.js --data ... --query ...
+</code></pre>
+<p>and for MS Windows:</p>
+<pre><code>set JVM_ARGS=-Djena:scripting=true
+sparql --set arq:js-library=SomeFile.js --data ... --query ...
 </code></pre>
 <p>will execute on the data with the JavaScript functions from file
 &ldquo;SomeFile.js&rdquo; available.</p>
-<p>JavScript functions can also be set from a string directly from within Java using constant
+<p>JavaScript functions can also be set from a string directly from within Java using constant
 <code>ARQ.symJavaScriptFunctions</code> (&ldquo;<a href="http://jena.apache.org/ARQ#js-functions%22)">http://jena.apache.org/ARQ#js-functions&quot;)</a>.</p>
 <h2 id="using-javascript-functions">Using JavaScript functions</h2>
 <p>SPARQL functions implemented in JavaScript are automatically called when a
@@ -264,9 +274,10 @@ For example, &ldquo;some words to process &quot; becomes &ldquo;someWordsToProce
 // Words to be combined are separated by a space in the string.
 
 function toCamelCase(str) {
-    return str.split(' ')
-	.map(cc)
-	.join('');
+    return str
+              .split(' ')
+              .map(cc)
+              .join('');
 }
 
 function ucFirst(word)    {
@@ -289,10 +300,7 @@ SELECT ?input (js:toCamelCase(?input) AS ?X)
     VALUES ?input { &quot;some woRDs to PROCESS&quot; }
 }
 </code></pre>
-<p>which can be executed with:</p>
-<pre><code>sparql --set arq:js-library=functions.js --query Q.rq
-</code></pre>
-<p>and it results in:</p>
+<p>which results in:</p>
 <pre><code>--------------------------------------------------
 | input                   | X                    |
 ==================================================
@@ -302,7 +310,8 @@ SELECT ?input (js:toCamelCase(?input) AS ?X)
 <h2 id="use-with-fuseki">Use with Fuseki</h2>
 <p>The context setting can be provided on the command line starting the
 server, for example:</p>
-<pre><code>fuseki --set arq:js-library=functions.js --mem /ds
+<pre><code>export JVM_ARGS=-Djena:scripting=true
+fuseki --set arq:js-library=functions.js --mem /ds
 </code></pre>
 <p>or it can be specified in the server configuration file <code>config.ttl</code>:</p>
 <pre><code>PREFIX :        &lt;#&gt;
@@ -331,7 +340,8 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 .
 </code></pre>
 <p>and used as:</p>
-<pre><code>fuseki --conf config.ttl
+<pre><code>export JVM_ARGS=-Djena:scripting=true    
+fuseki --conf config.ttl
 </code></pre>
 
   </article>
@@ -341,7 +351,7 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
     <nav id="TableOfContents">
   <ul>
     <li><a href="#requirements">Requirements</a></li>
-    <li><a href="#loading-javascript-functions">Loading JavaScript functions</a></li>
+    <li><a href="#enabling-and-loading-javascript-functions">Enabling and Loading JavaScript functions</a></li>
     <li><a href="#using-javascript-functions">Using JavaScript functions</a>
       <ul>
         <li><a href="#arguments-and-function-results">Arguments and Function Results</a></li>

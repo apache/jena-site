@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Apache Jena Releases</title>
+    <title>Apache Jena - Using ARP Without Jena</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -121,7 +121,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/download/__index.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/io/arp/arp_standalone.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -137,9 +137,6 @@
 
 
 
-    
-    
-
 
 <ol class="breadcrumb mt-4 p-2 bg-body-tertiary">
     
@@ -150,7 +147,31 @@
         
         
             
-                <li class="breadcrumb-item active">DOWNLOAD</li>
+                <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item"><a href='/documentation/io'>IO</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item"><a href='/documentation/io/arp'>ARP</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item active">ARP STANDALONE</li>
             
             
         
@@ -161,7 +182,7 @@
 
 
             </div>
-            <h1 class="title">Apache Jena Releases</h1>
+            <h1 class="title">Using ARP Without Jena</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
@@ -170,161 +191,176 @@
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#apache-jena-release">Apache Jena Release</a></li>
-        <li><a href="#apache-jena-binary-distributions">Apache Jena Binary Distributions</a></li>
-        <li><a href="#individual-modules">Individual Modules</a>
-          <ul>
-            <li><a href="#maven">Maven</a></li>
-            <li><a href="#source-code">Source code</a></li>
-            <li><a href="#previous-releases">Previous releases</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#download-source">Download Source</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#sample-code">Sample Code</a></li>
+    <li><a href="#arp-event-handling">ARP Event Handling</a></li>
+    <li><a href="#configuring-arp">Configuring ARP</a></li>
+    <li><a href="#interrupting-arp">Interrupting ARP</a></li>
+    <li><a href="#using-other-sax-sources">Using Other SAX Sources</a></li>
+    <li><a href="#memory-usage">Memory usage</a></li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>Apache Jena is packaged as downloads which contain the most commonly used portions of the systems:</p>
+    <p>ARP can be used both as a Jena subsystem, or as a standalone
+RDF/XML parser. This document gives a quick guide to using ARP
+standalone.</p>
+<h2 id="overview">Overview</h2>
+<p>To load an RDF file:</p>
+<ol>
+<li>Create an
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#ARP()">ARP</a> instance.</li>
+<li>Set parse options, particularly error detection control, using
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()">getOptions</a>
+or
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setOptionsWith(org.apache.jena.rdf.arp.ARPOptions)">setOptionsWith</a>.</li>
+<li>Set its handlers, by calling the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
+or
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
+methods, and then.
 <ul>
-<li><strong>apache-jena</strong> – contains the APIs, SPARQL engine, the TDB native RDF database and command line tools</li>
-<li><strong>apache-jena-fuseki</strong> – the Jena SPARQL server</li>
+<li>Setting the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">statement handler</a>.</li>
+<li>Optionally setting the other handlers.</li>
 </ul>
-<p>Jena4 requires Java 11.</p>
-<p>Jena jars are <a href="maven.html">available from Maven</a>.</p>
-<p>You may <a href="https://www.apache.org/info/verification.html">verify the authenticity of artifacts</a> below by using the <a href="https://downloads.apache.org/jena/KEYS">PGP KEYS</a> file.</p>
-<h3 id="apache-jena-release">Apache Jena Release</h3>
-<p>Source release: this forms the official release of Apache Jena. All binaries artifacts and maven binaries correspond to this source.</p>
-<table>
-<thead>
-<tr>
-<th>Apache Jena Release</th>
-<th style="text-align:center">SHA512</th>
-<th style="text-align:center">Signature</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="[preferred]jena/source/jena-4.8.0-source-release.zip">jena-4.8.0-source-release.zip</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/source/jena-4.8.0-source-release.zip.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/source/jena-4.8.0-source-release.zip.asc">PGP</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="apache-jena-binary-distributions">Apache Jena Binary Distributions</h3>
-<p>The binary distribution of the Fuseki server:</p>
-<table>
-<thead>
-<tr>
-<th>Apache Jena Fuseki</th>
-<th style="text-align:center">SHA512</th>
-<th style="text-align:center">Signature</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="[preferred]jena/binaries/apache-jena-fuseki-4.8.0.tar.gz">apache-jena-fuseki-4.8.0.tar.gz</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.8.0.tar.gz.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.8.0.tar.gz.asc">PGP</a></td>
-</tr>
-<tr>
-<td><a href="[preferred]jena/binaries/apache-jena-fuseki-4.8.0.zip">apache-jena-fuseki-4.8.0.zip</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.8.0.zip.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.8.0.zip.asc">PGP</a></td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
-<table>
-<thead>
-<tr>
-<th>Apache Jena libraries</th>
-<th style="text-align:center">SHA512</th>
-<th style="text-align:center">Signature</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="[preferred]jena/binaries/apache-jena-4.8.0.tar.gz">apache-jena-4.8.0.tar.gz</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-4.8.0.tar.gz.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-4.8.0.tar.gz.asc">PGP</a></td>
-</tr>
-<tr>
-<td><a href="[preferred]jena/binaries/apache-jena-4.8.0.zip">apache-jena-4.8.0.zip</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-4.8.0.zip.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/apache-jena-4.8.0.zip.asc">PGP</a></td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-The binary distribution of Fuseki as a WAR file:
-<table>
-<thead>
-<tr>
-<th>Apache Jena Fuseki</th>
-<th style="text-align:center">SHA512</th>
-<th style="text-align:center">Signature</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="[preferred]jena/binaries/jena-fuseki-war-4.8.0.war">jena-fuseki-war-4.8.0.war</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.8.0.war.sha512">SHA512</a></td>
-<td style="text-align:center"><a href="https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.8.0.war.asc">PGP</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="individual-modules">Individual Modules</h3>
-<p>Apache Jena publishes a range of modules beyond those included in the binary distributions (code for all modules may be found in the source distribution).</p>
-<p>Individual modules may be obtained using a dependency manager which can talk to Maven repositories, some modules are only available via Maven.</p>
-<h4 id="maven">Maven</h4>
-<p>See &ldquo;<a href="maven.html">Using Jena with Apache Maven</a>&rdquo; for full details.</p>
-<pre><code>&lt;dependency&gt;
-   &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-   &lt;artifactId&gt;apache-jena-libs&lt;/artifactId&gt;
-   &lt;type&gt;pom&lt;/type&gt;
-   &lt;version&gt;X.Y.Z&lt;/version&gt;
-&lt;/dependency&gt;
+</li>
+<li>Call a
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARP.html#load(java.io.InputStream,%20java.lang.String)">load</a>
+method</li>
+</ol>
+<p>Xerces is used for parsing the XML. The SAXEvents generated by
+Xerces are then analysed as RDF by ARP. It is possible to use a
+different source of SAX events.</p>
+<p>Errors may occur in either the XML or the RDF part.</p>
+<h2 id="sample-code">Sample Code</h2>
+<pre><code>ARP arp = new ARP();
+
+// initialisation - uses ARPConfig interface only.
+arp.getOptions().setLaxErrorMode();
+
+arp.getHandlers().setErrorHandler(new ErrorHandler(){
+    public void fatalError(SAXParseException e){
+           // TODO code
+    }
+    public void error(SAXParseException e){
+            // TODO code
+    }
+    public void warning(SAXParseException e){
+            // TODO code
+    }
+});
+arp.getHandlers().setStatementHandler(new StatementHandler(){
+    public void statement(AResource a, AResource b, ALiteral l){
+            // TODO code
+    }
+    public void statement(AResource a, AResource b, AResource l){
+            // TODO code
+    }
+});
+
+// parsing.
+
+try {
+    // Loading fixed input ...
+    arp.load(new StringReader(
+        &quot;&lt;rdf:RDF  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'&gt;\n&quot;
+        +&quot;&lt;rdf:Description&gt;&lt;rdf:value rdf:parseType='Literal'&gt;&quot;
+        +&quot;&lt;b&gt;hello&lt;/b&gt;&lt;/rdf:value&gt;\n&quot;
+        +&quot;&lt;/rdf:Description&gt;&lt;/rdf:RDF&gt;&quot;
+    ));
+
+}
+catch (IOException ioe){
+    // something unexpected went wrong
+}
+catch (SAXParseException s){
+    // This error will have been reported
+}
+catch (SAXException ss) {
+    // This error will not have been reported.
+}
 </code></pre>
-<h4 id="source-code">Source code</h4>
-<p>The development codebase is available from git.</p>
-<p><a href="https://gitbox.apache.org/repos/asf?p=jena.git">https://gitbox.apache.org/repos/asf?p=jena.git</a></p>
-<p>This is also available on github:</p>
-<p><a href="https://github.com/apache/jena">https://github.com/apache/jena</a></p>
-<h4 id="previous-releases">Previous releases</h4>
-<p>While previous releases are available, we strongly recommend that wherever
-possible users use the latest official Apache releases of Jena in
-preference to using any older versions of Jena.</p>
-<p>Previous Apache Jena releases can be found in the Apache archive area
-at <a href="https://archive.apache.org/dist/jena/">https://archive.apache.org/dist/jena</a>.</p>
-<h2 id="download-source">Download Source</h2>
-<p>The Apache Software foundation uses <a href="https://dlcdn.apache.org/">CDN-distribution</a> for Apache
-projects and <a href="https://dlcdn.apache.org/jena/">the current release of Jena</a>.</p>
-<p>[if-any logo]
-<a href="[link]">
-  <img align="right" src="[logo]" border="0" />
-</a>[end]
-The currently selected mirror is <b>[preferred]</b>.  If you encounter a problem with this mirror, please select another
-mirror.
-<form action="[location]" method="get" id="SelectMirror">
-Other mirrors: <select name="Preferred">
-[if-any http]
-  [for http]<option value="[http]">[http]</option>[end]
-[end]
-<p>[if-any ftp]
-[for ftp]<option value="[ftp]">[ftp]</option>[end]
-[end]
-[if-any backup]
-[for backup]<option value="[backup]">[backup]
-(backup)</option>[end]
-[end]
-</select>
-<input type="submit" value="Change" /></p>
-</form>
+<h2 id="arp-event-handling">ARP Event Handling</h2>
+<p>ARP reports events concerning:</p>
+<ul>
+<li>Triples found in the input.</li>
+<li>Errors in the input.</li>
+<li>Namespace declarations.</li>
+<li>Scope of blank nodes.</li>
+</ul>
+<p>User code is needed to respond to any of these events of interest.
+This is written by implementing any of the relevant interfaces:
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/StatementHandler.html">StatementHandler</a>,
+org.xml.sax.ErrorHandler,
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/NamespaceHandler.html">NamespaceHandler</a>,
+and
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html">ExtendedHandler</a>.</p>
+<p>An individual handler is set by calling the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getHandlers()">getHandlers</a>
+method on the ARP instance. This returns an encapsulation of all
+the handlers being used. A specific handler is set by calling the
+appropriate set&hellip;Handler method on that object, e.g.
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setStatementHandler(org.apache.jena.rdf.arp.StatementHandler)">setStatementHandler</a>.</p>
+<p>All the handlers can be copied from one ARP instance to another by
+using the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#setHandlersWith(org.apache.jena.rdf.arp.ARPHandlers)">setHandlersWith</a>
+method:</p>
+<pre><code> ARP from, to;
+ // initialize from and to
+ // ...
+
+ to.setHandlersWith(from.getHandlers());
+</code></pre>
+<p>The error handler reports both XML and RDF errors, the former
+detected by Xerces. See
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPHandlers.html#setErrorHandler(org.xml.sax.ErrorHandler)">ARPHandlers.setErrorHandler</a>
+for details of how to distinguish between them.</p>
+<h2 id="configuring-arp">Configuring ARP</h2>
+<p>ARP can be configured to treat most error conditions as warnings or
+to be ignored, and to treat some non-error conditions as warnings
+or errors.</p>
+<p>In addition, the behaviour in response to input that does not have
+an <code>&lt;rdf:RDF&gt;</code> root element is configurable: either to treat the
+whole file as RDF anyway, or to scan the file looking for embedded
+<code>&lt;rdf:RDF&gt;</code> elements.</p>
+<p>As with the handlers, there is an options object that encapsulates
+these settings. It can be accessed using
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPConfig.html#getOptions()"><code>getOptions</code></a>,
+and then individual settings can be made using the methods in
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ARPOptions.html"><code>ARPOptions</code></a>.</p>
+<p>It is also possible to copy all the option settings from one ARP
+instance to another:</p>
+<pre><code> ARP from, to;
+ // initialize from and to ...
+
+ to.setOptionsWith(from.getOptions());
+</code></pre>
+<p>The <a href="iohowto.html#arp_properties">I/O how-to</a> gives some more
+detail about the options settings, although it assumes the use of
+the Jena <code>RDFReader</code> interface.</p>
+<h2 id="interrupting-arp">Interrupting ARP</h2>
+<p>It is possible to interrupt an ARP thread. See the
+<a href="iohowto.html#interrupting_arp">I/O how-to</a> for details.</p>
+<h2 id="using-other-sax-sources">Using Other SAX Sources</h2>
+<p>It is possible to use ARP with other SAX input sources, e.g. from a
+non-Xerces parser, or from an in-memory XML source, such as a DOM
+tree.</p>
+<p>Instead of an ARP instance, you create an instance of
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html">SAX2RDF</a> using
+the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#newInstance(java.lang.String)">newInstance</a>
+method. This can be configured just like an ARP instance, following
+the initialization section of the <a href="#sample">sample code</a>.</p>
+<p>This is used like a SAX2Model instance as
+<a href="sax.html">described elsewhere</a>.</p>
+<h2 id="memory-usage">Memory usage</h2>
+<p>For very large files, ARP does not use any additional memory except
+when either the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/ExtendedHandler.html#discardNodesWithNodeID()">ExtendedHandler.discardNodesWithNodeID</a>
+returns false or when the
+<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/AResource.html#setUserData(java.lang.Object)">AResource.setUserData</a>
+method has been used. In these cases ARP needs to remember the
+<code>rdf:nodeID</code> usage through the file life time.</p>
 
   </article>
   
@@ -332,20 +368,13 @@ Other mirrors: <select name="Preferred">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#apache-jena-release">Apache Jena Release</a></li>
-        <li><a href="#apache-jena-binary-distributions">Apache Jena Binary Distributions</a></li>
-        <li><a href="#individual-modules">Individual Modules</a>
-          <ul>
-            <li><a href="#maven">Maven</a></li>
-            <li><a href="#source-code">Source code</a></li>
-            <li><a href="#previous-releases">Previous releases</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#download-source">Download Source</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#sample-code">Sample Code</a></li>
+    <li><a href="#arp-event-handling">ARP Event Handling</a></li>
+    <li><a href="#configuring-arp">Configuring ARP</a></li>
+    <li><a href="#interrupting-arp">Interrupting ARP</a></li>
+    <li><a href="#using-other-sax-sources">Using Other SAX Sources</a></li>
+    <li><a href="#memory-usage">Memory usage</a></li>
   </ul>
 </nav>
   </aside>
