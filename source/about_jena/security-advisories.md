@@ -52,15 +52,16 @@ Please refer to the individual CVE links for further details and mitigations.
 
 ## CVE-2023-22665 - Exposure of arbitrary execution in script engine expressions.
 
-[CVE-2023](https://www.cve.org/CVERecord?id=CVE-2023-22665) affects Jena ?? through 4.7.0 and relates to the [Javascript
-SPARQL Functions](https://jena.apache.org/documentation/query/javascript-functions.html) feature of our ARQ SPARQL
-engine.
+[CVE-2023](https://www.cve.org/CVERecord?id=CVE-2023-22665) affects Jena 3.7.0 through 4.7.0 and relates to the
+[Javascript SPARQL Functions](https://jena.apache.org/documentation/query/javascript-functions.html) feature of our ARQ
+SPARQL engine.
 
 From Jena 4.8.0 onwards this feature **MUST** be explicitly enabled by end users, and on newer JVMs (Java 17 onwards) a
-JavaScript script engine must be explicitly added to the environment.  However, when enabled this feature does expose
-the majority of the underlying scripting engine directly to SPARQL queries so may remain a vector for arbitrary code
-execution.  Therefore it is recommended that this feature remain disabled for any publicly accessible deployment that
-utilises the ARQ query engine.
+JavaScript script engine **MUST** be explicitly added to the environment.
+
+However, when enabled this feature does expose the majority of the underlying scripting engine directly to SPARQL
+queries so may provide a vector for arbitrary code execution.  Therefore, it is recommended that this feature remain
+disabled for any publicly accessible deployment that utilises the ARQ query engine.
 
 Users should upgrade to latest Jena 4.x [release](../download/) available.
 
