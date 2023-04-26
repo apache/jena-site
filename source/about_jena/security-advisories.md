@@ -50,9 +50,23 @@ policy above we advise users to always utilise the latest Jena release available
 
 Please refer to the individual CVE links for further details and mitigations.
 
+## CVE-2023-22665 - Exposure of arbitrary execution in script engine expressions.
+
+[CVE-2023](https://www.cve.org/CVERecord?id=CVE-2023-22665) affects Jena ?? through 4.7.0 and relates to the [Javascript
+SPARQL Functions](https://jena.apache.org/documentation/query/javascript-functions.html) feature of our ARQ SPARQL
+engine.
+
+From Jena 4.8.0 onwards this feature **MUST** be explicitly enabled by end users, and on newer JVMs (Java 17 onwards) a
+JavaScript script engine must be explicitly added to the environment.  However, when enabled this feature does expose
+the majority of the underlying scripting engine directly to SPARQL queries so may remain a vector for arbitrary code
+execution.  Therefore it is recommended that this feature remain disabled for any publicly accessible deployment that
+utilises the ARQ query engine.
+
+Users should upgrade to latest Jena 4.x [release](../download/) available.
+
 ## CVE-2022-45136 - JDBC Serialisation in Apache Jena SDB
 
-[CVE-2022-45136](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45136) affects all versions of [Jena
+[CVE-2022-45136](https://www.cve.org/CVERecord?id=CVE-2022-45136) affects all versions of [Jena
 SDB](../documentation/archive/sdb/) up to and including the final `3.17.0` release.
 
 Apache Jena SDB has been EOL since December 2020 and we recommend any remaining users migrate to [Jena TDB
@@ -62,7 +76,7 @@ Apache Jena would like to thank Crilwa & LaNyer640 for reporting this issue
 
 ## CVE-2022-28890 - Processing External DTDs
 
-[CVE-2022-28890](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-28890) affects the RDF/XML parser in Jena 4.4.0
+[CVE-2022-28890](https://www.cve.org/CVERecord?id=CVE-2022-28890) affects the RDF/XML parser in Jena 4.4.0
 only.
 
 Users should upgrade to latest Jena 4.x [release](../download/) available.
@@ -72,13 +86,13 @@ report.
 
 ## CVE-2021-39239 - XML External Entity (XXE) Vulnerability
 
-[CVE-2021-39239](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-39239) affects XML parsing up to and including the Jena `4.1.0` release.
+[CVE-2021-39239](https://www.cve.org/CVERecord?id=CVE-2021-39239) affects XML parsing up to and including the Jena `4.1.0` release.
 
 Users should upgrade to latest Jena 4.x [release](../download/) available.
 
 ## CVE-2021-33192 - Display information UI XSS in Apache Jena Fuseki
 
-[CVE-2021-33192](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33192) affected
+[CVE-2021-33192](https://www.cve.org/CVERecord?id=CVE-2021-33192) affected
 [Fuseki](../documentation/fuseki2/) versions `2.0.0` through `4.0.0`.
 
 Users should upgrade to latest Jena 4.x [release](../download/) available.
@@ -91,9 +105,9 @@ and/or configuration changes have been adopted and released as soon as appropria
 
 ## log4shell
 
-[CVE-2021-45105](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046),
-[CVE-2021-45105](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45105) and
-[CVE-2021-44832](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44832), collectively known as
+[CVE-2021-45105](https://www.cve.org/CVERecord?id=CVE-2021-45046),
+[CVE-2021-45105](https://www.cve.org/CVERecord?id=CVE-2021-45105) and
+[CVE-2021-44832](https://www.cve.org/CVERecord?id=CVE-2021-44832), collectively known as
 [log4shell](https://en.wikipedia.org/wiki/Log4Shell) were several vulnerabilities identified in the [Apache
 Log4j](https://logging.apache.org/log4j/2.x/index.html) project that Jena uses as the concrete logging implementation
 for [Fuseki](../documentation/fuseki2/) and our command line tools.

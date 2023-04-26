@@ -65,6 +65,10 @@ will execute on the data with the JavaScript functions from file
 JavaScript functions can also be set from a string directly from within Java using constant
 `ARQ.symJavaScriptFunctions` ("http://jena.apache.org/ARQ#js-functions").
 
+**WARNING:** Enabling this feature exposes the majority of the underlying scripting engine directly to SPARQL queries so
+may provide a vector for arbitrary code execution.  Therefore it is recommended that this feature remain disabled for
+any publicly accessible deployment that utilises the ARQ query engine.
+
 ## Using JavaScript functions
 
 SPARQL functions implemented in JavaScript are automatically called when a
