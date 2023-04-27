@@ -183,6 +183,7 @@
   </ul>
 
   <ul>
+    <li><a href="#cve-2023-22665---exposure-of-arbitrary-execution-in-script-engine-expressions">CVE-2023-22665 - Exposure of arbitrary execution in script engine expressions.</a></li>
     <li><a href="#cve-2022-45136---jdbc-serialisation-in-apache-jena-sdb">CVE-2022-45136 - JDBC Serialisation in Apache Jena SDB</a></li>
     <li><a href="#cve-2022-28890---processing-external-dtds">CVE-2022-28890 - Processing External DTDs</a></li>
     <li><a href="#cve-2021-39239---xml-external-entity-xxe-vulnerability">CVE-2021-39239 - XML External Entity (XXE) Vulnerability</a></li>
@@ -225,23 +226,33 @@ appropriate to the severity of the issue.</p>
 <p>The following CVEs specifically relate to the Jena codebase itself and have been addressed by the project. Per our
 policy above we advise users to always utilise the latest Jena release available.</p>
 <p>Please refer to the individual CVE links for further details and mitigations.</p>
+<h2 id="cve-2023-22665---exposure-of-arbitrary-execution-in-script-engine-expressions">CVE-2023-22665 - Exposure of arbitrary execution in script engine expressions.</h2>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2023-22665">CVE-2023</a> affects Jena 3.7.0 through 4.7.0 and relates to the
+<a href="https://jena.apache.org/documentation/query/javascript-functions.html">Javascript SPARQL Functions</a> feature of our ARQ
+SPARQL engine.</p>
+<p>From Jena 4.8.0 onwards this feature <strong>MUST</strong> be explicitly enabled by end users, and on newer JVMs (Java 17 onwards) a
+JavaScript script engine <strong>MUST</strong> be explicitly added to the environment.</p>
+<p>However, when enabled this feature does expose the majority of the underlying scripting engine directly to SPARQL
+queries so may provide a vector for arbitrary code execution.  Therefore, it is recommended that this feature remain
+disabled for any publicly accessible deployment that utilises the ARQ query engine.</p>
+<p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
 <h2 id="cve-2022-45136---jdbc-serialisation-in-apache-jena-sdb">CVE-2022-45136 - JDBC Serialisation in Apache Jena SDB</h2>
-<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45136">CVE-2022-45136</a> affects all versions of <a href="../documentation/archive/sdb/">Jena
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2022-45136">CVE-2022-45136</a> affects all versions of <a href="../documentation/archive/sdb/">Jena
 SDB</a> up to and including the final <code>3.17.0</code> release.</p>
 <p>Apache Jena SDB has been EOL since December 2020 and we recommend any remaining users migrate to <a href="../documentation/tdb2/">Jena TDB
 2</a> or other 3rd party vendor alternatives.</p>
 <p>Apache Jena would like to thank Crilwa &amp; LaNyer640 for reporting this issue</p>
 <h2 id="cve-2022-28890---processing-external-dtds">CVE-2022-28890 - Processing External DTDs</h2>
-<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-28890">CVE-2022-28890</a> affects the RDF/XML parser in Jena 4.4.0
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2022-28890">CVE-2022-28890</a> affects the RDF/XML parser in Jena 4.4.0
 only.</p>
 <p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
 <p>Apache Jena would like to thank Feras Daragma, Avishag Shapira &amp; Amit Laish (GE Digital, Cyber Security Lab) for their
 report.</p>
 <h2 id="cve-2021-39239---xml-external-entity-xxe-vulnerability">CVE-2021-39239 - XML External Entity (XXE) Vulnerability</h2>
-<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-39239">CVE-2021-39239</a> affects XML parsing up to and including the Jena <code>4.1.0</code> release.</p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2021-39239">CVE-2021-39239</a> affects XML parsing up to and including the Jena <code>4.1.0</code> release.</p>
 <p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
 <h2 id="cve-2021-33192---display-information-ui-xss-in-apache-jena-fuseki">CVE-2021-33192 - Display information UI XSS in Apache Jena Fuseki</h2>
-<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33192">CVE-2021-33192</a> affected
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2021-33192">CVE-2021-33192</a> affected
 <a href="../documentation/fuseki2/">Fuseki</a> versions <code>2.0.0</code> through <code>4.0.0</code>.</p>
 <p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
 <h1 id="cves-in-jena-dependencies">CVEs in Jena Dependencies</h1>
@@ -249,9 +260,9 @@ report.</p>
 standard <a href="#security-issue-policy">Security Issue Policy</a> applies and any necessary dependency updates, dependency API
 and/or configuration changes have been adopted and released as soon as appropriate.</p>
 <h2 id="log4shell">log4shell</h2>
-<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046">CVE-2021-45105</a>,
-<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45105">CVE-2021-45105</a> and
-<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44832">CVE-2021-44832</a>, collectively known as
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2021-45046">CVE-2021-45105</a>,
+<a href="https://www.cve.org/CVERecord?id=CVE-2021-45105">CVE-2021-45105</a> and
+<a href="https://www.cve.org/CVERecord?id=CVE-2021-44832">CVE-2021-44832</a>, collectively known as
 <a href="https://en.wikipedia.org/wiki/Log4Shell">log4shell</a> were several vulnerabilities identified in the <a href="https://logging.apache.org/log4j/2.x/index.html">Apache
 Log4j</a> project that Jena uses as the concrete logging implementation
 for <a href="../documentation/fuseki2/">Fuseki</a> and our command line tools.</p>
@@ -272,6 +283,7 @@ for <a href="../documentation/fuseki2/">Fuseki</a> and our command line tools.</
   </ul>
 
   <ul>
+    <li><a href="#cve-2023-22665---exposure-of-arbitrary-execution-in-script-engine-expressions">CVE-2023-22665 - Exposure of arbitrary execution in script engine expressions.</a></li>
     <li><a href="#cve-2022-45136---jdbc-serialisation-in-apache-jena-sdb">CVE-2022-45136 - JDBC Serialisation in Apache Jena SDB</a></li>
     <li><a href="#cve-2022-28890---processing-external-dtds">CVE-2022-28890 - Processing External DTDs</a></li>
     <li><a href="#cve-2021-39239---xml-external-entity-xxe-vulnerability">CVE-2021-39239 - XML External Entity (XXE) Vulnerability</a></li>
