@@ -15,27 +15,31 @@ it.
 To monitor a Model, you must *register* a *ModelChangedListener*
 with that Model:
 
-        Model m = ModelFactory.createDefaultModel();
-        ModelChangedListener L = new MyListener();
-        m.register( L );
+```java
+Model m = ModelFactory.createDefaultModel();
+ModelChangedListener L = new MyListener();
+m.register( L );
+```
 
 *MyListener* must be an implementation of *ModelChangedListener*,
 for example:
 
-        class MyListener implements ModelChangedListener
-            {
-            public void addedStatement( Statement s )
-                { System.out.println( ">> added statement " + s ); }
-            public void addedStatements( Statement [] statements ) {}
-            public void addedStatements( List statements ) {}
-            public void addedStatements( StmtIterator statements ) {}
-            public void addedStatements( Model m ) {}
-            public void removedStatement( Statement s ) {}
-            public void removedStatements( Statement [] statements ) {}
-            public void removedStatements( List statements ) {}
-            public void removedStatements( StmtIterator statements ) {}
-            public void removedStatements( Model m ) {}
-            }
+```java
+class MyListener implements ModelChangedListener
+{
+    public void addedStatement( Statement s )
+        { System.out.println( ">> added statement " + s ); }
+    public void addedStatements( Statement [] statements ) {}
+    public void addedStatements( List statements ) {}
+    public void addedStatements( StmtIterator statements ) {}
+    public void addedStatements( Model m ) {}
+    public void removedStatement( Statement s ) {}
+    public void removedStatements( Statement [] statements ) {}
+    public void removedStatements( List statements ) {}
+    public void removedStatements( StmtIterator statements ) {}
+    public void removedStatements( Model m ) {}
+}
+```
 
 This listener ignores everything except the addition of single
 statements to *m*; those it prints out. The listener has a method
