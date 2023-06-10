@@ -202,7 +202,9 @@ configuration, add new functionality, or react to a server being built and
 started.</p>
 <p>This feature was added in Jena version 4.3.0. It is an experimental feature
 that will evolve based on feedback and use cases.</p>
-<p>FusekiModules can be provided in two ways:</p>
+<p>The interface for modules is <code>FusekiModule</code>; if automatcally loaded, the
+interface is <code>FusekiModule</code> which extends <code>FusekiModule</code>.</p>
+<p>Fuseki modules can be provided in two ways:</p>
 <ul>
 <li>Loaded from additional jars on the classpath</li>
 <li>Programmatically controlling the setup of the <code>FusekiServer</code> server.</li>
@@ -211,21 +213,28 @@ that will evolve based on feedback and use cases.</p>
 <p>Fuseki Modules can be loaded using the JDK
 <a href="https://www.baeldung.com/java-spi">ServiceLoader</a> by being placing
 a jar file on the classpath,
-together with any additional dependencies. The service loader looks for files
-<code>META-INF/services/org.apache.jena.fuseki.main.sys.FusekiModule</code> in the jar
-file.</p>
+together with any additional dependencies. These provide interface
+<code>FusekiAutoModule</code>.
+The service loader is contreolled by file resources
+<code>META-INF/services/org.apache.jena.fuseki.main.sys.FusekiAutoModule</code> in the jar
+file.
+The module class must have a no-argument constructor.</p>
 <p>This is often done by placing the file in the development code in
 <code>src/main/resources/META-INF/services/</code>).
 The file containing a line with the implementation full class name. If
 <a href="../notes/jena-repack.html">repacking</a> Fuseki with the maven-shade-plugin, make
-sure the <code>ServicesResourceTransformer</code> is used. The module must have a no
-argument constructor.</p>
+sure the <code>ServicesResourceTransformer</code> is used.</p>
 <p>The method <code>start</code> is called when the module is loaded. Custom operations can
 be globally registered at this point (see the <a href="https://github.com/apache/jena/tree/main/jena-fuseki2/jena-fuseki-main/src/test/java/org/apache/jena/fuseki/main/examples">Fuseki
 examples</a> directory).</p>
+<p>A <code>FusekiAutoModule</code> can provide a level, an integer, to control the order in which
+modules are invoked during server building. Lower numbers are invoked before larger
+numbers at each step.</p>
 <h3 id="programmaticaly-configuring-a-server">Programmaticaly configuring a server</h3>
-<p>If using Fuseki as an <a href="./fuseki-embedded.html">embedded server</a>, the module is
-added in code as:</p>
+<p>If creating a Fuseki server from Java, the modules can be autoloaded as descriobed above,
+or explicitly added to the server builder.</p>
+<p>A <code>FusekiModules</code> object is collection of modules, called at each point in the order
+given when creating the object.</p>
 <pre tabindex="0"><code>    FusekiModule myModule = new MyModule();
     FusekiModules fmods = FusekiModules.create(myModule);
     FusekiServer server = FusekiServer.create()
@@ -233,8 +242,7 @@ added in code as:</p>
         .fusekiModules(fmods)
         ...
         .build();  
-</code></pre><p><code>FusekiModule.start()</code> is not automatically called.</p>
-<h3 id="fuseki-module-operations">Fuseki Module operations</h3>
+</code></pre><h3 id="fuseki-module-operations">Fuseki Module operations</h3>
 <p>The module lifecycle during creating a Fuseki server is:</p>
 <ul>
 <li><code>prepare</code> - called at the start of the server
@@ -244,7 +252,13 @@ This is called after the server has been configured, before the server is built.
 It defaults to calls to <code>configDataAccessPoint</code> for dataset being hosted by the server.</li>
 <li><code>server</code> - called after the built, before the return of <code>FusekiServerBuilder.build()</code></li>
 </ul>
-<p>and the Fuseki start up sequence is:</p>
+<p>There are also operations notified when a server is reloaded while running.</p>
+<ul>
+<li><code>serverConfirmReload</code></li>
+<li><code>serveReload</code></li>
+</ul>
+<p>As of Jena 4.9.0, eeload is not yet supported.</p>
+<p>The Fuseki start up sequence is:</p>
 <ul>
 <li><code>serverBeforeStarting</code> - called at the start of <code>server.start()</code></li>
 <li><code>serverAfterStarting</code> - called at the end of <code>server.start()</code></li>
@@ -253,14 +267,14 @@ has stopped in the <code>server.stop()</code> call.
 (note, this is not always called because a server can simply exit the JVM).</li>
 </ul>
 <p>A Fuseki module does not need to implement all these steps. The default for all
-of them is &ldquo;do nothing&rdquo;. Usually, an extension will only be interested in
-certain steps, like the configuration and registry information of
+steps is &ldquo;do nothing&rdquo;.  Usually, an extension will only be interested in
+certain steps, such as <code>prepare</code>, or the registry information of
 <code>configuration</code>.</p>
 <p>During the configuration step, the Fuseki configuration file for the server is
 available. If the server is built programmatically without a configuration file,
 this is null.</p>
 <p>The configuration file can contain RDF information to build resources (e.g.
-contains assembler descriptions not directly linked to the server).</p>
+it can contain additional assembler descriptions not directly linked to the server).</p>
 <p>There is an <a href="https://github.com/apache/jena/blob/main/jena-fuseki2/jena-fuseki-main/src/test/java/org/apache/jena/fuseki/main/examples/ExFusekiMain_3_FusekiModule.java">example Fuseki
 Module</a>
 in the Fuseki examples directory.</p>
@@ -276,10 +290,6 @@ in the Fuseki examples directory.</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Display name to identify this module.
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> String <span style="color:#00a000">name</span><span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/** Module loaded by the JVM service loader */</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">start</span><span style="color:#666">()</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// -- Build cycle.
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
@@ -316,6 +326,16 @@ in the Fuseki examples directory.</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">server</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Confirm or reject a request to reload.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">boolean</span> <span style="color:#00a000">serverConfirmReload</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">;</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     * Perform any operations necessary for a reload.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">serverReload</span><span style="color:#666">(</span>FusekiServer server<span style="color:#666">)</span> <span style="color:#666">{</span> <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// -- Server start up
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">/**
@@ -340,7 +360,10 @@ in the Fuseki examples directory.</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@Override</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">default</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">stop</span><span style="color:#666">()</span> <span style="color:#666">{}</span>
 </span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div>
+</span></span></code></pre></div><p><code>FusekiAutoModules</code> also provide the
+<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/sys/JenaSubsystemLifecycle.html"><code>org.apache.jena.base.module.SubsystemLifecycle</code></a>
+interface.</p>
+
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
