@@ -288,6 +288,12 @@ and in code:
 ```
 and in code:
 ```
+RDFWriter.source(model)
+     .format(RDFFormat.TURTLE_LONG)
+     .output(System.out);
+```
+or:
+```
   RDFWriter.source(model)
      .set(RIOT.symTurtleIndentStyle, "long")
      .lang(Lang.TTL)
