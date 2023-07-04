@@ -733,10 +733,28 @@ The following is an example of an assembler file defining a TDB dataset with a L
        ) .
 
     :myservice rdf:type fuseki:Service ;
-        fuseki:name                       "myds" ;     # e.g : `s-query --service=http://localhost:3030/myds "select * ..."`
-        fuseki:serviceQuery               "query" ;    # SPARQL query service
-        fuseki:serviceUpdate              "update" ;   # SPARQL update service
-        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
+        # e.g : `s-query --service=http://localhost:3030/myds "select * ..."`
+        fuseki:name               "myds" ;
+        # SPARQL query service : /myds
+        fuseki:endpoint [ 
+            fuseki:operation fuseki:query ;
+        ];
+        # SPARQL query service : /myds/query
+        fuseki:endpoint [ 
+            fuseki:operation fuseki:query ;
+            fuseki:name "query"
+        ];
+        # SPARQL update service : /myds/update
+        fuseki:endpoint [
+            fuseki:operation fuseki:update ;
+            fuseki:name "update"
+        ];
+        # SPARQL Graph store protocol (read and write) : /myds/data
+        fuseki:endpoint [
+            fuseki:operation fuseki:gsp-rw ; 
+            fuseki:name "data" 
+        ];
+        # The text-enabled dataset
         fuseki:dataset                    :text_dataset ;
         .
 
