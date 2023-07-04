@@ -998,10 +998,28 @@ indexed as well: <a href="#building-a-text-index">Building a Text Index</a>.</p>
    ) .
 
 :myservice rdf:type fuseki:Service ;
-    fuseki:name                       &quot;myds&quot; ;     # e.g : `s-query --service=http://localhost:3030/myds &quot;select * ...&quot;`
-    fuseki:serviceQuery               &quot;query&quot; ;    # SPARQL query service
-    fuseki:serviceUpdate              &quot;update&quot; ;   # SPARQL update service
-    fuseki:serviceReadWriteGraphStore &quot;data&quot; ;     # SPARQL Graph store protocol (read and write)
+    # e.g : `s-query --service=http://localhost:3030/myds &quot;select * ...&quot;`
+    fuseki:name               &quot;myds&quot; ;
+    # SPARQL query service : /myds
+    fuseki:endpoint [ 
+        fuseki:operation fuseki:query ;
+    ];
+    # SPARQL query service : /myds/query
+    fuseki:endpoint [ 
+        fuseki:operation fuseki:query ;
+        fuseki:name &quot;query&quot;
+    ];
+    # SPARQL update service : /myds/update
+    fuseki:endpoint [
+        fuseki:operation fuseki:update ;
+        fuseki:name &quot;update&quot;
+    ];
+    # SPARQL Graph store protocol (read and write) : /myds/data
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-rw ; 
+        fuseki:name &quot;data&quot; 
+    ];
+    # The text-enabled dataset
     fuseki:dataset                    :text_dataset ;
     .
 
