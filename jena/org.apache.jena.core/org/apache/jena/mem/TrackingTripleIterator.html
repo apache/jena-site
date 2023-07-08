@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -94,7 +94,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../util/iterator/WrappedIterator.html" title="class in org.apache.jena.util.iterator">WrappedIterator</a>&lt;<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span></div>
 <div class="block">A WrappedIterator which remembers the last object next'ed in a
     protected instance variable, so that subclasses have access to it 
-    during .remove.</div>
+    during .remove.
+    After a call to <a href="#forEachRemaining(java.util.function.Consumer)"><code>forEachRemaining(java.util.function.Consumer&lt;? super org.apache.jena.graph.Triple&gt;)</code></a> current is null. So calling #remove after
+    #forEachRemaining is not supported.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -122,9 +124,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#next()" class="member-name-link">next</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forEachRemaining(java.util.function.Consumer)" class="member-name-link">forEachRemaining</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;action)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">forEachRemaining: defer to the base iterator</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#next()" class="member-name-link">next</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Answer the next object, remembering it in <code>current</code>.</div>
 </div>
 </div>
@@ -142,9 +149,6 @@ loadScripts(document, 'script');</script>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.util.iterator.ExtendedIterator">Methods inherited from interface&nbsp;org.apache.jena.util.iterator.<a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a></h3>
 <code><a href="../util/iterator/ExtendedIterator.html#forEach(java.util.function.Consumer)">forEach</a>, <a href="../util/iterator/ExtendedIterator.html#nextOptional()">nextOptional</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.util.Iterator">Methods inherited from interface&nbsp;java.util.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html#forEachRemaining(java.util.function.Consumer)" title="class or interface in java.util" class="external-link">forEachRemaining</a></code></div>
 </section>
 </li>
 </ul>
@@ -186,6 +190,20 @@ loadScripts(document, 'script');</script>
 <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html#next()" title="class or interface in java.util" class="external-link"><code>Iterator.next()</code></a></li>
 </ul>
 </dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="forEachRemaining(java.util.function.Consumer)">
+<h3>forEachRemaining</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">forEachRemaining</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;action)</span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../util/iterator/WrappedIterator.html#forEachRemaining(java.util.function.Consumer)">WrappedIterator</a></code></span></div>
+<div class="block">forEachRemaining: defer to the base iterator</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html#forEachRemaining(java.util.function.Consumer)" title="class or interface in java.util" class="external-link">forEachRemaining</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html" title="class or interface in java.util" class="external-link">Iterator</a>&lt;<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../util/iterator/WrappedIterator.html#forEachRemaining(java.util.function.Consumer)">forEachRemaining</a></code>&nbsp;in class&nbsp;<code><a href="../util/iterator/WrappedIterator.html" title="class in org.apache.jena.util.iterator">WrappedIterator</a>&lt;<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
 </dl>
 </section>
 </li>

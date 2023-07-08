@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../../script-dir/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../../../../../../script-dir/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -81,8 +81,13 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ProtobufConvert</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Convert to and from Protobuf wire objects.
+ <p>
  See <a href="StreamRDF2Protobuf.html" title="class in org.apache.jena.riot.protobuf"><code>StreamRDF2Protobuf</code></a> and <a href="Protobuf2StreamRDF.html" title="class in org.apache.jena.riot.protobuf"><code>Protobuf2StreamRDF</code></a>
- for ways to convert as streams (they recycle intermediate objects).</div>
+ for ways to convert as streams (they recycle intermediate objects).
+ <p>
+ Many operations have available with a cache.
+ The cache is used for creating URis from strings. It interns the node
+ leading to significant savings of space, especially in the property position.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -119,79 +124,107 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Node,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
- boolean&nbsp;allowValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Node,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
- <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
- boolean&nbsp;allowValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Triple,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple,
- boolean&nbsp;allowValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Triple,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple,
- <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
- boolean&nbsp;allowValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;quad)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;rq,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;rq,
  <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term)" class="member-name-link">convert</a><wbr>(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term,
  <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a> using a prefix map which must agree
  with the map used to create the <code>RDF_Term</code> in the first place.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;triple)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;rt,
- <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple)" class="member-name-link">convert</a><wbr>(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;triple)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.sparql.core.Quad,boolean)" class="member-name-link">convert</a><wbr>(<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&nbsp;quad,
- boolean&nbsp;allowValues)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;rt,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.sparql.core.Quad,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&nbsp;quad,
- <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Node,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
  boolean&nbsp;allowValues)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
- <a href="wire/PB_RDF.RDF_Term.Builder.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term.Builder</a>&nbsp;term)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Node,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
+ boolean&nbsp;allowValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Triple,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple,
+ boolean&nbsp;allowValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.graph.Triple,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
+ boolean&nbsp;allowValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;quad)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;rq,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a> using a prefix map which must agree
+ with the map used to create the <code>RDF_Term</code> in the first place.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;triple)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple,org.apache.jena.riot.system.PrefixMap)" class="member-name-link">convert</a><wbr>(<a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;rt,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.sparql.core.Quad,boolean)" class="member-name-link">convert</a><wbr>(<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&nbsp;quad,
+ boolean&nbsp;allowValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#convert(org.apache.jena.sparql.core.Quad,org.apache.jena.riot.system.PrefixMap,boolean)" class="member-name-link">convert</a><wbr>(<a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a>&nbsp;quad,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
+ boolean&nbsp;allowValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
+ <a href="wire/PB_RDF.RDF_Term.Builder.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term.Builder</a>&nbsp;term)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Encode a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> into an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a>,
  using values (integer, decimal, double) if possible.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder,boolean)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder,boolean)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
  <a href="wire/PB_RDF.RDF_Term.Builder.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term.Builder</a>&nbsp;term,
  boolean&nbsp;allowValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Encode a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> into an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.system.PrefixMap,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder,boolean)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toProtobuf(org.apache.jena.graph.Node,org.apache.jena.riot.system.PrefixMap,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term.Builder,boolean)" class="member-name-link">toProtobuf</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;node,
  <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
  <a href="wire/PB_RDF.RDF_Term.Builder.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term.Builder</a>&nbsp;termBuilder,
  boolean&nbsp;allowValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Encode a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> into an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a></div>
 </div>
 </div>
@@ -233,9 +266,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term)">
+<h3>convert</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term)</span></div>
+<div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a>.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term,org.apache.jena.riot.system.PrefixMap)">
 <h3>convert</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(<a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</span></div>
+<div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a> using a prefix map which must agree
+ with the map used to create the <code>RDF_Term</code> in the first place.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Term,org.apache.jena.riot.system.PrefixMap)">
+<h3>convert</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Term</a>&nbsp;term,
  <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</span></div>
 <div class="block">Build a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Node</code></a> from an <a href="wire/PB_RDF.RDF_Term.html" title="class in org.apache.jena.riot.protobuf.wire"><code>PB_RDF.RDF_Term</code></a> using a prefix map which must agree
  with the map used to create the <code>RDF_Term</code> in the first place.</div>
@@ -248,6 +299,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple)">
+<h3>convert</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;triple)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple,org.apache.jena.riot.system.PrefixMap)">
 <h3>convert</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(<a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;rt,
@@ -255,9 +313,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Triple,org.apache.jena.riot.system.PrefixMap)">
+<h3>convert</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Triple.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Triple</a>&nbsp;rt,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="convert(org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad,org.apache.jena.riot.system.PrefixMap)">
 <h3>convert</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(<a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;rq,
+ <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="convert(org.apache.jena.atlas.lib.Cache,org.apache.jena.riot.protobuf.wire.PB_RDF.RDF_Quad,org.apache.jena.riot.system.PrefixMap)">
+<h3>convert</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../sparql/core/Quad.html" title="class in org.apache.jena.sparql.core">Quad</a></span>&nbsp;<span class="element-name">convert</span><wbr><span class="parameters">(org.apache.jena.atlas.lib.Cache&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&gt;&nbsp;uriCache,
+ <a href="wire/PB_RDF.RDF_Quad.html" title="class in org.apache.jena.riot.protobuf.wire">PB_RDF.RDF_Quad</a>&nbsp;rq,
  <a href="../system/PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap)</span></div>
 </section>
 </li>

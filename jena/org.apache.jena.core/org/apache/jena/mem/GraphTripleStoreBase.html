@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="GraphTripleStore.html" title="class in org.apache.jena.mem">GraphTripleStore</a></code>, <code><a href="GraphTripleStoreMem.html" title="class in org.apache.jena.mem">GraphTripleStoreMem</a></code></dd>
+<dd><code><a href="GraphTripleStoreMem.html" title="class in org.apache.jena.mem">GraphTripleStoreMem</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">GraphTripleStoreBase</span>
@@ -124,8 +124,10 @@ implements <a href="../graph/impl/TripleStore.html" title="interface in org.apac
 <div class="block">Answer true iff this triple store contains the (concrete) triple <code>t</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsByEquality(org.apache.jena.graph.Triple)" class="member-name-link">containsByEquality</a><wbr>(<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsMatch(org.apache.jena.graph.Triple)" class="member-name-link">containsMatch</a><wbr>(<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Answer true iff this triple store contains the triple match <code>t</code>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(org.apache.jena.graph.Triple)" class="member-name-link">delete</a><wbr>(<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -161,6 +163,14 @@ implements <a href="../graph/impl/TripleStore.html" title="interface in org.apac
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Answer the size (number of triples) of this triple store.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">stream</a><wbr>(<a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;sm,
+ <a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;pm,
+ <a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;om)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Answer a Stream returning all the triples from this store that
+         match the pattern <code>m = (S, P, O)</code>.</div>
 </div>
 </div>
 </div>
@@ -293,9 +303,15 @@ implements <a href="../graph/impl/TripleStore.html" title="interface in org.apac
 </section>
 </li>
 <li>
-<section class="detail" id="containsByEquality(org.apache.jena.graph.Triple)">
-<h3>containsByEquality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">containsByEquality</span><wbr><span class="parameters">(<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</span></div>
+<section class="detail" id="containsMatch(org.apache.jena.graph.Triple)">
+<h3>containsMatch</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">containsMatch</span><wbr><span class="parameters">(<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../graph/impl/TripleStore.html#containsMatch(org.apache.jena.graph.Triple)">TripleStore</a></code></span></div>
+<div class="block">Answer true iff this triple store contains the triple match <code>t</code>.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../graph/impl/TripleStore.html#containsMatch(org.apache.jena.graph.Triple)">containsMatch</a></code>&nbsp;in interface&nbsp;<code><a href="../graph/impl/TripleStore.html" title="interface in org.apache.jena.graph.impl">TripleStore</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -320,6 +336,33 @@ implements <a href="../graph/impl/TripleStore.html" title="interface in org.apac
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../graph/impl/TripleStore.html#find(org.apache.jena.graph.Triple)">find</a></code>&nbsp;in interface&nbsp;<code><a href="../graph/impl/TripleStore.html" title="interface in org.apache.jena.graph.impl">TripleStore</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">
+<h3>stream</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span>&nbsp;<span class="element-name">stream</span><wbr><span class="parameters">(<a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;sm,
+ <a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;pm,
+ <a href="../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;om)</span></div>
+<div class="block">Answer a Stream returning all the triples from this store that
+         match the pattern <code>m = (S, P, O)</code>.
+
+         <p>Because the node-to-triples maps index on each of subject, predicate,
+         and (non-literal) object, concrete S/P/O patterns can immediately select
+         an appropriate map. Because the match for literals must be by sameValueAs,
+         not equality, the optimisation is not applied for literals. [This is probably a
+         Bad Thing for strings.]
+
+         <p>Practice suggests doing the predicate test <i>last</i>, because there are
+         "usually" many more statements than predicates, so the predicate doesn't
+         cut down the search space very much. By "practice suggests" I mean that
+         when the order went, accidentally, from S/O/P to S/P/O, performance on
+         (ANY, P, O) searches on largish models with few predicates declined
+         dramatically - specifically on the not-galen.owl ontology.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../graph/impl/TripleStore.html#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">stream</a></code>&nbsp;in interface&nbsp;<code><a href="../graph/impl/TripleStore.html" title="interface in org.apache.jena.graph.impl">TripleStore</a></code></dd>
 </dl>
 </section>
 </li>
