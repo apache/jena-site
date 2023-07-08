@@ -69,6 +69,29 @@ JavaScript functions can also be set from a string directly from within Java usi
 may provide a vector for arbitrary code execution.  Therefore it is recommended that this feature remain disabled for
 any publicly accessible deployment that utilises the ARQ query engine.
 
+## Identifying callable functions
+
+The context setting ""http://jena.apache.org/ARQ#scriptAllowList" is used to
+provide a comma-separated list of function names, which are the local part of
+the URI, that are allowed to be called
+as custom script functions.
+
+This can be written as `arq:scriptAllowList` for commands and Fuseki configuration files.
+It is the java constant `ARQ.symCustomFunctionScriptAllowList`
+
+    sparql --set arq:js-library=SomeFile.js \
+           --set arq:scriptAllowList=toCamelCase,anotherFunction
+           --data ... --query ...
+
+and a query of:
+
+    PREFIX js: <http://jena.apache.org/ARQ/jsFunction#>
+
+    SELECT ?input (js:toCamelCase(?input) AS ?X)
+    {
+        VALUES ?input { "some woRDs to PROCESS" }
+    }
+
 ## Using JavaScript functions
 
 SPARQL functions implemented in JavaScript are automatically called when a
@@ -155,7 +178,9 @@ The context setting can be provided on the command line starting the
 server, for example:
 
     export JVM_ARGS=-Djena:scripting=true
-    fuseki --set arq:js-library=functions.js --mem /ds
+    fuseki --set arq:js-library=functions.js \
+           --set arq:scriptAllowList=toCamelCase \                                             
+           --mem /ds
 
 or it can be specified in the server configuration file `config.ttl`:
 
@@ -170,6 +195,10 @@ or it can be specified in the server configuration file `config.ttl`:
         ja:context [
              ja:cxtName "arq:js-library" ;
              ja:cxtValue "/filepath/functions.js"
+        ] ;
+        ja:context [
+             ja:cxtName "arq:scriptAllowList" ;
+             ja:cxtValue "toCamelCase"
         ] ;
     .
 
