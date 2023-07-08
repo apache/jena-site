@@ -149,6 +149,11 @@ Example:
     
     :b      foaf:knows  :a .
 
+The default pretty printed output (shown above) aligns predicates
+and objects, which can result in wide lines. For a narrower
+indentation style, set `ttl:indentStyle` to `long`.
+See [Turtle and Trig format options](#opt-turtle-trig).
+
 Pretty printed formats:
 
 | RDFFormat      | Same as               |
@@ -250,6 +255,7 @@ otherwise noted, the setting applies to both Turtle and TriG.
 | Context setting | Cmd line | Values |
 |-----------------|----------|--|
 | RIOT.symTurtleDirectiveStyle | "ttl:directiveStyle" | "sparql", "rdf11", "at", "n3" |
+| RIOT.symTurtleIndentStyle    | "ttl:indentStyle"    | "wide", "long" |
 | RIOT.symTurtleOmitBase       | "ttl:omitBase"       | "true", "false" |
 
 <p>&nbsp;</p>
@@ -275,6 +281,25 @@ and in code:
      .lang(Lang.TTL)
      .output(System.out);
 ```
+
+##### _Setting indent style_
+```
+    riot --set ttl:indentStyle=long --formatted=ttl file1.rdf file2.nt ...
+```
+and in code:
+```
+RDFWriter.source(model)
+     .format(RDFFormat.TURTLE_LONG)
+     .output(System.out);
+```
+or:
+```
+  RDFWriter.source(model)
+     .set(RIOT.symTurtleIndentStyle, "long")
+     .lang(Lang.TTL)
+     .output(System.out);
+```
+
 ##### _Base URI_
 
 Output can be written with relative URIs and no base. Note: such output is not
