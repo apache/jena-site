@@ -52,7 +52,7 @@ wrappers just set the query language.
 -   `arq.sparql` : wrapper for SPARQL queries
 -   `arq.arq` : wrapper for ARQ queries
 
-Running `arq.query --help`prints the usage message. The main
+Running `arq.query --help` prints the usage message. The main
 arguments are:
 
 -   `--query FILE` : The file with the query to execute
@@ -88,7 +88,7 @@ print the SPARQL algebra for the query in
 
 ### `arq.uparse`
 
-Parse a SPARQL update print it out.
+Parse a SPARQL update and print it out.
 
 `arq.uparse` will parse the update, print it out again (with line
 numbers by default) and then parse the serialized update again. If
