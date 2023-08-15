@@ -368,6 +368,19 @@ in ASCII (using `\u` escape sequences for non-ASCI characters where necessary).
 
 ### JSON-LD {#json-ld}
 
+> Caution. This section describes features that may be removed.
+>
+> Jena uses different third party processors for JSON-LD 1.0 and JSON-LD 1.1.
+>
+> This section describes support for passing configuration to the JSON-LD 1.0
+> processor only. It does not apply to the JSON-LD 1.1 processor.
+>
+> It is planned that support for JSON-LD 1.0 will be removed in Jena5.
+>
+> The project is looking for contributions for passing framing configuration to
+> the JSON-LD 1.1 processor, which is
+> [titanium-json-ld](https://github.com/filip26/titanium-json-ld).
+
 JSON-LD output is supported, in its various flavors 
 ("compacted", "expanded", "flattened", "framed"), 
 by using one of the following RDFFormats:
