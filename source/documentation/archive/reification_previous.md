@@ -1,5 +1,7 @@
 ---
 title: Reification styles (archive material)
+aliases:
+    - /documentation/notes/reification-previous.html
 ---
 
 ## Reification styles
