@@ -2,6 +2,8 @@
 title: Reification HowTo
 ---
 
+> Reification API support will be removed in Jena5.
+
 ## Introduction
 
 This document describes the Jena API support for reification.
@@ -126,11 +128,3 @@ All the reified statements in the model that reify the given
 statement are removed, whatever their reifying resource. To remove
 a particular reified statement only, use
 -   `Model::removeReification(ReifiedStatement)`
-
-## Reification styles
-
-Prior to version 2.10.0 of Jena, there were 3 styles of reification, 
-"standard", "minimal" and "convenient".  As of 2.10.0 and later, only 
-what was previously the "standard" style is supported.
-
-The old documentation is [still available](reification_previous.html).
