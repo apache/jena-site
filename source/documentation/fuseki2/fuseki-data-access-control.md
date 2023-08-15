@@ -134,9 +134,9 @@ Access control lists (ACL) as part of the server configuration file.
     fuseki --conf <i>configFile.ttl</i>
 </pre>
 
-ACLs are provided by the `ja:allowedUsers` property
+ACLs are provided by the `fuseki:allowedUsers` property
 
-### Format of `ja:allowedUsers` {#alloweduser}
+### Format of `fuseki:allowedUsers` {#alloweduser}
 
 The list of users allowed access can be an RDF list or repeated use of
 the property or a mixture. The different settings are combined into one ACL.
