@@ -262,5 +262,5 @@ operations are visible to the called code.
 
 ## Examples
 
-* for simple usage examples see <https://github.com/apache/jena/tree/main/jena-rdfconnection/src/main/java/org/apache/jena/rdfconnection/examples>.
+* for simple usage examples see <https://github.com/apache/jena/tree/main/jena-examples/src/main/java/rdfconnection/examples>.
 * for example of how to use with StreamRDF see <https://github.com/apache/jena/blob/main/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java>.
