@@ -464,7 +464,7 @@ m.write( System.out );
 ```
 
 
-The output from this fragment is three lots of RDF/XML, with
+The output from this fragment is lots of RDF/XML, with
 three different prefix mappings. First the default, with no
 prefixes other than the standard ones:
 
