@@ -52,7 +52,7 @@ list.
 
        boolean includeWarnings = false;
        IRI iri;
-       iri = iriFactory.create{iriString); // always works
+       iri = iriFactory.create(iriString); // always works
        if (iri.hasViolation(includeWarnings)) {
          // bad iri code
        }
