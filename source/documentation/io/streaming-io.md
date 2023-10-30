@@ -27,7 +27,7 @@ implementation to Jena code e.g.
 ## StreamRDF
 
 The central abstraction is 
-[`StreamRDF`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDF.html)
+[`StreamRDF`](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/StreamRDF.html)
 which is an interface for streamed RDF data.  It covers triples and quads, 
 and also parser events for prefix settings and base URI declarations.
 
@@ -53,8 +53,8 @@ and also parser events for prefix settings and base URI declarations.
 
 There are utilities to help:
 
-* [`StreamRDFLib`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDFLib.html) &ndash; create `StreamRDF` objects
-* [`StreamRDFOps`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDFOps.html) &ndash; helpers for sending RDF data to `StreamRDF` objects
+* [`StreamRDFLib`](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/StreamRDFLib.html) &ndash; create `StreamRDF` objects
+* [`StreamRDFOps`](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/StreamRDFOps.html) &ndash; helpers for sending RDF data to `StreamRDF` objects
 
 ## Reading data
 
@@ -63,8 +63,8 @@ exception of JSON-LD.  A JSON object can have members in any order so the
 parser may need the whole top-level object in order to have the information
 needed for parsing.
 
-The [`parse` functions](/documentation/javadoc/arq/org/apache/jena/riot/RDFDataMgr.html#parse%28org.apache.jena.riot.system.StreamRDF%2C%20java.io.InputStream%2C%20org.apache.jena.riot.Lang%29)
-of [RDFDataMgr](/documentation/javadoc/arq/org/apache/jena/riot/RDFDataMgr.html) 
+The [`parse` functions](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/RDFDataMgr.html#parse%28org.apache.jena.riot.system.StreamRDF%2C%20java.io.InputStream%2C%20org.apache.jena.riot.Lang%29)
+of [RDFDataMgr](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/RDFDataMgr.html) 
 directs the output of the parser to a `StreamRDF`.  For example:
 
     StreamRDF destination = ... 
@@ -86,7 +86,7 @@ that is necessarily "less pretty".
 See ["Streamed Block Formats"](rdf-output.html#streamed-block-formats) 
 for details.
 
-The [`StreamRDFWriter`](/documentation/javadoc/arq/org/apache/jena/riot/system/StreamRDFWriter.html)
+The [`StreamRDFWriter`](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/StreamRDFWriter.html)
 class has functions that write graphs and datasets
 using a streaming writer and also provides for the creation of
 an `StreamRDF` backed by a stream-based writer
@@ -102,7 +102,7 @@ N-Triples and N-Quads are always written as a stream.
 
 ## RDFFormat and Lang
 
-| [RDFFormat](/documentation/javadoc/arq/org/apache/jena/riot/RDFFormat.html) | [Lang](/documentation/javadoc/arq/org/apache/jena/riot/Lang.html) shortcut  |
+| [RDFFormat](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/RDFFormat.html) | [Lang](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/Lang.html) shortcut  |
 |----------------------------|------------------|
 | `RDFFormat.TURTLE_BLOCKS`  | `Lang.TURTLE`    |
 | `RDFFormat.TURTLE_FLAT`    |                  |

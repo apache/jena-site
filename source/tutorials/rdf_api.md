@@ -962,9 +962,9 @@ should be reasonably clear that the Models have merged as expected.  The
 intersection and difference of the Models can be computed in a similar
 manner, using the methods <code>.intersection(Model)</code> and
 <code>.difference(Model)</code>; see the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html#difference(org.apache.jena.rdf.model.Model)">difference</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#difference(org.apache.jena.rdf.model.Model)">difference</a>
 and
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html#intersection(org.apache.jena.rdf.model.Model)">intersection</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#intersection(org.apache.jena.rdf.model.Model)">intersection</a>
 Javadocs for more details.
 </p>
 

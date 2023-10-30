@@ -249,10 +249,10 @@ profile it is `null` since RDFS does not define object properties.
 
 The profile is bound to an *ontology model*, which is an extended
 version of Jena's
-[`Model`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html) class.
+[`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) class.
 The base `Model` allows access to the statements in a collection of
 RDF data.
-[`OntModel`](/documentation/javadoc/jena/org/apache/jena/ontology/OntModel.html)
+[`OntModel`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModel.html)
 extends this by adding support for the kinds of constructs expected to
 be in an ontology: classes (in a class hierarchy), properties (in a
 property hierarchy) and individuals.
@@ -260,7 +260,7 @@ property hierarchy) and individuals.
 When you're working with an
 ontology in Jena, all of the state information remains encoded as
 RDF triples (accessed as Jena
-[`Statement`s](/documentation/javadoc/jena/org/apache/jena/rdf/model/Statement.html)) stored in the RDF
+[`Statement`s](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Statement.html)) stored in the RDF
 model. The ontology API
 doesn't change the RDF representation of ontologies. What it does
 do is add a set of convenience classes and methods that make it
@@ -417,7 +417,7 @@ API throughout the rest of this document.
 An ontology model is an extension of the Jena RDF model,
 providing extra capabilities for handling ontologies. Ontology
 models are created through the Jena
-[`ModelFactory`](/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html).
+[`ModelFactory`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelFactory.html).
 The simplest way to create an ontology model is as follows:
 
     OntModel m = ModelFactory.createOntologyModel();
@@ -458,7 +458,7 @@ OWL DL | `http://www.w3.org/TR/owl-features/#term_OWLDL`
 OWL Lite | `http://www.w3.org/TR/owl-features/#term_OWLLite`
 
 These URI's are used to look-up the language profile from the
-[`ProfileRegistry`](/documentation/javadoc/jena/org/apache/jena/ontology/ProfileRegistry.html).
+[`ProfileRegistry`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/ProfileRegistry.html).
 The profile registry contains public constant declarations so
 that you do not have to remember these URI's. Please note that the
 URI's denoting OWL Lite and OWL DL are not officially sanctioned by
@@ -466,7 +466,7 @@ the OWL standard.
 
 Beyond these basic choices, the complexities of configuring an
 ontology model are wrapped up in a recipe object called
-[`OntModelSpec`](/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html).
+[`OntModelSpec`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html).
 This specification allows complete control over the configuration
 choices for the ontology model, including the language profile in
 use, the reasoner, and the means of handling compound documents. A
@@ -495,7 +495,7 @@ RDFS\_MEM\_RDFS\_INF | RDFS | in-memory | rule reasoner with RDFS-level entailme
 For details of reasoner capabilities, please see the
 [inference documentation](../inference) and the Javadoc
 for
-[OntModelSpec](/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html).
+[OntModelSpec](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html).
 See also further discussion [below](#inference-intro).
 
 **Note:** it is primarily the choice of reasoner, rather than the
@@ -677,7 +677,7 @@ a simple interface that allows different kinds of model storage
 on demand. For the database case, this may include passing the
 database user-name and password and other connection parameters.
 New model makers can be created with the
-[`ModelFactory`](/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html).
+[`ModelFactory`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelFactory.html).
 
 There are two cases in which we may want to create storage for
 models on-demand. The first is when creating the `OntModel` for the
@@ -703,7 +703,7 @@ programming interface (`Model`) with a simple, manageable internal
 data structure (`Graph`). Hence some potential confusion in that
 Figure 4, above, refers to a structure containing graphs, but we
 use a
-[`ModelMaker`](/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelMaker.html)
+[`ModelMaker`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelMaker.html)
 to generate new stores. The document manager extracts the
 appropriate graph from the containing model. Except in cases where
 you are extending Jena's internal structures, you should think of
@@ -734,7 +734,7 @@ fail just because it temporarily does not have Internet access, or
 because a previously published ontology has been moved.
 To alleviate these commonly
 experienced problems, we can use Jena's
-[`FileManager`](/documentation/javadoc/jena/org/apache/jena/util/FileManager.html) to
+[`FileManager`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/FileManager.html) to
 manage local indirections, so that an attempt to import a
 document from a given published URL means that a local copy of the
 document is loaded instead. This may be a file on the local disk, or simply a
@@ -771,7 +771,7 @@ with any legal URI (not necessarily resolvable) &ndash; so long as the
 `altURL` is itself resolvable.
 
 See the notes on
-[`FileManager`](/documentation/javadoc/jena/org/apache/jena/util/FileManager.html) for details of additional options.
+[`FileManager`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/FileManager.html) for details of additional options.
 
 In the following example, we use the `DocumentManager` API to declare that the ESWC
 ontology is replicated locally on disk. We then load it using
@@ -820,14 +820,14 @@ by calling `clearCache()`.
 
 All of the classes in the ontology API that represent ontology
 values have
-[`OntResource`](/documentation/javadoc/jena/org/apache/jena/ontology/OntResource.html)
+[`OntResource`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntResource.html)
 as a common super-class. This makes `OntResource` a good place to
 put shared functionality for all such classes, and makes a handy
 common return value for general methods. The Java interface
 `OntResource` extends Jena's RDF
-[`Resource`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Resource.html)
+[`Resource`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Resource.html)
 interface, so any general method that accepts a resource or an
-[`RDFNode`](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFNode.html)
+[`RDFNode`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFNode.html)
 will also accept an `OntResource`, and consequently, any other
 ontology value.
 
@@ -958,7 +958,7 @@ returned.
 
 Classes are the basic building blocks of an ontology. A simple
 class is represented in Jena by an
-[OntClass](/documentation/javadoc/jena/org/apache/jena/ontology/OntClass.html)
+[OntClass](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntClass.html)
 object. As [mentioned above](#rdf-polymorphism), an ontology class
 is a facet of an RDF resource. One way, therefore, to get an
 ontology class is to convert a plain RDF resource into
@@ -1067,11 +1067,11 @@ properties represented in an ontology model.
 
 A property in an ontology model is an extension of the core Jena
 API class
-[`Property`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Property.html)
+[`Property`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Property.html)
 and allows access to the additional information that can be
 asserted about properties in an ontology language. The common API
 super-class for representing ontology properties in Java is
-[`OntProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/OntProperty.html).
+[`OntProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntProperty.html).
 Again, using the pattern of add, set, get, list, has, and remove
 methods, we can access the following attributes of an
 `OntProperty`:
@@ -1143,10 +1143,10 @@ entailments, and so is useful when annotating ontology documents,
 for example.
 
 In Jena, the Java interfaces
-[`ObjectProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/ObjectProperty.html),
-[`DatatypeProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/DatatypeProperty.html)
+[`ObjectProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/ObjectProperty.html),
+[`DatatypeProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/DatatypeProperty.html)
 and
-[`AnnotationProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/AnnotationProperty.html)
+[`AnnotationProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/AnnotationProperty.html)
 are sub-types of `OntProperty`. However, they do not have any
 behaviours (methods) particular to themselves. Their existence
 allows the more complex sub-types of ObjectProperty &ndash; transitive
@@ -1167,7 +1167,7 @@ equivalent to stating that the property has a maximum cardinality
 of one.
 
 Being a functional property is represented through the
-[`FunctionalProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/FunctionalProperty.html)
+[`FunctionalProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/FunctionalProperty.html)
 facet of an ontology property object. If a property is declared
 functional (test using the `isFunctional()` method), then the
 method `asFunctionalProperty()` conveniently returns the functional property
@@ -1180,13 +1180,13 @@ parameter to the `createObjectProperty()` method on `OntModel`.
 
 There are several additional sub-types of ObjectProperty that
 represent additional capabilities of ontology properties. A
-[`TransitiveProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/TransitiveProperty.html)
+[`TransitiveProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/TransitiveProperty.html)
 means that if p is transitive, and we know `:a p :b` and also
 `b p :c`, we can infer that `:a p :c`. A
-[`SymmetricProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/SymmetricProperty.html)
+[`SymmetricProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/SymmetricProperty.html)
 means that if p is symmetric, and we know `:a p :b`, we can infer
 `:b p :a`. An
-[`InverseFunctionalProperty`](/documentation/javadoc/jena/org/apache/jena/ontology/InverseFunctionalProperty.html)
+[`InverseFunctionalProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/InverseFunctionalProperty.html)
 means that for any given range element, the domain value is unique.
 
 Given that all properties are `RDFNode` objects, and therefore
@@ -1239,7 +1239,7 @@ each in turn.
 ### Restriction class expressions
 
 A
-[restriction](/documentation/javadoc/jena/org/apache/jena/ontology/Restriction.html)
+[restriction](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/Restriction.html)
 defines a class by reference to one of the properties of the
 individuals that comprise the members of the class, and then
 placing some constraint on that property. For example, in a simple
@@ -1439,10 +1439,10 @@ is even more compact:
 Although lists are defined in the generic RDF model in Jena, they
 are extensively used by the ontology API so we mention them here.
 Full details of the methods defined are in the
-[`RDFList` javadoc](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html).
+[`RDFList` javadoc](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFList.html).
 
 Various means of constructing lists are defined in
-[`Model`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html), as
+[`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html), as
 variants on `createList`. For example, we can construct a list of
 three classes as follows:
 
@@ -1471,7 +1471,7 @@ Finally, a resource which is a cell in a list sequence will accept
 `.as( RDFList.class )`
 
 Once the list has been created or obtained from the model,
-[`RDFList`](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFList.html)
+[`RDFList`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFList.html)
 methods may be used to access members of the list, iterate over the
 list, and so forth. For example:
 
@@ -1544,7 +1544,7 @@ that `m` is a model into which the ESWC ontology has been read:
 
 Union and intersection class expressions are very similar, so
 Jena defines a common super-class
-[`BooleanClassDescription`](/documentation/javadoc/jena/org/apache/jena/ontology/BooleanClassDescription.html).
+[`BooleanClassDescription`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/BooleanClassDescription.html).
 This class provides access to the *operands* to the expression. In
 the intersection example above, the operands are the two restrictions. The
 `BooleanClassDescription` class allows us to set the operands
@@ -1562,7 +1562,7 @@ class. Recall that a class is a set of individuals. Often, we want
 to define the members of the class *implicitly*: for example, "the class
 of UK conferences". Sometimes it is convenient to define a class
 *explicitly*, by stating the individuals the class contains. An
-[enumerated class](/documentation/javadoc/jena/org/apache/jena/ontology/EnumeratedClass.html)
+[enumerated class](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/EnumeratedClass.html)
 is exactly the class whose members are the given individuals. For
 example, we know that the class of PrimaryColours contains exactly
 red, green and blue, and no others.
@@ -1600,7 +1600,7 @@ following:
 
 An OWL `DataRange` is similar to an enumerated class, except that the members
 of the `DataRange` are literal values, such as integers, dates or strings. See the
-[`DataRange` javadoc](/documentation/javadoc/jena/org/apache/jena/ontology/DataRange.html)
+[`DataRange` javadoc](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/DataRange.html)
 for more details.
 
 ### Listing classes
@@ -1632,7 +1632,7 @@ get a list of named hierarchy root classes, i.e. the named classes
 that lie closest to the top of the hierarchy (alternatively: the
 shallowest fringe of the hierarchy consisting solely of named
 classes), use the
-[OntTools](/documentation/javadoc/jena/org/apache/jena/ontology/OntTools.html)
+[OntTools](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntTools.html)
 method `namedHierarchyRoots()`.
 
 You should also note that it is important to close the iterators
@@ -1661,7 +1661,7 @@ declarations. In OWL Lite and DL, the language terms and the
 instance data that the application is working with are kept
 separate, by definition of the language. Jena therefore supports a
 simple notion of an
-[`Individual`](/documentation/javadoc/jena/org/apache/jena/ontology/Individual.html),
+[`Individual`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/Individual.html),
 which is essentially an alias for `Resource`. While `Individual`s
 are largely synonymous with `Resource`s, they do provide an
 programming interface that is consistent with the other Java
@@ -1713,7 +1713,7 @@ the *base URI* of the document containing the ontology. The base
 URI may be stated in the document through an `xml:base` declaration
 in the XML preamble. The base URI can also be specified when
 reading the document via Jena's Model API (see the `read()` methods
-on [`OntModel`](/documentation/javadoc/jena/org/apache/jena/ontology/OntModel.html)
+on [`OntModel`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModel.html)
 for reference).
 
 We can attach various meta-data statements to this object to
@@ -1735,7 +1735,7 @@ version information.
 
 In the Jena API, the ontology's metadata properties can be accessed
 through the
-[`Ontology`](/documentation/javadoc/jena/org/apache/jena/ontology/Ontology.html)
+[`Ontology`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/Ontology.html)
 interface. Suppose we wish to know the list of URI's that the
 ontology imports. First we must obtain the resource representing the
 ontology itself:
@@ -1838,7 +1838,7 @@ performance are.
 
 The reasoner attached to an ontology model, if any, is specified
 through the
-[`OntModelSpec`](/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html).
+[`OntModelSpec`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html).
 The methods `setReasoner()` and `setReasonerFactory()` on the model
 spec are used to specify a reasoner. The setReasoner variant is
 intended for use on a specification which will only be used to

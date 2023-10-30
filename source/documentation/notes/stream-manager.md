@@ -101,5 +101,5 @@ If log4j2, set the logging level of the classes:
 
 Javadoc:
 
-- [StreamManager](/documentation/javadoc/arq/org/apache/jena/riot/system/stream/StreamManager.html)
-- [LocationMapper](/documentation/javadoc/arq/org/apache/jena/riot/system/stream/LocationMapper.html)
+- [StreamManager](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/stream/StreamManager.html)
+- [LocationMapper](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/system/stream/LocationMapper.html)

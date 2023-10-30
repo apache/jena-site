@@ -100,7 +100,7 @@ JsonObjectMember          | ::= | String ':' ( Var &#x7C; RDFLiteral &#x7C; Nume
 
 ## Programming API
 
-ARQ provides 2 additional methods in [QueryExecution](/documentation/javadoc/arq/org/apache/jena/query/QueryExecution.html) for JSON.
+ARQ provides 2 additional methods in [QueryExecution](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/query/QueryExecution.html) for JSON.
 
     Iterator<JsonObject> QueryExecution.execJsonItems()
     JsonArray QueryExecution.execJson()

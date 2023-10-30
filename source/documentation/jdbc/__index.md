@@ -71,7 +71,7 @@ sniffing may not be accurate for the entire result set so can still result in er
 The second alternative we refer to as low compatibility and is designed for users who are using the driver
 directly and are fully aware that they are writing SPARQL queries and getting SPARQL results.  In this mode
 we make no effort to type columns in a friendly way instead typing them as `Types.JAVA_OBJECT` with the Java
-type `Node` (i.e. the Jena [Node](/documentation/javadoc/jena/org/apache/jena/graph/Node.html) class).
+type `Node` (i.e. the Jena [Node](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html) class).
 
 Regardless of how you configure to do column typing the core library does it best to allow you to marshal values
 into strong types.  For example even if using default compatibility and your columns are typed as strings
