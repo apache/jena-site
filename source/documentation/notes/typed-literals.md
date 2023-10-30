@@ -59,7 +59,7 @@ typed literals whose datatype is the special type
 
 Jena will correctly parse typed literals within RDF/XML, NTriple
 and Turtle source files. The same Java object,
-[`Literal`](/documentation/javadoc/jena/org/apache/jena/rdf/model/Literal.html)
+[`Literal`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Literal.html)
 will represent "plain" and "typed" literals. Literal now supports
 some new methods:
 
@@ -130,7 +130,7 @@ made it impossible to cache literals in a hash table.
 
 Datatypes for typed literals are represented by instances of the
 interface
-[`org.apache.jena.datatypes.RDFDatatype`](/documentation/javadoc/jena/org/apache/jena/datatypes/RDFDatatype.html).
+[`org.apache.jena.datatypes.RDFDatatype`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/RDFDatatype.html).
 Instances of this interface can be used to parse and serialized
 typed data, test for equality and test if a typed or lexical value
 is a legal value for this datatype.
@@ -189,7 +189,7 @@ Jena includes prebuilt, and pre-registered, instances of
     gYearMonth gMonthDay
 
 These are all available as static member variables from
-[`org.apache.jena.datatypes.xsd.XSDDatatype`](/documentation/javadoc/jena/org/apache/jena/datatypes/xsd/XSDDatatype.html).
+[`org.apache.jena.datatypes.xsd.XSDDatatype`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/xsd/XSDDatatype.html).
 
 Of these types, the following are registered as the default type to
 use to represent certain Java classes:
@@ -264,7 +264,7 @@ standard for how to map the datatype URI to a datatype definition.
 
 Within Jena2 we allow new datatypes to be created and registered by
 using the
-[`TypeMapper`](/documentation/javadoc/jena/org/apache/jena/datatypes/TypeMapper.html)
+[`TypeMapper`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/datatypes/TypeMapper.html)
 class.
 
 The easiest way to define a new RDFDatatype is to subclass

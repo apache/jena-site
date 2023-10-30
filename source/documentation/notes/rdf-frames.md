@@ -205,7 +205,7 @@ converse for properties:
       OntProperty.listDeclaringClasses( boolean direct );
 
 All of the above API methods return a Jena
-[`ExtendedIterator`](/documentation/javadoc/jena/org/apache/jena/util/iterator/ExtendedIterator.html).
+[`ExtendedIterator`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html).
 
 **Note a change from the Jena 2.1 interface:** the optional Boolean
 parameter on `listDeclaredProperties` has changed name from `all`

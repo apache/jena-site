@@ -40,7 +40,7 @@ The file extension for JSONLD 1.1 is `.jsonld11`.
 
 If not reading from a file with this file extension, the application needs to
 force the language choice to be JSON-LD 1.1 with 
-[`RDFParser`](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/RDFParser.html)
+[`RDFParser`](https://jena.apache.org/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/RDFParser.html)
 using `forceLang(Lang.JSONLD11)`:
 
 ```

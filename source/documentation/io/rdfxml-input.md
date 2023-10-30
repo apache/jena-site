@@ -14,9 +14,9 @@ This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.
 
 For access to these advanced features, first get an `RDFReader`
 object that is an instance of an ARP parser, by using the
-[`getReader`](/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReaderF.html#getReader())`()`
+[`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader())`()`
 method on any `Model`. It is then configured using the
-[`setProperty`](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 method. This changes the properties for parsing RDF/XML. Many of
 the properties change the RDF parser, some change the XML parser.
 (The Jena RDF/XML parser, ARP, implements the
@@ -25,7 +25,7 @@ over a [Xerces2-J](http://xml.apache.org/xerces2-j/index.html) XML
 parser). However, changing the features and properties of the XML
 parser is not likely to be useful, but was easy to implement.
 
-[`setProperty`](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 can be used to set and get:
 
 - ARP properties
@@ -56,9 +56,9 @@ ARP property names and string values are case insensitive.
 Property Name | Description | Value class | Legal Values
 ------------- | ----------- | ----------- | ------------
 `iri-rules` | Set the engine for checking and resolving. `"strict"` sets the IRI engine with rules for valid IRIs, XLink and RDF; it does not permit spaces in IRIs. `"iri"`sets the IRI engine to IRI ([RFC 3986](http://www.ietf.org/rfc/rfc3986.txt), [RFC 3987](http://www.ietf.org/rfc/rfc3987.txt)) `.` The default is `"lax"`(for backwards compatibility)`,` the rules for RDF URI references only, which does permit spaces although the use of spaces is not good practice. | String | `lax`<br />`strict`<br />`iri`
-`error-mode`| [`ARPOptions.setDefaultErrorMode()`](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setDefaultErrorMode()) <br />[`ARPOptions.setLaxErrorMode()`](/documentation/javadoc/jena/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setLaxErrorMode())<br />[`ARPOptions.setStrictErrorMode()`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode())<br />[`ARPOptions.setStrictErrorMode(int)`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode(int))<br />  This allows a coarse-grained approach to control of error handling. Setting this property is equivalent to setting many of the fine-grained error handling properties. | `String` | `default`<br />`lax`<br />`strict`<br />`strict-ignore`<br />`strict-warning`<br />`strict-error`<br />`strict-fatal`
-`embedding` | [`ARPOptions.setEmbedding(boolean)`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setEmbedding(boolean)) <br />This sets ARP to look for RDF embedded within an enclosing XML document. | `String` or `Boolean` | `true`<br />`false`
-`ERR_<XXX>` <br />`WARN_<XXX>`<br />`IGN_<XXX>` | See [`ARPErrorNumbers`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html) for a complete list of the error conditions detected. Setting one of these properties is equivalent to the method [`ARPOptions.setErrorMode(int, int)`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setErrorMode(int,%20int)). Thus fine-grained control over the behaviour in response to specific error conditions is possible.| `String` or `Integer` | [`EM_IGNORE`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_IGNORE)<br />[`EM_WARNING`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_WARNING)<br />[`EM_ERROR`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_ERROR)<br />[`EM_FATAL`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_FATAL)
+`error-mode`| [`ARPOptions.setDefaultErrorMode()`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setDefaultErrorMode()) <br />[`ARPOptions.setLaxErrorMode()`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/ARPOptions.html#setLaxErrorMode())<br />[`ARPOptions.setStrictErrorMode()`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode())<br />[`ARPOptions.setStrictErrorMode(int)`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setStrictErrorMode(int))<br />  This allows a coarse-grained approach to control of error handling. Setting this property is equivalent to setting many of the fine-grained error handling properties. | `String` | `default`<br />`lax`<br />`strict`<br />`strict-ignore`<br />`strict-warning`<br />`strict-error`<br />`strict-fatal`
+`embedding` | [`ARPOptions.setEmbedding(boolean)`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setEmbedding(boolean)) <br />This sets ARP to look for RDF embedded within an enclosing XML document. | `String` or `Boolean` | `true`<br />`false`
+`ERR_<XXX>` <br />`WARN_<XXX>`<br />`IGN_<XXX>` | See [`ARPErrorNumbers`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html) for a complete list of the error conditions detected. Setting one of these properties is equivalent to the method [`ARPOptions.setErrorMode(int, int)`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPOptions.html#setErrorMode(int,%20int)). Thus fine-grained control over the behaviour in response to specific error conditions is possible.| `String` or `Integer` | [`EM_IGNORE`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_IGNORE)<br />[`EM_WARNING`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_WARNING)<br />[`EM_ERROR`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_ERROR)<br />[`EM_FATAL`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#EM_FATAL)
 
 To set ARP properties, create a map of values to be set and put this in parser context:
 
@@ -116,7 +116,7 @@ The other way round does not work.
      …
 
 This is because in strict mode
-[`IGN_DAML_COLLECTION`](/documentation/javadoc/jena/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#IGN_DAML_COLLECTION)
+[`IGN_DAML_COLLECTION`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml0/xmlinput/ARPErrorNumbers.html#IGN_DAML_COLLECTION)
 is treated as an error, and so the second call to `setProperty`
 overwrites the effect of the first.
 

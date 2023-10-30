@@ -172,7 +172,7 @@ are defined before use.
 **Note**
 
 Jena does not treat namespaces in a special way. A `Model` will remember any prefixes defined
-in the input RDF (see the [`PrefixMapping`](/documentation/javadoc/jena/org/apache/jena/shared/PrefixMapping.html)
+in the input RDF (see the [`PrefixMapping`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/shared/PrefixMapping.html)
 interface; all Jena `Model` objects extend `PrefixMapping`), and the output writers which
 serialize a model to XML or Turtle will normally attempt to use prefixes to abbreviate URI's.
 However internally, a `Resource` URI is not separated into a namespace and local-name pair.

@@ -73,7 +73,7 @@ TriplesTemplate           | ::= | TriplesSameSubject ( '.' TriplesTemplate? )?
 
 ## Programming API
 
-ARQ provides 2 additional methods in [QueryExecution](/documentation/javadoc/arq/org/apache/jena/query/QueryExecution.html) for Construct Quad.
+ARQ provides 2 additional methods in [QueryExecution](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/query/QueryExecution.html) for Construct Quad.
 
     Iterator<Quad> QueryExecution.execConstructQuads() // allow duplication
     Dataset QueryExecution.execConstructDataset() // no duplication
@@ -113,7 +113,7 @@ More examples can be found at `ExampleConstructQuads.java` at
 Jena [Fuseki](/documentation/fuseki2/index.html) is also empowered with Construct Quad query as a built-in
 function. No more additional configuration is required to switch it on.
 Because
-[QueryEngineHTTP](/documentation/javadoc/arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html)
+[QueryEngineHTTP](/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/engine/http/QueryEngineHTTP.html)
 is just an implementation of QueryExecution, there's not much difference
 for the client users to manipulate the programming API described in the
 previous sections, e.g.

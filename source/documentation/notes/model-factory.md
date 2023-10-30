@@ -60,7 +60,7 @@ allow the reasoner to digest them before working on the model.
 
 From where do you fetch your reasoners? From the
 *reasoner registry*, the class
-[ReasonerRegistry](/documentation/javadoc/jena/org/apache/jena/reasoner/ReasonerRegistry.html).
+[ReasonerRegistry](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/ReasonerRegistry.html).
 This allows reasoners to be looked up by name, but also provides
 some predefined access methods for well-know reasoners:
 
@@ -85,7 +85,7 @@ in-memory and presents OWL ontologies.
 
 - `createOntologyModel(OntModelSpec spec, Model base)` Creates an
 ontology model according the
-[OntModelSpec](/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html)
+[OntModelSpec](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html)
 `spec` which presents the ontology of `base`.
 
 - `createOntologyModel(OntModelSpec spec, ModelMaker maker, Model base)`
@@ -178,7 +178,7 @@ returns that model.
 There are other methods, for removing models, additional control
 over create *vs* open, closing the maker, and looking names up; for
 those consult the
-[ModelMaker JavaDoc](/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelMaker.html).
+[ModelMaker JavaDoc](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelMaker.html).
 
 ## Miscellany
 

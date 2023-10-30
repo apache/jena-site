@@ -111,22 +111,22 @@ fragment IDs from [http://www.w3.org/TR/rdf-syntax-grammar](http://www.w3.org/TR
 indicating grammar rules that will not be used. Rules that can be blocked are:
 
 - [section-Reification](http://www.w3.org/TR/rdf-syntax-grammar#section-Reification)
- ([`RDFSyntax.sectionReification`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#sectionReification))
+ ([`RDFSyntax.sectionReification`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#sectionReification))
 - [section-List-Expand](http://www.w3.org/TR/rdf-syntax-grammar#section-List-Expand)
- ([`RDFSyntax.sectionListExpand`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#sectionListExpand))
+ ([`RDFSyntax.sectionListExpand`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#sectionListExpand))
 - [parseTypeLiteralPropertyElt](http://www.w3.org/TR/rdf-syntax-grammar#parseTypeLiteralPropertyElt)
- ([`RDFSyntax.parseTypeLiteralPropertyElt`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeLiteralPropertyElt))
+ ([`RDFSyntax.parseTypeLiteralPropertyElt`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeLiteralPropertyElt))
 - [parseTypeResourcePropertyElt](http://www.w3.org/TR/rdf-syntax-grammar#parseTypeResourcePropertyElt)
- ([`RDFSyntax.parseTypeLiteralPropertyElt`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeLiteralPropertyElt))
+ ([`RDFSyntax.parseTypeLiteralPropertyElt`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeLiteralPropertyElt))
 - [parseTypeCollectionPropertyElt](http://www.w3.org/TR/rdf-syntax-grammar#parseTypeCollectionPropertyElt)
- ([`RDFSyntax.parseTypeCollectionPropertyElt`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeCollectionPropertyElt))
+ ([`RDFSyntax.parseTypeCollectionPropertyElt`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#parseTypeCollectionPropertyElt))
 - [idAttr](http://www.w3.org/TR/rdf-syntax-grammar#idAttr)
- ([`RDFSyntax.idAttr`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#idAttr))
+ ([`RDFSyntax.idAttr`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#idAttr))
 - [propertyAttr](http://www.w3.org/TR/rdf-syntax-grammar#propertyAttr)
- ([`RDFSyntax.propertyAttr`](/documentation/javadoc/jena/org/apache/jena/vocabulary/RDFSyntax.html#propertyAttr))
+ ([`RDFSyntax.propertyAttr`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/RDFSyntax.html#propertyAttr))
 
 In addition `"daml:collection"`
-([`DAML_OIL.collection`](/documentation/javadoc/jena/org/apache/jena/vocabulary/DAML_OIL.html#collection))
+([`DAML_OIL.collection`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/DAML_OIL.html#collection))
 can be blocked. Blocking
 [idAttr](http://www.w3.org/TR/rdf-syntax-grammar#idAttr) also
 blocks
