@@ -217,21 +217,21 @@ Jena Model.</p>
 <h2 id="1-overview">1. Overview</h2>
 <p>To read an arbitrary SAX source as triples to be added into a Jena
 model, it is not possible to use a
-<code>Model.</code><a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream,%20java.lang.String)"><code>read</code></a>()
+<code>Model.</code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream,%20java.lang.String)"><code>read</code></a>()
 operation. Instead, you construct a SAX event handler of class
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>,
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>,
 using the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html#create(java.lang.String,%20org.apache.jena.rdf.model.Model)"><code>create</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html#create(java.lang.String,%20org.apache.jena.rdf.model.Model)"><code>create</code></a>
 method, install these as the handler on your SAX event source, and
 then stream the SAX events. It is possible to have fine-grained
 control over the SAX events, for instance, by inserting or deleting
 events, before passing them to the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>
 handler.</p>
 <h2 id="sample-code">Sample Code</h2>
 <p>This code uses the Xerces parser as a SAX event stream, and adds
 the triple to a
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html"><code>Model</code></a> using
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html"><code>Model</code></a> using
 default options.</p>
 <pre><code>// Use your own SAX source.
 XMLReader saxParser = new SAXParser();
@@ -264,10 +264,10 @@ try {
 </code></pre>
 <h2 id="initializing-sax-event-source">Initializing SAX event source</h2>
 <p>If your SAX event source is a subclass of <code>XMLReader</code>, then the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#installHandlers(org.xml.sax.XMLReader,%20org.apache.jena.rdf.arp.XMLHandler)">installHandlers</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html#installHandlers(org.xml.sax.XMLReader,%20org.apache.jena.rdf.arp.XMLHandler)">installHandlers</a>
 static method can be used as shown in the sample. Otherwise, you
 have to do it yourself. The
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#installHandlers(org.xml.sax.XMLReader,%20org.apache.jena.rdf.arp.XMLHandler)"><code>installHandlers</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html#installHandlers(org.xml.sax.XMLReader,%20org.apache.jena.rdf.arp.XMLHandler)"><code>installHandlers</code></a>
 code is like this:</p>
 <pre><code>static public void installHandlers(XMLReader rdr, XMLHandler sax2rdf)
 throws SAXException
@@ -288,22 +288,22 @@ throws SAXException
 <p>For some other SAX source, the exact code will differ, but the
 required operations are as above.</p>
 <h2 id="error-handler">Error Handler</h2>
-<p>The <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html">SAX2Model</a>
+<p>The <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html">SAX2Model</a>
 handler supports the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReader.html#setErrorHandler(org.apache.jena.rdf.model.RDFErrorHandler)">setErrorHandler</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html#setErrorHandler(org.apache.jena.rdf.model.RDFErrorHandler)">setErrorHandler</a>
 method, from the Jena
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReader.html">RDFReader</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html">RDFReader</a>
 interface. This is used in the same way as that method to control
 error reporting.</p>
 <p>A specific fatal error, new in Jena 2.3, is ERR_INTERRUPTED, which
 indicates that the current Thread received an interrupt. This
 allows long jobs to be aborted on user request.</p>
 <h2 id="options">Options</h2>
-<p>The <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>
+<p>The <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html"><code>SAX2Model</code></a>
 handler supports the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReader.html#setProperty(java.lang.String,%20java.lang.Object)"><code>setProperty</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html#setProperty(java.lang.String,%20java.lang.Object)"><code>setProperty</code></a>
 method, from the Jena
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/RDFReader.html"><code>RDFReader</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html"><code>RDFReader</code></a>
 interface. This is used in nearly the same way to have fine grain
 control over ARPs behaviour, particularly over error reporting, see
 the <a href="iohowto.html#arp_properties">I/O howto</a>. Setting SAX or
@@ -314,12 +314,12 @@ necessary to ensure that ARP knows the correct value for <code>xml:lang</code>
 and desirable that it knows the correct mappings of namespace
 prefixes.</p>
 <p>There is a second version of the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2Model.html#create(java.lang.String,%20org.apache.jena.rdf.model.Model,%20java.lang.String)"><code>create</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2Model.html#create(java.lang.String,%20org.apache.jena.rdf.model.Model,%20java.lang.String)"><code>create</code></a>
 method, which allows specification of the <code>xml:lang</code> value from the
 outer context. If this is inappropriate it is possible, but hard
 work, to synthesis an appropriate SAX event.</p>
 <p>For the namespaces prefixes, it is possible to call the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#startPrefixMapping(java.lang.String,%20java.lang.String)"><code>startPrefixMapping</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html#startPrefixMapping(java.lang.String,%20java.lang.String)"><code>startPrefixMapping</code></a>
 SAX event, before passing the other SAX events, to declare each
 namespace, one by one. Failure to do this is permitted, but, for
 instance, a Jena Model will then not know the (advisory) namespace
@@ -329,18 +329,18 @@ events, but nothing untoward is likely if such code is omitted.</p>
 <p>As with ARP, it is possible to use this functionality, without
 using other Jena features, in particular, without using a Jena
 Model. Instead of using the class SAX2Model, you use its superclass
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html">SAX2RDF</a>. The
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#create(java.lang.String)">create</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html">SAX2RDF</a>. The
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html#create(java.lang.String)">create</a>
 method on this class does not provide any means of specifying what
 to do with the triples. Instead, the class implements the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html">ARPConfig</a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html">ARPConfig</a>
 interface, which permits the setting of handlers and parser
 options, as described in the documentation for using
 <a href="standalone.html">ARP without Jena</a>.</p>
 <p>Thus you need to:</p>
 <ol>
 <li>Create a SAX2RDF using
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/SAX2RDF.html#create(java.lang.String)">SAX2RDF.create()</a></li>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/SAX2RDF.html#create(java.lang.String)">SAX2RDF.create()</a></li>
 <li>Attach your StatementHandler and SAXErrorHandler and optionally
 your NamespaceHandler and ExtendedHandler to the SAX2RDF instance.</li>
 <li>Install the SAX2RDF instance as the SAX handler on your SAX
@@ -352,19 +352,19 @@ source.</li>
 suggest using Java 1.4.2_04 or greater for this functionality.
 This issue has no impact on any other Jena functionality.</p>
 <h3 id="using-a-dom-as-input-to-jena">Using a DOM as Input to Jena</h3>
-<p>The <a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/DOM2Model.html"><code>DOM2Model</code></a>
+<p>The <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/DOM2Model.html"><code>DOM2Model</code></a>
 subclass of SAX2Model, allows the parsing of a DOM using ARP. The
 procedure to follow is:</p>
 <ul>
 <li>Construct a <code>DOM2Model</code>, using a factory method such as
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/DOM2Model.html#createD2M(java.lang.String,%20org.apache.jena.rdf.model.Model)"><code>createD2M</code></a>,
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/DOM2Model.html#createD2M(java.lang.String,%20org.apache.jena.rdf.model.Model)"><code>createD2M</code></a>,
 specifying the xml:base of the document to be loaded, the Model to
 load into, optionally the xml:lang value (particularly useful if
 using a DOM Node from within a Document).</li>
 <li>Set any properties, error handlers etc. on the <code>DOM2Model</code>
 object.</li>
 <li>The DOM is parsed simply by calling the
-<a href="/documentation/javadoc/jena/org/apache/jena/rdf/arp/DOM2Model.html#load(org.w3c.dom.Node)"><code>load(Node)</code></a>
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/arp/DOM2Model.html#load(org.w3c.dom.Node)"><code>load(Node)</code></a>
 method.</li>
 </ul>
 <h3 id="using-a-dom-as-input-to-arp">Using a DOM as Input to ARP</h3>

@@ -304,7 +304,7 @@
   engine</em>, please forgive us. </p>
 <p>The overall structure of the inference machinery is illustrated below. </p>
 <p class="centered"><img src="reasoner-overview.png" width="544" height="305" alt="Overall structure of inference machinery"></p>
-<p>Applications normally access the inference machinery by using the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
+<p>Applications normally access the inference machinery by using the <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
   to associate a data set with some reasoner to create a new Model. Queries to
   the created model will return not only those statements that were present in
   the original data but also additional statements than can be derived from the
@@ -362,12 +362,12 @@
 <h3 id="reasonerAPI">Generic reasoner API</h3>
 <h4 id="finding-a-reasoner">Finding a reasoner</h4>
 <p>For each type of reasoner there is a factory class (which conforms to the interface
-  <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/ReasonerFactory.html">ReasonerFactory</a></code>)
+  <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/ReasonerFactory.html">ReasonerFactory</a></code>)
   an instance of which can be used to create instances of the associated
-  <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/Reasoner.html">Reasoner</a></code>.
+  <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/Reasoner.html">Reasoner</a></code>.
   The factory instances can be located by going directly to a known factory class
   and using the static <code>theInstance</code>() method or by retrieval from
-  a global <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/ReasonerRegistry.html">ReasonerRegistry</a></code>
+  a global <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/ReasonerRegistry.html">ReasonerRegistry</a></code>
   which stores factory instances indexed by URI assigned to the reasoner. </p>
 <p>In addition, there are convenience methods on the <code>ReasonerRegistry</code>
   for locating a prebuilt instance of each of the main reasoners (<code>getTransitiveReasoner</code>,
@@ -394,7 +394,7 @@
   method to set a single configuration parameter, <code>Reasoner.setParameter</code>.
   The parameter being set is identified by the corresponding configuration property.</p>
 <p>For the built in reasoners the available configuration parameters are described
-  below and are predefined in the <code><a href="/documentation/javadoc/jena/org/apache/jena/vocabulary/ReasonerVocabulary.html">ReasonerVocabulary</a></code>
+  below and are predefined in the <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/ReasonerVocabulary.html">ReasonerVocabulary</a></code>
   class.</p>
 <p>The parameter value can normally be a String or a structured value. For example,
   to set a boolean value one can use the strings &quot;true&quot; or &quot;false&quot;,
@@ -412,7 +412,7 @@
   a set schema data, use the <code>Reasoner.bindSchema</code> method which returns
   a new, specialized, reasoner.</p>
 <p>To bind the reasoner to the final data set to create an inference model see
-  the <a href="/documentation/javadoc/jena/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
+  the <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/ModelFactory.html"><code>ModelFactory</code></a>
   methods, particularly <code>ModelFactory.createInfModel</code>. </p>
 <h4 id="accessing-inferences">Accessing inferences</h4>
 <p>Finally, having created an inference model, any API operations which access
@@ -610,21 +610,21 @@ if (validity.isValid()) {
   aliases for those relations which can be queried this way. For the built in
   reasoners this functionality is available for <code>rdfs:subClassOf</code> and
   <code>rdfs:subPropertyOf</code> and the direct aliases for these are defined
-  in <a href="/documentation/javadoc/jena/org/apache/jena/vocabulary/ReasonerVocabulary.html"><code>ReasonerVocabulary</code></a>.</p>
+  in <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/ReasonerVocabulary.html"><code>ReasonerVocabulary</code></a>.</p>
 <p>Typically the easiest way to work with such indirect and direct relations is
   to use the <a href="../ontology/index.html">Ontology API</a> which hides the
   grubby details of these property aliases.</p>
 <h4 id="derivations">Derivations</h4>
 <p>It is sometimes useful to be able to trace where an inferred statement was
   generated from. This is achieved using the <code>InfModel.getDerivation(Statement)</code>
-  method. This returns a iterator over a set <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/Derivation.html"><code>Derivation</code></a>
+  method. This returns a iterator over a set <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/Derivation.html"><code>Derivation</code></a>
   objects through which a brief description of the source of the derivation can
   be obtained. Typically understanding this involves tracing the sources for other
   statements which were used in this derivation and the <code>Derivation.PrintTrace</code>
   method is used to do this recursively.</p>
 <p>The general form of the Derivation objects is quite abstract but in the case
   of the rule-based reasoners they have a more detailed internal structure that
-  can be accessed - see <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/RuleDerivation.html">RuleDerivation</a></code>.</p>
+  can be accessed - see <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/RuleDerivation.html">RuleDerivation</a></code>.</p>
 <p>Derivation information is rather expensive to compute and store. For this reason,
   it is not recorded by default and <code>InfModel.serDerivationLogging(true)</code>
   must be used to enable derivations to be recorded. This should be called before
@@ -1211,7 +1211,7 @@ configuration still leaves something to be desired and will the subject of futur
 <p>[<a href="#owl">OWL Index</a>] [<a href="#index">Main Index</a>]</p>
 <h3 id="OWLconfiguration">OWL Configuration</h3>
 <p>This reasoner is accessed using <code>ModelFactory.createOntologyModel</code>
-  with the prebuilt <a href="/documentation/javadoc/jena/org/apache/jena/ontology/OntModelSpec.html"><code>OntModelSpec</code></a>
+  with the prebuilt <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html"><code>OntModelSpec</code></a>
   <code>OWL_MEM_RULE_INF</code> or manually via <code>ReasonerRegistry.getOWLReasoner()</code>.</p>
 <p>There are no OWL-specific configuration parameters though the reasoner supports
   the standard control parameters:</p>
@@ -1448,7 +1448,7 @@ class B = cardinality(P,1)</pre>
   tabled datalog engine - they can be run separately or the forward engine can
   be used to prime the backward engine which in turn will be used to answer queries.</p>
 <p>The various engine configurations are all accessible through a single parameterized
-  reasoner <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/GenericRuleReasoner.html">GenericRuleReasoner</a></code>.
+  reasoner <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/GenericRuleReasoner.html">GenericRuleReasoner</a></code>.
   At a minimum a <code>GenericRuleReasoner</code> requires a ruleset to define
   its behaviour. A <code>GenericRuleReasoner</code> instance with a ruleset can
   be used like any of the other reasoners described above - that is it can be
@@ -1459,9 +1459,9 @@ class B = cardinality(P,1)</pre>
   for the RDFS and OWL implementations but is easily extensible.</p>
 <p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 <h3 id="RULEsyntax">Rule syntax and structure</h3>
-<p>A rule for the rule-based reasoner is defined by a Java <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/Rule.html">Rule</a></code>
+<p>A rule for the rule-based reasoner is defined by a Java <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/Rule.html">Rule</a></code>
   object with a list of body terms (premises), a list of head terms (conclusions)
-  and an optional name and optional direction. Each term or <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/ClauseEntry.html"><code>ClauseEntry</code></a>
+  and an optional name and optional direction. Each term or <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/ClauseEntry.html"><code>ClauseEntry</code></a>
   is either a triple pattern, an extended triple pattern or a call to a builtin
   primitive. A rule set is simply a List of Rules.</p>
 <p>For convenience a rather simple parser is included with Rule which allows rules
@@ -1499,7 +1499,7 @@ or   number                      // e.g. 42 or 25.5</pre></p>
   multiple triples and allows a rule to collect those triples together in one
   place.</p>
 <p>To keep rules readable qname syntax is supported for URI refs. The set of known
-  prefixes is those registered with the <code><a href="/documentation/javadoc/jena/org/apache/jena/util/PrintUtil.html">PrintUtil</a></code>
+  prefixes is those registered with the <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/PrintUtil.html">PrintUtil</a></code>
   object. This initially knows about rdf, rdfs, owl, xsd and a test namespace
   eg, but more mappings can be registered in java code. In addition it is possible to
   define additional prefix mappings in the rule file, see below. </p>
@@ -2221,18 +2221,18 @@ InfModel inf = ModelFactory.createInfModel(reasoner, data);
   rule syntax so long as it can be compiled into Rule objects.</p>
 <h4 id="builtins">Builtins</h4>
 <p>Second, the set of procedural builtins can be extended. A builtin should implement
-  the <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/Builtin.html"><code>Builtin</code></a>
-  interface. The easiest way to achieve this is by subclassing <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/builtins/BaseBuiltin.html">BaseBuiltin</a></code>
+  the <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/Builtin.html"><code>Builtin</code></a>
+  interface. The easiest way to achieve this is by subclassing <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/builtins/BaseBuiltin.html">BaseBuiltin</a></code>
   and defining a name (<code>getName</code>), the number of arguments expected
   (<code>getArgLength</code>) and one or both of <code>bodyCall</code> and <code>headAction</code>.
   The <code>bodyCall</code> method is used when the builtin is invoked in the
   body of a rule clause and should return true or false according to whether the
   test passes. In both cases the arguments may be variables or bound values and
-  the supplied <code><a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/RuleContext.html">RuleContext</a></code>
+  the supplied <code><a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/RuleContext.html">RuleContext</a></code>
   object can be used to dereference bound variables and to bind new variables.
 </p>
 <p>Once the Builtin has been defined then an instance of it needs to be registered
-  with <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/BuiltinRegistry.html"><code>BuiltinRegistry</code></a>
+  with <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/BuiltinRegistry.html"><code>BuiltinRegistry</code></a>
   for it to be seen by the rule parser and interpreters.</p>
 <p>The easiest way to experiment with this is to look at the examples in the builtins
   directory. </p>
@@ -2241,7 +2241,7 @@ InfModel inf = ModelFactory.createInfModel(reasoner, data);
   hooks over the data at the time the inference graph is <i>prepared</i>. These
   procedural hooks can be used to perform tests or translations which are slow
   or inconvenient to express in rule form. See <code>GenericRuleReasoner.addPreprocessingHook</code>
-  and the <a href="/documentation/javadoc/jena/org/apache/jena/reasoner/rulesys/RulePreprocessHook.html"><code>RulePreprocessHook</code></a>
+  and the <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/reasoner/rulesys/RulePreprocessHook.html"><code>RulePreprocessHook</code></a>
   class for more details.</p>
 <p>[<a href="#index">Index</a>]</p>
 <h2 id="extensions">Extending the inference support</h2>
