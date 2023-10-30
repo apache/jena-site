@@ -116,7 +116,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createGraphMem()" class="member-name-link">createGraphMem</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create a graph that is a Jena memory graph</div>
+<div class="block">Create a graph that is a Jena memory graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createJenaDefaultGraph()" class="member-name-link">createJenaDefaultGraph</a>()</code></div>
@@ -131,7 +131,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GraphTxn.html" title="class in org.apache.jena.sparql.graph">GraphTxn</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createTxnGraph()" class="member-name-link">createTxnGraph</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create an in-memory, transactional graph.</div>
+<div class="block">Create an in-memory, thread-safe, transactional graph.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link">Model</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#makeDefaultModel()" class="member-name-link">makeDefaultModel</a>()</code></div>
@@ -186,7 +186,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createGraphMem()">
 <h3>createGraphMem</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></span>&nbsp;<span class="element-name">createGraphMem</span>()</div>
-<div class="block">Create a graph that is a Jena memory graph</div>
+<div class="block">Create a graph that is a Jena memory graph.
+ The created graph is <strong>not thread safe</strong>.
+ Inappropriate use of graph iterators and streams may cause <code>ConcurrentModificationException</code>.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -201,7 +203,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createTxnGraph()">
 <h3>createTxnGraph</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GraphTxn.html" title="class in org.apache.jena.sparql.graph">GraphTxn</a></span>&nbsp;<span class="element-name">createTxnGraph</span>()</div>
-<div class="block">Create an in-memory, transactional graph.
+<div class="block">Create an in-memory, thread-safe, transactional graph.
  <p>
  This fully supports transactions, including abort to roll-back changes. It
  provides "autocommit" if operations are performed outside a transaction. The

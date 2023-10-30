@@ -87,12 +87,14 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GraphTxn</span>
 <span class="extends-implements">extends <a href="GraphWrapper.html" title="class in org.apache.jena.sparql.graph">GraphWrapper</a>
 implements <a href="../core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a></span></div>
-<div class="block">In-memory, transactional graph.</div>
+<div class="block">In-memory, thread-safe, transactional graph.</div>
 <dl class="notes">
 <dt>Implementation Note:</dt>
 <dd>The implementation uses the default graph of <a href="../core/mem/DatasetGraphInMemory.html" title="class in org.apache.jena.sparql.core.mem"><code>DatasetGraphInMemory</code></a>.
  The graph transaction handler continues to work.
- This class adds the <a href="../core/Transactional.html" title="interface in org.apache.jena.sparql.core"><code>Transactional</code></a> to the graph itself.</dd>
+ This class adds the <a href="../core/Transactional.html" title="interface in org.apache.jena.sparql.core"><code>Transactional</code></a> to the graph itself
+ and provides <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link"><code>ExtendedIterators</code></a> that provide
+ read access to the data if used outside a transaction.</dd>
 </dl>
 </section>
 <section class="summary">
@@ -166,6 +168,14 @@ implements <a href="../core/Transactional.html" title="interface in org.apache.j
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Finish the transaction - if a write transaction and commit() has not been called, then abort</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link">ExtendedIterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">find</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;s,
+ <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;p,
+ <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;o)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link">ExtendedIterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#find(org.apache.jena.graph.Triple)" class="member-name-link">find</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get()" class="member-name-link">get</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -194,7 +204,7 @@ implements <a href="../core/Transactional.html" title="interface in org.apache.j
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.sparql.graph.GraphWrapper">Methods inherited from class&nbsp;org.apache.jena.sparql.graph.<a href="GraphWrapper.html" title="class in org.apache.jena.sparql.graph">GraphWrapper</a></h3>
-<code><a href="GraphWrapper.html#add(org.apache.jena.graph.Triple)">add</a>, <a href="GraphWrapper.html#clear()">clear</a>, <a href="GraphWrapper.html#close()">close</a>, <a href="GraphWrapper.html#contains(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">contains</a>, <a href="GraphWrapper.html#contains(org.apache.jena.graph.Triple)">contains</a>, <a href="GraphWrapper.html#delete(org.apache.jena.graph.Triple)">delete</a>, <a href="GraphWrapper.html#dependsOn(org.apache.jena.graph.Graph)">dependsOn</a>, <a href="GraphWrapper.html#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">find</a>, <a href="GraphWrapper.html#find(org.apache.jena.graph.Triple)">find</a>, <a href="GraphWrapper.html#getCapabilities()">getCapabilities</a>, <a href="GraphWrapper.html#getEventManager()">getEventManager</a>, <a href="GraphWrapper.html#getPrefixMapping()">getPrefixMapping</a>, <a href="GraphWrapper.html#getTransactionHandler()">getTransactionHandler</a>, <a href="GraphWrapper.html#isClosed()">isClosed</a>, <a href="GraphWrapper.html#isEmpty()">isEmpty</a>, <a href="GraphWrapper.html#isIsomorphicWith(org.apache.jena.graph.Graph)">isIsomorphicWith</a>, <a href="GraphWrapper.html#remove(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">remove</a>, <a href="GraphWrapper.html#size()">size</a></code></div>
+<code><a href="GraphWrapper.html#add(org.apache.jena.graph.Triple)">add</a>, <a href="GraphWrapper.html#clear()">clear</a>, <a href="GraphWrapper.html#close()">close</a>, <a href="GraphWrapper.html#contains(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">contains</a>, <a href="GraphWrapper.html#contains(org.apache.jena.graph.Triple)">contains</a>, <a href="GraphWrapper.html#delete(org.apache.jena.graph.Triple)">delete</a>, <a href="GraphWrapper.html#dependsOn(org.apache.jena.graph.Graph)">dependsOn</a>, <a href="GraphWrapper.html#getCapabilities()">getCapabilities</a>, <a href="GraphWrapper.html#getEventManager()">getEventManager</a>, <a href="GraphWrapper.html#getPrefixMapping()">getPrefixMapping</a>, <a href="GraphWrapper.html#getTransactionHandler()">getTransactionHandler</a>, <a href="GraphWrapper.html#isClosed()">isClosed</a>, <a href="GraphWrapper.html#isEmpty()">isEmpty</a>, <a href="GraphWrapper.html#isIsomorphicWith(org.apache.jena.graph.Graph)">isIsomorphicWith</a>, <a href="GraphWrapper.html#remove(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">remove</a>, <a href="GraphWrapper.html#size()">size</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -395,6 +405,32 @@ implements <a href="../core/Transactional.html" title="interface in org.apache.j
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../core/Transactional.html#isInTransaction()">isInTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="../core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="find(org.apache.jena.graph.Triple)">
+<h3>find</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link">ExtendedIterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">find</span><wbr><span class="parameters">(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&nbsp;triple)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html#find(org.apache.jena.graph.Triple)" title="class or interface in org.apache.jena.graph" class="external-link">find</a></code>&nbsp;in interface&nbsp;<code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="GraphWrapper.html#find(org.apache.jena.graph.Triple)">find</a></code>&nbsp;in class&nbsp;<code><a href="GraphWrapper.html" title="class in org.apache.jena.sparql.graph">GraphWrapper</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">
+<h3>find</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html" title="class or interface in org.apache.jena.util.iterator" class="external-link">ExtendedIterator</a>&lt;<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Triple.html" title="class or interface in org.apache.jena.graph" class="external-link">Triple</a>&gt;</span>&nbsp;<span class="element-name">find</span><wbr><span class="parameters">(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;s,
+ <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;p,
+ <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html" title="class or interface in org.apache.jena.graph" class="external-link">Node</a>&nbsp;o)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" title="class or interface in org.apache.jena.graph" class="external-link">find</a></code>&nbsp;in interface&nbsp;<code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="GraphWrapper.html#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">find</a></code>&nbsp;in class&nbsp;<code><a href="GraphWrapper.html" title="class in org.apache.jena.sparql.graph">GraphWrapper</a></code></dd>
 </dl>
 </section>
 </li>

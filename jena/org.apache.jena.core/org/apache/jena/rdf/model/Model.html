@@ -98,7 +98,7 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <p>
     Models may create Resources [URI nodes and bnodes]. Creating a Resource does
     <i>not</i> make the Resource visible to the model; Resources are only "in" Models
-    if Statements about them are added to the Model. Similarly the only way to "remove"
+    if Statements about them are added to the Model. Similarly, the only way to "remove"
     a Resource from a Model is to remove all the Statements that mention it.
 <p>
     When a Resource or Literal is created by a Model, the Model is free to re-use an
@@ -109,6 +109,17 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
     convenience methods which extends this interface, e.g. performing
     automatic type conversions and support for enhanced resources,
     is defined in <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model"><code>ModelCon</code></a>.</p>
+ <p>
+        The good practice is to close explicitly every <a href="../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>Jena's ExtendedIterator</code></a>
+        produced by the <code>Model</code> right after query operation.
+        Depending on the implementation,
+        the iterator may throw a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>
+        if continued with it after modification operation.
+        This may happen even if the queried data does not relate directly to the modified data
+        (i.e. when triple search pattern does not match added or deleted triple).
+        A <code> ExtendedIterator</code> should be operated on
+        (invoking materializing <code>ExtendedIterator</code> operation) only once;
+        in general reusable are not allowed and may lead to an exception.
 
  <h2>System Properties</h2>
 
@@ -185,8 +196,7 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#add(org.apache.jena.rdf.model.Model)" class="member-name-link">add</a><wbr>(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;m)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Add all the statements in another model to this model, including the
- reified statements.</div>
+<div class="block">Add all the statements in another model to this model.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#add(org.apache.jena.rdf.model.Statement)" class="member-name-link">add</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
@@ -313,17 +323,20 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="block">Create a property with a given URI composed from a namespace part and a
         localname part by concatenating the strings.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createReifiedStatement(java.lang.String,org.apache.jena.rdf.model.Statement)" class="member-name-link">createReifiedStatement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uri,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#createReifiedStatement(java.lang.String,org.apache.jena.rdf.model.Statement)" class="member-name-link">createReifiedStatement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uri,
  <a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">answer a ReifiedStatement that encodes _s_, belongs to this Model,
-        and is a Resource with that _uri_.</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createReifiedStatement(org.apache.jena.rdf.model.Statement)" class="member-name-link">createReifiedStatement</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Answer a ReifiedStatement that encodes _s_ and belongs to this Model.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#createReifiedStatement(org.apache.jena.rdf.model.Statement)" class="member-name-link">createReifiedStatement</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Resource.html" title="interface in org.apache.jena.rdf.model">Resource</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createResource()" class="member-name-link">createResource</a>()</code></div>
@@ -390,10 +403,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Execute the runnable <code>action</code> within a transaction.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Resource.html" title="interface in org.apache.jena.rdf.model">Resource</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAnyReifiedStatement(org.apache.jena.rdf.model.Statement)" class="member-name-link">getAnyReifiedStatement</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Find or create a <a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model"><code>ReifiedStatement</code></a> corresponding to a Statement.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="Resource.html" title="interface in org.apache.jena.rdf.model">Resource</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#getAnyReifiedStatement(org.apache.jena.rdf.model.Statement)" class="member-name-link">getAnyReifiedStatement</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../shared/Lock.html" title="interface in org.apache.jena.shared">Lock</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getLock()" class="member-name-link">getLock</a>()</code></div>
@@ -465,8 +480,8 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#intersection(org.apache.jena.rdf.model.Model)" class="member-name-link">intersection</a><wbr>(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;model)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Create a new, independant, model containing all the statements which are in both
-         this model and another.</div>
+<div class="block">Create a new, independent, model containing all the statements which are in
+ both this model and another.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isClosed()" class="member-name-link">isClosed</a>()</code></div>
@@ -485,10 +500,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="block">Compare this Model with another for equality ignoring the labels on
  bNodes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isReified(org.apache.jena.rdf.model.Statement)" class="member-name-link">isReified</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Determine if this Statement has been reified in this Model.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#isReified(org.apache.jena.rdf.model.Statement)" class="member-name-link">isReified</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="NsIterator.html" title="interface in org.apache.jena.rdf.model">NsIterator</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listNameSpaces()" class="member-name-link">listNameSpaces</a>()</code></div>
@@ -513,16 +530,19 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">List the values of a property of a resource.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listReifiedStatements()" class="member-name-link">listReifiedStatements</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">answer an iterator delivering all the reified statements "in" this model</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#listReifiedStatements()" class="member-name-link">listReifiedStatements</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listReifiedStatements(org.apache.jena.rdf.model.Statement)" class="member-name-link">listReifiedStatements</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;st)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">answer an iterator delivering all the reified statements "in" this model
-        that match the statement _st_.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#listReifiedStatements(org.apache.jena.rdf.model.Statement)" class="member-name-link">listReifiedStatements</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;st)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ResIterator.html" title="interface in org.apache.jena.rdf.model">ResIterator</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listResourcesWithProperty(org.apache.jena.rdf.model.Property)" class="member-name-link">listResourcesWithProperty</a><wbr>(<a href="Property.html" title="interface in org.apache.jena.rdf.model">Property</a>&nbsp;p)</code></div>
@@ -549,10 +569,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Find all the statements matching a pattern.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model">StmtIterator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listStatements(org.apache.jena.rdf.model.Selector)" class="member-name-link">listStatements</a><wbr>(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">List the statements matching a selector.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model">StmtIterator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#listStatements(org.apache.jena.rdf.model.Selector)" class="member-name-link">listStatements</a><wbr>(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link"><code>Predicate&lt;Statement&gt;</code></a> to filter a <a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model"><code>StmtIterator</code></a>.</div>
+</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ResIterator.html" title="interface in org.apache.jena.rdf.model">ResIterator</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#listSubjects()" class="member-name-link">listSubjects</a>()</code></div>
@@ -577,10 +599,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Notify any listeners that the event e has occurred.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#query(org.apache.jena.rdf.model.Selector)" class="member-name-link">query</a><wbr>(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Create a new model containing the statements matching a query.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#query(org.apache.jena.rdf.model.Selector)" class="member-name-link">query</a><wbr>(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#read(java.io.InputStream,java.lang.String)" class="member-name-link">read</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;in,
@@ -661,10 +685,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove all the statements matching (s, p, o) from this model.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeAllReifications(org.apache.jena.rdf.model.Statement)" class="member-name-link">removeAllReifications</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Remove all reifications (ie implicit reification quads) of _s_.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#removeAllReifications(org.apache.jena.rdf.model.Statement)" class="member-name-link">removeAllReifications</a><wbr>(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeNsPrefix(java.lang.String)" class="member-name-link">removeNsPrefix</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
@@ -672,10 +698,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="block">Remove any existing maplet with the given prefix name and answer this
         mapping.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeReification(org.apache.jena.rdf.model.ReifiedStatement)" class="member-name-link">removeReification</a><wbr>(<a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a>&nbsp;rs)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Remove a particular reificiation.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#removeReification(org.apache.jena.rdf.model.ReifiedStatement)" class="member-name-link">removeReification</a><wbr>(<a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a>&nbsp;rs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setNsPrefix(java.lang.String,java.lang.String)" class="member-name-link">setNsPrefix</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix,
@@ -715,8 +743,8 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#union(org.apache.jena.rdf.model.Model)" class="member-name-link">union</a><wbr>(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;model)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Create a new, independant, model containing all the statements in this model
-         together with all of those in another given model.</div>
+<div class="block">Create a new, independent, model containing all the statements in this model
+ together with all of those in another given model.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#unregister(org.apache.jena.rdf.model.ModelChangedListener)" class="member-name-link">unregister</a><wbr>(<a href="ModelChangedListener.html" title="interface in org.apache.jena.rdf.model">ModelChangedListener</a>&nbsp;listener)</code></div>
@@ -1302,8 +1330,7 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <section class="detail" id="add(org.apache.jena.rdf.model.Model)">
 <h3>add</h3>
 <div class="member-signature"><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;m)</span></div>
-<div class="block">Add all the statements in another model to this model, including the
- reified statements.</div>
+<div class="block">Add all the statements in another model to this model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>m</code> - The model whose statements are to be added.</dd>
@@ -1337,23 +1364,23 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <h3>read</h3>
 <div class="member-signature"><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">read</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;in,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;base)</span></div>
-<div class="block">Add statements from a document.
-  This method assumes the concrete syntax is RDF/XML.
-  See <a href="#read(java.io.InputStream,java.lang.String,java.lang.String)"><code>read(InputStream, String, String)</code></a> for explicitly setting the language.
-  <p>
-  See <a href="http://jena.apache.org/documentation/io/index.html">"Reading and Writing RDF in Apache Jena"</a>
-    for more information about concrete syntaxes.
-  </p></div>
+<div class="block">Add statements from a document. This method assumes the concrete syntax is
+ RDF/XML. See <a href="#read(java.io.InputStream,java.lang.String,java.lang.String)"><code>read(InputStream, String, String)</code></a> for explicitly setting
+ the language.
+ <p>
+ See <a href="http://jena.apache.org/documentation/io/index.html">"Reading and
+ Writing RDF in Apache Jena"</a> for more information about concrete syntaxes.
+ </p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>in</code> - the input stream</dd>
-<dd><code>base</code> - the base uri to be used when converting relative
-         URI's to absolute URI's. (Resolving relative URIs and fragment IDs is done
-         by prepending the base URI to the relative URI/fragment.) If there are no
-         relative URIs in the source, this argument may safely be <code>null</code>.
-         If the base is the empty string, then relative URIs <i>will be retained in
-         the model</i>. This is typically unwise and will usually generate errors
-         when writing the model back out.</dd>
+<dd><code>base</code> - the base uri to be used when converting relative URI's to absolute
+     URI's. (Resolving relative URIs and fragment IDs is done by prepending the
+     base URI to the relative URI/fragment.) If there are no relative URIs in
+     the source, this argument may safely be <code>null</code>. If the base is
+     the empty string, then relative URIs <i>will be retained in the model</i>.
+     This is typically unwise and will usually generate errors when writing the
+     model back out.</dd>
 <dt>Returns:</dt>
 <dd>the current model</dd>
 </dl>
@@ -1366,26 +1393,26 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;base,
  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lang)</span></div>
 <div class="block">Add RDF statements represented in language <code>lang</code> to the model.
- <br/>Predefined values for <code>lang</code> are "RDF/XML", "N-TRIPLE",
- "TURTLE" (or "TTL") and "N3".
- <code>null</code> represents the default language, "RDF/XML".
- "RDF/XML-ABBREV" is a synonym for "RDF/XML".
- <br/></div>
+ <br/>
+ Predefined values for <code>lang</code> are "RDF/XML", "N-TRIPLE", "TURTLE"
+ (or "TTL"). <code>null</code> represents the default language, "RDF/XML".
+ "RDF/XML-ABBREV" is a synonym for "RDF/XML". <br/></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>base</code> - the base uri to be used when converting relative
-             URI's to absolute URI's. (Resolving relative URIs and fragment IDs is done
-             by prepending the base URI to the relative URI/fragment.) If there are no
-             relative URIs in the source, this argument may safely be <code>null</code>.
-             If the base is the empty string, then relative URIs <i>will be retained in
-             the model</i>. This is typically unwise and will usually generate errors
-             when writing the model back out.
-  <p>
-  See <a href="http://jena.apache.org/documentation/io/index.html">"Reading and Writing RDF in Apache Jena"</a>
-    for more information about concrete syntaxes.
-  </p></dd>
-<dd><code>lang</code> - the language of the serialization <code>null</code>
- selects the default</dd>
+<dd><code>base</code> - the base uri to be used when converting relative URI's to absolute
+     URI's. (Resolving relative URIs and fragment IDs is done by prepending the
+     base URI to the relative URI/fragment.) If there are no relative URIs in
+     the source, this argument may safely be <code>null</code>. If the base is
+     the empty string, then relative URIs <i>will be retained in the model</i>.
+     This is typically unwise and will usually generate errors when writing the
+     model back out.
+     <p>
+     See <a href="http://jena.apache.org/documentation/io/index.html">"Reading
+     and Writing RDF in Apache Jena"</a> for more information about concrete
+     syntaxes.
+     </p></dd>
+<dd><code>lang</code> - the language of the serialization <code>null</code> selects the
+     default</dd>
 <dd><code>in</code> - the source of the input serialization</dd>
 <dt>Returns:</dt>
 <dd>this model</dd>
@@ -1913,7 +1940,11 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="isReified(org.apache.jena.rdf.model.Statement)">
 <h3>isReified</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">isReified</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type">boolean</span>&nbsp;<span class="element-name">isReified</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Determine if this Statement has been reified in this Model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1926,7 +1957,11 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="getAnyReifiedStatement(org.apache.jena.rdf.model.Statement)">
 <h3>getAnyReifiedStatement</h3>
-<div class="member-signature"><span class="return-type"><a href="Resource.html" title="interface in org.apache.jena.rdf.model">Resource</a></span>&nbsp;<span class="element-name">getAnyReifiedStatement</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="Resource.html" title="interface in org.apache.jena.rdf.model">Resource</a></span>&nbsp;<span class="element-name">getAnyReifiedStatement</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Find or create a <a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model"><code>ReifiedStatement</code></a> corresponding to a Statement.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1939,14 +1974,22 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="removeAllReifications(org.apache.jena.rdf.model.Statement)">
 <h3>removeAllReifications</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeAllReifications</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name">removeAllReifications</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Remove all reifications (ie implicit reification quads) of _s_.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="removeReification(org.apache.jena.rdf.model.ReifiedStatement)">
 <h3>removeReification</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeReification</span><wbr><span class="parameters">(<a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a>&nbsp;rs)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type">void</span>&nbsp;<span class="element-name">removeReification</span><wbr><span class="parameters">(<a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a>&nbsp;rs)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Remove a particular reificiation.</div>
 </section>
 </li>
@@ -1966,15 +2009,18 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="listStatements(org.apache.jena.rdf.model.Selector)">
 <h3>listStatements</h3>
-<div class="member-signature"><span class="return-type"><a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model">StmtIterator</a></span>&nbsp;<span class="element-name">listStatements</span><wbr><span class="parameters">(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model">StmtIterator</a></span>&nbsp;<span class="element-name">listStatements</span><wbr><span class="parameters">(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link"><code>Predicate&lt;Statement&gt;</code></a> to filter a <a href="StmtIterator.html" title="interface in org.apache.jena.rdf.model"><code>StmtIterator</code></a>.</div>
+</div>
 <div class="block">List the statements matching a selector.
 
  <p>A statement is considered to match if the <CODE>test</CODE> method
  of s returns true when called on s.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>s</code> - A selector object.
-         .</dd>
+<dd><code>s</code> - A selector object.</dd>
 <dt>Returns:</dt>
 <dd>an iterator over the matching statements</dd>
 </dl>
@@ -2006,7 +2052,11 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="createReifiedStatement(org.apache.jena.rdf.model.Statement)">
 <h3>createReifiedStatement</h3>
-<div class="member-signature"><span class="return-type"><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></span>&nbsp;<span class="element-name">createReifiedStatement</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></span>&nbsp;<span class="element-name">createReifiedStatement</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Answer a ReifiedStatement that encodes _s_ and belongs to this Model.
     <br>
         result.getModel() == this
@@ -2017,8 +2067,12 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="createReifiedStatement(java.lang.String,org.apache.jena.rdf.model.Statement)">
 <h3>createReifiedStatement</h3>
-<div class="member-signature"><span class="return-type"><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></span>&nbsp;<span class="element-name">createReifiedStatement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uri,
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="ReifiedStatement.html" title="interface in org.apache.jena.rdf.model">ReifiedStatement</a></span>&nbsp;<span class="element-name">createReifiedStatement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uri,
  <a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">answer a ReifiedStatement that encodes _s_, belongs to this Model,
         and is a Resource with that _uri_.</div>
 </section>
@@ -2026,14 +2080,22 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="listReifiedStatements()">
 <h3>listReifiedStatements</h3>
-<div class="member-signature"><span class="return-type"><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></span>&nbsp;<span class="element-name">listReifiedStatements</span>()</div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></span>&nbsp;<span class="element-name">listReifiedStatements</span>()</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">answer an iterator delivering all the reified statements "in" this model</div>
 </section>
 </li>
 <li>
 <section class="detail" id="listReifiedStatements(org.apache.jena.rdf.model.Statement)">
 <h3>listReifiedStatements</h3>
-<div class="member-signature"><span class="return-type"><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></span>&nbsp;<span class="element-name">listReifiedStatements</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;st)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="RSIterator.html" title="interface in org.apache.jena.rdf.model">RSIterator</a></span>&nbsp;<span class="element-name">listReifiedStatements</span><wbr><span class="parameters">(<a href="Statement.html" title="interface in org.apache.jena.rdf.model">Statement</a>&nbsp;st)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">answer an iterator delivering all the reified statements "in" this model
         that match the statement _st_.</div>
 </section>
@@ -2041,15 +2103,18 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <li>
 <section class="detail" id="query(org.apache.jena.rdf.model.Selector)">
 <h3>query</h3>
-<div class="member-signature"><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">query</span><wbr><span class="parameters">(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</span></div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">query</span><wbr><span class="parameters">(<a href="Selector.html" title="interface in org.apache.jena.rdf.model">Selector</a>&nbsp;s)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">To be removed</div>
+</div>
 <div class="block">Create a new model containing the statements matching a query.
 
  <p>A statement is considered to match if the <CODE>test</CODE> method
  of s returns true when called on s.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>s</code> - A selector object.
-         .</dd>
+<dd><code>s</code> - A selector object.</dd>
 <dt>Returns:</dt>
 <dd>an iterator over the matching statements</dd>
 </dl>
@@ -2059,14 +2124,14 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <section class="detail" id="union(org.apache.jena.rdf.model.Model)">
 <h3>union</h3>
 <div class="member-signature"><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">union</span><wbr><span class="parameters">(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;model)</span></div>
-<div class="block">Create a new, independant, model containing all the statements in this model
-         together with all of those in another given model. By <i>independant</i>
-         we mean that changes to the result model do not affect the operand
-         models, and <i>vice versa</i>.
-     <p>
-         The new model need not be of the same type as either this model or
-         the argument model: typically it will be a memory-based model, even
-         if this model is a database model.</div>
+<div class="block">Create a new, independent, model containing all the statements in this model
+ together with all of those in another given model. By <i>independant</i> we
+ mean that changes to the result model do not affect the operand models, and
+ <i>vice versa</i>.
+ <p>
+ The new model need not be of the same type as either this model or the
+ argument model: typically it will be a memory-based model, even if this model
+ is a database model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>model</code> - The other model whose statements are to be included.</dd>
@@ -2079,11 +2144,11 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <section class="detail" id="intersection(org.apache.jena.rdf.model.Model)">
 <h3>intersection</h3>
 <div class="member-signature"><span class="return-type"><a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a></span>&nbsp;<span class="element-name">intersection</span><wbr><span class="parameters">(<a href="Model.html" title="interface in org.apache.jena.rdf.model">Model</a>&nbsp;model)</span></div>
-<div class="block">Create a new, independant, model containing all the statements which are in both
-         this model and another.  As models are sets of statements, a statement
-         contained in both models will only appear once in the resulting model.
-         The new model need not be of the same type as either this model or
-         the argument model: typically it will be a memory-based model.</div>
+<div class="block">Create a new, independent, model containing all the statements which are in
+ both this model and another. As models are sets of statements, a statement
+ contained in both models will only appear once in the resulting model. The new
+ model need not be of the same type as either this model or the argument model:
+ typically it will be a memory-based model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>model</code> - The other model.</dd>
@@ -2269,17 +2334,10 @@ extends <a href="ModelCon.html" title="interface in org.apache.jena.rdf.model">M
 <h3>getLock</h3>
 <div class="member-signature"><span class="return-type"><a href="../../shared/Lock.html" title="interface in org.apache.jena.shared">Lock</a></span>&nbsp;<span class="element-name">getLock</span>()</div>
 <div class="block">Get the model lock for this model.
-  See also the convenience operations enterCriticalSection and leaveCriticalSection.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The ModelLock object associated with this model</dd>
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../shared/Lock.html" title="interface in org.apache.jena.shared"><code>Lock</code></a></li>
-</ul>
-</dd>
-</dl>
+ <p>
+ See also the  operations <a href="../../shared/Lock.html#enterCriticalSection(boolean)"><code>Lock.enterCriticalSection(boolean)</code></a> and <a href="../../shared/Lock.html#leaveCriticalSection()"><code>Lock.leaveCriticalSection()</code></a>.
+ <p>
+ It is better to use transactions.</div>
 </section>
 </li>
 <li>

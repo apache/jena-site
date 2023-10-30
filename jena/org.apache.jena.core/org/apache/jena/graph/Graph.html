@@ -87,7 +87,17 @@ loadScripts(document, 'script');</script>
 <div class="block">The interface to be satisfied by implementations maintaining collections
     of RDF triples. The core interface is small (add, delete, find, contains) and
     is augmented by additional classes to handle more complicated matters
-    such as event management.</div>
+    such as event management.
+    The good practice is to explicitly close every <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> produced by the <code>Graph</code>
+    right after query operation.
+    Depending on the implementation,
+    the iterator and stream may throw a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>
+    if continued with it after modification operation.
+    This may happen even if the queried data does not relate directly to the modified data
+    (i.e. when triple search pattern does not match added or deleted triple).
+    A <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> should be operated on
+    (invoking materializing <code>ExtendedIterator</code> or terminal <code>Stream</code> operation) only once;
+    in general reusable are not allowed and may lead to an exception.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
