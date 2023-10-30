@@ -17,4 +17,3 @@ title: Jena JavaDoc
 - [Query Builder](javadoc/extras/querybuilder/index.html)
 - [Service Enhancer](javadoc/extras/serviceenhancer/index.html)
 - [Security Permissions JavaDoc](javadoc/permissions/index.html)
-- [JDBC JavaDoc](javadoc/jdbc/index.html)
