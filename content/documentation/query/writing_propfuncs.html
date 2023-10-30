@@ -187,7 +187,7 @@
     <p><strong>ARQ - Writing Property Functions</strong></p>
 <p>See also <a href="writing_functions.html">Writing Filter Functions</a>.</p>
 <p>Applications can add SPARQL property functions to the query engine. This is done by first implementing the
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunction.html"><code>PropertyFunction</code></a>
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/pfunction/PropertyFunction.html"><code>PropertyFunction</code></a>
 interface, and then either registering that function or using the fake <code>java:</code> URI scheme to dynamically
 load the function.</p>
 <p><strong>Writing SPARQL Property Functions</strong></p>
@@ -195,7 +195,7 @@ load the function.</p>
 that allows a URI to name a function in the query processor. A key difference is that Property Functions may
 generate new bindings.</p>
 <p>Just like
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/function/Function.html">org.apache.jena.sparql.function.Function</a>
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/function/Function.html">org.apache.jena.sparql.function.Function</a>
 there are various utility classes provided to simplify the creation of a Property Function. The selection of
 one depends on the &lsquo;style&rsquo; of the desired built-in. For example, <code>PFuncSimple</code> is expected to be the predicate
 of triple patterns <code>?such ex:as ?this</code>, where neither argument is an <code>rdf:list</code>, and either may be a variable.
@@ -220,18 +220,18 @@ Alternatively, <code>PFuncAssignToObject</code> assumes that the subject will be
 </code></pre>
 <p>The choice of extension point determines the function signature that the developer will need to implement, and
 primarily determines whether some of the arguments will be
-<a href="/documentation/javadoc/jena/org/apache/jena/graph/Node.html"><code>org.apache.jena.graph.Node</code></a>s or
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropFuncArg.html"><code>org.apache.jena.sparql.pfunction.PropFuncArg</code></a>s.
+<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html"><code>org.apache.jena.graph.Node</code></a>s or
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/pfunction/PropFuncArg.html"><code>org.apache.jena.sparql.pfunction.PropFuncArg</code></a>s.
 In the latter case, the programmer can determine whether the argument is a list as well as how many
 arguments it consists of.</p>
 <p><strong>Registration</strong></p>
 <p>Every property function is associated with a particular
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/util/Context.html"><code>org.apache.jena.sparql.util.Context</code></a>.
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/util/Context.html"><code>org.apache.jena.sparql.util.Context</code></a>.
 This allows you to limit the availability of the function to be global or associated with a particular dataset.
 For example, a custom Property Function may expose an index which only has meaning with respect to some set
 of data.</p>
 <p>Assuming you have an implementation of
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionFactory</code></a>
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/pfunction/PropertyFunctionFactory.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionFactory</code></a>
 (shown later), you can register a function as follows:</p>
 <pre><code>final PropertyFunctionRegistry reg = PropertyFunctionRegistry.chooseRegistry(ARQ.getContext());
 reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory());
@@ -244,7 +244,7 @@ reg.put(&quot;urn:ex:fn#example&quot;, new ExamplePropertyFunctionFactory());
 PropertyFunctionRegistry.set(ds.getContext(), reg);
 </code></pre>
 <p>Note that
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/pfunction/PropertyFunctionRegistry.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionRegistry</code></a>
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/pfunction/PropertyFunctionRegistry.html"><code>org.apache.jena.sparql.pfunction.PropertyFunctionRegistry</code></a>
 has other <code>put</code> methods that allow registration by passing a <code>Class</code> object, as well.</p>
 <p><strong>Implementation</strong></p>
 <p>The implementation of a Property Function is actually quite straight forward once one is aware of the tools
@@ -279,14 +279,14 @@ no valid solutions to return, then an empty solution may be presented.</p>
 easy to support typical use cases.</p>
 <p>Of particular note:</p>
 <ul>
-<li><a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterNullIterator.html"><code>QueryIterNullIterator</code></a> - to indicate that there are no valid solutions/bindings for the given values</li>
-<li><a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterSingleton.html"><code>QueryIterSingleton</code></a> - to provide a single solution/binding for the given values</li>
-<li><a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/iterator/QueryIterPlainWrapper.html"><code>QueryIterPlainWrapper</code></a> - to provide multiple solutions/bindings for the given values</li>
+<li><a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/engine/iterator/QueryIterNullIterator.html"><code>QueryIterNullIterator</code></a> - to indicate that there are no valid solutions/bindings for the given values</li>
+<li><a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/engine/iterator/QueryIterSingleton.html"><code>QueryIterSingleton</code></a> - to provide a single solution/binding for the given values</li>
+<li><a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/engine/iterator/QueryIterPlainWrapper.html"><code>QueryIterPlainWrapper</code></a> - to provide multiple solutions/bindings for the given values</li>
 </ul>
 <p>The second two cases require instances of <code>Binding</code> objects which can be obtained through static methods of
-<a href="/documentation/javadoc/arq/org/apache/jena/sparql/engine/binding/BindingFactory.html"><code>BindingFactory</code></a>.
-Creation of <code>Binding</code> objects will also require references to <a href="/documentation/javadoc/arq/org/apache/jena/sparql/core/Var.html"><code>Var</code></a>
-and <a href="/documentation/javadoc/jena/org/apache/jena/graph/NodeFactory.html"><code>NodeFactory</code></a></p>
+<a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/engine/binding/BindingFactory.html"><code>BindingFactory</code></a>.
+Creation of <code>Binding</code> objects will also require references to <a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/sparql/core/Var.html"><code>Var</code></a>
+and <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/NodeFactory.html"><code>NodeFactory</code></a></p>
 <p>Note that it can make a lot of sense to generate the <code>Iterator&lt;Binding&gt;</code> for <code>QueryIterPlainWrapper</code> by means of
 Jena&rsquo;s <code>ExtendedIterator</code>. This can allow domain-specific value to be easily mapped to <code>Binding</code> objects in
 a lazy fashion.</p>
