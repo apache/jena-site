@@ -82,8 +82,7 @@ to fix these build problems, so Eclipse can successfully build and run the proje
 
 <img src="figures/using_jena_with_eclipse-006.png" class="img-responsive" alt="Eclipse build problems">
 
-The build problems are related to a known
-[issue due to how the project shades Google Guava classes](https://jena.markmail.org/thread/hdu22kg6qtgsfpn6#query:+page:1+mid:tl3tfxtmfa3hh734+state:results).
+The build problems are related to a known issue due to how the project shades Google Guava classes.
 
 The workaround is to make sure the <i>jena-shaded-guava</i> Maven module remains closed
 in Eclipse. You can simply right click on the project, and choose Close. Its icon should

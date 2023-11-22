@@ -52,7 +52,7 @@ O Eclipse mostrar&aacute; um &iacute;cone vermelho nos projetos importados que t
 
 <img src="figures/using_jena_with_eclipse-006.png" class="img-responsive" alt="Eclipse build problems">
 
-Os problemas s&atilde;o geralmente relacionados a um [problema conhecido por como um dos projetos utiliza o Maven Shade Plugin nas classes do Google Guava](https://jena.markmail.org/thread/hdu22kg6qtgsfpn6#query:+page:1+mid:tl3tfxtmfa3hh734+state:results).
+Os problemas s&atilde;o geralmente relacionados a um problema conhecido por como um dos projetos utiliza o Maven Shade Plugin nas classes do Google Guava.
 
 A solu&ccedil;&atilde;o &eacute; garantir que o projeto _jena-shaded-guava_ fique fechado no _workspace_ do Eclipse. Voc&ecirc; pode simplesmente clicar com o bot&atilde;o direito sobre o projeto, e escolher _Close_. O &iacute;cone do projeto dever&aacute; mudar, indicando que ele foi fechado com sucesso.
 
