@@ -163,7 +163,7 @@ The [Lucene contributions page](http://lucene.apache.org/java/3_4_0/contribution
 ## Getting Help and Getting Involved
 
 If you have a problem with LARQ, make sure you read the [Getting help with Jena](../../help_and_support/index.html) page and post a message on the [users@jena.apache.org](mailto:users@jena.apache.org?s=[LARQ] ) mailing list.
-You can also search the jena-users mailing list archives [here](http://markmail.org/search/?q=larq+list%3Aorg.apache.jena.users).
+You can also search the jena-users mailing list archives [here](https://lists.apache.org/list.html?users@jena.apache.org).
 
 If you use LARQ and you want to get involved, make sure you read the [Getting Involved](../../getting_involved/index.html) page. You can help us making LARQ better by:
 

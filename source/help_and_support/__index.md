@@ -16,8 +16,7 @@ list, please send an email to: <a href="mailto:users-subscribe@jena.apache.org">
 to subscribe with. This list is a good place to ask for advice on developing Jena-based
 applications, or solving  a problem with using Jena. *Please see below for notes
 on asking good questions*. The list is archived at
-[lists.apache.org](https://lists.apache.org/list.html?users@jena.apache.org)
-or externally at [jena.markmail.org](https://jena.markmail.org/search/)
+[lists.apache.org](https://lists.apache.org/list.html?users@jena.apache.org).
 
 The *developers* list is `dev@jena.apache.org`. To join this
 list, please send an email to: <a href="mailto:dev-subscribe@jena.apache.org">
@@ -55,7 +54,7 @@ Asking good questions is **the best way to get good answers**. Try to follow the
   is often enough for you to figure out the problem yourself, which is always satisfying!
 
   - **Don't re-post your question** after only a few hours. People are busy, and may be in a different timezone
-  to you. If you're not sure if your question made it to the list, [look in the archive](https://jena.markmail.org/search/?q=-list%3Aorg.apache.incubator.jena-commits).
+  to you. If you're not sure if your question made it to the list, [look in the archive](https://lists.apache.org/list.html?users@jena.apache.org).
 
   - **Adding lots of exclamation marks** or other punctuation will **not** move your question up the queue. Quite the
   reverse, in fact.
