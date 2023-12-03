@@ -83,7 +83,7 @@ length value. There is no use of the value part in triple and quads indexes.
 ### Transactions {#tdb-transactions}
 
 Both TDB1 and TDB2 provide database transactions.
-The API is described on the [Jena Transactions page](/docuemntation/txn/ "Jena Transactions").
+The API is described on the [Jena Transactions page](/documentation/txn/ "Jena Transactions").
 
 When running with transactions, TDB1 and TDB2 provide support for multiple read
 and write transactions without application involvement. There will be multiple
