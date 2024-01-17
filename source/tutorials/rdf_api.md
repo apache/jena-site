@@ -625,7 +625,7 @@ resource from the model read in from the file in tutorial 5:</p>
 
 ```java
 // retrieve the John Smith vcard resource from the model
-Resource vcard = model.getResource(johnSmithURI);</code>
+Resource vcard = model.getResource(johnSmithURI);
 ```
 
 
