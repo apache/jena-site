@@ -23,7 +23,7 @@ systems.
 widely-used, binary encoding layers each with a large number of language
 bindings.
 
-For more details of [RDF Thrift](http://afs.github.io/rdf-thrift).
+For more details of [RDF Thrift](https://afs.github.io/rdf-thrift/).
 
 ## Thrift encoding of RDF Terms {#encoding-terms-thrift}
 
