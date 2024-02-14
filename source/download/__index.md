@@ -7,7 +7,7 @@ Apache Jena is packaged as downloads which contain the most commonly used portio
 - **apache-jena** &ndash; contains the APIs, SPARQL engine, the TDB native RDF database and command line tools
 - **apache-jena-fuseki** &ndash; the Jena SPARQL server
 
-Jena4 requires Java 11.
+Jena5 requires Java 17.
 
 Jena jars are [available from Maven](maven.html).
 
@@ -19,7 +19,7 @@ Source release: this forms the official release of Apache Jena. All binaries art
 
 | Apache Jena Release | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/source/jena-4.10.0-source-release.zip">jena-4.10.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-4.10.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-4.10.0-source-release.zip.asc) |
+|<a href="[preferred]jena/source/jena-5.0.0-rc1-source-release.zip">jena-5.0.0-rc1-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-5.0.0-rc1-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-5.0.0-rc1-source-release.zip.asc) |
 
 ### Apache Jena Binary Distributions
 
@@ -27,23 +27,28 @@ The binary distribution of the Fuseki server:
 
 | Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.10.0.tar.gz">apache-jena-fuseki-4.10.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.10.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.10.0.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-4.10.0.zip">apache-jena-fuseki-4.10.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.10.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-4.10.0.zip.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.0.0-rc1.tar.gz">apache-jena-fuseki-5.0.0-rc1.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.0.0-rc1.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.0.0-rc1.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.0.0-rc1.zip">apache-jena-fuseki-5.0.0-rc1.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.0.0-rc1.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.0.0-rc1.zip.asc) |
 
 <p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
 | Apache Jena libraries | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/binaries/apache-jena-4.10.0.tar.gz">apache-jena-4.10.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.10.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.10.0.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-4.10.0.zip">apache-jena-4.10.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-4.10.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-4.10.0.zip.asc)
+|<a href="[preferred]jena/binaries/apache-jena-5.0.0-rc1.tar.gz">apache-jena-5.0.0-rc1.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-5.0.0-rc1.zip">apache-jena-5.0.0-rc1.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.zip.asc)
 
 <p>&nbsp;</p>
 The binary distribution of Fuseki as a WAR file:
 
 | Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/jena-fuseki-war-4.10.0.war">jena-fuseki-war-4.10.0.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.10.0.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-4.10.0.war.asc) |
+| <a href="[preferred]jena/binaries/jena-fuseki-war-5.0.0-rc1.war">jena-fuseki-war-5.0.0-rc1.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.0.0-rc1.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.0.0-rc1.war.asc)
+|
+
+This can be run in any servlet application container supporting Jakarta Servlet 6.0
+(part of Jakarta EE version 9), such as  [Apache Tomcat](https://tomcat.apache.org/index.html) 10.1.x.
+The server must be running running on the required version of Java.
 
 ### Individual Modules
 
