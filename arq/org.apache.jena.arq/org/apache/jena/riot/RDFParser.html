@@ -73,34 +73,34 @@ loadScripts(document, 'script');</script>
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.apache.jena.riot</a></div>
 <h1 title="Class RDFParser" class="title">Class RDFParser</h1>
 </div>
-<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">org.apache.jena.riot.RDFParser</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RDFParser</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">An <a href="RDFParser.html" title="class in org.apache.jena.riot"><code>RDFParser</code></a> is a process that will generate triples; <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a>
- provides the means to setup the parser.
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">An <a href="RDFParser.html" title="class in org.apache.jena.riot"><code>RDFParser</code></a> is a process that will generate triples and quads;
+ <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> provides the means to create parsers.
  <p>
  An <a href="RDFParser.html" title="class in org.apache.jena.riot"><code>RDFParser</code></a> has a predefined source; the target for output is given when the
- "parse" method is called. It can be used multiple times in which case the same source
+ "parse" step is called. It can be used multiple times in which case the same source
  is reread. The destination can vary. The application is responsible for concurrency of
  the destination of the parse operation.
+ <p>
+ Parser output is sent to a <a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system"><code>StreamRDF</code></a>.
 
- The process is
-
+ The general process is
  <pre>
     StreamRDF destination = ...
     RDFParser parser = RDFParser.create().source("filename.ttl").build();
     parser.parse(destination);
  </pre>
- or using abbreviated forms:
+ There are various convenience forms to perform common tasks such as
+ to parse a file and create a <code>Model</code>:
  <pre>
- RDFParser.source("filename.ttl").parse(destination);
- </pre>
- The <code>destination</code> <a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system"><code>StreamRDF</code></a> and can be given as a
- <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Graph</code></a> or <a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core"><code>DatasetGraph</code></a> as well.</div>
+    Model model = RDFParser.source("filename.ttl").toModel();
+ </pre></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -117,7 +117,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -128,80 +128,88 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromString(java.lang.String)" class="member-name-link">fromString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set content to parse to be the
- given string.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#fromString(java.lang.String)" class="member-name-link">fromString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#fromString(java.lang.String,org.apache.jena.riot.Lang)"><code>fromString(String, Lang)</code></a></div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.graph.Graph)" class="member-name-link">parse</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a>&nbsp;graph)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source, sending the results to a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Graph</code></a>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.query.Dataset)" class="member-name-link">parse</a><wbr>(<a href="../query/Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source, sending the results to a <a href="../query/Dataset.html" title="interface in org.apache.jena.query"><code>Dataset</code></a>.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.rdf.model.Model)" class="member-name-link">parse</a><wbr>(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link">Model</a>&nbsp;model)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source, sending the results to a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link"><code>Model</code></a>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.riot.system.StreamRDF)" class="member-name-link">parse</a><wbr>(<a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system">StreamRDF</a>&nbsp;destination)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source, sending the results to a <a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system"><code>StreamRDF</code></a>.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">parse</a><wbr>(<a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source, sending the results to a <a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core"><code>DatasetGraph</code></a>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.io.InputStream)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.lang.String)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uriOrFile)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromString(java.lang.String,org.apache.jena.riot.Lang)" class="member-name-link">fromString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string,
+ <a href="Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set content to be parsed
+ together with the RDF syntax language.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.graph.Graph)" class="member-name-link">parse</a><wbr>(org.apache.jena.graph.Graph&nbsp;graph)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source, sending the results to a <code>Graph</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.query.Dataset)" class="member-name-link">parse</a><wbr>(<a href="../query/Dataset.html" title="interface in org.apache.jena.query">Dataset</a>&nbsp;dataset)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source, sending the results to a <a href="../query/Dataset.html" title="interface in org.apache.jena.query"><code>Dataset</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.rdf.model.Model)" class="member-name-link">parse</a><wbr>(org.apache.jena.rdf.model.Model&nbsp;model)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source, sending the results to a <code>Model</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.riot.system.StreamRDF)" class="member-name-link">parse</a><wbr>(<a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system">StreamRDF</a>&nbsp;destination)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source, sending the results to a <a href="system/StreamRDF.html" title="interface in org.apache.jena.riot.system"><code>StreamRDF</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parse(org.apache.jena.sparql.core.DatasetGraph)" class="member-name-link">parse</a><wbr>(<a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a>&nbsp;dataset)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source, sending the results to a <a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core"><code>DatasetGraph</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.io.InputStream)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.lang.String)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uriOrFile)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to the URI, which
  can be a filename.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.nio.file.Path)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#source(java.nio.file.Path)" class="member-name-link">source</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to the
- <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a>.</div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../query/Dataset.html" title="interface in org.apache.jena.query">Dataset</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toDataset()" class="member-name-link">toDataset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../query/Dataset.html" title="interface in org.apache.jena.query">Dataset</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toDataset()" class="member-name-link">toDataset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Parse the source in to a fresh <a href="../query/Dataset.html" title="interface in org.apache.jena.query"><code>Dataset</code></a> and return the dataset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toDatasetGraph()" class="member-name-link">toDatasetGraph</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toDatasetGraph()" class="member-name-link">toDatasetGraph</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Parse the source in to a fresh <a href="../sparql/core/DatasetGraph.html" title="interface in org.apache.jena.sparql.core"><code>DatasetGraph</code></a> and return the DatasetGraph.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toGraph()" class="member-name-link">toGraph</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source in to a fresh <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Graph</code></a> and return the graph.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link">Model</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toModel()" class="member-name-link">toModel</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.jena.graph.Graph</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toGraph()" class="member-name-link">toGraph</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parse the source in to a fresh <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link"><code>Model</code></a> and return the model.</div>
+<div class="block">Parse the source in to a fresh <code>Graph</code> and return the graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.jena.rdf.model.Model</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toModel()" class="member-name-link">toModel</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parse the source in to a fresh <code>Model</code> and return the model.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -230,9 +238,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="source(java.nio.file.Path)">
 <h3>source</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path)</span></div>
 <div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to the
- <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a>.
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link"><code>Path</code></a>.
  <p>
  This is a shortcut for <code>RDFParser.create().source(path)</code>.</div>
 <dl class="notes">
@@ -246,7 +254,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="source(java.lang.String)">
 <h3>source</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uriOrFile)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uriOrFile)</span></div>
 <div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to the URI, which
  can be a filename.
  <p>
@@ -262,9 +270,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="fromString(java.lang.String)">
 <h3>fromString</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">fromString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
-<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set content to parse to be the
- given string. The syntax must be set with <code>.lang(...)</code>.
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">fromString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#fromString(java.lang.String,org.apache.jena.riot.Lang)"><code>fromString(String, Lang)</code></a></div>
+</div>
+<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set content to be parsed to the
+ string. The syntax must be set with <code>.lang(...)</code>.
  <p>
  Shortcut for <code>RDFParser.create.fromString(string)</code>.</div>
 <dl class="notes">
@@ -276,11 +288,29 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="fromString(java.lang.String,org.apache.jena.riot.Lang)">
+<h3>fromString</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">fromString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string,
+ <a href="Lang.html" title="class in org.apache.jena.riot">Lang</a>&nbsp;lang)</span></div>
+<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set content to be parsed
+ together with the RDF syntax language.
+ <p>
+ Shortcut for <code>RDFParser.create.fromString(string).lang(lang)</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>string</code> - </dd>
+<dd><code>lang</code> - </dd>
+<dt>Returns:</dt>
+<dd>RDFParserBuilder</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="source(java.io.InputStream)">
 <h3>source</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input)</span></div>
-<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a>.
-  The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a> will be closed when the
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RDFParserBuilder.html" title="class in org.apache.jena.riot">RDFParserBuilder</a></span>&nbsp;<span class="element-name">source</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link">InputStream</a>&nbsp;input)</span></div>
+<div class="block">Create an <a href="RDFParserBuilder.html" title="class in org.apache.jena.riot"><code>RDFParserBuilder</code></a> and set the source to <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a>.
+  The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html" title="class or interface in java.io" class="external-link"><code>InputStream</code></a> will be closed when the
   parser is called and the parser can not be reused.
   The syntax must be set with <code>.lang(...)</code>.
   <p>
@@ -296,8 +326,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="parse(org.apache.jena.graph.Graph)">
 <h3>parse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a>&nbsp;graph)</span></div>
-<div class="block">Parse the source, sending the results to a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Graph</code></a>.
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(org.apache.jena.graph.Graph&nbsp;graph)</span></div>
+<div class="block">Parse the source, sending the results to a <code>Graph</code>.
  <p>
  The source must be for
  triples; any quads are discarded.</div>
@@ -306,8 +336,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="parse(org.apache.jena.rdf.model.Model)">
 <h3>parse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link">Model</a>&nbsp;model)</span></div>
-<div class="block">Parse the source, sending the results to a <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link"><code>Model</code></a>.
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(org.apache.jena.rdf.model.Model&nbsp;model)</span></div>
+<div class="block">Parse the source, sending the results to a <code>Model</code>.
  <p>
  The source must be for
  triples; any quads are discarded.
@@ -333,8 +363,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toGraph()">
 <h3>toGraph</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link">Graph</a></span>&nbsp;<span class="element-name">toGraph</span>()</div>
-<div class="block">Parse the source in to a fresh <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Graph.html" title="class or interface in org.apache.jena.graph" class="external-link"><code>Graph</code></a> and return the graph.
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.jena.graph.Graph</span>&nbsp;<span class="element-name">toGraph</span>()</div>
+<div class="block">Parse the source in to a fresh <code>Graph</code> and return the graph.
  <p>
  The source must be for triples; any quads are discarded.</div>
 </section>
@@ -342,8 +372,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toModel()">
 <h3>toModel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link">Model</a></span>&nbsp;<span class="element-name">toModel</span>()</div>
-<div class="block">Parse the source in to a fresh <a href="https://jena.apache.org/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html" title="class or interface in org.apache.jena.rdf.model" class="external-link"><code>Model</code></a> and return the model.
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.jena.rdf.model.Model</span>&nbsp;<span class="element-name">toModel</span>()</div>
+<div class="block">Parse the source in to a fresh <code>Model</code> and return the model.
  <p>
  The source must be for triples; any quads are discarded.</div>
 </section>

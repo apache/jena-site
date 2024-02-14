@@ -88,14 +88,14 @@ loadScripts(document, 'script');</script>
     of RDF triples. The core interface is small (add, delete, find, contains) and
     is augmented by additional classes to handle more complicated matters
     such as event management.
-    The good practice is to explicitly close every <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> produced by the <code>Graph</code>
+    The good practice is to explicitly close every <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> produced by the <code>Graph</code>
     right after query operation.
     Depending on the implementation,
-    the iterator and stream may throw a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>
+    the iterator and stream may throw a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>
     if continued with it after modification operation.
     This may happen even if the queried data does not relate directly to the modified data
     (i.e. when triple search pattern does not match added or deleted triple).
-    A <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> should be operated on
+    A <a href="../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> and <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> should be operated on
     (invoking materializing <code>ExtendedIterator</code> or terminal <code>Stream</code> operation) only once;
     in general reusable are not allowed and may lead to an exception.</div>
 <dl class="notes">
@@ -258,19 +258,24 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">For a concrete graph this returns the number of triples in the graph.</div>
+<div class="block">For a concrete graph, this returns the number of triples in the graph.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#sizeLong()" class="member-name-link">sizeLong</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of all triples in the graph.</div>
+<div class="block">For a concrete graph, this returns the number of triples in the graph.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">stream</a><wbr>(<a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;s,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of all triples in the graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">stream</a><wbr>(<a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;s,
  <a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;p,
  <a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;o)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of Triples matching a pattern.</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of Triples matching a pattern.</div>
 </div>
 </div>
 </div>
@@ -431,10 +436,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">
 <h3>stream</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span>&nbsp;<span class="element-name">stream</span><wbr><span class="parameters">(<a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;s,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span>&nbsp;<span class="element-name">stream</span><wbr><span class="parameters">(<a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;s,
  <a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;p,
  <a href="Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;o)</span></div>
-<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of Triples matching a pattern.</div>
+<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of Triples matching a pattern.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a stream  of triples in this graph matching the pattern.</dd>
@@ -444,8 +449,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="stream()">
 <h3>stream</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span>&nbsp;<span class="element-name">stream</span>()</div>
-<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of all triples in the graph.</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</span>&nbsp;<span class="element-name">stream</span>()</div>
+<div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of all triples in the graph.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a stream  of triples in this graph.</dd>
@@ -541,9 +546,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="size()">
 <h3>size</h3>
 <div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
-<div class="block">For a concrete graph this returns the number of triples in the graph. For graphs which
+<div class="block">For a concrete graph, this returns the number of triples in the graph. For graphs which
  might infer additional triples it results an estimated lower bound of the number of triples.
  For example, an inference graph might return the number of triples in the raw data graph.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="#sizeLong()"><code>sizeLong()</code></a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="sizeLong()">
+<h3>sizeLong</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">sizeLong</span>()</div>
+<div class="block">For a concrete graph, this returns the number of triples in the graph. For graphs which
+ might infer additional triples it results an estimated lower bound of the number of triples.
+ For example, an inference graph might return the number of triples in the raw data graph.
+ This method returns a long.</div>
 </section>
 </li>
 <li>
