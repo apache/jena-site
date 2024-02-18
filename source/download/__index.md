@@ -33,7 +33,7 @@ The binary distribution of the Fuseki server:
 <p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
-| Apache Jena libraries | SHA512 | Signature |
+| Apache Jena Commands | SHA512 | Signature |
 | ------------ | :----: | :-------: |
 |<a href="[preferred]jena/binaries/apache-jena-5.0.0-rc1.tar.gz">apache-jena-5.0.0-rc1.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.tar.gz.asc) |
 | <a href="[preferred]jena/binaries/apache-jena-5.0.0-rc1.zip">apache-jena-5.0.0-rc1.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.0.0-rc1.zip.asc)
