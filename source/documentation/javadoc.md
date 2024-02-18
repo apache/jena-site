@@ -4,7 +4,7 @@ title: Jena JavaDoc
 
 - [Jena Core JavaDoc](javadoc/jena/index.html)
 - [ARQ JavaDoc (SPARQL)](javadoc/arq/index.html)
-- [TDB JavaDoc](javadoc/tdb/index.html)
+- [TDB JavaDoc](javadoc/tdb2/index.html)
 - [RDF Connection](javadoc/rdfconnection/index.html)
 - Fuseki JavaDoc
   - [Fuseki2 Webapp](javadoc/fuseki2/index.html)
