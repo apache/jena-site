@@ -73,9 +73,6 @@ features - should usually be discussed on the [dev@jena.apache.org](mailto:dev@j
 Use your judgement here, a few hundred lines of code may be considered small if it isn't changing/extending functionality significantly.
 Conversely a small patch that changes a core behavior should be more widely discussed.
 
-If in doubt start a thread on dev or comment on the JIRA issue, JIRA comments get copied to the dev list
-so all developers should see the comments even if they aren't explicitly watching the issue.
-
 ## IP Clearance
 
 Depending on where a patch comes from there may be IP clearance issues, for small patches this is generally a non-issue.
