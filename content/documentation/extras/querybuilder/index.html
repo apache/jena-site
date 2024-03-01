@@ -184,7 +184,9 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#constructing-expressions">Constructing Expressions</a></li>
+  </ul>
+
+  <ul>
     <li><a href="#update-builder">Update Builder</a></li>
     <li><a href="#where-builder">Where Builder</a></li>
     <li><a href="#template-usage">Template Usage</a></li>
@@ -207,15 +209,51 @@ Query q = sb.build() ;
 WHERE
   { ?s ?p ?o }
 </code></pre>
-<h2 id="constructing-expressions">Constructing Expressions</h2>
+<p>Standard Java variables can be used in the various clauses as long as the datatype has a registered Datatype within Jena.  For example:</p>
+<pre><code>Integer five = Integer.valueof(5);
+SelectBuilder sb = new SelectBuilder()
+    .addVar( &quot;*&quot; )
+    .addWhere( &quot;?s&quot;, &quot;?p&quot;, five );
+
+Query q = sb.build() ;
+</code></pre>
+<p>produces</p>
+<pre><code>SELECT *
+WHERE
+  { ?s ?p &quot;5&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; }
+</code></pre>
+<p>Java Collections are properly expanded to RDF collections within the query builder provided there is a registered Datatype for the elements.  Nested collections are expanded. Collections can also be defined with the standard SPARQL shorthand.  So the following produce equivalent queries:</p>
+<pre><code>SelectBuilder sb = new SelectBuilder()
+    .addVar( &quot;*&quot; )
+    .addWhere( &quot;?s&quot;, &quot;?p&quot;, List.of( &quot;a&quot;, &quot;b&quot;, &quot;c&quot;) );
+
+Query q = sb.build() ;
+</code></pre>
+<p>and</p>
+<pre><code>SelectBuilder sb = new SelectBuilder()
+    .addVar( &quot;*&quot; )
+    .addWhere( &quot;?s&quot;, &quot;?p&quot;, &quot;('a' 'b' 'c')&quot; );
+
+Query q = sb.build() ;
+</code></pre>
+<p>It is common to create <code>Var</code> objects and use them in complex queries to make the query more readable.  For example:</p>
+<pre><code>Var node = Var.alloc(&quot;node&quot;);
+Var x = Var.alloc(&quot;x&quot;);
+Var y = Var.alloc(&quot;y&quot;);
+SelectBuilder sb = new SelectBuilder()
+  .addVar(x).addVar(y)
+  .addWhere(node, RDF.type, Namespace.Obst)
+  .addWhere(node, Namespace.x, x)
+  .addWhere(node, Namespace.y, y);
+</code></pre>
+<h1 id="constructing-expressions">Constructing Expressions</h1>
 <p>Expressions are primarily used in <code>filter</code> and <code>bind</code> statements as well as in select clauses.  All the standard expressions are implemented in the <code>ExprFactory</code> class.  An <code>ExprFactory</code> can be retrieved from any Builder by calling the <code>getExprFactory()</code> method.  This will create a Factory that has the same prefix mappings and the query.  An alternative is to construct the <code>ExprFactory</code> directly, this factory will not have the prefixes defined in <code>PrefixMapping.Extended</code>.</p>
 <pre><code>SelectBuilder builder = new SelectBuilder();
 ExprFactory exprF = builder.getExprFactory()
     .addPrefix( &quot;cf&quot;,
-        &quot;http://vocab.nerc.ac.uk/collection/P07/current/CFSN0023/&quot;)
+        &quot;http://vocab.nerc.ac.uk/collection/P07/current/CFSN0023/&quot;);
 builder.addVar( exprF.floor( ?v ), ?floor )
-
-    .addWhere( ?s, &quot;cf:air_temperature&quot;, ?v )
+    .addWhere( ?s, &quot;cf:air_temperature&quot;, ?v );
 </code></pre>
 <h2 id="update-builder">Update Builder</h2>
 <p>The <code>UpdateBuilder</code> is used to create <code>Update</code>, <code>UpdateDeleteWhere</code> or <code>UpdateRequest</code> objects.  When an <code>UpdateRequest</code> is built is contains a single <code>Update</code> object as defined by the <code>UpdateBuilder</code>.  <code>Update</code> objects can  be added to an UpdateRequest using the <code>appendTo()</code> method.</p>
@@ -322,7 +360,9 @@ WHERE
     <nav id="TableOfContents">
   <ul>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#constructing-expressions">Constructing Expressions</a></li>
+  </ul>
+
+  <ul>
     <li><a href="#update-builder">Update Builder</a></li>
     <li><a href="#where-builder">Where Builder</a></li>
     <li><a href="#template-usage">Template Usage</a></li>
