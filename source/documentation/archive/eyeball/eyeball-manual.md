@@ -59,7 +59,7 @@ In the Eyeball distribution directory, run the Eyeball tests:
     ant test
 
 If these tests fail, something is wrong. Please ask on the user
-mailing list or file a Jira issue.
+mailing list.
 
 If the tests have passed, you can use Eyeball from the installation
 directory, or copy *lib*, *etc* and *mirror* to somewhere

@@ -170,6 +170,5 @@ If you use LARQ and you want to get involved, make sure you read the [Getting In
  * improving this documentation, writing tutorials or blog posts about LARQ
  * letting us know how you use LARQ, your use cases and what are in your opinion missing features 
  * answering users question about LARQ on the [users@jena.apache.org](mailto:users@jena.apache.org?s=[LARQ] ) mailing list
- * submitting bug reports and feature requests on JIRA: https://issues.apache.org/jira/browse/JENA
- * voting or submitting patches for the currently [open bugs or improvements](https://issues.apache.org/jira/secure/IssueNavigator.jspa?reset=true&jqlQuery=project+%3D+JENA+AND+component+%3D+LARQ+AND+status+%3D+Open+ORDER+BY+priority+DESC&mode=hide) for LARQ
+ * submitting bug reports and feature requests
  * checking out LARQ source code, playing with it and let us know your ideas for possible improvements: [https://svn.apache.org/repos/asf/jena/Archive/jena-larq](https://svn.apache.org/repos/asf/jena/Archive/jena-larq)

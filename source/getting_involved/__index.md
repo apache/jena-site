@@ -11,9 +11,9 @@ If you need help using Jena, please see our [getting help](../help_and_support) 
 ### How to contribute
 
 You can help us sending your suggestions, feature requests and bug reports (as well as patches) using
-[Jena's GitHub Issues](https://github.com/apache/jena/issues) or [Jena JIRA](https://issues.apache.org/jira/browse/JENA).
+[Jena's GitHub Issues](https://github.com/apache/jena/issues).
 
-You can discuss your contribution, before or after adding it to Jira, on the [`dev@jena.apache.org`](mailto:dev@jena.apache.org) mailing list.
+You can discuss your contribution on the [`dev@jena.apache.org`](mailto:dev@jena.apache.org) mailing list.
 You can also help other users by answering their questions on the [`users@jena.apache.org`](mailto:users@jena.apache.org) mailing list.
 See the [subscription instructions](../help_and_support) for details.
 
@@ -68,22 +68,14 @@ contribute your suggested changes to the code.
 
 ### Open issues
 
-You can find a list of the [open issues](https://issues.apache.org/jira/secure/IssueNavigator.jspa?reset=true&jqlQuery=project+%3D+JENA+AND+status+%3D+Open+ORDER+BY+priority+DESC&mode=hide) on JIRA (sorted by priority).
-Or, you can look at the [last week activity](https://issues.apache.org/jira/secure/QuickSearch.jspa?searchString=jena+updated:-1w) to get a sense of what people are working on.
+Apache Jena manages issues using [github open issues](https://github.com/apache/jena/issues).
 
 ### Submit your patches
 
 You can develop new contributions and work on patches using either the
-Apache-hosted git repository or the [mirror on GitHub](https://github.com/apache/jena
-).  
+Apache-hosted git repository or the [mirror on GitHub](https://github.com/apache/jena).  
 
-[GitHub pull requests](https://github.com/apache/jena/pulls) are forwarded to the
-[dev@jira mailing list](/help_and_support/) for review by the Jena committers. 
-You should subscribe to dev@jira to follow the feedback on your pull request. 
-
-
-Alternatively, patches can be attached directly to issues in Jira 
-(click on `More Actions > Attach Files`).
+Alternatively, patches can be attached directly to issues in github.
 
 Please, inspect your contribution/patch and make sure it includes all (and
 only) the relevant changes for a single issue. Don't forget tests!

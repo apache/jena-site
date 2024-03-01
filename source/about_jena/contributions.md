@@ -11,7 +11,7 @@ This list is provided for information purposes only, and is not meant as an
 endorsement of the mentioned projects by the Jena team.
 
 If you wish your contribution to appear on this page, please raise a
-GitHub or JIRA issue with the details to be published.
+GitHub issue with the details to be published.
 
 ## Related projects
 
