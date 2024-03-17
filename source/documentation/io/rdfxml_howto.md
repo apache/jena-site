@@ -4,6 +4,8 @@ title: Jena RDF/XML How-To
 
 _Legacy Documentation : may not be up-to-date_
 
+* The original ARQ parser will be removed from Jena. *
+
 ---
 
 This is a guide to the RDF/XML I/O subsystem of Jena, ARP.

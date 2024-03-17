@@ -2,6 +2,12 @@
 title: SAX Input into Jena and ARP
 ---
 
+___Legacy Documentation : not up-to-date___
+
+___The original ARQ parser will be removed from Jena___
+
+---
+
 Normally, both ARP and Jena are used to read files either from the
 local machine or from the Web. A different use case, addressed
 here, is when the XML source is available in-memory in some way. In

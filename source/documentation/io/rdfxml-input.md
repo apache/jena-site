@@ -1,14 +1,56 @@
 ---
-title: Jena RDF/XML Input How-To
+title: Jena RDF/XML Input How-To (ARP)
 ---
 
-_Legacy Documentation : may not be up-to-date_
+___Legacy Documentation : not up-to-date___
 
-Original [RDF/XML HowTo](rdfxml_howto.html).
+___The original ARP parser will be removed from Jena.___
+
+The current RDF/XML parser is RRX.
 
 ---
 
-This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.
+This is a guide to the RDF/XML legacy ARP input subsystem of Jena.
+
+
+The ARP RDF/XML parser is designed for use with RIOT and to have the same handling
+of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.
+
+The ARP0 parser is the original standalone parser.
+
+## RDF/XML Input
+
+The usual way to access the RDF/XML parser is via `RDFDataMgr` or `RDFParser`.
+
+    Model model = RDFDataMgr.loadModel("data.arp");
+
+or
+
+    Model model = RDFParser.source("data.arp").toModel();
+
+Note the file extension is _arp_.
+
+### Legacy ARP RDF/XML parser
+
+#### RIOT integrated ARP parser
+
+To access the parse from Java code use constants `RRX.RDFXML_ARP1`.
+
+The syntax name is `arp` or `arp1`.
+
+The file extension is _arp_ or `arp1`.
+
+#### Original ARP0 parser
+
+To access the parse from Java code use constants `RRX.RDFXML_ARP0`.
+
+The syntax name is `arp0`.
+
+The file extension is _arp0_.
+
+Details of the original Jena RDF/XML parser, [ARP](arp/arp.html).
+
+---
 
 ## Advanced RDF/XML Input
 
@@ -139,7 +181,3 @@ The global default IRI engine can be set with:
     ARPOptions.setIRIFactoryGlobal(IRIFactory.iriImplementation()) ;
 
 or other IRI rule engine from `IRIFactory`.
-
-## Further details
-
-[Details of ARP, the Jena RDF/XML parser](arp/arp.html)

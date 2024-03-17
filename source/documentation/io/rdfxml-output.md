@@ -2,19 +2,13 @@
 title: Jena RDF/XML Output How-To
 ---
 
-_Legacy Documentation : may not be up-to-date_
-
-Original [RDF/XML HowTo](rdfxml_howto.html).
-
----
-
 ## Advanced RDF/XML Output
 
 Two forms for output are provided: pretty printed RDF/XML ("RDF/XML-ABBREV") or plain RDF/XML
 
 While some of the code is shared, these
 two writers are really very different, resulting in different but
-equivalent output. "RDF/XML-ABBREV" is slower, but should produce
+equivalent RDF output. "RDF/XML-ABBREV" is slower, but should produce
 more readable XML.
 
 ### Properties to Control RDF/XML Output

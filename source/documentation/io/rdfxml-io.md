@@ -2,41 +2,17 @@
 title: Jena RDF XML
 ---
 
-This is a guide to the RDF/XML I/O subsystem of Jena.
-
-The RDF/XML parser is designed for use with RIOT and to have the same handling
-of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.
-
+- [RDF/XML Input](#rdfxml-input)
+- [RDF/XML Output](#rdfxml-output)
 
 ## RDF/XML Input
 
-The usual way to access the RDF/XML parser is via `RDFDataMgr` or `RDFParser`.
+The RIOT RDF/XML parser is called RRX.
 
-    Model model = RDFDataMgr.loadModel("data.rdf");
 
-or
+The ARP RDF/XML parser is stil available but wil be rmoved from Apache Jena.
 
-    Model model = RDFParser.source("data.rdf").toModel();
-
-The original "ARP" parser is still available bu tmaybe pahsed out.  To access
-the legacy parser, use the context symbol `RIOT.symRDFXML0` to `true` or
-`"true".
-
-    Model model = RDFParser.source(""data.rdf")
-                           .set(RIOT.symRDFXML0, true)
-                           .parse(dest);
-
-This applies to the command line:
-
-    riot --set rdfxml:rdfxml0=true data.rdf
-
-This can be set globally in the JVM:
-
-    RIOT.getContext().set(RIOT.symRDFXML0, "true");
-
-Details of [legacy RDF/XML input](rdfxml-input.html).
-
-Details of the original Jena RDF/XML parser, [ARP](arp/arp.html).
+- Legacy ARP [RDF/XML input](rdfxml-input.html)
 
 ## RDF/XML Output
 
@@ -67,5 +43,4 @@ or
 
     RDFWriter.source(model).format(RDFFormat.RDFXML_PLAIN).output(System.out);
 
-
-Details of [legacy RDF/XML output](rdfxml-output.html).
+- [RDF/XML advanced output](rdfxml-output.html)
