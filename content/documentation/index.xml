@@ -1007,7 +1007,7 @@ Jena Lucene Solr ElasticSearch upto 3.2.0 5.x or 6.x 5.x or 6.x not supporte
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/javadoc.html</guid>
-      <description> Jena Core JavaDoc ARQ JavaDoc (SPARQL) TDB JavaDoc RDF Connection Fuseki JavaDoc Fuseki2 Webapp Fuseki2 Main Text search SHACL ShEx RDF Patch GeoSPARQL Query Builder Service Enhancer Security Permissions JavaDoc </description>
+      <description> Jena Core Fuseki JavaDoc Fuseki2 Webapp Fuseki2 Main ARQ(SPARQL) RDF Connection TDB Text search SHACL ShEx RDF Patch GeoSPARQL Query Builder Service Enhancer Security Permissions JavaDoc </description>
     </item>
     
     <item>
@@ -1062,7 +1062,7 @@ Documentation Overview Usage Notes Design Security Evaluator implementation Asse
       <description>Jena Permissions provides a standard Jena assembler making it easy to use the SecuredModel in an Assembler based environment. To use the permissions assembler the assembler file must contain the lines:
 [] ja:loadClass &amp;quot;org.apache.jena.permissions.SecuredAssembler&amp;quot; . sec:Model rdfs:subClassOf ja:NamedModel . The secured assembler provides XXXXXXXXXXXx properties for the assembler files.
 Assuming we define:
-@prefix sec: &amp;lt;http://apache.org/jena/permissions/Assembler#&amp;gt; . Then the following resources are defined:
+PREFIX sec: &amp;lt;http://apache.org/jena/permissions/Assembler#&amp;gt; Then the following resources are defined:
 sec:Model - A secured model. One against which the security evaluator is running access checks.</description>
     </item>
     
@@ -1114,11 +1114,10 @@ SelectBuilder sb = new SelectBuilder() .addVar( &amp;quot;*&amp;quot; ) .</descr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/rdfxml-io.html</guid>
-      <description>This is a guide to the RDF/XML I/O subsystem of Jena.
-The RDF/XML parser is designed for use with RIOT and to have the same handling of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.
-RDF/XML Input The usual way to access the RDF/XML parser is via RDFDataMgr or RDFParser.
-Model model = RDFDataMgr.loadModel(&amp;quot;data.rdf&amp;quot;); or
-Model model = RDFParser.source(&amp;quot;data.rdf&amp;quot;).toModel(); The original &amp;ldquo;ARP&amp;rdquo; parser is still available bu tmaybe pahsed out.</description>
+      <description>RDF/XML Input RDF/XML Output RDF/XML Input The RIOT RDF/XML parser is called RRX.
+The ARP RDF/XML parser is stil available but wil be rmoved from Apache Jena.
+Legacy ARP RDF/XML input RDF/XML Output Two forms for output are provided:
+The default output Lang.RDFXML, historically called &amp;ldquo;RDF/XML-ABBREV&amp;rdquo;, which also has a format name RDFFormat.RDFXML_PRETTY. It produces readable output. It requires working memory to analyse the data to be written and it is not streaming.</description>
     </item>
     
     <item>
@@ -1128,21 +1127,23 @@ Model model = RDFParser.source(&amp;quot;data.rdf&amp;quot;).toModel(); The orig
       
       <guid>https://jena.apache.org/documentation/io/rdfxml_howto.html</guid>
       <description>Legacy Documentation : may not be up-to-date
-This is a guide to the RDF/XML I/O subsystem of Jena, ARP. The first section gives a quick introduction to the I/O subsystem. The other sections are aimed at users wishing to use advanced features within the RDF/XML I/O subsystem.
+The original ARQ parser will be removed from Jena. * This is a guide to the RDF/XML I/O subsystem of Jena, ARP. The first section gives a quick introduction to the I/O subsystem. The other sections are aimed at users wishing to use advanced features within the RDF/XML I/O subsystem.
 Other content related to Jena RDF/XML How-To includes:
 Details of ARP, the Jena RDF/XML parser Quick Introduction The main I/O methods in Jena use InputStreams and OutputStreams.</description>
     </item>
     
     <item>
-      <title>Jena RDF/XML Input How-To</title>
+      <title>Jena RDF/XML Input How-To (ARP)</title>
       <link>https://jena.apache.org/documentation/io/rdfxml-input.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/rdfxml-input.html</guid>
-      <description>Legacy Documentation : may not be up-to-date
-Original RDF/XML HowTo.
-This is a guide to the RDF/XML legacy input subsystem of Jena, ARP.
-Advanced RDF/XML Input For access to these advanced features, first get an RDFReader object that is an instance of an ARP parser, by using the getReader() method on any Model. It is then configured using the [setProperty](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))(String, Object) method. This changes the properties for parsing RDF/XML. Many of the properties change the RDF parser, some change the XML parser.</description>
+      <description>Legacy Documentation : not up-to-date
+The original ARP parser will be removed from Jena.
+The current RDF/XML parser is RRX.
+This is a guide to the RDF/XML legacy ARP input subsystem of Jena.
+The ARP RDF/XML parser is designed for use with RIOT and to have the same handling of errors, IRI resolution, and treatment of base IRIs as other RIOT readers.
+The ARP0 parser is the original standalone parser.</description>
     </item>
     
     <item>
@@ -1151,10 +1152,8 @@ Advanced RDF/XML Input For access to these advanced features, first get an RDFRe
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/rdfxml-output.html</guid>
-      <description>Legacy Documentation : may not be up-to-date
-Original RDF/XML HowTo.
-Advanced RDF/XML Output Two forms for output are provided: pretty printed RDF/XML (&amp;ldquo;RDF/XML-ABBREV&amp;rdquo;) or plain RDF/XML
-While some of the code is shared, these two writers are really very different, resulting in different but equivalent output. &amp;ldquo;RDF/XML-ABBREV&amp;rdquo; is slower, but should produce more readable XML.
+      <description>Advanced RDF/XML Output Two forms for output are provided: pretty printed RDF/XML (&amp;ldquo;RDF/XML-ABBREV&amp;rdquo;) or plain RDF/XML
+While some of the code is shared, these two writers are really very different, resulting in different but equivalent RDF output. &amp;ldquo;RDF/XML-ABBREV&amp;rdquo; is slower, but should produce more readable XML.
 Properties to Control RDF/XML Output Property NameDescriptionValue classLegal Values xmlbase The value to be included for an xml:base attribute on the root element in the file.</description>
     </item>
     
@@ -1317,9 +1316,11 @@ Example This example ensures certain prefixes are in the dataset and adds some b
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/arp/arp.html</guid>
-      <description>This section details the Jena RDF/XML parser. ARP is the parsing subsystem in Jena for handling the RDF/XML syntax.
-ARP Features Using ARP without Jena Using other SAX and DOM XML sources ARP Features Java based RDF parser. Compliant with RDF Syntax and RDF Test Cases Recommendations. Compliant with following standards and recommendations: xml:lang
-xml:lang is fully supported, both in RDF/XML and any document embedding RDF/XML. Moreover, the language tags are checked against RFC1766, RFC3066, ISO639-1, ISO3166.</description>
+      <description>Legacy Documentation : not up-to-date
+The original ARP parser will be removed from Jena
+The current RDF/XML parser is RRX.
+This section details the Jena RDF/XML parser. ARP is the parsing subsystem in Jena for handling the RDF/XML syntax.
+ARP Features Using ARP without Jena Using other SAX and DOM XML sources ARP Features Java based RDF parser. Compliant with RDF Syntax and RDF Test Cases Recommendations. Compliant with following standards and recommendations: xml:lang</description>
     </item>
     
     <item>
@@ -1329,8 +1330,8 @@ xml:lang is fully supported, both in RDF/XML and any document embedding RDF/XML.
       
       <guid>https://jena.apache.org/documentation/io/</guid>
       <description>This page details the setup of RDF I/O technology (RIOT).
-Formats Commands Reading RDF in Jena Writing RDF in Jena Working with RDF Streams Additional details on working with RDF/XML Formats The following RDF formats are supported by Jena. In addition, other syntaxes can be integrated into both the parser and writer registries.
-Turtle RDF/XML N-Triples JSON-LD RDF/JSON TriG N-Quads TriX RDF Binary RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.</description>
+Formats Commands Reading RDF in Jena Writing RDF in Jena Working with RDF Streams Formats The following RDF formats are supported by Jena. In addition, other syntaxes can be integrated into both the parser and writer registries.
+Turtle JSON-LD N-Triples N-Quads TriG RDF/XML TriX RDF/JSON RDF Binary RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.</description>
     </item>
     
     <item>
@@ -1402,8 +1403,9 @@ As a standalone server As a service run by the operation system, for example, st
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/arp/arp_sax.html</guid>
-      <description>Normally, both ARP and Jena are used to read files either from the local machine or from the Web. A different use case, addressed here, is when the XML source is available in-memory in some way. In these cases, ARP and Jena can be used as a SAX event handler, turning SAX events into triples, or a DOM tree can be parsed into a Jena Model.
-1. Overview To read an arbitrary SAX source as triples to be added into a Jena model, it is not possible to use a Model.</description>
+      <description>Legacy Documentation : not up-to-date
+The original ARQ parser will be removed from Jena
+Normally, both ARP and Jena are used to read files either from the local machine or from the Web. A different use case, addressed here, is when the XML source is available in-memory in some way. In these cases, ARP and Jena can be used as a SAX event handler, turning SAX events into triples, or a DOM tree can be parsed into a Jena Model.</description>
     </item>
     
     <item>
@@ -2085,9 +2087,11 @@ Part of the remit for the 2001 RDF Core working group was to add to RDF support 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://jena.apache.org/documentation/io/arp/arp_standalone.html</guid>
-      <description>ARP can be used both as a Jena subsystem, or as a standalone RDF/XML parser. This document gives a quick guide to using ARP standalone.
+      <description>Legacy Documentation : not up-to-date
+The original ARQ parser will be removed from Jena.
+ARP can be used both as a Jena subsystem, or as a standalone RDF/XML parser. This document gives a quick guide to using ARP standalone.
 Overview To load an RDF file:
-Create an ARP instance. Set parse options, particularly error detection control, using getOptions or setOptionsWith. Set its handlers, by calling the getHandlers or setHandlersWith methods, and then. Setting the statement handler. Optionally setting the other handlers. Call a load method Xerces is used for parsing the XML.</description>
+Create an ARP instance. Set parse options, particularly error detection control, using getOptions or setOptionsWith. Set its handlers, by calling the getHandlers or setHandlersWith methods, and then.</description>
     </item>
     
     <item>
@@ -2109,8 +2113,7 @@ Files ending in .gz are assumed to be gzip-compressed. Input and output to such 
       <guid>https://jena.apache.org/documentation/io/rdf-output.html</guid>
       <description>This page describes the RIOT (RDF I/O technology) output capabilities.
 See Reading RDF for details of the RIOT Reader system.
-API RDFFormat RDFFormats and Jena syntax names Formats Normal Printing Pretty Printed Languages Streamed Block Formats Line printed formats Turtle and Trig format options N-Triples and N-Quads JSON-LD RDF Binary RDF/XML Examples Notes See Advanced RDF/XML Output for details of the Jena RDF/XML writer.
-API There are two ways to write RDF data using Apache Jena RIOT, either via the RDFDataMgr</description>
+API RDFFormat RDFFormats and Jena syntax names Formats Normal Printing Pretty Printed Languages Streamed Block Formats Line printed formats Turtle and Trig format options N-Triples and N-Quads JSON-LD RDF Binary RDF/XML Examples Notes API There are two ways to write RDF data using Apache Jena RIOT, either via the RDFDataMgr</description>
     </item>
     
   </channel>
