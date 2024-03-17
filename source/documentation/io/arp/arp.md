@@ -2,6 +2,14 @@
 title: RDF/XML Input in Jena
 ---
 
+___Legacy Documentation : not up-to-date___
+
+___The original ARP parser will be removed from Jena___
+
+The current RDF/XML parser is RRX.
+
+---
+
 This section details the Jena RDF/XML parser.
 ARP is the parsing subsystem in Jena for handling the RDF/XML syntax.
 

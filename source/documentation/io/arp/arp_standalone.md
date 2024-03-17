@@ -2,6 +2,12 @@
 title: Using ARP Without Jena
 ---
 
+__Legacy Documentation : not up-to-date__
+
+__The original ARQ parser will be removed from Jena.__
+
+---
+
 ARP can be used both as a Jena subsystem, or as a standalone
 RDF/XML parser. This document gives a quick guide to using ARP
 standalone.
