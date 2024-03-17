@@ -10,7 +10,6 @@ This page details the setup of RDF I/O technology (RIOT).
 * [Reading RDF in Jena](rdf-input.html)
 * [Writing RDF in Jena](rdf-output.html)
 * [Working with RDF Streams](streaming-io.html)
-* [Additional details on working with RDF/XML](rdfxml-io.html)
 
 ## Formats
 
@@ -18,19 +17,17 @@ The following RDF formats are supported by Jena. In addition, other syntaxes
 can be integrated into both the parser and writer registries.
 
 - Turtle
-- RDF/XML
-- N-Triples
 - JSON-LD
-- RDF/JSON
-- TriG
+- N-Triples
 - N-Quads
+- TriG
+- RDF/XML
 - TriX
+- RDF/JSON
 - RDF Binary
 
 RDF/JSON is different from JSON-LD - it is a direct encoding of RDF triples in JSON.
 See the [description of RDF/JSON](rdf-json.html).
-
-From Jena 4.5.0, JSON-LD 1.1 is the main supported version of JSON-LD.
 
 RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
 for fast parsing.  See [RDF Binary](rdf-binary.html).
@@ -96,7 +93,6 @@ get command line reminders):
 -   `--output=FORMAT`: Output in a given syntax (streaming if possible).
 -   `--formatted=FORMAT`: Output in a given syntax, using pretty printing.
 -   `--stream=FORMAT`: Output in a given syntax, streaming (not all syntaxes can be streamed).
-
 
 To aid in checking for errors in UTF8-encoded files, there is a
 utility which reads a file of bytes as UTF8 and checks the encoding.

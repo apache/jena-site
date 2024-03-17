@@ -10,8 +10,6 @@ To do this you will need a Fuseki installation, the Permissions Packages and a S
 
 ## Set up
 
-This example uses Fuseki 2.3.0 or higher, Permissions 3.1.0 or higher and Apache Commons Collections v4.
-
 Fuseki can be downloaded from:
 <https://repository.apache.org/content/repositories/releases/org/apache/jena/apache-jena-fuseki/>
 
@@ -74,13 +72,13 @@ graph.
 
 Define all the prefixes.
 
-    @prefix fuseki:  <http://jena.apache.org/fuseki#> .
-    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
-    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-    @prefix perm:    <http://apache.org/jena/permissions/Assembler#> .
-    @prefix my:     <http://example.org/#> .
+    PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+    PREFIX tdb:     <http://jena.hpl.hp.com/2008/tdb#>
+    PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+    PREFIX perm:    <http://apache.org/jena/permissions/Assembler#>
+    PREFIX my:      <http://example.org/#>
 
 
 Load the SecuredAssembler class from the permissions library and define the perm:Model as a subclass of ja:NamedModel.

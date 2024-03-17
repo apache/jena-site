@@ -11,7 +11,7 @@ The secured assembler provides XXXXXXXXXXXx properties for the assembler files.
 
 Assuming we define:
 
-     @prefix sec:    <http://apache.org/jena/permissions/Assembler#> .
+     PREFIX sec:    <http://apache.org/jena/permissions/Assembler#>
 
 Then the following resources are defined:
 

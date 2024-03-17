@@ -22,9 +22,6 @@ See [Reading RDF](rdf-input.html) for details of the RIOT Reader system.
 - [Examples](#examples)
 - [Notes](#notes)
 
-See [Advanced RDF/XML Output](rdfxml_howto.html#advanced-rdfxml-output) 
-for details of the Jena RDF/XML writer.
-
 ## API {#api}
 
 There are two ways to write RDF data using Apache Jena RIOT, 
@@ -136,10 +133,10 @@ or write N-triples/N-Quads.
 
 Example:
 
-    @prefix :      <http://example/> .
-    @prefix dc:    <http://purl.org/dc/elements/1.1/> .
-    @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-    @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    PREFIX :      <http://example/>
+    PREFIX dc:    <http://purl.org/dc/elements/1.1/>
+    PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     
     :book   dc:author  ( :a :b ) .
     
@@ -183,10 +180,10 @@ to use the short label form.
 
 Example:
 
-    @prefix :  <http://example/> .
-    @prefix dc:  <http://purl.org/dc/elements/1.1/> .
-    @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-    @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+    PREFIX :  <http://example/>
+    PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     
     :book   dc:author  _:b0 .
     
@@ -225,10 +222,10 @@ Example:
 The FLAT writers abbreviates IRIs, literals and blank node labels
 but always writes one complete triple on one line (no use of `;`).
 
-    @prefix :  <http://example/> .
-    @prefix dc:  <http://purl.org/dc/elements/1.1/> .
-    @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-    @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    PREFIX :  <http://example/>
+    PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+    PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     _:b0 foaf:name "Bob" .
     :book dc:author _:b1 .
     _:b2 rdf:rest rdf:nil .
@@ -263,8 +260,8 @@ otherwise noted, the setting applies to both Turtle and TriG.
 | Directive Style | Effect |
 |------------------|-------|
 | "sparql", "rdf11"    | Use `PREFIX` and `BASE` in output.   |
-| "at", "n3"           | Use `@prefix` and `@base` in output. |
-| unset                | Use `@prefix` and `@base` in output. |
+| "at", "rdf10         | Use `@prefix` and `@base` in output. |
+| unset                | Use `PREFIX` and `BASE` in output.   |
 
 <p>&nbsp;</b>
 
@@ -272,7 +269,7 @@ otherwise noted, the setting applies to both Turtle and TriG.
 
 ##### _Setting directive style_
 ```
-    riot --set ttl:directiveStyle=sparql --pretty Turtle file1.rdf file2.nt ...
+    riot --set ttl:directiveStyle=rdf11 --pretty Turtle file1.rdf file2.nt ...
 ```
 and in code:
 ```
@@ -288,7 +285,7 @@ and in code:
 ```
 and in code:
 ```
-RDFWriter.source(model)
+  RDFWriter.source(model)
      .format(RDFFormat.TURTLE_LONG)
      .output(System.out);
 ```
@@ -438,6 +435,8 @@ while the jena writer name defaults to a streaming plain output.
 | RDFXML    | RDFXML_PRETTY, RDF_XML_ABBREV | "RDF/XML-ABBREV" |
 | RDFXML_PLAIN |                            | "RDF/XML"        |
 
+More details [RDF/XML Output](rdfxml-io.html#rdfxml-output).
+
 ## Examples {#examples}
 
 Example code may be found in [jena-examples:arq/examples](https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/riot/).
@@ -446,27 +445,27 @@ Example code may be found in [jena-examples:arq/examples](https://github.com/apa
 
 The follow ways are different ways to write a model in Turtle:
 
-        Model model =  ... ;
+      Model model =  ... ;
 
-        // Write a model in Turtle syntax, default style (pretty printed)
-        RDFDataMgr.write(System.out, model, Lang.TURTLE) ;
+      // Write a model in Turtle syntax, default style (pretty printed)
+      RDFDataMgr.write(System.out, model, Lang.TURTLE) ;
         
-        // Write Turtle to the blocks variant
-        RDFDataMgr.write(System.out, model, RDFFormat.TURTLE_BLOCKS) ;
+      // Write Turtle to the blocks variant
+      RDFDataMgr.write(System.out, model, RDFFormat.TURTLE_BLOCKS) ;
         
-        // Write as Turtle via model.write
-        model.write(System.out, "TTL") ;
+      // Write as Turtle via model.write
+      model.write(System.out, "TTL") ;
 
 ### Ways to write a dataset
 
 The preferred style is to use `RDFDataMgr`:
 
-    Dataset ds = .... ;
-    // Write as TriG
-    RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
+      Dataset ds = .... ;
+      // Write as TriG
+      RDFDataMgr.write(System.out, ds, Lang.TRIG) ;
 
-    // Write as N-Quads
-    RDFDataMgr.write(System.out, dataset, Lang.NQUADS) ;
+      // Write as N-Quads
+      RDFDataMgr.write(System.out, dataset, Lang.NQUADS) ;
 
 Additionally, a single model can be written in a dataset format - it becomes
 the default graph of the dataset.
@@ -476,10 +475,10 @@ the default graph of the dataset.
 
 might give:
 
-    @prefix :      <http://example/> .
-    @prefix dc:    <http://purl.org/dc/elements/1.1/> .
-    @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-    @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    PREFIX :      <http://example/>
+    PREFIX dc:    <http://purl.org/dc/elements/1.1/>
+    PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
     {
         :book   dc:author  ( :a :b ) .

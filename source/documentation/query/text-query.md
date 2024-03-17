@@ -719,13 +719,13 @@ The following is an example of an assembler file defining a TDB dataset with a L
     # See https://jena.apache.org/documentation/fuseki2/fuseki-layout.html for the destination of this file.
     #########################################################################
     
-    @prefix :        <http://localhost/jena_example/#> .
-    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
-    @prefix text:    <http://jena.apache.org/text#> .
-    @prefix skos:    <http://www.w3.org/2004/02/skos/core#>
-    @prefix fuseki:  <http://jena.apache.org/fuseki#> .
+    PREFIX :        <http://localhost/jena_example/#>
+    PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX tdb:     <http://jena.hpl.hp.com/2008/tdb#>
+    PREFIX text:    <http://jena.apache.org/text#>
+    PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
+    PREFIX fuseki:  <http://jena.apache.org/fuseki#>
 
     [] rdf:type fuseki:Server ;
        fuseki:services (
