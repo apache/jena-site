@@ -295,21 +295,6 @@ There is a default prefix mapping with a few common prefixes: `rdf`,
 `rdfs`, `owl`, `xsd` and `fn` (the XPath/XQuery functions and operators
 namespace).
 
-## Mapping to RDF
-
-The syntax of SSE is very close to Turtle lists because the syntax for
-IRIs and literals are the same.: to produce Turtle (outline):
-
-1.  Replace symbols by IRIs: prepend a common URI and %-encode any
-    characters necessary.
-2.  Replace variables by IRIs: prepend a common URI.
-3.  Move prefixes to be `@prefix` directives.
-4.  Put a dot at the end of the file.
-
-The result is an RDF model using only the properties `rdf:first` and
-`rdf:rest` so it records the data structure, but not what the data
-structure represents.
-
 ## SSE Files
 
 The file extension is `.sse` and all files are UTF-8.

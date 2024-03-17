@@ -57,8 +57,8 @@ with data read from URLs (files or from any other URL).
 
 The examples use the following prefixes:
 
-    @prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
-    @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+    PREFIX ja:     <http://jena.hpl.hp.com/2005/11/Assembler#>
+    PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 To create an empty in-memory dataset, all that is required is the line:
 

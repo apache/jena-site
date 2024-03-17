@@ -35,7 +35,7 @@ Location mapping files are RDF - they may be written in RDF/XML, Turtle
 (file suffix `.ttl`) or N-Triples (file suffix `.nt`). The default
 is RDF/XML unless one of these suffices is found.
 
-    @prefix lm: <http://jena.hpl.hp.com/2004/08/location-mapping#> .
+    PREFIX lm: <http://jena.hpl.hp.com/2004/08/location-mapping#>
 
     [] lm:mapping
        [ lm:name "file:foo.ttl" ;     lm:altName "file:etc/foo.ttl" ] ,

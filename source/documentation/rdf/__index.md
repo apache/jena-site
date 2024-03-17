@@ -160,12 +160,12 @@ where `acme-product` is defined to be `http://acme.example/schema/products#`. Th
 for example, in Turtle:
 
 ```turtle
-@prefix acme-product: <http://acme.example/schema/products#>.
+PREFIX acme-product: <http://acme.example/schema/products#>
 
 acme-product:widget acme-product:price "44.99"^^xsd:decimal.
 ```
 
-The datatype `xsd:decimal` is another example of an abbreviated URI. Note that no `@prefix` rules
+The datatype `xsd:decimal` is another example of an abbreviated URI. Note that no `PREFIX` rules
 are defined by RDF or Turtle: authors of RDF content should ensure that all prefixes used in curies
 are defined before use.
 
