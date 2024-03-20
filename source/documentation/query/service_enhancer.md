@@ -140,11 +140,17 @@ means that it was cut off. This information is used to ensure that a request usi
 
 </details>
 
-
 Note, that a repeated execution of a query (possibly with different limits/offsets) will serve the data from cache rather than making another remote request.
 The cache operates on a per-input-binding basis: For instance, in the example above it means that when removing bindings from the `VALUES` block data will
 still be served from the cache. Conversely, adding additional bindings to the `VALUES` block will only send a (bulk) remote request for those
 that lack cache entries.
+
+## SERVICE <loop:> vs LATERAL
+Since Jena 4.7.0 the SPARQL engine has native support for the `LATERAL` keyword which should almost always be preferred over `SERVICE <loop:>`. The use of `SERVICE <loop:>` is essentially only justified in combination with bulk requests, such as `SERVICE <loop:bulk+5:>`.
+
+Also note, that the semantics of `loop:` and `LATERAL` differ: the former substitutes variables regardless of scope, whereas the latter substitutes only in-scope variables. Another difference is, that `loop:` creates a new execution context for each request (even for local ones) such that the `NOW()` function will yield increasing timestamps as query execution progresses.
+
+Currently, the SE plugin does not support bulk requests under `LATERAL` semantics.
 
 ## Namespace
 The plugin introduces the namespace `http://jena.apache.org/service-enhancer#` which is used for both ARQ context symbols as well as assembler configuration.
@@ -233,11 +239,34 @@ The value of `se:datasetId` is used to look up caches when referring to the acti
 
 ### Configuration with Fuseki
 
+#### Supplying Service Enhancer Dependencies
+
+##### Before Jena 4.10
+No additional dependencies are needed.
+
+##### Jena 4.10 and Jena 5
+Guava needs to be supplied externally, as it is no longer part of Jena's core.
+
+* A Guava JAR can be downloaded manually, such as from the Maven Central repository, by picking a `guava-VERSION.jar` file from the [published Guava versions](https://repo1.maven.org/maven2/com/google/guava/guava/). Typically, all newer versions should work. When in doubt, cross-check with the declaration(s) in the service enhancer's POM file.
+
+* The POM file of the SE module includes a `bundle` profile which can be used to build a JAR bundle using [Apache Maven](https://maven.apache.org/) using the commands below. Be sure to replace `VERSION` with a version that matches that of your Fuseki setup. See also the [published Service Enhancer versions](https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/).
+
+```bash
+# Fetch the serviceenhancer pom
+# and save it as ./jena-serviceenhancer.pom
+mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:VERSION:pom' \
+  -Dmdep.stripVersion=true -D'outputDirectory=.'
+
+# Build using the 'bundle' profile which creates the (shaded) JAR bundle
+# ./target/jena-serviceenhancer-VERSION.jar
+mvn -f jena-serviceenhancer.pom -Pbundle package
+```
+
 #### Adding the Service Enhancer JAR
 This section assumes that one of the distributions of `apache-jena-fuseki` has been downloaded from [https://jena.apache.org/download/].
 The extracted folder should contain the `./fuseki-server` executable start script which automatically loads all jars (relative to `$PWD`) under `run/extra`.
-These folders need to be created e.g. using `mkdir -p run/extra`. The SE plugin can be manually built or downloaded from maven central (it is self-contained without transitive dependencies).
-Placing it into the `run/extra` folder makes it available for use with Fuseki. The plugin and Fuseki versions should match.
+These folders need to be created e.g. using `mkdir -p run/extra`. The SE plugin can be manually built or downloaded from maven central, as described in the prior section.
+Placing it into the `run/extra` folder makes it available for use with Fuseki. The plugin and Fuseki version should match.
 
 #### Fuseki Assembler Configuration
 The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
@@ -540,5 +569,4 @@ In practice, many triple store engines return the same response for the same gra
 As can be seen from [example](#example), bulk requests result in a union which are sorted by the serial numbers assigned to the input bindings.
 However, SPARQL does not mandate stable sorting, therefore this approach may cause bindings with the same serial number to become 'shuffled'.
 The solution is to is to include sort sufficient conditions in the `SERVICE`'s graph pattern. The bulk query will include those sort conditions after the serial number sort condition.
-
 
