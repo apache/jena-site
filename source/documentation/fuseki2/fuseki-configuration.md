@@ -108,8 +108,8 @@ The base name is `/ds`.
 
         fuseki:endpoint [ 
              # HTML file upload service
-            fuseki:operation fuseki:update ; 
-            fuseki:name "update" 
+            fuseki:operation fuseki:upload ; 
+            fuseki:name "upload" 
         ] ;
 
         fuseki:endpoint [ 
