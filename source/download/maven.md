@@ -26,12 +26,14 @@ repositories to your <code>pom.xml</code> or <code>settings.xml</code>.
 This is how to specify in your pom.xml file the dependency
 on a version of Jena:
 
-      <dependency>
-        <groupId>org.apache.jena</groupId>
-        <artifactId>apache-jena-libs</artifactId>
-        <type>pom</type>
-        <version>X.Y.Z</version>
-      </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>apache-jena-libs</artifactId>
+  <type>pom</type>
+  <version>X.Y.Z</version>
+</dependency>
+  ```
 
 This will transitively resolve all the dependencies for you: `jena-core`,
 `jena-arq`, `jena-tdb` and `jena-iri` and their dependencies.  
@@ -40,11 +42,13 @@ Note the use of `<type>pom</type>` above.
 
 Other modules need to be added separately, for example:
 
-      <dependency>
-        <groupId>org.apache.jena</groupId>
-        <artifactId>jena-text</artifactId>
-        <version>x.y.z</version>
-      </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-text</artifactId>
+  <version>x.y.z</version>
+</dependency>
+```
 
 Please check for the latest versions.
 
@@ -139,27 +143,31 @@ If you want to depend on Jena development snapshots and help with Jena
 development, e.g. to get access to recent bug fixes for testing, you
 should add the following to your <code>pom.xml</code>:
 
-      <repository>
-        <id>apache-repo-snapshots</id>
-        <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        <releases>
-          <enabled>false</enabled>
-        </releases>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
-      </repository>
+```xml
+<repository>
+  <id>apache-repo-snapshots</id>
+  <url>https://repository.apache.org/content/repositories/snapshots/</url>
+  <releases>
+    <enabled>false</enabled>
+  </releases>
+  <snapshots>
+    <enabled>true</enabled>
+  </snapshots>
+</repository>
+```
 
 ### Build and install artifacts in your local Maven repository
 
-If you want you can checkout the Jena sources, build the artifacts and
-install them in your local Maven repository, then you simply checkout the source 
+If you want you can check out the Jena sources, build the artifacts and
+install them in your local Maven repository, then you simply check out the source 
 tree and build with maven 
 <code>mvn install</code>. This assumes you have Maven and Git installed:
 
-    git clone https://github.com/apache/jena/
-    cd jena
-    mvn clean install
+```bash
+$ git clone https://github.com/apache/jena/
+$ cd jena
+$ mvn clean install
+```
 
-Each of the modules can be built on its own but they
+Each of the modules can be built on its own, but they
 require the current snapshots and Jena parent POM to be installed.

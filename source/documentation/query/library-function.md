@@ -5,9 +5,9 @@ title: Functions in ARQ
 The regular expressions for fan:localname and afn:namespace were incorrect.
 SPARQL allows custom functions in expressions so that
 queries can be used on domain-specific data. SPARQL defines a
-function by URI (or prefixed name) in FILTER expressions.  ARQ
+function by URI (or prefixed name) in FILTER expressions. ARQ
 provides a function library and supports application-provided
-functions.  Functions and property functions can be
+functions. Functions and property functions can be
 [registered or dynamically loaded](extension.html).
 
 Applications can also

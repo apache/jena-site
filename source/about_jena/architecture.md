@@ -17,7 +17,7 @@ defined interfaces between them. First let's start with the big picture:
 RDF triples and graphs, and their various components, are accessed through Jena's
 RDF API. Typical abstractions here are <code>Resource</code> representing an
 RDF resource (whether named with a URI or anonymous), <code>Literal</code> for data
-values (numbers, strings, dates, etc), <code>Statement</code> representing an RDF
+values (numbers, strings, dates, etc.), <code>Statement</code> representing an RDF
 triple and <code>Model</code> representing the whole graph. The RDF API has basic
 facilities for adding and removing triples to graphs and finding triples that match
 particular patterns. Here you can also read in RDF from external sources, whether

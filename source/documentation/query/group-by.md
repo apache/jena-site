@@ -35,7 +35,7 @@ clause.
     }
     GROUP BY ?productId (?num * ?price AS ?cost)
 
- 
+
 
 ## HAVING
 
@@ -66,7 +66,7 @@ RDF terms, that is names. It is not a count of individuals because
 two names can refer to the same individual.
 
 If there was no explicit `GROUP BY` clause, then it is as if the
-whole of the result set forms a single group element. 
+whole of the result set forms a single group element.
 Equivalently, it is `GROUP BY` of no variables. Only aggregation
 expressions make sense in the SELECT clause as there are no
 variables from the query pattern to project out.

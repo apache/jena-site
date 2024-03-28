@@ -38,9 +38,11 @@ specifications for the components are themselves Assembler
 specifications given by other Resources in the same Model.For
 example, to specify a memory model with data loaded from a file:
 
-    eg:model a ja:MemoryModel
-        ; ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/example.n3>]
-        .
+```turtle
+eg:model a ja:MemoryModel
+    ; ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/example.n3>]
+    .
+```
 
 The `rdf:type` of `eg:model` specifies that the constructed Model is to
 be a Jena memory-based model. The `ja:content` property specifies
@@ -65,9 +67,11 @@ We can construct our example model from the specification like this
 (you may need to tweak the filename to make this work in your
 environment):
 
-    Model spec = RDFDataMgr.loadModel( "examples.ttl" );
-    Resource root = spec.createResource( spec.expandPrefix( "eg:opening-example" ) );
-    Model m = Assembler.general.openModel( root );
+```java
+Model spec = RDFDataMgr.loadModel( "examples.ttl" );
+Resource root = spec.createResource( spec.expandPrefix( "eg:opening-example" ) );
+Model m = Assembler.general.openModel( root );
+```
 
 The model is constructed from the "root resource",
 `eg:opening-example` in our example. `general` knows how to create
@@ -81,27 +85,29 @@ inference, ontology, and file-backed. All of these model
 specifications share a set of base properties for attaching
 content and prefix mappings.
 
-    ja:Loadable a rdfs:Class ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:initialContent a rdf:Property ;
-      rdfs:domain ja:Loadable
-      rdfs:range ja:Content
-    .
-    ja:content a rdf:Property ;
-      rdfs:domain ja:Loadable ;
-      rdfs:range ja:Content
-    .
+```turtle
+ja:Loadable a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:initialContent a rdf:Property ;
+  rdfs:domain ja:Loadable
+  rdfs:range ja:Content
+.
+ja:content a rdf:Property ;
+  rdfs:domain ja:Loadable ;
+  rdfs:range ja:Content
+.
 
-    ja:Model a rdfs:Class ;
-      rdfs:subClassOf ja:ContentItem ;
-      rdfs:subClassOf ja:Loadable
-    .
+ja:Model a rdfs:Class ;
+  rdfs:subClassOf ja:ContentItem ;
+  rdfs:subClassOf ja:Loadable
+.
 
-    ja:prefixMapping a rdf:Property ;
-      rdfs:domain ja:Model ;
-      rdfs:range ja:PrefixMapping
-    .
+ja:prefixMapping a rdf:Property ;
+  rdfs:domain ja:Model ;
+  rdfs:range ja:PrefixMapping
+.
+```
 
 All of a model's `ja:content` property values are interpreted as
 specifying `Content` objects and a single composite `Content`
@@ -109,14 +115,16 @@ object is constructed and used to initialise the model. See
 [Content](#content-specification) for the description of Content
 specifications. For example:
 
-    eg:sharedContent
-        ja:externalContent <http://somewhere/RDF/ont.owl>
-        .
-    eg:common-example a ja:MemoryModel ;
-          ja:content eg:sharedContent ;
-          ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/A.rdf>] ;
-          ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/B.rdf>]
-        .
+```turtle
+eg:sharedContent
+    ja:externalContent <http://somewhere/RDF/ont.owl>
+    .
+eg:common-example a ja:MemoryModel ;
+      ja:content eg:sharedContent ;
+      ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/A.rdf>] ;
+      ja:content [ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/B.rdf>]
+    .
+```
 
 The model constructed for `eg:A` will be loaded with the contents
 of `Data/A.n3`, `Data/B.rdf`, and `http://somewhere/RDF/ont.owl`.
@@ -139,17 +147,19 @@ models. Content can be external (files and URLs) or literal
 (strings in the specification) or quotations (referring to RDF
 which is part of the specification).
 
-    ja:Content a rdfs:Class ;
-      rdfs:subClassOf ja:HasFileManager
-    .
+```turtle
+ja:Content a rdfs:Class ;
+  rdfs:subClassOf ja:HasFileManager
+.
 
-    ja:HasFileManager a rdfs:Class ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:fileManager a rdf:Property ;
-      rdfs:domain ja:HasFileManager ;
-      rdfs:range ja:FileManager
-    .
+ja:HasFileManager a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:fileManager a rdf:Property ;
+  rdfs:domain ja:HasFileManager ;
+  rdfs:range ja:FileManager
+.
+```
 
 A `ja:Content` specification may have zero or more
 `ja:externalContent` property values. These are URI resources
@@ -157,10 +167,12 @@ naming an external (file or http etc) RDF object. The constructed
 Content object contains the union of the values of all such
 resources. For example:
 
-    eg:external-content-example
-        ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/C.owl>,
-                           <http://jena.hpl.hp.com/some-jena-data.rdf>
-        .
+```turtle
+eg:external-content-example
+    ja:externalContent <file:////home/kers/projects/jena2/doc/assembler/Data/C.owl>,
+                       <http://jena.hpl.hp.com/some-jena-data.rdf>
+    .
+```
 
 The external content is located using a `FileManager`. If the
 `Content` resource has a `ja:fileManager` property, then the
@@ -177,9 +189,11 @@ by an explicit `ja:contentEncoding` property value, or guessed from
 the content of the string. The only encodings permitted are "N3"
 and "RDF/XML". For example:
 
-    eg:literal-content-example
-        ja:literalContent "_:it dc:title 'Interesting Times'"
-        .
+```turtle
+eg:literal-content-example
+    ja:literalContent "_:it dc:title 'Interesting Times'"
+    .
+```
 
 The literal content is wrapped so that prefix declarations for
 **rdf**, **rdfs**, **owl**, **dc**, and **xsd** apply before
@@ -196,10 +210,12 @@ Inference models are specified by supplying a description of the
 reasoner that is used by the model and (optionally) a base model to
 reason over. For example:
 
-    eg:inference-example
-        ja:baseModel [a ja:MemoryModel] ;
-          ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>]
-        .
+```turtle
+eg:inference-example
+    ja:baseModel [a ja:MemoryModel] ;
+      ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>]
+    .
+```
 
 describes an inference model that uses RDFS reasoning. The
 *reasonerURL* property value is the URI used to identify the
@@ -207,10 +223,12 @@ reasoner (it is the value of the Jena constant
 `RDFSRuleReasonerFactory.URI`). The base model is specified as a
 memory model; if it is left out, an empty memory model is used.
 
-    eg:db-inference-example
-        ja:baseModel eg:model-example ;
-        ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>]
-        .
+```turtle
+eg:db-inference-example
+    ja:baseModel eg:model-example ;
+    ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>]
+    .
+```
 
 The same reasoner as used as in the previous example, but now the
 base model is a specific model description in the same way as our earlier
@@ -221,11 +239,13 @@ API as for its internal reasoners, you can access a DIG reasoner
 (such as Pellet running as a server) using an Assembler
 specification:
 
-    eg:external-inference-example
-        ja:reasoner [<http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL>
-                       <http://localhost:2004/> ;
-                     ja:reasonerURL <http://jena.hpl.hp.com/2003/DIGReasoner>]
-        .
+```turtle
+eg:external-inference-example
+    ja:reasoner [<http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL>
+                   <http://localhost:2004/> ;
+                 ja:reasonerURL <http://jena.hpl.hp.com/2003/DIGReasoner>]
+    .
+```
 
 If there's a DIG server running locally on port 2004, this
 specification will create a DIG inference model that uses it.
@@ -241,33 +261,35 @@ This reasoner will infer a type declaration from a use of a
 property. (The prefix *my* will have to be known to the rule
 parser, of course.)
 
-    ja:InfModel a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:reasoner; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:baseModel; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Model
-    .
-    ja:reasoner a rdf:Property ;
-      rdfs:domain ja:InfModel ;
-      rdfs:range ja:ReasonerFactory
-    .
-    ja:baseModel a rdf:Property ;
-      rdfs:domain ja:InfModel ;
-      rdfs:range ja:Model
-    .
+```turtle
+ja:InfModel a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:reasoner; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:baseModel; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Model
+.
+ja:reasoner a rdf:Property ;
+  rdfs:domain ja:InfModel ;
+  rdfs:range ja:ReasonerFactory
+.
+ja:baseModel a rdf:Property ;
+  rdfs:domain ja:InfModel ;
+  rdfs:range ja:Model
+.
 
-    ja:HasRules a rdfs:Class ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:rule a rdf:Property ;
-      rdfs:domain ja:HasRules
-    .
-    ja:rulesFrom a rdf:Property ;
-      rdfs:domain ja:HasRules
-    .
-    ja:rules a rdf:Property ;
-      rdfs:domain ja:HasRules ;
-      rdfs:range ja:RuleSet
-    .
+ja:HasRules a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:rule a rdf:Property ;
+  rdfs:domain ja:HasRules
+.
+ja:rulesFrom a rdf:Property ;
+  rdfs:domain ja:HasRules
+.
+ja:rules a rdf:Property ;
+  rdfs:domain ja:HasRules ;
+  rdfs:range ja:RuleSet
+.
+```
 
 An InfModel's `ja:baseModel` property value specifies the base
 model for the inference model; if omitted, an empty memory model is
@@ -290,20 +312,22 @@ rules of the implied `RuleSet` are added to the `Reasoner`.
 A ReasonerFactory can be specified by URL or by class name (but not
 both).
 
-    ja:ReasonerFactory a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:ReasonerURL; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:HasRules
-    .
-    ja:reasonerClass a rdf:Property ;
-      rdfs:domain ja:ReasonerFactory
-    .
-    ja:reasonerURL a rdf:Property ;
-      rdfs:domain ja:ReasonerFactory
-    .
-    ja:schema a rdf:Property ;
-      rdfs:domain ja:ReasonerFactory ;
-      rdfs:range ja:Model
-    .
+```turtle
+ja:ReasonerFactory a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:ReasonerURL; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:HasRules
+.
+ja:reasonerClass a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory
+.
+ja:reasonerURL a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory
+.
+ja:schema a rdf:Property ;
+  rdfs:domain ja:ReasonerFactory ;
+  rdfs:range ja:Model
+.
+```
 
 If the optional unique property `ja:reasonerURL` is specified, then
 its resource value is the URI of a reasoner in the Jena reasoner
@@ -333,9 +357,11 @@ A `RuleSet` specification allows rules (for ReasonerFactories) to
 be specified inline, elsewhere in the specification model, or in an
 external resource.
 
-    ja:RuleSet a rdfs:Class ;
-      rdfs:subClassOf ja:HasRules
-    .
+```turtle
+ja:RuleSet a rdfs:Class ;
+  rdfs:subClassOf ja:HasRules
+.
+```
 
 The optional repeatable property `ja:rule` has as its value a
 literal string which is the text of a Jena rule or rules. All those
@@ -357,58 +383,64 @@ Ontology models can be specified in several ways. The simplest is
 to use the name of an OntModelSpec from the Java OntModelSpec
 class:
 
-    eg:simple-ont-example
-        ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF
-        .
+```turtle
+eg:simple-ont-example
+    ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF
+    .
+```
 
 This constructs an `OntModel` with an empty base model and using
 the OWL_DL language and the full rule reasoner. All of the
 OntModelSpec constants in the Jena implementation are available in
 this way. A base model can be specified:
 
-    eg:base-ont-example
-        ja:baseModel [a ja:MemoryModel ;
-                     ja:content [ja:externalContent <http://jena.hpl.hp.com/some-jena-data.rdf>]]
-        .
+```turtle
+eg:base-ont-example
+    ja:baseModel [a ja:MemoryModel ;
+                 ja:content [ja:externalContent <http://jena.hpl.hp.com/some-jena-data.rdf>]]
+    .
+```
 
 The OntModel has a base which is a memory model loaded with the
 contents of `http://jena.hpl.hp.com/some-jena-data.rdf`. Since the
 ontModelSpec was omitted, it defaults to `OWL_MEM_RDFS_INF` - the
 same default as `ModelFactory.createOntologyModel()`.
 
-    ja:OntModel a rdfs:Class ;
-      rdfs:subClassOf ja:UnionModel ;
-      rdfs:subClassOf ja:InfModel
-    .
-    ja:ontModelSpec a rdf:Property ;
-      rdfs:domain ja:OntModel ;
-      rdfs:range ja:OntModelSpec
-    .
+```turtle
+ja:OntModel a rdfs:Class ;
+  rdfs:subClassOf ja:UnionModel ;
+  rdfs:subClassOf ja:InfModel
+.
+ja:ontModelSpec a rdf:Property ;
+  rdfs:domain ja:OntModel ;
+  rdfs:range ja:OntModelSpec
+.
 
-    ja:OntModelSpec a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:like; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:reasonerFactory; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:importSource; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:documentManager; owl:maxCardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:ontLanguage; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:importSource a rdf:Property ;
-      rdfs:domain ja:OntModelSpec
-    .
-    ja:reasonerFactory a rdf:Property ;
-      rdfs:domain ja:OntModelSpec ;
-      rdfs:range ja:ReasonerFactory
-    .
-    ja:documentManager a rdf:Property ;
-      rdfs:domain ja:OntModelSpec
-    .
-    ja:ontLanguage a rdf:Property ;
-      rdfs:domain ja:OntModelSpec
-    .
-    ja:likeBuiltinSpec a rdf:Property ;
-      rdfs:domain ja:OntModelSpec
-    .
+ja:OntModelSpec a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:like; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:reasonerFactory; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:importSource; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:documentManager; owl:maxCardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:ontLanguage; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+ja:importSource a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:reasonerFactory a rdf:Property ;
+  rdfs:domain ja:OntModelSpec ;
+  rdfs:range ja:ReasonerFactory
+.
+ja:documentManager a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:ontLanguage a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+ja:likeBuiltinSpec a rdf:Property ;
+  rdfs:domain ja:OntModelSpec
+.
+```
 
 `OntModel` is a subclass of `InfModel`, and the `ja:baseModel`
 property means the same thing.
@@ -459,14 +491,16 @@ An `OntDocumentManager` can be specified by a `ja:DocumentManager`
 specification which describes the `OntDocumentManager`'s file
 manager and policy settings.
 
-    eg:mapper
-        lm:mapping [lm:altName "file:etc/foo.n3" ;
-        lm:name "file:foo.n3"]
-        .
-    eg:document-manager-example
-        ja:fileManager [ja:locationMapper eg:mapper] ;
-        ja:meta [ dm:altURL <http://localhost/RDF/my-alt.rdf>]
-        .
+```turtle
+eg:mapper
+    lm:mapping [lm:altName "file:etc/foo.n3" ;
+    lm:name "file:foo.n3"]
+    .
+eg:document-manager-example
+    ja:fileManager [ja:locationMapper eg:mapper] ;
+    ja:meta [ dm:altURL <http://localhost/RDF/my-alt.rdf>]
+    .
+```
 
 In this example, `eg:document-manager-example` is a
 `ja:DocumentManager` specification. It has its own
@@ -479,8 +513,9 @@ document manager meta-data: the sub-model of the assembler
 specification reachable from `eg:document-manager-example` is
 passed to the document manager when it is created. For the meanings
 of the `dm:` properties, see the Jena ontology documentation and
-the ontology.rdf ontology.
+the `ontology.rdf` ontology.
 
+```turtle
     ja:DocumentManager a rdfs:Class ;
       rdfs:subClassOf [owl:onProperty ja:policyPath; owl:maxCardinality 1] ;
       rdfs:subClassOf [owl:onProperty ja:fileManager; owl:maxCardinality 1] ;
@@ -490,6 +525,7 @@ the ontology.rdf ontology.
     ja:policyPath a rdf:Property ;
       rdfs:domain ja:DocumentManager
     .
+```
 
 The `ja:fileManager` property value, if present, has as its object
 a `ja:FileManager` specification; the constructed document manager
@@ -506,26 +542,30 @@ DocumentManager resource contains any OntDocumentManager
 `DOC_MGR_POLICY` or `ONTOLOGY_SPEC` objects, they will be
 interpreted by the constructed document manager object.
 
-    ja:FileManager a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:locationMapper; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:locationMapper a rdf:Property ;
-      rdfs:domain ja:FileManager ;
-      rdfs:range ja:LocationMapper
-    .
+```turtle
+ja:FileManager a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:locationMapper; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+ja:locationMapper a rdf:Property ;
+  rdfs:domain ja:FileManager ;
+  rdfs:range ja:LocationMapper
+.
+```
 
 A `ja:FileManager` object may have a `ja:locationMapper` property
 value which identifies the specification of a `LocationMapper`
 object initialising that file manager.
 
-    ja:LocationMapper a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty lm:mapping; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Object
-    .
-    lm:mapping a rdf:Property ;
-      rdfs:domain ja:LocationMapper
-    .
+```turtle
+ja:LocationMapper a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty lm:mapping; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Object
+.
+lm:mapping a rdf:Property ;
+  rdfs:domain ja:LocationMapper
+.
+```
 
 A `ja:LocationMapper` object may have `lm:mapping` property values,
 describing the location mapping, as described in the FileManager
@@ -538,18 +578,20 @@ Union models can be constructed from any number of sub-models and a
 single *root* model. The root model is the one written to when the
 union model is updated; the sub-models are untouched.
 
-    ja:UnionModel a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:rootModel; owl:maxCardinality 1] ;
-      rdfs:subClassOf ja:Model
-    .
-    ja:rootModel a rdf:Property ;
-      rdfs:domain ja:UnionModel ;
-      rdfs:range ja:Model
-    .
-    ja:subModel a rdf:Property ;
-      rdfs:domain ja:UnionModel ;
-      rdfs:range ja:Model
-    .
+```turtle
+ja:UnionModel a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:rootModel; owl:maxCardinality 1] ;
+  rdfs:subClassOf ja:Model
+.
+ja:rootModel a rdf:Property ;
+  rdfs:domain ja:UnionModel ;
+  rdfs:range ja:Model
+.
+ja:subModel a rdf:Property ;
+  rdfs:domain ja:UnionModel ;
+  rdfs:range ja:Model
+.
+```
 
 If the single `ja:rootModel` property is present, its value
 describes a model to use as the root model of the union. All
@@ -567,25 +609,27 @@ property).
 The PrefixMappings of a model may be set from PrefixMapping
 specifications.
 
-    ja:PrefixMapping a rdfs:Class ;
-      rdfs:subClassOf ja:Object
-    .
-    ja:includes a rdf:Property ;
-      rdfs:domain ja:PrefixMapping ;
-      rdfs:range ja:PrefixMapping
-    .
+```turtle
+ja:PrefixMapping a rdfs:Class ;
+  rdfs:subClassOf ja:Object
+.
+ja:includes a rdf:Property ;
+  rdfs:domain ja:PrefixMapping ;
+  rdfs:range ja:PrefixMapping
+.
 
-    ja:SinglePrefixMapping a rdfs:Class ;
-      rdfs:subClassOf [owl:onProperty ja:namespace; owl:cardinality 1] ;
-      rdfs:subClassOf [owl:onProperty ja:prefix; owl:cardinality 1] ;
-      rdfs:subClassOf ja:PrefixMapping
-    .
-    ja:namespace a rdf:Property ;
-      rdfs:domain ja:SinglePrefixMapping
-    .
-    ja:prefix a rdf:Property ;
-      rdfs:domain ja:SinglePrefixMapping
-    .
+ja:SinglePrefixMapping a rdfs:Class ;
+  rdfs:subClassOf [owl:onProperty ja:namespace; owl:cardinality 1] ;
+  rdfs:subClassOf [owl:onProperty ja:prefix; owl:cardinality 1] ;
+  rdfs:subClassOf ja:PrefixMapping
+.
+ja:namespace a rdf:Property ;
+  rdfs:domain ja:SinglePrefixMapping
+.
+ja:prefix a rdf:Property ;
+  rdfs:domain ja:SinglePrefixMapping
+.
+```
 
 The `ja:includes` property allows a PrefixMapping to include the
 content of other specified PrefixMappings.
@@ -603,7 +647,9 @@ Assembler specification: the *assembler* and *imports* directives.
 
 A specification may contain statements of the form:
 
-    someResource ja:assembler "some.Assembler.class.name"
+```turtle
+someResource ja:assembler "some.Assembler.class.name"
+```
 
 When `someResource` is used as the type of a root object, the
 AssemblerGroup that processes the description will use an instance
@@ -614,7 +660,9 @@ details.
 
 Similarly, statements of the form:
 
-    someResource ja:loadClass "some.class.name"
+```turtle
+someResource ja:loadClass "some.class.name"
+```
 
 will cause the named class to be loaded (but not treated as
 assemblers).
@@ -623,11 +671,15 @@ assemblers).
 
 If a specification contains statements of the form:
 
-    anyResource owl:imports someURL
+```turtle
+anyResource owl:imports someURL
+```
 
 or, equivalently,
 
-    anyResource ja:imports someURL
+```turtle
+anyResource ja:imports someURL
+```
 
 then the specification is regarded as also containing the contents
 of the RDF at `someURL`. That RDF may in turn contain `imports`

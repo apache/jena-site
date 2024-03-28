@@ -9,151 +9,168 @@ Query Builder provides implementations of Ask, Construct, Select and Update buil
 
 Each of the builders has a series of methods to define the query.  Each method returns the builder for easy chaining.  The  example:
 
+```java
+SelectBuilder sb = new SelectBuilder()
+    .addVar( "*" )
+    .addWhere( "?s", "?p", "?o" );
 
-    SelectBuilder sb = new SelectBuilder()
-        .addVar( "*" )
-        .addWhere( "?s", "?p", "?o" );
-
-    Query q = sb.build() ;
-
+Query q = sb.build() ;
+```
 
 produces
 
-    SELECT *
-    WHERE
-      { ?s ?p ?o }
+```sparql
+SELECT *
+WHERE
+  { ?s ?p ?o }
+```
 
 Standard Java variables can be used in the various clauses as long as the datatype has a registered Datatype within Jena.  For example:
 
-    Integer five = Integer.valueof(5);
-    SelectBuilder sb = new SelectBuilder()
-        .addVar( "*" )
-        .addWhere( "?s", "?p", five );
+```java
+Integer five = Integer.valueof(5);
+SelectBuilder sb = new SelectBuilder()
+    .addVar( "*" )
+    .addWhere( "?s", "?p", five );
 
-    Query q = sb.build() ;
-
+Query q = sb.build() ;
+```
 
 produces
 
-    SELECT *
-    WHERE
-      { ?s ?p "5"^^<http://www.w3.org/2001/XMLSchema#integer> }
+```sparql
+SELECT *
+WHERE
+  { ?s ?p "5"^^<http://www.w3.org/2001/XMLSchema#integer> }
+```
 
 Java Collections are properly expanded to RDF collections within the query builder provided there is a registered Datatype for the elements.  Nested collections are expanded. Collections can also be defined with the standard SPARQL shorthand.  So the following produce equivalent queries:
 
+```java
+SelectBuilder sb = new SelectBuilder()
+    .addVar( "*" )
+    .addWhere( "?s", "?p", List.of( "a", "b", "c") );
 
-    SelectBuilder sb = new SelectBuilder()
-        .addVar( "*" )
-        .addWhere( "?s", "?p", List.of( "a", "b", "c") );
-
-    Query q = sb.build() ;
+Query q = sb.build() ;
+```
 
 and
 
-    SelectBuilder sb = new SelectBuilder()
-        .addVar( "*" )
-        .addWhere( "?s", "?p", "('a' 'b' 'c')" );
+```java
+SelectBuilder sb = new SelectBuilder()
+    .addVar( "*" )
+    .addWhere( "?s", "?p", "('a' 'b' 'c')" );
 
-    Query q = sb.build() ;
+Query q = sb.build() ;
+```
 
 It is common to create `Var` objects and use them in complex queries to make the query more readable.  For example:
 
-    Var node = Var.alloc("node");
-    Var x = Var.alloc("x");
-    Var y = Var.alloc("y");
-    SelectBuilder sb = new SelectBuilder()
-      .addVar(x).addVar(y)
-      .addWhere(node, RDF.type, Namespace.Obst)
-      .addWhere(node, Namespace.x, x)
-      .addWhere(node, Namespace.y, y);
-
+```java
+Var node = Var.alloc("node");
+Var x = Var.alloc("x");
+Var y = Var.alloc("y");
+SelectBuilder sb = new SelectBuilder()
+  .addVar(x).addVar(y)
+  .addWhere(node, RDF.type, Namespace.Obst)
+  .addWhere(node, Namespace.x, x)
+  .addWhere(node, Namespace.y, y);
+```
 
 # Constructing Expressions
 
 Expressions are primarily used in `filter` and `bind` statements as well as in select clauses.  All the standard expressions are implemented in the `ExprFactory` class.  An `ExprFactory` can be retrieved from any Builder by calling the `getExprFactory()` method.  This will create a Factory that has the same prefix mappings and the query.  An alternative is to construct the `ExprFactory` directly, this factory will not have the prefixes defined in `PrefixMapping.Extended`.
 
-    SelectBuilder builder = new SelectBuilder();
-    ExprFactory exprF = builder.getExprFactory()
-        .addPrefix( "cf",
-            "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0023/");
-    builder.addVar( exprF.floor( ?v ), ?floor )
-        .addWhere( ?s, "cf:air_temperature", ?v );
+```java
+SelectBuilder builder = new SelectBuilder();
+ExprFactory exprF = builder.getExprFactory()
+    .addPrefix( "cf",
+        "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0023/");
+builder.addVar( exprF.floor( ?v ), ?floor )
+    .addWhere( ?s, "cf:air_temperature", ?v );
+```
 
 
 ## Update Builder
 
 The `UpdateBuilder` is used to create `Update`, `UpdateDeleteWhere` or `UpdateRequest` objects.  When an `UpdateRequest` is built is contains a single `Update` object as defined by the `UpdateBuilder`.  `Update` objects can  be added to an UpdateRequest using the `appendTo()` method.
 
-    Var subj = Var.alloc( "s" );
-    Var obj = Var.alloc( "o" );
+```java
+Var subj = Var.alloc( "s" );
+Var obj = Var.alloc( "o" );
 
-    UpdateBuilder builder = new UpdateBuilder( PrefixMapping.Standard)
-        .addInsert( subj, "rdfs:comment", obj )
-        .addWhere( subj, "dc:title", obj);
+UpdateBuilder builder = new UpdateBuilder( PrefixMapping.Standard)
+    .addInsert( subj, "rdfs:comment", obj )
+    .addWhere( subj, "dc:title", obj);
 
-    UpdateRequest req = builder.buildRequest();
+UpdateRequest req = builder.buildRequest();
 
-    UpdateBuilder builder2 = new UpdateBuilder()
-        .addPrefix( "dc", "http://purl.org/dc/elements/1.1/")
-        .addDelete( subj, "?p", obj)
-        .where( subj, dc:creator, "me")
-        .appendTo( req );
+UpdateBuilder builder2 = new UpdateBuilder()
+    .addPrefix( "dc", "http://purl.org/dc/elements/1.1/")
+    .addDelete( subj, "?p", obj)
+    .where( subj, dc:creator, "me")
+    .appendTo( req );
+```
 
 ## Where Builder
 
 In some use cases it is desirable to create a where clause without constructing an entire query.  The `WhereBuilder` is designed to fit this need.  For example to construct the query:
 
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+```sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-    SELECT ?page ?type WHERE
-    {
-        ?s foaf:page ?page .
-        { ?s rdfs:label "Microsoft"@en . BIND ("A" as ?type) }
-        UNION
-        { ?s rdfs:label "Apple"@en . BIND ("B" as ?type) }
-    }
+SELECT ?page ?type WHERE
+{
+    ?s foaf:page ?page .
+    { ?s rdfs:label "Microsoft"@en . BIND ("A" as ?type) }
+    UNION
+    { ?s rdfs:label "Apple"@en . BIND ("B" as ?type) }
+}
+```
 
 You could use a WhereBuilder to construct the union queries and add them to a Select or other query builder.
 
-    WhereBuilder whereBuilder = new WhereBuilder()
+```java
+WhereBuilder whereBuilder = new WhereBuilder()
+    .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
+    addWhere( "?s", "rdfs:label", "'Microsoft'@en" )
+    .addBind( "'A'", "?type")
+    .addUnion( new WhereBuilder()
         .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
-        addWhere( "?s", "rdfs:label", "'Microsoft'@en" )
-        .addBind( "'A'", "?type")
-        .addUnion( new WhereBuilder()
-            .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
-            .addWhere( "?s", "rdfs:label", "'Apple'@en" )
-            .addBind( "'B'", "?type")
-        );
+        .addWhere( "?s", "rdfs:label", "'Apple'@en" )
+        .addBind( "'B'", "?type")
+    );
 
-    SelectBuilder builder = new SelectBuilder()
-       .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
-       .addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" );
-       .addVar( "?page")
-       .addVar( "?type" )
-       .addWhere( "?s", "foaf:page",  "?page" )
-       .addWhere( whereBuilder );
+SelectBuilder builder = new SelectBuilder()
+   .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
+   .addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" );
+   .addVar( "?page")
+   .addVar( "?type" )
+   .addWhere( "?s", "foaf:page",  "?page" )
+   .addWhere( whereBuilder );
+```
 
 The where clauses could be built inline as:
 
-    SelectBuilder builder = new SelectBuilder()
-      .addPrefixs( PrefixMapping.Standard )
-      .addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" );
-      .addVar( "?page")
-      .addVar( "?type" )
-      .addWhere( "?s", "foaf:page",  "?page" )
-      .addWhere( new WhereBuilder()
+```java
+SelectBuilder builder = new SelectBuilder()
+  .addPrefixs( PrefixMapping.Standard )
+  .addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" );
+  .addVar( "?page")
+  .addVar( "?type" )
+  .addWhere( "?s", "foaf:page",  "?page" )
+  .addWhere( new WhereBuilder()
+      .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
+      .addWhere( "?s", "rdfs:label", "'Microsoft'@en" )
+      .addBind( "'A'", "?type")
+      .addUnion( new WhereBuilder()
           .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
-          .addWhere( "?s", "rdfs:label", "'Microsoft'@en" )
-          .addBind( "'A'", "?type")
-          .addUnion( new WhereBuilder()
-              .addPrefix( "rdfs",  "http://www.w3.org/2000/01/rdf-schema#" )
-              .addWhere( "?s", "rdfs:label", "'Apple'@en" )
-              .addBind( "'B'", "?type")
-          )
-      );
-
-
+          .addWhere( "?s", "rdfs:label", "'Apple'@en" )
+          .addBind( "'B'", "?type")
+      )
+  );
+```
 
 ## Template Usage
 
@@ -162,34 +179,40 @@ Using this a developer can create as "Template" query and add to it as necessary
 
 For example using the above query as the "template" with this code:
 
-
-    SelectBuilder sb2 = sb.clone();
-    sb2.addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" )
-       .addWhere( ?s, RDF.type, "foaf:Person") ;
-
+```java
+SelectBuilder sb2 = sb.clone();
+sb2.addPrefix( "foaf", "http://xmlns.com/foaf/0.1/" )
+   .addWhere( ?s, RDF.type, "foaf:Person") ;
+```
 
 produces
 
-    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-    SELECT *
-    WHERE
-      { ?s ?p ?o .
-        ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> foaf:person .
-      }
+```sparql
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT *
+WHERE
+  { ?s ?p ?o .
+    ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> foaf:person .
+  }
+```
 
 ## Prepared Statement Usage
 
 The query builders have the ability to replace variables with other values.  This can be
 
-    SelectBuilder sb = new SelectBuilder()
-        .addVar( "*" )
-        .addWhere( "?s", "?p", "?o" );
+```java
+SelectBuilder sb = new SelectBuilder()
+    .addVar( "*" )
+    .addWhere( "?s", "?p", "?o" );
 
-    sb.setVar( Var.alloc( "?o" ), NodeFactory.createURI( "http://xmlns.com/foaf/0.1/Person" ) ) ;
-    Query q = sb.build();
+sb.setVar( Var.alloc( "?o" ), NodeFactory.createURI( "http://xmlns.com/foaf/0.1/Person" ) ) ;
+Query q = sb.build();
+```
 
 produces
 
-    SELECT *
-    WHERE
-      { ?s ?p <http://xmlns.com/foaf/0.1/Person> }
+```sparql
+SELECT *
+WHERE
+  { ?s ?p <http://xmlns.com/foaf/0.1/Person> }
+```

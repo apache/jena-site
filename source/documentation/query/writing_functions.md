@@ -24,7 +24,7 @@ arguments.
 The abstract class `FunctionBase`, the superclass of
 `FunctionBase1` to `FunctionBase4`, evaluates its arguments and
 calls the implementation code with argument values (if a variable
-was unbound, an error will have been generated) 
+was unbound, an error will have been generated)
 
 It is possible to get unevaluated arguments but care must be taken
 not to violate the rules of function evaluation. The standard
@@ -92,7 +92,7 @@ The standard library, in package
 
 ## Registering Functions
 
-The query compiler finds functions based on the functions URI. 
+The query compiler finds functions based on the functions URI.
 There is a global registry of known functions, but any query
 execution can have its own function registry.
 
@@ -126,7 +126,7 @@ with the command line tools can load custom functions.
        FILTER (?x + f:myIntToXSD(?y))
     ...
 
- 
+
 
 
 [ARQ documentation index](index.html)

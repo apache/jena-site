@@ -69,7 +69,7 @@ graph in a CONSTRUCT query.
 
 The OPTIONAL/!BOUND/FILTER idiom for performing limited negation of
 a pattern in SPARQL can be inconvenient because it requires a
-variable in the OPTIONAL to be assigned by pattern matching.  Using
+variable in the OPTIONAL to be assigned by pattern matching. Using
 a LET can make that easier; here, we assign to ?z (any value will
 do) to mark when the matching pattern included the OPTIONAL
 pattern.

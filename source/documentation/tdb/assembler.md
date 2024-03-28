@@ -27,8 +27,8 @@ A dataset can be constructed in an assembler file:
     PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
 
-    <#dataset> rdf:type         tdb:DatasetTDB ;
-        tdb:location "DB" ;
+    <#dataset> rdf:type         tdb:DatasetTDB ;
+        tdb:location "DB" ;
         .
 
 Only one dataset can be stored in a location (filing system
@@ -43,8 +43,8 @@ The first section declares the prefixes used later:
 
 then there is the description of the TDB dataset itself:
 
-    <#dataset> rdf:type tdb:DatasetTDB ;
-        tdb:location "DB" ;
+    <#dataset> rdf:type tdb:DatasetTDB ;
+        tdb:location "DB" ;
 
 The property `tdb:location` gives the file name as a string. It is
 relative to the applications current working directory, not where
@@ -61,9 +61,9 @@ An assembler can specify that the default graph for query is the
 union of the named graphs. This is done by adding
 *tdb:unionDefaultGraph*.
 
-    <#dataset> rdf:type         tdb:DatasetTDB ;
-        tdb:location "DB" ;
-        tdb:unionDefaultGraph true ;
+    <#dataset> rdf:type         tdb:DatasetTDB ;
+        tdb:location "DB" ;
+        tdb:unionDefaultGraph true ;
         .
 
 ## Graph
@@ -79,18 +79,18 @@ A single graph from a TDB dataset can be described by:
     PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
 
-    <#dataset> rdf:type tdb:DatasetTDB ;
-        tdb:location "DB" ;
+    <#dataset> rdf:type tdb:DatasetTDB ;
+        tdb:location "DB" ;
 
-    <#graph> rdf:type tdb:GraphTDB ;
+    <#graph> rdf:type tdb:GraphTDB ;
         tdb:dataset <#dataset> .
 
 A particular named graph in the dataset at a location can be
 assembled with:
 
-    <#graphNamed> rdf:type tdb:GraphTDB ;
+    <#graphNamed> rdf:type tdb:GraphTDB ;
         tdb:dataset <#dataset> ;
-        tdb:graphName <http://example/graph1> ;
+        tdb:graphName <http://example/graph1> ;
         .
 
 ## Mixed Datasets
@@ -109,19 +109,19 @@ below:
 
     # A dataset of one TDB-backed graph as the default graph and 
     # an in-memory graph as a named graph.
-    <#dataset> rdf:type      ja:RDFDataset ;
-         ja:defaultGraph <#graph> ;
+    <#dataset> rdf:type      ja:RDFDataset ;
+         ja:defaultGraph <#graph> ;
          ja:namedGraph
-            [ ja:graphName      <http://example.org/name1> ;
-              ja:graph          <#graph2> ] ;
+            [ ja:graphName      <http://example.org/name1> ;
+              ja:graph          <#graph2> ] ;
          .
 
-    <#graph> rdf:type tdb:GraphTDB ;
-        tdb:location "DB" ;
+    <#graph> rdf:type tdb:GraphTDB ;
+        tdb:location "DB" ;
         .
 
-    <#graph2> rdf:type ja:MemoryModel ;
-         ja:content [ja:externalContent <file:Data/books.n3> ] ;
+    <#graph2> rdf:type ja:MemoryModel ;
+         ja:content [ja:externalContent <file:Data/books.n3> ] ;
          .
 
 Note here we added:
@@ -145,17 +145,17 @@ reasoners.
     tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
     tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
-    tdb:location a rdf:Property ;
+    tdb:location a rdf:Property ;
        # domain is tdb:Dataset or tdb:GraphTDB
        # The range is simple literal
        .
 
-    tdb:unionDefaultGraph a rdf:Property ;
-       rdfs:domain tdb:Dataset ;
+    tdb:unionDefaultGraph a rdf:Property ;
+       rdfs:domain tdb:Dataset ;
        # The range is xsd:boolean
        .
 
-    tdb:graphName a rdf:Property ;
-       rdfs:domain tdb:GraphTDB ;
+    tdb:graphName a rdf:Property ;
+       rdfs:domain tdb:GraphTDB ;
        # range is a URI
        .

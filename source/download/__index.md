@@ -49,7 +49,7 @@ The binary distribution of Fuseki as a WAR file:
 This can be run in any servlet application container supporting Jakarta Servlet 6.0
 (part of Jakarta EE version 9), such as [Apache Tomcat](https://tomcat.apache.org/index.html)
 10.x or later.
-The server must be running running on the required version of Java.
+The server must be running on the required version of Java.
 
 ### Apache Jena Download area
 
@@ -66,12 +66,14 @@ Individual modules may be obtained using a dependency manager which can talk to 
 
 See "[Using Jena with Apache Maven](maven.html)" for full details.
 
-    <dependency>
-       <groupId>org.apache.jena</groupId>
-       <artifactId>apache-jena-libs</artifactId>
-       <type>pom</type>
-       <version>X.Y.Z</version>
-    </dependency>
+```xml
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>apache-jena-libs</artifactId>
+   <type>pom</type>
+   <version>X.Y.Z</version>
+</dependency>
+```
 
 #### Source code
 
@@ -79,7 +81,7 @@ The development codebase is available from git.
 
 [https://gitbox.apache.org/repos/asf?p=jena.git](https://gitbox.apache.org/repos/asf?p=jena.git)
 
-This is also available on github:
+This is also available on GitHub:
 
 [https://github.com/apache/jena](https://github.com/apache/jena)
 

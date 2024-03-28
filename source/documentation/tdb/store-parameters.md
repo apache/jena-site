@@ -18,21 +18,25 @@ before any other access to the disk area occurs. It is not possible to have
 different setups for the same dataset on disk.
 
 `StoreParams` are set by populating the internal state with the setup
-before a application level dataset is created.
+before an application level dataset is created.
 
-    TDBFactory.setup(Location location, StoreParams params)
+```java
+TDBFactory.setup(Location location, StoreParams params)
+```
 
 This must be called before any application calls to get a `Dataset` (or
 `DatasetGraph`) object otherwise `IllegalStateException` is thrown by this
 function.
 
-    Location location = ... ;
-    StoreParams customParams = ... ;
+```hava
+Location location = ... ;
+StoreParams customParams = ... ;
 
-    TDBFactory.setup(location, customParams) ;
-    
-    Dataset ds = TDBFactory.createDataset(location) ;
-    ...
+TDBFactory.setup(location, customParams) ;
+
+Dataset ds = TDBFactory.createDataset(location) ;
+...
+```
 
 It is only possible to change store parameters by expelling the managed
 storage by calling `TDBFactory.release(Location)`.  This drops all caching.
@@ -115,7 +119,7 @@ below.  Unspecified options defaults to the for the running setup.
 
 These are default settings for a 64 bit Java:
 
-<pre>
+```json
 { 
   "tdb.file_mode" :               "mapped" ,
   "tdb.block_size" :              8192 ,
@@ -136,7 +140,7 @@ These are default settings for a 64 bit Java:
   "tdb.file_prefix_nodeid" :      "prefix2id" ,
   "tdb.file_prefix_id2node" :     "prefixes"
 }
-</pre>
+```
 
 ## Choosing the store parameters
 

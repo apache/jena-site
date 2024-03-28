@@ -26,17 +26,17 @@ These methods are found on the
 [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) interface.
 These are:
 
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream, java.lang.String))`(java.io.InputStream in, java.lang.String base)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream, java.lang.String))`(java.io.InputStream in, java.lang.String base)`
   <br />Add statements from an RDF/XML serialization
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream, java.lang.String, java.lang.String))`(java.io.InputStream in, java.lang.String base, java.lang.String lang)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.InputStream, java.lang.String, java.lang.String))`(java.io.InputStream in, java.lang.String base, java.lang.String lang)`
   <br /> Add RDF statements represented in language `lang` to the model.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.lang.String))`(java.lang.String url)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.lang.String))`(java.lang.String url)`
   <br />Add the RDF statements from an XML document.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream))`(java.io.OutputStream out)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream))`(java.io.OutputStream out)`
   <br /> Write the model as an XML document.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream, java.lang.String))`(java.io.OutputStream out, java.lang.String lang)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream, java.lang.String))`(java.io.OutputStream out, java.lang.String lang)`
   <br />Write a serialized representation of a model in a specified language.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream, java.lang.String, java.lang.String))`(java.io.OutputStream out, java.lang.String lang, java.lang.String base)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.OutputStream, java.lang.String, java.lang.String))`(java.io.OutputStream out, java.lang.String lang, java.lang.String base)`
   <br />Write a serialized representation of a model in a specified language.
 
 The built-in languages are `"RDF/XML"`, `"RDF/XML-ABBREV"` as well as 
@@ -56,7 +56,7 @@ result in such errors. Most incorrect usage of `Writer`s for RDF/XML
 output will produce correct XML by using an appropriate XML
 declaration giving the encoding - e.g.
 
-    <?xml version='1.0' encoding='ISO-8859-15'?>
+    <?xml version='1.0' encoding='ISO-8859-15'?>
 
 However, such XML is less portable than XML in UTF-8. Using the
 `Model.write(OutputStream …)` methods allows the Jena system
@@ -165,21 +165,21 @@ These do not need to be encoded and decoded so a character encoding
 does not need to be specified. Other examples are when an advanced
 user explicitly wishes to correctly control the encoding.
 
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.Reader, java.lang.String))`(java.io.Reader reader, java.lang.String base)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.Reader, java.lang.String))`(java.io.Reader reader, java.lang.String base)`
 <br />Using this method is often a mistake.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.Reader, java.lang.String, java.lang.String))`(java.io.Reader reader, java.lang.String base, java.lang.String lang)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`read`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#read(java.io.Reader, java.lang.String, java.lang.String))`(java.io.Reader reader, java.lang.String base, java.lang.String lang)`
 <br />Using this method is often a mistake.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer))`(java.io.Writer writer)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer))`(java.io.Writer writer)`
 <br />Caution! Write the model as an XML document.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer, java.lang.String))`(java.io.Writer writer, java.lang.String lang)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer, java.lang.String))`(java.io.Writer writer, java.lang.String lang)`
 <br /> Caution! Write a serialized representation of a model in a specified language.
-- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer, java.lang.String, java.lang.String))`(java.io.Writer writer, java.lang.String lang, java.lang.String base)`
+- [`Model`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html) [`write`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#write(java.io.Writer, java.lang.String, java.lang.String))`(java.io.Writer writer, java.lang.String lang, java.lang.String base)`
 <br /> Caution! Write a serialized representation of a model in a specified language.
 
-Incorrect use of these `read(Reader, …)` methods results in
+Incorrect use of these `read(Reader, …)` methods results in
 warnings and errors with RDF/XML and RDF/XML-ABBREV (except in a
 few cases where the incorrect use cannot be automatically
-detected). Incorrect use of the `write(Writer, …)` methods
+detected). Incorrect use of the `write(Writer, …)` methods
 results in peculiar XML declarations such as
 `<?xml version="1.0" encoding="WINDOWS-1252"?>`. This would reflect
 that the character encoding you used (probably without realizing)
@@ -214,13 +214,13 @@ The four vital calls in the `Model` interface are:
 [`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader())`()`
 <br />Return an RDFReader instance for the default serialization language.
 - [`RDFReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html)
-[`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader(java.lang.String))`(java.lang.String lang)`
+[`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader(java.lang.String))`(java.lang.String lang)`
 <br />Return an RDFReader instance for the specified serialization language.
 - [`RDFReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html)
 [`getWriter`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFWriterF.html#getWriter())`()`
 <br />Return an RDFWriter instance for the default serialization language.
 - [`RDFReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html)
-[`getWriter`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFWriterF.html#getWriter(java.lang.String))`(java.lang.String lang)`
+[`getWriter`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFWriterF.html#getWriter(java.lang.String))`(java.lang.String lang)`
 <br />An RDFWriter instance for the specified serialization language.
 
 Each of these calls returns an `RDFReader` or `RDFWriter` that can be
@@ -235,7 +235,7 @@ methods, these interfaces provide:
 [`setErrorHandler`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html#setErrorHandler(org.apache.jena.rdf.model.RDFErrorHandler))`(` [RDFErrorHandler](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFErrorHandler.html) `errHandler )`
 <br />Set an error handler for the reader
 - `java.lang.Object`
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html#setProperty(java.lang.String, java.lang.Object))`(java.lang.String propName, java.lang.Object propValue)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReader.html#setProperty(java.lang.String, java.lang.Object))`(java.lang.String propName, java.lang.Object propValue)`
 <br />Set the value of a reader property.
 
 Setting properties, or the error handler, on an `RDFReader` or an
@@ -280,9 +280,9 @@ For RDF/XML and RDF/XML-ABBREV, there are many options in both the
 `RDFReader` and the `RDFWriter`. N3 has options on the `RDFWriter`. These
 options are detailed below. For RDF/XML they are also found in the
 JavaDoc for
-`JenaReader.`[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+`JenaReader.`[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 and
-`RDFXMLWriterI.`[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/xmloutput/RDFXMLWriterI.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`.
+`RDFXMLWriterI.`[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/xmloutput/RDFXMLWriterI.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`.
 
 ## Advanced RDF/XML Input
 
@@ -290,7 +290,7 @@ For access to these advanced features, first get an `RDFReader`
 object that is an instance of an ARP parser, by using the
 [`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader())`()`
 method on any `Model`. It is then configured using the
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 method. This changes the properties for parsing RDF/XML. Many of
 the properties change the RDF parser, some change the XML parser.
 (The Jena RDF/XML parser, ARP, implements the
@@ -299,7 +299,7 @@ over a [Xerces2-J](http://xml.apache.org/xerces2-j/index.html) XML
 parser). However, changing the features and properties of the XML
 parser is not likely to be useful, but was easy to implement.
 
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 can be used to set and get:
 
 - ARP properties
@@ -434,7 +434,7 @@ the appropriate language, by using
 or
 [`getWriter`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFWriterF.html#getWriter(java.lang.String))`("RDF/XML-ABBREV")`
 on any `Model`. It is then configured using the
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 method. This changes the properties for writing RDF/XML.
 
 ### Properties to Control RDF/XML Output
@@ -562,7 +562,7 @@ that writer.
 <td><tt>Resource[]</tt> or <tt>String</tt></td>
 <td></td>
 </tr>
-<tr> 
+<tr>
 <td><tt>prettyTypes</tt></td>
 <td>
 Only for the RDF/XML-ABBREV writer. This is a list of the types of

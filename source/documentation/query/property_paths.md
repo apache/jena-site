@@ -5,7 +5,7 @@ title: ARQ Property Paths
 # ARQ - Property Paths
 
 A property path is a possible route through a graph between two
-graph nodes.  A trivial case is a property path of length exactly
+graph nodes.  A trivial case is a property path of length exactly
 one, which is a triple pattern.
 
 Most property paths are now legal SPARQL 1.1 syntax, there are some advanced property 
@@ -75,7 +75,7 @@ path-evaluation at runtime.
 
 A path of just a URI is still a single triple pattern.
 
-A path is "complex"  if it involves one or more of the operators
+A path is "complex" if it involves one or more of the operators
 \*,?, + and {}. Such paths require special evaluation and provide
 expressivity outside of strict SPARQL because paths can be of
 variable length. When used with models backed by SQL databases,

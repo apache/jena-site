@@ -16,7 +16,7 @@ encouraged.
 Expressions can involve [group aggregations](group-by.html).
 
 Expressions that do not correctly evaluate result in an unbound
-variable in the results.  That is, the illegal expression is
+variable in the results. That is, the illegal expression is
 silently skipped.
 
 Examples:
@@ -28,7 +28,7 @@ Examples:
       :x :p ?p
     }
 
- 
+
 
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX :    <http://example/>

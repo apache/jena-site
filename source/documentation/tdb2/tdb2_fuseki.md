@@ -10,27 +10,28 @@ either a complete server configuration (see below) or as an entry in the
 `FUSEKI_BASE/configuration/` area of the full server.
 
 The command line start-up for Fuseki (both full and basic versions) uses the
-the `--tdb2` flag to modify the `--loc` argument to work with a TDB2 dataset.
+`--tdb2` flag to modify the `--loc` argument to work with a TDB2 dataset.
 
 Example complete server configuration file for full or basic servers:
-The base URL will be of the form `http::/_host:port_/tdb2-database`.
+The base URL will be of the form `http://_host:port_/tdb2-database`.
 
 Note the `tdb2:` prefix.
 
-<pre>
-PREFIX :        &lt;#&gt;
-PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
-PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-<b>PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;</b>
-PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+```ttl
+PREFIX :        <#>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+# tdb2 in this line, below.
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
 
 [] rdf:type fuseki:Server ;
    fuseki:services (
-     &lt;#service_tdb2&gt;
+     <#service_tdb2>
    ) .
 
-&lt;#service_tdb2&gt; rdf:type fuseki:Service ;
+<#service_tdb2> rdf:type fuseki:Service ;
     rdfs:label                      "TDB2 Service (RW)" ;
     fuseki:name                     "tdb2-database" ;
     fuseki:serviceQuery             "query" ;
@@ -39,14 +40,14 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
     fuseki:serviceReadWriteGraphStore      "data" ;
     # A separate read-only graph store endpoint:
     fuseki:serviceReadGraphStore       "get" ;
-    fuseki:dataset           &lt;#tdb_dataset_readwrite&gt; ;
+    fuseki:dataset           <#tdb_dataset_readwrite> ;
     .
 
-&lt;#tdb_dataset_readwrite&gt; rdf:type      <b>tdb2:DatasetTDB2</b> ;
+<#tdb_dataset_readwrite> rdf:type      <b>tdb2:DatasetTDB2</b> ;
     <b>tdb2:location</b> "TDB2" ;
     ## This is supported: tdb2:unionDefaultGraph true ;
-        .
-</pre>
+    .
+```
 
 This example is available in [config-tdb2.ttl](https://github.com/apache/jena/blob/main/jena-fuseki2/examples/config-tdb2.ttl)
 
@@ -58,15 +59,15 @@ editing will be routed to the TDB2 database.
 
 For a service configuration in `FUSEKI_BASE/configuration/`:
 
-<pre>
-PREFIX :        &lt;#&gt;
-PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
-PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;
-PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+```turtle
+PREFIX :        <#>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
 
-&lt;#service_tdb2&gt; rdf:type fuseki:Service ;
+<#service_tdb2> rdf:type fuseki:Service ;
     rdfs:label                      "TDB2 Service (RW)" ;
     fuseki:name                     "tdb2-database" ;
     fuseki:serviceQuery             "query" ;
@@ -75,11 +76,11 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
     fuseki:serviceReadWriteGraphStore      "data" ;
     # A separate read-only graph store endpoint:
     fuseki:serviceReadGraphStore       "get" ;
-    fuseki:dataset           &lt;#tdb_dataset_readwrite&gt; ;
+    fuseki:dataset           <#tdb_dataset_readwrite> ;
     .
 
-&lt;#tdb_dataset_readwrite&gt; rdf:type      <b>tdb2:DatasetTDB2</b> ;
+<#tdb_dataset_readwrite> rdf:type      <b>tdb2:DatasetTDB2</b> ;
     <b>tdb2:location</b> "TDB2" ;
     ## tdb2:unionDefaultGraph true ;
      .
-</pre>
+```

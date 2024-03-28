@@ -28,10 +28,10 @@ HSQLDB.
 
     sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 
-    <#dataset> rdf:type sdb:DatasetStore ;
+    <#dataset> rdf:type sdb:DatasetStore ;
         sdb:store <#store> .
 
-    <#store> rdf:type sdb:Store ;
+    <#store> rdf:type sdb:Store ;
        ...
        .
 
@@ -46,12 +46,12 @@ at the API level rather than at the query level, the following can
 be added to an assembler description:
 
     # Default graph
-    <#myModel1> rdf:type sdb:Model ;
+    <#myModel1> rdf:type sdb:Model ;
         sdb:dataset <#dataset> .
 
     # Named graph
-    <#myModel2> rdf:type sdb:Model ;
-        sdb:namedGraph   data:graph1 ;
+    <#myModel2> rdf:type sdb:Model ;
+        sdb:namedGraph   data:graph1 ;
         sdb:dataset <#dataset> .
 
 There can several model descriptions in the same file, referring to

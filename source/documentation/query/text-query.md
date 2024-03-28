@@ -26,15 +26,17 @@ so its use _is not indexed_. For example, if you're
 searching for occurrences of `"printer"` in the `rdfs:label` of a bunch
 of products:
 
-    PREFIX   ex: <http://www.example.org/resources#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    
-    SELECT ?s ?lbl
-    WHERE { 
-    	?s a ex:Product ;
-    	   rdfs:label ?lbl
-    	FILTER regex(?lbl, "printer", "i")
-    }
+```sparql
+PREFIX   ex: <http://www.example.org/resources#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?s ?lbl
+WHERE { 
+  ?s a ex:Product ;
+     rdfs:label ?lbl
+  FILTER regex(?lbl, "printer", "i")
+}
+```
 
 then the search will need to examine _all_ selected `rdfs:label`
 statements and apply the regular expression to each label in turn. If
@@ -1501,7 +1503,7 @@ There are two multilingual search situations that are supported as of 3.8.0:
 
 The first situation arises when entering triples that include languages with multiple encodings that for various reasons are not normalized to a single encoding. In this situation it is helpful to be able to retrieve appropriate result sets without regard for the encodings used at the time that the triples were inserted into the dataset.
 
-There are several such languages of interest: Chinese, Tibetan, Sanskrit, Japanese and Korean. There are various Romanizations and ideographic variants.
+There are several suchlanguages of interest: Chinese, Tibetan, Sanskrit, Japanese and Korean. There are various Romanizations and ideographic variants.
 
 Encodings may not be normalized when inserting triples for a variety of reasons. A principle one is that the `rdf:langString` object often must be entered in the same encoding that it occurs in some physical text that is being catalogued. Another is that metadata may be imported from sources that use different encoding conventions and it is desirable to preserve the original form.
 
@@ -1531,13 +1533,13 @@ To handle the first situation a `text` assembler predicate, `text:searchFor`, is
 
 indicates that when using a search string such as "རྡོ་རྗེ་སྙིང་"@bo the Lucene index should also be searched for matches tagged as `bo-x-ewts` and `bo-alalc97`.
 
-This is made possible by a Tibetan `Analyzer` that tokenizes strings in all three encodings into Tibetan Unicode. This is feasible since the `bo-x-ewts` and `bo-alalc97` encodings are one-to-one with Unicode Tibetan. Since all fields with these language tags will have a common set of indexed terms, i.e., Tibetan Unicode, it suffices to arrange for the query analyzer to have access to the language tag for the query string along with the various fields that need to be considered.
+This is made possible by a Tibetan `Analyzer` that tokenizes strings in all three encodings into Tibetan Unicode. This is feasible since the `bo-x-ewts` and `bo-alalc97` encodings are one-to-one with Unicode Tibetan. Since all fields with these language tags will have a common set of indexed terms, i.e., Tibetan Unicode, it suffices to arrange for the query analyzer to have access to the language tag for the query string along with the various fields that need to be considered.
 
 Supposing that the query is:
 
-    (?s ?sc ?lit) text:query ("rje"@bo-x-ewts) 
+    (?s ?sc ?lit) text:query ("rje"@bo-x-ewts)
 
-Then the query formed in `TextIndexLucene` will be:
+Then the query formed in `TextIndexLucene` will be:
 
     label_bo:rje label_bo-x-ewts:rje label_bo-alalc97:rje
 
@@ -1549,7 +1551,7 @@ which reflects the underlying Tibetan Unicode term encoding. During `IndexSearch
 
 This support simplifies applications by permitting encoding independent retrieval without additional layers of transcoding and so on. It's all done under the covers in Lucene.
 
-Solving the second situation simplifies applications by adding appropriate fields and indexing via configuration in the `text:defineAnalyzers`. For example, the following fragment:
+Solving the second situation simplifies applications by adding appropriate fields and indexing via configuration in the `text:defineAnalyzers`. For example, the following fragment:
 
         [ text:defineAnalyzer :hanzAnalyzer ; 
           text:analyzer [ 

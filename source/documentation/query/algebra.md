@@ -19,7 +19,7 @@ of the algebra form to access different graph storage
 implementations.
 
 The classes for the datastructures for the algebra resize in the
-package `org.apache.jena.sparql.algebra` in the `op` subpackage. 
+package `org.apache.jena.sparql.algebra` in the `op` subpackage.
 All the classes are names "`Op...`"; the interface that they all
 offer is "`Op`".
 
@@ -51,10 +51,10 @@ And back again.
     System.out.println(query.serialize()) ;
 
 This reverse translation can handle any algebra expression
-originally from a SPARQL Query, but not any algebra expression.  It
+originally from a SPARQL Query, but not any algebra expression. It
 is possible to create programmatically useful algebra expressions
 that can not be turned into a query, especially if they involve
-algebra.  Also, the query produced may not be exactly the same but
+algebra. Also, the query produced may not be exactly the same but
 will yield the same results (for example, filters may be moved
 because the SPARQL query algebra translation in the SPARQL
 specification moves filter expressions around).
@@ -73,14 +73,14 @@ The SSE class simply calls the appropriate builder operation from
 the `org.apache.jena.sparql.sse.builder` package.
 
 To go with this, there is a collection of writers for many of the
-Java structures in ARQ. 
+Java structures in ARQ.
 
     Op op = ... ;
     SSE.write(op) ;      // Write to stdout
 
 Writers default to writing to `System.out` but support calls to any
 output stream (it manages the conversion to UTF-8) and ARQ own
-`IndentedWriter`s form for embedding in structured output.  Again,
+`IndentedWriter`s form for embedding in structured output. Again,
 SSE is simply passing the calls to the writer operation from the
 `org.apache.jena.sparql.sse.writer` package.
 

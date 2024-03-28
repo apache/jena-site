@@ -6,11 +6,13 @@ title: TDB2 - Database Administration
 
 A TDB2 database is contained in a directory location `DIR` as:
 
-    DIR/
-      Backups/
-      Data-0001/
-      Data-0002/
-      tdb.lock
+```bash
+DIR/
+  Backups/
+  Data-0001/
+  Data-0002/
+  tdb.lock
+```
 
 where `Data-NNNN` are the compacted generations of the database. The
 highest number is the currently live database.  The others are not used
@@ -28,7 +30,9 @@ between processes, or machines, consider using [Fuseki2 with TDB2](tdb2_fuseki.h
 
 TDB2 databases grow over time as updates occur. They can be compacted by calling:
 
-    DatabaseMgr.compact(dataset.asDatasetGraph());
+```java
+DatabaseMgr.compact(dataset.asDatasetGraph());
+```
 
 Compaction can be done on a live database. Read requests will continue to be
 serviced; write request are held up until compaction has finished. This
@@ -49,7 +53,9 @@ for live [Fuseki webapps](/documentation/fuseki2/fuseki-webapp.html).
 
 A TDB2 database can be backed up by calling:
 
-    DatabaseMgr.backup(dataset.asDatasetGraph());
+```java
+DatabaseMgr.backup(dataset.asDatasetGraph());
+```
 
 which will create a dump file including a timestamp:
 

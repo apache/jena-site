@@ -20,10 +20,12 @@ but sometimes it is necessary to use the basic transaction API described here.
 These are used for SPARQL queries and code using the Jena API
 actions that do not change the data.  The general pattern is:
 
-     dataset.begin(ReadWrite.READ) ;
-     try {
-       ...
-     } finally { dataset.end() ; }
+```java
+dataset.begin(ReadWrite.READ) ;
+try {
+    ...
+} finally { dataset.end() ; }
+```
 
 The `dataset.end()` declares the end of the read transaction.  Applications may also call
 `dataset.commit()` or `dataset.abort()` which all have the same effect for a read transaction.
@@ -31,21 +33,23 @@ The `dataset.end()` declares the end of the read transaction.  Applications may 
 This example has two queries - no updates between or during the queries will be seen by
 this code even if another thread commits changes in the lifetime of this transaction.
 
-     Dataset dataset = ... ;
-     dataset.begin(ReadWrite.READ) ;
-     try {
-         String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
-         try(QueryExecution qExec = QueryExecution.create(qs1, dataset)) {
-             ResultSet rs = qExec.execSelect() ;
-             ResultSetFormatter.out(rs) ;
-         }
+```java
+Dataset dataset = ... ;
+dataset.begin(ReadWrite.READ) ;
+try {
+    String qs1 = "SELECT * {?s ?p ?o} LIMIT 10" ;        
+    try(QueryExecution qExec = QueryExecution.create(qs1, dataset)) {
+        ResultSet rs = qExec.execSelect() ;
+        ResultSetFormatter.out(rs) ;
+    }
 
-         String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
-         try(QueryExecution qExec = QueryExecution.create(qs2, dataset)) {
-             rs = qExec.execSelect() ;
-             ResultSetFormatter.out(rs) ;
-         }
-     } finally { dataset.end() ; }
+    String qs2 = "SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10" ;  
+    try(QueryExecution qExec = QueryExecution.create(qs2, dataset)) {
+        rs = qExec.execSelect() ;
+        ResultSetFormatter.out(rs) ;
+    }
+} finally { dataset.end() ; }
+```
 
 ### Write transactions
 
@@ -55,13 +59,15 @@ operations to change a dataset may consume large amounts of temporary space.
 
 The general pattern is:
 
-     dataset.begin(ReadWrite.WRITE) ;
-     try {
-       ...
-       dataset.commit() ;
-     } finally {
-       dataset.end() ;
-     }
+```java
+dataset.begin(ReadWrite.WRITE) ;
+try {
+    ...
+    dataset.commit() ;
+} finally {
+    dataset.end() ;
+}
+```
 
 The  `dataset.end()` will abort the transaction is there was no call to
 `dataset.commit()` or `dataset.abort()` inside the write transaction.
@@ -70,39 +76,41 @@ Once `dataset.commit()` or `dataset.abort()` is called, the application
 needs to start a new transaction to perform further operations on the
 dataset.
 
-     Dataset dataset = ... ;
-     dataset.begin(TxnType.WRITE) ;
+```java
+Dataset dataset = ... ;
+dataset.begin(TxnType.WRITE) ;
 
-     try {
-         Model model = dataset.getDefaultModel() ;
-         // API calls to a model in the dataset
+try {
+    Model model = dataset.getDefaultModel() ;
+    // API calls to a model in the dataset
 
-         // Make some changes via the model ...
-         model.add( ... )
+    // Make some changes via the model ...
+    model.add( ... )
 
-         // A SPARQL query will see the new statement added.
-         try (QueryExecution qExec = QueryExecution.create(
-                 "SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10",
-                 dataset)) {
-             ResultSet rs = qExec.execSelect() ;
-             ResultSetFormatter.out(rs) ;
-         }
+    // A SPARQL query will see the new statement added.
+    try (QueryExecution qExec = QueryExecution.create(
+         "SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10",
+         dataset)) {
+        ResultSet rs = qExec.execSelect() ;
+        ResultSetFormatter.out(rs) ;
+    }
 
-         // ... perform a SPARQL Update
-         String sparqlUpdateString = StrUtils.strjoinNL(
-              "PREFIX . <http://example/>",
-              "INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }"
-              ) ;
+    // ... perform a SPARQL Update
+    String sparqlUpdateString = StrUtils.strjoinNL(
+        "PREFIX . <http://example/>",
+        "INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }"
+    ) ;
 
-         UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
-         UpdateExecution.dataset(dataset).update(request).execute();
+    UpdateRequest request = UpdateFactory.create(sparqlUpdateString) ;
+    UpdateExecution.dataset(dataset).update(request).execute() ;
 
-         // Finally, commit the transaction.
-         dataset.commit() ;
-         // Or call .abort()
-        } finally {
-            dataset.end() ;
-        }
+    // Finally, commit the transaction.
+    dataset.commit() ;
+    // Or call .abort()
+} finally {
+    dataset.end() ;
+}
+```
 
 ## Transaction Types, Modes and Promotion. {#types-modes-promotion}
 
@@ -139,42 +147,52 @@ one dataset, and so there is one transaction per thread.
 
 Either:
 
-     // Create a dataset and keep it globally.
-     static Dataset dataset = TDBFactory.createDataset(location) ;
+```java
+// Create a dataset and keep it globally.
+static Dataset dataset = TDBFactory.createDataset(location) ;
+```
 
 Thread 1:
 
-     dataset.begin(TxnType.WRITE) ;
-     try {
-       ...
-       dataset.commit() ;
-     } finally { dataset.end() ; }
+```java
+dataset.begin(TxnType.WRITE) ;
+try {
+    ...
+    dataset.commit() ;
+} finally { dataset.end() ; }
+```
 
 Thread 2:
 
-     dataset.begin(TxnType.READ) ;
-     try {
-       ...
-     } finally { dataset.end() ; }
+```java
+dataset.begin(TxnType.READ) ;
+try {
+    ...
+} finally { dataset.end() ; }
+```
 
 It is possible (in TDB) to create different dataset objects to the same location.
 
 Thread 1:
 
-     Dataset dataset = TDBFactory.createDataset(location) ;
-     dataset.begin(TxnType.WRITE) ;
-     try {
-       ...
-       dataset.commit() ;
-     } finally { dataset.end() ; }
+```java
+Dataset dataset = TDBFactory.createDataset(location) ;
+dataset.begin(TxnType.WRITE) ;
+try {
+    ...
+    dataset.commit() ;
+} finally { dataset.end() ; }
+```
 
 Thread 2:
 
-     Dataset dataset = TDBFactory.createDataset(location) ;
-     dataset.begin(TxnType.READ) ;
-     try {
-       ...
-     } finally { dataset.end() ; }
+```java
+Dataset dataset = TDBFactory.createDataset(location) ;
+dataset.begin(TxnType.READ) ;
+try {
+    ...
+} finally { dataset.end() ; }
+```
 
 Each thread has a separate `dataset` object; these safely share the
 same storage and have independent transactions.

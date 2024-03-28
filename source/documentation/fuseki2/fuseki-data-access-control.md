@@ -36,9 +36,10 @@ the certificate file and password for the certificate.
 ### HTTPS certificate details file {#https-details}
 
 The file is a simple JSON file:
-<pre>
-    { "cert": <i>KEYSTORE</i> , "passwd": <i>SECRET</i> }
-</pre>
+
+```json
+{ "cert": KEYSTORE, "passwd": SECRET }
+```
 
 This file must be protected by file access settings so that it can only
 be read by the userid running the server.  One way is to put the
@@ -53,9 +54,9 @@ host name of the Fuseki server to the client system. A signed certificate provid
 
 A self-signed certificate can be generated with:
 
-<pre>
-    keytool -keystore <i>keystore</i> -alias <i>jetty</i> -genkey -keyalg RSA
-</pre>
+```bash
+$ keytool -keystore $keystore -alias jetty -genkey -keyalg RSA
+```
 
 For information on creating a certificate, see the Jetty documentation
 for [generating certificates](http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html#generating-key-pairs-and-certificates).
@@ -77,16 +78,18 @@ These should be [used with HTTPS](#https).
 
 These can also be given in the server configuration file:
 
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-        fuseki:passwd  "<i>password_file</i>" ;
-        fuseki:auth    "<i>digest</i>" ;
-        ...
-</pre>
+```turtle
+<#server> rdf:type fuseki:Server ;
+    fuseki:passwd  "<i>password_file</i>" ;
+    fuseki:auth    "<i>digest</i>" ;
+    ...
+```
 
 The format of the password file is:
 
-    username: password
+```
+username: password
+```
 
 and passwords can be stored in hash or obfuscated form.
 
@@ -130,9 +133,9 @@ lists. Graph-level access control is [covered below](#graph-acl).
 
 Access control lists (ACL) as part of the server configuration file.
 
-<pre>
-    fuseki --conf <i>configFile.ttl</i>
-</pre>
+```bash
+$ fuseki --conf configFile.ttl
+```
 
 ACLs are provided by the `fuseki:allowedUsers` property
 
@@ -141,35 +144,39 @@ ACLs are provided by the `fuseki:allowedUsers` property
 The list of users allowed access can be an RDF list or repeated use of
 the property or a mixture. The different settings are combined into one ACL.
 
-     fuseki:allowedUsers    "user1", "user2", "user3";
-     fuseki:allowedUsers    "user3";
-     fuseki:allowedUsers    ( "user1" "user2" "user3") ;
+```turtle
+fuseki:allowedUsers    "user1", "user2", "user3";
+fuseki:allowedUsers    "user3";
+fuseki:allowedUsers    ( "user1" "user2" "user3") ;
+```
 
 There is a special user name "*" which means "any authenticated user".
 
-    fuseki:allowedUsers  "*" ;
+```turtle
+fuseki:allowedUsers  "*" ;
+```
 
 ### Server Level ACLs {#server-acl}
 
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-       <b>fuseki:allowedUsers    "user1", "user2", "user3";</b>
-       ...
-       fuseki:services ( ... ) ;
-       ...
-       .
-</pre>
+```turtle
+<#server> rdf:type fuseki:Server ;
+   <b>fuseki:allowedUsers    "user1", "user2", "user3";</b>
+   ...
+   fuseki:services ( ... ) ;
+   ...
+   .
+```
 
 A useful pattern is:
 
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-       <b>fuseki:allowedUsers    "*";</b>
-       ...
-       fuseki:services ( ... ) ;
-       ...
-       .
-</pre>
+```turtle
+<#server> rdf:type fuseki:Server ;
+   <b>fuseki:allowedUsers    "*";</b>
+   ...
+   fuseki:services ( ... ) ;
+   ...
+   .
+```
 
 which requires all access to to be authenticated and the allowed users are
 those in the password file.
@@ -182,30 +189,31 @@ to all requests to the endpoints of the dataset.
 Any server-wide "allowedUsers" configuration also applies and both
 levels must allow the user access.
 
-<pre>
-    &lt;#service_auth&gt; rdf:type fuseki:Service ;
-        rdfs:label                      "ACL controlled dataset" ;
-        fuseki:name                     "db-acl" ;
+```turtle
+<#service_auth> rdf:type fuseki:Service ;
+    rdfs:label                      "ACL controlled dataset" ;
+    fuseki:name                     "db-acl" ;
 
-        <b>fuseki:allowedUsers             "user1", "user3";</b>
+    # ACL here.
+    fuseki:allowedUsers             "user1", "user3";
 
-        ## Choice of operations.
+    ## Choice of operations.
 
-        fuseki:endpoint [ 
-            fuseki:operation fuseki:query ;
-            fuseki:name "sparql" 
-        ];
-        fuseki:endpoint [
-            fuseki:operation fuseki:update ;
-            fuseki:name "sparql"
-        ] ;
-        fuseki:endpoint [
-            fuseki:operation fuseki:gsp-r ;
-            fuseki:name "get"
-        ] ;
-        fuseki:dataset                  &lt;#base_dataset&gt;;
-        .
-</pre>
+    fuseki:endpoint [ 
+        fuseki:operation fuseki:query ;
+        fuseki:name "sparql" 
+    ];
+    fuseki:endpoint [
+        fuseki:operation fuseki:update ;
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [
+        fuseki:operation fuseki:gsp-r ;
+        fuseki:name "get"
+    ] ;
+    fuseki:dataset                  <#base_dataset>;
+    .
+```
 
 ### Endpoint Level ACLs {#endpoint-acl}
 
@@ -213,16 +221,18 @@ An access control list can be applied to an individual endpoint.
 Again, any  other "allowedUsers" configuration, service-wide, or
 server-wide) also applies.
 
-         fuseki:endpoint [ 
-            fuseki:operation fuseki:query ;
-            fuseki:name "query" ;
-            fuseki:allowedUsers "user1", "user2" ;
-        ];
-        fuseki:endpoint [
-            fuseki:operation fuseki:update ;
-            fuseki:name "update" ;
-            fuseki:allowedUsers "user1"
-        ] ;
+```turtle
+fuseki:endpoint [ 
+    fuseki:operation fuseki:query ;
+    fuseki:name "query" ;
+    fuseki:allowedUsers "user1", "user2" ;
+];
+fuseki:endpoint [
+    fuseki:operation fuseki:update ;
+    fuseki:name "update" ;
+    fuseki:allowedUsers "user1"
+] ;
+```
 
 Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 <em>user2</em> can use SPARQL query.
@@ -232,35 +242,37 @@ Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 Graph level access control is defined using a specific dataset
 implementation for the service.
 
-    <#access_dataset>  rdf:type access:AccessControlledDataset ;
-        access:registry   ... ;
-        access:dataset    ... ;
-        .
+```turtle
+<#access_dataset>  rdf:type access:AccessControlledDataset ;
+    access:registry   ... ;
+    access:dataset    ... ;
+    .
+```
 
 Graph ACLs are defined in a [Graph Security Registry](#graph-security-registry) which lists the users and graph URIs.
 
-<pre>
-    &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
-        rdfs:label                      "Graph-level access controlled dataset" ;
-        fuseki:name                     "db-graph-acl" ;
-        ## Read-only operations on the dataset URL.
-        fuseki:endpoint [ fuseki:operation fuseki:query ] ;
-        fuseki:endpoint [ fuseki:operation fuseki:gsp_r ] ;
-        fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
-        .
+```turtle
+<#service_tdb2> rdf:type fuseki:Service ;
+    rdfs:label                      "Graph-level access controlled dataset" ;
+    fuseki:name                     "db-graph-acl" ;
+    ## Read-only operations on the dataset URL.
+    fuseki:endpoint [ fuseki:operation fuseki:query ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp_r ] ;
+    fuseki:dataset                  <b><#access_dataset></b> ;
+    .
 
-    # Define access on the dataset.
-    &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
-        access:registry   &lt;#securityRegistry&gt; ;
-        access:dataset    &lt;#tdb_dataset_shared&gt; ;
-        .
+# Define access on the dataset.
+<#access_dataset>  rdf:type access:AccessControlledDataset ;
+    access:registry   <#securityRegistry> ;
+    access:dataset    <#tdb_dataset_shared> ;
+    .
 
-    &lt;#securityRegistry&gt;rdf:type access:SecurityRegistry ;
-       . . .
+<#securityRegistry>rdf:type access:SecurityRegistry ;
+   . . .
 
-    &lt;#tdb_dataset_shared&gt; rdf:type tdb:DatasetTDB ;
-        . . .
-</pre>
+<#tdb_dataset_shared> rdf:type tdb:DatasetTDB ;
+    . . .
+```
 
 All dataset storage types are supported. TDB1 and TDB2 have special implementations for handling graph access control.
 
@@ -271,23 +283,25 @@ either a list format "(user graph1 graph2 ...)" or as RDF properties
 `access:user` and `access:graphs`. The property `access:graphs` has graph URI or a
 list of URIs as its object.
 
-    <#securityRegistry> rdf:type access:SecurityRegistry ;
-        access:entry ( "user1" <http://host/graphname1>  <http://host/graphname2> ) ;
-        access:entry ( "user1" <http://host/graphname3> ) ;
+```turtle
+<#securityRegistry> rdf:type access:SecurityRegistry ;
+    access:entry ( "user1" <http://host/graphname1>  <http://host/graphname2> ) ;
+    access:entry ( "user1" <http://host/graphname3> ) ;
 
-        access:entry ( "user1" <urn:x-arq:DefaultGraph> ) ;
+    access:entry ( "user1" <urn:x-arq:DefaultGraph> ) ;
 
-        access:entry ( "user2" <http://host/graphname9> ) ;
-        access:entry [ access:user "user3" ; access:graphs ( <http://host/graphname3> <http://host/graphname4> ) ] ;
-        access:entry [ access:user "user3" ; access:graphs <http://host/graphname5> ] ;
-        access:entry [ access:user "userZ" ; access:graphs <http://host/graphnameZ> ] ;
-        .
+    access:entry ( "user2" <http://host/graphname9> ) ;
+    access:entry [ access:user "user3" ; access:graphs ( <http://host/graphname3> <http://host/graphname4> ) ] ;
+    access:entry [ access:user "user3" ; access:graphs <http://host/graphname5> ] ;
+    access:entry [ access:user "userZ" ; access:graphs <http://host/graphnameZ> ] ;
+    .
+```
 
 ## Jetty Configuration {#jetty-configuration}
 
 For authentication configuration not covered by Fuseki configuration,
 the deployed server can be run using a Jetty configuration.
 
-Server command line: <tt>--jetty=<i>jetty.xml</i></tt>.
+Server command line: `--jetty=jetty.xml`.
 
 [Documentation for `jetty.xml`](https://www.eclipse.org/jetty/documentation/current/jetty-xml-config.html).

@@ -2,16 +2,18 @@
 title: GeoSPARQL Assembler
 ---
 
-Details of the GeoSPARQL support are proivded on the [GeoSPARQL page](index).
+Details of the GeoSPARQL support are provided on the [GeoSPARQL page](index).
 
 The assembler for GeoSPARQL support is part of the `jena-geosparql` artifact and
 must be on the Fuseki server classpath, along with its dependencies.
 
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-geosparql</artifactId>
-      <version>...</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-geosparql</artifactId>
+  <version>...</version>
+</dependency>
+```
 
 or download the binary from the 
 [Maven central repository org/apache/jena/jena-geosparql](https://repo1.maven.org/maven2/org/apache/jena/jena-geosparql/)
@@ -20,7 +22,7 @@ The GeoSPARQL assembler can be used in a Fuseki configuration file.
 
 This example is of a read-only: 
 
-```
+```sparql
 PREFIX fuseki:    <http://jena.apache.org/fuseki#>
 PREFIX rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:      <http://www.w3.org/2000/01/rdf-schema#>
@@ -45,8 +47,9 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 ```
 
 It is possible to run with a data file loaded into memory and 
-an spatial in-memory index:
-```
+a spatial in-memory index:
+
+```sparql
 PREFIX fuseki:    <http://jena.apache.org/fuseki#>
 PREFIX rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:      <http://www.w3.org/2000/01/rdf-schema#>
@@ -70,7 +73,8 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 ```
 
 The full assembler properties with the default settings is:
-```
+
+```turtle
 <#geo_ds> rdf:type geosparql:GeosparqlDataset ;
     # Build in-memory is absent.
     geosparql:spatialIndexFile     "spatial.index";

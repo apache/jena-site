@@ -31,12 +31,12 @@ are short for the constants of class `java.lang.Boolean`.
 
 Setting globally:
 
-     SDB.getContext().set(symbol, value) ;
+     SDB.getContext().set(symbol, value) ;
 
 Per query execution:
 
-     QueryExecution qExec = QueryExecutionFactory.create(...) ;
-     qExec.getContext.set(symbol, value) ;
+     QueryExecution qExec = QueryExecutionFactory.create(...) ;
+     qExec.getContext.set(symbol, value) ;
 
 Setting for a query execution happens before any query compilation
 or setup happens. Creation of a query execution object does not
@@ -107,7 +107,7 @@ SQL generation can include SQL comments to show how SPARQL has been
 turned into SQL. This option is `true` by default and always set
 for the command `sdbprint`.
 
-    SDB.getContext().setFalse(SDB.annotateGeneratedSQL) ;
+    SDB.getContext().setFalse(SDB.annotateGeneratedSQL) ;
 
 
 

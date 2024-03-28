@@ -13,11 +13,13 @@ describes the GeoSPARQL supported features.
 ## Getting Started
 GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.
 
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-geosparql</artifactId>
-      <version>...</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-geosparql</artifactId>
+  <version>...</version>
+</dependency>
+```
 
 ## Features
 
@@ -112,28 +114,32 @@ e.g. coordinate reference systems and mathematical transformations.
 
 Example GeoSPARQL query:
 
-    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
-    
-    SELECT ?obj
-    WHERE{
-        ?subj geo:sfContains ?obj
-    } ORDER by ?obj
+```sparql
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+
+SELECT ?obj
+WHERE{
+    ?subj geo:sfContains ?obj
+} ORDER by ?obj
+```
 
 ### Querying Datasets & Models with SPARQL
 
 The setup of GeoSPARQL Jena only needs to be performed once in an application.
-After it is setup querying is performed using Jena's standard query methods.
+After it is set up querying is performed using Jena's standard query methods.
 
 To query a Model with GeoSPARQL or standard SPARQL:
 
-    GeoSPARQLConfig.setupMemoryIndex();
-    Model model = .....;
-    String query = ....;
-    
-    try (QueryExecution qe = QueryExecution.create(query, model)) {
-        ResultSet rs = qe.execSelect();
-        ResultSetFormatter.outputAsTSV(rs);
-    }
+```java
+GeoSPARQLConfig.setupMemoryIndex();
+Model model = .....;
+String query = ....;
+
+try (QueryExecution qe = QueryExecution.create(query, model)) {
+    ResultSet rs = qe.execSelect();
+    ResultSetFormatter.outputAsTSV(rs);
+}
+```
 
 If your dataset needs to be separate from your application and accessed over
 HTTP then you probably need the [GeoSPARQL Assembler](geosparql-assembler) to
@@ -293,18 +299,21 @@ to be specified in the query.  In the case of `Features` this requires the
 
 This means the query:
 
+```sparql
+?subj geo:hasDefaultGeometry ?subjGeom .
+?subjGeom geo:hasSerialization ?subjLit .
 
-        ?subj geo:hasDefaultGeometry ?subjGeom .
-        ?subjGeom geo:hasSerialization ?subjLit .
-        
-        ?obj geo:hasDefaultGeometry ?objGeom .
-        ?objGeom geo:hasSerialization ?objLit .
-        
-        FILTER(geof:sfContains(?subjLit, ?objLit))
+?obj geo:hasDefaultGeometry ?objGeom .
+?objGeom geo:hasSerialization ?objLit .
+
+FILTER(geof:sfContains(?subjLit, ?objLit))
+```
 
 becomes:
 
-        ?subj geo:sfContains ?obj .
+```sparql
+?subj geo:sfContains ?obj .
+```
 
 Methods are available to apply the `hasDefaultGeometry` property to every
 `Geometry` with a single `hasGeometry` property, see
@@ -339,8 +348,9 @@ performed but an index is configured to not store the result.
 As an extension to the standard, supplying a `Geometry Literal` is
 also permitted. For example:
 
-        ?subj geo:sfContains "POINT(0 0)"^^geo:wktLiteral .
-
+```sparql
+?subj geo:sfContains "POINT(0 0)"^^geo:wktLiteral .
+```
 
 ### Dataset Conversion
 
@@ -370,7 +380,7 @@ a Jena TDB to remove the need to reprocess.
 
 Other operations are available and can be applied to a Dataset containing
 multiple Models and in some cases files and folders.  These operations do
-__not__ configure and setup the GeoSPARQL functions or indexes that are required
+__not__ configure and set up the GeoSPARQL functions or indexes that are required
 for querying.
 
 ### Spatial Index
@@ -382,7 +392,7 @@ it.
 
 A Spatial Index is required for the `jena-spatial` property functions and is
 optional for the GeoSPARQL spatial relations.  Only a single SRS can be used for
-a Spatial Index and it is recommended that datasets are converted to a single
+a Spatial Index, and it is recommended that datasets are converted to a single
 SRS, see `GeoSPARQLOperations`.
 
 Setting up a Spatial Index can be done through
@@ -399,8 +409,8 @@ noted that there is error inherent in spatial reference systems and some
 variation in values may occur between different systems.
 
 The following table gives some examples of units that are supported (additional
-units can be added to the `UnitsRegistry` using the `javax.measure.Unit` API.
-These URI are all in the namespace `http://www.opengis.net/def/uom/OGC/1.0/` and
+units can be added to the `UnitsRegistry` using the `javax.measure.Unit` API).
+These URIs are all in the namespace `http://www.opengis.net/def/uom/OGC/1.0/` and
 here use the prefix `units`.
 
 URI | Description
@@ -473,21 +483,25 @@ Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.
 
 Geo predicates can be converted to Geometry Literals in query and then used with the GeoSPARQL filter functions.
 
-      ?subj wgs:lat ?lat .
-      ?subj wgs:long ?lon .
-      BIND(spatialF:convertLatLon(?lat, ?lon) as ?point) .
-      #Coordinate order is Lon/Lat without stated SRS URI.
-      BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
-      FILTER(geof:sfContains(?box, ?point))
+```sparql
+?subj wgs:lat ?lat .
+?subj wgs:long ?lon .
+BIND(spatialF:convertLatLon(?lat, ?lon) as ?point) .
+#Coordinate order is Lon/Lat without stated SRS URI.
+BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
+FILTER(geof:sfContains(?box, ?point))
+```
 
 Alternatively, utilising more shapes, relations and spatial reference systems
 can be achieved by converting the dataset to the GeoSPARQL structure.
 
-      ?subj geo:hasGeometry ?geom .
-      ?geom geo:hasSerialization ?geomLit .
-      #Coordinate order is Lon/Lat without stated SRS URI.
-      BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
-      FILTER(geof:sfContains(?box, ?geomLit))
+```sparql
+?subj geo:hasGeometry ?geom .
+?geom geo:hasSerialization ?geomLit .
+#Coordinate order is Lon/Lat without stated SRS URI.
+BIND("POLYGON((...))"^^<http://www.opengis.net/ont/geosparql#wktLiteral> AS ?box) .
+FILTER(geof:sfContains(?box, ?geomLit))
+```
 
 Datasets can contain both Geo predicates and Geometry Literals without
 interference.  However, a dataset containing both types will only examine those
