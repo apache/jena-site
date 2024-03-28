@@ -45,12 +45,12 @@ download.
 
 The server logging goes to the console:
 
-    09:25:41 INFO  Fuseki               :: Dataset: in-memory
-    09:25:41 INFO  Fuseki               :: Update enabled
-    09:25:41 INFO  Fuseki               :: Fuseki development
-    09:25:41 INFO  Fuseki               :: Jetty 7.2.1.v20101111
-    09:25:41 INFO  Fuseki               :: Dataset = /ds
-    09:25:41 INFO  Fuseki               :: Started 2011/01/06 09:25:41 GMT on port 3030
+    09:25:41 INFO  Fuseki               :: Dataset: in-memory
+    09:25:41 INFO  Fuseki               :: Update enabled
+    09:25:41 INFO  Fuseki               :: Fuseki development
+    09:25:41 INFO  Fuseki               :: Jetty 7.2.1.v20101111
+    09:25:41 INFO  Fuseki               :: Dataset = /ds
+    09:25:41 INFO  Fuseki               :: Started 2011/01/06 09:25:41 GMT on port 3030
 
 ## User Interface
 
@@ -85,7 +85,7 @@ Get it back:
 
 Query it with SPARQL using the .../query endpoint.
 
-    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
+    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
 
 Update it with SPARQL using the .../update endpoint.
 
@@ -223,8 +223,8 @@ and a database in the directory DB, an assembler description of:
     @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
 
-    <#dataset> rdf:type      tdb:DatasetTDB ;
-         tdb:location "DB" ;
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+         tdb:location "DB" ;
          .
 
 The form:
@@ -236,9 +236,9 @@ is a shorthand for such an assembler with location `DB`.
 To make triples from all the named graphs appear as the default,
 unnamed graph, use:
 
-    <#dataset> rdf:type      tdb:DatasetTDB ;
-         tdb:location "DB" ;
-         tdb:unionDefaultGraph true ;
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+         tdb:location "DB" ;
+         tdb:unionDefaultGraph true ;
         .
 
 ## Fuseki Server and general dataset descriptions
@@ -255,19 +255,19 @@ Full details of setting up models assembler is given in the
 A general dataset is described by:
 
     # Dataset of default graph and one named graph.
-    <#dataset> rdf:type ja:RDFDataset ;
-       ja:defaultGraph <#modelDft> ;
+    <#dataset> rdf:type ja:RDFDataset ;
+       ja:defaultGraph <#modelDft> ;
        ja:namedGraph
-           [ ja:graphName      <http://example.org/name1> ;
-             ja:graph          <#model1> ] ;
+           [ ja:graphName      <http://example.org/name1> ;
+             ja:graph          <#model1> ] ;
        .
 
-    <#modelDft> a ja:MemoryModel ;
+    <#modelDft> a ja:MemoryModel ;
             ja:content [ ja:externalContent <file:Data.ttl> .
 
-    <#model1>  rdf:type ja:MemoryModel ;
-       ja:content [ ja:externalContent <file:FILE-1.ttl> ] ;
-       ja:content [ ja:externalContent <file:FILE-2.ttl> ] ;
+    <#model1>  rdf:type ja:MemoryModel ;
+       ja:content [ ja:externalContent <file:FILE-1.ttl> ] ;
+       ja:content [ ja:externalContent <file:FILE-2.ttl> ] ;
        .
 
 The models can be
@@ -296,7 +296,7 @@ Some useful prefix declarations:
     @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
     @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-    @prefix :        <#> .
+    @prefix :        <#> .
 
 ### Server Section
 
@@ -304,13 +304,13 @@ Order of the file does not matter to the machine, but it's useful
 to start with the server description, then each of the services
 with its datasets.
 
-    [] rdf:type fuseki:Server ;
+    [] rdf:type fuseki:Server ;
        # Server-wide context parameters can be given here.
        # For example, to set query timeouts: on a server-wide basis:
        # Format 1: "1000" -- 1 second timeout
        # Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
        # See java doc for ARQ.queryTimeout
-       # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
+       # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
 
        # Services available.  Only explicitly listed services are configured.
        #  If there is a service description not linked from this list, it is ignored.
@@ -336,16 +336,16 @@ Initially, the dataset is empty.
     ## ---------------------------------------------------------------
     ## Updatable in-memory dataset.
 
-    <#service1> rdf:type fuseki:Service ;
-        fuseki:name                       "ds" ;       # http://host:port/ds
-        fuseki:serviceQuery               "query" ;    # SPARQL query service
-        fuseki:serviceQuery               "sparql" ;   # SPARQL query service
-        fuseki:serviceUpdate              "update" ;   # SPARQL query service
-        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
-        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
+    <#service1> rdf:type fuseki:Service ;
+        fuseki:name                       "ds" ;       # http://host:port/ds
+        fuseki:serviceQuery               "query" ;    # SPARQL query service
+        fuseki:serviceQuery               "sparql" ;   # SPARQL query service
+        fuseki:serviceUpdate              "update" ;   # SPARQL query service
+        fuseki:serviceUpload              "upload" ;   # Non-SPARQL upload service
+        fuseki:serviceReadWriteGraphStore "data" ;     # SPARQL Graph store protocol (read and write)
         # A separate read-only graph store endpoint:
-        fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
-        fuseki:dataset                   <#dataset-mem> ;
+        fuseki:serviceReadGraphStore      "get" ;      # SPARQL Graph store protocol (read only)
+        fuseki:dataset                   <#dataset-mem> ;
         .
 
     <#dataset-mem> rdf:type ja:RDFDataset .
@@ -360,20 +360,20 @@ graph:
 This service offers read-only access to a dataset with a single
 graph of data.
 
-    <#service2> rdf:type fuseki:Service ;
-        fuseki:name                     "books" ;    # http://host:port/books
-        fuseki:serviceQuery             "query" ;    # SPARQL query service
-        fuseki:serviceReadGraphStore    "data" ;     # SPARQL Graph store protocol (read only)
-        fuseki:dataset           <#books> ;
+    <#service2> rdf:type fuseki:Service ;
+        fuseki:name                     "books" ;    # http://host:port/books
+        fuseki:serviceQuery             "query" ;    # SPARQL query service
+        fuseki:serviceReadGraphStore    "data" ;     # SPARQL Graph store protocol (read only)
+        fuseki:dataset           <#books> ;
         .
 
-    <#books>    rdf:type ja:RDFDataset ;
-        rdfs:label "Books" ;
+    <#books>    rdf:type ja:RDFDataset ;
+        rdfs:label "Books" ;
         ja:defaultGraph
-          [ rdfs:label "books.ttl" ;
-            a ja:MemoryModel ;
-            ja:content [ja:externalContent <file:Data/books.ttl> ] ;
-          ] ;
+          [ rdfs:label "books.ttl" ;
+            a ja:MemoryModel ;
+            ja:content [ja:externalContent <file:Data/books.ttl> ] ;
+          ] ;
         .
 
 ### Service 3
@@ -382,18 +382,18 @@ This service offers SPARQL query access only to a TDB database. The
 TDB database can have specific features set, such as query timeout
 or making the default graph the union of all named graphs.
 
-    <#service3>  rdf:type fuseki:Service ;
-        fuseki:name              "tdb" ;       # http://host:port/tdb
-        fuseki:serviceQuery      "sparql" ;    # SPARQL query service
-        fuseki:dataset           <#dataset> ;
+    <#service3>  rdf:type fuseki:Service ;
+        fuseki:name              "tdb" ;       # http://host:port/tdb
+        fuseki:serviceQuery      "sparql" ;    # SPARQL query service
+        fuseki:dataset           <#dataset> ;
         .
 
-    <#dataset> rdf:type      tdb:DatasetTDB ;
-        tdb:location "DB" ;
+    <#dataset> rdf:type      tdb:DatasetTDB ;
+        tdb:location "DB" ;
         # Query timeout on this dataset (1s, 1000 milliseconds)
-        ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
+        ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
         # Make the default graph be the union of all named graphs.
-        ## tdb:unionDefaultGraph true ;
+        ## tdb:unionDefaultGraph true ;
          .
 
 ## SPARQL Over HTTP
@@ -416,7 +416,7 @@ See the [SPARQL Over HTTP](/documentation/fuseki2/soh.html) page.
     s-put http://localhost:3030/ds/data http://example/graph D.nt
 
     # Query
-    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
+    s-query --service http://localhost:3030/ds/query 'SELECT * {?s ?p ?o}'
 
     # Update
     s-update --service http://localhost:3030/ds/update --file=update.ru

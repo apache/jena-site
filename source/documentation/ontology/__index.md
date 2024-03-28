@@ -347,7 +347,7 @@ allow us to dynamically change the Java class of the object
 representing this resource. The resource has not changed: it still
 has URI `#DigitalCamera`. But the appropriate Java class Jena might
 choose to encapsulate it has changed from `OntClass` to `Restriction`.
-Conversely, if we subsequently remove the `rdf:type owl:Restriction`
+Conversely, if we subsequently remove the `rdf:type owl:Restriction`
 from the model, using the `Restriction` Java class is no longer
 appropriate.
 
@@ -713,12 +713,12 @@ you are extending Jena's internal structures, you should think of
 
 By default, loading imports during the `read()` call is automatic. To
 `read()` an ontology without building the imports closure, call the
-method `setProcessImports( false )` on the document manager object
+method `setProcessImports( false )` on the document manager object
 before calling `read()`. Alternatively, you can set the
 `processImports` property in the policy file. You can also be more
 selective, and ignore only certain URI's when loading the imported
 documents. To selectively skip certain named imports, call the
-method `addIgnoreImport( String uri )` on the document manager
+method `addIgnoreImport( String uri )` on the document manager
 object, or set the `ignoreImport` property in the policy.
 
 ### Managing file references
@@ -812,7 +812,7 @@ storage space.
 
 Caching of import models is switched on by default. To turn it off,
 use the policy property `cacheModels`, or call the method
-`setCacheModels( boolean caching )` with `caching = false`. The
+`setCacheModels( boolean caching )` with `caching = false`. The
 document manager's current model cache can be cleared at any time
 by calling `clearCache()`.
 
@@ -856,20 +856,20 @@ get<property\> | Return the value for the given property, if the resource has on
 has<property\> | Return true if there is at least one value for the given property. Depending on the name of the property, this is sometimes is<property\>
 remove<property\> | Removes a given value from the values of the property on this resource. Has no effect if the resource does not have that value.
 
-For example: `addSameAs( Resource r )`, or
-`isSameAs( Resource r )`. For full details of the individual
+For example: `addSameAs( Resource r )`, or
+`isSameAs( Resource r )`. For full details of the individual
 methods, please consult the Javadoc.
 
 `OntResource` defines some other general utility methods. For
 example, to find out how many values a resource has for a given
-property, you can call `getCardinality( Property p )`. To delete
+property, you can call `getCardinality( Property p )`. To delete
 the resource from the ontology altogether, you can call `remove()`.
 The effect of this is to remove every statement that mentions this
 resource as a subject or object of a statement.
 
 To get the value of a given property, use
-`getPropertyValue( Property p )`. To set it,
-`setPropertyValue( Property p, RDFNode value )`. Continuing the
+`getPropertyValue( Property p )`. To set it,
+`setPropertyValue( Property p, RDFNode value )`. Continuing the
 naming pattern, the values of a named property can be listed (with
 `listPropertyValues`), removed (with `removeProperty`) or added
 (with `addProperty`).
@@ -893,7 +893,7 @@ For some tasks, getting a complete list of the RDF types of a
 resource is exactly what is needed. For other tasks, this is not
 the case. If you are developing an ontology editor, for example,
 you may want to distinguish in its display between inferred and
-asserted types. In the above example, only `x rdf:type B` is
+asserted types. In the above example, only `x rdf:type B` is
 asserted, everything else is inferred. One way to make this
 distinction is to make use of the base model (see Figure 4).
 Getting the resource from the base model and listing the type
@@ -1078,7 +1078,7 @@ methods, we can access the following attributes of an
 
 Attribute | Meaning
 --------- | -------
-subProperty | A sub property of this property; i.e. a property which is declared to be a `subPropertyOf` this property. If p is a sub property of q, and we know that `A p B` is true, we can infer that `A q B` is also true.
+subProperty | A sub property of this property; i.e. a property which is declared to be a `subPropertyOf` this property. If p is a sub property of q, and we know that `A p B` is true, we can infer that `A q B` is also true.
 superProperty | A super property of this property, i.e. a property that this property is a `subPropertyOf`
 domain | Denotes the class or classes that form the domain of this property. Multiple domain values are interpreted as a conjunction. The domain denotes the class of value the property maps from.
 range | Denotes the class or classes that form the range of this property. Multiple range values are interpreted as a conjunction. The range denotes the class of values the property maps to.
@@ -1160,8 +1160,8 @@ property in a model, it will have the effect of asserting different
 OWL permits object and datatype properties to be *functional* &ndash;
 that is, for a given individual in the domain, the range value will
 always be the same. In particular, if `father` is a functional
-property, and individual `:jane` has `father :jim` and
-`father :james`, a reasoner is entitled to conclude that `:jim` and
+property, and individual `:jane` has `father :jim` and
+`father :james`, a reasoner is entitled to conclude that `:jim` and
 `:james` denote the same individual. A functional property is
 equivalent to stating that the property has a maximum cardinality
 of one.
@@ -1181,11 +1181,11 @@ parameter to the `createObjectProperty()` method on `OntModel`.
 There are several additional sub-types of ObjectProperty that
 represent additional capabilities of ontology properties. A
 [`TransitiveProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/TransitiveProperty.html)
-means that if p is transitive, and we know `:a p :b` and also
-`b p :c`, we can infer that `:a p :c`. A
+means that if p is transitive, and we know `:a p :b` and also
+`b p :c`, we can infer that `:a p :c`. A
 [`SymmetricProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/SymmetricProperty.html)
-means that if p is symmetric, and we know `:a p :b`, we can infer
-`:b p :a`. An
+means that if p is symmetric, and we know `:a p :b`, we can infer
+`:b p :a`. An
 [`InverseFunctionalProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/InverseFunctionalProperty.html)
 means that for any given range element, the domain value is unique.
 
@@ -1468,7 +1468,7 @@ the ontology operations we are discussing here, the order of values
 in the list is not considered significant.
 
 Finally, a resource which is a cell in a list sequence will accept
-`.as( RDFList.class )`
+`.as( RDFList.class )`
 
 Once the list has been created or obtained from the model,
 [`RDFList`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFList.html)
@@ -1682,7 +1682,7 @@ The only real difference between these approaches is that the
 second way will create the individual in the same model that the
 class is attached to (see the `getModel()` method). In both of the
 above examples the individual is named, but this is not necessary.
-The method `OntModel.createIndividual( Resource cls )` creates an
+The method `OntModel.createIndividual( Resource cls )` creates an
 anonymous individual belonging to the given class. Note that the
 type of the class parameter is only `Resource`. You are not
 required to use `as()` to present a `Resource` to an `OntClass`

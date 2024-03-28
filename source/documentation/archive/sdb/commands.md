@@ -97,18 +97,18 @@ modified description.
 
 Set the layout type:
 
-     --layout : layout name
+     --layout : layout name
 
 Currently, one of `layout1`, `layout2`, `layout2/index`,
 `layout2/hash`.
 
 Set JDBC details:
 
-     --dbName : Database Name
-     --dbHost : Host machine name
-     --dbType : Database type.
-     --dbUser : Database use
-     --dbPassword : Database password.
+     --dbName : Database Name
+     --dbHost : Host machine name
+     --dbType : Database type.
+     --dbUser : Database use
+     --dbPassword : Database password.
 
 The host name can `host` or `host:port`.
 
@@ -152,7 +152,7 @@ Option | Description
 `--create` | formats the store and sets up indexes
 `--format` | just formats the store and creates indexes for loading, not querying.
 `--indexes` | Create indexes for querying
-`--dropIndexes` | Drop indexes for querying.
+`--dropIndexes` | Drop indexes for querying.
 
 Loading large graphs can be faster by formatting, loading the data,
 then building the query indexes with this command.

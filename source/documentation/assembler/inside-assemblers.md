@@ -14,15 +14,17 @@ writing assembler descriptions, see the
 An `Assembler` is an object that builds objects (most importantly,
 `Model`s) from RDF descriptions.
 
-    public Object open( Assembler a, Resource root, Mode mode );
+```java
+public Object open( Assembler a, Resource root, Mode mode );
 
-    public Object open( Assembler a, Resource root );
+public Object open( Assembler a, Resource root );
 
-    public Object open( Resource root );
+public Object open( Resource root );
 
-    public Model openModel( Resource root );
+public Model openModel( Resource root );
 
-    public Model openModel( Resource root, Mode mode );
+public Model openModel( Resource root, Mode mode );
+```
 
 The fundamental method is the first: all the others are shorthands
 for ways of calling it. The abstract class `AssemblerBase`

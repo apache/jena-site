@@ -41,7 +41,7 @@ Examples:
 ```bash
 arq.qparse --explain --query Q.rq
 
-arq.qparse --explain 'SELECT * { ?s ?p ?o }'
+arq.qparse --explain 'SELECT * { ?s ?p ?o }'
 ```
 
 ## Execution Logging
@@ -76,7 +76,7 @@ The context setting is for key (Java constant) `ARQ.symLogExec`. To set
 globally:
 
 ```java
-ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+ARQ.setExecutionLogging(Explain.InfoLevel.ALL);
 ```
 
 and it may also be set on an individual query execution using its local

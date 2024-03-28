@@ -15,13 +15,13 @@ SPARQL is a
 [query language](https://www.w3.org/TR/sparql11-query/) and a
 [protocol](https://www.w3.org/TR/rdf-sparql-protocol/) for accessing
 RDF designed by the
-[W3C RDF Data Access Working Group](https://www.w3.org/2001/sw/DataAccess/). 
+[W3C RDF Data Access Working Group](https://www.w3.org/2001/sw/DataAccess/).
 
 As a query language, SPARQL is "data-oriented" in that it only
 queries the information held in the models; there is no inference
-in the query language itself.  Of course, the Jena model may be
+in the query language itself. Of course, the Jena model may be
 'smart' in that it provides the impression that certain triples
-exist by creating them on-demand, including OWL reasoning.  SPARQL
+exist by creating them on-demand, including OWL reasoning. SPARQL
 does not do anything other than take the description of what the
 application wants, in the form of a query, and returns that
 information, in the form of a set of bindings or an RDF graph.

@@ -9,16 +9,20 @@ execute it with Jena.
 
 The file "[q1.rq](sparql_data/q1.rq)" contains the following query:
 
-    SELECT ?x
-    WHERE { ?x  <http://www.w3.org/2001/vcard-rdf/3.0#FN>  "John Smith" }
+```sparql
+SELECT ?x
+WHERE { ?x  <http://www.w3.org/2001/vcard-rdf/3.0#FN>  "John Smith" }
+```
 
 executing that query with the command line query application;
 
-    ---------------------------------
-    | x                             |
-    =================================
-    | <http://somewhere/JohnSmith/> |
-    ---------------------------------
+```turtle
+---------------------------------
+| x                             |
+=================================
+| <http://somewhere/JohnSmith/> |
+---------------------------------
+```
 
 This works by matching the triple pattern in the `WHERE` clause
 against the triples in the RDF graph. The predicate and object of
@@ -28,12 +32,12 @@ no other restrictions on the variable. The pattern matches any
 triples with these predicate and object values, and it matches with
 solutions for `x`.
 
-The item enclosed in <\> is a URI (actually, it's an IRI) and the
+The item enclosed in `<\>` is a URI (actually, it's an IRI) and the
 item enclosed in "" is a plain literal. Just like Turtle, N3 or
 N-triples, typed literals are written with \^\^ and language tags
 can be added with @.
 
-?x is a variable called x. The ? does not form part of the name
+`?x` is a variable called x. The ? does not form part of the name
 which is why it does not appear in the table output.
 
 There is one match. The query returns the match in the `x` query
@@ -50,7 +54,9 @@ command path.
 
 Execute:
 
-    bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+```
+> bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+```
 
 You can just put the `bat/` directory on your classpath or copy the
 programs out of it.
@@ -59,7 +65,9 @@ programs out of it.
 
 Execute:
 
-    bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
+```bash
+$ bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
+```
 
 ### Using the Java command line applications directly
 
@@ -68,7 +76,9 @@ Execute:
 You will need to set the classpath to include *all* the jar files
 in the Jena distribution `lib/` directory.
 
-    java -cp 'DIST/lib/*' arq.sparql ...
+```bash
+$ java -cp 'DIST/lib/*' arq.sparql ...
+```
 
 where `DIST` is the `apache-jena-VERSION` directory.
 

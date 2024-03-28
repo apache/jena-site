@@ -31,7 +31,9 @@ Suppose the Model `M` contains an Assembler specification whose
 *root* - the Resource describing the whole Model to construct is
 `R` (so `R.getModel() == M)`. Invoke:
 
-    Assembler.general.openModel(R)
+```java
+Assembler.general.openModel(R)
+```
 
 The result is the desired Model. Further details about the
 `Assembler` interface, the special Assembler `general`, and the
@@ -45,14 +47,18 @@ the root resource `my:root`.
 
 ### ... a memory model?
 
-    my:root a ja:MemoryModel.
+```turtle
+my:root a ja:MemoryModel.
+```
 
 ### ... an inference model?
 
-    my:root
-        ja:reasoner [ja:reasonerURL theReasonerURL] ;
-        ja:baseModel theBaseModelResource
-        .
+```turtle
+my:root
+    ja:reasoner [ja:reasonerURL theReasonerURL] ;
+    ja:baseModel theBaseModelResource
+    .
+```
 
 *theReasonerURL* is one of the reasoner (factory) URLs given in the
 inference documentation and code; *theBaseModelResource* is another
@@ -60,19 +66,23 @@ resource in the same document describing the base model.
 
 ### ... some initialising content?
 
-    my:root
-        ja:content [ja:externalContent <someContentURL>]
-        ... rest of model specification ...
-        .
+```turtle
+my:root
+    ja:content [ja:externalContent <someContentURL>]
+    ... rest of model specification ...
+    .
+```
 
 The model will be pre-loaded with the contents of *someContentURL*.
 
 ### ... an ontology model?
 
-    my:root
-        ja:ontModelSpec ja:OntModelSpecName ;
-        ja:baseModel somebaseModel
-        .
+```turtle
+my:root
+    ja:ontModelSpec ja:OntModelSpecName ;
+    ja:baseModel somebaseModel
+    .
+```
 
 The *OntModelSpecName* can be any of the predefined Jena
 OntModelSpec names, eg `OWL_DL_MEM_RULE_INF`. The baseModel is

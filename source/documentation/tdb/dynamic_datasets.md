@@ -38,11 +38,11 @@ Example
     #where the data is  in the datastore as named graphs.
 
     BASE <http://example>
-    SELECT ?zName
+    SELECT ?zName
     FROM <alice-foaf>
     FROM <bob-foaf>
     {
-       <http://example/Alice#me> foaf:knows ?y .
-       ?y foaf:knows ?z .
-       ?z foaf:name ?zName .
+       <http://example/Alice#me> foaf:knows ?y .
+       ?y foaf:knows ?z .
+       ?z foaf:name ?zName .
     }

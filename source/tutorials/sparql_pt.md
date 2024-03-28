@@ -13,7 +13,7 @@ SPARQL é uma
 [linguagem de consulta](https://www.w3.org/TR/sparql11-query/) e um
 [protocolo](https://www.w3.org/TR/rdf-sparql-protocol/) para acesso a
 RDF elaborado pelo
-[W3C RDF Data Access Working Group](https://www.w3.org/2001/sw/DataAccess/). 
+[W3C RDF Data Access Working Group](https://www.w3.org/2001/sw/DataAccess/).
 
 Como uma linguagem de consulta, SPARQL é orientada a dados de forma que só consulta as informações presentes nos modelos, não há inferência propriamente dita nesta linguagem de consulta.  Por acaso, os modelos de Jena são “inteligentes” quanto a isso, e nos dá a impressão de que certas triplas são criadas sob demanda, incluindo raciocínio OWL. SPARQL nada mais faz do que pegar a descrição do que a aplicação quer, na forma de uma consulta, e retornar a informação, na forma de um conjunto de ligações ou grafo RDF.
 

@@ -49,7 +49,8 @@ Literais são exibidas em retângulos.</p>
 
 <p>O código para criar este grafo, ou modelo, é simples:</p>
 
-<pre>// some definitions
+```java
+// some definitions
 static String personURI    = "http://somewhere/JohnSmith";
 static String fullName     = "John Smith";
 
@@ -61,7 +62,7 @@ Resource johnSmith = model.createResource(personURI);
 
 // add the property
 johnSmith.addProperty(VCARD.FN, fullName);
-</pre>
+```
 
 
 <p>Ele começa com algumas definições de constantes e então cria um Model vazio, usando o método <code>createDefaultModel()</code> de <code>ModelFactory</code>
@@ -71,11 +72,11 @@ para criar um modelo na memória. Jena possui outras implementações da interfa
 
 <p>O código para criar o recurso e adicionar a propriedade pode ser escrito de forma mais compacta usando um estilo cascata:</p>
 
-
-<pre>Resource johnSmith =
+```java
+Resource johnSmith =
        model.createResource(personURI)
             .addProperty(VCARD.FN, fullName);
-</pre>
+```
 
 <p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial01.java">tutorial 1</a>. Como exercício, pegue este código e modifique-o para criar um próprio VCARD para você.</p>
 
@@ -90,8 +91,8 @@ para criar um modelo na memória. Jena possui outras implementações da interfa
 
 <p>O código Jena para construir este exemplo é, novamente, muito simples. Primeiro algumas declarações e a criação do modelo vazio.</p>
 
-
-<pre>// some definitions
+```java
+// some definitions
 String personURI    = "http://somewhere/JohnSmith";
 String givenName    = "John";
 String familyName   = "Smith";
@@ -109,8 +110,7 @@ Resource johnSmith
                       model.createResource()
                            .addProperty(VCARD.Given, givenName)
                            .addProperty(VCARD.Family, familyName));
-</pre>
-
+```
 
 <p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a>.</p>
 
@@ -135,8 +135,8 @@ que retorna a próxima sentença do iterador (o mesmo que <code>next()</code> fa
 
 <p>Agora vamos usar essa interface para estender tutorial2 para listar todas as sentenças criadas e imprimi-las. O código completo deste exemplo pode ser encontrado em <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial03.java">tutorial 3</a>.</p>
 
-
-<pre>// list the statements in the Model
+```java
+// list the statements in the Model
 StmtIterator iter = model.listStatements();
 
 // print out the predicate, subject and object of each statement
@@ -157,19 +157,20 @@ while (iter.hasNext()) {
 
     System.out.println(" .");
 }
-</pre>
-
+```
 
 <p>Já que o objeto de uma sentença pode ser tanto um recurso quanto uma literal, o método 
 <code>getObject()</code> retorna um objeto do tipo <code>RDFNode</code>, que é uma superclasse comum de ambos <code>Resource</code> e <code>Literal</code>. O objeto em si é do tipo apropriado, então o código usa <code>instanceof</code> para determinar qual e processá-lo de acordo.</p>
 
 <p>Quando executado, o programa deve produzir a saída:</p>
-<pre>http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#N anon:14df86:ecc3dee17b:-7fff .
+
+```turtle
+http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#N anon:14df86:ecc3dee17b:-7fff .
 anon:14df86:ecc3dee17b:-7fff http://www.w3.org/2001/vcard-rdf/3.0#Family  "Smith" .
 anon:14df86:ecc3dee17b:-7fff http://www.w3.org/2001/vcard-rdf/3.0#Given  "John" .
 http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#FN  "John Smith"
 .
-</pre>
+```
 
 <p></p>
 
@@ -185,27 +186,28 @@ Group</a> definiu uma notação similar chamada <a href="https://www.w3.org/TR/r
 <p>O Tutorial 3 criou um modelo e o escreveu no formato de triplas. <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial04.java">Tutorial 4</a> modifica o tutorial 3 para escrever o modelo na forma de RDF XML numa stream de saída. O código, novamente, é muito simples: <code>model.write</code> pode receber um  <code>OutputStream</code> como argumento.</p>
 
-
-  <pre>// now write the model in XML form to a file
-model.write(System.out);</pre>
-
+```java
+// now write the model in XML form to a file
+model.write(System.out);
+```
 
 <p>A saída deve parecer com isso:</p>
 
-
-  <pre>&lt;rdf:RDF
+```xml
+<rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
   xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
-  &lt;rdf:Description rdf:about='http://somewhere/JohnSmith'&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A0&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
+ >
+  <rdf:Description rdf:about='http://somewhere/JohnSmith'>
+    <vcard:FN>John Smith</vcard:FN>
+    <vcard:N rdf:nodeID="A0"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <vcard:Given>John</vcard:Given>
+    <vcard:Family>Smith</vcard:Family>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 <p></p>
 
@@ -222,16 +224,18 @@ model.write(System.out);</pre>
 <p>Jena possui uma interface extensível que permite novos escritores para diferentes linguagens de serialização RDF. Jena possuem também um escritor RDF/XML mais sofisticado que pode ser invocado ao especificar outro argumento à chamada de método 
 <code>RDFDataMgr.write</code>:</p>
 
-<pre>// now write the model in a pretty form
+```java
+// now write the model in a pretty form
 RDFDataMgr.write(System.out, model, Lang.RDFXML);
-</pre>
+```
 
 <p>Este escritor, chamado também de PrettyWriter, ganha vantagem ao usar as particularidades da sintaxe abreviada de RDF/XML ao criar um modelo mais compacto. Ele também é capaz de preservar os blank nodes onde é possível. Entretanto, não é recomendável para escrever modelos muito grandes, já que sua desempenho deixa a desejar. Para escrever grandes arquivos e preservar os blank nodes, escreva no formato de N-Triplas:</p>
 
 
-<pre>// now write the model in XML form to a file
+```java
+// now write the model in XML form to a file
 RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
-</pre>
+```
 
 
 <p>Isso produzirá uma saída similar à do tutorial 3, que está em conformidade com a especificação de N-Triplas.</p>
@@ -240,8 +244,7 @@ RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 
 <p><a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstra a leitura  num modelo de sentenças gravadas num RDF XML. Com este tutorial, nós teremos criado uma pequena base de dados de vcards na forma RDF/XML. O código a seguir fará leitura e escrita. <em>Note que para esta aplicação rodar, o arquivo de entrada precisa estar no diretório da aplicação.</em></p>
 
-
-<pre>
+```java
 // create an empty model
 Model model = ModelFactory.createDefaultModel();
 
@@ -257,50 +260,49 @@ model.read(in, null);
 
 // write it to standard out
 model.write(System.out);
-</pre>
-
+```
 
 <p>O segundo argumento da chamada de método <code>read()</code> é a URI que será usada para resolver URIs relativas. Como não há referências URI relativas no arquivo de teste, ele pode ser vazio. Quando executado, <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> produzirá uma saída XML como esta:</p>
 
-
-<pre>&lt;rdf:RDF
+```xml
+<rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
   xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/JohnSmith/'&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A0&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/SarahJones/'&gt;
-    &lt;vcard:FN&gt;Sarah Jones&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A1&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/MattJones/'&gt;
-    &lt;vcard:FN&gt;Matt Jones&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A2&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A3&quot;&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Rebecca&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A1&quot;&gt;
-    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Sarah&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A2&quot;&gt;
-    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Matthew&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/RebeccaSmith/'&gt;
-    &lt;vcard:FN&gt;Becky Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A3&quot;/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-
+ >
+  <rdf:Description rdf:nodeID="A0">
+    <vcard:Family>Smith</vcard:Family>
+    <vcard:Given>John</vcard:Given>
+  </rdf:Description>
+  <rdf:Description rdf:about='http://somewhere/JohnSmith/'>
+    <vcard:FN>John Smith</vcard:FN>
+    <vcard:N rdf:nodeID="A0"/>
+  </rdf:Description>
+  <rdf:Description rdf:about='http://somewhere/SarahJones/'>
+    <vcard:FN>Sarah Jones</vcard:FN>
+    <vcard:N rdf:nodeID="A1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about='http://somewhere/MattJones/'>
+    <vcard:FN>Matt Jones</vcard:FN>
+    <vcard:N rdf:nodeID="A2"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A3">
+    <vcard:Family>Smith</vcard:Family>
+    <vcard:Given>Rebecca</vcard:Given>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <vcard:Family>Jones</vcard:Family>
+    <vcard:Given>Sarah</vcard:Given>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A2">
+    <vcard:Family>Jones</vcard:Family>
+    <vcard:Given>Matthew</vcard:Given>
+  </rdf:Description>
+  <rdf:Description rdf:about='http://somewhere/RebeccaSmith/'>
+    <vcard:FN>Becky Smith</vcard:FN>
+    <vcard:N rdf:nodeID="A3"/>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 ## Controlando prefixos {# id="ch-Prefixes" }
 
@@ -309,94 +311,86 @@ model.write(System.out);
 Na sessão anterior, nós vimos que a saída XML declarou um prefixo namespace  
 <code>vcard</code> e o usou para abreviar URIs. Enquanto que RDF usa somente URIs completas, e não sua forma encurtada, Jena provê formas de controlar namespaces usados na saída com seu mapeamento de prefixos. Aqui vai um exemplo simples.
 
-
-<pre>
- Model m = ModelFactory.createDefaultModel();
- String nsA = "http://somewhere/else#";
- String nsB = "http://nowhere/else#";
- Resource root = m.createResource( nsA + "root" );
- Property P = m.createProperty( nsA + "P" );
- Property Q = m.createProperty( nsB + "Q" );
- Resource x = m.createResource( nsA + "x" );
- Resource y = m.createResource( nsA + "y" );
- Resource z = m.createResource( nsA + "z" );
- m.add( root, P, x ).add( root, P, y ).add( y, Q, z );
- System.out.println( "# -- no special prefixes defined" );
- m.write( System.out );
- System.out.println( "# -- nsA defined" );
- m.setNsPrefix( "nsA", nsA );
- m.write( System.out );
- System.out.println( "# -- nsA and cat defined" );
- m.setNsPrefix( "cat", nsB );
- m.write( System.out );
-</pre>
+```java
+Model m = ModelFactory.createDefaultModel();
+String nsA = "http://somewhere/else#";
+String nsB = "http://nowhere/else#";
+Resource root = m.createResource( nsA + "root" );
+Property P = m.createProperty( nsA + "P" );
+Property Q = m.createProperty( nsB + "Q" );
+Resource x = m.createResource( nsA + "x" );
+Resource y = m.createResource( nsA + "y" );
+Resource z = m.createResource( nsA + "z" );
+m.add( root, P, x ).add( root, P, y ).add( y, Q, z );
+System.out.println( "# -- no special prefixes defined" );
+m.write( System.out );
+System.out.println( "# -- nsA defined" );
+m.setNsPrefix( "nsA", nsA );
+m.write( System.out );
+System.out.println( "# -- nsA and cat defined" );
+m.setNsPrefix( "cat", nsB );
+m.write( System.out );
+```
 
 A saída deste fragmento são três blocos de RDF/XML, com três diferentes mapeamentos de prefixos. Primeiro o padrão, sem prefixos diferentes dos padrões:
 
-
-<pre>
+```xml
 # -- no special prefixes defined
 
-&lt;rdf:RDF
+<rdf:RDF
     xmlns:j.0="http://nowhere/else#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:j.1="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;j.1:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;j.1:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;j.0:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-
+    xmlns:j.1="http://somewhere/else#" >
+  <rdf:Description rdf:about="http://somewhere/else#root">
+    <j.1:P rdf:resource="http://somewhere/else#x"/>
+    <j.1:P rdf:resource="http://somewhere/else#y"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://somewhere/else#y">
+    <j.0:Q rdf:resource="http://somewhere/else#z"/>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 Nós vimos que o namespace rdf é declarado automaticamente, já que são requeridos para tags como <code>&lt;RDF:rdf&gt;</code> e <code>&lt;rdf:resource&gt;</code>. Declarações de namespace são também necessárias para o uso das duas propriedades P e Q, mas já que seus namespaces não foram introduzidos no modelo, eles recebem nomes namespaces inventados <code>j.0</code> e <code>j.1</code>.
 
 <p>O método <code>setNsPrefix(String prefix, String URI)</code>
 declara que o namespace da <code>URI</code> deve ser abreviado por <code>prefixos</code>. Jena requer que o <code>prefixo</code> seja um namespace XML correto, e que o <code>URI</code> termine com um caractere sem-nome. O escritor RDF/XML transformará essas declarações de prefixos em declarações de namespaces XML e as usará nas suas saídas:
 
-
-
-<pre>
+```xml
 # -- nsA defined
 
-&lt;rdf:RDF
+<rdf:RDF
     xmlns:j.0="http://nowhere/else#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:nsA="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;j.0:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-
+    xmlns:nsA="http://somewhere/else#" >
+  <rdf:Description rdf:about="http://somewhere/else#root">
+    <nsA:P rdf:resource="http://somewhere/else#x"/>
+    <nsA:P rdf:resource="http://somewhere/else#y"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://somewhere/else#y">
+    <j.0:Q rdf:resource="http://somewhere/else#z"/>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 O outro namespace ainda recebe o nome criado automaticamente, mas o nome nsA é agora usado nas tags de propriedades. Não há necessidade de que o nome do prefixo tenha alguma relação com as variáveis do código Jena:
 
-
-<pre>
+```xml
 # -- nsA and cat defined
 
-&lt;rdf:RDF
+<rdf:RDF
     xmlns:cat="http://nowhere/else#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:nsA="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;cat:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-
+    xmlns:nsA="http://somewhere/else#" >
+  <rdf:Description rdf:about="http://somewhere/else#root">
+    <nsA:P rdf:resource="http://somewhere/else#x"/>
+    <nsA:P rdf:resource="http://somewhere/else#y"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://somewhere/else#y">
+    <cat:Q rdf:resource="http://somewhere/else#z"/>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 Ambos os prefixos são usados na saída, e não houve a necessidade de prefixos gerados automaticamente.
 
@@ -406,13 +400,11 @@ Assim como as declarações de prefixos definidas por chamadas a <code>setNsPref
 
 <p>Pegue a saída produzida pelo fragmento anterior e cole-o dentro de algum arquivo, com a URL  <b>file:/tmp/fragment.rdf</b> say. E execute o código:
 
-
-<pre>
+```java
 Model m2 = ModelFactory.createDefaultModel();
 m2.read( "file:/tmp/fragment.rdf" );
 m2.write( System.out );
-</pre>
-
+```
 
 Você verá que os prefixos da entrada são preservados na saída. Todos os prefixos são escritos, mesmo se eles não forem usados em lugar algum. Você pode remover um prefixo com <code>removeNsPrefix(String prefix)</code> se você não o quiser na saída.
 
@@ -438,51 +430,48 @@ Você verá que os prefixos da entrada são preservados na saída. Todos os pref
 
 <p> Dada a URI de um recurso, o objeto do recurso pode ser recuperado de um modelo usando o método <code>Model.getResource(String uri)</code>. Este método é definido para retornar um objeto Resource se ele existir no modelo, ou, caso contrário, criar um novo. Por exemplo, para recuperar o recurso Adam Smith do modelo lido a partir do arquivo no tutorial 5:</p>
 
-
-<pre>// retrieve the John Smith vcard resource from the model
+```java
+// retrieve the John Smith vcard resource from the model
 Resource vcard = model.getResource(johnSmithURI);
-</pre>
-
+```
 
 <p>A interface Resource define numerosos métodos para acessar as propriedades de um recurso. O método <code>Resource.getProperty(Property p)</code> acessa uma propriedade do recurso. Este método não segue a convenção usual de Java de acesso já que o tipo do objeto retorna é  <code>Statement,</code> e não <code>Property</code> como era de se esperar. Retornando toda a sentença permite à aplicação acessar o valor da propriedade usando um de seus métodos de acesso que retornam o objeto da sentença. Por exemplo, para recuperar o recurso que é o valor da propriedade <code>vcard:N</code></p>
 
-
-<pre>// retrieve the value of the N property
+```java
+// retrieve the value of the N property
 Resource name = (Resource) vcard.getProperty(VCARD.N)
                                 .getObject();
-</pre>
-
+```
 
 <p>De modo geral, o objeto de uma sentença pode ser um recurso ou uma literal, então a aplicação, sabendo que o valor precisar ser um recurso, faz o cast do objeto retornado. Uma das coisas que Jena tenta fazer é fornecer tipos específicos de métodos, então a aplicação não tem que fazer cast, e checagem de tipos pode ser feita em tempo de compilação. O fragmento de código acima poderia ser mais convenientemente escrito assim:</p>
 
-
-<pre>// retrieve the value of the FN property
+```java
+// retrieve the value of the N property
 Resource name = vcard.getProperty(VCARD.N)
-                     .getResource();</pre>
-
+                     .getResource();
+```
 
 <p>Similarmente, o valor literal de uma propriedade pode ser recuperado:</p>
 
-
-<pre>// retrieve the given name property
+```java// retrieve the given name property
 String fullName = vcard.getProperty(VCARD.FN)
-                        .getString();</pre>
-
+                        .getString();
+```
 
 <p>Neste exemplo, o recurso vcard possui somente as propriedades <code>vcard:FN</code> e <code>vcard:N</code>. RDF permite a um recurso repetir uma propriedade; por exemplo, Adam pode ter mais de um apelido. Vamos dar dois apelidos a ele:</p>
 
-
-<pre>// add two nickname properties to vcard
+```java
+// add two nickname properties to vcard
 vcard.addProperty(VCARD.NICKNAME, "Smithy")
-     .addProperty(VCARD.NICKNAME, "Adman");</pre>
-
+     .addProperty(VCARD.NICKNAME, "Adman");
+```
 
 <p>Como notado anteriormente, Jena representa um modelo RDF como um conjunto de sentenças, então, adicionar uma sentença com um sujeito, predicado e objeto igual a um já existente não terá efeito. Jena não define qual do dois apelidos será retornado. O resultado da chamada a <code>vcard.getProperty(VCARD.NICKNAME)</code> é indeterminado. Jena vai retornar um dos valores, mas não há garantia nem mesmo de que duas chamadas consecutivas irá retornar o mesmo valor.</p>
 
 <p>Se for possível que uma propriedade ocorra mais de uma vez, então o método  Resource.listProperties(Property p) pode ser usado para retornar um iterador para lista-las. Este método retorna um iterador que retorna objetos do tipo <code>Statement</code>. Nós podemos listar os apelidos assim:</p>
 
-
-<pre>// set up the output
+```java
+// set up the output
 System.out.println("The nicknames of \""
                       + fullName + "\" are:");
 // list the nicknames
@@ -492,23 +481,20 @@ while (iter.hasNext()) {
                                     .getObject()
                                     .toString());
 }
-</pre>
-
+```
 
 <p>Esse código pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial06.java"> tutorial 6</a>. O iterador <code>iter</code> reproduz todas as sentenças com sujeito <code>vcard</code> e predicado <code>VCARD.NICKNAME</code>, então, iterar sobre ele permite recuperar cada sentença usando
 <code>nextStatement()</code>, pegar o campo do objeto, e convertê-lo para string. O código produz a seguinte saída quando executado:</p>
 
-
-<pre>The nicknames of "John Smith" are:
-   Smithy
-   Adman
-</pre>
-
+```bash
+The nicknames of "John Smith" are:
+    Smithy
+    Adman
+```
 
 <p>Todas as propriedades de um recurso podem ser listadas usando o método 
 <code>listProperties()</code> sem argumentos.
 </p>
-
 
 ## Consultas em Modelos {# id="ch-Querying-a-Model" }
 
@@ -520,53 +506,51 @@ while (iter.hasNext()) {
 <p><code>Model.listSubjectsWithProperty(Property p, RDFNode
 o)</code><code></code> retornará um iterador sobre todos os  recursos com propriedade <code>p</code> de valor <code>o</code>. Se nós assumirmos que somente recursos vcard terão a propriedade <code>vcard:FN</code> e que, em nossos dados, todos esses recursos têm essa propriedade, então podemos encontrar todos os vCards assim:</p>
 
-
-  <pre>// list vcards
+```java
+// list vcards
 ResIterator iter = model.listSubjectsWithProperty(VCARD.FN);
 while (iter.hasNext()) {
     Resource r = iter.nextResource();
     ...
-}</pre>
-
+}
+```
 
 <p>Todos esses métodos de consulta são açúcar sintático sobre o método primitivo de consulta <code>model.listStatements(Selector s)</code>. Esse método retorna um iterador sobre todas as sentenças no modelo 'selecionado' por <code>s</code>. A interface de selector foi feita para ser extensível, mas por hora, só há uma implementação dela, a classe  <code>SimpleSelector</code> do pacote <code>org.apache.jena.rdf.model</code>. Usar <code>SimpleSelector </code> é uma das raras ocasiões em Jena onde é necessário usar uma classe especifica em vez de uma interface. O construtor de <code>SimpleSelector</code> recebe três argumentos:</p>
 
-
-<pre>Selector selector = new SimpleSelector(subject, predicate, object)</pre>
-
+```java
+Selector selector = new SimpleSelector(subject, predicate, object);
+```
 
 <p>Esse selector vai selecionar todas as sentenças em que o sujeito casa com
 <code>subject</code>, um predicado que casa com <code>predicate</code> e um objeto que casa com <code>object</code>. Se <code>null</code> é passado para algum dos argumentos, ele vai casar com qualquer coisa, caso contrário, ele vai casar com os recursos ou literais correspondentes. (Dois recursos são iguais se eles possuem o mesmo URI ou são o mesmo blank node; dois literais são iguais se todos os seus componentes forem iguais.) Assim:</p>
 
-
-  <pre>Selector selector = new SimpleSelector(null, null, null);</pre>
-
+```java
+Selector selector = new SimpleSelector(null, null, null);
+```
 
 <p>vai selecionar todas as sentenças do modelo.</p>
 
-
-  <pre>Selector selector = new SimpleSelector(null, VCARD.FN, null);</pre>
-
+```java
+Selector selector = new SimpleSelector(null, VCARD.FN, null);
+```
 
 <p>vai selecionar todas as sentenças com o predicado VCARD.FN, independente do sujeito ou objeto. Como um atalho especial,
 
-<code>listStatements( S, P, O )
-</code>
-
+```java
+listStatements( S, P, O )
+```
 é equivalente a
 
-<code>listStatements( new SimpleSelector( S, P, O ) )
-</code>
-
-
-
+```java
+listStatements( new SimpleSelector( S, P, O ) )
+```
 
 <p>
 O código a seguir, que pode ser encontrado em  <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial07.java">tutorial 7</a> que lista os nomes completos de todos os vcards do banco de dados.</p>
 
-
-<pre>// select all the resources with a VCARD.FN property
+```java
+// select all the resources with a VCARD.FN property
 ResIterator iter = model.listSubjectsWithProperty(VCARD.FN);
 if (iter.hasNext()) {
     System.out.println("The database contains vcards for:");
@@ -578,19 +562,17 @@ if (iter.hasNext()) {
 } else {
     System.out.println("No vcards were found in the database");
 }
-</pre>
-
+```
 
 <p>Isso deve produzir uma saída similar a:</p>
 
-
-<pre>The database contains vcards for:
+```bash
+The database contains vcards for:
   Sarah Jones
   John Smith
   Matt Jones
   Becky Smith
-</pre>
-
+```
 
 <p>Seu próximo exercício é modificar o código para usar <code>SimpleSelector
 </code>em vez de <code>listSubjectsWithProperty</code>.</p>
@@ -598,51 +580,49 @@ if (iter.hasNext()) {
 <p>Vamos ver como implementar um controle mais refinado sobre as sentenças selecionadas.
 <code>SimpleSelector</code> pode ser herdado ter seus selects modificado para mais filtragens:</p>
 
-
-  <pre>// select all the resources with a VCARD.FN property
+```java
+// select all the resources with a VCARD.FN property
 // whose value ends with "Smith"
 StmtIterator iter = model.listStatements(
     new SimpleSelector(null, VCARD.FN, (RDFNode) null) {
         public boolean selects(Statement s)
             {return s.getString().endsWith("Smith");}
-    });</pre>
-
+    });
+```
 
 <p>Esse código usa uma técnica elegante de Java para sobrescrever a definição de um método quando criamos uma instância da classe. Aqui, o método <code>selects(...)</code> garante que o nome completo termine com “Smith”. É importante notar que a filtragem baseada nos argumentos sujeito, predicado e objeto tem lugar antes que o método <code>selects(...)</code> seja chamado, então esse teste extra só será aplicado para casar sentenças.</p>
 
 <p>O código completo pode ser encontrado no <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial08.java">tutorial
 8</a> e produz uma saída igual a:</p>
 
-
-  <pre>The database contains vcards for:
+```bash
+The database contains vcards for:
   John Smith
-  Becky Smith</pre>
-
-<p></p>
+  Becky Smith
+```
 
 <p>Você pode imaginar que:</p>
 
-
-<pre>// do all filtering in the selects method
+```java
+// do all filtering in the selects method
 StmtIterator iter = model.listStatements(
   new
       SimpleSelector(null, null, (RDFNode) null) {
           public boolean selects(Statement s) {
               return (subject == null   || s.getSubject().equals(subject))
                   &amp;&amp; (predicate == null || s.getPredicate().equals(predicate))
-                  &amp;&amp; (object == null    || s.getObject().equals(object))
+                  &amp;&amp; (object == null    || s.getObject().equals(object)) ;
           }
      }
- });
-</pre>
-
+     });
+```
 
 <p>é equivalente a:</p>
 
-
-  <pre>StmtIterator iter =
-  model.listStatements(new SimpleSelector(subject, predicate, object)</pre>
-
+```java
+StmtIterator iter =
+  model.listStatements(new SimpleSelector(subject, predicate, object)
+```
 
 <p>Embora possam ser funcionalmente equivalentes, a primeira forma vai listar todas as sentenças do modelo e testar cada uma individualmente, a segunda forma permite índices mantidos pela implementação para melhor a perfomance. Tente isso em modelos grandes e veja você mesmo, mas prepare uma chícara de café antes.</p>
 
@@ -664,8 +644,8 @@ StmtIterator iter = model.listStatements(
 <p>Vamos ver o código (o código completo está em  <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) e ver o que acontece.</p>
 
-
-<pre>// read the RDF/XML files
+```java
+// read the RDF/XML files
 model1.read(new InputStreamReader(in1), "");
 model2.read(new InputStreamReader(in2), "");
 
@@ -673,30 +653,29 @@ model2.read(new InputStreamReader(in2), "");
 Model model = model1.union(model2);
 
 // print the Model as RDF/XML
-model.write(system.out, "RDF/XML-ABBREV");</pre>
-
+model.write(system.out, "RDF/XML-ABBREV");
+```
 
 <p>A saída produzida pelo PrettyWriter se assemelha a:</p>
 
-
-<pre>&lt;rdf:RDF
-    xmlns:rdf=&quot;<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a>&quot;
-    xmlns:vcard=&quot;http://www.w3.org/2001/vcard-rdf/3.0#&quot;&gt;
-  &lt;rdf:Description rdf:about=&quot;http://somewhere/JohnSmith/&quot;&gt;
-    &lt;vcard:EMAIL&gt;
-      &lt;vcard:internet&gt;
-        &lt;rdf:value&gt;John@somewhere.com&lt;/rdf:value&gt;
-      &lt;/vcard:internet&gt;
-    &lt;/vcard:EMAIL&gt;
-    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;
-      &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-      &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;/vcard:N&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-
+```xml
+<rdf:RDF
+    xmlns:rdf="<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a>"
+    xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+  <rdf:Description rdf:about="http://somewhere/JohnSmith/">
+    <vcard:EMAIL>
+      <vcard:internet>
+        <rdf:value>John@somewhere.com</rdf:value>
+      </vcard:internet>
+    </vcard:EMAIL>
+    <vcard:N rdf:parseType="Resource">
+      <vcard:Given>John</vcard:Given>
+      <vcard:Family>Smith</vcard:Family>
+    </vcard:N>
+    <vcard:FN>John Smith</vcard:FN>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 <p>Mesmo que você não seja familiarizado com  os detalhes da sintaxe RDF/XML, deve ser relativamente claro que os modelos foram unidos como esperado A interseção e a diferença de modelos podem ser computados de maneira semelhante, usando os métodos <code>.intersection(Model)</code> e
 <code>.difference(Model)</code>; veja a documentação de
@@ -730,8 +709,8 @@ para mais detalhes.
 
 <p align="left">Vamos modificar o tutorial 8 para criar essa bag:</p>
 
-
-<pre>// create a bag
+```java
+// create a bag
 Bag smiths = model.createBag();
 
 // select all the resources with a VCARD.FN property
@@ -746,29 +725,30 @@ StmtIterator iter = model.listStatements(
 while (iter.hasNext()) {
     smiths.add(iter.nextStatement().getSubject());
 }
-</pre>
+```
 
 <p>Se nós imprimirmos esse modelo, vamos obter algo do tipo:</p>
 
-  <pre>&lt;rdf:RDF
+```xml
+<rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
   xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
+ >
 ...
-  &lt;rdf:Description rdf:nodeID=&quot;A3&quot;&gt;
-    &lt;rdf:type rdf:resource='http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag'/&gt;
-    &lt;rdf:_1 rdf:resource='http://somewhere/JohnSmith/'/&gt;
-    &lt;rdf:_2 rdf:resource='http://somewhere/RebeccaSmith/'/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-
+  <rdf:Description rdf:nodeID="A3">
+    <rdf:type rdf:resource='http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag'/>
+    <rdf:_1 rdf:resource='http://somewhere/JohnSmith/'/>
+    <rdf:_2 rdf:resource='http://somewhere/RebeccaSmith/'/>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 <p>que representa o recurso Bag.</p>
 
 <p>A interface do container fornece um iterador para listar o conteúdo do container:</p>
 
-
-<pre>// print out the members of the bag
+```java
+// print out the members of the bag
 NodeIterator iter2 = smiths.iterator();
 if (iter2.hasNext()) {
     System.out.println("The bag contains:");
@@ -781,16 +761,15 @@ if (iter2.hasNext()) {
 } else {
     System.out.println("The bag is empty");
 }
-</pre>
-
+```
 
 <p>que produz a seguinte saída:</p>
 
-
-<pre>The bag contains:
+```bash
+The bag contains:
   John Smith
-  Becky Smith</pre>
-
+  Becky Smith
+```
 
 <p>O código executável pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial10.java">
 tutorial 10</a>, que coloca esses fragmentos de código juntos num exemplo completo.</p>
@@ -805,8 +784,8 @@ tutorial 10</a>, que coloca esses fragmentos de código juntos num exemplo compl
 
 <p>Em Jena, esses atributos de uma literal podem ser setados quando a literal é construída, e.g. no <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial11.java">tutorial 11</a>:</p>
 
-
-<pre>// create the resource
+```java
+// create the resource
 Resource r = model.createResource();
 
 // add the property
@@ -815,30 +794,30 @@ r.addProperty(RDFS.label, model.createLiteral("chat", "en"))
  .addProperty(RDFS.label, model.createLiteral("&lt;em&gt;chat&lt;/em&gt;", true));
 
 // write out the Model
-model.write(system.out);</pre>
-
+model.write(system.out);
+```
 
 <p>produz</p>
 
-
-<pre>&lt;rdf:RDF
+```xml
+<rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
   xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'
- &gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;rdfs:label xml:lang='en'&gt;chat&lt;/rdfs:label&gt;
-    &lt;rdfs:label xml:lang='fr'&gt;chat&lt;/rdfs:label&gt;
-    &lt;rdfs:label rdf:parseType='Literal'&gt;&lt;em&gt;chat&lt;/em&gt;&lt;/rdfs:label&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-
+ >
+  <rdf:Description rdf:nodeID="A0">
+    <rdfs:label xml:lang='en'>chat</rdfs:label>
+    <rdfs:label xml:lang='fr'>chat</rdfs:label>
+    <rdfs:label rdf:parseType='Literal'><em>chat</em></rdfs:label>
+  </rdf:Description>
+</rdf:RDF>
+```
 
 <p>Para que duas literais sejam consideradas iguais, elas devem ser ambas literais XML ou ambas literais simples. Em adição a isso, ambas não devem possuir tag de linguagem, ou se as tags de linguagem estiverem presentes, elas devem ser iguais. Para simples literais strings, elas devem ser iguais. Literais XML têm duas noções de igualdade. A noção simples é que as condições anteriores são verdade e as strings também são iguais. A outra noção é de que elas podem ser iguais se a canonização das strings forem iguais.</p>
 
 <p>As interfaces de Jena também suportam literais tipadas. A maneira antiga (mostrada abaixo) trata literais tipadas como atalhos para strings: valores tipados são convertidos por Java em strings, e essas strings são armazenadas no modelo. Por exemplo, tente (observando que para literais simples, nós podemos omitir a chamada code>model.createLiteral</code>(...)):</p>
 
-
-<pre>// create the resource
+```java
+// create the resource
 Resource r = model.createResource();
 
 // add the property
@@ -847,14 +826,13 @@ r.addProperty(RDFS.label, "11")
 
 // write out the Model
 model.write(system.out, "N-TRIPLE");
-</pre>
-
+```
 
 <p>A saída produzida é:</p>
 
-
-  <pre>_:A... &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; "11" .</pre>
-
+```bash
+_:A... <http://www.w3.org/2000/01/rdf-schema#label> "11" .
+```
 
 <p>Já que ambas as literais são apenas a string “’11”, então somente uma sentença é adicionada</p>
 

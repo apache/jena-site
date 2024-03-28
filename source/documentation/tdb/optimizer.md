@@ -97,7 +97,7 @@ sent at level "INFO". So for log4j2, the following can be set in the
 The context setting is for key (Java constant) `ARQ.symLogExec`. To
 set globally:
 
-    ARQ.getContext().set(ARQ.symLogExec,true) ;
+    ARQ.getContext().set(ARQ.symLogExec,true) ;
 
 and it may also be set on an individual query execution using its
 local context.
@@ -130,7 +130,7 @@ on the server, dataset, or endpoint:
 These can be specified as string, to the command line tools, or
 using the constants in `Explain.InfoLevel`.
 
-     qExec.getContext().set(ARQ.symLogExec,Explain.InfoLevel.FINE) ;
+     qExec.getContext().set(ARQ.symLogExec,Explain.InfoLevel.FINE) ;
 
 ## tdbquery --explain
 
@@ -244,12 +244,12 @@ to RDF terms by the time a triplepatetrn is reached in the
 execution plan being considered. For example, in the basic graph
 pattern:
 
-    { ?x  :identifier  1234 .
-      ?x  :name        ?name .
+    { ?x  :identifier  1234 .
+      ?x  :name        ?name .
     }
 
-then ?x will be bound in pattern ?x :name ?name to an RDF term if
-executed after the pattern ?x :identifier 1234.
+then ?x will be bound in pattern ?x :name ?name to an RDF term if
+executed after the pattern ?x :identifier 1234.
 
 A rule is of the form:
 
@@ -268,10 +268,10 @@ LITERAL | Matches an RDF literal
 BNODE | Matches an RDF blank node (in the data)
 ANY  |Matches anything - a term or variable
 
-From the example above, `(VAR :identifier TERM)` will match
-`?x :identifier 1234`.
+From the example above, `(VAR :identifier TERM)` will match
+`?x :identifier 1234`.
 
-`(TERM :name VAR)` will match `?x :name ?name` when in a potential plan
+`(TERM :name VAR)` will match `?x :name ?name` when in a potential plan
 where the `:identifier` triple pattern is first because `?x` will be a
 bound term at that point but not if this triple pattern is
 considered first.
@@ -366,7 +366,7 @@ The `graph` parameter uses a built-in TDB [special graph name](/documentation/td
 
 Rule for an inverse functional property:
 
-    ((VAR :ifp TERM) 1 )
+    ((VAR :ifp TERM) 1 )
 
 and even if a property is only approximately identifying for
 resources (e.g. date of birth in a small dataset of people), it is
@@ -383,7 +383,7 @@ a particular class is common or not. In some datasets
 may help little because a property whose domain is that class, or a
 subclass, may be more elective. SO a rule like:
 
-    ((VAR :property VAR) ...)
+    ((VAR :property VAR) ...)
 
 is more selective.
 

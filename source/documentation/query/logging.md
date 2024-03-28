@@ -6,17 +6,17 @@ ARQ uses
 [SLF4j](http://slf4j.org/)
 as the logging API and the query and RIOT commands use
 [Log4J2](http://logging.apache.org/log4j/2.x/) as a deployment
-system.  You can use Java 1.4 logging instead.
+system. You can use Java 1.4 logging instead.
 
 ARQ does not output any logging messages at level INFO in normal
-operation. The code uses level TRACE and DEBUG.  Running with
+operation. The code uses level TRACE and DEBUG. Running with
 logging set to an application at INFO will cause no output in
 normal operation. Output below INFO can be very verbose and is
 intended mainly to help debug ARQ. WARN and FATAL messages are only
 used when something is wrong.
 
 The root of all the loggers is `org.apache.jena`.
-`org.apache.jena.query` is the application API. 
+`org.apache.jena.query` is the application API.
 `org.apache.jena.sparql` is the implementation and extensions
 points.
 
@@ -92,7 +92,7 @@ at level "info". So for log4j2, the following can be set in the
 The context setting is for key (Java constant) `ARQ.symLogExec`. To set
 globally:
 
-    ARQ.setExecutionLogging(Explain.InfoLevel.ALL) ;
+    ARQ.setExecutionLogging(Explain.InfoLevel.ALL);
 
 and it may also be set on an individual query execution using its local
 context.
@@ -119,7 +119,7 @@ NONE | No information logged
 These can be specified as string, to the command line tools, or using
 the constants in `Explain.InfoLevel`.
 
-     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.FINE) ;
+     qExec.getContext().set(ARQ.symLogExec, Explain.InfoLevel.FINE);
 
      arq.query --set arq:logExec=FINE --data data file --query=queryfile
 

@@ -26,8 +26,8 @@ in J2EE application servers.
 A store description identifies which storage layout is being used,
 the connection to use and the database type.
 
-     [] rdf:type sdb:Store ;
-         sdb:layout         "layout2" ;
+     [] rdf:type sdb:Store ;
+         sdb:layout         "layout2" ;
          sdb:connection     <#conn> .
 
      <#conn> ...
@@ -54,15 +54,15 @@ same.
     @prefix ja:       <http://jena.hpl.hp.com/2005/11/Assembler#> .
     @prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
 
-    <#myStore> rdf:type sdb:Store ;
-         sdb:layout         "layout2" ;
-         sdb:connection     <#conn> ;
+    <#myStore> rdf:type sdb:Store ;
+         sdb:layout         "layout2" ;
+         sdb:connection     <#conn> ;
          .
 
-    <#conn> rdf:type sdb:SDBConnection ;
-         sdb:sdbType        "derby" ;
-         sdb:sdbName        "DB/SDB2" ;
-         sdb:driver         "org.apache.derby.jdbc.EmbeddedDriver" ;
+    <#conn> rdf:type sdb:SDBConnection ;
+         sdb:sdbType        "derby" ;
+         sdb:sdbName        "DB/SDB2" ;
+         sdb:driver         "org.apache.derby.jdbc.EmbeddedDriver" ;
          .
 
 Examples of assembler files are to be found in the `Store/`

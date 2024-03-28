@@ -36,7 +36,7 @@ property functions.
 
 A SPARQL custom function is implementation dependent. Most details
 of the ARQ query engine do not have to be understood to write a
-function; it is a matter of implementing one interface.  This is
+function; it is a matter of implementing one interface. This is
 made simpler for many cases by a number of base classes that
 provide much of the machinery needed.
 
@@ -51,7 +51,7 @@ access the queried dataset.
 
 ### Dynamically Loaded Functions
 
-The ARQ function library uses this mechanism.  The namespace of the
+The ARQ function library uses this mechanism. The namespace of the
 ARQ function library is `<http://jena.apache.org/ARQ/function#>`.
 
     PREFIX afn: <http://jena.apache.org/ARQ/function#>

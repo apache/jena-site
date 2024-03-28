@@ -43,14 +43,16 @@ force the language choice to be JSON-LD 1.1 with
 [`RDFParser`](https://jena.apache.org/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/RDFParser.html)
 using `forceLang(Lang.JSONLD11)`:
 
-```
+```java
 RDFParser.source(...)
     .forceLang(Lang.JSONLD11)
     ...
     .build()
 ```
+
 or short-cut form:
-```
+
+```java
 RDFParser.source(URL or InputStream)
     .forceLang(Lang.JSONLD11)
     .parse(dataset);

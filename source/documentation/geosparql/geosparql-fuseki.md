@@ -13,11 +13,13 @@ GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Mav
 SPARQL queries directly on Jena Datasets and Models can be done using
 the [GeoSPARQL Jena module](index.html).
 
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-fuseki-geosparql</artifactId>
-      <version>...</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-fuseki-geosparql</artifactId>
+  <version>...</version>
+</dependency>
+```
 
 or download the binary from the 
 [Maven central repository org/apache/jena/jena-fuseki-geosparql](https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-geosparql/)
@@ -54,7 +56,7 @@ It is expected that at least one Geometry Literal or Geo Predicate is present in
 a dataset (otherwise a standard Fuseki server can be used).  A spatial index is
 created and new data cannot be added to the index once built.  The spatial index
 can optionally be stored for future usage and needs to removed from a TDB folder
-if the index is to rebuilt.
+if the index is to be rebuilt.
 
 ## Clarifications on GeoSPARQL
 
@@ -116,24 +118,28 @@ Examples:
 
  See [rdf-tables](https://github.com/galbiston/rdf-tables) in _Output Formats/Serialisations_ for supported RDF format keywords.
 
-__N.B.__ Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. """test.rdf""". Otherwise, logging output will be sent to a file called "xml". Also, "The input line is too long" error can mean the path to the  exceeds the character limit and needs shortening.
+__N.B.__ Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. `"""test.rdf"""`. Otherwise, logging output will be sent to a file called "xml". Also, "The input line is too long" error can mean the path to the  exceeds the character limit and needs shortening.
 
 ### Embedded Server
 Run within a Java application to provide GeoSPARQL support over HTTP to other applications:
 
-    FusekiLogging.setLogging();
-    GeosparqlServer server =
-        new GeosparqlServer(portNumber, datasetName, isLoopbackOnly, dataset, isUpdate);
+```java
+FusekiLogging.setLogging();
+GeosparqlServer server =
+    new GeosparqlServer(portNumber, datasetName, isLoopbackOnly, dataset, isUpdate);
+```
 
 ## SPARQL Query Example
 Once the default server is running it can be queried using Jena as follows:
 
-    String service = "http://localhost:3030/ds";
-    String query = ....;
-    try (QueryExecution qe = QueryExecution.service(service).query(query).build()) {
-        ResultSet rs = qe.execSelect();
-        ResultSetFormatter.outputAsTSV(rs);
-    }
+```java
+String service = "http://localhost:3030/ds";
+String query = ....;
+try (QueryExecution qe = QueryExecution.service(service).query(query).build()) {
+    ResultSet rs = qe.execSelect();
+    ResultSetFormatter.outputAsTSV(rs);
+}
+```
 
 The server will respond to any valid SPARQL HTTP so an alternative SPARQL framework can be used.
 More information on SPARQL querying using Jena can be found on their website (https://jena.apache.org/tutorials/sparql.html).
@@ -154,11 +160,13 @@ An embedded EPSG dataset can be included in an application by adding the followi
 
 * Maven dependency in `pom.xml`
 
-    <dependency>
-      <groupId>org.apache.sis.non-free</groupId>
-      <artifactId>sis-embedded-data</artifactId>
-      <version>0.8</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.apache.sis.non-free</groupId>
+  <artifactId>sis-embedded-data</artifactId>
+  <version>0.8</version>
+</dependency>
+```
 
 ## Command Line Arguments
 

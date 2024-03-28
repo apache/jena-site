@@ -58,7 +58,7 @@ For access to these advanced features, first get an `RDFReader`
 object that is an instance of an ARP parser, by using the
 [`getReader`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFReaderF.html#getReader())`()`
 method on any `Model`. It is then configured using the
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 method. This changes the properties for parsing RDF/XML. Many of
 the properties change the RDF parser, some change the XML parser.
 (The Jena RDF/XML parser, ARP, implements the
@@ -67,7 +67,7 @@ over a [Xerces2-J](http://xml.apache.org/xerces2-j/index.html) XML
 parser). However, changing the features and properties of the XML
 parser is not likely to be useful, but was easy to implement.
 
-[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
+[`setProperty`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdfxml/xmlinput0/JenaReader.html#setProperty(java.lang.String, java.lang.Object))`(String, Object)`
 can be used to set and get:
 
 - ARP properties

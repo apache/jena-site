@@ -147,12 +147,12 @@ contains a `.jrnl` file that is non-empty then Fuseki/TDB is having to hold the 
 **However**, because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting 
 Fuseki the journal will be flushed to disk. When using the [TDB Java API](java_api.html), the journal can be flushed by closing any datasets and releasing the TDB resources.
     
-      Dataset dataset = TDBFactory.createDataset(directory) ;
+      Dataset dataset = TDBFactory.createDataset(directory) ;
       try{
          ...
-         dataset.begin(ReadWrite.READ) ;
+         dataset.begin(ReadWrite.READ) ;
          // Perform operations      
-         dataset.end() ;
+         dataset.end() ;
          ... 
       }finally{
          dataset.close();

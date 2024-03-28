@@ -37,7 +37,7 @@ as well as what you actually get.
 If you are getting no results, or less than you expected, try
 cutting parts out of the query until something changes.
 
-There are various formatters for result sets included in ARQ. 
+There are various formatters for result sets included in ARQ.
 Print your results in text form if possible. There is a
 [testing format](http://www.w3.org/2001/sw/DataAccess/tests/README.html)
 used by the Data Access Working Group and that is used for the
@@ -50,7 +50,7 @@ A bug report or support request should be **complete** and
 problem - often, you will discover the solution yourself.
 
 *Complete* means that any query included should include prefixes
-and the whole syntax string, not a fragment.  Any program code
+and the whole syntax string, not a fragment. Any program code
 should be ready to run, not a fragment of a large program.
 
 *Minimal* means that the data sent should be an abbreviated

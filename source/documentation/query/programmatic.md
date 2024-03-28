@@ -4,7 +4,7 @@ title: ARQ - Building Queries Programmatically
 
 It is possible to build queries by building and abstract syntax
 tree (as the parser does) or by building the algebra expression for
-the query.  It is usually better to work with the algebra form as
+the query.  It is usually better to work with the algebra form as
 it is more regular.
 
 See the examples such as `arq.examples.algrebra.AlgebraExec` at

@@ -28,7 +28,7 @@ modified in various ways:
     and values.
 
 The solution modifiers OFFSET/LIMIT and ORDER BY always apply to
-all result forms. 
+all result forms.
 
 ### OFFSET and LIMIT
 
@@ -36,7 +36,7 @@ A set of solutions can be abbreviated by specifying the offset (the
 start index) and the limit (the number of solutions) to be
 returned. Using LIMIT alone can be useful to ensure not too many
 solutions are returned, to restrict the effect of some unexpected
-situation.  LIMIT and OFFSET can be used in conjunction with
+situation. LIMIT and OFFSET can be used in conjunction with
 sorting to take a defined slice through the solutions found.
 
 ### ORDER BY
@@ -44,11 +44,13 @@ sorting to take a defined slice through the solutions found.
 SPARQL solutions are sorted by expression, including custom
 functions.
 
-    ORDER BY ?x ?y
+```sparql
+ORDER BY ?x ?y
 
-    ORDER BY DESC(?x)
+ORDER BY DESC(?x)
 
-    ORDER BY x:func(?x)  # Custom sorting condition
+ORDER BY x:func(?x)  # Custom sorting condition
+```
 
 ### DISTINCT
 
@@ -56,20 +58,19 @@ The SELECT result form can take the DISTINCT modifier which ensures
 that no two solutions returned are the same - this takes place
 after projection to the requested variables.
 
- 
 
 ## SELECT
 
 The `SELECT` result form is a projection, with DISTINCT applied, of
 the solution set. `SELECT` identifies which named variables are in
-the result set.  This may be "`*`" meaning "all named variables"
+the result set. This may be "`*`" meaning "all named variables"
 (blank nodes in the query act like variables for matching but are
 never returned).
 
 ## CONSTRUCT
 
-CONSTRUCT builds an RDF based on a graph template.  The graph
-template can have variables which are bound by a WHERE clause.  The
+CONSTRUCT builds an RDF based on a graph template. The graph
+template can have variables which are bound by a WHERE clause. The
 effect is to calculate the graph fragment, given the template, for
 each solution from the WHERE clause, after taking into account any
 solution modifiers. The graph fragments, one per solution, are

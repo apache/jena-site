@@ -46,7 +46,7 @@ execute in a reasonable time.
 
 ### Query
 
-     $ sdbquery --sdb sdb.ttl 'SELECT * WHERE { ?s a ?p }'
+     $ sdbquery --sdb sdb.ttl 'SELECT * WHERE { ?s a ?p }'
 
      $ sdbquery --sdb sdb.ttl --file query.rq
 

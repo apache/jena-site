@@ -282,7 +282,6 @@ model.write(System.out);
 
 <p>The output should look something like this:</p>
 
-
 ```xml
 <rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
@@ -390,7 +389,6 @@ references in the test file, it is allowed to be empty. When run, <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> will produce XML output which
 looks like:</p>
 
-
 ```xml
 <rdf:RDF
   xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
@@ -441,7 +439,6 @@ uses only the full URIs, and not this shortened form, Jena provides ways
 of controlling the namespaces used on output with its <i>prefix mappings</i>.
 Here's a simple example.
 
-
 ```java
 Model m = ModelFactory.createDefaultModel();
 String nsA = "http://somewhere/else#";
@@ -468,7 +465,6 @@ The output from this fragment is lots of RDF/XML, with
 three different prefix mappings. First the default, with no
 prefixes other than the standard ones:
 
-
 ```xml
 # -- no special prefixes defined
 
@@ -486,7 +482,6 @@ prefixes other than the standard ones:
 </rdf:RDF>
 ```
 
-
 We see that the rdf namespace is declared automatically, since it
 is required for tags such as <code>&lt;rdf:RDF&gt;</code> and
 <code>&lt;rdf:resource&gt;</code>. XML namespace declarations are also
@@ -501,8 +496,6 @@ a legal XML namespace name, and that <code>URI</code> ends with a
 non-name character. The RDF/XML writer will turn these prefix
 declarations into XML namespace declarations and use them in its
 output:
-
-
 
 ```xml
 # -- nsA defined
@@ -521,8 +514,6 @@ output:
 </rdf:RDF>
 ```
 
-
-The other namespace still gets the constructed name, but the nsA name
 is now used in the property tags. There's no need for the prefix name
 to have anything to do with the variables in the Jena code:
 
@@ -544,7 +535,6 @@ to have anything to do with the variables in the Jena code:
 </rdf:RDF>
 ```
 
-
 Both prefixes are used for output, and no generated prefixes are needed.
 
 <h3>Implicit prefix definitions</h3>
@@ -557,13 +547,11 @@ Jena will remember the prefixes that were used in input to
 some file, with URL <b>file:/tmp/fragment.rdf</b> say. Then run the
 code:
 
-
 ```java
 Model m2 = ModelFactory.createDefaultModel();
 m2.read( "file:/tmp/fragment.rdf" );
 m2.write( System.out );
 ```
-
 
 You'll see that the prefixes from the input are preserved in the output.
 All the prefixes are written, even if they're not used anywhere. You can
@@ -579,7 +567,6 @@ and records them on input and uses them on output.
 such as extracting a Java <code>Map</code> of the exiting mappings, or
 adding a whole group of mappings at once; see the documentation for
 <code>PrefixMapping</code> for details.
-
 
 ## Jena RDF Packages {# id="ch-Jena-RDF-Packages" }
 
@@ -609,7 +596,6 @@ used. That way, if the model implementation has used an optimized
 implementation of <code>Resource</code>, then no conversions between the two
 types will be necessary.</p>
 
-
 ## Navigating a Model {# id="ch-Navigating-a-Model" }
 
 <p>So far, this tutorial has dealt mainly with creating, reading and writing
@@ -622,12 +608,10 @@ method is defined to return a Resource object if one exists in the model, or
 otherwise to create a new one. For example, to retrieve the John Smith
 resource from the model read in from the file in tutorial 5:</p>
 
-
 ```java
 // retrieve the John Smith vcard resource from the model
 Resource vcard = model.getResource(johnSmithURI);
 ```
-
 
 <p>The Resource interface defines a number of methods for accessing the
 properties of a resource. The <code>Resource.getProperty(Property
@@ -639,13 +623,11 @@ access the value of the property using one of its accessor methods which
 return the object of the statement. For example to retrieve the
 resource which is the value of the <code>vcard:N</code> property:</p>
 
-
 ```java
 // retrieve the value of the N property
 Resource name = (Resource) vcard.getProperty(VCARD.N)
                                 .getObject();
 ```
-
 
 <p>In general, the object of a statement could be a resource or a literal, so
 the application code, knowing the value must be a resource, casts the
@@ -654,35 +636,29 @@ type specific methods so the application does not have to cast and type
 checking can be done at compile time. The code fragment above, can be
 more conveniently written:</p>
 
-
 ```java
 // retrieve the value of the N property
 Resource name = vcard.getProperty(VCARD.N)
                      .getResource();
 ```
 
-
 <p>Similarly, the literal value of a property can be retrieved:</p>
-
 
 ```java// retrieve the given name property
 String fullName = vcard.getProperty(VCARD.FN)
                         .getString();
 ```
 
-
 <p>In this example, the vcard resource has only one <code>vcard:FN</code> and
 one <code>vcard:N</code> property. RDF permits a resource to repeat a
 property; for example Adam might have more than one nickname.  Let's give him
 two:</p>
-
 
 ```java
 // add two nickname properties to vcard
 vcard.addProperty(VCARD.NICKNAME, "Smithy")
      .addProperty(VCARD.NICKNAME, "Adman");
 ```
-
 
 <p>As noted before, Jena represents an RDF Model as <em>set </em>of
 statements, so adding a statement with the subject, predicate and object as
@@ -729,7 +705,6 @@ The nicknames of "John Smith" are:
 <code>listProperties()</code> method without an argument.
 </p>
 
-
 ## Querying a Model {# id="ch-Querying-a-Model" }
 
 <p>The previous section dealt with the case of navigating a model from a
@@ -770,9 +745,9 @@ package <code>org.apache.jena.rdf.model</code>.  Using
 necessary to use a specific class rather than an interface.  The
 <code>SimpleSelector</code> constructor takes three arguments:</p>
 
-
-<pre>Selector selector = new SimpleSelector(subject, predicate, object);</pre>
-
+```java
+Selector selector = new SimpleSelector(subject, predicate, object);
+```
 
 <p>This selector will select all statements with a subject that matches
 <code>subject</code>, a predicate that matches <code>predicate</code> and an
@@ -782,15 +757,15 @@ equal resources or literals. (Two resources are equal if they have equal URIs
 or are the same blank node; two literals are the same if all their components
 are equal.) Thus:</p>
 
-
-<pre>Selector selector = new SimpleSelector(null, null, null);</pre>
-
+```java
+Selector selector = new SimpleSelector(null, null, null);
+```
 
 <p>will select all the statements in a Model.</p>
 
-
-<pre>Selector selector = new SimpleSelector(null, VCARD.FN, null);</pre>
-
+```java
+Selector selector = new SimpleSelector(null, VCARD.FN, null);
+```
 
 <p>will select all the statements with VCARD.FN as their predicate, whatever
 the subject or object. As a special shorthand,
@@ -838,10 +813,9 @@ The database contains vcards for:
 <p>Your next exercise is to modify this code to use <code>SimpleSelector
 </code>instead of <code>listSubjectsWithProperty</code>.</p>
 
-<p>Lets see how to implement some finer control over the statements selected.
+<p>Let's see how to implement some finer control over the statements selected.
 <code>SimpleSelector</code> can be subclassed and its selects method modified
 to perform further filtering:</p>
-
 
 ```java
 // select all the resources with a VCARD.FN property
@@ -863,7 +837,6 @@ applied to matching statements.</p>
 
 <p>The full code can be found in <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial08.java">tutorial
 8</a> and produces output like this:</p>
-
 
 ```bash
 The database contains vcards for:
@@ -889,12 +862,10 @@ StmtIterator iter = model.listStatements(
 
 <p>is equivalent to:</p>
 
-
 ```java
 StmtIterator iter =
   model.listStatements(new SimpleSelector(subject, predicate, object)
 ```
-
 
 <p>Whilst functionally they may be equivalent, the first form will list all
 the statements in the Model and test each one individually, whilst the second
@@ -921,7 +892,7 @@ one and the duplicate <code>vcard:FN</code> arc is dropped to produce:</p>
 <p style="text-align: center">
 <img alt="figure 6" src="figures/fig6.png" width="540" height="240"></p>
 
-<p>Lets look at the code to do this (the full code is in <a
+<p>Let's look at the code to do this (the full code is in <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) and see what happens.</p>
 
 ```java
@@ -1102,7 +1073,7 @@ original RDF/XML syntax.</p>
 
 <p>Further there are really two sorts of Literals.  In one, the string
 component is just that, an ordinary string.  In the other the string
-component is expected to be a well balanced fragment of XML.  When an RDF
+component is expected to be a well-balanced fragment of XML.  When an RDF
 Model is written as RDF/XML a special construction using a
 parseType='Literal' attribute is used to represent it.</p>
 
@@ -1166,7 +1137,7 @@ model.write(system.out, "N-TRIPLE");
 
 <p>The output produced is:</p>
 
-```turtle
+```bash
 _:A... <http://www.w3.org/2000/01/rdf-schema#label> "11" .
 ```
 

@@ -44,7 +44,7 @@ pattern.
 
 Set globally:
 
-    TDB.getContext().set(TDB.symUnionDefaultGraph, true) ;
+    TDB.getContext().set(TDB.symUnionDefaultGraph, true) ;
 
 or set on a per query basis:
 

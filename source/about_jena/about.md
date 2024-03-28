@@ -2,7 +2,7 @@
 title: What is Jena?
 ---
 
-Jena is a Java framework for building Semantic Web applications. It provides a
+Jena is a Java framework for building Semantic Web applications. It provides an
 extensive Java libraries for helping developers develop code that
 handles RDF, RDFS, RDFa, OWL and SPARQL in line with
 published [W3C recommendations](https://www.w3.org/2001/sw/).

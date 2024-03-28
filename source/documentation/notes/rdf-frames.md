@@ -9,7 +9,7 @@ frame might have an `age` slot, a `height`slot etc. RDF, however,
 has taken a step beyond frame languages by making `rdf:Property` a
 first class value, not an element of a frame or resource *per se*.
 In RDF, for example, an age property can be defined:
-`<rdf:Property rdf:ID="age">`, and then applied to any resource,
+`<rdf:Property rdf:ID="age">`, and then applied to any resource,
 including, but not limited to a `Person` resource.
 
 While this introduces an extra element of modelling flexibility in
@@ -113,20 +113,20 @@ false, would entail the additional `rdf:type` statement that the
 
 For more complex class expressions in the domain, we look to see
 what simple domain constraints are entailed. For example, a domain
-constraint `A ∩ B` (i.e. "A intersection B") for property `p`
-entails that both `p rdfs:domain A` and `p rdfs:domain B` are true.
+constraint `A ∩ B` (i.e. "A intersection B") for property `p`
+entails that both `p rdfs:domain A` and `p rdfs:domain B` are true.
 However, the properties of neither `A` nor `B` will include `p`. To
 see this, suppose we have a resource `x` that we already know is of
-type `A`, and a statement `x p y`. This entails `x rdf:type A`
-which we already know, but also `x rdf:type B`. So information is
+type `A`, and a statement `x p y`. This entails `x rdf:type A`
+which we already know, but also `x rdf:type B`. So information is
 added, even if we know that `x` is an instance `A`, so `p` is not a
 property of `A`. The symmetrical argument holds for `p` not being a
 property of `B`.
 
-However, if the domain of `p` is `A ∪ B` (i.e. "A union B"), then
+However, if the domain of `p` is `A ∪ B` (i.e. "A union B"), then
 both `A` and `B` will have `p` as a property, since an occurrence
-of, say `x p y` does not allow us to conclude that either
-`x rdf:type A` or `x rdf:type B`.
+of, say `x p y` does not allow us to conclude that either
+`x rdf:type A` or `x rdf:type B`.
 
 ## Property hierarchies
 
@@ -262,12 +262,12 @@ be noted:
     the entailed associations between classes and properties. Users are
     now advised to attach a reasoner to their models to do this.
 -   Change in parameter semantics
-    The old version of `listDeclaredProperties(boolean all)` took one
+    The old version of `listDeclaredProperties(boolean all)` took one
     parameter, a Boolean flag to indicate whether additional declared
     (implied) properties should be listed. Since this is now covered by
     the use, or otherwise, of a reasoner attached to the model, the new
-    method signature is `listDeclaredProperties(boolean direct)`, where
-    calling the method with `direct = true` will compress the returned
+    method signature is `listDeclaredProperties(boolean direct)`, where
+    calling the method with `direct = true` will compress the returned
     results to use only the
     [direct](../ontology/index.html#direct_relationships)
     associations.

@@ -135,7 +135,7 @@ that writer.
 <td><tt>Resource[]</tt> or <tt>String</tt></td>
 <td></td>
 </tr>
-<tr> 
+<tr>
 <td><tt>prettyTypes</tt></td>
 <td>
 Only for the RDF/XML-ABBREV writer. This is a list of the types of

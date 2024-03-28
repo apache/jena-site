@@ -30,17 +30,18 @@ Um conjunto de soluções pode ser abreviado especificando o deslocamento (índi
 
 Soluções SPARQL são ordenadas por expressões, incluindo funções padrões.
 
-    ORDER BY ?x ?y
+```sparql
+ORDER BY ?x ?y
 
-    ORDER BY DESC(?x)
+ORDER BY DESC(?x)
 
-    ORDER BY x:func(?x)  # Custom sorting condition
+ORDER BY x:func(?x)  # Custom sorting condition
+```
 
 ### DISTINCT
 
 O SELECT pode usar o modificador DISTINCT para garantir que duas soluções retornadas sejam diferentes.
 
- 
 ## SELECT
 
 O `SELECT` é uma projeção, com DISTINCT aplicado, do conjunto solução. `SELECT` identifica quais variáveis nomeadas estão no conjunto resultado. Isso pode ser um "*" significando que “todas as variáveis” (blank nodes na consulta atuam como variáveis para casamento, mas nada é retornado).

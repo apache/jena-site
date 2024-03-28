@@ -24,7 +24,7 @@ are short for the constants of class `java.lang.Boolean`.
 
 Setting globally:
 
-     TDB.getContext().set(symbol, value) ;
+     TDB.getContext().set(symbol, value) ;
 
 Per query execution:
 

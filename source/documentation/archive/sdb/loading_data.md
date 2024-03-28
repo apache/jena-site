@@ -43,11 +43,11 @@ You can also explicitly delimit bulk operations:
 
 A try/finally block can ensure that the finish is notified.
 
-     model.notifyEvent(GraphEvents.startRead) ;
+     model.notifyEvent(GraphEvents.startRead) ;
      try {
         ... do add/remove operations ...
      } finally {
-       model.notifyEvent(GraphEvents.finishRead) ;
+       model.notifyEvent(GraphEvents.finishRead) ;
      }
 
 The `model.read` operations do this automatically.

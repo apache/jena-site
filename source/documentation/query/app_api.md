@@ -159,7 +159,7 @@ execution should be closed after use.
 
 ## DESCRIBE Queries
 
-`DESCRIBE` queries return a single RDF graph. 
+`DESCRIBE` queries return a single RDF graph.
 [Different handlers](extension.html#describeHandlers) for the
 `DESCRIBE` operation can be loaded by added by the application.
 
@@ -186,7 +186,7 @@ See ResultSetFormatter.outputAsXML method.
 
 ## Datasets
 
-The examples above are all queries on a single model.  A SPARQL
+The examples above are all queries on a single model. A SPARQL
 query is made on a dataset, which is a default graph and zero or
 more named graphs. Datasets can be constructed using the
 `DatasetFactory`:

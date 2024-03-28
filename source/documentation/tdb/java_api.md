@@ -31,17 +31,17 @@ forced to disk if they have not been written already.
 ### Using a directory name
 
       // Make a TDB-backed dataset
-      String directory = "MyDatabases/Dataset1" ;
-      Dataset dataset = TDBFactory.createDataset(directory) ;
+      String directory = "MyDatabases/Dataset1" ;
+      Dataset dataset = TDBFactory.createDataset(directory) ;
       ...
-      dataset.begin(ReadWrite.READ) ;
+      dataset.begin(ReadWrite.READ) ;
       // Get model inside the transaction
-      Model model = dataset.getDefaultModel() ;
-      dataset.end() ;
+      Model model = dataset.getDefaultModel() ;
+      dataset.end() ;
       ... 
-      dataset.begin(ReadWrite.WRITE) ;
-      model = dataset.getDefaultModel() ;
-      dataset.end() ;
+      dataset.begin(ReadWrite.WRITE) ;
+      model = dataset.getDefaultModel() ;
+      dataset.end() ;
       ... 
 
 ### Using an assembler file
@@ -50,13 +50,13 @@ forced to disk if they have not been written already.
       // This way, you can change the model being used without changing the code.
       // The assembler file is a configuration file.
       // The same assembler description will work in Fuseki.
-      String assemblerFile = "Store/tdb-assembler.ttl" ;
-      Dataset dataset = TDBFactory.assembleDataset(assemblerFile) ;
+      String assemblerFile = "Store/tdb-assembler.ttl" ;
+      Dataset dataset = TDBFactory.assembleDataset(assemblerFile) ;
       ...
-      dataset.begin(ReadWrite.READ) ;
+      dataset.begin(ReadWrite.READ) ;
       // Get model inside the transaction
-      Model model = dataset.getDefaultModel() ;
-      dataset.end() ;
+      Model model = dataset.getDefaultModel() ;
+      dataset.end() ;
       ...
 
 See
@@ -94,8 +94,8 @@ write-behind so unwritten changes may be held in-memory.
 TDB provides an explicit call dataset objects for
 synchronization with disk:
 
-      Dataset dataset = ...  ;
-      TDB.sync(dataset ) ;
+      Dataset dataset = ... ;
+      TDB.sync(dataset );
 
 Any dataset or model can be passed to these functions - if they are
 not backed by TDB then no action is taken and the call merely

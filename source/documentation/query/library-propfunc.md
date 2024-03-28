@@ -59,9 +59,9 @@ or bound to the length of the list.
 </td><td>
 Membership of an RDF Container (rdf:Bag, rdf:Seq, rdf:Alt).
 Pre-registered URI. If this infers with queries running over a Jena
-inference model which also provides <code>rdfs:member</code>, then remove this
+inference model which also provides <code>rdfs:member</code>, then remove this
 from the global registry.
-<code>  PropertyFunctionRegistry.get().<br>       remove(RDFS.member.getURI()) ;</code>
+<code> PropertyFunctionRegistry.get().<br> remove(RDFS.member.getURI()) ;</code>
 </td></tr>
 <tr><td>
 <code>apf:textMatch</code>
@@ -98,13 +98,13 @@ see if a member of the list.
 <tr><td>
 <i><code>varOrTerm</code></i><code>apf:assign</code><i><code>varOrTerm</code></i>
 </td><td>
-Assign an RDF term from one side to the other.  If both are fixed
+Assign an RDF term from one side to the other. If both are fixed
 RDF terms or bound variables, it becomes a boolean test that the
 subject is the same RDF term as the object.
 </td><tr>
 <tr><td>
-<i><code>iri</code></i><code>apf:splitIRI (<i>namespace</i> <i> localname</i>)</code><br />
-<i><code>iri</code></i><code>apf:splitURI (<i>namespace</i> <i> localname</i>)</code>
+<i><code>iri</code></i><code>apf:splitIRI (<i>namespace</i> <i>localname</i>)</code><br />
+<i><code>iri</code></i><code>apf:splitURI (<i>namespace</i> <i>localname</i>)</code>
 </td><td>
 Split the IRI or URI into namespace (an IRI) and local name (a
 string). Compare if given values or bound variables, otherwise set
@@ -130,7 +130,7 @@ blank node label as a plain string. Argument mismatch causes no
 match. Use with care.
 </td><tr>
 <tr><td>
-<code><i>subject</i> apf:versionARQ <i>version</i><br>             <br>  </code>
+<code><i>subject</i> apf:versionARQ <i>version</i><br>             <br> </code>
 </td><td>
 Set the <i>subject</i> to the IRI for ARQ and set the object to the
 version string (format "N.N.N" where N is a number). If any of the

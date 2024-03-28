@@ -68,7 +68,7 @@ recompilation and a rebuild.
 
 To create a `Store` from a store assembler
 
-      Store store = SDBFactory.connectStore("sdb.ttl") ;
+      Store store = SDBFactory.connectStore("sdb.ttl") ;
 
 The assembler file has two parts, the connection details and the
 store type.
@@ -78,15 +78,15 @@ store type.
      @prefix ja:       <http://jena.hpl.hp.com/2005/11/Assembler#> .
      @prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
 
-     _:c rdf:type sdb:SDBConnection ;
-         sdb:sdbType        "derby" ;
-         sdb:sdbName        "DB/SDB2" ;
-         sdb:driver         "org.apache.derby.jdbc.EmbeddedDriver" ;
+     _:c rdf:type sdb:SDBConnection ;
+         sdb:sdbType        "derby" ;
+         sdb:sdbName        "DB/SDB2" ;
+         sdb:driver         "org.apache.derby.jdbc.EmbeddedDriver" ;
          .
 
-     [] rdf:type sdb:Store ;
-         sdb:layout         "layout2" ;
-         sdb:connection     _:c ;
+     [] rdf:type sdb:Store ;
+         sdb:layout         "layout2" ;
+         sdb:connection     _:c ;
         .
 
 See the full details of
@@ -99,11 +99,11 @@ The less flexible way to create a store description is to build it
 in Java. For example:
 
        StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash,
-                                           DatabaseType.Derby) ;
-       JDBC.loadDriverDerby() ;
+                                           DatabaseType.Derby) ;
+       JDBC.loadDriverDerby() ;
        String jdbcURL = "jdbc:derby:DB/SDB2";
-       SDBConnection conn = new SDBConnection(jdbcURL, null, null) ;
-       Store store = SDBFactory.connectStore(conn, storeDesc) ;
+       SDBConnection conn = new SDBConnection(jdbcURL, null, null) ;
+       Store store = SDBFactory.connectStore(conn, storeDesc) ;
 
 ### Database User and Password
 
@@ -137,7 +137,7 @@ SDB connection information is ignored when reading to get just the
 store description. The store description can be kept across store
 creations:
 
-      storeDesc = StoreDesc.read("sdb.ttl") ;
+      storeDesc = StoreDesc.read("sdb.ttl") ;
 
 then used with an JDBC connection object passed from the connection
 container:
@@ -146,18 +146,18 @@ container:
                                  StoreDesc storeDesc,
                                  Connection jdbcConnection)
         {
-            Query query = QueryFactory.create(queryString) ;
+            Query query = QueryFactory.create(queryString) ;
 
-            SDBConnection conn = SDBFactory.createConnection(jdbcConnection) ;
+            SDBConnection conn = SDBFactory.createConnection(jdbcConnection) ;
 
-            Store store = SDBFactory.connectStore(conn, storeDesc) ;
+            Store store = SDBFactory.connectStore(conn, storeDesc) ;
 
-            Dataset ds = SDBFactory.connectDataset(store) ;
+            Dataset ds = SDBFactory.connectDataset(store) ;
             try(QueryExecution qe = QueryExecutionFactory.create(query, ds)) {
-                ResultSet rs = qe.execSelect() ;
-                ResultSetFormatter.out(rs) ;
+                ResultSet rs = qe.execSelect() ;
+                ResultSetFormatter.out(rs) ;
             }
-            store.close() ;
+            store.close() ;
         }
 
 ## Formatting or Emptying the Store
@@ -194,26 +194,26 @@ The interface to making queries with SDB is same as that for
 SDB is an ARQ query engine that can handle queries made on an RDF
 dataset which is of the SDB class `DatasetStore`:
 
-       Dataset ds = DatasetStore.create(store) ;
+       Dataset ds = DatasetStore.create(store) ;
 
 This is then used as normal with ARQ:
 
-       Dataset ds = DatasetStore.create(store) ;
+       Dataset ds = DatasetStore.create(store) ;
        try(QueryExecution qe = QueryExecutionFactory.create(query, ds)) {
-           ResultSet rs = qe.execSelect() ;
-           ResultSetFormatter.out(rs) ;
+           ResultSet rs = qe.execSelect() ;
+           ResultSetFormatter.out(rs) ;
        }
 
 When finished, the store should be closed to release any resources
 associated with the particular implementation. Closing a store does
 *not* close it's JDBC connection.
 
-       store.close() ;
+       store.close() ;
 
 Closing the SDBConnection *does* close the JDBC connection:
 
-       store.getConnection().close() ;
-       store.close() ;
+       store.getConnection().close() ;
+       store.close() ;
 
 If models or graphs backed by SDB are placed in a general Dataset
 then the query is not efficiently executed by SDB.
@@ -225,17 +225,17 @@ with all the Jena API operations.
 
 Here, the graph for the model is the default graph:
 
-        Store store = SDBFactory.connectStore("sdb.ttl") ;
-        Model model = SDBFactory.connectDefaultModel(store) ;
+        Store store = SDBFactory.connectStore("sdb.ttl") ;
+        Model model = SDBFactory.connectDefaultModel(store) ;
 
-        StmtIterator sIter = model.listStatements() ;
-        for ( ; sIter.hasNext() ; )
+        StmtIterator sIter = model.listStatements() ;
+        for ( ; sIter.hasNext() ; )
         {
-            Statement stmt = sIter.nextStatement() ;
-            System.out.println(stmt) ;
+            Statement stmt = sIter.nextStatement() ;
+            System.out.println(stmt) ;
         }
-        sIter.close() ;
-        store.close() ;
+        sIter.close() ;
+        store.close() ;
 
 SDB is optimized for SPARQL queries but queries and other Jena API
 operations can be mixed. The results from a SPARQL query are Jena

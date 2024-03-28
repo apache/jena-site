@@ -134,7 +134,7 @@ dataset.
 
          // A SPARQL query will see the new statement added.
          try (QueryExecution qExec = QueryExecution.dataset(dataset)
-                 .query("SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10")
+                 .query("SELECT (count(*) AS ?count) { ?s ?p ?o} LIMIT 10")
                  .build() ) {
              ResultSet rs = qExec.execSelect() ;
              ResultSetFormatter.out(rs) ;

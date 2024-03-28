@@ -24,7 +24,7 @@ specialised storage and also for wrapping non-RDF sources to look
 like RDF. There is a common implementation framework provided by
 `GraphBase` so only one operation, the `find` method, needs to be
 written for a read-only data source. Basic find works well in many
-cases, and the whole Jena API will be able to use the extension. 
+cases, and the whole Jena API will be able to use the extension.
 For higher SPARQL performance, ARQ can be extended at the
 [basic graph matching](#graph-matching-and-a-custom-stagegenerator) or
 [algebra level](#opexecutor).
@@ -142,7 +142,7 @@ transformation is performed by a call to `Algebra.toQuadForm`.
 Transformations proceed from the bottom of the expression tree to
 the top. Algebra expressions are best treated as immutable so a
 change made in one part of the tree should result in a copy of the
-tree above it.  This is automated by the  `TransformCopy` class
+tree above it. This is automated by the `TransformCopy` class
 which is the commonly used base class for writing transforms. The
 other helper base class is `TransformBase,` which provides the
 identify operation (returns the node supplied) for each transform
@@ -275,13 +275,13 @@ match a basic graph pattern.
 ## Graph matching and a custom StageGenerator
 
 The correct point to hook into ARQ for just extending basic graph
-pattern matching (BGPs) is to provide a custom `StageGenerator`. 
+pattern matching (BGPs) is to provide a custom `StageGenerator`.
 (To hook into filtered basic graph patterns, the extension will
 need to provide its own `OpExecutor` factory). The advantage of
 the `StageGenerator` mechanism, as compared to the more general
 `OpExecutor` described below, is that it more self-contained and
 requires less detail about the internal evaluation of the other
-SPARQL algebra operators.  This extension point corresponds to
+SPARQL algebra operators. This extension point corresponds to
 section 12.6
 "[Extending SPARQL Basic Graph Matching](http://www.w3.org/TR/sparql11-query/#sparqlBGPExtend)".
 
@@ -290,7 +290,7 @@ Below is the default code to match a BGP from
 code in the `StageBuilder` class.The input is a stream of results
 from earlier stages. The execution must return a query iterator
 that is all the possible ways to match the basic graph pattern for
-each of the inputs in turn. Order of results does not matter. 
+each of the inputs in turn. Order of results does not matter.
 
     protected QueryIterator execute(OpBGP opBGP, QueryIterator input)
     {
@@ -384,7 +384,7 @@ An example query using a filter:
         FILTER regex(?title, "Paddington")
       }
 
- results in the algebra expression for the pattern:
+results in the algebra expression for the pattern:
 
         (filter (regex ?title "Paddington")
             (bgp (triple ?book dc:title ?title)
@@ -393,18 +393,18 @@ An example query using a filter:
 showing that the filter is being applied to the results of a basic
 graph pattern matching.
 
-Note: this is not the way to provide custom filter operations.  See
+Note: this is not the way to provide custom filter operations. See
 the documentation for
 [application-provided filter functions](extension.html#filter-functions).
 
 Each step of evaluation in the main query engine is performed by a
-`OpExecutor` and a new one is created from a factory at each step. 
+`OpExecutor` and a new one is created from a factory at each step.
 The factory is registered in the execution context. The
 implementation of a specialized `OpExecutor` can inherit from the
 standard one and override only those algebra operators it wishes to
 deal with, including inspecting the execution and choosing to
 pass up to the super-class based on the details of the
-operation.  From the query above, only regex filters might be
+operation. From the query above, only regex filters might be
 specially handled.
 
 Registering an `OpExecutorFactory`:
@@ -498,6 +498,6 @@ evaluation to the custom query engine.
 New operators can be added to the algebra using the `OpExt` class
 as the super-class of the new operator. They can be inserted into
 the expression to be evaluated using a custom query engine to
-intercept evaluation initialization.  When evaluation of a query
+intercept evaluation initialization. When evaluation of a query
 requires the evaluation of a sub-class of `OpExt`, the `eval`
 method is called.
