@@ -192,152 +192,139 @@ number of named graphs.</p>
 <p>The graph matching operation
 (<a href="sparql_basic_patterns.html">basic patterns</a>,
 <a href="sparql_optionals.html"><code>OPTIONAL</code>s</a>, and <a href="sparql_union.html"><code>UNION</code>s</a>) work on
-one RDF graph.  This starts out being the default graph of the
+one RDF graph.  This starts out being the default graph of the
 dataset but it can be changed by the <code>GRAPH</code> keyword.</p>
-<pre><code>GRAPH uri { ... pattern ... }
-
-GRAPH var { ... pattern ... }
-</code></pre>
-<p>If a URI is given, the pattern will be matched against the graph in
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#00a000">uri</span> { ... <span style="">pattern</span> ... }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="">var</span> { ... <span style="">pattern</span> ... }
+</span></span></code></pre></div><p>If a URI is given, the pattern will be matched against the graph in
 the dataset with that name - if there isn&rsquo;t one, the <code>GRAPH</code> clause
 fails to match at all.</p>
 <p>If a variable is given, all the named graphs (not the default
-graph) are tried.  The variable may be used elsewhere so that if,
+graph) are tried.  The variable may be used elsewhere so that if,
 during execution, its value is already known for a solution, only
 the specific named graph is tried.</p>
 <h3 id="example-data">Example Data</h3>
-<p>An RDF dataset can take a variety of forms.  Two common setups are
+<p>An RDF dataset can take a variety of forms.  Two common setups are
 to have the default graph being the union (the RDF merge) of all
 the named graphs or to have the default graph be an inventory of
-the named graphs (where they came from, when they were read etc). 
+the named graphs (where they came from, when they were read etc).
 There are no limitations - one graph can be included twice under
 different names, or some graphs may share triples with others.</p>
 <p>In the examples below we will use the following dataset that might
 occur for an RDF aggregator of book details:</p>
 <p>Default graph (<a href="sparql_data/ds-dft.ttl">ds-dft.ttl</a>):</p>
-<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
-@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-&lt;ds-ng-1.ttl&gt; dc:date &quot;2005-07-14T03:18:56+0100&quot;^^xsd:dateTime .
-&lt;ds-ng-2.ttl&gt; dc:date &quot;2005-09-22T05:53:05+0100&quot;^^xsd:dateTime .
-</code></pre>
-<p>Named graph (<a href="sparql_data/ds-ng-1.ttl">ds-ng-1.ttl</a>):</p>
-<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
-
-[] dc:title &quot;Harry Potter and the Philospher's Stone&quot; .
-[] dc:title &quot;Harry Potter and the Chamber of Secrets&quot; .
-</code></pre>
-<p>Named graph (<a href="sparql_data/ds-ng-2.ttl">ds-ng-2.ttl</a>):</p>
-<pre><code>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
-
-[] dc:title &quot;Harry Potter and the Sorcerer's Stone&quot; .
-[] dc:title &quot;Harry Potter and the Chamber of Secrets&quot; .
-</code></pre>
-<p>That is, we have two small graphs describing some books, and we
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://purl.org/dc/elements/1.1/&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">xsd:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;ds-ng-1.ttl&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-07-14T03:18:56+0100&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;ds-ng-2.ttl&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-09-22T05:53:05+0100&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Named graph (<a href="sparql_data/ds-ng-1.ttl">ds-ng-1.ttl</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://purl.org/dc/elements/1.1/&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[]<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Philospher&#39;s Stone&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[]<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Named graph (<a href="sparql_data/ds-ng-2.ttl">ds-ng-2.ttl</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://purl.org/dc/elements/1.1/&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[]<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Sorcerer&#39;s Stone&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[]<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>That is, we have two small graphs describing some books, and we
 have a default graph which records when these graphs were last
 read.</p>
 <p>Queries can be run with the command line application (this would be
 all one line):</p>
-<pre><code>java -cp ... arq.sparql
-    --graph ds-dft.ttl --namedgraph ds-ng-1.ttl --namedgraph ds-ng-2.ttl
-    --query query file
-</code></pre>
-<p>Datasets don&rsquo;t have to be created just for the lifetime of the query. 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ java -cp ... arq.sparql
+</span></span><span style="display:flex;"><span>    --graph ds-dft.ttl --namedgraph ds-ng-1.ttl --namedgraph ds-ng-2.ttl
+</span></span><span style="display:flex;"><span>    --query query file
+</span></span></code></pre></div><p>Datasets don&rsquo;t have to be created just for the lifetime of the query.
 They can be created and stored in a database, as would be more
 usual for an aggregator application.</p>
 <h3 id="accessing-the-dataset">Accessing the Dataset</h3>
 <p>The first example just accesses the default graph
 (<a href="sparql_data/q-ds-1.rq">q-ds-1.rq</a>):</p>
-<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
-PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
-PREFIX : &lt;.&gt;
-
-SELECT *
-{ ?s ?p ?o }
-</code></pre>
-<p>(The &ldquo;<code>PREFIX : &lt;.&gt;</code>&rdquo;  just helps format the output)</p>
-<pre><code>----------------------------------------------------------------------
-| s            | p       | o                                         |
-======================================================================
-| :ds-ng-2.ttl | dc:date | &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime |
-| :ds-ng-1.ttl | dc:date | &quot;2005-07-14T03:18:56+01:00&quot;^^xsd:dateTime |
-----------------------------------------------------------------------
-</code></pre>
-<p>This is the default graph only - nothing from the named graphs
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">xsd</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">dc</span>: <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> : <span style="color:#a0a000">&lt;.&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span>
+</span></span><span style="display:flex;"><span>{ <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> }
+</span></span></code></pre></div><p>(The &ldquo;<code>PREFIX : &lt;.&gt;</code>&rdquo; just helps format the output)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">----------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">s</span><span style="color:#bbb">            </span><span style="">|</span><span style="color:#bbb"> </span><span style="">p</span><span style="color:#bbb">       </span><span style="">|</span><span style="color:#bbb"> </span><span style="">o</span><span style="color:#bbb">                                         </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">======================================================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-2</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-09-22T05:53:05+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-1</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-07-14T03:18:56+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">----------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>This is the default graph only - nothing from the named graphs
 because they aren&rsquo;t queried unless explicitly indicated via
 <code>GRAPH</code>.</p>
 <p>We can query for all triples by querying the default graph and the
 named graphs (<a href="sparql_data/q-ds-2.rq">q-ds-2.rq</a>):</p>
-<pre><code>PREFIX  xsd:    &lt;http://www.w3.org/2001/XMLSchema#&gt;
-PREFIX  dc:     &lt;http://purl.org/dc/elements/1.1/&gt;
-PREFIX  :       &lt;.&gt;
-
-SELECT *
-{
-    { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } }
-}
-</code></pre>
-<p>giving:</p>
-<pre><code>---------------------------------------------------------------------------------------
-| s            | p        | o                                          | g            |
-=======================================================================================
-| :ds-ng-2.ttl | dc:date  | &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime  |              |
-| :ds-ng-1.ttl | dc:date  | &quot;2005-07-14T03:18:56+01:00&quot;^^xsd:dateTime  |              |
-| _:b0         | dc:title | &quot;Harry Potter and the Sorcerer's Stone&quot;    | :ds-ng-2.ttl |
-| _:b1         | dc:title | &quot;Harry Potter and the Chamber of Secrets&quot;  | :ds-ng-2.ttl |
-| _:b2         | dc:title | &quot;Harry Potter and the Chamber of Secrets&quot;  | :ds-ng-1.ttl |
-| _:b3         | dc:title | &quot;Harry Potter and the Philospher's Stone&quot;  | :ds-ng-1.ttl |
----------------------------------------------------------------------------------------
-</code></pre>
-<h3 id="querying-a-specific-graph">Querying a specific graph</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  <span style="color:#00f;font-weight:bold">xsd</span>:    <span style="color:#a0a000">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  <span style="color:#00f;font-weight:bold">dc</span>:     <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  :       <span style="color:#a0a000">&lt;.&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">UNION</span> { <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#b8860b">?g</span> { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>giving:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">s</span><span style="color:#bbb">            </span><span style="">|</span><span style="color:#bbb"> </span><span style="">p</span><span style="color:#bbb">        </span><span style="">|</span><span style="color:#bbb"> </span><span style="">o</span><span style="color:#bbb">                                          </span><span style="">|</span><span style="color:#bbb"> </span><span style="">g</span><span style="color:#bbb">            </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=======================================================================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-2</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-09-22T05:53:05+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">              </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-1</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">date</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-07-14T03:18:56+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">              </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b0</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Sorcerer&#39;s Stone&#34;</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-2</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b1</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-2</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b2</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-1</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b3</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dc:</span><span style="color:#008000;font-weight:bold">title</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Philospher&#39;s Stone&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">ds-ng-1</span>.<span style="">ttl</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="querying-a-specific-graph">Querying a specific graph</h3>
 <p>If the application knows the name graph, it can directly ask a
 query such as finding all the titles in a given graph
 (<a href="sparql_data/q-ds-3.rq">q-ds-3.rq</a>):</p>
-<pre><code>PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
-PREFIX : &lt;.&gt;
-
-SELECT ?title
-{
-  GRAPH :ds-ng-2.ttl
-    { ?b dc:title ?title }
-}
-</code></pre>
-<p>Results:</p>
-<pre><code>---------------------------------------------
-| title                                     |
-=============================================
-| &quot;Harry Potter and the Sorcerer's Stone&quot;   |
-| &quot;Harry Potter and the Chamber of Secrets&quot; |
----------------------------------------------
-</code></pre>
-<h3 id="querying-to-find-data-from-graphs-that-match-a-pattern">Querying to find data from graphs that match a pattern</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">dc</span>: <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> : <span style="color:#a0a000">&lt;.&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?title</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">GRAPH</span> :<span style="color:#008000;font-weight:bold">ds-ng-2.ttl</span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#b8860b">?b</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Results:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">title</span><span style="color:#bbb">                                     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=============================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Sorcerer&#39;s Stone&#34;</span><span style="color:#bbb">   </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="querying-to-find-data-from-graphs-that-match-a-pattern">Querying to find data from graphs that match a pattern</h3>
 <p>The name of the graphs to be queried can be determined with the
 query itself. The same process for variables applies whether they
 are part of a graph pattern or the <code>GRAPH</code> form. The query below
 (<a href="sparql_data/q-ds-4.rq">q-ds-4.rq</a>) sets a condition on the variable used to
 select named graphs, based on information in the default graph.</p>
-<pre><code>PREFIX  xsd:    &lt;http://www.w3.org/2001/XMLSchema#&gt;
-PREFIX  dc:     &lt;http://purl.org/dc/elements/1.1/&gt;
-PREFIX  :       &lt;.&gt;
-
-SELECT ?date ?title
-{
-  ?g dc:date ?date . FILTER (?date &gt; &quot;2005-08-01T00:00:00Z&quot;^^xsd:dateTime )
-  GRAPH ?g
-      { ?b dc:title ?title }
-}
-</code></pre>
-<p>The results of executing this query on the example dataset are the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  <span style="color:#00f;font-weight:bold">xsd</span>:    <span style="color:#a0a000">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  <span style="color:#00f;font-weight:bold">dc</span>:     <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span>  :       <span style="color:#a0a000">&lt;.&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?date</span> <span style="color:#b8860b">?title</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?g</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">date</span> <span style="color:#b8860b">?date</span> . <span style="color:#a2f;font-weight:bold">FILTER</span> (<span style="color:#b8860b">?date</span> <span style="color:#666">&gt;</span> <span style="color:#b44">&#34;2005-08-01T00:00:00Z&#34;</span><span style="color:#666">^^</span><span style="color:#00f;font-weight:bold">xsd</span>:<span style="color:#008000;font-weight:bold">dateTime</span> )
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#b8860b">?g</span>
+</span></span><span style="display:flex;"><span>      { <span style="color:#b8860b">?b</span> <span style="color:#00f;font-weight:bold">dc</span>:<span style="color:#008000;font-weight:bold">title</span> <span style="color:#b8860b">?title</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The results of executing this query on the example dataset are the
 titles in one of the graphs, the one with the date later than 1
 August 2005.</p>
-<pre><code>-----------------------------------------------------------------------------------------
-| date                                      | title                                     |
-=========================================================================================
-| &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime | &quot;Harry Potter and the Sorcerer's Stone&quot;   |
-| &quot;2005-09-22T05:53:05+01:00&quot;^^xsd:dateTime | &quot;Harry Potter and the Chamber of Secrets&quot; |
------------------------------------------------------------------------------------------
-</code></pre>
-<h2 id="describing-rdf-datasets---from-and-from-named">Describing RDF Datasets - <code>FROM</code> and <code>FROM NAMED</code></h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-----------------------------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">date</span><span style="color:#bbb">                                      </span><span style="">|</span><span style="color:#bbb"> </span><span style="">title</span><span style="color:#bbb">                                     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=========================================================================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-09-22T05:53:05+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Sorcerer&#39;s Stone&#34;</span><span style="color:#bbb">   </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;2005-09-22T05:53:05+01:00&#34;</span><span style="color:#666">^^</span><span style="font-style:italic">xsd:dateTime</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Harry Potter and the Chamber of Secrets&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------------------------------------------------------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="describing-rdf-datasets---from-and-from-named">Describing RDF Datasets - <code>FROM</code> and <code>FROM NAMED</code></h2>
 <p>A query execution can be given the dataset when the execution
 object is built or it can be described in the query itself. When
 the details are on the command line, a temporary dataset is created
@@ -360,19 +347,18 @@ added to the dataset.</p>
 <p>For example, the query to find all the triples in both default
 graph and named graphs could be written as
 (<a href="sparql_data/q-ds-5.rq">q-ds-5.rq</a>):</p>
-<pre><code>PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
-PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
-PREFIX :    &lt;.&gt;
-
-SELECT *
-FROM       &lt;ds-dft.ttl&gt;
-FROM NAMED &lt;ds-ng-1.ttl&gt;
-FROM NAMED &lt;ds-ng-2.ttl&gt;
-{
-   { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } }
-}
-</code></pre>
-<p><a href="sparql_results.html">Next: results</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">xsd</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">dc</span>:  <span style="color:#a0a000">&lt;http://purl.org/dc/elements/1.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> :    <span style="color:#a0a000">&lt;.&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FROM</span>       <span style="color:#a0a000">&lt;ds-dft.ttl&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FROM NAMED</span> <span style="color:#a0a000">&lt;ds-ng-1.ttl&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FROM NAMED</span> <span style="color:#a0a000">&lt;ds-ng-2.ttl&gt;</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } <span style="color:#a2f;font-weight:bold">UNION</span> { <span style="color:#a2f;font-weight:bold">GRAPH</span> <span style="color:#b8860b">?g</span> { <span style="color:#b8860b">?s</span> <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?o</span> } }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><a href="sparql_results.html">Next: results</a></p>
 
   </article>
   

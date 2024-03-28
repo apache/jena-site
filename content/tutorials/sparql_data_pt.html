@@ -178,73 +178,71 @@
 <p>Nós vamos começar os dados em <a href="sparql_data/vc-db-1.rdf">vc-db-1.rdf</a>:
 este arquivo contém RDF para uma quantidade de descrições de vcards de pessoas. Vcards são descritos em
 <a href="https://www.ietf.org/rfc/rfc2426.txt">RFC2426</a> e a tradução RDF é descrita na nota da W3C
-&ldquo;<a href="https://www.w3.org/TR/vcard-rdf.html">Representing vCard Objects in RDF/XML</a>&quot;. 
+&ldquo;<a href="https://www.w3.org/TR/vcard-rdf.html">Representing vCard Objects in RDF/XML</a>&rdquo;.
 Nosso banco de dados exemplo apenas contém alguma informação sobre nomes.</p>
 <p>Graficamente, os dados se assemelham a:</p>
 <p><img src="/images/vc-db.png" alt="Graph of the vCard database" title="Graph of the vCard database"></p>
 <p>Em triplas, devem se parecer com:</p>
-<pre><code>@prefix vCard:   &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .
-@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix :        &lt;#&gt; .
-
-&lt;http://somewhere/MattJones/&gt;
-    vCard:FN    &quot;Matt Jones&quot; ;
-    vCard:N     [ vCard:Family
-                              &quot;Jones&quot; ;
-                  vCard:Given
-                              &quot;Matthew&quot;
-                ] .
-
-&lt;http://somewhere/RebeccaSmith/&gt;
-    vCard:FN    &quot;Becky Smith&quot; ;
-    vCard:N     [ vCard:Family
-                              &quot;Smith&quot; ;
-                  vCard:Given
-                              &quot;Rebecca&quot;
-                ] .
-
-&lt;http://somewhere/JohnSmith/&gt;
-    vCard:FN    &quot;John Smith&quot; ;
-    vCard:N     [ vCard:Family
-                              &quot;Smith&quot; ;
-                  vCard:Given
-                              &quot;John&quot;
-                ] .
-
-&lt;http://somewhere/SarahJones/&gt;
-    vCard:FN    &quot;Sarah Jones&quot; ;
-    vCard:N     [ vCard:Family
-                              &quot;Jones&quot; ;
-                  vCard:Given
-                              &quot;Sarah&quot;
-                ] .
-</code></pre>
-<p>ou então mais explicitamente como triplas:</p>
-<pre><code>@prefix vCard:   &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .
-@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-
-&lt;http://somewhere/MattJones/&gt;  vCard:FN   &quot;Matt Jones&quot; .
-&lt;http://somewhere/MattJones/&gt;  vCard:N    _:b0 .
-_:b0  vCard:Family &quot;Jones&quot; .
-_:b0  vCard:Given  &quot;Matthew&quot; .
-
-
-&lt;http://somewhere/RebeccaSmith/&gt; vCard:FN    &quot;Becky Smith&quot; .
-&lt;http://somewhere/RebeccaSmith/&gt; vCard:N     _:b1 .
-_:b1 vCard:Family &quot;Smith&quot; .
-_:b1 vCard:Given  &quot;Rebecca&quot; .
-
-&lt;http://somewhere/JohnSmith/&gt;    vCard:FN    &quot;John Smith&quot; .
-&lt;http://somewhere/JohnSmith/&gt;    vCard:N     _:b2 .
-_:b2 vCard:Family &quot;Smith&quot; .
-_:b2 vCard:Given  &quot;John&quot;  .
-
-&lt;http://somewhere/SarahJones/&gt;   vCard:FN    &quot;Sarah Jones&quot; .
-&lt;http://somewhere/SarahJones/&gt;   vCard:N     _:b3 .
-_:b3 vCard:Family  &quot;Jones&quot; .
-_:b3 vCard:Given   &quot;Sarah&quot; .
-</code></pre>
-<p>É importante perceber que elas são as mesmas do grafo RDF e que as triplas no grafo não estão em alguma ordem particular. Elas são apenas escritas em grupos relacionados para a leitura humana – a máquina não se importa com isso.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#bbb">   </span><span style="color:#b8860b">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#bbb">     </span><span style="color:#b8860b">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#bbb">        </span><span style="color:#b8860b">&lt;#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/MattJones/&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Jones&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Matthew&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                </span>]<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/RebeccaSmith/&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Rebecca&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                </span>]<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;John&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                </span>]<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/SarahJones/&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Jones&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                              </span><span style="color:#b44">&#34;Sarah&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                </span>]<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>ou então mais explicitamente como triplas:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#bbb">   </span><span style="color:#b8860b">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#bbb">     </span><span style="color:#b8860b">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/MattJones/&gt;</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">   </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/MattJones/&gt;</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">    </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b0</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b0</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b0</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;Matthew&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/RebeccaSmith/&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/RebeccaSmith/&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b1</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b1</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b1</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;Rebecca&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b2</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b2</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b2</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;John&#34;</span><span style="color:#bbb">  </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/SarahJones/&gt;</span><span style="color:#bbb">   </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;http://somewhere/SarahJones/&gt;</span><span style="color:#bbb">   </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">N</span><span style="color:#bbb">     </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b3</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b3</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Family</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b3</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vCard:</span><span style="color:#008000;font-weight:bold">Given</span><span style="color:#bbb">   </span><span style="color:#b44">&#34;Sarah&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>É importante perceber que elas são as mesmas do grafo RDF e que as triplas no grafo não estão em alguma ordem particular. Elas são apenas escritas em grupos relacionados para a leitura humana – a máquina não se importa com isso.</p>
 <p><a href="sparql_query1_pt.html">Próximo: Uma consulta simples</a></p>
 
   </article>

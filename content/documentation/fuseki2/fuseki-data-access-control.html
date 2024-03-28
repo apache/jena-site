@@ -252,10 +252,8 @@ for configuring security over the whole of the Fuseki UI.</p>
 the certificate file and password for the certificate.</p>
 <h3 id="https-details">HTTPS certificate details file</h3>
 <p>The file is a simple JSON file:</p>
-<pre>
-    { "cert": <i>KEYSTORE</i> , "passwd": <i>SECRET</i> }
-</pre>
-<p>This file must be protected by file access settings so that it can only
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{ <span style="color:#008000;font-weight:bold">&#34;cert&#34;</span>: <span style="">KEYSTORE</span>, <span style="color:#008000;font-weight:bold">&#34;passwd&#34;</span>: <span style="">SECRET</span> }
+</span></span></code></pre></div><p>This file must be protected by file access settings so that it can only
 be read by the userid running the server.  One way is to put the
 keystore certificate and the certificate details file in the same
 directory, then make the directory secure.</p>
@@ -264,10 +262,8 @@ directory, then make the directory secure.</p>
 stops some attacks. What it does not do is guarantee the identity of the
 host name of the Fuseki server to the client system. A signed certificate provides that through the chain of trust. A self-signed certificate does protect data in HTTP responses.</p>
 <p>A self-signed certificate can be generated with:</p>
-<pre>
-    keytool -keystore <i>keystore</i> -alias <i>jetty</i> -genkey -keyalg RSA
-</pre>
-<p>For information on creating a certificate, see the Jetty documentation
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ keytool -keystore <span style="color:#b8860b">$keystore</span> -alias jetty -genkey -keyalg RSA
+</span></span></code></pre></div><p>For information on creating a certificate, see the Jetty documentation
 for <a href="http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html#generating-key-pairs-and-certificates">generating certificates</a>.</p>
 <h2 id="authentication">Authentication</h2>
 <p><a href="https://en.wikipedia.org/wiki/Authentication">Authentication</a>,
@@ -298,16 +294,13 @@ system. Fuseki Main provides users/password setup and HTTP authentication,
 </tbody>
 </table>
 <p>These can also be given in the server configuration file:</p>
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-        fuseki:passwd  "<i>password_file</i>" ;
-        fuseki:auth    "<i>digest</i>" ;
-        ...
-</pre>
-<p>The format of the password file is:</p>
-<pre><code>username: password
-</code></pre>
-<p>and passwords can be stored in hash or obfuscated form.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#server&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Server</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">passwd</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;&lt;i&gt;password_file&lt;/i&gt;&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">auth</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;&lt;i&gt;digest&lt;/i&gt;&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The format of the password file is:</p>
+<pre tabindex="0"><code>username: password
+</code></pre><p>and passwords can be stored in hash or obfuscated form.</p>
 <p>Documentation of the <a href="http://www.eclipse.org/jetty/documentation/current/configuring-security.html#hash-login-service">Eclipse Jetty Password file format</a>.</p>
 <p>If different authentication is required, the full facilities of
 <a href="http://www.eclipse.org/jetty/documentation/current/configuring-security.html">Eclipse Jetty configuration</a>
@@ -395,139 +388,125 @@ details.  This section is a brief summary of some relevant options:</p>
 graphs within a dataset. This section covers server, dataset and endpoint access control
 lists. Graph-level access control is <a href="#graph-acl">covered below</a>.</p>
 <p>Access control lists (ACL) as part of the server configuration file.</p>
-<pre>
-    fuseki --conf <i>configFile.ttl</i>
-</pre>
-<p>ACLs are provided by the <code>fuseki:allowedUsers</code> property</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ fuseki --conf configFile.ttl
+</span></span></code></pre></div><p>ACLs are provided by the <code>fuseki:allowedUsers</code> property</p>
 <h3 id="alloweduser">Format of <code>fuseki:allowedUsers</code></h3>
 <p>The list of users allowed access can be an RDF list or repeated use of
 the property or a mixture. The different settings are combined into one ACL.</p>
-<pre><code> fuseki:allowedUsers    &quot;user1&quot;, &quot;user2&quot;, &quot;user3&quot;;
- fuseki:allowedUsers    &quot;user3&quot;;
- fuseki:allowedUsers    ( &quot;user1&quot; &quot;user2&quot; &quot;user3&quot;) ;
-</code></pre>
-<p>There is a special user name &ldquo;*&rdquo; which means &ldquo;any authenticated user&rdquo;.</p>
-<pre><code>fuseki:allowedUsers  &quot;*&quot; ;
-</code></pre>
-<h3 id="server-acl">Server Level ACLs</h3>
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-       <b>fuseki:allowedUsers    "user1", "user2", "user3";</b>
-       ...
-       fuseki:services ( ... ) ;
-       ...
-       .
-</pre>
-<p>A useful pattern is:</p>
-<pre>
-    &lt;#server&gt; rdf:type fuseki:Server ;
-       <b>fuseki:allowedUsers    "*";</b>
-       ...
-       fuseki:services ( ... ) ;
-       ...
-       .
-</pre>
-<p>which requires all access to to be authenticated and the allowed users are
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;user1&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user2&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;user3&#34;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">    </span>(<span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user2&#34;</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>There is a special user name &ldquo;*&rdquo; which means &ldquo;any authenticated user&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">  </span><span style="color:#b44">&#34;*&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="server-acl">Server Level ACLs</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#server&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Server</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;user1&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user2&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span>;<span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">services</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>A useful pattern is:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#server&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Server</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;*&#34;</span>;<span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">services</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>which requires all access to to be authenticated and the allowed users are
 those in the password file.</p>
 <h3 id="dataset-acl">Dataset Level ACLs</h3>
 <p>When there is an access control list on the <code>fuseki:Service</code>, it applies
 to all requests to the endpoints of the dataset.</p>
 <p>Any server-wide &ldquo;allowedUsers&rdquo; configuration also applies and both
 levels must allow the user access.</p>
-<pre>
-    &lt;#service_auth&gt; rdf:type fuseki:Service ;
-        rdfs:label                      "ACL controlled dataset" ;
-        fuseki:name                     "db-acl" ;
-
-        <b>fuseki:allowedUsers             "user1", "user3";</b>
-
-        ## Choice of operations.
-
-        fuseki:endpoint [ 
-            fuseki:operation fuseki:query ;
-            fuseki:name "sparql" 
-        ];
-        fuseki:endpoint [
-            fuseki:operation fuseki:update ;
-            fuseki:name "sparql"
-        ] ;
-        fuseki:endpoint [
-            fuseki:operation fuseki:gsp-r ;
-            fuseki:name "get"
-        ] ;
-        fuseki:dataset                  &lt;#base_dataset&gt;;
-        .
-</pre>
-<h3 id="endpoint-acl">Endpoint Level ACLs</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#service_auth&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">label</span><span style="color:#bbb">                      </span><span style="color:#b44">&#34;ACL controlled dataset&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">                     </span><span style="color:#b44">&#34;db-acl&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># ACL here.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb">             </span><span style="color:#b44">&#34;user1&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">## Choice of operations.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">query</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;sparql&#34;</span><span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>];<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">update</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;sparql&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">gsp-r</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;get&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">                  </span><span style="color:#b8860b">&lt;#base_dataset&gt;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="endpoint-acl">Endpoint Level ACLs</h3>
 <p>An access control list can be applied to an individual endpoint.
 Again, any  other &ldquo;allowedUsers&rdquo; configuration, service-wide, or
 server-wide) also applies.</p>
-<pre><code>     fuseki:endpoint [ 
-        fuseki:operation fuseki:query ;
-        fuseki:name &quot;query&quot; ;
-        fuseki:allowedUsers &quot;user1&quot;, &quot;user2&quot; ;
-    ];
-    fuseki:endpoint [
-        fuseki:operation fuseki:update ;
-        fuseki:name &quot;update&quot; ;
-        fuseki:allowedUsers &quot;user1&quot;
-    ] ;
-</code></pre>
-<p>Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">query</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;query&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;user2&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>];<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">update</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;update&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">allowedUsers</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Only <em>user1</em> can use SPARQL update; both <em>user1</em> and
 <em>user2</em> can use SPARQL query.</p>
 <h2 id="graph-acl">Graph Access Control Lists</h2>
 <p>Graph level access control is defined using a specific dataset
 implementation for the service.</p>
-<pre><code>&lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
-    access:registry   ... ;
-    access:dataset    ... ;
-    .
-</code></pre>
-<p>Graph ACLs are defined in a <a href="#graph-security-registry">Graph Security Registry</a> which lists the users and graph URIs.</p>
-<pre>
-    &lt;#service_tdb2&gt; rdf:type fuseki:Service ;
-        rdfs:label                      "Graph-level access controlled dataset" ;
-        fuseki:name                     "db-graph-acl" ;
-        ## Read-only operations on the dataset URL.
-        fuseki:endpoint [ fuseki:operation fuseki:query ] ;
-        fuseki:endpoint [ fuseki:operation fuseki:gsp_r ] ;
-        fuseki:dataset                  <b>&lt;#access_dataset&gt;</b> ;
-        .
-
-    # Define access on the dataset.
-    &lt;#access_dataset&gt;  rdf:type access:AccessControlledDataset ;
-        access:registry   &lt;#securityRegistry&gt; ;
-        access:dataset    &lt;#tdb_dataset_shared&gt; ;
-        .
-
-    &lt;#securityRegistry&gt;rdf:type access:SecurityRegistry ;
-       . . .
-
-    &lt;#tdb_dataset_shared&gt; rdf:type tdb:DatasetTDB ;
-        . . .
-</pre>
-<p>All dataset storage types are supported. TDB1 and TDB2 have special implementations for handling graph access control.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#access_dataset&gt;</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">AccessControlledDataset</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">registry</span><span style="color:#bbb">   </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">    </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Graph ACLs are defined in a <a href="#graph-security-registry">Graph Security Registry</a> which lists the users and graph URIs.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#service_tdb2&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">label</span><span style="color:#bbb">                      </span><span style="color:#b44">&#34;Graph-level access controlled dataset&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">                     </span><span style="color:#b44">&#34;db-graph-acl&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">## Read-only operations on the dataset URL.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">query</span><span style="color:#bbb"> </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">endpoint</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">operation</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">gsp_r</span><span style="color:#bbb"> </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">                  </span><span style="color:#b8860b">&lt;b&gt;&lt;#access_dataset&gt;&lt;/b&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># Define access on the dataset.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#access_dataset&gt;</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">AccessControlledDataset</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">registry</span><span style="color:#bbb">   </span><span style="color:#b8860b">&lt;#securityRegistry&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;#tdb_dataset_shared&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#securityRegistry&gt;</span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">SecurityRegistry</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#tdb_dataset_shared&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">tdb:</span><span style="color:#008000;font-weight:bold">DatasetTDB</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>All dataset storage types are supported. TDB1 and TDB2 have special implementations for handling graph access control.</p>
 <h3 id="graph-security-registry">Graph Security Registry</h3>
 <p>The Graph Security Registry is defined as a number of access entries in
 either a list format &ldquo;(user graph1 graph2 &hellip;)&rdquo; or as RDF properties
 <code>access:user</code> and <code>access:graphs</code>. The property <code>access:graphs</code> has graph URI or a
 list of URIs as its object.</p>
-<pre><code>&lt;#securityRegistry&gt; rdf:type access:SecurityRegistry ;
-    access:entry ( &quot;user1&quot; &lt;http://host/graphname1&gt;  &lt;http://host/graphname2&gt; ) ;
-    access:entry ( &quot;user1&quot; &lt;http://host/graphname3&gt; ) ;
-
-    access:entry ( &quot;user1&quot; &lt;urn:x-arq:DefaultGraph&gt; ) ;
-
-    access:entry ( &quot;user2&quot; &lt;http://host/graphname9&gt; ) ;
-    access:entry [ access:user &quot;user3&quot; ; access:graphs ( &lt;http://host/graphname3&gt; &lt;http://host/graphname4&gt; ) ] ;
-    access:entry [ access:user &quot;user3&quot; ; access:graphs &lt;http://host/graphname5&gt; ] ;
-    access:entry [ access:user &quot;userZ&quot; ; access:graphs &lt;http://host/graphnameZ&gt; ] ;
-    .
-</code></pre>
-<h2 id="jetty-configuration">Jetty Configuration</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#securityRegistry&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">SecurityRegistry</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname1&gt;</span><span style="color:#bbb">  </span><span style="color:#b8860b">&lt;http://host/graphname2&gt;</span><span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname3&gt;</span><span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span><span style="color:#b44">&#34;user1&#34;</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;urn:x-arq:DefaultGraph&gt;</span><span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span><span style="color:#b44">&#34;user2&#34;</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname9&gt;</span><span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">user</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">graphs</span><span style="color:#bbb"> </span>(<span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname3&gt;</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname4&gt;</span><span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">user</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;user3&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">graphs</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphname5&gt;</span><span style="color:#bbb"> </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">entry</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">user</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;userZ&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">access:</span><span style="color:#008000;font-weight:bold">graphs</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://host/graphnameZ&gt;</span><span style="color:#bbb"> </span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="jetty-configuration">Jetty Configuration</h2>
 <p>For authentication configuration not covered by Fuseki configuration,
 the deployed server can be run using a Jetty configuration.</p>
-<p>Server command line: <tt>&ndash;jetty=<i>jetty.xml</i></tt>.</p>
+<p>Server command line: <code>--jetty=jetty.xml</code>.</p>
 <p><a href="https://www.eclipse.org/jetty/documentation/current/jetty-xml-config.html">Documentation for <code>jetty.xml</code></a>.</p>
 
   </article>

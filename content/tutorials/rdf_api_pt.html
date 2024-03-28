@@ -226,54 +226,51 @@ href="#glos-Literal"><i>literal</i></a>, que por hora podemos pensar nelas como 
 Literais são exibidas em retângulos.</p>
 <p>Jena é uma API Java que pode ser usada para pra criar e manipular grafos RDF como o apresentado no exemplo. Jena possui classes para representar grafos, recursos, propriedades e literais. As interfaces que representam recursos, propriedades e literais são chamadas de modelo e é representada pela interface Model.</p>
 <p>O código para criar este grafo, ou modelo, é simples:</p>
-<pre>// some definitions
-static String personURI    = "http://somewhere/JohnSmith";
-static String fullName     = "John Smith";
-
-// create an empty Model
-Model model = ModelFactory.createDefaultModel();
-
-// create the resource
-Resource johnSmith = model.createResource(personURI);
-
-// add the property
-johnSmith.addProperty(VCARD.FN, fullName);
-</pre>
-<p>Ele começa com algumas definições de constantes e então cria um Model vazio, usando o método <code>createDefaultModel()</code> de <code>ModelFactory</code>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// some definitions
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">static</span> String personURI    <span style="color:#666">=</span> <span style="color:#b44">&#34;http://somewhere/JohnSmith&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">static</span> String fullName     <span style="color:#666">=</span> <span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create an empty Model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model model <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create the resource
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource johnSmith <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span>personURI<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// add the property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>johnSmith<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> fullName<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Ele começa com algumas definições de constantes e então cria um Model vazio, usando o método <code>createDefaultModel()</code> de <code>ModelFactory</code>
 para criar um modelo na memória. Jena possui outras implementações da interface Model, e.g. uma que usa banco de dados relacionais: esses tipos de modelo são também disponibilizados a partir de ModelFactory.</p>
 <p>O recurso Jonh Smith é então criado, e uma propriedade é adicionada a ele. A propriedade é fornecida pela a classe "constante"  VCARD, que mantém os objetos que representam todas as definições no esquema de VCARD. Jena provê classes constantes para outros esquemas bem conhecidos, bem como os próprios RDF e RDFs , Dublin Core e OWL.</p>
 <p>O código para criar o recurso e adicionar a propriedade pode ser escrito de forma mais compacta usando um estilo cascata:</p>
-<pre>Resource johnSmith =
-       model.createResource(personURI)
-            .addProperty(VCARD.FN, fullName);
-</pre>
-<p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial01.java">tutorial 1</a>. Como exercício, pegue este código e modifique-o para criar um próprio VCARD para você.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource johnSmith <span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>       model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span>personURI<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> fullName<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial01.java">tutorial 1</a>. Como exercício, pegue este código e modifique-o para criar um próprio VCARD para você.</p>
 <p>Agora vamos adicionar mais detalhes ao vcard, explorando mais recursos de RDF e Jena.</p>
 <p>No primeiro exemplo, o valor da propriedade foi um número. As propriedades RDF podem também assumir outros recursos como valor. Usando uma técnica comum em RDF, este exemplo mostra como representar diferentes partes do nome de Jonh Smith:</p>
 <p align="center">
 <img border="0" src="figures/fig2.png" alt="figure 2" width="360" height="240"></p>
 <p>Aqui, nós adicionamos uma nova propriedade, vcard:N, para representar a estrutura do nome de Jonh Smith. Há muitas coisas interessantes sobre este modelo. Note que a propriedade vcard:N usa um recurso como seu valor. Note também que a elipse que representa a composição do nome não possui URI. Isso é conhecido como <i><a href="#glos-blank node">blank Node</a>.</i></p>
 <p>O código Jena para construir este exemplo é, novamente, muito simples. Primeiro algumas declarações e a criação do modelo vazio.</p>
-<pre>// some definitions
-String personURI    = "http://somewhere/JohnSmith";
-String givenName    = "John";
-String familyName   = "Smith";
-String fullName     = givenName + " " + familyName;
-
-// create an empty Model
-Model model = ModelFactory.createDefaultModel();
-
-// create the resource
-//   and add the properties cascading style
-Resource johnSmith
-  = model.createResource(personURI)
-         .addProperty(VCARD.FN, fullName)
-         .addProperty(VCARD.N,
-                      model.createResource()
-                           .addProperty(VCARD.Given, givenName)
-                           .addProperty(VCARD.Family, familyName));
-</pre>
-<p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// some definitions
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>String personURI    <span style="color:#666">=</span> <span style="color:#b44">&#34;http://somewhere/JohnSmith&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>String givenName    <span style="color:#666">=</span> <span style="color:#b44">&#34;John&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>String familyName   <span style="color:#666">=</span> <span style="color:#b44">&#34;Smith&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>String fullName     <span style="color:#666">=</span> givenName <span style="color:#666">+</span> <span style="color:#b44">&#34; &#34;</span> <span style="color:#666">+</span> familyName<span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create an empty Model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model model <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create the resource
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">//   and add the properties cascading style
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource johnSmith
+</span></span><span style="display:flex;"><span>  <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span>personURI<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> fullName<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">N</span><span style="color:#666">,</span>
+</span></span><span style="display:flex;"><span>                      model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                           <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">Given</span><span style="color:#666">,</span> givenName<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                           <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">Family</span><span style="color:#666">,</span> familyName<span style="color:#666">));</span>
+</span></span></code></pre></div><p>Os códigos desse exemplo podem ser encontrados no diretório /src-examples no pacote de distribuição do Jena como <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial02.java">tutorial 2</a>.</p>
 <h2 id="ch-Statements">Sentenças</h2>
 <p>Cada arco no modelo RDF é chamado de <i><a
 href="#glos-Statement">sentença</a></i>. Cada sentença define um fato sobre o recurso. Uma sentença possui três partes:</p>
@@ -290,38 +287,36 @@ por causa de suas três partes.</p>
 <code>StmtIterator</code> possui o método <code>nextStatement()</code>
 que retorna a próxima sentença do iterador (o mesmo que <code>next()</code> faz, já convertido para  <code>Statement</code>). A interface <code>Statement</code> provê métodos de acesso ao sujeito, predicado e objeto de uma sentença.</p>
 <p>Agora vamos usar essa interface para estender tutorial2 para listar todas as sentenças criadas e imprimi-las. O código completo deste exemplo pode ser encontrado em <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial03.java">tutorial 3</a>.</p>
-<pre>// list the statements in the Model
-StmtIterator iter = model.listStatements();
-
-// print out the predicate, subject and object of each statement
-while (iter.hasNext()) {
-    Statement stmt      = iter.nextStatement();  // get next statement
-    Resource  subject   = stmt.getSubject();     // get the subject
-    Property  predicate = stmt.getPredicate();   // get the predicate
-    RDFNode   object    = stmt.getObject();      // get the object
-
-    System.out.print(subject.toString());
-    System.out.print(" " + predicate.toString() + " ");
-    if (object instanceof Resource) {
-       System.out.print(object.toString());
-    } else {
-        // object is a literal
-        System.out.print(" \"" + object.toString() + "\"");
-    }
-
-    System.out.println(" .");
-}
-</pre>
-<p>Já que o objeto de uma sentença pode ser tanto um recurso quanto uma literal, o método 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// list the statements in the Model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>StmtIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// print out the predicate, subject and object of each statement
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    Statement stmt      <span style="color:#666">=</span> iter<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">();</span>  <span style="color:#080;font-style:italic">// get next statement
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Resource  subject   <span style="color:#666">=</span> stmt<span style="color:#666">.</span><span style="color:#b44">getSubject</span><span style="color:#666">();</span>     <span style="color:#080;font-style:italic">// get the subject
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Property  predicate <span style="color:#666">=</span> stmt<span style="color:#666">.</span><span style="color:#b44">getPredicate</span><span style="color:#666">();</span>   <span style="color:#080;font-style:italic">// get the predicate
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    RDFNode   object    <span style="color:#666">=</span> stmt<span style="color:#666">.</span><span style="color:#b44">getObject</span><span style="color:#666">();</span>      <span style="color:#080;font-style:italic">// get the object
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span>subject<span style="color:#666">.</span><span style="color:#b44">toString</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span><span style="color:#b44">&#34; &#34;</span> <span style="color:#666">+</span> predicate<span style="color:#666">.</span><span style="color:#b44">toString</span><span style="color:#666">()</span> <span style="color:#666">+</span> <span style="color:#b44">&#34; &#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>object <span style="color:#a2f;font-weight:bold">instanceof</span> Resource<span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>       System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span>object<span style="color:#666">.</span><span style="color:#b44">toString</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic">// object is a literal
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span><span style="color:#b44">&#34; \&#34;&#34;</span> <span style="color:#666">+</span> object<span style="color:#666">.</span><span style="color:#b44">toString</span><span style="color:#666">()</span> <span style="color:#666">+</span> <span style="color:#b44">&#34;\&#34;&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; .&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Já que o objeto de uma sentença pode ser tanto um recurso quanto uma literal, o método 
 <code>getObject()</code> retorna um objeto do tipo <code>RDFNode</code>, que é uma superclasse comum de ambos <code>Resource</code> e <code>Literal</code>. O objeto em si é do tipo apropriado, então o código usa <code>instanceof</code> para determinar qual e processá-lo de acordo.</p>
 <p>Quando executado, o programa deve produzir a saída:</p>
-<pre>http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#N anon:14df86:ecc3dee17b:-7fff .
-anon:14df86:ecc3dee17b:-7fff http://www.w3.org/2001/vcard-rdf/3.0#Family  "Smith" .
-anon:14df86:ecc3dee17b:-7fff http://www.w3.org/2001/vcard-rdf/3.0#Given  "John" .
-http://somewhere/JohnSmith http://www.w3.org/2001/vcard-rdf/3.0#FN  "John Smith"
-.
-</pre>
-<p></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">http</span>:<span style="">//somewhere/JohnSmith</span><span style="color:#bbb"> </span><span style="">http</span>:<span style="">//www</span>.<span style="">w</span><span style="color:#666">3</span>.<span style="">org/</span><span style="color:#666">2001</span><span style="">/vcard-rdf/</span><span style="color:#666">3.0</span><span style="color:#080;font-style:italic">#N anon:14df86:ecc3dee17b:-7fff .</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">anon</span>:<span style="color:#666">14</span><span style="color:#00f;font-weight:bold">df86:</span><span style="color:#008000;font-weight:bold">ecc3dee17b</span>:<span style="color:#666">-7</span><span style="">fff</span><span style="color:#bbb"> </span><span style="">http</span>:<span style="">//www</span>.<span style="">w</span><span style="color:#666">3</span>.<span style="">org/</span><span style="color:#666">2001</span><span style="">/vcard-rdf/</span><span style="color:#666">3.0</span><span style="color:#080;font-style:italic">#Family  &#34;Smith&#34; .</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">anon</span>:<span style="color:#666">14</span><span style="color:#00f;font-weight:bold">df86:</span><span style="color:#008000;font-weight:bold">ecc3dee17b</span>:<span style="color:#666">-7</span><span style="">fff</span><span style="color:#bbb"> </span><span style="">http</span>:<span style="">//www</span>.<span style="">w</span><span style="color:#666">3</span>.<span style="">org/</span><span style="color:#666">2001</span><span style="">/vcard-rdf/</span><span style="color:#666">3.0</span><span style="color:#080;font-style:italic">#Given  &#34;John&#34; .</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">http</span>:<span style="">//somewhere/JohnSmith</span><span style="color:#bbb"> </span><span style="">http</span>:<span style="">//www</span>.<span style="">w</span><span style="color:#666">3</span>.<span style="">org/</span><span style="color:#666">2001</span><span style="">/vcard-rdf/</span><span style="color:#666">3.0</span><span style="color:#080;font-style:italic">#FN  &#34;John Smith&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p></p>
 <p>Agora você sabe o porquê de ser simples elaborar modelos. Se você olhar atentamente, você perceberá que cada linha consiste de três campos representando o sujeito, predicado e objeto de cada sentença. Há quatro arcos no nosso modelo, então há quatro sentenças. O "anon:14df86:ecc3dee17b:-7fff" é um identificador interno gerado pelo Jena. Não é uma URI e não deve ser confundido como tal. É simplesmente um nome interno usado pela implementação do Jena.</p>
 <p>O W3C <a href="https://www.w3.org/2001/sw/RDFCore/">RDFCore Working
 Group</a> definiu uma notação similar chamada <a href="https://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples</a>. O nome significa "notação de triplas". Nós veremos na próxima sessão que o Jena possui uma interface de escrita de N-Triples também.</p>
@@ -329,23 +324,23 @@ Group</a> definiu uma notação similar chamada <a href="https://www.w3.org/TR/r
 <p>Jena possui métodos para ler e escrever RDF como XML. Eles podem ser usados para armazenar o modelo RDF em um arquivo e carregá-lo novamente em outro momento.</p>
 <p>O Tutorial 3 criou um modelo e o escreveu no formato de triplas. <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial04.java">Tutorial 4</a> modifica o tutorial 3 para escrever o modelo na forma de RDF XML numa stream de saída. O código, novamente, é muito simples: <code>model.write</code> pode receber um  <code>OutputStream</code> como argumento.</p>
-  <pre>// now write the model in XML form to a file
-model.write(System.out);</pre>
-<p>A saída deve parecer com isso:</p>
-  <pre>&lt;rdf:RDF
-  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-  xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
-  &lt;rdf:Description rdf:about='http://somewhere/JohnSmith'&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A0&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-<p></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// now write the model in XML form to a file
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>A saída deve parecer com isso:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:vcard=</span><span style="color:#b44">&#39;http://www.w3.org/2001/vcard-rdf/3.0#&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#39;http://somewhere/JohnSmith&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>John Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A0&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A0&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>John<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p></p>
 <p>As especificações de RDF especificam como representar RDF como XML. A sintaxe de RDF XML é bastante complexa. Recomendamos ao leitor dar uma olhada no <a href="https://www.w3.org/TR/rdf-primer/">primer</a>  sendo desenvolvido pelo RDFCore WG para uma introdução mais detalhada. Entretanto, vamos dar uma olhada rápida em como interpretar a saída acima.</p>
 <p>RDF é normalmente encapsulada num elemento &lt;rdf:RDF&gt;. O elemento é opcional se houver outras maneiras de saber se aquele XML é RDF, mas normalmente ele é presente. O elemento RDF define os dois namespaces usados no documento. Há um elemento  &lt;rdf:Description&gt; que descreve o recurso cuja URI é "http://somewhere/JohnSmith". Se o atributo rdf:about estivesse ausente, esse elemento representaria um blank node.</p>
 <p>O elemento &lt;vcard:FN&gt; descreve uma propriedade do recurso. O nome da propriedade é o "FN" no namespace do vcard. RDF o converte para uma referência URI concatenando a referência URI do prefixo presente no namespace de vcard e "FN", o nome local parte do nome. Isto nos dá a referência URI " http://www.w3.org/2001/vcard-rdf/3.0#FN". O valor da propriedade é a literal "Jonh Smith".</p>
@@ -353,158 +348,144 @@ model.write(System.out);</pre>
 <p>Há um erro nesse RDF XML: ele não representa exatamente o modelo que criamos. Foi dado uma URI ao blank node do modelo. Ele não é mais um blank node portanto. A sintaxe RDF/XML não é capaz de representar todos os modelos RDF; por exemplo, ela não pode representar um blank node que é o objeto de duas sentenças. O escritor que usamos para escrever este RDF/XML não é capaz de escrever corretamente o subconjunto de modelos que podem ser escritos corretamente. Ele dá uma URI a cada blank node, tornando-o não mais blank.</p>
 <p>Jena possui uma interface extensível que permite novos escritores para diferentes linguagens de serialização RDF. Jena possuem também um escritor RDF/XML mais sofisticado que pode ser invocado ao especificar outro argumento à chamada de método 
 <code>RDFDataMgr.write</code>:</p>
-<pre>// now write the model in a pretty form
-RDFDataMgr.write(System.out, model, Lang.RDFXML);
-</pre>
-<p>Este escritor, chamado também de PrettyWriter, ganha vantagem ao usar as particularidades da sintaxe abreviada de RDF/XML ao criar um modelo mais compacto. Ele também é capaz de preservar os blank nodes onde é possível. Entretanto, não é recomendável para escrever modelos muito grandes, já que sua desempenho deixa a desejar. Para escrever grandes arquivos e preservar os blank nodes, escreva no formato de N-Triplas:</p>
-<pre>// now write the model in XML form to a file
-RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
-</pre>
-<p>Isso produzirá uma saída similar à do tutorial 3, que está em conformidade com a especificação de N-Triplas.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// now write the model in a pretty form
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> model<span style="color:#666">,</span> Lang<span style="color:#666">.</span><span style="color:#b44">RDFXML</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>Este escritor, chamado também de PrettyWriter, ganha vantagem ao usar as particularidades da sintaxe abreviada de RDF/XML ao criar um modelo mais compacto. Ele também é capaz de preservar os blank nodes onde é possível. Entretanto, não é recomendável para escrever modelos muito grandes, já que sua desempenho deixa a desejar. Para escrever grandes arquivos e preservar os blank nodes, escreva no formato de N-Triplas:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// now write the model in XML form to a file
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> model<span style="color:#666">,</span> Lang<span style="color:#666">.</span><span style="color:#b44">NTRIPLES</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>Isso produzirá uma saída similar à do tutorial 3, que está em conformidade com a especificação de N-Triplas.</p>
 <h2 id="ch-Reading-RDF">Leitura de RDF</h2>
 <p><a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java">Tutorial 5</a> demonstra a leitura  num modelo de sentenças gravadas num RDF XML. Com este tutorial, nós teremos criado uma pequena base de dados de vcards na forma RDF/XML. O código a seguir fará leitura e escrita. <em>Note que para esta aplicação rodar, o arquivo de entrada precisa estar no diretório da aplicação.</em></p>
-<pre>
-// create an empty model
-Model model = ModelFactory.createDefaultModel();
-
-// use the RDFDataMgr to find the input file
-InputStream in = RDFDataMgr.open( inputFileName );
-if (in == null) {
-    throw new IllegalArgumentException(
-                                 "File: " + inputFileName + " not found");
-}
-
-// read the RDF/XML file
-model.read(in, null);
-
-// write it to standard out
-model.write(System.out);
-</pre>
-<p>O segundo argumento da chamada de método <code>read()</code> é a URI que será usada para resolver URIs relativas. Como não há referências URI relativas no arquivo de teste, ele pode ser vazio. Quando executado, <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> produzirá uma saída XML como esta:</p>
-<pre>&lt;rdf:RDF
-  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-  xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/JohnSmith/'&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A0&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/SarahJones/'&gt;
-    &lt;vcard:FN&gt;Sarah Jones&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A1&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/MattJones/'&gt;
-    &lt;vcard:FN&gt;Matt Jones&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A2&quot;/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A3&quot;&gt;
-    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Rebecca&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A1&quot;&gt;
-    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Sarah&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A2&quot;&gt;
-    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;
-    &lt;vcard:Given&gt;Matthew&lt;/vcard:Given&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about='http://somewhere/RebeccaSmith/'&gt;
-    &lt;vcard:FN&gt;Becky Smith&lt;/vcard:FN&gt;
-    &lt;vcard:N rdf:nodeID=&quot;A3&quot;/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-<h2 id="ch-Prefixes">Controlando prefixos</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create an empty model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model model <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// use the RDFDataMgr to find the input file
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>InputStream in <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">open</span><span style="color:#666">(</span> inputFileName <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>in <span style="color:#666">==</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">throw</span> <span style="color:#a2f;font-weight:bold">new</span> IllegalArgumentException<span style="color:#666">(</span>
+</span></span><span style="display:flex;"><span>                                 <span style="color:#b44">&#34;File: &#34;</span> <span style="color:#666">+</span> inputFileName <span style="color:#666">+</span> <span style="color:#b44">&#34; not found&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// read the RDF/XML file
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span>in<span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// write it to standard out
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>O segundo argumento da chamada de método <code>read()</code> é a URI que será usada para resolver URIs relativas. Como não há referências URI relativas no arquivo de teste, ele pode ser vazio. Quando executado, <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial05.java"> tutorial 5</a> produzirá uma saída XML como esta:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:vcard=</span><span style="color:#b44">&#39;http://www.w3.org/2001/vcard-rdf/3.0#&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A0&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>John<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#39;http://somewhere/JohnSmith/&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>John Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A0&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#39;http://somewhere/SarahJones/&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>Sarah Jones<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A1&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#39;http://somewhere/MattJones/&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>Matt Jones<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A2&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A3&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>Rebecca<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A1&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Jones<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>Sarah<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A2&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Jones<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>Matthew<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#39;http://somewhere/RebeccaSmith/&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>Becky Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A3&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><h2 id="ch-Prefixes">Controlando prefixos</h2>
 <h3 id="definições-explícitas-de-prefixos">Definições explícitas de prefixos</h3>
 <p>Na sessão anterior, nós vimos que a saída XML declarou um prefixo namespace<br>
 <code>vcard</code> e o usou para abreviar URIs. Enquanto que RDF usa somente URIs completas, e não sua forma encurtada, Jena provê formas de controlar namespaces usados na saída com seu mapeamento de prefixos. Aqui vai um exemplo simples.</p>
-<pre>
- Model m = ModelFactory.createDefaultModel();
- String nsA = "http://somewhere/else#";
- String nsB = "http://nowhere/else#";
- Resource root = m.createResource( nsA + "root" );
- Property P = m.createProperty( nsA + "P" );
- Property Q = m.createProperty( nsB + "Q" );
- Resource x = m.createResource( nsA + "x" );
- Resource y = m.createResource( nsA + "y" );
- Resource z = m.createResource( nsA + "z" );
- m.add( root, P, x ).add( root, P, y ).add( y, Q, z );
- System.out.println( "# -- no special prefixes defined" );
- m.write( System.out );
- System.out.println( "# -- nsA defined" );
- m.setNsPrefix( "nsA", nsA );
- m.write( System.out );
- System.out.println( "# -- nsA and cat defined" );
- m.setNsPrefix( "cat", nsB );
- m.write( System.out );
-</pre>
-<p>A saída deste fragmento são três blocos de RDF/XML, com três diferentes mapeamentos de prefixos. Primeiro o padrão, sem prefixos diferentes dos padrões:</p>
-<pre>
-# -- no special prefixes defined
-
-&lt;rdf:RDF
-    xmlns:j.0="http://nowhere/else#"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:j.1="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;j.1:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;j.1:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;j.0:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-<p>Nós vimos que o namespace rdf é declarado automaticamente, já que são requeridos para tags como <code>&lt;RDF:rdf&gt;</code> e <code>&lt;rdf:resource&gt;</code>. Declarações de namespace são também necessárias para o uso das duas propriedades P e Q, mas já que seus namespaces não foram introduzidos no modelo, eles recebem nomes namespaces inventados <code>j.0</code> e <code>j.1</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model m <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>String nsA <span style="color:#666">=</span> <span style="color:#b44">&#34;http://somewhere/else#&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>String nsB <span style="color:#666">=</span> <span style="color:#b44">&#34;http://nowhere/else#&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>Resource root <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span> nsA <span style="color:#666">+</span> <span style="color:#b44">&#34;root&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Property P <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createProperty</span><span style="color:#666">(</span> nsA <span style="color:#666">+</span> <span style="color:#b44">&#34;P&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Property Q <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createProperty</span><span style="color:#666">(</span> nsB <span style="color:#666">+</span> <span style="color:#b44">&#34;Q&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource x <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span> nsA <span style="color:#666">+</span> <span style="color:#b44">&#34;x&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource y <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span> nsA <span style="color:#666">+</span> <span style="color:#b44">&#34;y&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource z <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span> nsA <span style="color:#666">+</span> <span style="color:#b44">&#34;z&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span> root<span style="color:#666">,</span> P<span style="color:#666">,</span> x <span style="color:#666">).</span><span style="color:#b44">add</span><span style="color:#666">(</span> root<span style="color:#666">,</span> P<span style="color:#666">,</span> y <span style="color:#666">).</span><span style="color:#b44">add</span><span style="color:#666">(</span> y<span style="color:#666">,</span> Q<span style="color:#666">,</span> z <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span> <span style="color:#b44">&#34;# -- no special prefixes defined&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span> System<span style="color:#666">.</span><span style="color:#b44">out</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span> <span style="color:#b44">&#34;# -- nsA defined&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">setNsPrefix</span><span style="color:#666">(</span> <span style="color:#b44">&#34;nsA&#34;</span><span style="color:#666">,</span> nsA <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span> System<span style="color:#666">.</span><span style="color:#b44">out</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span> <span style="color:#b44">&#34;# -- nsA and cat defined&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">setNsPrefix</span><span style="color:#666">(</span> <span style="color:#b44">&#34;cat&#34;</span><span style="color:#666">,</span> nsB <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span> System<span style="color:#666">.</span><span style="color:#b44">out</span> <span style="color:#666">);</span>
+</span></span></code></pre></div><p>A saída deste fragmento são três blocos de RDF/XML, com três diferentes mapeamentos de prefixos. Primeiro o padrão, sem prefixos diferentes dos padrões:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span># -- no special prefixes defined
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:j.0=</span><span style="color:#b44">&#34;http://nowhere/else#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:j.1=</span><span style="color:#b44">&#34;http://somewhere/else#&#34;</span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#root&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;j.1:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#x&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;j.1:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;j.0:Q</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#z&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>Nós vimos que o namespace rdf é declarado automaticamente, já que são requeridos para tags como <code>&lt;RDF:rdf&gt;</code> e <code>&lt;rdf:resource&gt;</code>. Declarações de namespace são também necessárias para o uso das duas propriedades P e Q, mas já que seus namespaces não foram introduzidos no modelo, eles recebem nomes namespaces inventados <code>j.0</code> e <code>j.1</code>.</p>
 <p>O método <code>setNsPrefix(String prefix, String URI)</code>
 declara que o namespace da <code>URI</code> deve ser abreviado por <code>prefixos</code>. Jena requer que o <code>prefixo</code> seja um namespace XML correto, e que o <code>URI</code> termine com um caractere sem-nome. O escritor RDF/XML transformará essas declarações de prefixos em declarações de namespaces XML e as usará nas suas saídas:
-<pre>
-# -- nsA defined
-
-&lt;rdf:RDF
-    xmlns:j.0="http://nowhere/else#"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:nsA="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;j.0:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-<p>O outro namespace ainda recebe o nome criado automaticamente, mas o nome nsA é agora usado nas tags de propriedades. Não há necessidade de que o nome do prefixo tenha alguma relação com as variáveis do código Jena:</p>
-<pre>
-# -- nsA and cat defined
-
-&lt;rdf:RDF
-    xmlns:cat="http://nowhere/else#"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:nsA="http://somewhere/else#" &gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#root"&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#x"/&gt;
-    &lt;nsA:P rdf:resource="http://somewhere/else#y"/&gt;
-  &lt;/rdf:Description&gt;
-  &lt;rdf:Description rdf:about="http://somewhere/else#y"&gt;
-    &lt;cat:Q rdf:resource="http://somewhere/else#z"/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-<p>Ambos os prefixos são usados na saída, e não houve a necessidade de prefixos gerados automaticamente.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span># -- nsA defined
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:j.0=</span><span style="color:#b44">&#34;http://nowhere/else#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:nsA=</span><span style="color:#b44">&#34;http://somewhere/else#&#34;</span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#root&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;nsA:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#x&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;nsA:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;j.0:Q</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#z&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>O outro namespace ainda recebe o nome criado automaticamente, mas o nome nsA é agora usado nas tags de propriedades. Não há necessidade de que o nome do prefixo tenha alguma relação com as variáveis do código Jena:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span># -- nsA and cat defined
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:cat=</span><span style="color:#b44">&#34;http://nowhere/else#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#34;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:nsA=</span><span style="color:#b44">&#34;http://somewhere/else#&#34;</span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#root&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;nsA:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#x&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;nsA:P</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/else#y&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;cat:Q</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#z&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>Ambos os prefixos são usados na saída, e não houve a necessidade de prefixos gerados automaticamente.</p>
 <h3 id="definições-implícitas-de-prefixos">Definições implícitas de prefixos</h3>
 <p>Assim como as declarações de prefixos definidas por chamadas a <code>setNsPrefix</code>, Jena vai lembrar-se dos prefixos que foram usados na entrada para <code>model.read()</code>.</p>
 <p>Pegue a saída produzida pelo fragmento anterior e cole-o dentro de algum arquivo, com a URL  <b>file:/tmp/fragment.rdf</b> say. E execute o código:
-<pre>
-Model m2 = ModelFactory.createDefaultModel();
-m2.read( "file:/tmp/fragment.rdf" );
-m2.write( System.out );
-</pre>
-<p>Você verá que os prefixos da entrada são preservados na saída. Todos os prefixos são escritos, mesmo se eles não forem usados em lugar algum. Você pode remover um prefixo com <code>removeNsPrefix(String prefix)</code> se você não o quiser na saída.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model m2 <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>m2<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span> <span style="color:#b44">&#34;file:/tmp/fragment.rdf&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>m2<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span> System<span style="color:#666">.</span><span style="color:#b44">out</span> <span style="color:#666">);</span>
+</span></span></code></pre></div><p>Você verá que os prefixos da entrada são preservados na saída. Todos os prefixos são escritos, mesmo se eles não forem usados em lugar algum. Você pode remover um prefixo com <code>removeNsPrefix(String prefix)</code> se você não o quiser na saída.</p>
 <p>Como N-Triplas não possuem nenhuma forma reduzida de escrever URIs, não há prefixos nem na entrada nem na saída. A notação <b>N3</b>, também suportada pelo Jena, possui nomes prefixados reduzidos, e grava-os na entrada e usa-os na saída.
 <p>Jena possui outras operações sobre mapeamento de prefixos de um modelo, como um<code>Map</code> de Java extraído a partir dos mapeamentos existentes, ou a adição de um grupo inteiro de mapeamentos de uma só vez; olhe a documentação de <code>PrefixMapping</code> para mais detalhes.
 <h2 id="ch-Jena-RDF-Packages">Pacotes Jena RDF</h2>
@@ -516,46 +497,41 @@ m2.write( System.out );
 <h2 id="ch-Navigating-a-Model">Navegação em Modelos</h2>
 <p>Até agora, este tutorial mostrou como criar, ler e escrever modelos RDF. Chegou o momento de mostrar como acessar as informações mantidas num modelo.</p>
 <p> Dada a URI de um recurso, o objeto do recurso pode ser recuperado de um modelo usando o método <code>Model.getResource(String uri)</code>. Este método é definido para retornar um objeto Resource se ele existir no modelo, ou, caso contrário, criar um novo. Por exemplo, para recuperar o recurso Adam Smith do modelo lido a partir do arquivo no tutorial 5:</p>
-<pre>// retrieve the John Smith vcard resource from the model
-Resource vcard = model.getResource(johnSmithURI);
-</pre>
-<p>A interface Resource define numerosos métodos para acessar as propriedades de um recurso. O método <code>Resource.getProperty(Property p)</code> acessa uma propriedade do recurso. Este método não segue a convenção usual de Java de acesso já que o tipo do objeto retorna é  <code>Statement,</code> e não <code>Property</code> como era de se esperar. Retornando toda a sentença permite à aplicação acessar o valor da propriedade usando um de seus métodos de acesso que retornam o objeto da sentença. Por exemplo, para recuperar o recurso que é o valor da propriedade <code>vcard:N</code></p>
-<pre>// retrieve the value of the N property
-Resource name = (Resource) vcard.getProperty(VCARD.N)
-                                .getObject();
-</pre>
-<p>De modo geral, o objeto de uma sentença pode ser um recurso ou uma literal, então a aplicação, sabendo que o valor precisar ser um recurso, faz o cast do objeto retornado. Uma das coisas que Jena tenta fazer é fornecer tipos específicos de métodos, então a aplicação não tem que fazer cast, e checagem de tipos pode ser feita em tempo de compilação. O fragmento de código acima poderia ser mais convenientemente escrito assim:</p>
-<pre>// retrieve the value of the FN property
-Resource name = vcard.getProperty(VCARD.N)
-                     .getResource();</pre>
-<p>Similarmente, o valor literal de uma propriedade pode ser recuperado:</p>
-<pre>// retrieve the given name property
-String fullName = vcard.getProperty(VCARD.FN)
-                        .getString();</pre>
-<p>Neste exemplo, o recurso vcard possui somente as propriedades <code>vcard:FN</code> e <code>vcard:N</code>. RDF permite a um recurso repetir uma propriedade; por exemplo, Adam pode ter mais de um apelido. Vamos dar dois apelidos a ele:</p>
-<pre>// add two nickname properties to vcard
-vcard.addProperty(VCARD.NICKNAME, "Smithy")
-     .addProperty(VCARD.NICKNAME, "Adman");</pre>
-<p>Como notado anteriormente, Jena representa um modelo RDF como um conjunto de sentenças, então, adicionar uma sentença com um sujeito, predicado e objeto igual a um já existente não terá efeito. Jena não define qual do dois apelidos será retornado. O resultado da chamada a <code>vcard.getProperty(VCARD.NICKNAME)</code> é indeterminado. Jena vai retornar um dos valores, mas não há garantia nem mesmo de que duas chamadas consecutivas irá retornar o mesmo valor.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// retrieve the John Smith vcard resource from the model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource vcard <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span>johnSmithURI<span style="color:#666">);</span>
+</span></span></code></pre></div><p>A interface Resource define numerosos métodos para acessar as propriedades de um recurso. O método <code>Resource.getProperty(Property p)</code> acessa uma propriedade do recurso. Este método não segue a convenção usual de Java de acesso já que o tipo do objeto retorna é  <code>Statement,</code> e não <code>Property</code> como era de se esperar. Retornando toda a sentença permite à aplicação acessar o valor da propriedade usando um de seus métodos de acesso que retornam o objeto da sentença. Por exemplo, para recuperar o recurso que é o valor da propriedade <code>vcard:N</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// retrieve the value of the N property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource name <span style="color:#666">=</span> <span style="color:#666">(</span>Resource<span style="color:#666">)</span> vcard<span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">N</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#666">.</span><span style="color:#b44">getObject</span><span style="color:#666">();</span>
+</span></span></code></pre></div><p>De modo geral, o objeto de uma sentença pode ser um recurso ou uma literal, então a aplicação, sabendo que o valor precisar ser um recurso, faz o cast do objeto retornado. Uma das coisas que Jena tenta fazer é fornecer tipos específicos de métodos, então a aplicação não tem que fazer cast, e checagem de tipos pode ser feita em tempo de compilação. O fragmento de código acima poderia ser mais convenientemente escrito assim:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// retrieve the value of the N property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource name <span style="color:#666">=</span> vcard<span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">N</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">();</span>
+</span></span></code></pre></div><p>Similarmente, o valor literal de uma propriedade pode ser recuperado:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java//" data-lang="java//"><span style="display:flex;"><span>String fullName <span style="color:#666">=</span> vcard<span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#666">.</span><span style="color:#b44">getString</span><span style="color:#666">();</span>
+</span></span></code></pre></div><p>Neste exemplo, o recurso vcard possui somente as propriedades <code>vcard:FN</code> e <code>vcard:N</code>. RDF permite a um recurso repetir uma propriedade; por exemplo, Adam pode ter mais de um apelido. Vamos dar dois apelidos a ele:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// add two nickname properties to vcard
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>vcard<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">NICKNAME</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Smithy&#34;</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">NICKNAME</span><span style="color:#666">,</span> <span style="color:#b44">&#34;Adman&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>Como notado anteriormente, Jena representa um modelo RDF como um conjunto de sentenças, então, adicionar uma sentença com um sujeito, predicado e objeto igual a um já existente não terá efeito. Jena não define qual do dois apelidos será retornado. O resultado da chamada a <code>vcard.getProperty(VCARD.NICKNAME)</code> é indeterminado. Jena vai retornar um dos valores, mas não há garantia nem mesmo de que duas chamadas consecutivas irá retornar o mesmo valor.</p>
 <p>Se for possível que uma propriedade ocorra mais de uma vez, então o método  Resource.listProperties(Property p) pode ser usado para retornar um iterador para lista-las. Este método retorna um iterador que retorna objetos do tipo <code>Statement</code>. Nós podemos listar os apelidos assim:</p>
-<pre>// set up the output
-System.out.println("The nicknames of \""
-                      + fullName + "\" are:");
-// list the nicknames
-StmtIterator iter = vcard.listProperties(VCARD.NICKNAME);
-while (iter.hasNext()) {
-    System.out.println("    " + iter.nextStatement()
-                                    .getObject()
-                                    .toString());
-}
-</pre>
-<p>Esse código pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial06.java"> tutorial 6</a>. O iterador <code>iter</code> reproduz todas as sentenças com sujeito <code>vcard</code> e predicado <code>VCARD.NICKNAME</code>, então, iterar sobre ele permite recuperar cada sentença usando
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// set up the output
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;The nicknames of \&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>                      <span style="color:#666">+</span> fullName <span style="color:#666">+</span> <span style="color:#b44">&#34;\&#34; are:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// list the nicknames
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>StmtIterator iter <span style="color:#666">=</span> vcard<span style="color:#666">.</span><span style="color:#b44">listProperties</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">NICKNAME</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;    &#34;</span> <span style="color:#666">+</span> iter<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#666">.</span><span style="color:#b44">getObject</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#666">.</span><span style="color:#b44">toString</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Esse código pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial06.java"> tutorial 6</a>. O iterador <code>iter</code> reproduz todas as sentenças com sujeito <code>vcard</code> e predicado <code>VCARD.NICKNAME</code>, então, iterar sobre ele permite recuperar cada sentença usando
 <code>nextStatement()</code>, pegar o campo do objeto, e convertê-lo para string. O código produz a seguinte saída quando executado:</p>
-<pre>The nicknames of "John Smith" are:
-   Smithy
-   Adman
-</pre>
-<p>Todas as propriedades de um recurso podem ser listadas usando o método 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>The nicknames of <span style="color:#b44">&#34;John Smith&#34;</span> are:
+</span></span><span style="display:flex;"><span>    Smithy
+</span></span><span style="display:flex;"><span>    Adman
+</span></span></code></pre></div><p>Todas as propriedades de um recurso podem ser listadas usando o método 
 <code>listProperties()</code> sem argumentos.
 </p>
 <h2 id="ch-Querying-a-Model">Consultas em Modelos</h2>
@@ -564,83 +540,77 @@ while (iter.hasNext()) {
 <code>Model.listSubjects()</code> é similar, mas retorna um iterador sobre todos os recursos que possuem propriedades, <i>ie</i> são sujeitos de alguma sentença.</p>
 <p><code>Model.listSubjectsWithProperty(Property p, RDFNode
 o)</code><code></code> retornará um iterador sobre todos os  recursos com propriedade <code>p</code> de valor <code>o</code>. Se nós assumirmos que somente recursos vcard terão a propriedade <code>vcard:FN</code> e que, em nossos dados, todos esses recursos têm essa propriedade, então podemos encontrar todos os vCards assim:</p>
-  <pre>// list vcards
-ResIterator iter = model.listSubjectsWithProperty(VCARD.FN);
-while (iter.hasNext()) {
-    Resource r = iter.nextResource();
-    ...
-}</pre>
-<p>Todos esses métodos de consulta são açúcar sintático sobre o método primitivo de consulta <code>model.listStatements(Selector s)</code>. Esse método retorna um iterador sobre todas as sentenças no modelo 'selecionado' por <code>s</code>. A interface de selector foi feita para ser extensível, mas por hora, só há uma implementação dela, a classe  <code>SimpleSelector</code> do pacote <code>org.apache.jena.rdf.model</code>. Usar <code>SimpleSelector </code> é uma das raras ocasiões em Jena onde é necessário usar uma classe especifica em vez de uma interface. O construtor de <code>SimpleSelector</code> recebe três argumentos:</p>
-<pre>Selector selector = new SimpleSelector(subject, predicate, object)</pre>
-<p>Esse selector vai selecionar todas as sentenças em que o sujeito casa com
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// list vcards
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>ResIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listSubjectsWithProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    Resource r <span style="color:#666">=</span> iter<span style="color:#666">.</span><span style="color:#b44">nextResource</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Todos esses métodos de consulta são açúcar sintático sobre o método primitivo de consulta <code>model.listStatements(Selector s)</code>. Esse método retorna um iterador sobre todas as sentenças no modelo 'selecionado' por <code>s</code>. A interface de selector foi feita para ser extensível, mas por hora, só há uma implementação dela, a classe  <code>SimpleSelector</code> do pacote <code>org.apache.jena.rdf.model</code>. Usar <code>SimpleSelector </code> é uma das raras ocasiões em Jena onde é necessário usar uma classe especifica em vez de uma interface. O construtor de <code>SimpleSelector</code> recebe três argumentos:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span>subject<span style="color:#666">,</span> predicate<span style="color:#666">,</span> object<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Esse selector vai selecionar todas as sentenças em que o sujeito casa com
 <code>subject</code>, um predicado que casa com <code>predicate</code> e um objeto que casa com <code>object</code>. Se <code>null</code> é passado para algum dos argumentos, ele vai casar com qualquer coisa, caso contrário, ele vai casar com os recursos ou literais correspondentes. (Dois recursos são iguais se eles possuem o mesmo URI ou são o mesmo blank node; dois literais são iguais se todos os seus componentes forem iguais.) Assim:</p>
-  <pre>Selector selector = new SimpleSelector(null, null, null);</pre>
-<p>vai selecionar todas as sentenças do modelo.</p>
-  <pre>Selector selector = new SimpleSelector(null, VCARD.FN, null);</pre>
-<p>vai selecionar todas as sentenças com o predicado VCARD.FN, independente do sujeito ou objeto. Como um atalho especial,
-<p><code>listStatements( S, P, O )
-</code></p>
-<p>é equivalente a</p>
-<p><code>listStatements( new SimpleSelector( S, P, O ) )
-</code></p>
-<p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>vai selecionar todas as sentenças do modelo.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>vai selecionar todas as sentenças com o predicado VCARD.FN, independente do sujeito ou objeto. Como um atalho especial,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>listStatements<span style="color:#666">(</span> S<span style="color:#666">,</span> P<span style="color:#666">,</span> O <span style="color:#666">)</span>
+</span></span></code></pre></div><p>é equivalente a</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>listStatements<span style="color:#666">(</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span> S<span style="color:#666">,</span> P<span style="color:#666">,</span> O <span style="color:#666">)</span> <span style="color:#666">)</span>
+</span></span></code></pre></div><p>
 O código a seguir, que pode ser encontrado em  <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial07.java">tutorial 7</a> que lista os nomes completos de todos os vcards do banco de dados.</p>
-<pre>// select all the resources with a VCARD.FN property
-ResIterator iter = model.listSubjectsWithProperty(VCARD.FN);
-if (iter.hasNext()) {
-    System.out.println("The database contains vcards for:");
-    while (iter.hasNext()) {
-        System.out.println("  " + iter.nextResource()
-                                      .getProperty(VCARD.FN)
-                                      .getString());
-    }
-} else {
-    System.out.println("No vcards were found in the database");
-}
-</pre>
-<p>Isso deve produzir uma saída similar a:</p>
-<pre>The database contains vcards for:
-  Sarah Jones
-  John Smith
-  Matt Jones
-  Becky Smith
-</pre>
-<p>Seu próximo exercício é modificar o código para usar <code>SimpleSelector
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// select all the resources with a VCARD.FN property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>ResIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listSubjectsWithProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;The database contains vcards for:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;  &#34;</span> <span style="color:#666">+</span> iter<span style="color:#666">.</span><span style="color:#b44">nextResource</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                                      <span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                                      <span style="color:#666">.</span><span style="color:#b44">getString</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;No vcards were found in the database&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Isso deve produzir uma saída similar a:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>The database contains vcards <span style="color:#a2f;font-weight:bold">for</span>:
+</span></span><span style="display:flex;"><span>  Sarah Jones
+</span></span><span style="display:flex;"><span>  John Smith
+</span></span><span style="display:flex;"><span>  Matt Jones
+</span></span><span style="display:flex;"><span>  Becky Smith
+</span></span></code></pre></div><p>Seu próximo exercício é modificar o código para usar <code>SimpleSelector
 </code>em vez de <code>listSubjectsWithProperty</code>.</p>
 <p>Vamos ver como implementar um controle mais refinado sobre as sentenças selecionadas.
 <code>SimpleSelector</code> pode ser herdado ter seus selects modificado para mais filtragens:</p>
-  <pre>// select all the resources with a VCARD.FN property
-// whose value ends with "Smith"
-StmtIterator iter = model.listStatements(
-    new SimpleSelector(null, VCARD.FN, (RDFNode) null) {
-        public boolean selects(Statement s)
-            {return s.getString().endsWith("Smith");}
-    });</pre>
-<p>Esse código usa uma técnica elegante de Java para sobrescrever a definição de um método quando criamos uma instância da classe. Aqui, o método <code>selects(...)</code> garante que o nome completo termine com “Smith”. É importante notar que a filtragem baseada nos argumentos sujeito, predicado e objeto tem lugar antes que o método <code>selects(...)</code> seja chamado, então esse teste extra só será aplicado para casar sentenças.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// select all the resources with a VCARD.FN property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// whose value ends with &#34;Smith&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>StmtIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> <span style="color:#666">(</span>RDFNode<span style="color:#666">)</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">boolean</span> <span style="color:#00a000">selects</span><span style="color:#666">(</span>Statement s<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">{</span><span style="color:#a2f;font-weight:bold">return</span> s<span style="color:#666">.</span><span style="color:#b44">getString</span><span style="color:#666">().</span><span style="color:#b44">endsWith</span><span style="color:#666">(</span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#666">);}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">});</span>
+</span></span></code></pre></div><p>Esse código usa uma técnica elegante de Java para sobrescrever a definição de um método quando criamos uma instância da classe. Aqui, o método <code>selects(...)</code> garante que o nome completo termine com “Smith”. É importante notar que a filtragem baseada nos argumentos sujeito, predicado e objeto tem lugar antes que o método <code>selects(...)</code> seja chamado, então esse teste extra só será aplicado para casar sentenças.</p>
 <p>O código completo pode ser encontrado no <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial08.java">tutorial
 8</a> e produz uma saída igual a:</p>
-  <pre>The database contains vcards for:
-  John Smith
-  Becky Smith</pre>
-<p></p>
-<p>Você pode imaginar que:</p>
-<pre>// do all filtering in the selects method
-StmtIterator iter = model.listStatements(
-  new
-      SimpleSelector(null, null, (RDFNode) null) {
-          public boolean selects(Statement s) {
-              return (subject == null   || s.getSubject().equals(subject))
-                  &amp;&amp; (predicate == null || s.getPredicate().equals(predicate))
-                  &amp;&amp; (object == null    || s.getObject().equals(object))
-          }
-     }
- });
-</pre>
-<p>é equivalente a:</p>
-  <pre>StmtIterator iter =
-  model.listStatements(new SimpleSelector(subject, predicate, object)</pre>
-<p>Embora possam ser funcionalmente equivalentes, a primeira forma vai listar todas as sentenças do modelo e testar cada uma individualmente, a segunda forma permite índices mantidos pela implementação para melhor a perfomance. Tente isso em modelos grandes e veja você mesmo, mas prepare uma chícara de café antes.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>The database contains vcards <span style="color:#a2f;font-weight:bold">for</span>:
+</span></span><span style="display:flex;"><span>  John Smith
+</span></span><span style="display:flex;"><span>  Becky Smith
+</span></span></code></pre></div><p>Você pode imaginar que:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// do all filtering in the selects method
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>StmtIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">new</span>
+</span></span><span style="display:flex;"><span>      SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#666">(</span>RDFNode<span style="color:#666">)</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">boolean</span> <span style="color:#00a000">selects</span><span style="color:#666">(</span>Statement s<span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#666">(</span>subject <span style="color:#666">==</span> <span style="color:#a2f;font-weight:bold">null</span>   <span style="color:#666">||</span> s<span style="color:#666">.</span><span style="color:#b44">getSubject</span><span style="color:#666">().</span><span style="color:#b44">equals</span><span style="color:#666">(</span>subject<span style="color:#666">))</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#666">&amp;</span>amp<span style="color:#666">;&amp;</span>amp<span style="color:#666">;</span> <span style="color:#666">(</span>predicate <span style="color:#666">==</span> <span style="color:#a2f;font-weight:bold">null</span> <span style="color:#666">||</span> s<span style="color:#666">.</span><span style="color:#b44">getPredicate</span><span style="color:#666">().</span><span style="color:#b44">equals</span><span style="color:#666">(</span>predicate<span style="color:#666">))</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#666">&amp;</span>amp<span style="color:#666">;&amp;</span>amp<span style="color:#666">;</span> <span style="color:#666">(</span>object <span style="color:#666">==</span> <span style="color:#a2f;font-weight:bold">null</span>    <span style="color:#666">||</span> s<span style="color:#666">.</span><span style="color:#b44">getObject</span><span style="color:#666">().</span><span style="color:#b44">equals</span><span style="color:#666">(</span>object<span style="color:#666">))</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#666">});</span>
+</span></span></code></pre></div><p>é equivalente a:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>StmtIterator iter <span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>  model<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span>subject<span style="color:#666">,</span> predicate<span style="color:#666">,</span> object<span style="color:#666">)</span>
+</span></span></code></pre></div><p>Embora possam ser funcionalmente equivalentes, a primeira forma vai listar todas as sentenças do modelo e testar cada uma individualmente, a segunda forma permite índices mantidos pela implementação para melhor a perfomance. Tente isso em modelos grandes e veja você mesmo, mas prepare uma chícara de café antes.</p>
 <h2 id="ch-Operations-on-Models">Operações em Modelos</h2>
 <p>Jena provê três operações para manipular modelos. Elas são operações comuns de conjunto: união, intersecção e diferença.</p>
 <p>A união de dois modelos é a união do conjunto de sentenças que representa cada modelo. Esta é uma das operações chaves que RDF suporta. Isso permite que fontes de dados discrepantes sejam juntadas. Considere o seguintes modelos:</p>
@@ -652,34 +622,33 @@ StmtIterator iter = model.listStatements(
 <img alt="figure 6" src="figures/fig6.png" width="540" height="240"></p>
 <p>Vamos ver o código (o código completo está em  <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) e ver o que acontece.</p>
-<pre>// read the RDF/XML files
-model1.read(new InputStreamReader(in1), "");
-model2.read(new InputStreamReader(in2), "");
-
-// merge the Models
-Model model = model1.union(model2);
-
-// print the Model as RDF/XML
-model.write(system.out, "RDF/XML-ABBREV");</pre>
-<p>A saída produzida pelo PrettyWriter se assemelha a:</p>
-<pre>&lt;rdf:RDF
-    xmlns:rdf=&quot;<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a>&quot;
-    xmlns:vcard=&quot;http://www.w3.org/2001/vcard-rdf/3.0#&quot;&gt;
-  &lt;rdf:Description rdf:about=&quot;http://somewhere/JohnSmith/&quot;&gt;
-    &lt;vcard:EMAIL&gt;
-      &lt;vcard:internet&gt;
-        &lt;rdf:value&gt;John@somewhere.com&lt;/rdf:value&gt;
-      &lt;/vcard:internet&gt;
-    &lt;/vcard:EMAIL&gt;
-    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;
-      &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;
-      &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;
-    &lt;/vcard:N&gt;
-    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;
-</pre>
-<p>Mesmo que você não seja familiarizado com  os detalhes da sintaxe RDF/XML, deve ser relativamente claro que os modelos foram unidos como esperado A interseção e a diferença de modelos podem ser computados de maneira semelhante, usando os métodos <code>.intersection(Model)</code> e
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// read the RDF/XML files
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model1<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">new</span> InputStreamReader<span style="color:#666">(</span>in1<span style="color:#666">),</span> <span style="color:#b44">&#34;&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>model2<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">new</span> InputStreamReader<span style="color:#666">(</span>in2<span style="color:#666">),</span> <span style="color:#b44">&#34;&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// merge the Models
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model model <span style="color:#666">=</span> model1<span style="color:#666">.</span><span style="color:#b44">union</span><span style="color:#666">(</span>model2<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// print the Model as RDF/XML
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>system<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> <span style="color:#b44">&#34;RDF/XML-ABBREV&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>A saída produzida pelo PrettyWriter se assemelha a:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#34;&lt;a href=&#34;</span><span style="">http://www.w3.org/1999/02/22-rdf-syntax-ns#&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>http://www.w3.org/1999/02/22-rdf-syntax-ns#<span style="color:#008000;font-weight:bold">&lt;/a&gt;</span>&#34;
+</span></span><span style="display:flex;"><span>    xmlns:vcard=&#34;http://www.w3.org/2001/vcard-rdf/3.0#&#34;&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;http://somewhere/JohnSmith/&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:EMAIL&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;vcard:internet&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#008000;font-weight:bold">&lt;rdf:value&gt;</span>John@somewhere.com<span style="color:#008000;font-weight:bold">&lt;/rdf:value&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;/vcard:internet&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;/vcard:EMAIL&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:N</span> <span style="color:#b44">rdf:parseType=</span><span style="color:#b44">&#34;Resource&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;vcard:Given&gt;</span>John<span style="color:#008000;font-weight:bold">&lt;/vcard:Given&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008000;font-weight:bold">&lt;vcard:Family&gt;</span>Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:Family&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;/vcard:N&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;vcard:FN&gt;</span>John Smith<span style="color:#008000;font-weight:bold">&lt;/vcard:FN&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>Mesmo que você não seja familiarizado com  os detalhes da sintaxe RDF/XML, deve ser relativamente claro que os modelos foram unidos como esperado A interseção e a diferença de modelos podem ser computados de maneira semelhante, usando os métodos <code>.intersection(Model)</code> e
 <code>.difference(Model)</code>; veja a documentação de
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html#difference(org.apache.jena.rdf.model.Model)">difference</a>
 e
@@ -701,97 +670,94 @@ para mais detalhes.
 <p align="left">ALTs representam alternativas. Por exemplo, vamos supor um recurso representando um software. Ele poderia ter uma propriedade indicando onde ele foi obtido. O valor dessa propriedade pode ser uma coleção ALT contendo vários sites de onde ele poderia ser baixado. ALTs são desordenados a menos que a propriedade rdf:_1 tenha significado especial. Ela representa a escolha padrão.</p>
 <p align="left">Embora os containers sejam manipulados como recursos e propriedades, Jena têm interfaces e implementações de classes explicitas para manipulá-los. Não é uma boa ideia ter um objeto manipulando um container e ao mesmo tempo modificando o estado do container usando métodos de mais baixo nível.</p>
 <p align="left">Vamos modificar o tutorial 8 para criar essa bag:</p>
-<pre>// create a bag
-Bag smiths = model.createBag();
-
-// select all the resources with a VCARD.FN property
-// whose value ends with "Smith"
-StmtIterator iter = model.listStatements(
-    new SimpleSelector(null, VCARD.FN, (RDFNode) null) {
-        public boolean selects(Statement s) {
-                return s.getString().endsWith("Smith");
-        }
-    });
-// add the Smith's to the bag
-while (iter.hasNext()) {
-    smiths.add(iter.nextStatement().getSubject());
-}
-</pre>
-<p>Se nós imprimirmos esse modelo, vamos obter algo do tipo:</p>
-  <pre>&lt;rdf:RDF
-  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-  xmlns:vcard='http://www.w3.org/2001/vcard-rdf/3.0#'
- &gt;
-...
-  &lt;rdf:Description rdf:nodeID=&quot;A3&quot;&gt;
-    &lt;rdf:type rdf:resource='http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag'/&gt;
-    &lt;rdf:_1 rdf:resource='http://somewhere/JohnSmith/'/&gt;
-    &lt;rdf:_2 rdf:resource='http://somewhere/RebeccaSmith/'/&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-<p>que representa o recurso Bag.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create a bag
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Bag smiths <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">createBag</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// select all the resources with a VCARD.FN property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// whose value ends with &#34;Smith&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>StmtIterator iter <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> <span style="color:#666">(</span>RDFNode<span style="color:#666">)</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">boolean</span> <span style="color:#00a000">selects</span><span style="color:#666">(</span>Statement s<span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a2f;font-weight:bold">return</span> s<span style="color:#666">.</span><span style="color:#b44">getString</span><span style="color:#666">().</span><span style="color:#b44">endsWith</span><span style="color:#666">(</span><span style="color:#b44">&#34;Smith&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// add the Smith&#39;s to the bag
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    smiths<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span>iter<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">().</span><span style="color:#b44">getSubject</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Se nós imprimirmos esse modelo, vamos obter algo do tipo:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:vcard=</span><span style="color:#b44">&#39;http://www.w3.org/2001/vcard-rdf/3.0#&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A3&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdf:type</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag&#39;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdf:_1</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#39;http://somewhere/JohnSmith/&#39;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdf:_2</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#39;http://somewhere/RebeccaSmith/&#39;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>que representa o recurso Bag.</p>
 <p>A interface do container fornece um iterador para listar o conteúdo do container:</p>
-<pre>// print out the members of the bag
-NodeIterator iter2 = smiths.iterator();
-if (iter2.hasNext()) {
-    System.out.println("The bag contains:");
-    while (iter2.hasNext()) {
-        System.out.println("  " +
-            ((Resource) iter2.next())
-                            .getProperty(VCARD.FN)
-                            .getString());
-    }
-} else {
-    System.out.println("The bag is empty");
-}
-</pre>
-<p>que produz a seguinte saída:</p>
-<pre>The bag contains:
-  John Smith
-  Becky Smith</pre>
-<p>O código executável pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial10.java">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// print out the members of the bag
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>NodeIterator iter2 <span style="color:#666">=</span> smiths<span style="color:#666">.</span><span style="color:#b44">iterator</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>iter2<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;The bag contains:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>iter2<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;  &#34;</span> <span style="color:#666">+</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#666">((</span>Resource<span style="color:#666">)</span> iter2<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">())</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#666">.</span><span style="color:#b44">getString</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;The bag is empty&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>que produz a seguinte saída:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>The bag contains:
+</span></span><span style="display:flex;"><span>  John Smith
+</span></span><span style="display:flex;"><span>  Becky Smith
+</span></span></code></pre></div><p>O código executável pode ser encontrado em  <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial10.java">
 tutorial 10</a>, que coloca esses fragmentos de código juntos num exemplo completo.</p>
 <p>As classes de Jena oferecem métodos para manipular containers, incluindo adição de novos membros, inserção de novos membros no meio de um container e a remoção de membros existentes. As classes de container Jena atualmente garantem que a lista ordenada de propriedades usadas começam com rdf:_1 e é contíguo. O RDFCore WG relaxou essa regra, permitindo uma representação parcial dos containers. Isso, portanto, é uma área de Jena que pode ser mudada no futuro.</p>
 <h2 id="ch-More-about-Literals-and-Datatypes">Mais sobre Literais e Datatypes</h2>
 <p>Literais RDF não são apenas strings. Literais devem ter uma tag para indicar a linguagem da literal. O diálogo de uma literal em Inglês é considerado diferente de um diálogo de uma literal em Francês. Esse comportamento estranho é um artefato da sintaxe RDF/XML original.</p>
 <p>Há na realidade dois tipos de Literais. Em uma delas, o componente string é somente isso, uma string ordinária. Na outra, o componente string é esperado que fosse um bem balanceado fragmento de XML.  Quando um modelo RDF é escrito como RDF/XML, uma construção especial usando um atributo parseType='Literal' é usado para representar isso.</p>
 <p>Em Jena, esses atributos de uma literal podem ser setados quando a literal é construída, e.g. no <a href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial11.java">tutorial 11</a>:</p>
-<pre>// create the resource
-Resource r = model.createResource();
-
-// add the property
-r.addProperty(RDFS.label, model.createLiteral("chat", "en"))
- .addProperty(RDFS.label, model.createLiteral("chat", "fr"))
- .addProperty(RDFS.label, model.createLiteral("&lt;em&gt;chat&lt;/em&gt;", true));
-
-// write out the Model
-model.write(system.out);</pre>
-<p>produz</p>
-<pre>&lt;rdf:RDF
-  xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-  xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'
- &gt;
-  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;
-    &lt;rdfs:label xml:lang='en'&gt;chat&lt;/rdfs:label&gt;
-    &lt;rdfs:label xml:lang='fr'&gt;chat&lt;/rdfs:label&gt;
-    &lt;rdfs:label rdf:parseType='Literal'&gt;&lt;em&gt;chat&lt;/em&gt;&lt;/rdfs:label&gt;
-  &lt;/rdf:Description&gt;
-&lt;/rdf:RDF&gt;</pre>
-<p>Para que duas literais sejam consideradas iguais, elas devem ser ambas literais XML ou ambas literais simples. Em adição a isso, ambas não devem possuir tag de linguagem, ou se as tags de linguagem estiverem presentes, elas devem ser iguais. Para simples literais strings, elas devem ser iguais. Literais XML têm duas noções de igualdade. A noção simples é que as condições anteriores são verdade e as strings também são iguais. A outra noção é de que elas podem ser iguais se a canonização das strings forem iguais.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create the resource
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource r <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// add the property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>r<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>RDFS<span style="color:#666">.</span><span style="color:#b44">label</span><span style="color:#666">,</span> model<span style="color:#666">.</span><span style="color:#b44">createLiteral</span><span style="color:#666">(</span><span style="color:#b44">&#34;chat&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;en&#34;</span><span style="color:#666">))</span>
+</span></span><span style="display:flex;"><span> <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>RDFS<span style="color:#666">.</span><span style="color:#b44">label</span><span style="color:#666">,</span> model<span style="color:#666">.</span><span style="color:#b44">createLiteral</span><span style="color:#666">(</span><span style="color:#b44">&#34;chat&#34;</span><span style="color:#666">,</span> <span style="color:#b44">&#34;fr&#34;</span><span style="color:#666">))</span>
+</span></span><span style="display:flex;"><span> <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>RDFS<span style="color:#666">.</span><span style="color:#b44">label</span><span style="color:#666">,</span> model<span style="color:#666">.</span><span style="color:#b44">createLiteral</span><span style="color:#666">(</span><span style="color:#b44">&#34;&amp;lt;em&amp;gt;chat&amp;lt;/em&amp;gt;&#34;</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// write out the Model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>system<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>produz</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:RDF</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:rdf=</span><span style="color:#b44">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b44">xmlns:rdfs=</span><span style="color:#b44">&#39;http://www.w3.org/2000/01/rdf-schema#&#39;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:nodeID=</span><span style="color:#b44">&#34;A0&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdfs:label</span> <span style="color:#b44">xml:lang=</span><span style="color:#b44">&#39;en&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>chat<span style="color:#008000;font-weight:bold">&lt;/rdfs:label&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdfs:label</span> <span style="color:#b44">xml:lang=</span><span style="color:#b44">&#39;fr&#39;</span><span style="color:#008000;font-weight:bold">&gt;</span>chat<span style="color:#008000;font-weight:bold">&lt;/rdfs:label&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;rdfs:label</span> <span style="color:#b44">rdf:parseType=</span><span style="color:#b44">&#39;Literal&#39;</span><span style="color:#008000;font-weight:bold">&gt;&lt;em&gt;</span>chat<span style="color:#008000;font-weight:bold">&lt;/em&gt;&lt;/rdfs:label&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
+</span></span></code></pre></div><p>Para que duas literais sejam consideradas iguais, elas devem ser ambas literais XML ou ambas literais simples. Em adição a isso, ambas não devem possuir tag de linguagem, ou se as tags de linguagem estiverem presentes, elas devem ser iguais. Para simples literais strings, elas devem ser iguais. Literais XML têm duas noções de igualdade. A noção simples é que as condições anteriores são verdade e as strings também são iguais. A outra noção é de que elas podem ser iguais se a canonização das strings forem iguais.</p>
 <p>As interfaces de Jena também suportam literais tipadas. A maneira antiga (mostrada abaixo) trata literais tipadas como atalhos para strings: valores tipados são convertidos por Java em strings, e essas strings são armazenadas no modelo. Por exemplo, tente (observando que para literais simples, nós podemos omitir a chamada code>model.createLiteral</code>(...)):</p>
-<pre>// create the resource
-Resource r = model.createResource();
-
-// add the property
-r.addProperty(RDFS.label, "11")
- .addProperty(RDFS.label, 11);
-
-// write out the Model
-model.write(system.out, "N-TRIPLE");
-</pre>
-<p>A saída produzida é:</p>
-  <pre>_:A... &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; "11" .</pre>
-<p>Já que ambas as literais são apenas a string “’11”, então somente uma sentença é adicionada</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// create the resource
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Resource r <span style="color:#666">=</span> model<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// add the property
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>r<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>RDFS<span style="color:#666">.</span><span style="color:#b44">label</span><span style="color:#666">,</span> <span style="color:#b44">&#34;11&#34;</span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>RDFS<span style="color:#666">.</span><span style="color:#b44">label</span><span style="color:#666">,</span> <span style="color:#666">11</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// write out the Model
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>system<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> <span style="color:#b44">&#34;N-TRIPLE&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>A saída produzida é:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>_:A... &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; <span style="color:#b44">&#34;11&#34;</span> .
+</span></span></code></pre></div><p>Já que ambas as literais são apenas a string “’11”, então somente uma sentença é adicionada</p>
 <p>O RDFCore WG definiu mecanismos para suportar datatypes em RDF. Jena os suporta usando mecanismos de <i>literais tipadas</i>; isso não é discutido neste tutorial.</p>
 <h2 id="ch-Glossary">Glossário</h2>
 <dl>

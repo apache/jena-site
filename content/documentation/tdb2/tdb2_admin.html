@@ -189,13 +189,12 @@
   <article class="flex-column me-lg-4">
     <h2 id="tdb2-directory-layout">TDB2 directory layout</h2>
 <p>A TDB2 database is contained in a directory location <code>DIR</code> as:</p>
-<pre><code>DIR/
-  Backups/
-  Data-0001/
-  Data-0002/
-  tdb.lock
-</code></pre>
-<p>where <code>Data-NNNN</code> are the compacted generations of the database. The
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>DIR/
+</span></span><span style="display:flex;"><span>  Backups/
+</span></span><span style="display:flex;"><span>  Data-0001/
+</span></span><span style="display:flex;"><span>  Data-0002/
+</span></span><span style="display:flex;"><span>  tdb.lock
+</span></span></code></pre></div><p>where <code>Data-NNNN</code> are the compacted generations of the database. The
 highest number is the currently live database.  The others are not used
 and not touched by the TDB2 subsystem. They can be deleted, moved
 elsewhere, or compressed as required. Each is a valid database in it own
@@ -206,9 +205,8 @@ the same time by different JVM processes. (If you wish to share a database
 between processes, or machines, consider using <a href="tdb2_fuseki.html">Fuseki2 with TDB2</a>.</p>
 <h2 id="compaction">Compaction</h2>
 <p>TDB2 databases grow over time as updates occur. They can be compacted by calling:</p>
-<pre><code>DatabaseMgr.compact(dataset.asDatasetGraph());
-</code></pre>
-<p>Compaction can be done on a live database. Read requests will continue to be
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatabaseMgr<span style="color:#666">.</span><span style="color:#b44">compact</span><span style="color:#666">(</span>dataset<span style="color:#666">.</span><span style="color:#b44">asDatasetGraph</span><span style="color:#666">());</span>
+</span></span></code></pre></div><p>Compaction can be done on a live database. Read requests will continue to be
 serviced; write request are held up until compaction has finished. This
 can be a long time for large databases.</p>
 <p>Compaction creates a new <code>Data-NNNN</code> subdirectory and copied over the
@@ -221,9 +219,8 @@ option  <code>--deleteOld</code> removes the last database after compaction.</p>
 for live <a href="/documentation/fuseki2/fuseki-webapp.html">Fuseki webapps</a>.</p>
 <h2 id="backup">Backup</h2>
 <p>A TDB2 database can be backed up by calling:</p>
-<pre><code>DatabaseMgr.backup(dataset.asDatasetGraph());
-</code></pre>
-<p>which will create a dump file including a timestamp:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatabaseMgr<span style="color:#666">.</span><span style="color:#b44">backup</span><span style="color:#666">(</span>dataset<span style="color:#666">.</span><span style="color:#b44">asDatasetGraph</span><span style="color:#666">());</span>
+</span></span></code></pre></div><p>which will create a dump file including a timestamp:</p>
 <pre>
 <i>location</i>/Backups/backup-<i>yyyy-MM-dd_HH:mm:ss</i>.nq.gz
 </pre>

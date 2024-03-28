@@ -181,6 +181,7 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#example">Example</a></li>
+    <li><a href="#service-loop-vs-lateral">SERVICE <a href="loop:">loop:</a> vs LATERAL</a></li>
     <li><a href="#namespace">Namespace</a></li>
     <li><a href="#maven-dependency">Maven Dependency</a></li>
     <li><a href="#programmatic-setup">Programmatic Setup</a></li>
@@ -188,6 +189,7 @@
       <ul>
         <li><a href="#configuration-with-fuseki">Configuration with Fuseki</a>
           <ul>
+            <li><a href="#supplying-service-enhancer-dependencies">Supplying Service Enhancer Dependencies</a></li>
             <li><a href="#adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</a></li>
             <li><a href="#fuseki-assembler-configuration">Fuseki Assembler Configuration</a></li>
           </ul>
@@ -355,6 +357,10 @@ means that it was cut off. This information is used to ensure that a request usi
 The cache operates on a per-input-binding basis: For instance, in the example above it means that when removing bindings from the <code>VALUES</code> block data will
 still be served from the cache. Conversely, adding additional bindings to the <code>VALUES</code> block will only send a (bulk) remote request for those
 that lack cache entries.</p>
+<h2 id="service-loop-vs-lateral">SERVICE <a href="loop:">loop:</a> vs LATERAL</h2>
+<p>Since Jena 4.7.0 the SPARQL engine has native support for the <code>LATERAL</code> keyword which should almost always be preferred over <code>SERVICE &lt;loop:&gt;</code>. The use of <code>SERVICE &lt;loop:&gt;</code> is essentially only justified in combination with bulk requests, such as <code>SERVICE &lt;loop:bulk+5:&gt;</code>.</p>
+<p>Also note, that the semantics of <code>loop:</code> and <code>LATERAL</code> differ: the former substitutes variables regardless of scope, whereas the latter substitutes only in-scope variables. Another difference is, that <code>loop:</code> creates a new execution context for each request (even for local ones) such that the <code>NOW()</code> function will yield increasing timestamps as query execution progresses.</p>
+<p>Currently, the SE plugin does not support bulk requests under <code>LATERAL</code> semantics.</p>
 <h2 id="namespace">Namespace</h2>
 <p>The plugin introduces the namespace <code>http://jena.apache.org/service-enhancer#</code> which is used for both ARQ context symbols as well as assembler configuration.</p>
 <h2 id="maven-dependency">Maven Dependency</h2>
@@ -416,11 +422,32 @@ Presently, the global instance cannot be configured via the assembler.</p>
 </span></span><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">assemble</span><span style="color:#666">(</span>spec<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:example:root&#34;</span><span style="color:#666">));</span>
 </span></span></code></pre></div><p>The value of <code>se:datasetId</code> is used to look up caches when referring to the active dataset using <code>SERVICE &lt;urn:x-arq:self&gt; {}</code>.</p>
 <h3 id="configuration-with-fuseki">Configuration with Fuseki</h3>
-<h4 id="adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</h4>
+<h4 id="supplying-service-enhancer-dependencies">Supplying Service Enhancer Dependencies</h4>
+<h5 id="before-jena-410">Before Jena 4.10</h5>
+<p>No additional dependencies are needed.</p>
+<h5 id="jena-410-and-jena-5">Jena 4.10 and Jena 5</h5>
+<p>Guava needs to be supplied externally, as it is no longer part of Jena&rsquo;s core.</p>
+<ul>
+<li>
+<p>A Guava JAR can be downloaded manually, such as from the Maven Central repository, by picking a <code>guava-VERSION.jar</code> file from the <a href="https://repo1.maven.org/maven2/com/google/guava/guava/">published Guava versions</a>. Typically, all newer versions should work. When in doubt, cross-check with the declaration(s) in the service enhancer&rsquo;s POM file.</p>
+</li>
+<li>
+<p>The POM file of the SE module includes a <code>bundle</code> profile which can be used to build a JAR bundle using <a href="https://maven.apache.org/">Apache Maven</a> using the commands below. Be sure to replace <code>VERSION</code> with a version that matches that of your Fuseki setup. See also the <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/">published Service Enhancer versions</a>.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Fetch the serviceenhancer pom</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># and save it as ./jena-serviceenhancer.pom</span>
+</span></span><span style="display:flex;"><span>mvn dependency:copy -D<span style="color:#b44">&#39;artifact=org.apache.jena:jena-serviceenhancer:VERSION:pom&#39;</span> <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>  -Dmdep.stripVersion<span style="color:#666">=</span><span style="color:#a2f">true</span> -D<span style="color:#b44">&#39;outputDirectory=.&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Build using the &#39;bundle&#39; profile which creates the (shaded) JAR bundle</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ./target/jena-serviceenhancer-VERSION.jar</span>
+</span></span><span style="display:flex;"><span>mvn -f jena-serviceenhancer.pom -Pbundle package
+</span></span></code></pre></div><h4 id="adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</h4>
 <p>This section assumes that one of the distributions of <code>apache-jena-fuseki</code> has been downloaded from [https://jena.apache.org/download/].
 The extracted folder should contain the <code>./fuseki-server</code> executable start script which automatically loads all jars (relative to <code>$PWD</code>) under <code>run/extra</code>.
-These folders need to be created e.g. using <code>mkdir -p run/extra</code>. The SE plugin can be manually built or downloaded from maven central (it is self-contained without transitive dependencies).
-Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki versions should match.</p>
+These folders need to be created e.g. using <code>mkdir -p run/extra</code>. The SE plugin can be manually built or downloaded from maven central, as described in the prior section.
+Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki version should match.</p>
 <h4 id="fuseki-assembler-configuration">Fuseki Assembler Configuration</h4>
 <p>The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
 Cache management can be performed via SPARQL extension functions. However, usually not every user should be allowed to invalidate caches as this
@@ -710,6 +737,7 @@ The solution is to is to include sort sufficient conditions in the <code>SERVICE
     <nav id="TableOfContents">
   <ul>
     <li><a href="#example">Example</a></li>
+    <li><a href="#service-loop-vs-lateral">SERVICE <a href="loop:">loop:</a> vs LATERAL</a></li>
     <li><a href="#namespace">Namespace</a></li>
     <li><a href="#maven-dependency">Maven Dependency</a></li>
     <li><a href="#programmatic-setup">Programmatic Setup</a></li>
@@ -717,6 +745,7 @@ The solution is to is to include sort sufficient conditions in the <code>SERVICE
       <ul>
         <li><a href="#configuration-with-fuseki">Configuration with Fuseki</a>
           <ul>
+            <li><a href="#supplying-service-enhancer-dependencies">Supplying Service Enhancer Dependencies</a></li>
             <li><a href="#adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</a></li>
             <li><a href="#fuseki-assembler-configuration">Fuseki Assembler Configuration</a></li>
           </ul>

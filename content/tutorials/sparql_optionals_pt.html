@@ -182,107 +182,97 @@
     <p>RDF é dado semi-estruturado então SPARQL tem a habilidade de consultá-lo, mas não para falhar quando o dado não existe. A consulta usa uma parte opcional para extender a informação encontrada na solução de uma consulta, mas para retornar a informação não opcional de qualquer maneira.</p>
 <h2 id="opicionais">OPICIONAIS</h2>
 <p>Essa consulta (<a href="sparql_data/q-opt1.rq">q-opt1.rq</a>) pega o nome da pessoa e também sua idade se essa informação estiver disponível.</p>
-<pre><code>PREFIX info:    &lt;http://somewhere/peopleInfo#&gt;
-PREFIX vcard:   &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name ?age
-WHERE
-{
-    ?person vcard:FN  ?name .
-    OPTIONAL { ?person info:age ?age }
-}
-</code></pre>
-<p>Duas das quatro pessoas nos dados (<a href="sparql_data/vc-db-2.rdf">vc-db-2.rdf</a>) possui a propriedade idade, então duas das soluções da consulta têm essa informação. No entanto, já que o padrão de tripla para a idade é opcional, há uma solução padrão para a pessoa que não tiver informação sobre a idade.</p>
-<pre><code>------------------------
-| name          | age |
-=======================
-| &quot;Becky Smith&quot; | 23  |
-| &quot;Sarah Jones&quot; |     |
-| &quot;John Smith&quot;  | 25  |
-| &quot;Matt Jones&quot;  |     |
------------------------
-</code></pre>
-<p>Se a clausula opcional não estivesse ali, nenhuma informação sobre idade seria retornada. Se o padrão da tripla fosse incluída, mas não fosse opcional, nós teríamos a consulta (<a href="sparql_data/q-opt2.rq">q-opt2.rq</a>):</p>
-<pre><code>PREFIX info:   &lt;http://somewhere/peopleInfo#&gt;
-PREFIX vcard:  &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name ?age
-WHERE
-{
-    ?person vcard:FN  ?name .
-    ?person info:age ?age .
-}
-</code></pre>
-<p>com os dois únicos resultados:</p>
-<pre><code>-----------------------
-| name          | age |
-=======================
-| &quot;Becky Smith&quot; | 23  |
-| &quot;John Smith&quot;  | 25  |
------------------------
-</code></pre>
-<p>porque a propriedade <code>info:age</code> deve estar presente na solução agora.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">info</span>:    <span style="color:#a0a000">&lt;http://somewhere/peopleInfo#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:   <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> <span style="color:#b8860b">?age</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">FN</span>  <span style="color:#b8860b">?name</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b8860b">?age</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Duas das quatro pessoas nos dados (<a href="sparql_data/vc-db-2.rdf">vc-db-2.rdf</a>) possui a propriedade idade, então duas das soluções da consulta têm essa informação. No entanto, já que o padrão de tripla para a idade é opcional, há uma solução padrão para a pessoa que não tiver informação sobre a idade.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb"> </span><span style="">age</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=======================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">23</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">25</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Se a clausula opcional não estivesse ali, nenhuma informação sobre idade seria retornada. Se o padrão da tripla fosse incluída, mas não fosse opcional, nós teríamos a consulta (<a href="sparql_data/q-opt2.rq">q-opt2.rq</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">info</span>:   <span style="color:#a0a000">&lt;http://somewhere/peopleInfo#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> <span style="color:#b8860b">?age</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">FN</span>  <span style="color:#b8860b">?name</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b8860b">?age</span> .
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>com os dois únicos resultados:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb"> </span><span style="">age</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=======================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">23</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">25</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>porque a propriedade <code>info:age</code> deve estar presente na solução agora.</p>
 <h2 id="opcionais-com-filtros">OPCIONAIS com FILTROS</h2>
 <p><code>OPTIONAL</code> é um operador binário que combina dois padrões de grafo. O padrão opcional é qualquer padrão de grupo e deve envolver qualquer tipo de padrão SPARQL. Se o grupo casar, a solução é estendida, senão, a solução original é dada (<a href="sparql_data/q-opt3.rq">q-opt-3.rq</a>).</p>
-<pre><code>PREFIX info:        &lt;http://somewhere/peopleInfo#&gt;
-PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name ?age
-WHERE
-{
-    ?person vcard:FN  ?name .
-    OPTIONAL { ?person info:age ?age . FILTER ( ?age &gt; 24 ) }
-}
-</code></pre>
-<p>Portanto, se filtrarmos por idades maiores que 24 na parte opcional, nós ainda teremos quatro soluções (do padrão <code>vcard:FN</code>) mas somente pegaremos idades se elas passarem no teste.</p>
-<pre><code>-----------------------
-| name          | age |
-=======================
-| &quot;Becky Smith&quot; |     |
-| &quot;Sarah Jones&quot; |     |
-| &quot;John Smith&quot;  | 25  |
-| &quot;Matt Jones&quot;  |     |
------------------------
-</code></pre>
-<p>Idade não incluída para  &ldquo;Becky Smith&rdquo;  porque é menor que 24.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">info</span>:        <span style="color:#a0a000">&lt;http://somewhere/peopleInfo#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:      <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> <span style="color:#b8860b">?age</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">FN</span>  <span style="color:#b8860b">?name</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b8860b">?age</span> . <span style="color:#a2f;font-weight:bold">FILTER</span> ( <span style="color:#b8860b">?age</span> <span style="color:#666">&gt;</span> <span style="color:#666">24</span> ) }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Portanto, se filtrarmos por idades maiores que 24 na parte opcional, nós ainda teremos quatro soluções (do padrão <code>vcard:FN</code>) mas somente pegaremos idades se elas passarem no teste.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb"> </span><span style="">age</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=======================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">25</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Idade não incluída para  &ldquo;Becky Smith&rdquo;  porque é menor que 24.</p>
 <p>Se a condição do filtro é movida para a parte opcional, então isso pode influenciar no número de soluções, mas deve ser necessário fazer um filtro mais complicado para permitir que a variável <code>age</code> seja não limitada (<a href="sparql_data/q-opt4.rq">q-opt4.rq</a>).</p>
-<pre><code>PREFIX info:        &lt;http://somewhere/peopleInfo#&gt;
-PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name ?age
-WHERE
-{
-    ?person vcard:FN  ?name .
-    OPTIONAL { ?person info:age ?age . }
-    FILTER ( !bound(?age) || ?age &gt; 24 )
-}
-</code></pre>
-<p>Se a solução tiver uma variável <code>age</code>, então ela deve ser maior que 24. Isso também pode ser não limitado. Agora há 3 soluções:</p>
-<pre><code>-----------------------
-| name          | age |
-=======================
-| &quot;Sarah Jones&quot; |     |
-| &quot;John Smith&quot;  | 25  |
-| &quot;Matt Jones&quot;  |     |
------------------------
-</code></pre>
-<p>Avaliar uma expressão que tem variáveis não limitadas onde uma variável limitada é esperada causa uma exceção de avaliação e toda a expressão falha.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">info</span>:        <span style="color:#a0a000">&lt;http://somewhere/peopleInfo#&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:      <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span> <span style="color:#b8860b">?age</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">FN</span>  <span style="color:#b8860b">?name</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?person</span> <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b8860b">?age</span> . }
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">FILTER</span> ( <span style="color:#666">!</span><span style="color:#00a000">bound</span>(<span style="color:#b8860b">?age</span>) <span style="color:#666">||</span> <span style="color:#b8860b">?age</span> <span style="color:#666">&gt;</span> <span style="color:#666">24</span> )
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Se a solução tiver uma variável <code>age</code>, então ela deve ser maior que 24. Isso também pode ser não limitado. Agora há 3 soluções:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb"> </span><span style="">age</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=======================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#666">25</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">     </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Avaliar uma expressão que tem variáveis não limitadas onde uma variável limitada é esperada causa uma exceção de avaliação e toda a expressão falha.</p>
 <h2 id="opcionais-e-consultas-dependentes-de-ordem">OPCIONAIS e consultas dependentes de ordem</h2>
 <p>Uma coisa a se ter cuidado ao usar a mesma variável em duas ou mais cláusulas opcionais (e não em algum padrão básico também):</p>
-<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
-PREFIX vCard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name
-WHERE
-{
-  ?x a foaf:Person .
-  OPTIONAL { ?x foaf:name ?name }
-  OPTIONAL { ?x vCard:FN  ?name }
-}
-</code></pre>
-<p>Se a primeira opção liga <code>?name</code> e <code>?x</code> a algum valor, a segunda opção é uma tentativa de casar as outras triplas (<code>?x</code> e <code>&lt;kbd&gt;?name&lt;/kbd&gt;</code> têm valor). Se a primeira opção não casar com a parte opcional, então a segunda é uma tentativa para casar a tripla com duas variáveis.</p>
-<p> 
-<a href="sparql_union_pt.html">Próximo: União de Consultas</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">foaf</span>: <span style="color:#a0a000">&lt;http://xmlns.com/foaf/0.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vCard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?x</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">Person</span> .
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?x</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name</span> }
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?x</span> <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span>  <span style="color:#b8860b">?name</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Se a primeira opção liga <code>?name</code> e <code>?x</code> a algum valor, a segunda opção é uma tentativa de casar as outras triplas (<code>?x</code> e <code>&lt;kbd&gt;?name&lt;/kbd&gt;</code> têm valor). Se a primeira opção não casar com a parte opcional, então a segunda é uma tentativa para casar a tripla com duas variáveis.</p>
+<p><a href="sparql_union_pt.html">Próximo: União de Consultas</a></p>
 
   </article>
   

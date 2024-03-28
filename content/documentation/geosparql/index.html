@@ -226,13 +226,12 @@
 describes the GeoSPARQL supported features.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.</p>
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-  &lt;artifactId&gt;jena-geosparql&lt;/artifactId&gt;
-  &lt;version&gt;...&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-<h2 id="features">Features</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;groupId&gt;</span>org.apache.jena<span style="color:#008000;font-weight:bold">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;artifactId&gt;</span>jena-geosparql<span style="color:#008000;font-weight:bold">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;version&gt;</span>...<span style="color:#008000;font-weight:bold">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><h2 id="features">Features</h2>
 <p>This implementation follows the 11-052r4 OGC GeoSPARQL standard
 (<a href="https://www.ogc.org/standards/geosparql">https://www.ogc.org/standards/geosparql</a>).  The implementation is pure Java
 and does not require any set-up or configuration of any third party relational
@@ -321,27 +320,25 @@ The <em>indexes</em> can be configured by size, retention duration and frequency
 frequently used but small quantity data is also applied in several <em>registries</em>,
 e.g. coordinate reference systems and mathematical transformations.</p>
 <p>Example GeoSPARQL query:</p>
-<pre><code>PREFIX geo: &lt;http://www.opengis.net/ont/geosparql#&gt;
-
-SELECT ?obj
-WHERE{
-    ?subj geo:sfContains ?obj
-} ORDER by ?obj
-</code></pre>
-<h3 id="querying-datasets--models-with-sparql">Querying Datasets &amp; Models with SPARQL</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">geo</span>: <span style="color:#a0a000">&lt;http://www.opengis.net/ont/geosparql#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?obj</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">sfContains</span> <span style="color:#b8860b">?obj</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#a2f;font-weight:bold">ORDER by</span> <span style="color:#b8860b">?obj</span>
+</span></span></code></pre></div><h3 id="querying-datasets--models-with-sparql">Querying Datasets &amp; Models with SPARQL</h3>
 <p>The setup of GeoSPARQL Jena only needs to be performed once in an application.
-After it is setup querying is performed using Jena&rsquo;s standard query methods.</p>
+After it is set up querying is performed using Jena&rsquo;s standard query methods.</p>
 <p>To query a Model with GeoSPARQL or standard SPARQL:</p>
-<pre><code>GeoSPARQLConfig.setupMemoryIndex();
-Model model = .....;
-String query = ....;
-
-try (QueryExecution qe = QueryExecution.create(query, model)) {
-    ResultSet rs = qe.execSelect();
-    ResultSetFormatter.outputAsTSV(rs);
-}
-</code></pre>
-<p>If your dataset needs to be separate from your application and accessed over
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>GeoSPARQLConfig<span style="color:#666">.</span><span style="color:#b44">setupMemoryIndex</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>Model model <span style="color:#666">=</span> <span style="color:#666">.....;</span>
+</span></span><span style="display:flex;"><span>String query <span style="color:#666">=</span> <span style="color:#666">....;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query<span style="color:#666">,</span> model<span style="color:#666">))</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    ResultSet rs <span style="color:#666">=</span> qe<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">outputAsTSV</span><span style="color:#666">(</span>rs<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>If your dataset needs to be separate from your application and accessed over
 HTTP then you probably need the <a href="geosparql-assembler">GeoSPARQL Assembler</a> to
 integrate with Fuseki.  The GeoSPARQL functionality needs to be setup in the
 application or Fuseki server where the dataset is located.</p>
@@ -477,18 +474,16 @@ asserted in the dataset.  This also means the <code>Geometry Literal</code> does
 to be specified in the query.  In the case of <code>Features</code> this requires the
 <code>hasDefaultGeometry</code> property to be used in the dataset.</p>
 <p>This means the query:</p>
-<pre><code>    ?subj geo:hasDefaultGeometry ?subjGeom .
-    ?subjGeom geo:hasSerialization ?subjLit .
-    
-    ?obj geo:hasDefaultGeometry ?objGeom .
-    ?objGeom geo:hasSerialization ?objLit .
-    
-    FILTER(geof:sfContains(?subjLit, ?objLit))
-</code></pre>
-<p>becomes:</p>
-<pre><code>    ?subj geo:sfContains ?obj .
-</code></pre>
-<p>Methods are available to apply the <code>hasDefaultGeometry</code> property to every
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasDefaultGeometry</span> <span style="color:#b8860b">?subjGeom</span> .
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">?subjGeom</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasSerialization</span> <span style="color:#b8860b">?subjLit</span> .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">?obj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasDefaultGeometry</span> <span style="color:#b8860b">?objGeom</span> .
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">?objGeom</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasSerialization</span> <span style="color:#b8860b">?objLit</span> .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FILTER</span>(<span style="color:#00f;font-weight:bold">geof</span>:<span style="color:#008000;font-weight:bold">sfContains</span>(<span style="color:#b8860b">?subjLit</span>, <span style="color:#b8860b">?objLit</span>))
+</span></span></code></pre></div><p>becomes:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">sfContains</span> <span style="color:#b8860b">?obj</span> .
+</span></span></code></pre></div><p>Methods are available to apply the <code>hasDefaultGeometry</code> property to every
 <code>Geometry</code> with a single <code>hasGeometry</code> property, see
 <code>org.apache.jena.geosparql.configuration.GeoSPARQLOperations</code>.</p>
 <p>Depending upon the spatial relation, queries may include the specified <code>Feature</code>
@@ -515,9 +510,8 @@ be switched on independently of the indexes, i.e. query rewriting can be
 performed but an index is configured to not store the result.</p>
 <p>As an extension to the standard, supplying a <code>Geometry Literal</code> is
 also permitted. For example:</p>
-<pre><code>    ?subj geo:sfContains &quot;POINT(0 0)&quot;^^geo:wktLiteral .
-</code></pre>
-<h3 id="dataset-conversion">Dataset Conversion</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">sfContains</span> <span style="color:#b44">&#34;POINT(0 0)&#34;</span><span style="color:#666">^^</span><span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">wktLiteral</span> .
+</span></span></code></pre></div><h3 id="dataset-conversion">Dataset Conversion</h3>
 <p>Methods to convert datasets between serialisations and spatial/coordinate
 reference systems are available in:
 <code>org.apache.jena.geosparql..configuration.GeoSPARQLOperations</code></p>
@@ -552,7 +546,7 @@ a Jena TDB to remove the need to reprocess.</p>
 </ul>
 <p>Other operations are available and can be applied to a Dataset containing
 multiple Models and in some cases files and folders.  These operations do
-<strong>not</strong> configure and setup the GeoSPARQL functions or indexes that are required
+<strong>not</strong> configure and set up the GeoSPARQL functions or indexes that are required
 for querying.</p>
 <h3 id="spatial-index">Spatial Index</h3>
 <p>A Spatial Index can be created to improve searching of a dataset.  The Spatial
@@ -561,7 +555,7 @@ datasets.  Once built the Spatial Index cannot have additional items added to
 it.</p>
 <p>A Spatial Index is required for the <code>jena-spatial</code> property functions and is
 optional for the GeoSPARQL spatial relations.  Only a single SRS can be used for
-a Spatial Index and it is recommended that datasets are converted to a single
+a Spatial Index, and it is recommended that datasets are converted to a single
 SRS, see <code>GeoSPARQLOperations</code>.</p>
 <p>Setting up a Spatial Index can be done through
 <code>org.apache.jena.geosparql.configuration.GeoSPARQLConfig</code>.  Additional methods
@@ -574,8 +568,8 @@ URL or URN, with conversion undertaken automatically as required.  It should be
 noted that there is error inherent in spatial reference systems and some
 variation in values may occur between different systems.</p>
 <p>The following table gives some examples of units that are supported (additional
-units can be added to the <code>UnitsRegistry</code> using the <code>javax.measure.Unit</code> API.
-These URI are all in the namespace <code>http://www.opengis.net/def/uom/OGC/1.0/</code> and
+units can be added to the <code>UnitsRegistry</code> using the <code>javax.measure.Unit</code> API).
+These URIs are all in the namespace <code>http://www.opengis.net/def/uom/OGC/1.0/</code> and
 here use the prefix <code>units</code>.</p>
 <table>
 <thead>
@@ -677,22 +671,20 @@ convert datasets from Geo predicates to GeoSPARQL structure, see:
 However, only certain spatial relations are valid for <code>Point</code> to <code>Point</code> relationships.
 Refer to pages 8-10 of 11-052r4 GeoSPARQL standard for more details.</p>
 <p>Geo predicates can be converted to Geometry Literals in query and then used with the GeoSPARQL filter functions.</p>
-<pre><code>  ?subj wgs:lat ?lat .
-  ?subj wgs:long ?lon .
-  BIND(spatialF:convertLatLon(?lat, ?lon) as ?point) .
-  #Coordinate order is Lon/Lat without stated SRS URI.
-  BIND(&quot;POLYGON((...))&quot;^^&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt; AS ?box) .
-  FILTER(geof:sfContains(?box, ?point))
-</code></pre>
-<p>Alternatively, utilising more shapes, relations and spatial reference systems
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">wgs</span>:<span style="color:#008000;font-weight:bold">lat</span> <span style="color:#b8860b">?lat</span> .
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">wgs</span>:<span style="color:#008000;font-weight:bold">long</span> <span style="color:#b8860b">?lon</span> .
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#00f;font-weight:bold">spatialF</span>:<span style="color:#008000;font-weight:bold">convertLatLon</span>(<span style="color:#b8860b">?lat</span>, <span style="color:#b8860b">?lon</span>) <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#b8860b">?point</span>) .
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Coordinate order is Lon/Lat without stated SRS URI.</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#b44">&#34;POLYGON((...))&#34;</span><span style="color:#666">^^</span><span style="color:#a0a000">&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?box</span>) .
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FILTER</span>(<span style="color:#00f;font-weight:bold">geof</span>:<span style="color:#008000;font-weight:bold">sfContains</span>(<span style="color:#b8860b">?box</span>, <span style="color:#b8860b">?point</span>))
+</span></span></code></pre></div><p>Alternatively, utilising more shapes, relations and spatial reference systems
 can be achieved by converting the dataset to the GeoSPARQL structure.</p>
-<pre><code>  ?subj geo:hasGeometry ?geom .
-  ?geom geo:hasSerialization ?geomLit .
-  #Coordinate order is Lon/Lat without stated SRS URI.
-  BIND(&quot;POLYGON((...))&quot;^^&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt; AS ?box) .
-  FILTER(geof:sfContains(?box, ?geomLit))
-</code></pre>
-<p>Datasets can contain both Geo predicates and Geometry Literals without
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?subj</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasGeometry</span> <span style="color:#b8860b">?geom</span> .
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">?geom</span> <span style="color:#00f;font-weight:bold">geo</span>:<span style="color:#008000;font-weight:bold">hasSerialization</span> <span style="color:#b8860b">?geomLit</span> .
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Coordinate order is Lon/Lat without stated SRS URI.</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">BIND</span>(<span style="color:#b44">&#34;POLYGON((...))&#34;</span><span style="color:#666">^^</span><span style="color:#a0a000">&lt;http://www.opengis.net/ont/geosparql#wktLiteral&gt;</span> <span style="color:#a2f;font-weight:bold">AS</span> <span style="color:#b8860b">?box</span>) .
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FILTER</span>(<span style="color:#00f;font-weight:bold">geof</span>:<span style="color:#008000;font-weight:bold">sfContains</span>(<span style="color:#b8860b">?box</span>, <span style="color:#b8860b">?geomLit</span>))
+</span></span></code></pre></div><p>Datasets can contain both Geo predicates and Geometry Literals without
 interference.  However, a dataset containing both types will only examine those
 <code>Features</code> which have Geometry Literals for spatial relations, i.e. the check
 for Geo predicates is a fallback when Geometry Literals aren&rsquo;t found.

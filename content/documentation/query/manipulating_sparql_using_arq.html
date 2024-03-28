@@ -201,7 +201,7 @@ blog</a></em></p>
 <h2 id="inserting-values-simple-prepared-statements">Inserting values (simple prepared statements)</h2>
 <p>Let&rsquo;s begin with something simple. Suppose we wanted to restrict the
 following query to a particular person:</p>
-<pre><code>   select * { ?person &lt;http://xmlns.com/foaf/0.1/name&gt; ?name }
+<pre><code>   select * { ?person &lt;http://xmlns.com/foaf/0.1/name&gt; ?name }
 </code></pre>
 <p><code>String#replaceAll</code> would work, but there is a safer way.
 <code>QueryExecutionFactory</code> in most cases lets you supply a <code>QuerySolution</code>
@@ -221,29 +221,29 @@ query. So what how do we really alter queries?</p>
 <p>ARQ provides two ways to work with queries: at the syntax level (<code>Query</code>
 and <code>Element</code>), or the algebra level (<code>Op</code>). The distinction is clear in
 filters:</p>
-<pre><code>   SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }
+<pre><code>   SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }
 </code></pre>
 <p>If you work at the syntax level you&rsquo;ll find that this looks (in pseudo
 code) like:</p>
-<pre><code>   (GROUP (PATTERN ( ?s &lt;http://example.com/val&gt; ?val )) (FILTER ( &lt; ?val 20 ) ))
+<pre><code>   (GROUP (PATTERN ( ?s &lt;http://example.com/val&gt; ?val )) (FILTER ( &lt; ?val 20 ) ))
 </code></pre>
 <p>That is there&rsquo;s a group containing a triple pattern and a filter, just
 as you see in the query. The algebra is different, and we can see it
 using <code>arq.qparse --print op</code></p>
-<pre><code>   $ java arq.qparse --print op 'SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }'
+<pre><code>   $ java arq.qparse --print op 'SELECT ?s { ?s &lt;http://example.com/val&gt; ?val . FILTER ( ?val &lt; 20 ) }'
    (base &lt;file:///...&gt;
        (project (?s)
-           (filter (&lt; ?val 20)
-               (bgp (triple ?s &lt;http://example.com/val&gt; ?val)))))
+           (filter (&lt; ?val 20)
+               (bgp (triple ?s &lt;http://example.com/val&gt; ?val)))))
 </code></pre>
 <p>Here the filter contains the pattern, rather than sitting next to it.
 This form makes it clear that the expression is filtering the pattern.</p>
 <p>Let&rsquo;s create that query from scratch using ARQ. We begin with some
 common pieces: the triple to match, and the expression for the filter.</p>
-<pre><code>   // ?s ?p ?o .
+<pre><code>   // ?s ?p ?o .
    Triple pattern =
        Triple.create(Var.alloc(&quot;s&quot;), Var.alloc(&quot;p&quot;), Var.alloc(&quot;o&quot;));
-   // ( ?s &lt; 20 )
+   // ( ?s &lt; 20 )
    Expr e = new E_LessThan(new ExprVar(&quot;s&quot;), new NodeValueInteger(20));
 </code></pre>
 <p><code>Triple</code> should be familiar from jena. <code>Var</code> is an extension of <code>Node</code>
@@ -260,7 +260,7 @@ things that appear in <code>FILTER</code> and <code>LET</code>.</p>
    Query q = QueryFactory.make();
    q.setQueryPattern(body);                               // Set the body of the query to our group
    q.setQuerySelectType();                                // Make it a select query
-   q.addResultVar(&quot;s&quot;);                                   // Select ?s
+   q.addResultVar(&quot;s&quot;);                                   // Select ?s
 </code></pre>
 <p>Now the algebra:</p>
 <pre><code>   Op op;
@@ -268,7 +268,7 @@ things that appear in <code>FILTER</code> and <code>LET</code>.</p>
    pat.add(pattern);                                      // Add our pattern match
    op = new OpBGP(pat);                                   // Make a BGP from this pattern
    op = OpFilter.filter(e, op);                           // Filter that pattern with our expression
-   op = new OpProject(op, Arrays.asList(Var.alloc(&quot;s&quot;))); // Reduce to just ?s
+   op = new OpProject(op, Arrays.asList(Var.alloc(&quot;s&quot;))); // Reduce to just ?s
    Query q = OpAsQuery.asQuery(op);                       // Convert to a query
    q.setQuerySelectType();                                // Make is a select query
 </code></pre>
@@ -302,9 +302,9 @@ I found was to generate ops from each constraint and join the results:</p>
 with just three conditions:</p>
 <pre><code>   (join
        (join
-           (filter (&lt; ?o0 20) (bgp (triple ?s &lt;urn:ex:prop0&gt; ?o0)))
-           (filter (&lt; ?o1 20) (bgp (triple ?s &lt;urn:ex:prop1&gt; ?o1))))
-       (filter (&lt; ?o2 20) (bgp (triple ?s &lt;urn:ex:prop2&gt; ?o2))))
+           (filter (&lt; ?o0 20) (bgp (triple ?s &lt;urn:ex:prop0&gt; ?o0)))
+           (filter (&lt; ?o1 20) (bgp (triple ?s &lt;urn:ex:prop1&gt; ?o1))))
+       (filter (&lt; ?o2 20) (bgp (triple ?s &lt;urn:ex:prop2&gt; ?o2))))
 </code></pre>
 <p>Each of the constraints is a filter on a bgp. This can be made much more
 readable by moving the filters out, and merging the triple patterns. We
@@ -338,11 +338,11 @@ can do this with the following <code>Transform</code>:</p>
 </code></pre>
 <p>As we go through the original query all joins are removed, and the
 result is:</p>
-<pre><code>   (filter (exprlist (&lt; ?o0 20) (&lt; ?o1 20) (&lt; ?o2 20))
+<pre><code>   (filter (exprlist (&lt; ?o0 20) (&lt; ?o1 20) (&lt; ?o2 20))
        (bgp
-           (triple ?s &lt;urn:ex:prop0&gt; ?o0)
-           (triple ?s &lt;urn:ex:prop1&gt; ?o1)
-           (triple ?s &lt;urn:ex:prop2&gt; ?o2)
+           (triple ?s &lt;urn:ex:prop0&gt; ?o0)
+           (triple ?s &lt;urn:ex:prop1&gt; ?o1)
+           (triple ?s &lt;urn:ex:prop2&gt; ?o2)
    ))
 </code></pre>
 <p>That completes this brief introduction. There is much more to ARQ, of

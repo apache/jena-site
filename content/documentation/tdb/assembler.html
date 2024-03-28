@@ -211,8 +211,8 @@ PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 
-&lt;#dataset&gt; rdf:type         tdb:DatasetTDB ;
-    tdb:location &quot;DB&quot; ;
+&lt;#dataset&gt; rdf:type         tdb:DatasetTDB ;
+    tdb:location &quot;DB&quot; ;
     .
 </code></pre>
 <p>Only one dataset can be stored in a location (filing system
@@ -224,8 +224,8 @@ PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 </code></pre>
 <p>then there is the description of the TDB dataset itself:</p>
-<pre><code>&lt;#dataset&gt; rdf:type tdb:DatasetTDB ;
-    tdb:location &quot;DB&quot; ;
+<pre><code>&lt;#dataset&gt; rdf:type tdb:DatasetTDB ;
+    tdb:location &quot;DB&quot; ;
 </code></pre>
 <p>The property <code>tdb:location</code> gives the file name as a string. It is
 relative to the applications current working directory, not where
@@ -238,9 +238,9 @@ description it wishes to use.</p>
 <p>An assembler can specify that the default graph for query is the
 union of the named graphs. This is done by adding
 <em>tdb:unionDefaultGraph</em>.</p>
-<pre><code>&lt;#dataset&gt; rdf:type         tdb:DatasetTDB ;
-    tdb:location &quot;DB&quot; ;
-    tdb:unionDefaultGraph true ;
+<pre><code>&lt;#dataset&gt; rdf:type         tdb:DatasetTDB ;
+    tdb:location &quot;DB&quot; ;
+    tdb:unionDefaultGraph true ;
     .
 </code></pre>
 <h2 id="graph">Graph</h2>
@@ -253,17 +253,17 @@ PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 
-&lt;#dataset&gt; rdf:type tdb:DatasetTDB ;
-    tdb:location &quot;DB&quot; ;
+&lt;#dataset&gt; rdf:type tdb:DatasetTDB ;
+    tdb:location &quot;DB&quot; ;
 
-&lt;#graph&gt; rdf:type tdb:GraphTDB ;
+&lt;#graph&gt; rdf:type tdb:GraphTDB ;
     tdb:dataset &lt;#dataset&gt; .
 </code></pre>
 <p>A particular named graph in the dataset at a location can be
 assembled with:</p>
-<pre><code>&lt;#graphNamed&gt; rdf:type tdb:GraphTDB ;
+<pre><code>&lt;#graphNamed&gt; rdf:type tdb:GraphTDB ;
     tdb:dataset &lt;#dataset&gt; ;
-    tdb:graphName &lt;http://example/graph1&gt; ;
+    tdb:graphName &lt;http://example/graph1&gt; ;
     .
 </code></pre>
 <h2 id="mixed-datasets">Mixed Datasets</h2>
@@ -279,19 +279,19 @@ PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 
 # A dataset of one TDB-backed graph as the default graph and 
 # an in-memory graph as a named graph.
-&lt;#dataset&gt; rdf:type      ja:RDFDataset ;
-     ja:defaultGraph &lt;#graph&gt; ;
+&lt;#dataset&gt; rdf:type      ja:RDFDataset ;
+     ja:defaultGraph &lt;#graph&gt; ;
      ja:namedGraph
-        [ ja:graphName      &lt;http://example.org/name1&gt; ;
-          ja:graph          &lt;#graph2&gt; ] ;
+        [ ja:graphName      &lt;http://example.org/name1&gt; ;
+          ja:graph          &lt;#graph2&gt; ] ;
      .
 
-&lt;#graph&gt; rdf:type tdb:GraphTDB ;
-    tdb:location &quot;DB&quot; ;
+&lt;#graph&gt; rdf:type tdb:GraphTDB ;
+    tdb:location &quot;DB&quot; ;
     .
 
-&lt;#graph2&gt; rdf:type ja:MemoryModel ;
-     ja:content [ja:externalContent &lt;file:Data/books.n3&gt; ] ;
+&lt;#graph2&gt; rdf:type ja:MemoryModel ;
+     ja:content [ja:externalContent &lt;file:Data/books.n3&gt; ] ;
      .
 </code></pre>
 <p>Note here we added:</p>
@@ -312,18 +312,18 @@ tdb:GraphTDB a rdfs:Class .
 tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
 tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
-tdb:location a rdf:Property ;
+tdb:location a rdf:Property ;
    # domain is tdb:Dataset or tdb:GraphTDB
    # The range is simple literal
    .
 
-tdb:unionDefaultGraph a rdf:Property ;
-   rdfs:domain tdb:Dataset ;
+tdb:unionDefaultGraph a rdf:Property ;
+   rdfs:domain tdb:Dataset ;
    # The range is xsd:boolean
    .
 
-tdb:graphName a rdf:Property ;
-   rdfs:domain tdb:GraphTDB ;
+tdb:graphName a rdf:Property ;
+   rdfs:domain tdb:GraphTDB ;
    # range is a URI
    .
 </code></pre>

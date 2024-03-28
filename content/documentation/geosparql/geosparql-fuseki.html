@@ -229,13 +229,12 @@
 <p>GeoSPARQL Fuseki can be accessed as an embedded server using Maven etc. from Maven Central or run from the command line.
 SPARQL queries directly on Jena Datasets and Models can be done using
 the <a href="index.html">GeoSPARQL Jena module</a>.</p>
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
-  &lt;artifactId&gt;jena-fuseki-geosparql&lt;/artifactId&gt;
-  &lt;version&gt;...&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>or download the binary from the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;groupId&gt;</span>org.apache.jena<span style="color:#008000;font-weight:bold">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;artifactId&gt;</span>jena-fuseki-geosparql<span style="color:#008000;font-weight:bold">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;version&gt;</span>...<span style="color:#008000;font-weight:bold">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>or download the binary from the
 <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-geosparql/">Maven central repository org/apache/jena/jena-fuseki-geosparql</a></p>
 <p>This uses the embedded server Fuseki and provides additional parameters for dataset loading.</p>
 <p>The project uses the GeoSPARQL implementation from the <a href="index.html">GeoSPARQL Jena module</a>, which includes a range of functions in addition to those from the GeoSPARQL standard.</p>
@@ -263,7 +262,7 @@ by setting the <code>SIS_DATA</code> environment variable
 a dataset (otherwise a standard Fuseki server can be used).  A spatial index is
 created and new data cannot be added to the index once built.  The spatial index
 can optionally be stored for future usage and needs to removed from a TDB folder
-if the index is to rebuilt.</p>
+if the index is to be rebuilt.</p>
 <h2 id="clarifications-on-geosparql">Clarifications on GeoSPARQL</h2>
 <h3 id="geographic-markup-language-gml">Geographic Markup Language (GML)</h3>
 <p>GeoSPARQL refers to the Geographic Markup Language (GML) as one format for
@@ -319,23 +318,21 @@ RDFS inferencing is applied using the GeoSPARQL schema to infer additional relat
 </li>
 </ul>
 <p>See <a href="https://github.com/galbiston/rdf-tables">rdf-tables</a> in <em>Output Formats/Serialisations</em> for supported RDF format keywords.</p>
-<p><strong>N.B.</strong> Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. &ldquo;&ldquo;&ldquo;test.rdf&rdquo;&rdquo;&rdquo;. Otherwise, logging output will be sent to a file called &ldquo;xml&rdquo;. Also, &ldquo;The input line is too long&rdquo; error can mean the path to the  exceeds the character limit and needs shortening.</p>
+<p><strong>N.B.</strong> Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. <code>&quot;&quot;&quot;test.rdf&quot;&quot;&quot;</code>. Otherwise, logging output will be sent to a file called &ldquo;xml&rdquo;. Also, &ldquo;The input line is too long&rdquo; error can mean the path to the  exceeds the character limit and needs shortening.</p>
 <h3 id="embedded-server">Embedded Server</h3>
 <p>Run within a Java application to provide GeoSPARQL support over HTTP to other applications:</p>
-<pre><code>FusekiLogging.setLogging();
-GeosparqlServer server =
-    new GeosparqlServer(portNumber, datasetName, isLoopbackOnly, dataset, isUpdate);
-</code></pre>
-<h2 id="sparql-query-example">SPARQL Query Example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>FusekiLogging<span style="color:#666">.</span><span style="color:#b44">setLogging</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>GeosparqlServer server <span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">new</span> GeosparqlServer<span style="color:#666">(</span>portNumber<span style="color:#666">,</span> datasetName<span style="color:#666">,</span> isLoopbackOnly<span style="color:#666">,</span> dataset<span style="color:#666">,</span> isUpdate<span style="color:#666">);</span>
+</span></span></code></pre></div><h2 id="sparql-query-example">SPARQL Query Example</h2>
 <p>Once the default server is running it can be queried using Jena as follows:</p>
-<pre><code>String service = &quot;http://localhost:3030/ds&quot;;
-String query = ....;
-try (QueryExecution qe = QueryExecution.service(service).query(query).build()) {
-    ResultSet rs = qe.execSelect();
-    ResultSetFormatter.outputAsTSV(rs);
-}
-</code></pre>
-<p>The server will respond to any valid SPARQL HTTP so an alternative SPARQL framework can be used.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String service <span style="color:#666">=</span> <span style="color:#b44">&#34;http://localhost:3030/ds&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>String query <span style="color:#666">=</span> <span style="color:#666">....;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>service<span style="color:#666">).</span><span style="color:#b44">query</span><span style="color:#666">(</span>query<span style="color:#666">).</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    ResultSet rs <span style="color:#666">=</span> qe<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">outputAsTSV</span><span style="color:#666">(</span>rs<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>The server will respond to any valid SPARQL HTTP so an alternative SPARQL framework can be used.
 More information on SPARQL querying using Jena can be found on their website (<a href="https://jena.apache.org/tutorials/sparql.html)">https://jena.apache.org/tutorials/sparql.html)</a>.</p>
 <h2 id="sis_data-environment-variable">SIS_DATA Environment Variable</h2>
 <p>The Apache SIS library is used to support the recognition and transformation of Coordinate/Spatial Reference Systems.
@@ -352,14 +349,14 @@ implementation &ldquo;org.apache.sis.non-free:sis-embedded-data:$sisVersion&rdqu
 </li>
 <li>
 <p>Maven dependency in <code>pom.xml</code></p>
-  <dependency>
-    <groupId>org.apache.sis.non-free</groupId>
-    <artifactId>sis-embedded-data</artifactId>
-    <version>0.8</version>
-  </dependency>
 </li>
 </ul>
-<h2 id="command-line-arguments">Command Line Arguments</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;groupId&gt;</span>org.apache.sis.non-free<span style="color:#008000;font-weight:bold">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;artifactId&gt;</span>sis-embedded-data<span style="color:#008000;font-weight:bold">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;version&gt;</span>0.8<span style="color:#008000;font-weight:bold">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><h2 id="command-line-arguments">Command Line Arguments</h2>
 <p>Boolean options that have false defaults only require &ldquo;&ndash;option&rdquo; to make true in release v1.0.7 or later.
 Release v1.0.6 and earlier use the form &ldquo;&ndash;option true&rdquo;.</p>
 <h3 id="1-port">1) Port</h3>

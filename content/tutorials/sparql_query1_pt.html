@@ -176,7 +176,7 @@
     <li><a href="#executando-a-consulta">Executando a consulta</a>
       <ul>
         <li><a href="#instalação-no-windows">Instalação no Windows</a></li>
-        <li><a href="#scripts-bash-para-linuxcyquinunix">scripts bash para Linux/Cyquin/Unix</a></li>
+        <li><a href="#scripts-bash-para-linuxcyqwinunix">scripts bash para Linux/Cyqwin/Unix</a></li>
         <li><a href="#usando-a-aplicação-de-linhas-de-comando-de-jena-diretamente">Usando a aplicação de linhas de comando de Jena diretamente</a></li>
       </ul>
     </li>
@@ -187,53 +187,46 @@
     <p>Nesta sessão, vamos olhar para a primeira consulta simples e mostrar como executá-la em Jena.</p>
 <h2 id="o-hello-world-de-consultas">O &ldquo;hello world&rdquo; de consultas</h2>
 <p>O arquivo &ldquo;<a href="sparql_data/q1.rq">q1.rq</a>&rdquo; contem a seguinte consulta:</p>
-<pre><code>SELECT ?x
-WHERE { ?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  &quot;John Smith&quot; }
-</code></pre>
-<p>executando esta consulta com a aplicação de consultas em linhas de comando:</p>
-<pre><code>---------------------------------
-| x                             |
-=================================
-| &lt;http://somewhere/JohnSmith/&gt; |
----------------------------------
-</code></pre>
-<p>Isso funciona casando o padrão da tripla na clausula <code>WHERE</code> contra as triplas no grafo RDF. O predicado e o objeto da tripla são valores fixos, então o padrão vai casar somente triplas com estes valores. O sujeito é a variável, e não há outras restrições para a variável. O padrão casa qualquer tripla com aquele predicado e aquele objeto, e isso casa com soluções para <code>x</code>.</p>
-<p>O item entre  &lt;&gt; é a URI (atualmente, é uma IRI) e o item entre &quot;&quot; é uma literal. Assim como Turtle, N3 ou N-Triplas, literais tipadas são escritas com ^^e tags de linguagem podem ser adicionadas com @.</p>
-<p>?x é uma variável chamada x. A ? não faz parte do nome e por conta disso não aparece nos resultados.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?x</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span> { <span style="color:#b8860b">?x</span>  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;</span>  <span style="color:#b44">&#34;John Smith&#34;</span> }
+</span></span></code></pre></div><p>executando esta consulta com a aplicação de consultas em linhas de comando:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">x</span><span style="color:#bbb">                             </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Isso funciona casando o padrão da tripla na clausula <code>WHERE</code> contra as triplas no grafo RDF. O predicado e o objeto da tripla são valores fixos, então o padrão vai casar somente triplas com estes valores. O sujeito é a variável, e não há outras restrições para a variável. O padrão casa qualquer tripla com aquele predicado e aquele objeto, e isso casa com soluções para <code>x</code>.</p>
+<p>O item entre  <code>&lt;\&gt;</code> é a URI (atualmente, é uma IRI) e o item entre &quot;&quot; é uma literal. Assim como Turtle, N3 ou N-Triplas, literais tipadas são escritas com ^^e tags de linguagem podem ser adicionadas com @.</p>
+<p><code>?x</code> é uma variável chamada x. A ? não faz parte do nome e por conta disso não aparece nos resultados.</p>
 <p>Há um casamento. A consulta retorna o casamento na variável x da consulta. A saída mostrada foi obtida usando uma das aplicações de ARQ em linhas de comando.</p>
 <h2 id="executando-a-consulta">Executando a consulta</h2>
 <p>Há <a href="/documentation/query/cmds.html">scripts de ajuda</a> nos diretórios de  ARQ <code>bat/</code> e
 <code>bin/</code> de sua distribuição. Eles podem não estar na distribuição do Jena. Você deve checar esses scripts antes de usá-los.</p>
 <h3 id="instalação-no-windows">Instalação no Windows</h3>
 <p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
-<pre><code>set ARQROOT=c:\MyProjects\ARQ
-</code></pre>
-<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
+<pre tabindex="0"><code>&gt; set ARQROOT=c:\MyProjects\ARQ
+</code></pre><p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
 <p>No diretório do ARQ, execute:</p>
-<pre><code>bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
-</code></pre>
-<p>Você pode simplesmente colocar o diretório <code>bat/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
-<h3 id="scripts-bash-para-linuxcyquinunix">scripts bash para Linux/Cyquin/Unix</h3>
+<pre tabindex="0"><code>&gt; bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+</code></pre><p>Você pode simplesmente colocar o diretório <code>bat/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
+<h3 id="scripts-bash-para-linuxcyqwinunix">scripts bash para Linux/Cyqwin/Unix</h3>
 <p>Aponte a variável de ambiente <code>ARQROOT</code> para a localização do arquivo na distribuição do ARQ.</p>
-<pre><code>export ARQROOT=$HOME/MyProjects/ARQ
-</code></pre>
-<p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#a2f">export</span> <span style="color:#b8860b">ARQROOT</span><span style="color:#666">=</span><span style="color:#b8860b">$HOME</span>/MyProjects/ARQ
+</span></span></code></pre></div><p>A distribuição normalmente contém o número da versão no nome do diretório.</p>
 <p>No diretório do ARQ, execute:</p>
-<pre><code>bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
-</code></pre>
-<p>Você pode simplesmente colocar o diretório <code>bin/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ bin/sparql --data<span style="color:#666">=</span>doc/Tutorial/vc-db-1.rdf --query<span style="color:#666">=</span>doc/Tutorial/q1.rq
+</span></span></code></pre></div><p>Você pode simplesmente colocar o diretório <code>bin/</code> no seu classpath ou copiar os programas lá. Todos eles dependem de ARQROOT.</p>
 <p><a href="https://www.cygwin.com/">Cygwin</a> é um ambiente Linux para Windows.</p>
 <h3 id="usando-a-aplicação-de-linhas-de-comando-de-jena-diretamente">Usando a aplicação de linhas de comando de Jena diretamente</h3>
 <p>Você precisará modificar o classpath para incluir <em>todos</em> os arquivos jar do diretório <code>lib/</code> do ARQ.</p>
 <p>Por exemplo, no Windows:</p>
-<pre><code>ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
+<pre tabindex="0"><code>ARQdir\lib\antlr-2.7.5.jar;ARQdir\lib\arq-extra.jar;ARQdir\lib\arq.jar;
 ARQdir\lib\commons-logging-1.1.jar;ARQdir\lib\concurrent.jar;ARQdir\lib\icu4j_3_4.jar;
 ARQdir\lib\iri.jar;ARQdir\lib\jena.jar;ARQdir\lib\jenatest.jar;
 ARQdir\lib\json.jar;ARQdir\lib\junit.jar;ARQdir\lib\log4j-1.2.12.jar;
 ARQdir\lib\lucene-core-2.2.0.jar;ARQdir\lib\stax-api-1.0.jar;
 ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
-</code></pre>
-<p>onde <code>&lt;i&gt;ARQdir&lt;/i&gt;</code> é onde você descompactou o ARQ. Isso tudo precisa estar numa linha.</p>
+</code></pre><p>onde <code>ARQdir</code> é onde você descompactou o ARQ. Isso tudo precisa estar numa linha.</p>
 <p>Os nomes dos arquivos JAR muitas vezes mudam e novos arquivos são adicionados – verifique essa lista com sua versão do ARQ.</p>
 <p>Os comandos estão no pacote ARQ.</p>
 <p><a href="sparql_basic_patterns_pt.html">Próximo: Padrões Básicos</a></p>
@@ -248,7 +241,7 @@ ARQdir\lib\wstx-asl-3.0.0.jar;ARQdir\lib\xercesImpl.jar;ARQdir\lib\xml-apis.jar
     <li><a href="#executando-a-consulta">Executando a consulta</a>
       <ul>
         <li><a href="#instalação-no-windows">Instalação no Windows</a></li>
-        <li><a href="#scripts-bash-para-linuxcyquinunix">scripts bash para Linux/Cyquin/Unix</a></li>
+        <li><a href="#scripts-bash-para-linuxcyqwinunix">scripts bash para Linux/Cyqwin/Unix</a></li>
         <li><a href="#usando-a-aplicação-de-linhas-de-comando-de-jena-diretamente">Usando a aplicação de linhas de comando de Jena diretamente</a></li>
       </ul>
     </li>

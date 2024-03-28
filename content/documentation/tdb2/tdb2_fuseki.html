@@ -187,72 +187,69 @@ embeddable <a href="../fuseki2/fuseki-embedded.html#fuseki-basic">Fuseki2 main s
 either a complete server configuration (see below) or as an entry in the
 <code>FUSEKI_BASE/configuration/</code> area of the full server.</p>
 <p>The command line start-up for Fuseki (both full and basic versions) uses the
-the <code>--tdb2</code> flag to modify the <code>--loc</code> argument to work with a TDB2 dataset.</p>
+<code>--tdb2</code> flag to modify the <code>--loc</code> argument to work with a TDB2 dataset.</p>
 <p>Example complete server configuration file for full or basic servers:
-The base URL will be of the form <code>http::/_host:port_/tdb2-database</code>.</p>
+The base URL will be of the form <code>http://_host:port_/tdb2-database</code>.</p>
 <p>Note the <code>tdb2:</code> prefix.</p>
-<pre>
-PREFIX :        &lt;#&gt;
-PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
-PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-<b>PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;</b>
-PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
-
-[] rdf:type fuseki:Server ;
-   fuseki:services (
-     &lt;#service_tdb2&gt;
-   ) .
-
-&lt;#service_tdb2&gt; rdf:type fuseki:Service ;
-    rdfs:label                      "TDB2 Service (RW)" ;
-    fuseki:name                     "tdb2-database" ;
-    fuseki:serviceQuery             "query" ;
-    fuseki:serviceQuery             "sparql" ;
-    fuseki:serviceUpdate            "update" ;
-    fuseki:serviceReadWriteGraphStore      "data" ;
-    # A separate read-only graph store endpoint:
-    fuseki:serviceReadGraphStore       "get" ;
-    fuseki:dataset           &lt;#tdb_dataset_readwrite&gt; ;
-    .
-
-&lt;#tdb_dataset_readwrite&gt; rdf:type      <b>tdb2:DatasetTDB2</b> ;
-    <b>tdb2:location</b> "TDB2" ;
-    ## This is supported: tdb2:unionDefaultGraph true ;
-        .
-</pre>
-<p>This example is available in <a href="https://github.com/apache/jena/blob/main/jena-fuseki2/examples/config-tdb2.ttl">config-tdb2.ttl</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ttl" data-lang="ttl"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#bbb">        </span><span style="color:#b8860b">&lt;#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#bbb">  </span><span style="color:#b8860b">&lt;http://jena.apache.org/fuseki#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#bbb">     </span><span style="color:#b8860b">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># tdb2 in this line, below.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;http://jena.apache.org/2016/tdb#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#bbb">      </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[]<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Server</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">services</span><span style="color:#bbb"> </span>(<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#b8860b">&lt;#service_tdb2&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>)<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#service_tdb2&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">label</span><span style="color:#bbb">                      </span><span style="color:#b44">&#34;TDB2 Service (RW)&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">                     </span><span style="color:#b44">&#34;tdb2-database&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceQuery</span><span style="color:#bbb">             </span><span style="color:#b44">&#34;query&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceQuery</span><span style="color:#bbb">             </span><span style="color:#b44">&#34;sparql&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceUpdate</span><span style="color:#bbb">            </span><span style="color:#b44">&#34;update&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceReadWriteGraphStore</span><span style="color:#bbb">      </span><span style="color:#b44">&#34;data&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># A separate read-only graph store endpoint:</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceReadGraphStore</span><span style="color:#bbb">       </span><span style="color:#b44">&#34;get&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">           </span><span style="color:#b8860b">&lt;#tdb_dataset_readwrite&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#tdb_dataset_readwrite&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb">      </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#008000;font-weight:bold">DatasetTDB2</span><span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#008000;font-weight:bold">location</span><span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;TDB2&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">## This is supported: tdb2:unionDefaultGraph true ;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>This example is available in <a href="https://github.com/apache/jena/blob/main/jena-fuseki2/examples/config-tdb2.ttl">config-tdb2.ttl</a></p>
 <p>The key difference is the declared <code>rdf:type</code> of the dataset.</p>
 <p>Note that the Fuseki UI does not provide a way to create TDB2 databases;
 a configuration file must be used. Once setup, upload, query and graph
 editing will be routed to the TDB2 database.</p>
 <p>For a service configuration in <code>FUSEKI_BASE/configuration/</code>:</p>
-<pre>
-PREFIX :        &lt;#&gt;
-PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
-PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;
-PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
-
-&lt;#service_tdb2&gt; rdf:type fuseki:Service ;
-    rdfs:label                      "TDB2 Service (RW)" ;
-    fuseki:name                     "tdb2-database" ;
-    fuseki:serviceQuery             "query" ;
-    fuseki:serviceQuery             "sparql" ;
-    fuseki:serviceUpdate            "update" ;
-    fuseki:serviceReadWriteGraphStore      "data" ;
-    # A separate read-only graph store endpoint:
-    fuseki:serviceReadGraphStore       "get" ;
-    fuseki:dataset           &lt;#tdb_dataset_readwrite&gt; ;
-    .
-
-&lt;#tdb_dataset_readwrite&gt; rdf:type      <b>tdb2:DatasetTDB2</b> ;
-    <b>tdb2:location</b> "TDB2" ;
-    ## tdb2:unionDefaultGraph true ;
-     .
-</pre>
-
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#bbb">        </span><span style="color:#b8860b">&lt;#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#bbb">  </span><span style="color:#b8860b">&lt;http://jena.apache.org/fuseki#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#bbb">     </span><span style="color:#b8860b">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;http://jena.apache.org/2016/tdb#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">PREFIX</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#bbb">      </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#service_tdb2&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">Service</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">label</span><span style="color:#bbb">                      </span><span style="color:#b44">&#34;TDB2 Service (RW)&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">                     </span><span style="color:#b44">&#34;tdb2-database&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceQuery</span><span style="color:#bbb">             </span><span style="color:#b44">&#34;query&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceQuery</span><span style="color:#bbb">             </span><span style="color:#b44">&#34;sparql&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceUpdate</span><span style="color:#bbb">            </span><span style="color:#b44">&#34;update&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceReadWriteGraphStore</span><span style="color:#bbb">      </span><span style="color:#b44">&#34;data&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># A separate read-only graph store endpoint:</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">serviceReadGraphStore</span><span style="color:#bbb">       </span><span style="color:#b44">&#34;get&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">fuseki:</span><span style="color:#008000;font-weight:bold">dataset</span><span style="color:#bbb">           </span><span style="color:#b8860b">&lt;#tdb_dataset_readwrite&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#b8860b">&lt;#tdb_dataset_readwrite&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb">      </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#008000;font-weight:bold">DatasetTDB2</span><span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#b8860b">&lt;b&gt;</span><span style="color:#00f;font-weight:bold">tdb2:</span><span style="color:#008000;font-weight:bold">location</span><span style="color:#b8860b">&lt;/b&gt;</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;TDB2&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">## tdb2:unionDefaultGraph true ;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div>
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">

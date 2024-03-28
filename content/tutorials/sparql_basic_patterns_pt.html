@@ -187,68 +187,61 @@
 <h2 id="soluções">Soluções</h2>
 <p>Soluções são um conjunto de pares de variáveis com um valor. Uma consulta <code>SELECT</code> expõe diretamente as soluções (depois de ordenar/limitar/deslocar) como o conjunto resultado – outras formas de consulta usam as soluções para fazer um grafo. Solução é a maneira como o padrão é casado – em que os valores das variáveis são utilizados para casar com o padrão.</p>
 <p>A primeira consulta de exemplo teve uma solução simples. Mude o padrão para esta segunda consulta: (<a href="sparql_data/q-bp1.rq">q-bp1.rq</a>):</p>
-<pre><code>SELECT ?x ?fname
-WHERE {?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  ?fname}
-</code></pre>
-<p>Isso tem quatro soluções, uma pra cada propriedade nome de VCARD das triplas na fonte de dados.</p>
-<pre><code>----------------------------------------------------
-| x                                | name          |
-====================================================
-| &lt;http://somewhere/RebeccaSmith/&gt; | &quot;Becky Smith&quot; |
-| &lt;http://somewhere/SarahJones/&gt;   | &quot;Sarah Jones&quot; |
-| &lt;http://somewhere/JohnSmith/&gt;    | &quot;John Smith&quot;  |
-| &lt;http://somewhere/MattJones/&gt;    | &quot;Matt Jones&quot;  |
-----------------------------------------------------
-</code></pre>
-<p>Até agora, com padrões de triplas e padrões básicos, cada variável será definida em cada solução. As soluções de uma consulta podem ser pensadas como uma tabela, mas no caso geral, é uma tabela onde nem sempre cada linha vai ter um valor para cada coluna. Todas as soluções para uma consulta SPARQL não têm que ter valores para todas as variáveis em todas as soluções como veremos depois.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?x</span> <span style="color:#b8860b">?fname</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span> {<span style="color:#b8860b">?x</span>  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;</span>  <span style="color:#b8860b">?fname</span>}
+</span></span></code></pre></div><p>Isso tem quatro soluções, uma pra cada propriedade nome de VCARD das triplas na fonte de dados.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">----------------------------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">x</span><span style="color:#bbb">                                </span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">====================================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/RebeccaSmith/&gt;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/SarahJones/&gt;</span><span style="color:#bbb">   </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/MattJones/&gt;</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">----------------------------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Até agora, com padrões de triplas e padrões básicos, cada variável será definida em cada solução. As soluções de uma consulta podem ser pensadas como uma tabela, mas no caso geral, é uma tabela onde nem sempre cada linha vai ter um valor para cada coluna. Todas as soluções para uma consulta SPARQL não têm que ter valores para todas as variáveis em todas as soluções como veremos depois.</p>
 <h2 id="padrões-básicos">Padrões Básicos</h2>
 <p>Um padrão básico é um conjunto de padrões de triplas. Ele casa quando todo o padrão da tripla casa com o mesmo valor usado cada vez que a variável com o mesmo nome é usada.</p>
-<pre><code>SELECT ?givenName
-WHERE
-  { ?y  &lt;http://www.w3.org/2001/vcard-rdf/3.0#Family&gt;  &quot;Smith&quot; .
-    ?y  &lt;http://www.w3.org/2001/vcard-rdf/3.0#Given&gt;  ?givenName .
-  }
-</code></pre>
-<p>Essa consulta (<a href="sparql_data/q-bp2.rq">q-bp2.rq</a>)envolve dois padrões de triplas, cada tripla termina com &lsquo;.&rsquo; (mas o ponto depois do último pode ser omitido como foi omitido no exemplo de padrão de uma tripla). A variável y tem que ser a mesma para cada casamento de padrão de tripla. As soluções são:</p>
-<pre><code>-------------
-| givenName |
-=============
-| &quot;John&quot;    |
-| &quot;Rebecca&quot; |
--------------
-</code></pre>
-<h3 id="qnames">QNames</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?givenName</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>  { <span style="color:#b8860b">?y</span>  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#Family&gt;</span>  <span style="color:#b44">&#34;Smith&#34;</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?y</span>  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#Given&gt;</span>  <span style="color:#b8860b">?givenName</span> .
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>Essa consulta (<a href="sparql_data/q-bp2.rq">q-bp2.rq</a>)envolve dois padrões de triplas, cada tripla termina com &lsquo;.&rsquo; (mas o ponto depois do último pode ser omitido como foi omitido no exemplo de padrão de uma tripla). A variável y tem que ser a mesma para cada casamento de padrão de tripla. As soluções são:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">givenName</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=============</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John&#34;</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Rebecca&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="qnames">QNames</h3>
 <p>Aqui temos um mecanismo prático para escrever longas URIs usando prefixos. A consulta acima poderia ser escrita mais claramente como a consulta:
 (<a href="sparql_data/q-bp3.rq">q-bp3.rq</a>):</p>
-<pre><code>PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?givenName
-WHERE
- { ?y vcard:Family &quot;Smith&quot; .
-   ?y vcard:Given  ?givenName .
- }
-</code></pre>
-<p>Isso é um mecanismo de prefixagem – as duas partes do URI, da declaração do prefixo e da parte depois de &ldquo;:&rdquo; no qname são concatenadas. Isso não é exatamente como um qname XML é, mas usa as regras de RDF para transformar o qname numa URI concatenando as partes.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:      <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?givenName</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span> { <span style="color:#b8860b">?y</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">Family</span> <span style="color:#b44">&#34;Smith&#34;</span> .
+</span></span><span style="display:flex;"><span>   <span style="color:#b8860b">?y</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">Given</span>  <span style="color:#b8860b">?givenName</span> .
+</span></span><span style="display:flex;"><span> }
+</span></span></code></pre></div><p>Isso é um mecanismo de prefixagem – as duas partes do URI, da declaração do prefixo e da parte depois de &ldquo;:&rdquo; no qname são concatenadas. Isso não é exatamente como um qname XML é, mas usa as regras de RDF para transformar o qname numa URI concatenando as partes.</p>
 <h3 id="blank-nodes">Blank Nodes</h3>
 <p>Mude a consulta só para retornar y da seguinte forma:
 (<a href="sparql_data/q-bp4.rq">q-bp4.rq</a>) :</p>
-<pre><code>PREFIX vcard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?y ?givenName
-WHERE
- { ?y vcard:Family &quot;Smith&quot; .
-   ?y vcard:Given  ?givenName .
- }
-</code></pre>
-<p>e os blank nodes aparecem</p>
-<pre><code>--------------------
-| y    | givenName |
-====================
-| _:b0 | &quot;John&quot;    |
-| _:b1 | &quot;Rebecca&quot; |
---------------------
-</code></pre>
-<p>como os estranhos qnames iniciados com  _:. Isso não é o título interno do blank node – isso é o ARQ imprimindo-os, atribuindo _:b0, _:b1 para mostrar quando dois blank nodes são o mesmo. Aqui eles são diferentes. Isso não revela o título interno usado para um blank node, mas isso está disponível quando usar a API Java.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>:      <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?y</span> <span style="color:#b8860b">?givenName</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span> { <span style="color:#b8860b">?y</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">Family</span> <span style="color:#b44">&#34;Smith&#34;</span> .
+</span></span><span style="display:flex;"><span>   <span style="color:#b8860b">?y</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">Given</span>  <span style="color:#b8860b">?givenName</span> .
+</span></span><span style="display:flex;"><span> }
+</span></span></code></pre></div><p>e os blank nodes aparecem</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">--------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">y</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb"> </span><span style="">givenName</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">====================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b0</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John&#34;</span><span style="color:#bbb">    </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b1</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Rebecca&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">--------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>como os estranhos qnames iniciados com  <code>_:</code>. Isso não é o título interno do blank node – isso é o ARQ imprimindo-os, atribuindo <code>_:b0</code>, <code>_:b1</code>para mostrar quando dois blank nodes são o mesmo. Aqui eles são diferentes. Isso não revela o título interno usado para um blank node, mas isso está disponível quando usar a API Java.</p>
 <p><a href="sparql_filters_pt.html">Próximo: Filtros</a></p>
 
   </article>

@@ -606,8 +606,7 @@ output:
 </span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;j.0:Q</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;http://somewhere/else#z&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:RDF&gt;</span>
-</span></span></code></pre></div><p>The other namespace still gets the constructed name, but the nsA name
-is now used in the property tags. There&rsquo;s no need for the prefix name
+</span></span></code></pre></div><p>is now used in the property tags. There&rsquo;s no need for the prefix name
 to have anything to do with the variables in the Jena code:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span># -- nsA and cat defined
 </span></span><span style="display:flex;"><span>
@@ -779,18 +778,18 @@ package <code>org.apache.jena.rdf.model</code>.  Using
 <code>SimpleSelector </code>is one of the rare occasions in Jena when it is
 necessary to use a specific class rather than an interface.  The
 <code>SimpleSelector</code> constructor takes three arguments:</p>
-<pre>Selector selector = new SimpleSelector(subject, predicate, object);</pre>
-<p>This selector will select all statements with a subject that matches
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span>subject<span style="color:#666">,</span> predicate<span style="color:#666">,</span> object<span style="color:#666">);</span>
+</span></span></code></pre></div><p>This selector will select all statements with a subject that matches
 <code>subject</code>, a predicate that matches <code>predicate</code> and an
 object that matches <code>object</code>.  If a <code>null</code> is supplied
 in any of the positions, it matches anything; otherwise they match corresponding
 equal resources or literals. (Two resources are equal if they have equal URIs
 or are the same blank node; two literals are the same if all their components
 are equal.) Thus:</p>
-<pre>Selector selector = new SimpleSelector(null, null, null);</pre>
-<p>will select all the statements in a Model.</p>
-<pre>Selector selector = new SimpleSelector(null, VCARD.FN, null);</pre>
-<p>will select all the statements with VCARD.FN as their predicate, whatever
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>will select all the statements in a Model.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Selector selector <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> SimpleSelector<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> VCARD<span style="color:#666">.</span><span style="color:#b44">FN</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>will select all the statements with VCARD.FN as their predicate, whatever
 the subject or object. As a special shorthand,
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>listStatements<span style="color:#666">(</span> S<span style="color:#666">,</span> P<span style="color:#666">,</span> O <span style="color:#666">)</span>
 </span></span></code></pre></div><p>is equivalent to</p>
@@ -819,7 +818,7 @@ vcards in the database.</p>
 </span></span><span style="display:flex;"><span>  Becky Smith
 </span></span></code></pre></div><p>Your next exercise is to modify this code to use <code>SimpleSelector
 </code>instead of <code>listSubjectsWithProperty</code>.</p>
-<p>Lets see how to implement some finer control over the statements selected.
+<p>Let's see how to implement some finer control over the statements selected.
 <code>SimpleSelector</code> can be subclassed and its selects method modified
 to perform further filtering:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// select all the resources with a VCARD.FN property
@@ -874,7 +873,7 @@ Consider the following two Models:</p>
 one and the duplicate <code>vcard:FN</code> arc is dropped to produce:</p>
 <p style="text-align: center">
 <img alt="figure 6" src="figures/fig6.png" width="540" height="240"></p>
-<p>Lets look at the code to do this (the full code is in <a
+<p>Let's look at the code to do this (the full code is in <a
 href="https://github.com/apache/jena/tree/main/jena-core/src-examples/jena/examples/rdf/Tutorial09.java">tutorial 9</a>) and see what happens.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// read the RDF/XML files
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model1<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">new</span> InputStreamReader<span style="color:#666">(</span>in1<span style="color:#666">),</span> <span style="color:#b44">&#34;&#34;</span><span style="color:#666">);</span>
@@ -1016,7 +1015,7 @@ French language tag.  This rather strange behaviour is an artefact of the
 original RDF/XML syntax.</p>
 <p>Further there are really two sorts of Literals.  In one, the string
 component is just that, an ordinary string.  In the other the string
-component is expected to be a well balanced fragment of XML.  When an RDF
+component is expected to be a well-balanced fragment of XML.  When an RDF
 Model is written as RDF/XML a special construction using a
 parseType='Literal' attribute is used to represent it.</p>
 <p>In Jena, these attributes of a literal may be set when the literal is
@@ -1065,8 +1064,8 @@ call):</p>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// write out the Model
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>model<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>system<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> <span style="color:#b44">&#34;N-TRIPLE&#34;</span><span style="color:#666">);</span>
 </span></span></code></pre></div><p>The output produced is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">A</span>...<span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;11&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
-</span></span></span></code></pre></div><p>Since both literals are really just the string "11", then only one
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>_:A... &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; <span style="color:#b44">&#34;11&#34;</span> .
+</span></span></code></pre></div><p>Since both literals are really just the string "11", then only one
 statement is added.</p>
 <p>The RDFCore WG has defined mechanisms for supporting datatypes in RDF.
 Jena supports these using the <i>typed literal</i> mechanisms; they are

@@ -261,7 +261,7 @@ different databases (e.g. testing and production) by changing a
 configuration file, and not the code, which would require
 recompilation and a rebuild.</p>
 <p>To create a <code>Store</code> from a store assembler</p>
-<pre><code>  Store store = SDBFactory.connectStore(&quot;sdb.ttl&quot;) ;
+<pre><code>  Store store = SDBFactory.connectStore(&quot;sdb.ttl&quot;) ;
 </code></pre>
 <p>The assembler file has two parts, the connection details and the
 store type.</p>
@@ -270,15 +270,15 @@ store type.</p>
  @prefix ja:       &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
  @prefix sdb:      &lt;http://jena.hpl.hp.com/2007/sdb#&gt; .
 
- _:c rdf:type sdb:SDBConnection ;
-     sdb:sdbType        &quot;derby&quot; ;
-     sdb:sdbName        &quot;DB/SDB2&quot; ;
-     sdb:driver         &quot;org.apache.derby.jdbc.EmbeddedDriver&quot; ;
+ _:c rdf:type sdb:SDBConnection ;
+     sdb:sdbType        &quot;derby&quot; ;
+     sdb:sdbName        &quot;DB/SDB2&quot; ;
+     sdb:driver         &quot;org.apache.derby.jdbc.EmbeddedDriver&quot; ;
      .
 
- [] rdf:type sdb:Store ;
-     sdb:layout         &quot;layout2&quot; ;
-     sdb:connection     _:c ;
+ [] rdf:type sdb:Store ;
+     sdb:layout         &quot;layout2&quot; ;
+     sdb:connection     _:c ;
     .
 </code></pre>
 <p>See the full details of
@@ -288,11 +288,11 @@ for the options.</p>
 <p>The less flexible way to create a store description is to build it
 in Java. For example:</p>
 <pre><code>   StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash,
-                                       DatabaseType.Derby) ;
-   JDBC.loadDriverDerby() ;
+                                       DatabaseType.Derby) ;
+   JDBC.loadDriverDerby() ;
    String jdbcURL = &quot;jdbc:derby:DB/SDB2&quot;;
-   SDBConnection conn = new SDBConnection(jdbcURL, null, null) ;
-   Store store = SDBFactory.connectStore(conn, storeDesc) ;
+   SDBConnection conn = new SDBConnection(jdbcURL, null, null) ;
+   Store store = SDBFactory.connectStore(conn, storeDesc) ;
 </code></pre>
 <h3 id="database-user-and-password">Database User and Password</h3>
 <p>The user and password for the database can be set in explicitly in
@@ -316,7 +316,7 @@ result in any database or JDBC connection actions.</p>
 SDB connection information is ignored when reading to get just the
 store description. The store description can be kept across store
 creations:</p>
-<pre><code>  storeDesc = StoreDesc.read(&quot;sdb.ttl&quot;) ;
+<pre><code>  storeDesc = StoreDesc.read(&quot;sdb.ttl&quot;) ;
 </code></pre>
 <p>then used with an JDBC connection object passed from the connection
 container:</p>
@@ -324,18 +324,18 @@ container:</p>
                              StoreDesc storeDesc,
                              Connection jdbcConnection)
     {
-        Query query = QueryFactory.create(queryString) ;
+        Query query = QueryFactory.create(queryString) ;
 
-        SDBConnection conn = SDBFactory.createConnection(jdbcConnection) ;
+        SDBConnection conn = SDBFactory.createConnection(jdbcConnection) ;
 
-        Store store = SDBFactory.connectStore(conn, storeDesc) ;
+        Store store = SDBFactory.connectStore(conn, storeDesc) ;
 
-        Dataset ds = SDBFactory.connectDataset(store) ;
+        Dataset ds = SDBFactory.connectDataset(store) ;
         try(QueryExecution qe = QueryExecutionFactory.create(query, ds)) {
-            ResultSet rs = qe.execSelect() ;
-            ResultSetFormatter.out(rs) ;
+            ResultSet rs = qe.execSelect() ;
+            ResultSetFormatter.out(rs) ;
         }
-        store.close() ;
+        store.close() ;
     }
 </code></pre>
 <h2 id="formatting-or-emptying-the-store">Formatting or Emptying the Store</h2>
@@ -362,23 +362,23 @@ implementation of that interface.</p>
 <a href="../query/app_api.html">querying with ARQ</a>.
 SDB is an ARQ query engine that can handle queries made on an RDF
 dataset which is of the SDB class <code>DatasetStore</code>:</p>
-<pre><code>   Dataset ds = DatasetStore.create(store) ;
+<pre><code>   Dataset ds = DatasetStore.create(store) ;
 </code></pre>
 <p>This is then used as normal with ARQ:</p>
-<pre><code>   Dataset ds = DatasetStore.create(store) ;
+<pre><code>   Dataset ds = DatasetStore.create(store) ;
    try(QueryExecution qe = QueryExecutionFactory.create(query, ds)) {
-       ResultSet rs = qe.execSelect() ;
-       ResultSetFormatter.out(rs) ;
+       ResultSet rs = qe.execSelect() ;
+       ResultSetFormatter.out(rs) ;
    }
 </code></pre>
 <p>When finished, the store should be closed to release any resources
 associated with the particular implementation. Closing a store does
 <em>not</em> close it&rsquo;s JDBC connection.</p>
-<pre><code>   store.close() ;
+<pre><code>   store.close() ;
 </code></pre>
 <p>Closing the SDBConnection <em>does</em> close the JDBC connection:</p>
-<pre><code>   store.getConnection().close() ;
-   store.close() ;
+<pre><code>   store.getConnection().close() ;
+   store.close() ;
 </code></pre>
 <p>If models or graphs backed by SDB are placed in a general Dataset
 then the query is not efficiently executed by SDB.</p>
@@ -386,17 +386,17 @@ then the query is not efficiently executed by SDB.</p>
 <p>A Jena model can be connected to one graph in the store and used
 with all the Jena API operations.</p>
 <p>Here, the graph for the model is the default graph:</p>
-<pre><code>    Store store = SDBFactory.connectStore(&quot;sdb.ttl&quot;) ;
-    Model model = SDBFactory.connectDefaultModel(store) ;
+<pre><code>    Store store = SDBFactory.connectStore(&quot;sdb.ttl&quot;) ;
+    Model model = SDBFactory.connectDefaultModel(store) ;
 
-    StmtIterator sIter = model.listStatements() ;
-    for ( ; sIter.hasNext() ; )
+    StmtIterator sIter = model.listStatements() ;
+    for ( ; sIter.hasNext() ; )
     {
-        Statement stmt = sIter.nextStatement() ;
-        System.out.println(stmt) ;
+        Statement stmt = sIter.nextStatement() ;
+        System.out.println(stmt) ;
     }
-    sIter.close() ;
-    store.close() ;
+    sIter.close() ;
+    store.close() ;
 </code></pre>
 <p>SDB is optimized for SPARQL queries but queries and other Jena API
 operations can be mixed. The results from a SPARQL query are Jena

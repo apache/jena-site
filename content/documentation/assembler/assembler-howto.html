@@ -240,11 +240,10 @@ constructed by specifying a base model and a reasoner. The
 specifications for the components are themselves Assembler
 specifications given by other Resources in the same Model.For
 example, to specify a memory model with data loaded from a file:</p>
-<pre><code>eg:model a ja:MemoryModel
-    ; ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/example.n3&gt;]
-    .
-</code></pre>
-<p>The <code>rdf:type</code> of <code>eg:model</code> specifies that the constructed Model is to
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">model</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;file:////home/kers/projects/jena2/doc/assembler/Data/example.n3&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The <code>rdf:type</code> of <code>eg:model</code> specifies that the constructed Model is to
 be a Jena memory-based model. The <code>ja:content</code> property specifies
 that the model is to be loaded with the content of the resource
 <code>file:Data/example.n3</code>. The content handler guesses from the &ldquo;.n3&rdquo;
@@ -264,11 +263,10 @@ this document, we will usually leave out inferrable types.</p>
 <p>We can construct our example model from the specification like this
 (you may need to tweak the filename to make this work in your
 environment):</p>
-<pre><code>Model spec = RDFDataMgr.loadModel( &quot;examples.ttl&quot; );
-Resource root = spec.createResource( spec.expandPrefix( &quot;eg:opening-example&quot; ) );
-Model m = Assembler.general.openModel( root );
-</code></pre>
-<p>The model is constructed from the &ldquo;root resource&rdquo;,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model spec <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span> <span style="color:#b44">&#34;examples.ttl&#34;</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource root <span style="color:#666">=</span> spec<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span> spec<span style="color:#666">.</span><span style="color:#b44">expandPrefix</span><span style="color:#666">(</span> <span style="color:#b44">&#34;eg:opening-example&#34;</span> <span style="color:#666">)</span> <span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Model m <span style="color:#666">=</span> Assembler<span style="color:#666">.</span><span style="color:#b44">general</span><span style="color:#666">.</span><span style="color:#b44">openModel</span><span style="color:#666">(</span> root <span style="color:#666">);</span>
+</span></span></code></pre></div><p>The model is constructed from the &ldquo;root resource&rdquo;,
 <code>eg:opening-example</code> in our example. <code>general</code> knows how to create
 all the kinds of objects - not just Models - that we describe in
 the next sections.</p>
@@ -277,43 +275,41 @@ the next sections.</p>
 inference, ontology, and file-backed. All of these model
 specifications share a set of base properties for attaching
 content and prefix mappings.</p>
-<pre><code>ja:Loadable a rdfs:Class ;
-  rdfs:subClassOf ja:Object
-.
-ja:initialContent a rdf:Property ;
-  rdfs:domain ja:Loadable
-  rdfs:range ja:Content
-.
-ja:content a rdf:Property ;
-  rdfs:domain ja:Loadable ;
-  rdfs:range ja:Content
-.
-
-ja:Model a rdfs:Class ;
-  rdfs:subClassOf ja:ContentItem ;
-  rdfs:subClassOf ja:Loadable
-.
-
-ja:prefixMapping a rdf:Property ;
-  rdfs:domain ja:Model ;
-  rdfs:range ja:PrefixMapping
-.
-</code></pre>
-<p>All of a model&rsquo;s <code>ja:content</code> property values are interpreted as
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Loadable</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">initialContent</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Loadable</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Content</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Loadable</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Content</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ContentItem</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Loadable</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">prefixMapping</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">PrefixMapping</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>All of a model&rsquo;s <code>ja:content</code> property values are interpreted as
 specifying <code>Content</code> objects and a single composite <code>Content</code>
 object is constructed and used to initialise the model. See
 <a href="#content-specification">Content</a> for the description of Content
 specifications. For example:</p>
-<pre><code>eg:sharedContent
-    ja:externalContent &lt;http://somewhere/RDF/ont.owl&gt;
-    .
-eg:common-example a ja:MemoryModel ;
-      ja:content eg:sharedContent ;
-      ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/A.rdf&gt;] ;
-      ja:content [ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/B.rdf&gt;]
-    .
-</code></pre>
-<p>The model constructed for <code>eg:A</code> will be loaded with the contents
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">sharedContent</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/RDF/ont.owl&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">common-example</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">sharedContent</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;file:////home/kers/projects/jena2/doc/assembler/Data/A.rdf&gt;</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;file:////home/kers/projects/jena2/doc/assembler/Data/B.rdf&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The model constructed for <code>eg:A</code> will be loaded with the contents
 of <code>Data/A.n3</code>, <code>Data/B.rdf</code>, and <code>http://somewhere/RDF/ont.owl</code>.
 If the model supports transactions, then the content is loaded
 inside a transaction; if the load fails, the transaction is
@@ -330,29 +326,27 @@ Content specifications.</p>
 models. Content can be external (files and URLs) or literal
 (strings in the specification) or quotations (referring to RDF
 which is part of the specification).</p>
-<pre><code>ja:Content a rdfs:Class ;
-  rdfs:subClassOf ja:HasFileManager
-.
-
-ja:HasFileManager a rdfs:Class ;
-  rdfs:subClassOf ja:Object
-.
-ja:fileManager a rdf:Property ;
-  rdfs:domain ja:HasFileManager ;
-  rdfs:range ja:FileManager
-.
-</code></pre>
-<p>A <code>ja:Content</code> specification may have zero or more
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Content</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasFileManager</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasFileManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">fileManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasFileManager</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">FileManager</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>A <code>ja:Content</code> specification may have zero or more
 <code>ja:externalContent</code> property values. These are URI resources
 naming an external (file or http etc) RDF object. The constructed
 Content object contains the union of the values of all such
 resources. For example:</p>
-<pre><code>eg:external-content-example
-    ja:externalContent &lt;file:////home/kers/projects/jena2/doc/assembler/Data/C.owl&gt;,
-                       &lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;
-    .
-</code></pre>
-<p>The external content is located using a <code>FileManager</code>. If the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">external-content-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;file:////home/kers/projects/jena2/doc/assembler/Data/C.owl&gt;</span>,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                       </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The external content is located using a <code>FileManager</code>. If the
 <code>Content</code> resource has a <code>ja:fileManager</code> property, then the
 <code>FileManager</code> described by that resource is used. Otherwise, if the
 <code>ContentAssembler</code> assembling this specification was constructed
@@ -365,11 +359,10 @@ Content object contains that RDF. The language is either specified
 by an explicit <code>ja:contentEncoding</code> property value, or guessed from
 the content of the string. The only encodings permitted are &ldquo;N3&rdquo;
 and &ldquo;RDF/XML&rdquo;. For example:</p>
-<pre><code>eg:literal-content-example
-    ja:literalContent &quot;_:it dc:title 'Interesting Times'&quot;
-    .
-</code></pre>
-<p>The literal content is wrapped so that prefix declarations for
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">literal-content-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">literalContent</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;_:it dc:title &#39;Interesting Times&#39;&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The literal content is wrapped so that prefix declarations for
 <strong>rdf</strong>, <strong>rdfs</strong>, <strong>owl</strong>, <strong>dc</strong>, and <strong>xsd</strong> apply before
 interpretation.</p>
 <p>The property values of any <code>ja:quotedContent</code> properties should be
@@ -380,35 +373,32 @@ content.</p>
 <p>Inference models are specified by supplying a description of the
 reasoner that is used by the model and (optionally) a base model to
 reason over. For example:</p>
-<pre><code>eg:inference-example
-    ja:baseModel [a ja:MemoryModel] ;
-      ja:reasoner [ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;]
-    .
-</code></pre>
-<p>describes an inference model that uses RDFS reasoning. The
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">inference-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span>[<span style="">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasoner</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerURL</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>describes an inference model that uses RDFS reasoning. The
 <em>reasonerURL</em> property value is the URI used to identify the
 reasoner (it is the value of the Jena constant
 <code>RDFSRuleReasonerFactory.URI</code>). The base model is specified as a
 memory model; if it is left out, an empty memory model is used.</p>
-<pre><code>eg:db-inference-example
-    ja:baseModel eg:model-example ;
-    ja:reasoner [ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;]
-    .
-</code></pre>
-<p>The same reasoner as used as in the previous example, but now the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">db-inference-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">model-example</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasoner</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerURL</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The same reasoner as used as in the previous example, but now the
 base model is a specific model description in the same way as our earlier
 example.</p>
 <p>Because Jena&rsquo;s access to external reasoners goes through the same
 API as for its internal reasoners, you can access a DIG reasoner
 (such as Pellet running as a server) using an Assembler
 specification:</p>
-<pre><code>eg:external-inference-example
-    ja:reasoner [&lt;http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL&gt;
-                   &lt;http://localhost:2004/&gt; ;
-                 ja:reasonerURL &lt;http://jena.hpl.hp.com/2003/DIGReasoner&gt;]
-    .
-</code></pre>
-<p>If there&rsquo;s a DIG server running locally on port 2004, this
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">external-inference-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasoner</span><span style="color:#bbb"> </span>[<span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL&gt;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                   </span><span style="color:#b8860b">&lt;http://localhost:2004/&gt;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                 </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerURL</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/2003/DIGReasoner&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>If there&rsquo;s a DIG server running locally on port 2004, this
 specification will create a DIG inference model that uses it.</p>
 <p>The internal rule reasoner can be supplied with rules written
 inside the specification, or outside from some resource (file or
@@ -419,35 +409,34 @@ ja:reasoner [ja:rule &ldquo;[r1: (?x my:P ?y) -&gt; (?x rdf:type my:T)]&rdquo;]
 <p>This reasoner will infer a type declaration from a use of a
 property. (The prefix <em>my</em> will have to be known to the rule
 parser, of course.)</p>
-<pre><code>ja:InfModel a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:reasoner; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:baseModel; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Model
-.
-ja:reasoner a rdf:Property ;
-  rdfs:domain ja:InfModel ;
-  rdfs:range ja:ReasonerFactory
-.
-ja:baseModel a rdf:Property ;
-  rdfs:domain ja:InfModel ;
-  rdfs:range ja:Model
-.
-
-ja:HasRules a rdfs:Class ;
-  rdfs:subClassOf ja:Object
-.
-ja:rule a rdf:Property ;
-  rdfs:domain ja:HasRules
-.
-ja:rulesFrom a rdf:Property ;
-  rdfs:domain ja:HasRules
-.
-ja:rules a rdf:Property ;
-  rdfs:domain ja:HasRules ;
-  rdfs:range ja:RuleSet
-.
-</code></pre>
-<p>An InfModel&rsquo;s <code>ja:baseModel</code> property value specifies the base
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">InfModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasoner</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasoner</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">InfModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">InfModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rule</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rulesFrom</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rules</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">RuleSet</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>An InfModel&rsquo;s <code>ja:baseModel</code> property value specifies the base
 model for the inference model; if omitted, an empty memory model is
 used.</p>
 <p>An InfModel&rsquo;s <code>ja:ReasonerFactory</code> property value specifies the
@@ -462,22 +451,21 @@ rules of the implied <code>RuleSet</code> are added to the <code>Reasoner</code>
 <h4 id="reasonerfactory">ReasonerFactory</h4>
 <p>A ReasonerFactory can be specified by URL or by class name (but not
 both).</p>
-<pre><code>ja:ReasonerFactory a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:ReasonerURL; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:HasRules
-.
-ja:reasonerClass a rdf:Property ;
-  rdfs:domain ja:ReasonerFactory
-.
-ja:reasonerURL a rdf:Property ;
-  rdfs:domain ja:ReasonerFactory
-.
-ja:schema a rdf:Property ;
-  rdfs:domain ja:ReasonerFactory ;
-  rdfs:range ja:Model
-.
-</code></pre>
-<p>If the optional unique property <code>ja:reasonerURL</code> is specified, then
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerURL</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerClass</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerURL</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">schema</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>If the optional unique property <code>ja:reasonerURL</code> is specified, then
 its resource value is the URI of a reasoner in the Jena reasoner
 registry; the reasoner is the one with the given URI.</p>
 <p>If the optional property <code>ja:schema</code> is specified, then the models
@@ -498,11 +486,10 @@ documentation.</p>
 <p>A <code>RuleSet</code> specification allows rules (for ReasonerFactories) to
 be specified inline, elsewhere in the specification model, or in an
 external resource.</p>
-<pre><code>ja:RuleSet a rdfs:Class ;
-  rdfs:subClassOf ja:HasRules
-.
-</code></pre>
-<p>The optional repeatable property <code>ja:rule</code> has as its value a
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">RuleSet</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasRules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The optional repeatable property <code>ja:rule</code> has as its value a
 literal string which is the text of a Jena rule or rules. All those
 rules are added to the <code>RuleSet</code>.</p>
 <p>The optional repeatable property <code>ja:rulesFrom</code> has as its value a
@@ -517,58 +504,55 @@ model. All those rules from that <code>RuleSet</code> are added to this
 <p>Ontology models can be specified in several ways. The simplest is
 to use the name of an OntModelSpec from the Java OntModelSpec
 class:</p>
-<pre><code>eg:simple-ont-example
-    ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF
-    .
-</code></pre>
-<p>This constructs an <code>OntModel</code> with an empty base model and using
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">simple-ont-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OWL_DL_MEM_RULE_INF</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>This constructs an <code>OntModel</code> with an empty base model and using
 the OWL_DL language and the full rule reasoner. All of the
 OntModelSpec constants in the Jena implementation are available in
 this way. A base model can be specified:</p>
-<pre><code>eg:base-ont-example
-    ja:baseModel [a ja:MemoryModel ;
-                 ja:content [ja:externalContent &lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;]]
-    .
-</code></pre>
-<p>The OntModel has a base which is a memory model loaded with the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">base-ont-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span>[<span style="">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">                 </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;</span>]]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The OntModel has a base which is a memory model loaded with the
 contents of <code>http://jena.hpl.hp.com/some-jena-data.rdf</code>. Since the
 ontModelSpec was omitted, it defaults to <code>OWL_MEM_RDFS_INF</code> - the
 same default as <code>ModelFactory.createOntologyModel()</code>.</p>
-<pre><code>ja:OntModel a rdfs:Class ;
-  rdfs:subClassOf ja:UnionModel ;
-  rdfs:subClassOf ja:InfModel
-.
-ja:ontModelSpec a rdf:Property ;
-  rdfs:domain ja:OntModel ;
-  rdfs:range ja:OntModelSpec
-.
-
-ja:OntModelSpec a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:like; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:reasonerFactory; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:importSource; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:documentManager; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:ontLanguage; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Object
-.
-ja:importSource a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:reasonerFactory a rdf:Property ;
-  rdfs:domain ja:OntModelSpec ;
-  rdfs:range ja:ReasonerFactory
-.
-ja:documentManager a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:ontLanguage a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:likeBuiltinSpec a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-</code></pre>
-<p><code>OntModel</code> is a subclass of <code>InfModel</code>, and the <code>ja:baseModel</code>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">UnionModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">InfModel</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">like</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerFactory</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">importSource</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">documentManager</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontLanguage</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">importSource</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerFactory</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">documentManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontLanguage</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">likeBuiltinSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p><code>OntModel</code> is a subclass of <code>InfModel</code>, and the <code>ja:baseModel</code>
 property means the same thing.</p>
 <p>The <code>OntModelSpec</code> property value is a resource, interpreted as an
 OntModelSpec description based on its name and the value of the
@@ -616,16 +600,15 @@ used as the default value.</p>
 <p>An <code>OntDocumentManager</code> can be specified by a <code>ja:DocumentManager</code>
 specification which describes the <code>OntDocumentManager</code>&rsquo;s file
 manager and policy settings.</p>
-<pre><code>eg:mapper
-    lm:mapping [lm:altName &quot;file:etc/foo.n3&quot; ;
-    lm:name &quot;file:foo.n3&quot;]
-    .
-eg:document-manager-example
-    ja:fileManager [ja:locationMapper eg:mapper] ;
-    ja:meta [ dm:altURL &lt;http://localhost/RDF/my-alt.rdf&gt;]
-    .
-</code></pre>
-<p>In this example, <code>eg:document-manager-example</code> is a
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">mapper</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">lm:</span><span style="color:#008000;font-weight:bold">mapping</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">lm:</span><span style="color:#008000;font-weight:bold">altName</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;file:etc/foo.n3&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">lm:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;file:foo.n3&#34;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">document-manager-example</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">fileManager</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">locationMapper</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">mapper</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">meta</span><span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">dm:</span><span style="color:#008000;font-weight:bold">altURL</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://localhost/RDF/my-alt.rdf&gt;</span>]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>In this example, <code>eg:document-manager-example</code> is a
 <code>ja:DocumentManager</code> specification. It has its own
 <code>FileManager specification</code>, the object of the
 <code>ja:fileManager property</code>; that <code>FileManager</code> has a location
@@ -635,18 +618,17 @@ document manager meta-data: the sub-model of the assembler
 specification reachable from <code>eg:document-manager-example</code> is
 passed to the document manager when it is created. For the meanings
 of the <code>dm:</code> properties, see the Jena ontology documentation and
-the ontology.rdf ontology.</p>
-<pre><code>ja:DocumentManager a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:policyPath; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:fileManager; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:fileManager; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:HasFileManager
-.
-ja:policyPath a rdf:Property ;
-  rdfs:domain ja:DocumentManager
-.
-</code></pre>
-<p>The <code>ja:fileManager</code> property value, if present, has as its object
+the <code>ontology.rdf</code> ontology.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">DocumentManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">policyPath</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">fileManager</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">fileManager</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">HasFileManager</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">policyPath</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">DocumentManager</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The <code>ja:fileManager</code> property value, if present, has as its object
 a <code>ja:FileManager</code> specification; the constructed document manager
 is given a new file manager constructed from that specification. If
 there is no <code>ja:fileManager</code> property, then the default
@@ -658,27 +640,25 @@ documentation. If absent, the usual default path is applied.</p>
 DocumentManager resource contains any OntDocumentManager
 <code>DOC_MGR_POLICY</code> or <code>ONTOLOGY_SPEC</code> objects, they will be
 interpreted by the constructed document manager object.</p>
-<pre><code>ja:FileManager a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:locationMapper; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Object
-.
-ja:locationMapper a rdf:Property ;
-  rdfs:domain ja:FileManager ;
-  rdfs:range ja:LocationMapper
-.
-</code></pre>
-<p>A <code>ja:FileManager</code> object may have a <code>ja:locationMapper</code> property
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">FileManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">locationMapper</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">locationMapper</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">FileManager</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">LocationMapper</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>A <code>ja:FileManager</code> object may have a <code>ja:locationMapper</code> property
 value which identifies the specification of a <code>LocationMapper</code>
 object initialising that file manager.</p>
-<pre><code>ja:LocationMapper a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty lm:mapping; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Object
-.
-lm:mapping a rdf:Property ;
-  rdfs:domain ja:LocationMapper
-.
-</code></pre>
-<p>A <code>ja:LocationMapper</code> object may have <code>lm:mapping</code> property values,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">LocationMapper</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">lm:</span><span style="color:#008000;font-weight:bold">mapping</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">lm:</span><span style="color:#008000;font-weight:bold">mapping</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">LocationMapper</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>A <code>ja:LocationMapper</code> object may have <code>lm:mapping</code> property values,
 describing the location mapping, as described in the FileManager
 documentation. (Note that the vocabulary for those items is in a
 different namespace than the JA properties and classes.)</p>
@@ -686,20 +666,19 @@ different namespace than the JA properties and classes.)</p>
 <p>Union models can be constructed from any number of sub-models and a
 single <em>root</em> model. The root model is the one written to when the
 union model is updated; the sub-models are untouched.</p>
-<pre><code>ja:UnionModel a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:rootModel; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Model
-.
-ja:rootModel a rdf:Property ;
-  rdfs:domain ja:UnionModel ;
-  rdfs:range ja:Model
-.
-ja:subModel a rdf:Property ;
-  rdfs:domain ja:UnionModel ;
-  rdfs:range ja:Model
-.
-</code></pre>
-<p>If the single <code>ja:rootModel</code> property is present, its value
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">UnionModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rootModel</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rootModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">UnionModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">subModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">UnionModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Model</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>If the single <code>ja:rootModel</code> property is present, its value
 describes a model to use as the root model of the union. All
 updates to the union are directed to this root model. If no root
 model is supplied, the union is given an <em>immutable</em>, <em>empty</em> model
@@ -711,27 +690,26 @@ property).</p>
 <h3 id="prefix-mappings">Prefix mappings</h3>
 <p>The PrefixMappings of a model may be set from PrefixMapping
 specifications.</p>
-<pre><code>ja:PrefixMapping a rdfs:Class ;
-  rdfs:subClassOf ja:Object
-.
-ja:includes a rdf:Property ;
-  rdfs:domain ja:PrefixMapping ;
-  rdfs:range ja:PrefixMapping
-.
-
-ja:SinglePrefixMapping a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:namespace; owl:cardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:prefix; owl:cardinality 1] ;
-  rdfs:subClassOf ja:PrefixMapping
-.
-ja:namespace a rdf:Property ;
-  rdfs:domain ja:SinglePrefixMapping
-.
-ja:prefix a rdf:Property ;
-  rdfs:domain ja:SinglePrefixMapping
-.
-</code></pre>
-<p>The <code>ja:includes</code> property allows a PrefixMapping to include the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">PrefixMapping</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">includes</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">PrefixMapping</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">PrefixMapping</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">SinglePrefixMapping</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">namespace</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">cardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">prefix</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">cardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">PrefixMapping</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">namespace</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">SinglePrefixMapping</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">prefix</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">SinglePrefixMapping</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The <code>ja:includes</code> property allows a PrefixMapping to include the
 content of other specified PrefixMappings.</p>
 <p>The <code>ja:prefix</code> and <code>ja:namespace</code> properties allow the
 construction of a single element of a prefix mapping by specifying
@@ -741,27 +719,23 @@ the prefix and namespace of the mapping.</p>
 Assembler specification: the <em>assembler</em> and <em>imports</em> directives.</p>
 <h4 id="assembler">Assembler</h4>
 <p>A specification may contain statements of the form:</p>
-<pre><code>someResource ja:assembler &quot;some.Assembler.class.name&quot;
-</code></pre>
-<p>When <code>someResource</code> is used as the type of a root object, the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">someResource</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">assembler</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;some.Assembler.class.name&#34;</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>When <code>someResource</code> is used as the type of a root object, the
 AssemblerGroup that processes the description will use an instance
 of the Java class named by the object of the statement. That class
 must implement the <code>Assembler</code> interface. See
 <a href="inside-assemblers.html#loading-assembler-classes">loading assembler classes</a> for more
 details.</p>
 <p>Similarly, statements of the form:</p>
-<pre><code>someResource ja:loadClass &quot;some.class.name&quot;
-</code></pre>
-<p>will cause the named class to be loaded (but not treated as
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">someResource</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">loadClass</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;some.class.name&#34;</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>will cause the named class to be loaded (but not treated as
 assemblers).</p>
 <h4 id="imports">Imports</h4>
 <p>If a specification contains statements of the form:</p>
-<pre><code>anyResource owl:imports someURL
-</code></pre>
-<p>or, equivalently,</p>
-<pre><code>anyResource ja:imports someURL
-</code></pre>
-<p>then the specification is regarded as also containing the contents
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">anyResource</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">imports</span><span style="color:#bbb"> </span><span style="">someURL</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>or, equivalently,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">anyResource</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">imports</span><span style="color:#bbb"> </span><span style="">someURL</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>then the specification is regarded as also containing the contents
 of the RDF at <code>someURL</code>. That RDF may in turn contain <code>imports</code>
 referring to other RDF.</p>
 <h2 id="limited-rdfs-inference">Limited RDFS inference</h2>

@@ -401,7 +401,7 @@
   RDF data to create an inference model. This can either be done by putting all
   the RDF data into one Model or by separating into two components - schema and
   instance data. For some external reasoners a hard separation may be required.
-  For all of the built in reasoners the separation is arbitrary. The prime value
+  For all of the built-in reasoners the separation is arbitrary. The prime value
   of this separation is to allow some deductions from one set of data (typically
   some schema definitions) to be efficiently applied to several subsidiary sets
   of data (typically sets of instance data).</p>
@@ -432,69 +432,61 @@
   have a resource &quot;a&quot; with value &quot;foo&quot; for &quot;p&quot;.
   This could be done by writing an RDF/XML or N3 file and reading that in but
   we have chosen to use the RDF API:</p>
-<pre><code>String NS = &quot;urn:x-hp-jena:eg/&quot;;
-
-// Build a trivial example data set
-Model rdfsExample = ModelFactory.createDefaultModel();
-Property p = rdfsExample.createProperty(NS, &quot;p&quot;);
-Property q = rdfsExample.createProperty(NS, &quot;q&quot;);
-rdfsExample.add(p, RDFS.subPropertyOf, q);
-rdfsExample.createResource(NS+&quot;a&quot;).addProperty(p, &quot;foo&quot;);
-</code></pre>
-<p>Now we can create an inference model which performs RDFS inference over this
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String NS <span style="color:#666">=</span> <span style="color:#b44">&#34;urn:x-hp-jena:eg/&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Build a trivial example data set
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model rdfsExample <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>Property p <span style="color:#666">=</span> rdfsExample<span style="color:#666">.</span><span style="color:#b44">createProperty</span><span style="color:#666">(</span>NS<span style="color:#666">,</span> <span style="color:#b44">&#34;p&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Property q <span style="color:#666">=</span> rdfsExample<span style="color:#666">.</span><span style="color:#b44">createProperty</span><span style="color:#666">(</span>NS<span style="color:#666">,</span> <span style="color:#b44">&#34;q&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>rdfsExample<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span>p<span style="color:#666">,</span> RDFS<span style="color:#666">.</span><span style="color:#b44">subPropertyOf</span><span style="color:#666">,</span> q<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>rdfsExample<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">(</span>NS<span style="color:#666">+</span><span style="color:#b44">&#34;a&#34;</span><span style="color:#666">).</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>p<span style="color:#666">,</span> <span style="color:#b44">&#34;foo&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>Now we can create an inference model which performs RDFS inference over this
   data by using:</p>
-<pre><code>InfModel inf = ModelFactory.createRDFSModel(rdfsExample);  // [1]
-</code></pre>
-<p>We can then check that resulting model shows that &quot;a&quot; also has property
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createRDFSModel</span><span style="color:#666">(</span>rdfsExample<span style="color:#666">);</span>  <span style="color:#080;font-style:italic">// [1]
+</span></span></span></code></pre></div><p>We can then check that resulting model shows that &quot;a&quot; also has property
   &quot;q&quot; of value &quot;foo&quot; by virtue of the subPropertyOf entailment:</p>
-<pre><code>Resource a = inf.getResource(NS+&quot;a&quot;);
-System.out.println(&quot;Statement: &quot; + a.getProperty(q));
-</code></pre>
-<p>Which prints the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource a <span style="color:#666">=</span> inf<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span>NS<span style="color:#666">+</span><span style="color:#b44">&#34;a&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Statement: &#34;</span> <span style="color:#666">+</span> a<span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>q<span style="color:#666">));</span>
+</span></span></code></pre></div><p>Which prints the output:</p>
 <pre>   <i> Statement: [urn:x-hp-jena:eg/a, urn:x-hp-jena:eg/q, Literal&lt;foo&gt;]</i>
 </pre>
 <p>Alternatively we could have created an empty inference model and then added
   in the statements directly to that model.</p>
 <p>If we wanted to use a different reasoner which is not available as a convenience
   method or wanted to configure one we would change line [1]. For example, to
-  create the same set up manually we could replace \[1\] by:</p>
-<pre><code>Reasoner reasoner = ReasonerRegistry.getRDFSReasoner();
-InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</code></pre>
-<p>or even more manually by</p>
-<pre><code>Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(null);
-InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</code></pre>
-<p>The purpose of creating a new reasoner instance like this variant would be
+  create the same setup manually we could replace \[1\] by:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> ReasonerRegistry<span style="color:#666">.</span><span style="color:#b44">getRDFSReasoner</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rdfsExample<span style="color:#666">);</span>
+</span></span></code></pre></div><p>or even more manually by</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> RDFSRuleReasonerFactory<span style="color:#666">.</span><span style="color:#b44">theInstance</span><span style="color:#666">().</span><span style="color:#b44">create</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rdfsExample<span style="color:#666">);</span>
+</span></span></code></pre></div><p>The purpose of creating a new reasoner instance like this variant would be
   to enable configuration parameters to be set. For example, if we were to listStatements
   on inf Model we would see that it also &quot;includes&quot; all the RDFS axioms,
   of which there are quite a lot. It is sometimes useful to suppress these and
   only see the &quot;interesting&quot; entailments. This can be done by setting
   the processing level parameter by creating a description of a new reasoner configuration
   and passing that to the factory method:</p>
-<pre><code>Resource config = ModelFactory.createDefaultModel()
-                              .createResource()
-                              .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, &quot;simple&quot;);
-Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(config);
-InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</code></pre>
-<p>This is a rather long winded way of setting a single parameter, though it can
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource config <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPsetRDFSLevel</span><span style="color:#666">,</span> <span style="color:#b44">&#34;simple&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> RDFSRuleReasonerFactory<span style="color:#666">.</span><span style="color:#b44">theInstance</span><span style="color:#666">().</span><span style="color:#b44">create</span><span style="color:#666">(</span>config<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rdfsExample<span style="color:#666">);</span>
+</span></span></code></pre></div><p>This is a rather long winded way of setting a single parameter, though it can
   be useful in the cases where you want to store this sort of configuration information
   in a separate (RDF) configuration file. For hardwired cases the following alternative
   is often simpler:</p>
-<pre><code>Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(null);
-reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
-                      ReasonerVocabulary.RDFS_SIMPLE);
-InfModel inf = ModelFactory.createInfModel(reasoner, rdfsExample);
-</code></pre>
-<p>Finally, supposing you have a more complex set of schema information, defined
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> RDFSRuleReasonerFactory<span style="color:#666">.</span><span style="color:#b44">theInstance</span><span style="color:#666">()</span>Create<span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>reasoner<span style="color:#666">.</span><span style="color:#b44">setParameter</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPsetRDFSLevel</span><span style="color:#666">,</span>
+</span></span><span style="display:flex;"><span>                      ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">RDFS_SIMPLE</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rdfsExample<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Finally, supposing you have a more complex set of schema information, defined
   in a Model called <i>schema,</i> and you want to apply this schema to several
   sets of instance data without redoing too many of the same intermediate deductions.
   This can be done by using the SPI level methods: </p>
-<pre><code>Reasoner boundReasoner = reasoner.bindSchema(schema);
-InfModel inf = ModelFactory.createInfModel(boundReasoner, data);
-</code></pre>
-<p>This creates a new reasoner, independent from the original, which contains
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Reasoner boundReasoner <span style="color:#666">=</span> reasoner<span style="color:#666">.</span><span style="color:#b44">bindSchema</span><span style="color:#666">(</span>schema<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>boundReasoner<span style="color:#666">,</span> data<span style="color:#666">);</span>
+</span></span></code></pre></div><p>This creates a new reasoner, independent from the original, which contains
   the schema data. Any queries to an InfModel created using the boundReasoner
   will see the schema statements, the data statements and any statements entailed
   from the combination of the two. Any updates to the InfModel will be reflected
@@ -527,19 +519,18 @@ InfModel inf = ModelFactory.createInfModel(boundReasoner, data);
   which can be used for programmatic handling of the violations.</p>
 <p>For example, to check a data set and list any problems one could do something
   like:</p>
-<pre><code>Model data = RDFDataMgr.loadModel(fname);
-InfModel infmodel = ModelFactory.createRDFSModel(data);
-ValidityReport validity = infmodel.validate();
-if (validity.isValid()) {
-    System.out.println(&quot;OK&quot;);
-} else {
-    System.out.println(&quot;Conflicts&quot;);
-    for (Iterator i = validity.getReports(); i.hasNext(); ) {
-        System.out.println(&quot; - &quot; + i.next());
-    }
-}
-</code></pre>
-<p>The file <code>testing/reasoners/rdfs/dttest2.nt</code> declares a property
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model data <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span>fname<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel infmodel <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createRDFSModel</span><span style="color:#666">(</span>data<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>ValidityReport validity <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">validate</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>validity<span style="color:#666">.</span><span style="color:#b44">isValid</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;OK&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Conflicts&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>Iterator i <span style="color:#666">=</span> validity<span style="color:#666">.</span><span style="color:#b44">getReports</span><span style="color:#666">();</span> i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> i<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>The file <code>testing/reasoners/rdfs/dttest2.nt</code> declares a property
   <code>bar</code> with range <code>xsd:integer</code> and attaches a <code>bar</code>
   value to some resource with the value <code>&quot;25.5&quot;^^xsd:decimal</code>.
   If we run the above sample code on this file we see:</p>
@@ -608,7 +599,7 @@ if (validity.isValid()) {
   reasoners this functionality is available for <code>rdfs:subClassOf</code> and
   <code>rdfs:subPropertyOf</code> and the direct aliases for these are defined
   in <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/vocabulary/ReasonerVocabulary.html"><code>ReasonerVocabulary</code></a>.</p>
-<p>Typically the easiest way to work with such indirect and direct relations is
+<p>Typically, the easiest way to work with such indirect and direct relations is
   to use the <a href="../ontology/index.html">Ontology API</a> which hides the
   grubby details of these property aliases.</p>
 <h4 id="derivations">Derivations</h4>
@@ -628,31 +619,28 @@ if (validity.isValid()) {
   any queries are made to the inference model.</p>
 <p>As an illustration suppose that we have a raw data model which asserts three
   triples:</p>
-<pre><code>eg:A eg:p eg:B .
-eg:B eg:p eg:C .
-eg:C eg:p eg:D .
-</code></pre>
-<p>and suppose that we have a trivial rule set which computes the transitive closure
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">A</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">p</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">B</span> .
+</span></span><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">B</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">p</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">C</span> .
+</span></span><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">C</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">p</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">D</span> .
+</span></span></code></pre></div><p>and suppose that we have a trivial rule set which computes the transitive closure
   over relation eg:p</p>
-<pre><code>String rules = &quot;[rule1: (?a eg:p ?b) (?b eg:p ?c) -&amp;gt; (?a eg:p ?c)]&quot;;
-Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
-reasoner.setDerivationLogging(true);
-InfModel inf = ModelFactory.createInfModel(reasoner, rawData);
-</code></pre>
-<p>Then we can query whether eg:A is related through eg:p to eg:D and list the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String rules <span style="color:#666">=</span> <span style="color:#b44">&#34;[rule1: (?a eg:p ?b) (?b eg:p ?c) -&amp;gt; (?a eg:p ?c)]&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> GenericRuleReasoner<span style="color:#666">(</span>Rule<span style="color:#666">.</span><span style="color:#b44">parseRules</span><span style="color:#666">(</span>rules<span style="color:#666">));</span>
+</span></span><span style="display:flex;"><span>reasoner<span style="color:#666">.</span><span style="color:#b44">setDerivationLogging</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rawData<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Then we can query whether eg:A is related through eg:p to eg:D and list the
   derivation route using the following code fragment: </p>
-<pre><code>PrintWriter out = new PrintWriter(System.out);
-for (StmtIterator i = inf.listStatements(A, p, D); i.hasNext(); ) {
-    Statement s = i.nextStatement();
-    System.out.println(&quot;Statement is &quot; + s);
-    for (Iterator id = inf.getDerivation(s); id.hasNext(); ) {
-        Derivation deriv = (Derivation) id.next();
-        deriv.printTrace(out, true);
-    }
-}
-out.flush();
-</code></pre>
-<p>Which generates the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>PrintWriter out <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> PrintWriter<span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>StmtIterator i <span style="color:#666">=</span> inf<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>A<span style="color:#666">,</span> p<span style="color:#666">,</span> D<span style="color:#666">);</span> i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    Statement s <span style="color:#666">=</span> i<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Statement is &#34;</span> <span style="color:#666">+</span> s<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>Iterator id <span style="color:#666">=</span> inf<span style="color:#666">.</span><span style="color:#b44">getDerivation</span><span style="color:#666">(</span>s<span style="color:#666">);</span> id<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        Derivation deriv <span style="color:#666">=</span> <span style="color:#666">(</span>Derivation<span style="color:#666">)</span> id<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        deriv<span style="color:#666">.</span><span style="color:#b44">printTrace</span><span style="color:#666">(</span>out<span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span>out<span style="color:#666">.</span><span style="color:#b44">flush</span><span style="color:#666">();</span>
+</span></span></code></pre></div><p>Which generates the output:</p>
 <pre><i>Statement is [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/D]
     Rule rule1 concluded (eg:A eg:p eg:D) &lt-
         Fact (eg:A eg:p eg:B)
@@ -729,13 +717,11 @@ out.flush();
   then the RDFS reasoner implements all RDFS entailments except for the bNode
   closure rules. These closure rules imply, for example, that for all triples
   of the form:</p>
-<pre><code>eg:a eg:p nnn^^datatype .
-</code></pre>
-<p>we should introduce the corresponding blank nodes:</p>
-<pre><code>eg:a eg:p _:anon1 .
-_:anon1 rdf:type datatype .
-</code></pre>
-<p>Whilst such rules are both correct and necessary to reduce RDF datatype entailment
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">a</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">p</span> <span style="">nnn</span>^^<span style="color:#00a000">datatype</span> .
+</span></span></code></pre></div><p>we should introduce the corresponding blank nodes:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">a</span> <span style="color:#00f;font-weight:bold">eg</span>:<span style="color:#008000;font-weight:bold">p</span> <span style="color:#a0a000">_:anon1</span> .
+</span></span><span style="display:flex;"><span><span style="color:#a0a000">_:anon1</span> <span style="color:#00f;font-weight:bold">rdf</span>:<span style="color:#008000;font-weight:bold">type</span> <span style="color:#00a000">datatype</span> .
+</span></span></code></pre></div><p>Whilst such rules are both correct and necessary to reduce RDF datatype entailment
   down to simple entailment they are not useful in implementation terms. In Jena
   simple entailment can be implemented by translating a graph containing bNodes
   to an equivalent query containing variables in place of the bNodes. Such a query
@@ -772,17 +758,15 @@ _:anon1 rdf:type datatype .
     the standard. </dd>
 </dl>
 <p>The level can be set using the <code>setParameter</code> call, e.g.</p>
-<pre><code>reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
-                      ReasonerVocabulary.RDFS_SIMPLE);
-</code></pre>
-<p>or by constructing an RDF configuration description and passing that to the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>reasoner<span style="color:#666">.</span><span style="color:#b44">setParameter</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPsetRDFSLevel</span><span style="color:#666">,</span>
+</span></span><span style="display:flex;"><span>                      ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">RDFS_SIMPLE</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>or by constructing an RDF configuration description and passing that to the
   RDFSRuleReasonerFactory e.g.</p>
-<pre><code>Resource config = ModelFactory.createDefaultModel()
-                  .createResource()
-                  .addProperty(ReasonerVocabulary.PROPsetRDFSLevel, &quot;simple&quot;);
-Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(config);
-</code></pre>
-<h4 id="summary-of-parameters">Summary of parameters</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource config <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">()</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPsetRDFSLevel</span><span style="color:#666">,</span> <span style="color:#b44">&#34;simple&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> RDFSRuleReasonerFactory<span style="color:#666">.</span><span style="color:#b44">theInstance</span><span style="color:#666">()</span>Create<span style="color:#666">(</span>config<span style="color:#666">);</span>
+</span></span></code></pre></div><h4 id="summary-of-parameters">Summary of parameters</h4>
 <table width="90%" border="1" cellspacing="0" cellpadding="0">
   <tr>
     <td width="22%"><b>Parameter</b></td>
@@ -836,56 +820,52 @@ Reasoner reasoner = RDFSRuleReasonerFactory.theInstance()Create(config);
 <p>As a complete worked example let us create a simple RDFS schema, some instance
   data and use an instance of the RDFS reasoner to query the two.</p>
 <p>We shall use a trivial schema:</p>
-<pre><code>  &lt;rdf:Description rdf:about=&quot;eg:mum&quot;&gt;
-    &lt;rdfs:subPropertyOf rdf:resource=&quot;eg:parent&quot;/&gt;
-  &lt;/rdf:Description&gt;
- 
-  &lt;rdf:Description rdf:about=&quot;eg:parent&quot;&gt;
-    &lt;rdfs:range  rdf:resource=&quot;eg:Person&quot;/&gt;
-    &lt;rdfs:domain rdf:resource=&quot;eg:Person&quot;/&gt;
-  &lt;/rdf:Description&gt;
-
-  &lt;rdf:Description rdf:about=&quot;eg:age&quot;&gt;
-    &lt;rdfs:range rdf:resource=&quot;xsd:integer&quot; /&gt;
-  &lt;/rdf:Description&gt;
-</code></pre>
-<p>This defines a property <code>parent</code> from <code>Person</code> to <code>Person</code>,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;eg:mum&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdfs:subPropertyOf</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;eg:parent&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;eg:parent&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdfs:range</span>  <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;eg:Person&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdfs:domain</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;eg:Person&#34;</span><span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;rdf:Description</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;eg:age&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;rdfs:range</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;xsd:integer&#34;</span> <span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/rdf:Description&gt;</span>
+</span></span></code></pre></div><p>This defines a property <code>parent</code> from <code>Person</code> to <code>Person</code>,
   a sub-property <code>mum</code> of <code>parent</code> and an integer-valued
   property <code>age</code>.</p>
 <p>We shall also use the even simpler instance file:</p>
-<pre><code>  &lt;Teenager rdf:about=&quot;eg:colin&quot;&gt;
-      &lt;mum rdf:resource=&quot;eg:rosy&quot; /&gt;
-      &lt;age&gt;13&lt;/age&gt;
-  &lt;/Teenager&gt;
-</code></pre>
-<p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;Teenager</span> <span style="color:#b44">rdf:about=</span><span style="color:#b44">&#34;eg:colin&#34;</span><span style="color:#008000;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;mum</span> <span style="color:#b44">rdf:resource=</span><span style="color:#b44">&#34;eg:rosy&#34;</span> <span style="color:#008000;font-weight:bold">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;age&gt;</span>13<span style="color:#008000;font-weight:bold">&lt;/age&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#008000;font-weight:bold">&lt;/Teenager&gt;</span>
+</span></span></code></pre></div><p>
   Which defines a <code>Teenager</code> called <code>colin</code> who has a <code>mum</code>
   <code>rosy</code> and an <code>age</code> of 13.</p>
 <p>Then the following code fragment can be used to read files containing these
   definitions, create an inference model and query it for information on the <code>rdf:type</code>
   of <code>colin</code> and the <code>rdf:type</code> of <code>Person</code>:</p>
-<pre><code>Model schema = RDFDataMgr.loadModel(&quot;file:data/rdfsDemoSchema.rdf&quot;);
-Model data = RDFDataMgr.loadModel(&quot;file:data/rdfsDemoData.rdf&quot;);
-InfModel infmodel = ModelFactory.createRDFSModel(schema, data);
-
-Resource colin = infmodel.getResource(&quot;urn:x-hp:eg/colin&quot;);
-System.out.println(&quot;colin has types:&quot;);
-printStatements(infmodel, colin, RDF.type, null);
-
-Resource Person = infmodel.getResource(&quot;urn:x-hp:eg/Person&quot;);
-System.out.println(&quot;\nPerson has types:&quot;);
-printStatements(infmodel, Person, RDF.type, null);
-</code></pre>
-<p>This produces the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model schema <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data/rdfsDemoSchema.rdf&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Model data <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data/rdfsDemoData.rdf&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel infmodel <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createRDFSModel</span><span style="color:#666">(</span>schema<span style="color:#666">,</span> data<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Resource colin <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:x-hp:eg/colin&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;colin has types:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>printStatements<span style="color:#666">(</span>infmodel<span style="color:#666">,</span> colin<span style="color:#666">,</span> RDF<span style="color:#666">.</span><span style="color:#b44">type</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Resource Person <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:x-hp:eg/Person&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;\nPerson has types:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>printStatements<span style="color:#666">(</span>infmodel<span style="color:#666">,</span> Person<span style="color:#666">,</span> RDF<span style="color:#666">.</span><span style="color:#b44">type</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>This produces the output:</p>
 <pre><i>colin has types:
  - (eg:colin rdf:type eg:Teenager)
  - (eg:colin rdf:type rdfs:Resource)
  - (eg:colin rdf:type eg:Person)
-<p>Person has types:</p>
-<ul>
-<li>(eg:Person rdf:type rdfs:Class)</li>
-<li>(eg:Person rdf:type rdfs:Resource)</i></pre></li>
-</ul>
+
+Person has types:
+ - (eg:Person rdf:type rdfs:Class)
+ - (eg:Person rdf:type rdfs:Resource)</i></pre>
 <p>This says that <code>colin</code> is both a <code>Teenager</code> (by direct
   definition), a <code>Person</code> (because he has a <code>mum</code> which
   means he has a <code>parent</code> and the domain of <code>parent</code> is
@@ -893,17 +873,17 @@ printStatements(infmodel, Person, RDF.type, null);
   is an <code>rdfs:Class</code>, even though that wasn't explicitly in the schema,
   because it is used as object of range and domain statements.</p>
 <p>If we add the additional code:</p>
-<pre>ValidityReport validity = infmodel.validate();
-if (validity.isValid()) {
-    System.out.println("\nOK");
-} else {
-    System.out.println("\nConflicts");
-    for (Iterator i = validity.getReports(); i.hasNext(); ) {
-        ValidityReport.Report report = (ValidityReport.Report)i.next();
-        System.out.println(" - " + report);
-    }
-}</pre>
-<p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ValidityReport validity <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">validate</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>validity<span style="color:#666">.</span><span style="color:#b44">isValid</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;\nOK&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;\nConflicts&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>Iterator i <span style="color:#666">=</span> validity<span style="color:#666">.</span><span style="color:#b44">getReports</span><span style="color:#666">();</span> i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        ValidityReport<span style="color:#666">.</span><span style="color:#b44">Report</span> report <span style="color:#666">=</span> <span style="color:#666">(</span>ValidityReport<span style="color:#666">.</span><span style="color:#b44">Report</span><span style="color:#666">)</span>i<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> report<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>
   Then we get the additional output:</p>
 <pre><i>Conflicts
  - Error (dtRange): Property urn:x-hp:eg/age has a typed range
@@ -1255,27 +1235,25 @@ configuration still leaves something to be desired and will the subject of futur
   and &quot;<code>bigName42</code>&quot;.</p>
 <p>We can create an instance of the OWL reasoner, specialized to the demo schema
   and then apply that to the demo data to obtain an inference model, as follows:</p>
-<pre><code>Model schema = RDFDataMgr.loadModel(&quot;file:data/owlDemoSchema.rdf&quot;);
-Model data = RDFDataMgr.loadModel(&quot;file:data/owlDemoData.rdf&quot;);
-Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
-reasoner = reasoner.bindSchema(schema);
-InfModel infmodel = ModelFactory.createInfModel(reasoner, data);
-</code></pre>
-<p>A typical example operation on such a model would be to find out all we know
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model schema <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data/owlDemoSchema.rdf&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Model data <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data/owlDemoData.rdf&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> ReasonerRegistry<span style="color:#666">.</span><span style="color:#b44">getOWLReasoner</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>reasoner <span style="color:#666">=</span> reasoner<span style="color:#666">.</span><span style="color:#b44">bindSchema</span><span style="color:#666">(</span>schema<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel infmodel <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> data<span style="color:#666">);</span>
+</span></span></code></pre></div><p>A typical example operation on such a model would be to find out all we know
   about a specific instance, for example the <code>nForce</code> mother board.
   This can be done using:</p>
-<pre><code>Resource nForce = infmodel.getResource(&quot;urn:x-hp:eg/nForce&quot;);
-System.out.println(&quot;nForce *:&quot;);
-printStatements(infmodel, nForce, null, null);
-</code></pre>
-<p> where <code>printStatements</code> is defined by: </p>
-    public void printStatements(Model m, Resource s, Property p, Resource o) {
-        for (StmtIterator i = m.listStatements(s,p,o); i.hasNext(); ) {
-            Statement stmt = i.nextStatement();
-            System.out.println(" - " + PrintUtil.print(stmt));
-        }
-    }
-<p>This produces the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource nForce <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:x-hp:eg/nForce&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;nForce *:&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>printStatements<span style="color:#666">(</span>infmodel<span style="color:#666">,</span> nForce<span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p> where <code>printStatements</code> is defined by: </p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">printStatements</span><span style="color:#666">(</span>Model m<span style="color:#666">,</span> Resource s<span style="color:#666">,</span> Property p<span style="color:#666">,</span> Resource o<span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>StmtIterator i <span style="color:#666">=</span> m<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>s<span style="color:#666">,</span>p<span style="color:#666">,</span>o<span style="color:#666">);</span> i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        Statement stmt <span style="color:#666">=</span> i<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> PrintUtil<span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span>stmt<span style="color:#666">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>This produces the output:</p>
 <pre><i>nForce *:
  - (eg:nForce rdf:type owl:Thing)
  - (eg:nForce owl:sameAs eg:unknownMB)
@@ -1301,30 +1279,28 @@ printStatements(infmodel, nForce, null, null);
   have a <code>gamingGraphics</code> component from the combination of the <code>nForce</code>
   inferences we've already seen and the transitivity of <code>hasComponent</code>.
   We can test this using:</p>
-<pre><code>Resource gamingComputer = infmodel.getResource(&quot;urn:x-hp:eg/GamingComputer&quot;);
-Resource whiteBox = infmodel.getResource(&quot;urn:x-hp:eg/whiteBoxZX&quot;);
-if (infmodel.contains(whiteBox, RDF.type, gamingComputer)) {
-    System.out.println(&quot;White box recognized as gaming computer&quot;);
-} else {
-    System.out.println(&quot;Failed to recognize white box correctly&quot;);
-}
-</code></pre>
-<p> Which generates the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Resource gamingComputer <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:x-hp:eg/GamingComputer&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource whiteBox <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:x-hp:eg/whiteBoxZX&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>infmodel<span style="color:#666">.</span><span style="color:#b44">contains</span><span style="color:#666">(</span>whiteBox<span style="color:#666">,</span> RDF<span style="color:#666">.</span><span style="color:#b44">type</span><span style="color:#666">,</span> gamingComputer<span style="color:#666">))</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;White box recognized as gaming computer&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Failed to recognize white box correctly&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p> Which generates the output:</p>
 <pre>  <i>White box recognized as gaming computer</i></pre>
 <p>Finally, we can check for inconsistencies within the data by using the validation
   interface:</p>
-<pre><code>ValidityReport validity = infmodel.validate();
-if (validity.isValid()) {
-    System.out.println(&quot;OK&quot;);
-} else {
-    System.out.println(&quot;Conflicts&quot;);
-    for (Iterator i = validity.getReports(); i.hasNext(); ) {
-        ValidityReport.Report report = (ValidityReport.Report)i.next();
-        System.out.println(&quot; - &quot; + report);
-    }
-}
-</code></pre>
-<p>Which generates the output:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ValidityReport validity <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">validate</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">(</span>validity<span style="color:#666">.</span><span style="color:#b44">isValid</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;OK&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;Conflicts&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#666">(</span>Iterator i <span style="color:#666">=</span> validity<span style="color:#666">.</span><span style="color:#b44">getReports</span><span style="color:#666">();</span> i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">();</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>        ValidityReport<span style="color:#666">.</span><span style="color:#b44">Report</span> report <span style="color:#666">=</span> <span style="color:#666">(</span>ValidityReport<span style="color:#666">.</span><span style="color:#b44">Report</span><span style="color:#666">)</span>i<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> report<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Which generates the output:</p>
 <pre><i>Conflicts
  - Error (conflict): Two individuals both same and different, may be
    due to disjoint classes or functional properties
@@ -1343,9 +1319,9 @@ Implicated node: eg:bigNameSpecialMB</i>
   class expressions.</p>
 <p>For example, given a model containing the RDF assertions corresponding to the
   two OWL axioms:</p>
-<pre>class A = intersectionOf (minCardinality(P, 1), maxCardinality(P,1))
-class B = cardinality(P,1)</pre>
-<p>Then the reasoner can demonstrate that classes A and B are equivalent, in particular
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">class</span> <span style="color:#00f">A</span> <span style="color:#666">=</span> intersectionOf <span style="color:#666">(</span>minCardinality<span style="color:#666">(</span>P<span style="color:#666">,</span> <span style="color:#666">1</span><span style="color:#666">),</span> maxCardinality<span style="color:#666">(</span>P<span style="color:#666">,</span><span style="color:#666">1</span><span style="color:#666">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">class</span> <span style="color:#00f">B</span> <span style="color:#666">=</span> cardinality<span style="color:#666">(</span>P<span style="color:#666">,</span><span style="color:#666">1</span><span style="color:#666">)</span>
+</span></span></code></pre></div><p>Then the reasoner can demonstrate that classes A and B are equivalent, in particular
   that any instance of A is an instance of B and vice versa. However, given a
   model just containing the first set of assertions you cannot directly query
   the inference model for the individual triples that make up <i>cardinality(P,1)</i>.
@@ -1516,22 +1492,16 @@ or   number                      // e.g. 42 or 25.5</pre></p>
 </p>
 <p>
 Rule files may be loaded and parsed using:
-<pre>
-List rules = Rule.rulesFromURL("file:myfile.rules");
-</pre>
-or
-<pre>
-BufferedReader br = /* open reader */ ;
-List rules = Rule.parseRules( Rule.rulesParserFromReader(br) );
-</pre>
-or
-<pre>
-String ruleSrc = /* list of rules in line */
-List rules = Rule.parseRules( rulesSrc );
-</pre>
-In the first two cases (reading from a URL or a BufferedReader) the rule file is
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>List rules <span style="color:#666">=</span> Rule<span style="color:#666">.</span><span style="color:#b44">rulesFromURL</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:myfile.rules&#34;</span><span style="color:#666">);</span>
+</span></span></code></pre></div><p>or</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>BufferedReader br <span style="color:#666">=</span> <span style="color:#080;font-style:italic">/* open reader */</span> <span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>List rules <span style="color:#666">=</span> Rule<span style="color:#666">.</span><span style="color:#b44">parseRules</span><span style="color:#666">(</span> Rule<span style="color:#666">.</span><span style="color:#b44">rulesParserFromReader</span><span style="color:#666">(</span>br<span style="color:#666">)</span> <span style="color:#666">);</span>
+</span></span></code></pre></div><p>or</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String ruleSrc <span style="color:#666">=</span> <span style="color:#080;font-style:italic">/* list of rules in line */</span>
+</span></span><span style="display:flex;"><span>List rules <span style="color:#666">=</span> Rule<span style="color:#666">.</span><span style="color:#b44">parseRules</span><span style="color:#666">(</span> rulesSrc <span style="color:#666">);</span>
+</span></span></code></pre></div><p>In the first two cases (reading from a URL or a BufferedReader) the rule file is
 preprocessed by a simple processor which strips comments and supports some additional
-macro commands:
+macro commands:</p>
 <dl>
 <dt><code># ...</code></dt>
 <dd>A comment line.</dd>
@@ -1552,17 +1522,14 @@ URL for a rule file use one of the keywords
 <code>OWLMini</code> (case insensitive).
 </dd>
 </dl>
-<p>
-So an example complete rule file which includes the RDFS rules and defines
-a single extra rule is:
-<pre><code># Example rule file
-@prefix pre: &lt;http://jena.hpl.hp.com/prefix#&gt;.
-@include &lt;RDFS&gt;.
-
-[rule1: (?f pre:father ?a) (?u pre:brother ?f) -&gt; (?u pre:uncle ?a)]
-</code></pre>
-</p>
-<p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
+<p>So an example complete rule file which includes the RDFS rules and defines
+a single extra rule is:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Example rule file</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">pre:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/prefix#&gt;</span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">@include</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;RDFS&gt;</span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[<span style="">rul</span><span style="color:#666">e1</span>:<span style="color:#bbb"> </span>(<span style="">?f</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">pre:</span><span style="color:#008000;font-weight:bold">father</span><span style="color:#bbb"> </span><span style="">?a</span>)<span style="color:#bbb"> </span>(<span style="">?u</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">pre:</span><span style="color:#008000;font-weight:bold">brother</span><span style="color:#bbb"> </span><span style="">?f</span>)<span style="color:#bbb"> </span><span style="">-&gt;</span><span style="color:#bbb"> </span>(<span style="">?u</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">pre:</span><span style="color:#008000;font-weight:bold">uncle</span><span style="color:#bbb"> </span><span style="">?a</span>)]<span style="color:#bbb">
+</span></span></span></code></pre></div><p>[<a href="#rules">Rule Index</a>] [<a href="#index">Main Index</a>]</p>
 <h3 id="RULEforward">Forward chaining engine</h3>
 <p>If the rule reasoner is configured to run in forward mode then only the forward
   chaining engine will be used. The first time the inference Model is queried
@@ -1646,10 +1613,9 @@ triple(s1, p1, o1) :- triple(sb1, pb1, ob1), ...
   property is tabled then goals such as <code>(A, ?P, ?X)</code> will all be tabled
   because the property variable might match one of the tabled properties.</p>
 <p>Thus the rule set:</p>
-<pre>
--&gt; table(rdfs:subClassOf).
-[r1: (?A rdfs:subClassOf ?C) &lt;- (?A rdfs:subClassOf ?B) (?B rdfs:subClassOf ?C)]</pre>
-<p>will successfully compute the transitive closure of the subClassOf relation.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-&gt;</span><span style="color:#bbb"> </span><span style="">table</span>(<span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span>).<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>[<span style="">r</span><span style="color:#666">1</span>:<span style="color:#bbb"> </span>(<span style="">?A</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="">?C</span>)<span style="color:#bbb"> </span><span style="">&lt;-</span><span style="color:#bbb"> </span>(<span style="">?A</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="">?B</span>)<span style="color:#bbb"> </span>(<span style="">?B</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="">?C</span>)]<span style="color:#bbb">
+</span></span></span></code></pre></div><p>will successfully compute the transitive closure of the subClassOf relation.
   Any query of the form (*, rdfs:subClassOf, *) will be satisfied by a mixture
   of ground facts and resolution of rule r1. Without the first line this rule
   would be an infinite loop. </p>
@@ -1714,11 +1680,11 @@ might be run in either backward or forward mode then they should be limited to a
   into the Reasoner factory in an RDF Model.</p>
 <p>The primary parameter required to instantiate a useful <code>GenericRuleReasoner</code>
   is a rule set which can be passed into the constructor, for example:</p>
-<pre>String ruleSrc = "[rule1: (?a eg:p ?b) (?b eg:p ?c) -&gt; (?a eg:p ?c)]";
+<pre tabindex="0"><code class="language-javas" data-lang="javas">String ruleSrc = &#34;[rule1: (?a eg:p ?b) (?b eg:p ?c) -&amp;gt; (?a eg:p ?c)]&#34;;
 List rules = Rule.parseRules(ruleSrc);
 ...
-Reasoner reasoner = new GenericRuleReasoner(rules);</pre>
-<p>A short cut, useful when the rules are defined in local text files using the
+Reasoner reasoner = new GenericRuleReasoner(rules);&lt;/pre&gt;
+</code></pre><p>A short cut, useful when the rules are defined in local text files using the
   syntax described earlier, is the <code>ruleSet</code> parameter which gives
   a file name which should be loadable from either the classpath or relative to
   the current working directory.<br>
@@ -2035,27 +2001,27 @@ do not "pollute" the inference results.</div>
   and to build a rule reasoner to implement this.</p>
 <p>As a simple design we define two properties eg:concatFirst, eg:concatSecond
   which declare the first and second properties in a concatenation. Thus the triples:</p>
-<pre>eg:r eg:concatFirst  eg:p .
-eg:r eg:concatSecond eg:q . </pre>
-<p>mean that the property r = p o q.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">r</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">concatFirst</span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">p</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">r</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">concatSecond</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">q</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>mean that the property r = p o q.</p>
 <p>Suppose we have a Jena Model rawModel which contains the above assertions together
   with the additional facts:</p>
-<pre>eg:A eg:p eg:B .
-eg:B eg:q eg:C .</pre>
-<p>Then we want to be able to conclude that A is related to C through the composite
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">A</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">p</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">B</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">B</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">q</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">C</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Then we want to be able to conclude that A is related to C through the composite
   relation r. The following code fragment constructs and runs a rule reasoner
   instance to implement this:</p>
-<pre>String rules =
-    "[r1: (?c eg:concatFirst ?p), (?c eg:concatSecond ?q) -&gt; " +
-    "     [r1b: (?x ?c ?y) &lt;- (?x ?p ?z) (?z ?q ?y)] ]";
-Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
-InfModel inf = ModelFactory.createInfModel(reasoner, rawData);
-System.out.println("A * * =&gt;");
-Iterator list = inf.listStatements(A, null, (RDFNode)null);
-while (list.hasNext()) {
-    System.out.println(" - " + list.next());
-}</pre>
-<p>When run on a rawData model contain the above four triples this generates the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String rules <span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;[r1: (?c eg:concatFirst ?p), (?c eg:concatSecond ?q) -&amp;gt; &#34;</span> <span style="color:#666">+</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;     [r1b: (?x ?c ?y) &amp;lt;- (?x ?p ?z) (?z ?q ?y)] ]&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>Reasoner reasoner <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> GenericRuleReasoner<span style="color:#666">(</span>Rule<span style="color:#666">.</span><span style="color:#b44">parseRules</span><span style="color:#666">(</span>rules<span style="color:#666">));</span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> rawData<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34;A * * =&amp;gt;&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Iterator list <span style="color:#666">=</span> inf<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>A<span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">,</span> <span style="color:#666">(</span>RDFNode<span style="color:#666">)</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>list<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> list<span style="color:#666">.</span><span style="color:#b44">next</span><span style="color:#666">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>When run on a rawData model contain the above four triples this generates the
   (correct) output:</p>
 <pre><i>A * * =&gt;
  - [urn:x-hp:eg/A, urn:x-hp:eg/p, urn:x-hp:eg/B]
@@ -2068,28 +2034,32 @@ while (list.hasNext()) {
 <p>This time we'll put the rules in a separate file to simplify editing them and
   we'll use the machinery for configuring a reasoner using an RDF specification.
   The code then looks something like this:</p>
-<pre>// Register a namespace for use in the demo
-String demoURI = "http://jena.hpl.hp.com/demo#";
-PrintUtil.registerPrefix("demo", demoURI);
-<p>// Create an (RDF) specification of a hybrid reasoner which
-// loads its data from an external file.
-Model m = ModelFactory.createDefaultModel();
-Resource configuration =  m.createResource();
-configuration.addProperty(ReasonerVocabulary.PROPruleMode, &ldquo;hybrid&rdquo;);
-configuration.addProperty(ReasonerVocabulary.PROPruleSet,  &ldquo;data/demo.rules&rdquo;);</p>
-<p>// Create an instance of such a reasoner
-Reasoner reasoner = GenericRuleReasonerFactory.theInstance().create(configuration);</p>
-<p>// Load test data
-Model data = RDFDataMgr.loadModel(&ldquo;file:data/demoData.rdf&rdquo;);
-InfModel infmodel = ModelFactory.createInfModel(reasoner, data);</p>
-<p>// Query for all things related to &ldquo;a&rdquo; by &ldquo;p&rdquo;
-Property p = data.getProperty(demoURI, &ldquo;p&rdquo;);
-Resource a = data.getResource(demoURI + &ldquo;a&rdquo;);
-StmtIterator i = infmodel.listStatements(a, p, (RDFNode)null);
-while (i.hasNext()) {
-System.out.println(&quot; - &quot; + PrintUtil.print(i.nextStatement()));
-}</pre></p>
-<p>Here is file <code>data/demo.rules</code> which defines property <code>demo:p</code>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Register a namespace for use in the demo
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>String demoURI <span style="color:#666">=</span> <span style="color:#b44">&#34;http://jena.hpl.hp.com/demo#&#34;</span><span style="color:#666">;</span>
+</span></span><span style="display:flex;"><span>PrintUtil<span style="color:#666">.</span><span style="color:#b44">registerPrefix</span><span style="color:#666">(</span><span style="color:#b44">&#34;demo&#34;</span><span style="color:#666">,</span> demoURI<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Create an (RDF) specification of a hybrid reasoner which
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// loads its data from an external file.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model m <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createDefaultModel</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>Resource configuration <span style="color:#666">=</span>  m<span style="color:#666">.</span><span style="color:#b44">createResource</span><span style="color:#666">();</span>
+</span></span><span style="display:flex;"><span>configuration<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPruleMode</span><span style="color:#666">,</span> <span style="color:#b44">&#34;hybrid&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>configuration<span style="color:#666">.</span><span style="color:#b44">addProperty</span><span style="color:#666">(</span>ReasonerVocabulary<span style="color:#666">.</span><span style="color:#b44">PROPruleSet</span><span style="color:#666">,</span>  <span style="color:#b44">&#34;data/demo.rules&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Create an instance of such a reasoner
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Reasoner reasoner <span style="color:#666">=</span> GenericRuleReasonerFactory<span style="color:#666">.</span><span style="color:#b44">theInstance</span><span style="color:#666">().</span><span style="color:#b44">create</span><span style="color:#666">(</span>configuration<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Load test data
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Model data <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data/demoData.rdf&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>InfModel infmodel <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> data<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Query for all things related to &#34;a&#34; by &#34;p&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Property p <span style="color:#666">=</span> data<span style="color:#666">.</span><span style="color:#b44">getProperty</span><span style="color:#666">(</span>demoURI<span style="color:#666">,</span> <span style="color:#b44">&#34;p&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>Resource a <span style="color:#666">=</span> data<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span>demoURI <span style="color:#666">+</span> <span style="color:#b44">&#34;a&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>StmtIterator i <span style="color:#666">=</span> infmodel<span style="color:#666">.</span><span style="color:#b44">listStatements</span><span style="color:#666">(</span>a<span style="color:#666">,</span> p<span style="color:#666">,</span> <span style="color:#666">(</span>RDFNode<span style="color:#666">)</span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">while</span> <span style="color:#666">(</span>i<span style="color:#666">.</span><span style="color:#b44">hasNext</span><span style="color:#666">())</span> <span style="color:#666">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span><span style="color:#b44">&#34; - &#34;</span> <span style="color:#666">+</span> PrintUtil<span style="color:#666">.</span><span style="color:#b44">print</span><span style="color:#666">(</span>i<span style="color:#666">.</span><span style="color:#b44">nextStatement</span><span style="color:#666">()));</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
+</span></span></code></pre></div><p>Here is file <code>data/demo.rules</code> which defines property <code>demo:p</code>
   as being both symmetric and transitive using pure forward rules:</p>
 <pre>[transitiveRule: (?A demo:p ?B), (?B demo:p ?C) -&gt; (?A &gt; demo:p ?C) ]
 [symmetricRule: (?Y demo:p ?X) -&gt; (?X demo:p ?Y) ] </pre>
@@ -2151,16 +2121,15 @@ System.out.println(&quot; - &quot; + PrintUtil.print(i.nextStatement()));
  should be forward, all the inferences which need all of the results of the RDFS/OWL rules
  should be backward. Note that the RDFS and OWL rulesets assume certain settings
  for the GenericRuleReasoner so a typical configuration is:</p>
-<pre><code>Model data = RDFDataMgr.loadModel(&quot;file:data.n3&quot;);
-List rules = Rule.rulesFromURL(&quot;myrules.rules&quot;);
-
-GenericRuleReasoner reasoner = new GenericRuleReasoner(rules);
-reasoner.setOWLTranslation(true);               // not needed in RDFS case
-reasoner.setTransitiveClosureCaching(true);
-
-InfModel inf = ModelFactory.createInfModel(reasoner, data);
-</code></pre>
-<p>Where the <code>myrules.rules</code> file will use <code>@include</code> to include
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model data <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadModel</span><span style="color:#666">(</span><span style="color:#b44">&#34;file:data.n3&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>List rules <span style="color:#666">=</span> Rule<span style="color:#666">.</span><span style="color:#b44">rulesFromURL</span><span style="color:#666">(</span><span style="color:#b44">&#34;myrules.rules&#34;</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GenericRuleReasoner reasoner <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> GenericRuleReasoner<span style="color:#666">(</span>rules<span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>reasoner<span style="color:#666">.</span><span style="color:#b44">setOWLTranslation</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>               <span style="color:#080;font-style:italic">// not needed in RDFS case
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>reasoner<span style="color:#666">.</span><span style="color:#b44">setTransitiveClosureCaching</span><span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>InfModel inf <span style="color:#666">=</span> ModelFactory<span style="color:#666">.</span><span style="color:#b44">createInfModel</span><span style="color:#666">(</span>reasoner<span style="color:#666">,</span> data<span style="color:#666">);</span>
+</span></span></code></pre></div><p>Where the <code>myrules.rules</code> file will use <code>@include</code> to include
  one of the RDFS or OWL rule sets.</p>
 <p>One  useful variant on this option, at least in simple cases, is
  to manually include a pure (non-hybrid) ruleset for the RDFS/OWL fragment
@@ -2191,14 +2160,14 @@ InfModel inf = ModelFactory.createInfModel(reasoner, data);
     [ (?X rb:violation error('summary', 'description', args)) &lt;- ...) ] .</pre>
 <p>The validation calls can be "switched on" by inserting an
   additional triple into the graph of the form:</p>
-<pre>_:anon rb:validation on() .</pre>
-<p>This makes it possible to build rules, such as the template above, which are
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a0a000">_:anon</span> <span style="color:#00f;font-weight:bold">rb</span>:<span style="color:#008000;font-weight:bold">validation</span> <span style="">on</span>() .
+</span></span></code></pre></div><p>This makes it possible to build rules, such as the template above, which are
   ignored unless validation has been switched on - thus avoiding potential overhead
   in normal operation. This is optional and the &quot;validation on()&quot; guard
   can be omitted.</p>
 <p>Then the validate call queries the inference graph for all triples of the form:</p>
-<pre>?x rb:violation f(summary, description, args) .</pre>
-<p>The subject resource is the &quot;prime suspect&quot; implicated in the inconsistency,
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#b8860b">?x</span> <span style="color:#00f;font-weight:bold">rb</span>:<span style="color:#008000;font-weight:bold">violation</span> <span style="">f</span>(<span style="">summary</span>, <span style="">description</span>, <span style="">args</span>) .
+</span></span></code></pre></div><p>The subject resource is the &quot;prime suspect&quot; implicated in the inconsistency,
   the relation<code> rb:violation</code> is a reserved property used to communicate
   validation reports from the rules to the reasoner, the object is a structured
   (functor-valued) literal. The name of the functor indicates the type of violation
