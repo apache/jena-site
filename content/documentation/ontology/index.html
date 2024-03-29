@@ -540,7 +540,7 @@ allow us to dynamically change the Java class of the object
 representing this resource. The resource has not changed: it still
 has URI <code>#DigitalCamera</code>. But the appropriate Java class Jena might
 choose to encapsulate it has changed from <code>OntClass</code> to <code>Restriction</code>.
-Conversely, if we subsequently remove the <code>rdf:type owl:Restriction</code>
+Conversely, if we subsequently remove the <code>rdf:type owl:Restriction</code>
 from the model, using the <code>Restriction</code> Java class is no longer
 appropriate.</p>
 <p>Even worse, OWL Full allows us to state the following (rather
@@ -968,12 +968,12 @@ you are extending Jena&rsquo;s internal structures, you should think of
 <h3 id="controlling-imports-processing">Controlling imports processing</h3>
 <p>By default, loading imports during the <code>read()</code> call is automatic. To
 <code>read()</code> an ontology without building the imports closure, call the
-method <code>setProcessImports( false )</code> on the document manager object
+method <code>setProcessImports( false )</code> on the document manager object
 before calling <code>read()</code>. Alternatively, you can set the
 <code>processImports</code> property in the policy file. You can also be more
 selective, and ignore only certain URI&rsquo;s when loading the imported
 documents. To selectively skip certain named imports, call the
-method <code>addIgnoreImport( String uri )</code> on the document manager
+method <code>addIgnoreImport( String uri )</code> on the document manager
 object, or set the <code>ignoreImport</code> property in the policy.</p>
 <h3 id="managing-file-references">Managing file references</h3>
 <p>An advantage of working with ontologies is that we can reuse work
@@ -1055,7 +1055,7 @@ reading a fresh copy of C from C&rsquo;s source URL, saving both time and
 storage space.</p>
 <p>Caching of import models is switched on by default. To turn it off,
 use the policy property <code>cacheModels</code>, or call the method
-<code>setCacheModels( boolean caching )</code> with <code>caching = false</code>. The
+<code>setCacheModels( boolean caching )</code> with <code>caching = false</code>. The
 document manager&rsquo;s current model cache can be cleared at any time
 by calling <code>clearCache()</code>.</p>
 <h2 id="the-generic-ontology-type-ontresource">The generic ontology type: OntResource</h2>
@@ -1147,18 +1147,18 @@ available methods:</p>
 </tr>
 </tbody>
 </table>
-<p>For example: <code>addSameAs( Resource r )</code>, or
-<code>isSameAs( Resource r )</code>. For full details of the individual
+<p>For example: <code>addSameAs( Resource r )</code>, or
+<code>isSameAs( Resource r )</code>. For full details of the individual
 methods, please consult the Javadoc.</p>
 <p><code>OntResource</code> defines some other general utility methods. For
 example, to find out how many values a resource has for a given
-property, you can call <code>getCardinality( Property p )</code>. To delete
+property, you can call <code>getCardinality( Property p )</code>. To delete
 the resource from the ontology altogether, you can call <code>remove()</code>.
 The effect of this is to remove every statement that mentions this
 resource as a subject or object of a statement.</p>
 <p>To get the value of a given property, use
-<code>getPropertyValue( Property p )</code>. To set it,
-<code>setPropertyValue( Property p, RDFNode value )</code>. Continuing the
+<code>getPropertyValue( Property p )</code>. To set it,
+<code>setPropertyValue( Property p, RDFNode value )</code>. Continuing the
 naming pattern, the values of a named property can be listed (with
 <code>listPropertyValues</code>), removed (with <code>removeProperty</code>) or added
 (with <code>addProperty</code>).</p>
@@ -1180,7 +1180,7 @@ also infer that <code>x</code> has <code>rdf:type</code> <code>owl:Thing</code> 
 resource is exactly what is needed. For other tasks, this is not
 the case. If you are developing an ontology editor, for example,
 you may want to distinguish in its display between inferred and
-asserted types. In the above example, only <code>x rdf:type B</code> is
+asserted types. In the above example, only <code>x rdf:type B</code> is
 asserted, everything else is inferred. One way to make this
 distinction is to make use of the base model (see Figure 4).
 Getting the resource from the base model and listing the type
@@ -1388,7 +1388,7 @@ methods, we can access the following attributes of an
 <tbody>
 <tr>
 <td>subProperty</td>
-<td>A sub property of this property; i.e. a property which is declared to be a <code>subPropertyOf</code> this property. If p is a sub property of q, and we know that <code>A p B</code> is true, we can infer that <code>A q B</code> is also true.</td>
+<td>A sub property of this property; i.e. a property which is declared to be a <code>subPropertyOf</code> this property. If p is a sub property of q, and we know that <code>A p B</code> is true, we can infer that <code>A q B</code> is also true.</td>
 </tr>
 <tr>
 <td>superProperty</td>
@@ -1480,8 +1480,8 @@ property in a model, it will have the effect of asserting different
 <p>OWL permits object and datatype properties to be <em>functional</em> –
 that is, for a given individual in the domain, the range value will
 always be the same. In particular, if <code>father</code> is a functional
-property, and individual <code>:jane</code> has <code>father :jim</code> and
-<code>father :james</code>, a reasoner is entitled to conclude that <code>:jim</code> and
+property, and individual <code>:jane</code> has <code>father :jim</code> and
+<code>father :james</code>, a reasoner is entitled to conclude that <code>:jim</code> and
 <code>:james</code> denote the same individual. A functional property is
 equivalent to stating that the property has a maximum cardinality
 of one.</p>
@@ -1498,11 +1498,11 @@ parameter to the <code>createObjectProperty()</code> method on <code>OntModel</c
 <p>There are several additional sub-types of ObjectProperty that
 represent additional capabilities of ontology properties. A
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/TransitiveProperty.html"><code>TransitiveProperty</code></a>
-means that if p is transitive, and we know <code>:a p :b</code> and also
-<code>b p :c</code>, we can infer that <code>:a p :c</code>. A
+means that if p is transitive, and we know <code>:a p :b</code> and also
+<code>b p :c</code>, we can infer that <code>:a p :c</code>. A
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/SymmetricProperty.html"><code>SymmetricProperty</code></a>
-means that if p is symmetric, and we know <code>:a p :b</code>, we can infer
-<code>:b p :a</code>. An
+means that if p is symmetric, and we know <code>:a p :b</code>, we can infer
+<code>:b p :a</code>. An
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/InverseFunctionalProperty.html"><code>InverseFunctionalProperty</code></a>
 means that for any given range element, the domain value is unique.</p>
 <p>Given that all properties are <code>RDFNode</code> objects, and therefore
@@ -1780,7 +1780,7 @@ the front of the list. Thus the second list will run <code>c2</code> to <code>c0
 the ontology operations we are discussing here, the order of values
 in the list is not considered significant.</p>
 <p>Finally, a resource which is a cell in a list sequence will accept
-<code>.as( RDFList.class )</code></p>
+<code>.as( RDFList.class )</code></p>
 <p>Once the list has been created or obtained from the model,
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/RDFList.html"><code>RDFList</code></a>
 methods may be used to access members of the list, iterate over the
@@ -1974,7 +1974,7 @@ Individual ind1 = c.createIndividual( NS + &quot;ind1&quot; );
 second way will create the individual in the same model that the
 class is attached to (see the <code>getModel()</code> method). In both of the
 above examples the individual is named, but this is not necessary.
-The method <code>OntModel.createIndividual( Resource cls )</code> creates an
+The method <code>OntModel.createIndividual( Resource cls )</code> creates an
 anonymous individual belonging to the given class. Note that the
 type of the class parameter is only <code>Resource</code>. You are not
 required to use <code>as()</code> to present a <code>Resource</code> to an <code>OntClass</code>

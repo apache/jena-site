@@ -188,28 +188,26 @@
 execute it with Jena.</p>
 <h2 id="a-hello-world-of-queries">A &ldquo;hello world&rdquo; of queries</h2>
 <p>The file &ldquo;<a href="sparql_data/q1.rq">q1.rq</a>&rdquo; contains the following query:</p>
-<pre><code>SELECT ?x
-WHERE { ?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  &quot;John Smith&quot; }
-</code></pre>
-<p>executing that query with the command line query application;</p>
-<pre><code>---------------------------------
-| x                             |
-=================================
-| &lt;http://somewhere/JohnSmith/&gt; |
----------------------------------
-</code></pre>
-<p>This works by matching the triple pattern in the <code>WHERE</code> clause
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?x</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span> { <span style="color:#b8860b">?x</span>  <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;</span>  <span style="color:#b44">&#34;John Smith&#34;</span> }
+</span></span></code></pre></div><p>executing that query with the command line query application;</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">x</span><span style="color:#bbb">                             </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>This works by matching the triple pattern in the <code>WHERE</code> clause
 against the triples in the RDF graph. The predicate and object of
 the triple are fixed values so the pattern is going to match only
 triples with those values. The subject is a variable, and there are
 no other restrictions on the variable. The pattern matches any
 triples with these predicate and object values, and it matches with
 solutions for <code>x</code>.</p>
-<p>The item enclosed in &lt;&gt; is a URI (actually, it&rsquo;s an IRI) and the
+<p>The item enclosed in <code>&lt;\&gt;</code> is a URI (actually, it&rsquo;s an IRI) and the
 item enclosed in &quot;&quot; is a plain literal. Just like Turtle, N3 or
 N-triples, typed literals are written with ^^ and language tags
 can be added with @.</p>
-<p>?x is a variable called x. The ? does not form part of the name
+<p><code>?x</code> is a variable called x. The ? does not form part of the name
 which is why it does not appear in the table output.</p>
 <p>There is one match. The query returns the match in the <code>x</code> query
 variable. The output shown was obtained by using one of ARQ&rsquo;s
@@ -220,21 +218,18 @@ command line applications.</p>
 command path.</p>
 <h3 id="windows-setup">Windows setup</h3>
 <p>Execute:</p>
-<pre><code>bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
-</code></pre>
-<p>You can just put the <code>bat/</code> directory on your classpath or copy the
+<pre tabindex="0"><code>&gt; bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq
+</code></pre><p>You can just put the <code>bat/</code> directory on your classpath or copy the
 programs out of it.</p>
 <h3 id="bash-scripts-for-linuxcygwinunix">bash scripts for Linux/Cygwin/Unix</h3>
 <p>Execute:</p>
-<pre><code>bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq
-</code></pre>
-<h3 id="using-the-java-command-line-applications-directly">Using the Java command line applications directly</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ bin/sparql --data<span style="color:#666">=</span>doc/Tutorial/vc-db-1.rdf --query<span style="color:#666">=</span>doc/Tutorial/q1.rq
+</span></span></code></pre></div><h3 id="using-the-java-command-line-applications-directly">Using the Java command line applications directly</h3>
 <p>(This is not necessary.)</p>
 <p>You will need to set the classpath to include <em>all</em> the jar files
 in the Jena distribution <code>lib/</code> directory.</p>
-<pre><code>java -cp 'DIST/lib/*' arq.sparql ...
-</code></pre>
-<p>where <code>DIST</code> is the <code>apache-jena-VERSION</code> directory.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ java -cp <span style="color:#b44">&#39;DIST/lib/*&#39;</span> arq.sparql ...
+</span></span></code></pre></div><p>where <code>DIST</code> is the <code>apache-jena-VERSION</code> directory.</p>
 <p><a href="sparql_basic_patterns.html">Next: basic patterns</a></p>
 
   </article>

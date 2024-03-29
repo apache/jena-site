@@ -306,12 +306,12 @@ eventually causing out of memory errors in Fuseki.  You can see if you are exper
 contains a <code>.jrnl</code> file that is non-empty then Fuseki/TDB is having to hold the journal in-memory.</p>
 <p><strong>However</strong>, because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting
 Fuseki the journal will be flushed to disk. When using the <a href="java_api.html">TDB Java API</a>, the journal can be flushed by closing any datasets and releasing the TDB resources.</p>
-<pre><code>  Dataset dataset = TDBFactory.createDataset(directory) ;
+<pre><code>  Dataset dataset = TDBFactory.createDataset(directory) ;
   try{
      ...
-     dataset.begin(ReadWrite.READ) ;
+     dataset.begin(ReadWrite.READ) ;
      // Perform operations      
-     dataset.end() ;
+     dataset.end() ;
      ... 
   }finally{
      dataset.close();

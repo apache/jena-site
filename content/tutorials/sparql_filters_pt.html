@@ -182,56 +182,50 @@
 <h2 id="casamento-de-strings">Casamento de Strings</h2>
 <p>SPARQL fornece uma operação para testar strings, baseada em expressões regulares. Isso inclui a habilidade de testes como SQL &ldquo;LIKE&rdquo;, no entanto, a sintaxe de expressões regulares é diferente de SQL.</p>
 <p>A sintaxe é:</p>
-<pre><code>FILTER regex(?x, &quot;pattern&quot; [, &quot;flags&quot;])
-</code></pre>
-<p>O argumento flags é opcional. A flag &ldquo;i&rdquo; significa casamento de padrão case-insensitivo.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">regex</span>(<span style="color:#b8860b">?x</span>, <span style="color:#b44">&#34;pattern&#34;</span> [, <span style="color:#b44">&#34;flags&#34;</span>])
+</span></span></code></pre></div><p>O argumento flags é opcional. A flag &ldquo;i&rdquo; significa casamento de padrão case-insensitivo.</p>
 <p>A consulta (<a href="sparql_data/q-f1.rq">q-f1.rq</a>) procura nomes com um “r” ou “R” neles.</p>
-<pre><code>PREFIX vcard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?g
-WHERE
-{ ?y vcard:Given ?g .
-  FILTER regex(?g, &quot;r&quot;, &quot;i&quot;) }
-</code></pre>
-<p>resultados:</p>
-<pre><code>-------------
-| g         |
-=============
-| &quot;Rebecca&quot; |
-| &quot;Sarah&quot;   |
--------------
-</code></pre>
-<p>A linguagem de expressão regular
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vcard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?g</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{ <span style="color:#b8860b">?y</span> <span style="color:#00f;font-weight:bold">vcard</span>:<span style="color:#008000;font-weight:bold">Given</span> <span style="color:#b8860b">?g</span> .
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">FILTER</span> <span style="color:#00a000">regex</span>(<span style="color:#b8860b">?g</span>, <span style="color:#b44">&#34;r&#34;</span>, <span style="color:#b44">&#34;i&#34;</span>) }
+</span></span></code></pre></div><p>resultados:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">g</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=============</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Rebecca&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah&#34;</span><span style="color:#bbb">   </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>A linguagem de expressão regular
 <a href="https://www.w3.org/TR/xpath-functions/#regex-syntax">XQuery regular expression language</a>
 é a versão codificada da mesma encontrada em Perl.</p>
 <h2 id="testando-valores">Testando valores</h2>
-<p>Muitas vezes, a aplicação necessita filtrar com o valor de uma variável. No arquivo <a href="sparql_data/vc-db-2.rdf">vc-db-2.rdf</a>, nós adicionamos um campo extra para idade. Idade não é definida no esquema de vcard então tivemos que criar uma nova propriedade para usar neste tutorial. RDF permite a mistura de diferentes definições de informação porque URIs são únicas. Note também que a propriedade info:age é tipada.</p>
+<p>Muitas vezes, a aplicação necessita filtrar com o valor de uma variável. No arquivo <a href="sparql_data/vc-db-2.rdf">vc-db-2.rdf</a>, nós adicionamos um campo extra para idade. Idade não é definida no esquema de vcard então tivemos que criar uma nova propriedade para usar neste tutorial. RDF permite a mistura de diferentes definições de informação porque URIs são únicas. Note também que a propriedade <code>info:age</code> é tipada.</p>
 <p>Nesse pedaço de dado, nós mostramos o valor tipado.</p>
-<pre><code>&lt;http://somewhere/RebeccaSmith/&gt;
-    info:age &quot;23&quot;^^xsd:integer ;
-    vCard:FN &quot;Becky Smith&quot; ;
-    vCard:N [ vCard:Family &quot;Smith&quot; ;
-              vCard:Given  &quot;Rebecca&quot; ] .
-</code></pre>
-<p>Então a consulta (<a href="sparql_data/q-f2.rq">q-f2.rq</a>) para procurar as pessoas mais velhas que 24 anos é:</p>
-<pre><code>PREFIX info: &lt;http://somewhere/peopleInfo#&gt;
-
-SELECT ?resource
-WHERE
-  {
-    ?resource info:age ?age .
-    FILTER (?age &gt;= 24)
-  }
-</code></pre>
-<p>A expressão aritmética precisa estar em parêntesis. A única solução é:</p>
-<pre><code>---------------------------------
-| resource                      |
-=================================
-| &lt;http://somewhere/JohnSmith/&gt; |
----------------------------------
-</code></pre>
-<p>Apenas um resultado, resultando na URI para o recurso Jonh Smith. Se consultássemos os mais novos que 24 anos, resultaria em Rebecca Smith. Nada sobre os Jones.</p>
-<p>O banco de dados não contém informação sobre a idade dos Jones: não há propriedades info:age nos seus vcards, então a variável <code>age</code> não recebe um valor, então não é testada.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a0a000">&lt;http://somewhere/RebeccaSmith/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b44">&#34;23&#34;</span><span style="color:#666">^^</span><span style="color:#00f;font-weight:bold">xsd</span>:<span style="color:#008000;font-weight:bold">integer</span> ;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span> <span style="color:#b44">&#34;Becky Smith&#34;</span> ;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">N</span> [ <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">Family</span> <span style="color:#b44">&#34;Smith&#34;</span> ;
+</span></span><span style="display:flex;"><span>              <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">Given</span>  <span style="color:#b44">&#34;Rebecca&#34;</span> ] .
+</span></span></code></pre></div><p>Então a consulta (<a href="sparql_data/q-f2.rq">q-f2.rq</a>) para procurar as pessoas mais velhas que 24 anos é:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">info</span>: <span style="color:#a0a000">&lt;http://somewhere/peopleInfo#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?resource</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">?resource</span> <span style="color:#00f;font-weight:bold">info</span>:<span style="color:#008000;font-weight:bold">age</span> <span style="color:#b8860b">?age</span> .
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">FILTER</span> (<span style="color:#b8860b">?age</span> <span style="color:#666">&gt;=</span> <span style="color:#666">24</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>A expressão aritmética precisa estar em parêntesis. A única solução é:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">resource</span><span style="color:#bbb">                      </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://somewhere/JohnSmith/&gt;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Apenas um resultado, resultando na URI para o recurso Jonh Smith. Se consultássemos os mais novos que 24 anos, resultaria em Rebecca Smith. Nada sobre os Jones.</p>
+<p>O banco de dados não contém informação sobre a idade dos Jones: não há propriedades <code>info:age</code> nos seus vcards, então a variável <code>age</code> não recebe um valor, então não é testada.</p>
 <p><a href="sparql_optionals_pt.html">Próximo: Opcionais</a></p>
 
   </article>

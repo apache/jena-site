@@ -183,94 +183,86 @@
 <h2 id="union---duas-maneiras-para-o-mesmo-dado">UNION - duas maneiras para o mesmo dado</h2>
 <p>Ambos os vocabulários de vcard e de FOAF possuem propriedades para nome de pessoas. Em vcard, é vcard:FN, o nome formatado, e em FOAF, é foaf:name. Nesta sessão, vamos olhar um pequeno conjunto de dados onde o nome das pessoas podem ser dados por ambos os vocabulários de FOAF e vcard.</p>
 <p>Suponha que temos um <a href="sparql_data/vc-db-3.ttl">an RDF graph</a> que contém a informação de nome usando os vocabulários de vcard e FOAF.</p>
-<pre><code>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-@prefix vcard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .
-
-_:a foaf:name   &quot;Matt Jones&quot; .
-
-_:b foaf:name   &quot;Sarah Jones&quot; .
-
-_:c vcard:FN    &quot;Becky Smith&quot; .
-
-_:d vcard:FN    &quot;John Smith&quot; .
-</code></pre>
-<p>Uma consulta para acessar a informação do nome, poderia ser (<a href="sparql_data/q-union1.rq">q-union1.rq</a>):</p>
-<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
-PREFIX vCard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name
-WHERE
-{
-   { [] foaf:name ?name } UNION { [] vCard:FN ?name }
-}
-</code></pre>
-<p>isso retorna:</p>
-<pre><code>-----------------
-| name          |
-=================
-| &quot;Matt Jones&quot;  |
-| &quot;Sarah Jones&quot; |
-| &quot;Becky Smith&quot; |
-| &quot;John Smith&quot;  |
------------------
-</code></pre>
-<p>Não importa que forma de expressão usasse para o nome, a variável ?name é preenchida. Isso pode ser obtido usando um <code>FILTER</code> como mostra essa consulta (<a href="sparql_data/q-union1alt.rq">q-union-1alt.rq</a>):</p>
-<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
-PREFIX vCard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name
-WHERE
-{
-  [] ?p ?name
-  FILTER ( ?p = foaf:name || ?p = vCard:FN )
-}
-</code></pre>
-<p>testando se a propriedade é uma URI ou a outra. As soluções podem não vir na mesma ordem. A primeira forma é conhecida como a mais rápida, dependendo dos dados e do armazenamento utilizado, porque a segunda forma tem que pegar todas as triplas do grafo para casar com o padrão da tripla  com variáveis não ligadas (ou blank nodes) em cada slot, então testa cada ?p para ver se casa com algum dos valores. Isso vai depender da sofisticação do otimizador de consultas para saber se ele vai executar a consulta mais eficientemente e transcender para a camada de armazenamento.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://xmlns.com/foaf/0.1/&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">@prefix</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vcard:</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">   </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">b</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">foaf:</span><span style="color:#008000;font-weight:bold">name</span><span style="color:#bbb">   </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">c</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vcard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">_</span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">d</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">vcard:</span><span style="color:#008000;font-weight:bold">FN</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Uma consulta para acessar a informação do nome, poderia ser (<a href="sparql_data/q-union1.rq">q-union1.rq</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">foaf</span>: <span style="color:#a0a000">&lt;http://xmlns.com/foaf/0.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vCard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   { [] <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name</span> } <span style="color:#a2f;font-weight:bold">UNION</span> { [] <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span> <span style="color:#b8860b">?name</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>isso retorna:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">-----------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">name</span><span style="color:#bbb">          </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">-----------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Não importa que forma de expressão usasse para o nome, a variável ?name é preenchida. Isso pode ser obtido usando um <code>FILTER</code> como mostra essa consulta (<a href="sparql_data/q-union1alt.rq">q-union-1alt.rq</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">foaf</span>: <span style="color:#a0a000">&lt;http://xmlns.com/foaf/0.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vCard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  [] <span style="color:#b8860b">?p</span> <span style="color:#b8860b">?name</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">FILTER</span> ( <span style="color:#b8860b">?p</span> <span style="color:#666">=</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#666">||</span> <span style="color:#b8860b">?p</span> <span style="color:#666">=</span> <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span> )
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>testando se a propriedade é uma URI ou a outra. As soluções podem não vir na mesma ordem. A primeira forma é conhecida como a mais rápida, dependendo dos dados e do armazenamento utilizado, porque a segunda forma tem que pegar todas as triplas do grafo para casar com o padrão da tripla  com variáveis não ligadas (ou blank nodes) em cada slot, então testa cada ?p para ver se casa com algum dos valores. Isso vai depender da sofisticação do otimizador de consultas para saber se ele vai executar a consulta mais eficientemente e transcender para a camada de armazenamento.</p>
 <h2 id="union---relembrando-onde-o-dado-foi-encontrado">Union - relembrando onde o dado foi encontrado.</h2>
 <p>O exemplo acima usou a mesma variável em cada ramo. Se diferentes variáveis forem usadas, a aplicação pode descobrir que sub-padrão causou o casamento (<a href="sparql_data/q-union2.rq">q-union2.rq</a>):</p>
-<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
-PREFIX vCard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name1 ?name2
-WHERE
-{
-   { [] foaf:name ?name1 } UNION { [] vCard:FN ?name2 }
-}
-
----------------------------------
-| name1         | name2         |
-=================================
-| &quot;Matt Jones&quot;  |               |
-| &quot;Sarah Jones&quot; |               |
-|               | &quot;Becky Smith&quot; |
-|               | &quot;John Smith&quot;  |
----------------------------------
-</code></pre>
-<p>Essa segunda consulta guardou informação sobre onde o name da pessoa se originou atribuindo o nome para diferentes variáveis.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">foaf</span>: <span style="color:#a0a000">&lt;http://xmlns.com/foaf/0.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vCard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name1</span> <span style="color:#b8860b">?name2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   { [] <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span> <span style="color:#b8860b">?name1</span> } <span style="color:#a2f;font-weight:bold">UNION</span> { [] <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span> <span style="color:#b8860b">?name2</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">nam</span><span style="color:#666">e1</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="">nam</span><span style="color:#666">e2</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Essa segunda consulta guardou informação sobre onde o name da pessoa se originou atribuindo o nome para diferentes variáveis.</p>
 <h2 id="optional-e-union">OPTIONAL e UNION</h2>
 <p>Na prática, <code>OPTIONAL</code> é mais comum que <code>UNION</code> mas ambas têm seu uso. <code>OPTIONAL</code> é útil para aumentar as soluções encontradas, <code>UNION</code> é útil para concatenar soluções de diferentes possibilidades. Eles não retornam necessariamente a informação da mesma maneira.</p>
 <p>Consulta(<a href="sparql_data/q-union3.rq">q-union3.rq</a>):</p>
-<pre><code>PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
-PREFIX vCard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
-
-SELECT ?name1 ?name2
-WHERE
-{
-  ?x a foaf:Person
-  OPTIONAL { ?x  foaf:name  ?name1 }
-  OPTIONAL { ?x  vCard:FN   ?name2 }
-}
-
----------------------------------
-| name1         | name2         |
-=================================
-| &quot;Matt Jones&quot;  |               |
-| &quot;Sarah Jones&quot; |               |
-|               | &quot;Becky Smith&quot; |
-|               | &quot;John Smith&quot;  |
----------------------------------
-</code></pre>
-<p>Mas cuidado ao usar <code>?name</code> em cada <code>OPTIONAL</code> porque isso é uma consulta dependente da ordem.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">foaf</span>: <span style="color:#a0a000">&lt;http://xmlns.com/foaf/0.1/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">vCard</span>: <span style="color:#a0a000">&lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#b8860b">?name1</span> <span style="color:#b8860b">?name2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">WHERE</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?x</span> <span style="color:#a2f;font-weight:bold">a</span> <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">Person</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?x</span>  <span style="color:#00f;font-weight:bold">foaf</span>:<span style="color:#008000;font-weight:bold">name</span>  <span style="color:#b8860b">?name1</span> }
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">OPTIONAL</span> { <span style="color:#b8860b">?x</span>  <span style="color:#00f;font-weight:bold">vCard</span>:<span style="color:#008000;font-weight:bold">FN</span>   <span style="color:#b8860b">?name2</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="">nam</span><span style="color:#666">e1</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb"> </span><span style="">nam</span><span style="color:#666">e2</span><span style="color:#bbb">         </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">=================================</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Matt Jones&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Sarah Jones&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;Becky Smith&#34;</span><span style="color:#bbb"> </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">|</span><span style="color:#bbb">               </span><span style="">|</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;John Smith&#34;</span><span style="color:#bbb">  </span><span style="">|</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="">---------------------------------</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Mas cuidado ao usar <code>?name</code> em cada <code>OPTIONAL</code> porque isso é uma consulta dependente da ordem.</p>
 <p><a href="sparql_datasets_pt.html">Próximo: Grafos Nomeados</a></p>
 
   </article>
