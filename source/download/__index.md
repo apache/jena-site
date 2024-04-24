@@ -7,7 +7,7 @@ Apache Jena is packaged as downloads which contain the most commonly used portio
 - **apache-jena** &ndash; contains the APIs, SPARQL engine, the TDB native RDF database and command line tools
 - **apache-jena-fuseki** &ndash; the Jena SPARQL server
 
-Jena5 requires Java 17.
+Jena5 requires Java 17, or a later version of Java.
 
 Jena jars are [available from Maven](maven.html).
 
