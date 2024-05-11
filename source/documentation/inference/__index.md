@@ -117,7 +117,7 @@ slug: index
   instance each time.</p>
 <p>If working with the <a href="../ontology/index.html">Ontology API</a> it is
   not always necessary to explicitly locate a reasoner. The prebuilt instances
-  of OntModelSpec provide easy access to the appropriate reasoners to use for
+  of `OntSpecification` provide easy access to the appropriate reasoners to use for
   different Ontology configurations.</p>
 <p>Similarly, if all you want is a plain RDF Model with RDFS inference included
   then the convenience methods <code>ModelFactory.createRDFSModel</code> can be
@@ -1036,8 +1036,8 @@ configuration still leaves something to be desired and will the subject of futur
 
 ### OWL Configuration {#OWLconfiguration}
 <p>This reasoner is accessed using <code>ModelFactory.createOntologyModel</code>
-  with the prebuilt <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/ontology/OntModelSpec.html"><code>OntModelSpec</code></a>
-  <code>OWL_MEM_RULE_INF</code> or manually via <code>ReasonerRegistry.getOWLReasoner()</code>.</p>
+  with the prebuilt <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html"><code>OntSpecification</code></a>
+  <code>OWL*_MEM_RULES_INF</code> or manually via <code>ReasonerRegistry.getOWLReasoner()</code>.</p>
 <p>There are no OWL-specific configuration parameters though the reasoner supports
   the standard control parameters:</p>
 <table width="90%" border="1" cellspacing="0" cellpadding="0">

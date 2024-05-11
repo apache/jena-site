@@ -198,79 +198,43 @@ through the [ontology API](../ontology/index.html). The following
 methods are used to access the properties of a class, and the
 converse for properties:
 
-      OntClass.listDeclaredProperties();
-      OntClass.listDeclaredProperties( boolean direct );
-      OntClass.hasDeclaredProperty( Property prop, boolean direct );
-      OntProperty.listDeclaringClasses();
-      OntProperty.listDeclaringClasses( boolean direct );
+      OntClass.declaredProperties();
+      OntClass.declaredProperties( boolean direct );
+      OntClass.hasDeclaredProperty( OntProperty prop, boolean direct );
+      OntProperty.declaringClasses();
+      OntProperty.declaringClasses( boolean direct );
 
-All of the above API methods return a Jena
-[`ExtendedIterator`](/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html).
+All of the above API methods return a Java `Stream`.
 
-**Note a change from the Jena 2.1 interface:** the optional Boolean
-parameter on `listDeclaredProperties` has changed name from `all`
-(Jena 2.1 and earlier) to `direct` (Jena 2.2 and later). The
-meaning of the parameter has also changed: `all` was intended to
-simulate some reasoning steps in the absence of a reasoner, whereas
+Where
 `direct` is used to restrict the associations to only the local
-associations. See more on
-[direct associations](../ontology/index.html#direct_relationships).
+associations.
+See also 
+[Figure 5: asserted and inferred relationships](../ontology/index.html##instances-or-individuals).
 
-A further difference from Jena 2.1 is that the models that are
-constructed without reasoners perform only very limited simulation
+The models that are constructed without reasoners perform only very limited simulation
 of the inference closure of the model. Users who wish the declared
 properties to include entailments will need to construct their
 models with one of the built-in or external reasoners. The
 difference is illustrated by the following code fragment:
 
-      <rdfs:Class rdf:ID="A" />
-      <rdfs:Property rdf:ID="p">
-        <rdfs:domain rdf:resource="#A" />
-      </rdfs:Property>
-      <rdfs:Property rdf:ID="q">
-        <rdfs:subPropertyOf rdf:resource="#p" />
-      </rdfs:Property>
+    String ns =  "http://ex.com#";
+    OntModel m0 = OntModelFactory.createModel(OntSpecification.OWL2_DL_MEM);
+    OntClass a0 = m0.createOntClass( ns + "A" );
+    OntClass b0 = m0.createOntClass( ns + "B" );
+    OntObjectProperty p = m0.createObjectProperty(ns + "p");
+    OntObjectProperty q = m0.createObjectProperty(ns + "q");
+    p.addSuperProperty(q);
+    q.addDomain(b0);
+    a0.addSubClass(b0);
 
-      OntModel mNoInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
-      OntClass a0 = mNoInf.getOntClass( NS + "A" );
-      Iterator i0 = a0.listDeclaredProperties();
+    OntModel m1 = OntModelFactory.createModel(m0.getBaseGraph(), OntSpecification.OWL2_DL_MEM_RULES_INF);
+    OntClass b1 = m1.getOntClass( ns + "B" );
 
-      OntModel mInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM_RULE_INF );
-      OntClass a1 = mInf.getOntClass( NS + "A" );
-      Iterator i1 = a1.listDeclaredProperties();
+    Stream<OntProperty> s0 = b0.declaredProperties(true);
+    Stream<OntProperty> s1 = b0.declaredProperties(true);
 
-Iterator `i1` will return `p` and `q`, while `i0` will return only
-`p`.
-
-## Summary of changes from Jena 2.2-beta-2 and older
-
-For users updating code that uses `listDeclaredProperties` from
-versions of Jena prior to 2.2-final, the following changes should
-be noted:
-
--   Global properties
-    `listDeclaredProperties` will treat properties with no specified
-    domain as global, and regard them as properties of all classes. The
-    use of the `direct` flag can hide global properties from non-root
-    classes.
--   Restriction properties
-    `listDeclaredProperties` no longer heuristically returns properties
-    associated with a class via the `owl:onProperty` predicate of a
-    restriction.
--   Limited simulated inference
-    The old version of `listDeclaredProperties` attempted to simulate
-    the entailed associations between classes and properties. Users are
-    now advised to attach a reasoner to their models to do this.
--   Change in parameter semantics
-    The old version of `listDeclaredProperties(boolean all)` took one
-    parameter, a Boolean flag to indicate whether additional declared
-    (implied) properties should be listed. Since this is now covered by
-    the use, or otherwise, of a reasoner attached to the model, the new
-    method signature is `listDeclaredProperties(boolean direct)`, where
-    calling the method with `direct = true` will compress the returned
-    results to use only the
-    [direct](../ontology/index.html#direct_relationships)
-    associations.
-
+Stream `s1` will return `p` and `q`, while `s0` will return only
+`q`.
 
 
