@@ -32,28 +32,24 @@ Replace `{name}` with a dataset name: e.g. `/$/backup/myDataset`.
 ||
 | <tt>POST</tt>   | `/$/datasets`          | Create a new dataset | 
 | <tt>GET</tt>    | `/$/datasets`          | Get a list of datasets |
-| <tt>DELETE</tt> | `/$/datasets/{name}`   | Remove a dataset |
 | <tt>GET</tt>    | `/$/datasets/{name}`   | Get information about a dataset |
-| <tt>POST</tt>   | `/$/datasets/{name}?state=offline` | Switch state of dataset to offline |
-| <tt>POST</tt>   | `/$/datasets/{name}?state=active`  | Switch state of dataset to online |
+| <tt>DELETE</tt> | `/$/datasets/{name}`   | Remove a dataset |
 ||
-| <tt>POST</tt>   | `/$/server/shutdown`   | Not implemented yet  | 
+| <tt>POST</tt>   | `/$/compact/{name}?deleteOld=true` | Compact a TDB2 database. Optional remove old storage. |
 ||
 | <tt>GET</tt>    | `/$/stats`             | Get request statistics for all datasets | 
 | <tt>GET</tt>    | `/$/stats/{name}`      | Get request statistics for a dataset |
 ||
 | <tt>POST</tt>   | `/$/backup/{name}`     |               |
-| <tt>POST</tt>   | `/$/backups/{name}`     | Alias of `/$/backup/{name}` |
+| <tt>POST</tt>   | `/$/backups/{name}`    | Alias of `/$/backup/{name}` |
 | <tt>GET</tt>    | `/$/backups-list`      |               |
-| <tt>POST</tt>   | `/$/compact/{name}?deleteOld=true` |               |
+||
 | <tt>POST</tt>   | `/$/sleep`             |               |
 ||
 | <tt>GET</tt>    | `/$/tasks`             |               | 
 | <tt>GET</tt>    | `/$/tasks/{name}`      |               |
 ||
 | <tt>GET</tt>    | `/$/metrics`           |               |
-||
-| <tt>GET</tt>    | `/$/logs`           | Not implemented yet |
 
 
 ## Ping
@@ -70,8 +66,6 @@ Pattern: `/$/server`
 
 The URL `/$/server` returns details about the server and it's current status in JSON.
 
-_@@details of JSON format._
-
 ## Datasets and Services
 Pattern: `/$/datasets`
 
@@ -80,8 +74,6 @@ Pattern: `/$/datasets`
 in the container, via `GET`, `POST` and `DELETE`, operate on specific dataset.
 
 ### Adding a Dataset and its Services.
-
-> _@@ May add server-managed templates_
 
 A dataset set can be added to a running server. There are several methods
 for doing this: 
@@ -107,7 +99,7 @@ the following parameters (query string or HTML form):
 
 | Parameter |                 |
 |-----------|-----------------|
-| `dbType`  | Either `mem` or `tdb` |
+| `dbType`  | Either `mem` or `tdb`, `tdb1`, or `tdb2` |
 | `dbName`  | URL path name   |
 
 The dataset name must not be already in-use.
@@ -121,8 +113,6 @@ in any RDF format or by posting from an HTML form (the syntax must be Turtle).
 
 The assembler file is stored by the server will be used on restart or when making the dataset active again.
 
-> _@@_
-
 ### Removing a Dataset
 
 Note: `DELETE` means "gone for ever".  The dataset name and the details of its
@@ -130,22 +120,12 @@ configuration are completely deleted and can not be recovered.
 
 The data of a TDB dataset is not deleted.
 
-### Active and Offline
-
-A dataset is in one of two modes: "active", meaning it is services request over HTTP
-(subject to configuration and security), or "offline", meaning the configuration and name 
-is known about by the server but the dataset is not attached to the server.  When "offline",
-any persistent data can be manipulated outside the server.
-
-Datasets are initially "active".  The transition from "active" to "offline" is graceful - all outstanding requests are completed.
-
 ## Statistics
 Pattern: `/$/stats/{name}`
 
 Statistics can be obtained for each dataset or all datasets in a single response.
 `/$/stats` is  treated as a container for this information.
 
-> _@@ stats details_
 > See [Fuseki Server Information](fuseki-server-info.html) for details of statistics kept by a Fuseki server.
 
 ### Backup 
@@ -246,6 +226,3 @@ This is inside an array to make the format returned the same as `/$/tasks`.
 
 ## Metrics
 Pattern: `/$/metrics`
-
-> _@@_
-
