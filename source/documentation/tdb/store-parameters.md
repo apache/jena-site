@@ -51,14 +51,15 @@ to share a database).
 
 These options do not affect the on-disk structures.
 
-| JSON key name                  | Default value | Notes                  |
-|--------------------------------|--------------:|------------------------|
-| tdb.file_mode                  | See below     |                        |
-| tdb.node2nodeid_cache_size     | 100,000       |  50,000 on 32 bit java |
-| tdb.nodeid2node_cache_size     | 500,000       |  50,000 on 32 bit java |
-| tdb.node_miss_cache_size       |     100       |                        |
-| tdb.block_read_cache_size      |   10000       | Only in direct mode    |
-| tdb.block_write_cache_size     |    2000       | Only in direct mode    |
+| JSON key name                          | Default value | Notes                 |
+|----------------------------------------|--------------:|-----------------------|
+| tdb.file_mode                          |     See below |                       |
+| tdb.node2nodeid_cache_size             |       100,000 | 50,000 on 32 bit java |
+| tdb.nodeid2node_cache_size             |       500,000 | 50,000 on 32 bit java |
+| tdb.node_miss_cache_size               |           100 |                       |
+| tdb.node_cache_initial_capacity_factor |          0.25 |                       |
+| tdb.block_read_cache_size              |         10000 | Only in direct mode   |
+| tdb.block_write_cache_size             |          2000 | Only in direct mode   |
 
 ### File access - "mapped" and "direct" modes
 
@@ -121,24 +122,25 @@ These are default settings for a 64 bit Java:
 
 ```json
 { 
-  "tdb.file_mode" :               "mapped" ,
-  "tdb.block_size" :              8192 ,
-  "tdb.block_read_cache_size" :   10000 ,
-  "tdb.block_write_cache_size" :  2000 ,
-  "tdb.node2nodeid_cache_size" :  100000 ,
-  "tdb.nodeid2node_cache_size" :  500000 ,
-  "tdb.node_miss_cache_size" :    100 ,
-  "tdb.index_node2id" :           "node2id" ,
-  "tdb.index_id2node" :           "nodes" ,
-  "tdb.triple_index_primary" :    "SPO" ,
-  "tdb.triple_indexes" :          [ "SPO" , "POS" , "OSP" ] ,
-  "tdb.quad_index_primary" :      "GSPO" ,
-  "tdb.quad_indexes" :            [ "GSPO" , "GPOS" , "GOSP" , "POSG" , "OSPG" , "SPOG" ] ,
-  "tdb.prefix_index_primary" :    "GPU" ,
-  "tdb.prefix_indexes" :          [ "GPU" ] ,
-  "tdb.file_prefix_index" :       "prefixIdx" ,
-  "tdb.file_prefix_nodeid" :      "prefix2id" ,
-  "tdb.file_prefix_id2node" :     "prefixes"
+  "tdb.file_mode" :                           "mapped" ,
+  "tdb.block_size" :                          8192 ,
+  "tdb.block_read_cache_size" :               10000 ,
+  "tdb.block_write_cache_size" :              2000 ,
+  "tdb.node2nodeid_cache_size" :              100000 ,
+  "tdb.nodeid2node_cache_size" :              500000 ,
+  "tdb.node_miss_cache_size" :                100 ,
+  "tdb.node_cache_initial_capacity_factor" :  0.25 ,
+  "tdb.index_node2id" :                       "node2id" ,
+  "tdb.index_id2node" :                       "nodes" ,
+  "tdb.triple_index_primary" :                "SPO" ,
+  "tdb.triple_indexes" :                      [ "SPO" , "POS" , "OSP" ] ,
+  "tdb.quad_index_primary" :                  "GSPO" ,
+  "tdb.quad_indexes" :                        [ "GSPO" , "GPOS" , "GOSP" , "POSG" , "OSPG" , "SPOG" ] ,
+  "tdb.prefix_index_primary" :                "GPU" ,
+  "tdb.prefix_indexes" :                      [ "GPU" ] ,
+  "tdb.file_prefix_index" :                   "prefixIdx" ,
+  "tdb.file_prefix_nodeid" :                  "prefix2id" ,
+  "tdb.file_prefix_id2node" :                 "prefixes"
 }
 ```
 
