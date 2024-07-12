@@ -171,14 +171,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Reverse lookup of URI to a prefix.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#prefix(java.lang.String)" class="member-name-link">prefix</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isLegalPrefix(java.lang.String)" class="member-name-link">isLegalPrefix</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Canonical prefix - remove a trailing ":".</div>
+<div class="block">Test whether a prefix string is legal for Turtle.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toString(org.apache.jena.riot.system.PrefixMap)" class="member-name-link">toString</a><wbr>(<a href="PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;prefixMap)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#prefix(java.lang.String)" class="member-name-link">prefix</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Canonical prefix - remove a trailing ":".</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#toString(org.apache.jena.riot.system.PrefixMap)" class="member-name-link">toString</a><wbr>(<a href="PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;prefixMap)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Calculate a printable multi-line string.</div>
 </div>
 </div>
@@ -281,13 +286,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="isLegalPrefix(java.lang.String)">
+<h3>isLegalPrefix</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isLegalPrefix</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</span></div>
+<div class="block">Test whether a prefix string is legal for Turtle.
+ Turtle grammar rule
+ <a href="https://www.w3.org/TR/rdf-turtle/#grammar-production-PN_PREFIX">PN_PREFIX</a>.
+ This rule is the same as the XML 1.1 QName namespace production
+ with the addition of allowing the empty string.
+ A "prefix" does not include any trailing ":" character.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="findByURI(org.apache.jena.riot.system.PrefixMap,java.lang.String)">
 <h3>findByURI</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">findByURI</span><wbr><span class="parameters">(<a href="PrefixMap.html" title="interface in org.apache.jena.riot.system">PrefixMap</a>&nbsp;pmap,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uriStr)</span></div>
 <div class="block">Reverse lookup of URI to a prefix. General implementation by scanning the
- <a href="PrefixMap.html" title="interface in org.apache.jena.riot.system"><code>PrefixMap</code></a>. Returns a prefix if found or null. If several prefixes for
- the same URI, returns one at random.</div>
+ <a href="PrefixMap.html" title="interface in org.apache.jena.riot.system"><code>PrefixMap</code></a>. Returns a prefix if found or null. If there are
+ several prefixes for the same URI, returns one at random.</div>
 </section>
 </li>
 <li>

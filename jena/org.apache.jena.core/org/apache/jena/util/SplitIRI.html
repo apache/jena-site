@@ -81,23 +81,33 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SplitIRI</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Code to split an URI or IRI into prefix and local part.
+ This code does <em>not</em> consider any prefix mapping.
+ The split is based on finding the last <code>/</code> or <code>#</code>
+ character.
+ <p>
  Historically, 'prefix' is referred to as 'namespace'
  reflecting RDF/XML history.
  <p>
  For display, use <a href="#localname(java.lang.String)"><code>localname(java.lang.String)</code></a> and <a href="#namespace(java.lang.String)"><code>namespace(java.lang.String)</code></a>.
- This follows Turtle, adds some pragmatic rulesm but does not escape
- any characters. A URI is split never split before the last <code>/</code>
- or last <code>#</code>, if present.
+ These pragmatic follow Turtle (e.g. localname allows a plain trailing dot)
+ but does not escape any characters.
+
+ These operations are for display (c.f. <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link"><code>Object.toString()</code></a> and do not guarantee a round-trip;
+ namespace+localname may not be the  exact input IRI.
+ A URI is split never split before the last <code>/</code> or <code>#</code>, if present.
  See <a href="#splitpoint(java.lang.String)"><code>splitpoint(java.lang.String)</code></a> for more details.
  <p>
- This code form the machinery behind <a href="../graph/Node.html#getLocalName()"><code>Node.getLocalName()</code></a>
- <a href="../graph/Node.html#getNameSpace()"><code>Node.getNameSpace()</code></a> for URI Nodes.
- <p>
- <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a> is strict Turtle; it is the same local name as
- before, but escaped if necessary.
+ The functions
+ <a href="#namespaceTTL(java.lang.String)"><code>namespaceTTL(java.lang.String)</code></a> and <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a>
+ provide a strict Turtle split, if possible;
+ the local name is escaped if necessary.
+ <a href="#namespaceTTL(java.lang.String)"><code>namespaceTTL(java.lang.String)</code></a> can be used to build a set of prefix mappings.
  <p>
  The functions <a href="#namespaceXML(java.lang.String)"><code>namespaceXML(java.lang.String)</code></a> and <a href="#localnameXML(java.lang.String)"><code>localnameXML(java.lang.String)</code></a>
- apply the rules for XML qnames.</div>
+ apply the rules for XML qnames.
+ <p>
+ This code forms the machinery behind <a href="../graph/Node.html#getLocalName()"><code>Node.getLocalName()</code></a>
+ <a href="../graph/Node.html#getNameSpace()"><code>Node.getNameSpace()</code></a> for URI Nodes following the XML rules.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,7 +129,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -134,13 +144,13 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#localnameTTL(java.lang.String)" class="member-name-link">localnameTTL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Calculate a localname - enforce legal Turtle
- escape PN_LOCAL_ESC, check for final '.'
- Use with <a href="#namespaceTTL(java.lang.String)"><code>namespaceTTL(java.lang.String)</code></a></div>
+ escapes for localnames (rule PN_LOCAL_ESC),
+ A final '.' is escaped.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#localnameXML(java.lang.String)" class="member-name-link">localnameXML</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Localname, according to XML qname rules.</div>
+<div class="block">Localname, according to XML 1.0 qname rules.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#namespace(java.lang.String)" class="member-name-link">namespace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
@@ -151,12 +161,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#namespaceTTL(java.lang.String)" class="member-name-link">namespaceTTL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the 'namespace' (prefix) for a URI string,
- legal for Turtle and goes with <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a></div>
+ legal for Turtle and goes with <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#namespaceXML(java.lang.String)" class="member-name-link">namespaceXML</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Namespace, according to XML qname rules.</div>
+<div class="block">Namespace, according to XML 1.0 qname rules.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#splitpoint(java.lang.String)" class="member-name-link">splitpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uri)</code></div>
@@ -167,7 +177,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#splitXML(java.lang.String)" class="member-name-link">splitXML</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Split point, according to XML qname rules.</div>
+<div class="block">Split point, according to XML 1.0 qname rules.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#splitXML10(java.lang.String)" class="member-name-link">splitXML10</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Retained as a record of previous split handling.</div>
+</div>
 </div>
 </div>
 </div>
@@ -205,7 +222,8 @@ loadScripts(document, 'script');</script>
 <h3>namespace</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">namespace</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
 <div class="block">Return the 'namespace' (prefix) for a URI string.
- Use with <a href="#localname(java.lang.String)"><code>localname(java.lang.String)</code></a></div>
+ Use with <a href="#localname(java.lang.String)"><code>localname(java.lang.String)</code></a>.
+ Return the input string if there is no splitpoint.</div>
 </section>
 </li>
 <li>
@@ -214,7 +232,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localname</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
 <div class="block">Calculate a localname - do not escape PN_LOCAL_ESC.
  This is not guaranteed to be legal Turtle.
- Use with <a href="#namespace(java.lang.String)"><code>namespace(java.lang.String)</code></a></div>
+ Use with <a href="#namespace(java.lang.String)"><code>namespace(java.lang.String)</code></a>
+ Return an empty string if there is no split point.</div>
 </section>
 </li>
 <li>
@@ -222,7 +241,8 @@ loadScripts(document, 'script');</script>
 <h3>namespaceTTL</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">namespaceTTL</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
 <div class="block">Return the 'namespace' (prefix) for a URI string,
- legal for Turtle and goes with <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a></div>
+ legal for Turtle and goes with <a href="#localnameTTL(java.lang.String)"><code>localnameTTL(java.lang.String)</code></a>.
+ This operation does not guaratee that the argument has a legal localname.</div>
 </section>
 </li>
 <li>
@@ -230,7 +250,9 @@ loadScripts(document, 'script');</script>
 <h3>localnameTTL</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localnameTTL</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
 <div class="block">Calculate a localname - enforce legal Turtle
- escape PN_LOCAL_ESC, check for final '.'
+ escapes for localnames (rule PN_LOCAL_ESC),
+ A final '.' is escaped.
+ Return "" for "no split".
  Use with <a href="#namespaceTTL(java.lang.String)"><code>namespaceTTL(java.lang.String)</code></a></div>
 </section>
 </li>
@@ -246,7 +268,9 @@ loadScripts(document, 'script');</script>
  <code>http://example/path/abc</code> could split to give <code>http://example/</code>
  and <code>path/abc</code> .
  <p>
- Split URN's after ':'.</div>
+ Split URN's after ':'.
+ <p>
+ This function does not enforce the Turtle rule that the final character can not be '.'.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>uri</code> - URI string</dd>
@@ -259,16 +283,28 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="splitXML(java.lang.String)">
 <h3>splitXML</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">splitXML</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
-<div class="block">Split point, according to XML qname rules.
- This is the longest NCName at the end of the uri.
- See <a href="../rdf/model/impl/Util.html#splitNamespaceXML(java.lang.String)"><code>Util.splitNamespaceXML(java.lang.String)</code></a>.</div>
+<div class="block">Split point, according to XML 1.0 qname rules.
+ This is the longest XML 1.0 NCName at the end of the uri.
+ Return a split at the end of the string if there is no match
+ (e.g. the URI string ends in '/' or '#').</div>
+</section>
+</li>
+<li>
+<section class="detail" id="splitXML10(java.lang.String)">
+<h3>splitXML10</h3>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html#forRemoval()" title="class or interface in java.lang" class="external-link">forRemoval</a>=true)
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">splitXML10</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Retained as a record of previous split handling.</div>
+</div>
+<div class="block">splitXML with local stricter XML 1.0 rules (only single Java characters)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="namespaceXML(java.lang.String)">
 <h3>namespaceXML</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">namespaceXML</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
-<div class="block">Namespace, according to XML qname rules.
+<div class="block">Namespace, according to XML 1.0 qname rules.
  Use with <a href="#localnameXML(java.lang.String)"><code>localnameXML(java.lang.String)</code></a>.</div>
 </section>
 </li>
@@ -276,7 +312,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="localnameXML(java.lang.String)">
 <h3>localnameXML</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localnameXML</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;string)</span></div>
-<div class="block">Localname, according to XML qname rules.</div>
+<div class="block">Localname, according to XML 1.0 qname rules.</div>
 </section>
 </li>
 </ul>
