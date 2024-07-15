@@ -8,17 +8,17 @@ and also read-write access which adds the ability to add and delete prefix entri
 ## Operations
 
 The service supports fetch, remove and update operations on prefixes. 
-When making requests to the API the url can have 3 parameters: prefix, uri, and prefixToRemove. 
-The fetch request is an HTTP GET and the update and remove operations get invoked
-via HTTP POST.
+When making requests to the API the url can have 2 parameters: prefix and uri.
+The fetch request is an HTTP GET and the update operation gets invoked
+via HTTP POST, and delete uses HTTP DELETE.
 
 ### FetchURI
-If only the prefix parameter is provided and the rest are null,
+If only the prefix parameter is provided and the uri is null,
 the service will perform a fetch operation and return the corresponding URI.
 If no such prefix exists in the database the operation returns an empty String.
 
 ### FetchPrefix
-If only the URI parameter is provided and the rest are null,
+If only the URI parameter is provided and the prefix is null,
 the service will perform a fetch operation and return the corresponding prefixes in a JsonArray.
 If no such prefix exists in the database the operation returns an empty String.
 
@@ -26,13 +26,12 @@ If no such prefix exists in the database the operation returns an empty String.
 A HTTP GET with no parameters returns all the prefix-URI pairs present in the dataset in a JsonArray.
 
 ### Update
-If only the prefixToRemove parameter is left null, the provided prefix-uri pair will be
-added to the dataset. If the provided prefix already exists in the database, the pair will be overwritten.
+If both prefix and uri are provided, the prefix-uri pair will be
+added to the dataset. If the prefix already exists in the database, the pair will be overwritten.
 In case the namespace already exists with a different prefix, the pair will be added to the dataset.
 
-### Remove
-The remove operation is performed when only the prefixToRemove parameters is provided
-and the other parameters are null. It removes the prefix-namespace pair matching the provided
+### Delete
+The delete operation is performed when the prefix parameter is provided to the HTTP DELETE. It removes the prefix-namespace pair matching the provided
 prefix. The operation is considered successful when the request is correctly formed
 even if the prefix doesn't exist in the database.
 
