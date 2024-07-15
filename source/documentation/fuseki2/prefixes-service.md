@@ -1,9 +1,9 @@
 # Prefixes Service
 
 ## Overview
-The prefix service provides prefix lookup, update and remove functionalities
-for 3 different implementations of prefix-namespace storage: MapStorage , which is a Java Map data structure, 
-RDFStorage - a DatasetGraph, and PrefixStorage, which uses a DatasetGraph's PrefixMap.
+The prefix service provides prefix lookup, update and delete functionality on a collection of prefixes.
+It provides a read access endpoint to look up a prefix name and to look up an URI to get prefixes for a URI
+and also read-write access which adds the ability to add and delete prefix entries.
 
 ## Operations
 
