@@ -69,14 +69,16 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/documentation/javadoc.html">All Javadoc</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/arq/">ARQ</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/ontapi/">Jena OntAPI</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/shex/">ShEx</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/tdb2/">TDB</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/text/">Text Search</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/permissions/">Permissions</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/shacl/">SHACL</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/tdb/">TDB</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                     </ul>
                 </li>
             </ul>
@@ -192,7 +194,6 @@
           </ul>
         </li>
         <li><a href="#removing-a-dataset">Removing a Dataset</a></li>
-        <li><a href="#active-and-offline">Active and Offline</a></li>
       </ul>
     </li>
     <li><a href="#statistics">Statistics</a>
@@ -282,24 +283,14 @@ Further operations may be added within this naming scheme.</p>
 <td>Get a list of datasets</td>
 </tr>
 <tr>
-<td><tt>DELETE</tt></td>
-<td><code>/$/datasets/{name}</code></td>
-<td>Remove a dataset</td>
-</tr>
-<tr>
 <td><tt>GET</tt></td>
 <td><code>/$/datasets/{name}</code></td>
 <td>Get information about a dataset</td>
 </tr>
 <tr>
-<td><tt>POST</tt></td>
-<td><code>/$/datasets/{name}?state=offline</code></td>
-<td>Switch state of dataset to offline</td>
-</tr>
-<tr>
-<td><tt>POST</tt></td>
-<td><code>/$/datasets/{name}?state=active</code></td>
-<td>Switch state of dataset to online</td>
+<td><tt>DELETE</tt></td>
+<td><code>/$/datasets/{name}</code></td>
+<td>Remove a dataset</td>
 </tr>
 <tr>
 <td></td>
@@ -308,8 +299,8 @@ Further operations may be added within this naming scheme.</p>
 </tr>
 <tr>
 <td><tt>POST</tt></td>
-<td><code>/$/server/shutdown</code></td>
-<td>Not implemented yet</td>
+<td><code>/$/compact/{name}?deleteOld=true</code></td>
+<td>Compact a TDB2 database. Optional remove old storage.</td>
 </tr>
 <tr>
 <td></td>
@@ -347,8 +338,8 @@ Further operations may be added within this naming scheme.</p>
 <td></td>
 </tr>
 <tr>
-<td><tt>POST</tt></td>
-<td><code>/$/compact/{name}?deleteOld=true</code></td>
+<td></td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -381,16 +372,6 @@ Further operations may be added within this naming scheme.</p>
 <td><code>/$/metrics</code></td>
 <td></td>
 </tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><tt>GET</tt></td>
-<td><code>/$/logs</code></td>
-<td>Not implemented yet</td>
-</tr>
 </tbody>
 </table>
 <h2 id="ping">Ping</h2>
@@ -402,16 +383,12 @@ request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) w
 <h2 id="server-information">Server Information</h2>
 <p>Pattern: <code>/$/server</code></p>
 <p>The URL <code>/$/server</code> returns details about the server and it&rsquo;s current status in JSON.</p>
-<p><em>@@details of JSON format.</em></p>
 <h2 id="datasets-and-services">Datasets and Services</h2>
 <p>Pattern: <code>/$/datasets</code></p>
 <p><code>/$/datasets</code> is a container representing all datasets present in the server.
 <code>/$/datasets/{name}</code> names a specific dataset.  As a container, operations on items
 in the container, via <code>GET</code>, <code>POST</code> and <code>DELETE</code>, operate on specific dataset.</p>
 <h3 id="adding-a-dataset-and-its-services">Adding a Dataset and its Services.</h3>
-<blockquote>
-<p><em>@@ May add server-managed templates</em></p>
-</blockquote>
 <p>A dataset set can be added to a running server. There are several methods
 for doing this:</p>
 <ul>
@@ -438,7 +415,7 @@ the following parameters (query string or HTML form):</p>
 <tbody>
 <tr>
 <td><code>dbType</code></td>
-<td>Either <code>mem</code> or <code>tdb</code></td>
+<td>Either <code>mem</code> or <code>tdb</code>, <code>tdb1</code>, or <code>tdb2</code></td>
 </tr>
 <tr>
 <td><code>dbName</code></td>
@@ -452,26 +429,16 @@ the following parameters (query string or HTML form):</p>
 <p>The assembler description contains data and service.  It can be sent by posting the assembler RDF graph
 in any RDF format or by posting from an HTML form (the syntax must be Turtle).</p>
 <p>The assembler file is stored by the server will be used on restart or when making the dataset active again.</p>
-<blockquote>
-<p><em>@@</em></p>
-</blockquote>
 <h3 id="removing-a-dataset">Removing a Dataset</h3>
 <p>Note: <code>DELETE</code> means &ldquo;gone for ever&rdquo;.  The dataset name and the details of its
 configuration are completely deleted and can not be recovered.</p>
 <p>The data of a TDB dataset is not deleted.</p>
-<h3 id="active-and-offline">Active and Offline</h3>
-<p>A dataset is in one of two modes: &ldquo;active&rdquo;, meaning it is services request over HTTP
-(subject to configuration and security), or &ldquo;offline&rdquo;, meaning the configuration and name
-is known about by the server but the dataset is not attached to the server.  When &ldquo;offline&rdquo;,
-any persistent data can be manipulated outside the server.</p>
-<p>Datasets are initially &ldquo;active&rdquo;.  The transition from &ldquo;active&rdquo; to &ldquo;offline&rdquo; is graceful - all outstanding requests are completed.</p>
 <h2 id="statistics">Statistics</h2>
 <p>Pattern: <code>/$/stats/{name}</code></p>
 <p>Statistics can be obtained for each dataset or all datasets in a single response.
 <code>/$/stats</code> is  treated as a container for this information.</p>
 <blockquote>
-<p><em>@@ stats details</em>
-See <a href="fuseki-server-info.html">Fuseki Server Information</a> for details of statistics kept by a Fuseki server.</p>
+<p>See <a href="fuseki-server-info.html">Fuseki Server Information</a> for details of statistics kept by a Fuseki server.</p>
 </blockquote>
 <h3 id="backup">Backup</h3>
 <p>Pattern: <code>/$/backup/{name}</code></p>
@@ -540,9 +507,6 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
 </code></pre><p>This is inside an array to make the format returned the same as <code>/$/tasks</code>.</p>
 <h2 id="metrics">Metrics</h2>
 <p>Pattern: <code>/$/metrics</code></p>
-<blockquote>
-<p><em>@@</em></p>
-</blockquote>
 
   </article>
   
@@ -562,7 +526,6 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
           </ul>
         </li>
         <li><a href="#removing-a-dataset">Removing a Dataset</a></li>
-        <li><a href="#active-and-offline">Active and Offline</a></li>
       </ul>
     </li>
     <li><a href="#statistics">Statistics</a>
