@@ -56,7 +56,7 @@ will return http://www.localhost.org/uri1.
 
 A POST request
 ```
-http://localhost:port/prefixes?prefix=prefix1&uri=http://www.localhost.org/newuri1
+http://localhost:port/dataset/prefixes?prefix=prefix1&uri=http://www.localhost.org/newuri1
 ```
 will result in the update of the database:
 
@@ -68,13 +68,13 @@ will result in the update of the database:
 Incorrectly formed requests
 ```
 // prefix is not valid
-http://localhost:port/prefixes?prefix=.prefix1&uri=http://www.localhost.org/newuri1
+http://localhost:port/dataset/prefixes?prefix=.prefix1&uri=http://www.localhost.org/newuri1
 
 // incorrect parameter name
-http://localhost:port/prefixes?p=prefix1&uri=http://www.localhost.org/newuri1
+http://localhost:port/dataset/prefixes?p=prefix1&uri=http://www.localhost.org/newuri1
 
-// illegal combination of parameter values
-http://localhost:port/prefixes?prefix=prefix1&uri=http://www.localhost.org/newuri1&prefixtoremove=prefix2
+// illegal combination of parameter values for DELETE
+http://localhost:port/prefixes?uri=http://www.localhost.org/newuri1
 ```
 result in HTTP exception: 400 - Bad Request.
 
@@ -97,7 +97,7 @@ PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
     fuseki:endpoint [ fuseki:operation fuseki:update ; ] ;
     
     fuseki:endpoint [ fuseki:operation ex:prefixes-r ; fuseki:name "prefixes" ] ;
-    fuseki:endpoint [ fuseki:operation ex:prefixes-rw ; fuseki:name "updatePrefixes" ] ;
+    fuseki:endpoint [ fuseki:operation ex:prefixes-rw ; fuseki:name "prefixes-rw" ] ;
     fuseki:dataset :dataset ;
     .
 
