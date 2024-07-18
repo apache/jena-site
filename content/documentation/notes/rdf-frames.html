@@ -69,14 +69,16 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/documentation/javadoc.html">All Javadoc</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/arq/">ARQ</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/jena/">Jena Core</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/ontapi/">Jena OntAPI</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/fuseki2/">Fuseki</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/shacl/">SHACL</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/shex/">ShEx</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/tdb2/">TDB</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/text/">Text Search</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/permissions/">Permissions</a></li>
                         <li><a class="dropdown-item" href="/documentation/javadoc/extras/querybuilder/">Query Builder</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/shacl/">SHACL</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/tdb/">TDB</a></li>
-                        <li><a class="dropdown-item" href="/documentation/javadoc/text/">Text Search</a></li>
+                        <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                     </ul>
                 </li>
             </ul>
@@ -185,7 +187,6 @@
     <li><a href="#property-hierarchies">Property hierarchies</a></li>
     <li><a href="#global-properties">Global properties</a></li>
     <li><a href="#the-java-api">The Java API</a></li>
-    <li><a href="#summary-of-changes-from-jena-22-beta-2-and-older">Summary of changes from Jena 2.2-beta-2 and older</a></li>
   </ul>
 </nav>
   </aside>
@@ -364,75 +365,41 @@ Jena 2.2 onwards.</p>
 through the <a href="../ontology/index.html">ontology API</a>. The following
 methods are used to access the properties of a class, and the
 converse for properties:</p>
-<pre><code>  OntClass.listDeclaredProperties();
-  OntClass.listDeclaredProperties( boolean direct );
-  OntClass.hasDeclaredProperty( Property prop, boolean direct );
-  OntProperty.listDeclaringClasses();
-  OntProperty.listDeclaringClasses( boolean direct );
+<pre><code>  OntClass.declaredProperties();
+  OntClass.declaredProperties( boolean direct );
+  OntClass.hasDeclaredProperty( OntProperty prop, boolean direct );
+  OntProperty.declaringClasses();
+  OntProperty.declaringClasses( boolean direct );
 </code></pre>
-<p>All of the above API methods return a Jena
-<a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/util/iterator/ExtendedIterator.html"><code>ExtendedIterator</code></a>.</p>
-<p><strong>Note a change from the Jena 2.1 interface:</strong> the optional Boolean
-parameter on <code>listDeclaredProperties</code> has changed name from <code>all</code>
-(Jena 2.1 and earlier) to <code>direct</code> (Jena 2.2 and later). The
-meaning of the parameter has also changed: <code>all</code> was intended to
-simulate some reasoning steps in the absence of a reasoner, whereas
+<p>All of the above API methods return a Java <code>Stream</code>.</p>
+<p>Where
 <code>direct</code> is used to restrict the associations to only the local
-associations. See more on
-<a href="../ontology/index.html#direct_relationships">direct associations</a>.</p>
-<p>A further difference from Jena 2.1 is that the models that are
-constructed without reasoners perform only very limited simulation
+associations.
+See also
+<a href="../ontology/index.html##instances-or-individuals">Figure 5: asserted and inferred relationships</a>.</p>
+<p>The models that are constructed without reasoners perform only very limited simulation
 of the inference closure of the model. Users who wish the declared
 properties to include entailments will need to construct their
 models with one of the built-in or external reasoners. The
 difference is illustrated by the following code fragment:</p>
-<pre><code>  &lt;rdfs:Class rdf:ID=&quot;A&quot; /&gt;
-  &lt;rdfs:Property rdf:ID=&quot;p&quot;&gt;
-    &lt;rdfs:domain rdf:resource=&quot;#A&quot; /&gt;
-  &lt;/rdfs:Property&gt;
-  &lt;rdfs:Property rdf:ID=&quot;q&quot;&gt;
-    &lt;rdfs:subPropertyOf rdf:resource=&quot;#p&quot; /&gt;
-  &lt;/rdfs:Property&gt;
+<pre><code>String ns =  &quot;http://ex.com#&quot;;
+OntModel m0 = OntModelFactory.createModel(OntSpecification.OWL2_DL_MEM);
+OntClass a0 = m0.createOntClass( ns + &quot;A&quot; );
+OntClass b0 = m0.createOntClass( ns + &quot;B&quot; );
+OntObjectProperty p = m0.createObjectProperty(ns + &quot;p&quot;);
+OntObjectProperty q = m0.createObjectProperty(ns + &quot;q&quot;);
+p.addSuperProperty(q);
+q.addDomain(b0);
+a0.addSubClass(b0);
 
-  OntModel mNoInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
-  OntClass a0 = mNoInf.getOntClass( NS + &quot;A&quot; );
-  Iterator i0 = a0.listDeclaredProperties();
+OntModel m1 = OntModelFactory.createModel(m0.getBaseGraph(), OntSpecification.OWL2_DL_MEM_RULES_INF);
+OntClass b1 = m1.getOntClass( ns + &quot;B&quot; );
 
-  OntModel mInf = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM_RULE_INF );
-  OntClass a1 = mInf.getOntClass( NS + &quot;A&quot; );
-  Iterator i1 = a1.listDeclaredProperties();
+Stream&lt;OntProperty&gt; s0 = b0.declaredProperties(true);
+Stream&lt;OntProperty&gt; s1 = b0.declaredProperties(true);
 </code></pre>
-<p>Iterator <code>i1</code> will return <code>p</code> and <code>q</code>, while <code>i0</code> will return only
-<code>p</code>.</p>
-<h2 id="summary-of-changes-from-jena-22-beta-2-and-older">Summary of changes from Jena 2.2-beta-2 and older</h2>
-<p>For users updating code that uses <code>listDeclaredProperties</code> from
-versions of Jena prior to 2.2-final, the following changes should
-be noted:</p>
-<ul>
-<li>Global properties
-<code>listDeclaredProperties</code> will treat properties with no specified
-domain as global, and regard them as properties of all classes. The
-use of the <code>direct</code> flag can hide global properties from non-root
-classes.</li>
-<li>Restriction properties
-<code>listDeclaredProperties</code> no longer heuristically returns properties
-associated with a class via the <code>owl:onProperty</code> predicate of a
-restriction.</li>
-<li>Limited simulated inference
-The old version of <code>listDeclaredProperties</code> attempted to simulate
-the entailed associations between classes and properties. Users are
-now advised to attach a reasoner to their models to do this.</li>
-<li>Change in parameter semantics
-The old version of <code>listDeclaredProperties(boolean all)</code> took one
-parameter, a Boolean flag to indicate whether additional declared
-(implied) properties should be listed. Since this is now covered by
-the use, or otherwise, of a reasoner attached to the model, the new
-method signature is <code>listDeclaredProperties(boolean direct)</code>, where
-calling the method with <code>direct = true</code> will compress the returned
-results to use only the
-<a href="../ontology/index.html#direct_relationships">direct</a>
-associations.</li>
-</ul>
+<p>Stream <code>s1</code> will return <code>p</code> and <code>q</code>, while <code>s0</code> will return only
+<code>q</code>.</p>
 
   </article>
   
@@ -445,7 +412,6 @@ associations.</li>
     <li><a href="#property-hierarchies">Property hierarchies</a></li>
     <li><a href="#global-properties">Global properties</a></li>
     <li><a href="#the-java-api">The Java API</a></li>
-    <li><a href="#summary-of-changes-from-jena-22-beta-2-and-older">Summary of changes from Jena 2.2-beta-2 and older</a></li>
   </ul>
 </nav>
   </aside>

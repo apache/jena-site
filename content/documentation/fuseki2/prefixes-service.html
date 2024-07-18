@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - About_jenas</title>
+    <title>Apache Jena - </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/about_jena" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/prefixes-service.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -146,7 +146,23 @@
         
         
             
-                <li class="breadcrumb-item active">ABOUT JENA</li>
+                <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item"><a href='/documentation/fuseki2'>FUSEKI2</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item active">PREFIXES SERVICE</li>
             
             
         
@@ -157,10 +173,162 @@
 
 
             </div>
-            <h1 class="title">About_jenas</h1>
+            <h1 class="title"></h1>
             
             
-	
+<main class="d-flex flex-xl-row flex-column">
+  
+  <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#operations">Operations</a>
+      <ul>
+        <li><a href="#fetchuri">FetchURI</a></li>
+        <li><a href="#fetchprefix">FetchPrefix</a></li>
+        <li><a href="#getall">GetAll</a></li>
+        <li><a href="#update">Update</a></li>
+        <li><a href="#delete">Delete</a></li>
+      </ul>
+    </li>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#configuration">Configuration</a></li>
+  </ul>
+</nav>
+  </aside>
+  <article class="flex-column me-lg-4">
+    <h1 id="prefixes-service">Prefixes Service</h1>
+<h2 id="overview">Overview</h2>
+<p>The prefix service provides prefix lookup, update and delete functionality on a collection of prefixes.
+It provides a read access endpoint to look up a prefix name and to look up an URI to get prefixes for a URI
+and also read-write access which adds the ability to add and delete prefix entries.</p>
+<h2 id="operations">Operations</h2>
+<p>The service supports fetch, remove and update operations on prefixes.
+When making requests to the API the url can have 2 parameters: prefix and uri.
+The fetch request is an HTTP GET and the update operation gets invoked
+via HTTP POST, and delete uses HTTP DELETE.</p>
+<h3 id="fetchuri">FetchURI</h3>
+<p>If only the prefix parameter is provided and the uri is null,
+the service will perform a fetch operation and return the corresponding URI.
+If no such prefix exists in the database the operation returns an empty String.</p>
+<h3 id="fetchprefix">FetchPrefix</h3>
+<p>If only the URI parameter is provided and the prefix is null,
+the service will perform a fetch operation and return the corresponding prefixes in a JsonArray.
+If no such prefix exists in the database the operation returns an empty String.</p>
+<h3 id="getall">GetAll</h3>
+<p>A HTTP GET with no parameters returns all the prefix-URI pairs present in the dataset in a JsonArray.</p>
+<h3 id="update">Update</h3>
+<p>If both prefix and uri are provided, the prefix-uri pair will be
+added to the dataset. If the prefix already exists in the database, the pair will be overwritten.
+In case the namespace already exists with a different prefix, the pair will be added to the dataset.</p>
+<h3 id="delete">Delete</h3>
+<p>The delete operation is performed when the prefix parameter is provided to the HTTP DELETE. It removes the prefix-namespace pair matching the provided
+prefix. The operation is considered successful when the request is correctly formed
+even if the prefix doesn&rsquo;t exist in the database.</p>
+<p>If any of the arguments is not valid, (the <a href="https://www.w3.org/TR/rdf12-turtle/#grammar-production-PN_PREFIX">prefix</a>
+and <a href="https://www.rfc-editor.org/rfc/rfc3986">URI</a> don&rsquo;t have the correct syntax) the server returns 400,
+it does so also when the url string is not formed correctly, for example when the parameter names are incorrect.</p>
+<h2 id="example">Example</h2>
+<p>For a server running on localhost using an example dataset</p>
+<table>
+<thead>
+<tr>
+<th>prefix</th>
+<th>uri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix1</td>
+<td><a href="http://www.localhost.org/uri1">http://www.localhost.org/uri1</a></td>
+</tr>
+<tr>
+<td>prefix2</td>
+<td><a href="http://www.localhost.org/uri2">http://www.localhost.org/uri2</a></td>
+</tr>
+</tbody>
+</table>
+<p>the following HTTP GET request</p>
+<pre tabindex="0"><code>http://localhost:port/prefixes?prefix=prefix1
+</code></pre><p>will return <a href="http://www.localhost.org/uri1">http://www.localhost.org/uri1</a>.</p>
+<p>A POST request</p>
+<pre tabindex="0"><code>http://localhost:port/dataset/prefixes?prefix=prefix1&amp;uri=http://www.localhost.org/newuri1
+</code></pre><p>will result in the update of the database:</p>
+<table>
+<thead>
+<tr>
+<th>prefix</th>
+<th>uri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix1</td>
+<td><a href="http://www.localhost.org/newuri1">http://www.localhost.org/newuri1</a></td>
+</tr>
+<tr>
+<td>prefix2</td>
+<td><a href="http://www.localhost.org/uri2">http://www.localhost.org/uri2</a></td>
+</tr>
+</tbody>
+</table>
+<p>Incorrectly formed requests</p>
+<pre tabindex="0"><code>// prefix is not valid
+http://localhost:port/dataset/prefixes?prefix=.prefix1&amp;uri=http://www.localhost.org/newuri1
+
+// incorrect parameter name
+http://localhost:port/dataset/prefixes?p=prefix1&amp;uri=http://www.localhost.org/newuri1
+
+// illegal combination of parameter values for DELETE
+http://localhost:port/prefixes?uri=http://www.localhost.org/newuri1
+</code></pre><p>result in HTTP exception: 400 - Bad Request.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The services is configured via a standard Fuseki config file. Example file for a Prefixes Services with a TDB2 database at <code>data/DB2</code>:</p>
+<pre tabindex="0"><code>PREFIX example:  &lt;http://example.org/fuseki/&gt;
+PREFIX ex: &lt;http://example.org/fuseki/operation/&gt;
+PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX :        &lt;http://telicent.io/config#&gt;
+PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
+PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;
+
+:service rdf:type fuseki:Service ;
+    fuseki:name &#34;dataset&#34; ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:update ; ] ;
+    
+    fuseki:endpoint [ fuseki:operation ex:prefixes-r ; fuseki:name &#34;prefixes&#34; ] ;
+    fuseki:endpoint [ fuseki:operation ex:prefixes-rw ; fuseki:name &#34;prefixes-rw&#34; ] ;
+    fuseki:dataset :dataset ;
+    .
+
+:dataset rdf:type  tdb2:DatasetTDB2 ;
+    tdb2:location &#34;data/DB2&#34; ;
+    .
+</code></pre>
+  </article>
+  
+  <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
+    <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#operations">Operations</a>
+      <ul>
+        <li><a href="#fetchuri">FetchURI</a></li>
+        <li><a href="#fetchprefix">FetchPrefix</a></li>
+        <li><a href="#getall">GetAll</a></li>
+        <li><a href="#update">Update</a></li>
+        <li><a href="#delete">Delete</a></li>
+      </ul>
+    </li>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#configuration">Configuration</a></li>
+  </ul>
+</nav>
+  </aside>
+</main>
 
         </div>
     </div>
