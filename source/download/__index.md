@@ -35,16 +35,16 @@ The binary distribution of libraries contains the APIs, SPARQL engine, the TDB n
 
 | Apache Jena Commands | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/binaries/apache-jena-5.1.0.tar.gz">apache-jena-5.1.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-5.1.0.zip">apache-jena-5.1.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.zip.asc)
+| <a href="[preferred]jena/binaries/apache-jena-5.1.0.tar.gz">apache-jena-5.1.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-5.1.0.zip">apache-jena-5.1.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.1.0.zip.asc) |
 
 <p>&nbsp;</p>
 The binary distribution of Fuseki as a WAR file:
 
 | Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/jena-fuseki-war-5.1.0.war">jena-fuseki-war-5.1.0.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.1.0.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.1.0.war.asc)
-|
+| <a href="[preferred]jena/binaries/jena-fuseki-war-5.1.0.war">jena-fuseki-war-5.1.0.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.1.0.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.1.0.war.asc) |
+
 
 This can be run in any servlet application container supporting Jakarta Servlet 6.0
 (part of Jakarta EE version 9), such as [Apache Tomcat](https://tomcat.apache.org/index.html)
