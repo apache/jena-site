@@ -198,11 +198,9 @@
     </li>
     <li><a href="#running-example-the-eswc-ontology">Running example: the ESWC ontology</a></li>
     <li><a href="#creating-ontology-models">Creating ontology models</a></li>
-    <li><a href="#compound-ontology-documents-and-imports-processing">Compound ontology documents and imports processing</a>
-      <ul>
-        <li><a href="#graphrepository">GraphRepository</a></li>
-      </ul>
-    </li>
+    <li><a href="#compound-ontology-documents-and-imports-processing">Compound ontology documents and imports processing</a></li>
+    <li><a href="#graphrepository">GraphRepository</a></li>
+    <li><a href="#graphmaker">GraphMaker</a></li>
     <li><a href="#ontmodel-triple-representation-ontstatement">OntModel triple representation: OntStatement</a></li>
     <li><a href="#the-generic-ontology-type-ontobject">The generic ontology type: OntObject</a></li>
     <li><a href="#ontology-entities">Ontology entities</a></li>
@@ -210,9 +208,12 @@
       <ul>
         <li><a href="#complex-class-expressions">Complex class expressions</a></li>
         <li><a href="#restriction-class-expressions">Restriction class expressions</a></li>
-        <li><a href="#boolean-connectives">Boolean Connectives</a></li>
-        <li><a href="#intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</a></li>
-        <li><a href="#enumeration-of-individuals">Enumeration of Individuals</a></li>
+        <li><a href="#boolean-connectives-and-enumeration-of-individuals">Boolean Connectives and Enumeration of Individuals</a>
+          <ul>
+            <li><a href="#intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</a></li>
+            <li><a href="#enumeration-of-individuals">Enumeration of Individuals</a></li>
+          </ul>
+        </li>
         <li><a href="#listing-classes">Listing classes</a></li>
       </ul>
     </li>
@@ -232,6 +233,7 @@
       </ul>
     </li>
     <li><a href="#working-with-persistent-ontologies">Working with persistent ontologies</a></li>
+    <li><a href="#utilities">Utilities</a></li>
   </ul>
 </nav>
   </aside>
@@ -267,15 +269,19 @@ The sections are:</p>
 <li><a href="#running-example-the-eswc-ontology">Running example: the ESWC ontology</a></li>
 <li><a href="#creating-ontology-models">Creating ontology models</a></li>
 <li><a href="#compound-ontology-documents-and-imports-processing">Compound ontology documents and imports processing</a></li>
-<li><a href="#the-generic-ontology-type-ontresource">The generic ontology type: OntResource</a></li>
-<li><a href="#ontology-classes-and-basic-class-expressions">Ontology classes and basic class expressions</a></li>
+<li><a href="#graphrepository">GraphRepository</a></li>
+<li><a href="#graphmaker">GraphMaker</a></li>
+<li><a href="#ontmodel-triple-representation-ontstatement">OntModel triple representation: OntStatement</a></li>
+<li><a href="#the-generic-ontology-type-ontobject">The generic ontology type: OntObject</a></li>
+<li><a href="#ontology-entities">Ontology entities</a></li>
+<li><a href="#ontology-classes">Ontology classes</a></li>
+<li><a href="#ontology-dataranges">Ontology dataranges</a></li>
 <li><a href="#ontology-properties">Ontology properties</a></li>
-<li><a href="#more-complex-class-expressions">More complex class expressions</a></li>
 <li><a href="#instances-or-individuals">Instances or individuals</a></li>
 <li><a href="#ontology-meta-data">Ontology meta-data</a></li>
 <li><a href="#ontology-inference-overview">Ontology inference: overview</a></li>
 <li><a href="#working-with-persistent-ontologies">Working with persistent ontologies</a></li>
-<li><a href="#experimental-ontology-tools">Experimental ontology tools</a></li>
+<li><a href="#utilities">Utilities</a></li>
 </ul>
 <h3 id="further-assistance">Further assistance</h3>
 <p>Hopefully, this document will be sufficient to help most readers
@@ -655,7 +661,7 @@ A number of common recipes are pre-declared as constants in
 </thead>
 <tbody>
 <tr>
-<td>OWL2_DL_MEM_BILTIN_INF</td>
+<td>OWL2_DL_MEM_BILTIN_RDFS_INF</td>
 <td>OWL2 DL</td>
 <td>in-memory</td>
 <td>builtin reasoner with RDFS-level entailment-rules</td>
@@ -1160,7 +1166,7 @@ adding a statement <code>&lt;this-ont-id&gt; owl:imports &lt;other-ont-id&gt;</c
 More convenient way to add the import, is to use <code>OntID</code> object:</p>
 <pre><code>thisOntModel.getID().addImport(&quot;other-ontology-iri&quot;);
 </code></pre>
-<h3 id="graphrepository">GraphRepository</h3>
+<h2 id="graphrepository">GraphRepository</h2>
 <p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphRepository.html">GraphRepository</a>
 is an abstraction that provides access to graphs.
 The method <code>GraphRepository#createGraphDocumentRepositoryMem()</code> creates an implementation <code>DocumentGraphRepository</code>
@@ -1178,6 +1184,13 @@ Graph graph = repo.get(&quot;http://this-ontology&quot;);
 it will contain
 <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/UnionGraph.html">UnionGraph</a> graphs
 that provide connectivity between ontologies.</p>
+<h2 id="graphmaker">GraphMaker</h2>
+<p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphMaker.html">GraphMaker</a>
+is another abstraction that provides access to graphs.
+It is primary intended to be a facade for persistent storage.
+The method <code>GraphRepository#createPersistentGraphRepository(GraphMaker)</code> allows
+to manage persistent ontologies backed by <code>GraphMaker</code>.
+See also <a href="#working-with-persistent-ontologies">Working with persistent ontologies</a>.</p>
 <h2 id="ontmodel-triple-representation-ontstatement">OntModel triple representation: OntStatement</h2>
 <p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntStatement.html">OntStatement</a> is an extended <code>org.apache.jena.rdf.model.Statement</code>.
 It has additional methods to support OWL2 annotations.
@@ -1239,7 +1252,7 @@ expressed through methods on <code>OntObject</code> are shown below:</p>
 </tr>
 <tr>
 <td>mainStatement</td>
-<td>The main <code>OntStatement</code>, which determines the nature of this ontological resource, In most cases it is a declaration and wraps a triple with predicate <code>rdf:type</code></td>
+<td>The main <code>OntStatement</code>, which determines the nature of this ontological resource. In most cases it is a declaration and wraps a triple with predicate <code>rdf:type</code></td>
 </tr>
 <tr>
 <td>spec</td>
@@ -1290,7 +1303,7 @@ which has following sub-types:</p>
 <p>Classes are the basic building blocks of an ontology.
 A class is represented in Jena by an
 <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.html">OntClass</a>
-object. As <a href="#rdf-polymorphism">mentioned above</a>, an ontology class
+object. As <a href="#rdf-level-polymorphism-and-java">mentioned above</a>, an ontology class
 is a facet of an RDF resource. One way, therefore, to get an
 ontology class is to convert a plain RDF resource into
 its class facet. Assume that <code>m</code> is a
@@ -1637,7 +1650,7 @@ LargeFormat.superClasses()
                         av.getProperty().getURI())
         );
 </code></pre>
-<h3 id="boolean-connectives">Boolean Connectives</h3>
+<h3 id="boolean-connectives-and-enumeration-of-individuals">Boolean Connectives and Enumeration of Individuals</h3>
 <p>Most developers are familiar with the use of Boolean operators to
 construct propositional expressions: conjunction (and), disjunction
 (or) and negation (not). OWL provides a means for constructing
@@ -1658,7 +1671,7 @@ than one argument. Before continuing with constructing and using</p>
 <p>In additional to these three class expressions, OWL2 also offers
 <a href="https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals">Enumeration of Individuals</a>.
 An enumeration of individuals <code>ObjectOneOf( a1 ... an )</code> contains exactly the individuals <code>ai</code> with <code>1 ≤ i ≤ n</code>.</p>
-<h3 id="intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</h3>
+<h4 id="intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</h4>
 <p>Given Jena&rsquo;s ability to construct lists, building intersection and
 union class expressions is straightforward. The <code>create</code> methods on
 <code>OntModel</code> allow us to construct an intersection or union directly.
@@ -1713,7 +1726,7 @@ OntClass.ObjectSomeValuesFrom hasIndTrack =
 OntClass.IntersectionOf ukIndustrialConf =
         m.createObjectIntersectionOf( ukLocation, hasIndTrack );
 </code></pre>
-<h3 id="enumeration-of-individuals">Enumeration of Individuals</h3>
+<h4 id="enumeration-of-individuals">Enumeration of Individuals</h4>
 <p>The final type class expression allowed by OWL is the enumerated
 class. Recall that a class is a set of individuals. Often, we want
 to define the members of the class <em>implicitly</em>: for example, &ldquo;the class
@@ -1917,13 +1930,13 @@ OntDataProperty cameraDeadline = m.getDataProperty( ns + &quot;hasCameraReadyDea
 
 OntDataProperty deadline = m.createDataProperty( ns + &quot;deadline&quot; );
 deadline.addDomain( m.getOntClass( ns + &quot;Call&quot; ) );
-deadline.addRange( XSD.dateTime.inModel(m).as(OntDataRange.class) );
+deadline.addRange( m.getDatatype(XSD.dateTime) );
 
-deadline.addSubPropertyOfStatement( subDeadline );
-deadline.addSubPropertyOfStatement( notifyDeadline );
-deadline.addSubPropertyOfStatement( cameraDeadline );
+deadline.addSubProperty( subDeadline );
+deadline.addSubProperty( notifyDeadline );
+deadline.addSubProperty( cameraDeadline );
 </code></pre>
-<p>Note that, although we called the <code>addSubPropertyOfStatement</code> method on the
+<p>Note that, although we called the <code>addSubProperty</code> method on the
 object representing the new super-property, the serialized form of
 the ontology will contain <code>rdfs:subPropertyOf</code> axioms on each of
 the sub-property resources, since this is what the language
@@ -2264,7 +2277,7 @@ retrieve, but we are not in any sense resolving the URI of the
 model. Once placed into the database, the name of the model is
 treated as an opaque string.</p>
 <p>To create a persistent model for the ontology
-<code>http://example.org/Customers</code>, we create a model maker that will
+<code>http://example.org/Customers</code>, we create a graph maker that will
 access our underlying database, and use the ontology URI as the
 database name. We then take the resulting persistent model, and use
 it as the base model when constructing an ontology model:</p>
@@ -2274,13 +2287,16 @@ OntModel m = OntModelFactory.createModel( base, OntSpecification.OWL2_DL_MEM );
 <p>Here we assume that the <code>getMaker()</code> method returns a suitably
 initialized <code>GraphMaker</code> that will open the connection to the
 database. This step only creates a persistent model named with the
-ontology URI. To initialise the content, we must either add
+ontology URI. To initialize the content, we must either add
 statements to the model using the OntModel API, or do a one-time
 read from a document:</p>
 <pre><code>m.read( &quot;http://example.org/Customers&quot; );
 </code></pre>
 <p>Once this step is completed, the model contents may be accessed in
 future without needing to read again.</p>
+<p>A <code>GraphMaker</code> may be wrapped
+by <code>PersistentGraphRepository</code> using the method <code>GraphRepository#createPersistentGraphRepository(GraphMaker)</code>.
+This allows managing ontology relationships automatically, without interacting with <code>GraphMaker</code> directly.</p>
 <p><strong>Note on performance</strong> The built-in Jena reasoners, including the
 rule reasoners, make many small queries into the model in order to
 propagate the effects of rules firing. When using a persistent
@@ -2298,6 +2314,22 @@ data in-memory, then store that into a database model to be queried
 by the run-time application. Such an off-line processing
 architecture will clearly not be applicable to every application
 problem.</p>
+<h2 id="utilities">Utilities</h2>
+<p>There are several utilities, which can be used for various purposes.
+<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/Graphs.html"><code>Graphs</code></a>
+is a collection of methods for working with various types of graphs, including <code>UnionGraph</code>.
+<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/StdModels.html"><code>StdModels</code></a> is for working with general-purpose <code>Model</code>s,
+and <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/OntModels.html"><code>OntModels</code></a> is
+for working with <code>OntModel</code>s.
+Some of the useful methods are:</p>
+<ul>
+<li><code>OntModels#getLCA( OntClass u, OntClass v )</code> - determine the lowest common ancestor for classes <code>u</code> and <code>v</code>.
+This is the class that is lowest in the class hierarchy, and which includes both <code>u</code> and <code>v</code> among its sub-classes.</li>
+<li><code>StdModels#findShortestPath( Model m, Resource start, RDFNode end, Filter onPath )</code> - breadth-first search, including a cycle check,
+to locate the shortest path from <code>start</code> to <code>end</code>, in which every triple on the path returns <code>true</code> to the <code>onPath</code> predicate.</li>
+<li><code>OntModels#namedHierarchyRoots( OntModel m )</code> - compute a list containing the uppermost fringe of the class hierarchy
+in the given model which consists only of named classes.</li>
+</ul>
 
   </article>
   
@@ -2326,11 +2358,9 @@ problem.</p>
     </li>
     <li><a href="#running-example-the-eswc-ontology">Running example: the ESWC ontology</a></li>
     <li><a href="#creating-ontology-models">Creating ontology models</a></li>
-    <li><a href="#compound-ontology-documents-and-imports-processing">Compound ontology documents and imports processing</a>
-      <ul>
-        <li><a href="#graphrepository">GraphRepository</a></li>
-      </ul>
-    </li>
+    <li><a href="#compound-ontology-documents-and-imports-processing">Compound ontology documents and imports processing</a></li>
+    <li><a href="#graphrepository">GraphRepository</a></li>
+    <li><a href="#graphmaker">GraphMaker</a></li>
     <li><a href="#ontmodel-triple-representation-ontstatement">OntModel triple representation: OntStatement</a></li>
     <li><a href="#the-generic-ontology-type-ontobject">The generic ontology type: OntObject</a></li>
     <li><a href="#ontology-entities">Ontology entities</a></li>
@@ -2338,9 +2368,12 @@ problem.</p>
       <ul>
         <li><a href="#complex-class-expressions">Complex class expressions</a></li>
         <li><a href="#restriction-class-expressions">Restriction class expressions</a></li>
-        <li><a href="#boolean-connectives">Boolean Connectives</a></li>
-        <li><a href="#intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</a></li>
-        <li><a href="#enumeration-of-individuals">Enumeration of Individuals</a></li>
+        <li><a href="#boolean-connectives-and-enumeration-of-individuals">Boolean Connectives and Enumeration of Individuals</a>
+          <ul>
+            <li><a href="#intersection-union-and-complement-class-expressions">Intersection, union and complement class expressions</a></li>
+            <li><a href="#enumeration-of-individuals">Enumeration of Individuals</a></li>
+          </ul>
+        </li>
         <li><a href="#listing-classes">Listing classes</a></li>
       </ul>
     </li>
@@ -2360,6 +2393,7 @@ problem.</p>
       </ul>
     </li>
     <li><a href="#working-with-persistent-ontologies">Working with persistent ontologies</a></li>
+    <li><a href="#utilities">Utilities</a></li>
   </ul>
 </nav>
   </aside>
