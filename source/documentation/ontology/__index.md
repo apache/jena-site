@@ -41,15 +41,19 @@ The sections are:
 - [Running example: the ESWC ontology](#running-example-the-eswc-ontology)
 - [Creating ontology models](#creating-ontology-models)
 - [Compound ontology documents and imports processing](#compound-ontology-documents-and-imports-processing)
-- [The generic ontology type: OntResource](#the-generic-ontology-type-ontresource)
-- [Ontology classes and basic class expressions](#ontology-classes-and-basic-class-expressions)
+- [GraphRepository](#graphrepository)
+- [GraphMaker](#graphmaker)
+- [OntModel triple representation: OntStatement](#ontmodel-triple-representation-ontstatement)
+- [The generic ontology type: OntObject](#the-generic-ontology-type-ontobject)
+- [Ontology entities](#ontology-entities)
+- [Ontology classes](#ontology-classes)
+- [Ontology dataranges](#ontology-dataranges)
 - [Ontology properties](#ontology-properties)
-- [More complex class expressions](#more-complex-class-expressions)
 - [Instances or individuals](#instances-or-individuals)
 - [Ontology meta-data](#ontology-meta-data)
 - [Ontology inference: overview](#ontology-inference-overview)
 - [Working with persistent ontologies](#working-with-persistent-ontologies)
-- [Experimental ontology tools](#experimental-ontology-tools)
+- [Utilities](#utilities)
 
 ### Further assistance
 
@@ -470,7 +474,7 @@ A number of common recipes are pre-declared as constants in
 
 OntSpecification | Language profile | Storage model | Reasoner
 ------------ |------------------| ------------- | --------
-OWL2_DL_MEM_BILTIN_INF | OWL2 DL          | in-memory | builtin reasoner with RDFS-level entailment-rules
+OWL2_DL_MEM_BILTIN_RDFS_INF | OWL2 DL          | in-memory | builtin reasoner with RDFS-level entailment-rules
 OWL2_DL_MEM | OWL2 DL          | in-memory | none
 OWL2_DL_MEM_TRANS_INF | OWL2 DL          | in-memory | transitive class-hierarchy inference
 OWL2_DL_MEM_RULES_INF | OWL2 DL          | in-memory | rule-based reasoner with OWL rules
@@ -689,7 +693,7 @@ More convenient way to add the import, is to use `OntID` object:
 
     thisOntModel.getID().addImport("other-ontology-iri");
 
-### GraphRepository
+## GraphRepository
 
 [GraphRepository](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphRepository.html) 
 is an abstraction that provides access to graphs. 
@@ -709,6 +713,14 @@ If the `GraphRepository` is passed as a parameter to the corresponding `OntModel
 it will contain 
 [UnionGraph](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/UnionGraph.html) graphs 
 that provide connectivity between ontologies.
+
+## GraphMaker
+[GraphMaker](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphMaker.html)
+is another abstraction that provides access to graphs.
+It is primary intended to be a facade for persistent storage.
+The method `GraphRepository#createPersistentGraphRepository(GraphMaker)` allows 
+to manage persistent ontologies backed by `GraphMaker`.
+See also [Working with persistent ontologies](#working-with-persistent-ontologies).
 
 ## OntModel triple representation: OntStatement
 [OntStatement](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntStatement.html) is an extended `org.apache.jena.rdf.model.Statement`.
@@ -765,7 +777,7 @@ expressed through methods on `OntObject` are shown below:
 Attribute | Meaning
 --------- | -------
 objectType | A concret java Class-type of this `OntObject`
-mainStatement | The main `OntStatement`, which determines the nature of this ontological resource, In most cases it is a declaration and wraps a triple with predicate `rdf:type`
+mainStatement | The main `OntStatement`, which determines the nature of this ontological resource. In most cases it is a declaration and wraps a triple with predicate `rdf:type`
 spec | All characteristic statements of the ontology resource, i. e., all those statements which completely determine this object nature according to the OWL2 specification; mainStatement is a part of spec
 content | spec plus all additional statements in which this object is the subject, minus those of them whose predicate is an annotation property (i.e. annotations are not included)
 annotations | All top-level annotations attached to the mainStatement of this object
@@ -795,7 +807,7 @@ which has following sub-types:
 Classes are the basic building blocks of an ontology. 
 A class is represented in Jena by an
 [OntClass](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.html)
-object. As [mentioned above](#rdf-polymorphism), an ontology class
+object. As [mentioned above](#rdf-level-polymorphism-and-java), an ontology class
 is a facet of an RDF resource. One way, therefore, to get an
 ontology class is to convert a plain RDF resource into
 its class facet. Assume that `m` is a
@@ -1029,7 +1041,7 @@ restriction. Assume `m` contains a suitable camera ontology:
                             av.getProperty().getURI())
             );
 
-### Boolean Connectives
+### Boolean Connectives and Enumeration of Individuals
 
 Most developers are familiar with the use of Boolean operators to
 construct propositional expressions: conjunction (and), disjunction
@@ -1054,7 +1066,7 @@ In additional to these three class expressions, OWL2 also offers
 [Enumeration of Individuals](https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals).
 An enumeration of individuals `ObjectOneOf( a1 ... an )` contains exactly the individuals `ai` with `1 ≤ i ≤ n`.
 
-### Intersection, union and complement class expressions
+#### Intersection, union and complement class expressions
 
 Given Jena's ability to construct lists, building intersection and
 union class expressions is straightforward. The `create` methods on
@@ -1113,7 +1125,7 @@ that `m` is a model into which the ESWC ontology has been read:
     OntClass.IntersectionOf ukIndustrialConf =
             m.createObjectIntersectionOf( ukLocation, hasIndTrack );
 
-### Enumeration of Individuals
+#### Enumeration of Individuals
 
 The final type class expression allowed by OWL is the enumerated
 class. Recall that a class is a set of individuals. Often, we want
@@ -1281,13 +1293,13 @@ deadline, notification deadline and camera-ready deadline, do:
 
     OntDataProperty deadline = m.createDataProperty( ns + "deadline" );
     deadline.addDomain( m.getOntClass( ns + "Call" ) );
-    deadline.addRange( XSD.dateTime.inModel(m).as(OntDataRange.class) );
+    deadline.addRange( m.getDatatype(XSD.dateTime) );
 
-    deadline.addSubPropertyOfStatement( subDeadline );
-    deadline.addSubPropertyOfStatement( notifyDeadline );
-    deadline.addSubPropertyOfStatement( cameraDeadline );
+    deadline.addSubProperty( subDeadline );
+    deadline.addSubProperty( notifyDeadline );
+    deadline.addSubProperty( cameraDeadline );
 
-Note that, although we called the `addSubPropertyOfStatement` method on the
+Note that, although we called the `addSubProperty` method on the
 object representing the new super-property, the serialized form of
 the ontology will contain `rdfs:subPropertyOf` axioms on each of
 the sub-property resources, since this is what the language
@@ -1648,7 +1660,7 @@ model. Once placed into the database, the name of the model is
 treated as an opaque string.
 
 To create a persistent model for the ontology
-`http://example.org/Customers`, we create a model maker that will
+`http://example.org/Customers`, we create a graph maker that will
 access our underlying database, and use the ontology URI as the
 database name. We then take the resulting persistent model, and use
 it as the base model when constructing an ontology model:
@@ -1659,7 +1671,7 @@ it as the base model when constructing an ontology model:
 Here we assume that the `getMaker()` method returns a suitably
 initialized `GraphMaker` that will open the connection to the
 database. This step only creates a persistent model named with the
-ontology URI. To initialise the content, we must either add
+ontology URI. To initialize the content, we must either add
 statements to the model using the OntModel API, or do a one-time
 read from a document:
 
@@ -1667,6 +1679,10 @@ read from a document:
 
 Once this step is completed, the model contents may be accessed in
 future without needing to read again.
+
+A `GraphMaker` may be wrapped 
+by `PersistentGraphRepository` using the method `GraphRepository#createPersistentGraphRepository(GraphMaker)`.
+This allows managing ontology relationships automatically, without interacting with `GraphMaker` directly.
 
 **Note on performance** The built-in Jena reasoners, including the
 rule reasoners, make many small queries into the model in order to
@@ -1685,3 +1701,19 @@ data in-memory, then store that into a database model to be queried
 by the run-time application. Such an off-line processing
 architecture will clearly not be applicable to every application
 problem.
+
+## Utilities
+There are several utilities, which can be used for various purposes.
+[`Graphs`](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/Graphs.html) 
+is a collection of methods for working with various types of graphs, including `UnionGraph`.
+[`StdModels`](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/StdModels.html) is for working with general-purpose `Model`s,
+and [`OntModels`](/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/OntModels.html) is
+for working with `OntModel`s.
+Some of the useful methods are:
+
+- `OntModels#getLCA( OntClass u, OntClass v )` - determine the lowest common ancestor for classes `u` and `v`. 
+This is the class that is lowest in the class hierarchy, and which includes both `u` and `v` among its sub-classes.
+- `StdModels#findShortestPath( Model m, Resource start, RDFNode end, Filter onPath )` - breadth-first search, including a cycle check, 
+to locate the shortest path from `start` to `end`, in which every triple on the path returns `true` to the `onPath` predicate.
+- `OntModels#namedHierarchyRoots( OntModel m )` - compute a list containing the uppermost fringe of the class hierarchy 
+in the given model which consists only of named classes.
