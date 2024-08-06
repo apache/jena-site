@@ -68,9 +68,9 @@ The prefix `arq:` is `<http://jena.apache.org/ARQ#>`.
 
 Symbol | Java Constant | Default
 ------ | ------------- | -------
-`arq:httpServiceAllowed`  | `ARQ.httpServiceAllowed` | true
-`arq:httpQueryClient`     | `ARQ.httpQueryClient`    | System default.
-`arq:httpServiceSendMode` | `ARQ.httpServiceSendMode | unset
+`arq:httpServiceAllowed`  | `ARQ.httpServiceAllowed`  | true
+`arq:httpQueryClient`     | `ARQ.httpQueryClient`     | System default.
+`arq:httpServiceSendMode` | `ARQ.httpServiceSendMode` | unset
 
 #### `arq:httpServiceAllowed`
 
