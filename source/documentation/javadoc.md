@@ -7,6 +7,7 @@ title: Jena JavaDoc
   - [Fuseki2 Webapp](javadoc/fuseki2/index.html)
   - [Fuseki2 Main](javadoc/fuseki2-main/index.html)
 - [ARQ(SPARQL)](javadoc/arq/index.html)
+- [Ontology](javadoc/ontapi/index.html)
 - [RDF Connection](javadoc/rdfconnection/index.html)
 - [TDB](javadoc/tdb2/index.html)
 - [Text search](javadoc/text/index.html)
