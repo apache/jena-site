@@ -242,7 +242,7 @@
 ontology API, including some of the common tasks you may need
 to perform. We
 won&rsquo;t go into all of the many details of the API here: you should
-expect to refer to the <a href="/documentation/javadoc/jena/">Javadoc</a> to
+expect to refer to the <a href="/documentation/javadoc/ontapi/">Javadoc</a> to
 get full details of the capabilities of the API.</p>
 <p><em>Please note that this section covers the new Jena ontology API, which has been introduced since Jena 5.1.0.
 The legacy Jena Ontology API documentation can be found <a href="legacy.html">here</a>.</em></p>
@@ -474,7 +474,7 @@ version of Jena&rsquo;s
 <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/rdf/model/Model.html"><code>Model</code></a> class.
 The base <code>Model</code> allows access to the statements in a collection of
 RDF data.
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntModel.html"><code>OntModel</code></a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntModel.html"><code>OntModel</code></a>
 extends this by adding support for the kinds of constructs expected to
 be in an ontology: classes (in a class hierarchy), properties (in a
 property hierarchy) and individuals.</p>
@@ -617,7 +617,7 @@ API throughout the rest of this document.</p>
 <p>An ontology model is an extension of the Jena RDF model,
 providing extra capabilities for handling ontologies. Ontology
 models are created through the Jena
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntModelFactory.html"><code>OntModelFactory</code></a>.
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/OntModelFactory.html"><code>OntModelFactory</code></a>.
 The simplest way to create an ontology model is as follows:</p>
 <pre><code>OntModel m = OntModelFactory.createModel();
 </code></pre>
@@ -644,7 +644,7 @@ For example, an OWL model that performs no reasoning at all can be created with:
 </code></pre>
 <p>Beyond these basic choices, the complexities of configuring an
 ontology model are wrapped up in a recipe object called
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html"><code>OntSpecification</code></a>.
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html"><code>OntSpecification</code></a>.
 This specification allows complete control over the configuration
 choices for the ontology model, including the language profile in
 use and the reasoner.
@@ -905,10 +905,10 @@ A number of common recipes are pre-declared as constants in
 <p>For details of reasoner capabilities, please see the
 <a href="../inference">inference documentation</a> and the Javadoc
 for
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html">OntSpecification</a>.
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html">OntSpecification</a>.
 See also further discussion <a href="#inference-intro">below</a>.</p>
 <p>To create a custom model specification,
-you can create <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.html">OntPersonality</a> object
+you can create <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.html">OntPersonality</a> object
 and create a new <code>OntSpecification</code> from its constructor:</p>
 <pre><code>OntPersonality OWL2_FULL_PERSONALITY = OntPersonalities.OWL2_ONT_PERSONALITY()
                 .setBuiltins(OntPersonalities.OWL2_FULL_BUILTINS)
@@ -921,19 +921,19 @@ OntSpecification OWL2_FULL_MEM_RDFS_INF = new OntSpecification(
 );
 </code></pre>
 <p>The first parameter in the builder above is the vocabulary
-(see <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Builtins.html">OntPersonality.Builtins</a>)
+(see <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Builtins.html">OntPersonality.Builtins</a>)
 that contains a set of OWL entities&rsquo; IRIs that do not require an explicit declaration (e.g., <code>owl:Thing</code>).
 The second parameter is the vocabulary
-(see <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Reserved.html">OntPersonality.Reserved</a>),
+(see <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Reserved.html">OntPersonality.Reserved</a>),
 which is for system resources and properties that cannot represent any OWL object.
 The third vocabulary
-(see <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Punnings.html">OntPersonality.Punnings</a>)
+(see <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntPersonality.Punnings.html">OntPersonality.Punnings</a>)
 contains description of <a href="https://www.w3.org/TR/owl2-new-features/#F12:_Punning">OWL punnings</a>.
 The last parameter in the builder is the<br>
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntConfig.html">OntConfig</a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/common/OntConfig.html">OntConfig</a>
 that allows fine-tuning the behavior.
 There are the following configuration settings
-(see <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntModelControls.html">OntModelControls</a>):</p>
+(see <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/OntModelControls.html">OntModelControls</a>):</p>
 <table>
 <thead>
 <tr>
@@ -1128,7 +1128,7 @@ contains meta-data about that document itself. For example:</p>
 </code></pre>
 <p>In OWL2 this section is mandatory and there must be one and only one per document.
 It corresponds
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntID.html">OntID</a> object.
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntID.html">OntID</a> object.
 In the example above, the construct <code>rdf:about=&quot;&quot;</code> is a <em>relative URI</em>.
 It will resolve to the document&rsquo;s base URI.
 In OWL2 the identifier of ontology is either version IRI, ontology IRI or document IRI
@@ -1167,7 +1167,7 @@ More convenient way to add the import, is to use <code>OntID</code> object:</p>
 <pre><code>thisOntModel.getID().addImport(&quot;other-ontology-iri&quot;);
 </code></pre>
 <h2 id="graphrepository">GraphRepository</h2>
-<p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphRepository.html">GraphRepository</a>
+<p><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphRepository.html">GraphRepository</a>
 is an abstraction that provides access to graphs.
 The method <code>GraphRepository#createGraphDocumentRepositoryMem()</code> creates an implementation <code>DocumentGraphRepository</code>
 that stores graphs in memory.
@@ -1182,17 +1182,17 @@ Graph graph = repo.get(&quot;http://this-ontology&quot;);
 </code></pre>
 <p>If the <code>GraphRepository</code> is passed as a parameter to the corresponding <code>OntModelFactory#createModel</code> method,
 it will contain
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/UnionGraph.html">UnionGraph</a> graphs
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/UnionGraph.html">UnionGraph</a> graphs
 that provide connectivity between ontologies.</p>
 <h2 id="graphmaker">GraphMaker</h2>
-<p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphMaker.html">GraphMaker</a>
+<p><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/GraphMaker.html">GraphMaker</a>
 is another abstraction that provides access to graphs.
 It is primary intended to be a facade for persistent storage.
 The method <code>GraphRepository#createPersistentGraphRepository(GraphMaker)</code> allows
 to manage persistent ontologies backed by <code>GraphMaker</code>.
 See also <a href="#working-with-persistent-ontologies">Working with persistent ontologies</a>.</p>
 <h2 id="ontmodel-triple-representation-ontstatement">OntModel triple representation: OntStatement</h2>
-<p><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntStatement.html">OntStatement</a> is an extended <code>org.apache.jena.rdf.model.Statement</code>.
+<p><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntStatement.html">OntStatement</a> is an extended <code>org.apache.jena.rdf.model.Statement</code>.
 It has additional methods to support OWL2 annotations.
 For example, the following snippet</p>
 <pre><code>OntModel m = OntModelFactory.createModel( OntSpecification.OWL2_DL_MEM );
@@ -1225,7 +1225,7 @@ PREFIX xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt;
 <h2 id="the-generic-ontology-type-ontobject">The generic ontology type: OntObject</h2>
 <p>All of the classes in the ontology API that represent ontology
 values have
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntObject.html"><code>OntObject</code></a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntObject.html"><code>OntObject</code></a>
 as a common super-class.
 This makes <code>OntObject</code> a good place to
 put shared functionality for all such classes, and makes a handy
@@ -1288,21 +1288,21 @@ expressed through methods on <code>OntObject</code> are shown below:</p>
 <h2 id="ontology-entities">Ontology entities</h2>
 <p>In OWL2, there are six kinds of named (IRI) resources,
 called <a href="https://www.w3.org/TR/owl-syntax/#Entities.2C_Literals.2C_and_Anonymous_Individuals">OWL entities</a>.
-The common supertype is <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntEntity.html">OntEntity</a>,
+The common supertype is <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntEntity.html">OntEntity</a>,
 which has following sub-types:</p>
 <ul>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.Named.html">OntClass.Named</a> - a named class expression.</li>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.Named.html">OntDataRange.Named</a> - a named data range expression.</li>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntIndividual.Named.html">OntIndividual.Named</a> - a named individual</li>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntObjectProperty.Named.html">OntObjectProperty.Named</a> - a non-inverse object property</li>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataProperty.html">OntDataProperty</a> - a datatype property</li>
-<li><a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntAnnotationProperty.html">OntAnnotationProperty</a> - an annotation property</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.Named.html">OntClass.Named</a> - a named class expression.</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.Named.html">OntDataRange.Named</a> - a named data range expression.</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntIndividual.Named.html">OntIndividual.Named</a> - a named individual</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntObjectProperty.Named.html">OntObjectProperty.Named</a> - a non-inverse object property</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataProperty.html">OntDataProperty</a> - a datatype property</li>
+<li><a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntAnnotationProperty.html">OntAnnotationProperty</a> - an annotation property</li>
 </ul>
 <p><code>OntEntity</code> can be ontology defined or builtin, e.g. <code>owl:Thing</code> is a builtin <code>OntClass.Named</code></p>
 <h2 id="ontology-classes">Ontology classes</h2>
 <p>Classes are the basic building blocks of an ontology.
 A class is represented in Jena by an
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.html">OntClass</a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.html">OntClass</a>
 object. As <a href="#rdf-level-polymorphism-and-java">mentioned above</a>, an ontology class
 is a facet of an RDF resource. One way, therefore, to get an
 ontology class is to convert a plain RDF resource into
@@ -1533,7 +1533,7 @@ expression: <em>restrictions</em> and <em>logical expressions</em>
 We&rsquo;ll examine each in turn.</p>
 <h3 id="restriction-class-expressions">Restriction class expressions</h3>
 <p>A
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.Restriction.html">restriction</a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.Restriction.html">restriction</a>
 defines a class by reference to one of the properties of the
 individuals that comprise the members of the class, and then
 placing some constraint on that property. For example, in a simple
@@ -1732,7 +1732,7 @@ class. Recall that a class is a set of individuals. Often, we want
 to define the members of the class <em>implicitly</em>: for example, &ldquo;the class
 of UK conferences&rdquo;. Sometimes it is convenient to define a class
 <em>explicitly</em>, by stating the individuals the class contains. An
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.OneOf.html">OntClass.OneOf</a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntClass.OneOf.html">OntClass.OneOf</a>
 is exactly the class whose members are the given individuals. For
 example, we know that the class of PrimaryColours contains exactly
 red, green and blue, and no others.</p>
@@ -1793,11 +1793,11 @@ asserted data and the reasoner being used.</p>
 <h2 id="ontology-dataranges">Ontology DataRanges</h2>
 <p>The concept of OWL <code>DataRange</code> is similar to class expressions.
 There is also named data range, called datatype
-(<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.Named.html">OntDataRange.Named</a>),
+(<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.Named.html">OntDataRange.Named</a>),
 and five kinds of anonymous data range expressions:
 data ComplementOf, data IntersectionOf, data UnionOf, data OneOf and datatype restriction (see table below).
 See the
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.html"><code>OntDataRange</code> javadoc</a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntDataRange.html"><code>OntDataRange</code> javadoc</a>
 for more details.
 Example:</p>
 <pre><code>m.createDataRestriction(
@@ -1858,8 +1858,8 @@ API class
 and allows access to the additional information that can be
 asserted about properties in an ontology language. The common API
 super-class for representing named and anonymous ontology properties in Java is
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntProperty.html">OntProperty</a>.
-There is also <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntNamedProperty.html">OntNamedProperty</a> supertype,
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntProperty.html">OntProperty</a>.
+There is also <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntNamedProperty.html">OntNamedProperty</a> supertype,
 which extends standard RDF <code>Property</code>, and <code>OntRelationalProperty</code>, which is supertype for <code>OntDataProperty</code> and <code>OntObjectProperty</code>.
 Again, using the pattern of add, set, get, list, has, and remove
 methods, we can access the following attributes of an
@@ -1989,7 +1989,7 @@ that the object property expression <code>p</code> is irreflexive — that is,
 no individual is connected by <code>p</code> to itself.</p>
 <h2 id="instances-or-individuals">Instances or individuals</h2>
 <p>The Individual (or Instance in terms of legacy OntModel) is present
-by the class <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntIndividual.html">OntIndividual</a>.
+by the class <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntIndividual.html">OntIndividual</a>.
 The definition of individual is a class-assertion <code>a rdf:type C.</code>, where <code>C</code> is <code>OntClass</code> and <code>a</code> is IRI or Blank Node.
 Thus, unlike legacy Jena OntModel, in general not every resource can be represented as an <code>OntIndividual</code>,
 although this is true in some specifications, such as <code>OntSpecification.OWL1_FULL_MEM_RDFS_INF</code>.</p>
@@ -2117,7 +2117,7 @@ the <em>base URI</em> of the document containing the ontology. The base
 URI may be stated in the document through an <code>xml:base</code> declaration
 in the XML preamble. The base URI can also be specified when
 reading the document via Jena&rsquo;s Model API (see the <code>read()</code> methods
-on <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntModel.html"><code>OntModel</code></a>
+on <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntModel.html"><code>OntModel</code></a>
 for reference).</p>
 <p>We can attach various meta-data statements to this object to
 indicate attributes of the ontology as a whole, using the Java object
@@ -2129,7 +2129,7 @@ indicate attributes of the ontology as a whole, using the Java object
 </code></pre>
 <p>In the Jena API, the ontology&rsquo;s metadata properties can be accessed
 through the
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntID.html"><code>OntID</code></a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/model/OntID.html"><code>OntID</code></a>
 interface. Suppose we wish to know the list of URI&rsquo;s that the
 ontology imports. First, we must obtain the resource representing the
 ontology itself:</p>
@@ -2201,7 +2201,7 @@ capabilities are supported, and what the implications for
 performance are.</p>
 <p>The reasoner attached to an ontology model, if any, is specified
 through the
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html"><code>OntSpecification</code></a>.
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/OntSpecification.html"><code>OntSpecification</code></a>.
 The Java object <code>OntSpecification</code> has two parameters: <code>OntPersonality</code> and <code>ReasonerFactory</code>.
 The <code>ReasonerRegistry</code> provides a collection of pre-built reasoners –
 see the reasoner documentation for more details. However, it is
@@ -2316,10 +2316,10 @@ architecture will clearly not be applicable to every application
 problem.</p>
 <h2 id="utilities">Utilities</h2>
 <p>There are several utilities, which can be used for various purposes.
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/Graphs.html"><code>Graphs</code></a>
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/Graphs.html"><code>Graphs</code></a>
 is a collection of methods for working with various types of graphs, including <code>UnionGraph</code>.
-<a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/StdModels.html"><code>StdModels</code></a> is for working with general-purpose <code>Model</code>s,
-and <a href="/documentation/javadoc/jena/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/OntModels.html"><code>OntModels</code></a> is
+<a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/StdModels.html"><code>StdModels</code></a> is for working with general-purpose <code>Model</code>s,
+and <a href="/documentation/javadoc/ontapi/org.apache.jena.ontapi/org/apache/jena/ontapi/utils/OntModels.html"><code>OntModels</code></a> is
 for working with <code>OntModel</code>s.
 Some of the useful methods are:</p>
 <ul>
