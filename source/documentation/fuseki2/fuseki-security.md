@@ -25,7 +25,7 @@ default `shiro.ini` configuration. The default admin user is `admin` and the
 password is `pw`. This can be changed directly in the INI file. Note that this
 setup is not recommended for production for various reasons  (no TLS, passwords
 in plain text etc.), consult the [Shiro
-INI](https://shiro.apache.org/configuration.html#Configuration-INISections)
+INI](https://shiro.apache.org/configuration.html#Configuration-INIConfiguration-Sections)
 documentation for best practices.
 
 As mentioned above, the default setup only restricts access to the admin pages
@@ -34,7 +34,7 @@ interface starts with '/$/', consult the [Fuseki HTTP Administration Protocol
 ](../fuseki2/fuseki-server-protocol.html) documentation for more details.
 
 If access to SPARQL endpoints should be restricted, additional [Shiro
-ACLs](https://shiro.apache.org/web.html#Web-WebINIconfiguration) are necessary.
+ACLs](https://shiro.apache.org/web.html#web_ini) are necessary.
 This is done in the `[urls]` section of the configuration. As an example,
 restricting access to the `../query` SPARQL endpoint for all datasets on Fuseki
 could be done with this wildcard pattern:
