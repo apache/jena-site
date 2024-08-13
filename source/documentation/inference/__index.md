@@ -213,7 +213,7 @@ System.out.println("Statement: " + a.getProperty(q));
   in the statements directly to that model.</p>
 <p>If we wanted to use a different reasoner which is not available as a convenience
   method or wanted to configure one we would change line [1]. For example, to
-  create the same setup manually we could replace \[1\] by:</p>
+  create the same setup manually we could replace [1] by:</p>
 
 ```java
 Reasoner reasoner = ReasonerRegistry.getRDFSReasoner();
