@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Running Fuseki with UI</title>
+    <title>Apache Jena - Jena JDBC Drivers</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-webapp.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/jdbc/drivers.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -154,7 +154,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/documentation/fuseki2'>FUSEKI2</a></li>
+                <li class="breadcrumb-item"><a href='/documentation/archive'>ARCHIVE</a></li>
             
             
         
@@ -162,7 +162,15 @@
         
         
             
-                <li class="breadcrumb-item active">FUSEKI WEBAPP</li>
+                <li class="breadcrumb-item"><a href='/documentation/archive/jdbc'>JDBC</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item active">DRIVERS.HTML</li>
             
             
         
@@ -173,7 +181,7 @@
 
 
             </div>
-            <h1 class="title">Running Fuseki with UI</h1>
+            <h1 class="title">Jena JDBC Drivers</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
@@ -182,124 +190,206 @@
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#fuseki-standalone-server">Fuseki as a Standalone Server</a></li>
-    <li><a href="#layout">Layout</a></li>
-    <li><a href="#fuseki-service">Fuseki as a Service</a></li>
-    <li><a href="#fuseki-web-application">Fuseki as a Web Application</a></li>
-    <li><a href="#configuring-logging">Configuring logging</a></li>
-    <li><a href="#fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</a></li>
+    <li><a href="#connection-url-basics">Connection URL Basics</a>
+      <ul>
+        <li><a href="#common-parameters">Common Parameters</a>
+          <ul>
+            <li><a href="#jdbc-compatibility-level">JDBC Compatibility Level</a></li>
+            <li><a href="#pre-processors">Pre-Processors</a></li>
+            <li><a href="#post-processors">Post-Processors</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#available-drivers">Available Drivers</a>
+      <ul>
+        <li><a href="#in-memory">In-Memory</a></li>
+        <li><a href="#tdb">TDB</a></li>
+        <li><a href="#remote-endpoint">Remote Endpoint</a>
+          <ul>
+            <li><a href="#authentication">Authentication</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>Fuseki/UI can be run in a number of ways:</p>
+    <p>Jena JDBC comes with three built in drivers by default with the option of building
+<a href="custom_driver.html">custom drivers</a> if desired.  This page covers the differences
+between the provided drivers and the connection URL options for each.</p>
+<h2 id="connection-url-basics">Connection URL Basics</h2>
+<p>Connection URLs for Jena JDBC drivers have a common format, they all start with the following:</p>
+<pre><code>jdbc:jena:foo:
+</code></pre>
+<p>Where <code>foo</code> is a driver specific prefix that indicates which specific driver implementation
+is being used.</p>
+<p>After the prefix the connection URL consists of a sequence of key
+value pairs, the characters ampersand (<code>&amp;</code>), semicolon (<code>;</code>) and
+pipe (<code>|</code>) are considered to be separators between pairs, the
+separators are reserved characters and may not be used in values. The key is
+separated from the value by a equals sign (<code>=</code>) though unlike the
+separators this is not a reserved character in values.</p>
+<p>There is no notion of character escaping in connection parameters so if you
+need to use any of the reserved characters in your values then you should
+pass these to the <code>connect(String, Properties)</code> method directly in the
+<code>Properties</code> object.</p>
+<h3 id="common-parameters">Common Parameters</h3>
+<p>There are some common parameter understood by all Jena JDBC drivers and which
+apply regardless of driver implementation.</p>
+<h4 id="jdbc-compatibility-level">JDBC Compatibility Level</h4>
+<p>As discussed in the <a href="index.html#treatment-of-results">overview</a> the drivers have a notion
+of JDBC compatibility which is configurable. The <code>jdbc-compatibility</code> parameter is used
+in connection URLs. To avoid typos when creating URLs programmatically a constant
+(<code>JenaDriver.PARAM_JDBC_COMPATIBILITY</code>) is provided which contains the parameter
+name exactly as the code expects it. This parameter provides an integer value
+in the range 1-9 which denotes how compatible the driver should attempt to
+be.  See the aforementioned overview documentation for more information on the interpretation
+of this parameter.</p>
+<p>When not set the default compatibility level is
+used, note that <code>JenaConnection</code> objects support changing this after
+the connection has been established.</p>
+<h4 id="pre-processors">Pre-Processors</h4>
+<p>The second of the common parameters is the <code>pre-processor</code> parameter which is used to
+specify one/more <code>CommandPreProcessor</code> implementations to use. The
+parameter should be specified once for each pre-processor you wish to you and
+you should supply a fully qualified class name to ensure the pre-processor
+can be loaded and registered on your connections. The driver will report an
+error if you specify a class that cannot be appropriately loaded and
+registered.</p>
+<p>Pre-processors are registered in the order that they are specified so if you
+use multiple pre-processors and they have ordering dependencies please ensure
+that you specify them in the desired order. Note that <code>JenaConnection</code>
+objects support changing registered pre-processors after the connection has
+been established.</p>
+<h4 id="post-processors">Post-Processors</h4>
+<p>There is also a <code>post-processor</code> parameter which is used to specify
+one/more <code>ResultsPostProcessor</code> implementations to use. The parameter
+should be specified once for each post-processor you wish to use and you
+should supply a fully qualified class name to ensure the post-processor can
+be loaded and registered on your connections. The driver will report an error
+is you specify a class that cannot be appropriately loaded and registered.</p>
+<p>Post-processors are registered in the order that they are specified so if you
+use multiple post-processors and they have ordering dependencies please
+ensure that you specify them in the desired order. Note that
+<code>JenaConnection</code> objects support changing registered post-processors
+after the connection has been established.</p>
+<h2 id="available-drivers">Available Drivers</h2>
 <ul>
-<li><a href="#fuseki-standalone-server">As a standalone server</a></li>
-<li><a href="#fuseki-service">As a service</a> run by the operation system, for example, started when the machine boots</li>
-<li><a href="#fuseki-web-application">As a Web Application</a> inside a container such as Apache Tomcat or Jetty.</li>
+<li><a href="#in-memory">In-Memory</a></li>
+<li><a href="#tdb">TDB</a></li>
+<li><a href="#remote-endpoint">Remote Endpoint</a></li>
 </ul>
-<p>Fuseki is also packaged as a plain server <a href="fuseki-main.html">&ldquo;Fuseki Main&rdquo;</a>
-with no UI for use as a configurable SPARQL server, for <a href="fuseki-docker.html">building as a Docker
-container</a>, and as a deployment and development standalone
-server. It supports the arguments used by the standalone server.</p>
-<p>The configuration file is the same format for all forms of the Fuseki server.</p>
-<p>See &ldquo;<a href="fuseki-configuration.html">Fuseki Configuration</a>&rdquo; for information on
-how to provide datasets and configure services using the configuration file.</p>
-<h2 id="fuseki-standalone-server">Fuseki as a Standalone Server</h2>
-<p>This is running Fuseki from the command line.</p>
-<p>To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:</p>
-<p>where <code>/NAME</code> is the dataset publishing name at this server in URI space.</p>
-<p>TDB2 database:</p>
-<pre><code>fuseki-server [--loc=DIR] [[--update] /NAME]
+<p>Each driver is available as a separate maven artifact, see the <a href="artifacts.html">artifacts</a> page
+for more information.</p>
+<h3 id="in-memory">In-Memory</h3>
+<p>The in-memory driver provides access to a non-persistent non-transactional in-memory dataset.  This dataset
+may either be initially empty or may be initialized from an input file.  Remember that
+this is non-persistent so even if the latter option is chosen changes are not persisted
+to the input file.  This driver is primarily intended for testing and demonstration
+purposes.</p>
+<p>Beyond the common parameters it has two possible connection parameters.  The first of these
+is the <code>dataset</code> parameter and is used to indicate an input file that the driver will
+initialize the in-memory dataset with e.g.</p>
+<pre><code>jdbc:jena:mem:dataset=file.nq
 </code></pre>
-<p>The <code>--loc</code> directory is either a TDB1 or TDB2 database.
-The directory <code>DIR</code> must exist.
-If the database in <code>DIR</code> does not exist, then a new database is created. By
-default this is a TDB2 database unless the argument &ndash;tdb1 is given.</p>
-<p>An in-memory, non-peristent database (always updatable) is:</p>
-<pre><code>fuseki-server --mem /NAME
+<p>If you prefer to start with an empty dataset you should use the <code>empty</code> parameter instead e.g.</p>
+<pre><code>jdbc:jena:mem:empty=true
 </code></pre>
-<p>Load a file at start and provide it read-only:</p>
-<pre><code>fuseki-server --file=MyData.ttl /NAME
+<p>If both are specified then the <code>dataset</code> parameter has precedence.</p>
+<h3 id="tdb">TDB</h3>
+<p>The TDB driver provides access to a persistent <a href="/documentation/tdb/">Jena TDB</a> dataset.  This
+means that the dataset is both persistent and can be used transactionally.  For correct
+transactional behavior it is typically necessary to set the holdability for connections and
+statements to <code>ResultSet.HOLD_CURSORS_OVER_COMMIT</code> as otherwise closing a result set or making
+an update will cause all other results to be closed.</p>
+<p>Beyond the common parameters the driver requires a single <code>location</code> parameter that provides
+the path to a location for a TDB dataset e.g.</p>
+<pre><code>jdbc:jena:tdb:location=/path/to/data
 </code></pre>
-<p>where <code>MyData.ttl</code> can be any RDF format, both triples or quads.</p>
-<p>Administrative functions are only available from &ldquo;localhost&rdquo;.</p>
-<p>See <code>fuseki-server --help</code> for details of more arguments.</p>
-<h2 id="layout">Layout</h2>
-<p>When run from the command line, the server creates its work area in the
-directory named by environment variable <code>FUSEKI_BASE</code>. When run from the
-command line, this defaults to the current directory.</p>
-<p><a href="fuseki-layout.html">Fuseki layout</a></p>
-<p>If you get the error message <code>Can't find jarfile to run</code> then you either
-need to put a copy of <code>fuseki-server.jar</code> in the current directory or set
-the environment variable <code>FUSEKI_HOME</code> to point to an unpacked Fuseki
-distribution.</p>
-<p>Starting with no dataset and no configuration is possible.
-Datasets can be added from the admin UI to a running server.</p>
-<h2 id="fuseki-service">Fuseki as a Service</h2>
-<p>Fuseki can run as an operating system service, started when the server
-machine boots.  The script <code>fuseki</code> is a Linux <code>init.d</code> with the common
-secondary arguments of <code>start</code> and <code>stop</code>.</p>
-<p>Process arguments are read from <code>/etc/default/fuseki</code> including
-<code>FUSEKI_HOME</code> and <code>FUSEKI_BASE</code>.  <code>FUSEKI_HOME</code> should be the directory
-where the distribution was unpacked.</p>
-<h2 id="fuseki-web-application">Fuseki as a Web Application</h2>
-<p>Fuseki can run from a
-<a href="http://en.wikipedia.org/wiki/WAR_%28file_format%29">WAR</a> file.</p>
-<p>The war file can be downloaded from the <a href="/download/">project downloads page</a>. It
-should then be renamed to the webapp name &ldquo;ROOT.war&rdquo; (this means there no name
-in the URL) or &ldquo;fuseki.war&rdquo; (with a name <code>/fuseki/</code>) or some other choice of
-name.</p>
-<p><code>FUSEKI_HOME</code> is not applicable.</p>
-<p><code>FUSEKI_BASE</code> defaults to <code>/etc/fuseki</code> which must be a writeable
-directory.  It is initialised the first time Fuseki runs, including a
-<a href="http://shiro.apache.org/">Apache Shiro</a> security file but this is only
-intended as a starting point.  It restricts use of the admin UI to the
-local machine.</p>
-<p>When deploying as a web application a more fully featured Admin API is
-made available and described on the
-<a href="fuseki-server-protocol.html">Fuseki Server Protocol (REST API)</a> page.</p>
-<h2 id="configuring-logging">Configuring logging</h2>
-<p>When running from a WAR file in a webapp container such as Apache Tomcat, the
-logging configuration comes from the file <code>log4j2.properties</code> in the root of the
-unpacked war file, e.g. <code>/var/lib/tomcat9/webapps/fuseki/log4j2.properties</code>.</p>
-<p>The name of the file is taken from <code>web.xml</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;context-param&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;param-name&gt;</span>log4jConfiguration<span style="color:#008000;font-weight:bold">&lt;/param-name&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&lt;param-value&gt;</span>log4j2.properties<span style="color:#008000;font-weight:bold">&lt;/param-value&gt;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&lt;/context-param&gt;</span>
-</span></span></code></pre></div><p>This only applies when running in a webapp container. When run from the command
-line, the server looks for <code>log4j2.properties</code> in the current directory and if
-not found, uses a built-in configuration.</p>
-<p>This logging goes to the standard output.</p>
-<p>See also <a href="./fuseki-logging.html">Fuseki Logging</a>.</p>
-<h2 id="fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</h2>
-<p><code>systemd</code> may be set to sandbox Tomcat9. The file area <code>/etc/fuseki</code> will not
-be writable to Fuseki. To enable this area, add <code>ReadWritePaths=/etc/fuseki/</code> to
-the file <code>/etc/systemd/system/tomcat9.service.d/override.conf</code>,
-creating the file if necessary.</p>
-<p><code>systemd</code> also captures standard out and routes it to the system journal:</p>
-<pre tabindex="0"><code>  journalctl -u tomcat9
-</code></pre><p>To direct the output to the traditional location of
-/var/log/tomcat9/catalina.out use the <code>StandardOutput</code> setting in <code>override.conf</code>:</p>
-<pre tabindex="0"><code>    [Service]
-   
-    # Allow access to the Fuseki area
-    ReadWritePaths=/etc/fuseki/
-    StandardOutput=file:/var/log/tomcat9/catalina.out
+<p>By default a TDB dataset will be created in that location if one does not exist, if you would
+prefer not to do this i.e. ensure you only access existing TDB datasets then you can add the
+<code>must-exist</code> parameter e.g.</p>
+<pre><code>jdbc:jena:tdb:location=/path/to/data&amp;must-exist=true
 </code></pre>
+<p>With this parameter set the connection will fail if the location does not exist as a directory,
+note that this does not validate that the location is a TDB dataset so it is still possible
+to pass in invalid paths even with this set.</p>
+<h3 id="remote-endpoint">Remote Endpoint</h3>
+<p>The Remote Endpoint driver provides access to any SPARQL Protocol compliant store that exposes
+SPARQL query and/or SPARQL update endpoints.  This driver can be explicitly configured to be
+in read-only or write-only mode by providing only one of the required endpoints.</p>
+<p>The <code>query</code> parameter sets the query endpoint whilst the <code>update</code> parameter sets the update endpoint e.g.</p>
+<pre><code>jdbc:jena:remote:query=http://localhost:3030/ds/query&amp;update=http://localhost:3030/ds/update
+</code></pre>
+<p>At least one of these parameters is required, if only one is provided you will get a read-only or
+write-only connection as appropriate.</p>
+<p>This driver also provides a whole variety of parameters that may be used to customize its behavior
+further.  Firstly there are a set of parameters which control the dataset description provided
+via the SPARQL protocol:</p>
+<ul>
+<li><code>default-graph-uri</code> - Sets a default graph for queries</li>
+<li><code>named-graph-uri</code> - Sets a named graph for queries</li>
+<li><code>using-graph-uri</code> - Sets a default graph for updates</li>
+<li><code>using-named-graph-uri</code> - Sets a named graph for updates</li>
+</ul>
+<p>All of these may be specified multiple times to specify multiple graph URIs for each.</p>
+<p>Then you have the <code>select-results-type</code> and <code>model-results-type</code> which are used to set the MIME
+type you&rsquo;d prefer to have the driver retrieve SPARQL results from the remote endpoints in.  If used
+you must set them to formats that ARQ supports, the ARQ <a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/riot/WebContent.html">WebContent</a>
+class has constants for the various supported formats.</p>
+<h4 id="authentication">Authentication</h4>
+<p>There is also comprehensive support for authentication using this driver, the standard JDBC <code>user</code>
+and <code>password</code> parameters are used for credentials and then a selection of driver specific
+parameters are used to configure how you wish the driver to authenticate.</p>
+<p>Under the hood authentication uses the new <code>HttpAuthenticator</code> framework introduced in the same
+release as Jena JDBC, see <a href="/documentation/query/http-auth.html">HTTP Authentication in ARQ</a>.  This means
+that it can support standard HTTP auth methods (Basic, Digest etc) or can use more complex schemes
+such as forms based auth with session cookies.</p>
+<p>To set up standard HTTP authentication it is sufficient to specify the <code>user</code> and <code>password</code> fields.  As
+with any JDBC application we <strong>strongly</strong> recommend that you do not place these in the connection URL
+directly but rather use the <code>Properties</code> object to pass these in.  One option you may wish to include
+if your endpoints use HTTP Basic authentication is the <code>preemptive-auth</code> parameter which when set to
+true will enable preemptive authentication.  While this is less secure it can be more performant if
+you are making lots of queries.</p>
+<p>Setting up form based authentication is somewhat more complex, at a minimum you need to provide the
+<code>form-url</code> parameter with a value for the URL that user credentials should be POSTed to in order to
+login.  You may need to specify the <code>form-user-field</code> and <code>form-password-field</code> parameters to provide
+the name of the fields for the login request, by default these assume you are using an Apache <code>mod_auth_form</code>
+protected server and use the appropriate default values.</p>
+<p>The final option for authenticator is to use the <code>authenticator</code> parameter via the <code>Properties</code> object
+to pass in an actual instance of a <code>HttpAuthenticator</code> that you wish to use.  This method is the most
+powerful in that it allows you to use any authentication method that you need.</p>
+
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#fuseki-standalone-server">Fuseki as a Standalone Server</a></li>
-    <li><a href="#layout">Layout</a></li>
-    <li><a href="#fuseki-service">Fuseki as a Service</a></li>
-    <li><a href="#fuseki-web-application">Fuseki as a Web Application</a></li>
-    <li><a href="#configuring-logging">Configuring logging</a></li>
-    <li><a href="#fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</a></li>
+    <li><a href="#connection-url-basics">Connection URL Basics</a>
+      <ul>
+        <li><a href="#common-parameters">Common Parameters</a>
+          <ul>
+            <li><a href="#jdbc-compatibility-level">JDBC Compatibility Level</a></li>
+            <li><a href="#pre-processors">Pre-Processors</a></li>
+            <li><a href="#post-processors">Post-Processors</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#available-drivers">Available Drivers</a>
+      <ul>
+        <li><a href="#in-memory">In-Memory</a></li>
+        <li><a href="#tdb">TDB</a></li>
+        <li><a href="#remote-endpoint">Remote Endpoint</a>
+          <ul>
+            <li><a href="#authentication">Authentication</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </aside>
