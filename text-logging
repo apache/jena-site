@@ -1,0 +1,48 @@
+merge with fuseki2/fuseki-logging.md
+
+### Fuseki loggers
+
+| Logger    | Usage |
+| -------   | ----- |
+| Fuseki    | The action log used for all endpoint requests |
+| Server    | Server information                       |
+| Admin     | Server administration operations         |
+| Config    | Dataset build/configuration log          |
+| Request   | NCSA [Common Log Format](https://en.wikipedia.org/wiki/Common_Log_Format) |
+| Backup    | Log for backup tasks              |
+| riot     | Uploaded data parse errors        |
+
+Parse errors for uploaded data go to the logger `org.apache.jena.riot`
+
+The full name used in the logging provider setup is
+of the form <code>org.apache.jena.fuseki.<i>&lt;NAME&gt;</i>
+except for `org.apache.jena.riot`.
+
+Logging default to level `INFO`.
+
+Any externally set logging setup takes precidence over the Fuseki default
+logging configuration.
+
+#### Server packaging
+
+Logging goes to stderr.
+
+The logging pattern is `%d{HH:mm:ss} %-5p %-15c{1} :: %m%n`.
+
+#### webapp (WAR file) packaging
+
+Logging goes to stdout.
+
+The logging pattern is `[%d{yyyy-MM-dd HH:mm:ss}] %-10c{1} %-5p %m%n`.
+
+#### Embedded mode:
+
+The default for logging is silent. To instead use the Fuseki setup, call
+`FusekiLogging.setLogging();` before any jena code is called. Then
+logging is the same as the server packaging.
+
+### `Request` log
+
+In all cases, the `Request` uses the plain pattern `%m%n` and the format
+follows the [Common Log Format](https://en.wikipedia.org/wiki/Common_Log_Format)
+used by many log analysis tools. The log defaults to `OFF`.

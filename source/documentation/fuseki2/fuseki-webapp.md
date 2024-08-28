@@ -105,16 +105,20 @@ unpacked war file, e.g. `/var/lib/tomcat9/webapps/fuseki/log4j2.properties`.
 
 The name of the file is taken from `web.xml`:
 
+```xml
   <context-param>
     <param-name>log4jConfiguration</param-name>
     <param-value>log4j2.properties</param-value>
   </context-param>
+```
 
 This only applies when running in a webapp container. When run from the command
 line, the server looks for `log4j2.properties` in the current directory and if
 not found, uses a built-in configuration.
 
 This logging goes to the standard output.
+
+See also [Fuseki Logging](./fuseki-logging.html).
 
 ## Fuseki with Tomcat9 and systemd
 
