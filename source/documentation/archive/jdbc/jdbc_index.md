@@ -3,7 +3,7 @@ title: Jena JDBC - A SPARQL over JDBC driver framework
 slug: index
 ---
 
-> Jena JDBC will be removed in Jena5.
+> Jena JDBC was removed in Jena5.
 
 Jena JDBC is a set of libraries which provide SPARQL over JDBC driver implementations.
 

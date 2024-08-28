@@ -120,11 +120,6 @@ structuring Jena development.
     <td><code>jar</code></td>
     <td>Security wrapper around Jena RDF implementation.</td>
   </tr>
-  <tr>
-    <td><code>jena-jdbc-driver-bundle</code></td>
-    <td><code>jar</code></td>
-    <td>A collection of JDBC drivers</td>
-  </tr>
 </table>
 
 There are also a number of artifacts used in development.
