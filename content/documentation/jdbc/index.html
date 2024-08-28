@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Creating a Custom Jena JDBC Driver</title>
+    <title>Apache Jena - Jena JDBC - A SPARQL over JDBC driver framework</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/jdbc/custom_driver.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/jdbc/__index.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -135,6 +135,9 @@
 
 
 
+
+    
+    
 
 
 <ol class="breadcrumb mt-4 p-2 bg-body-tertiary">
@@ -154,23 +157,7 @@
         
         
             
-                <li class="breadcrumb-item"><a href='/documentation/archive'>ARCHIVE</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item"><a href='/documentation/archive/jdbc'>JDBC</a></li>
-            
-            
-        
-    
-        
-        
-            
-                <li class="breadcrumb-item active">CUSTOM DRIVER</li>
+                <li class="breadcrumb-item active">JDBC</li>
             
             
         
@@ -181,7 +168,7 @@
 
 
             </div>
-            <h1 class="title">Creating a Custom Jena JDBC Driver</h1>
+            <h1 class="title">Jena JDBC - A SPARQL over JDBC driver framework</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
@@ -190,47 +177,161 @@
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#custom-driver-class">Custom Driver class</a></li>
-    <li><a href="#custom-connection-class">Custom Connection class</a></li>
-    <li><a href="#testing-your-driver">Testing your Driver</a></li>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#overview">Overview</a>
+      <ul>
+        <li><a href="#treatment-of-results">Treatment of Results</a></li>
+      </ul>
+    </li>
+    <li><a href="#basic-usage">Basic Usage</a>
+      <ul>
+        <li><a href="#establishing-a-connection">Establishing a Connection</a></li>
+        <li><a href="#performing-queries">Performing Queries</a></li>
+        <li><a href="#performing-updates">Performing Updates</a></li>
+      </ul>
+    </li>
+    <li><a href="#alternatives">Alternatives</a></li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>As noted in the <a href="index.html#overview">overview</a> Jena JDBC drivers are built around a core
-library which implements much of the common functionality required in an abstract way.  This
-means that it is relatively easy to build a custom driver just by relying on the core library
-and implementing a minimum of one class.</p>
-<h2 id="custom-driver-class">Custom Driver class</h2>
-<p>The one and only thing that you are required to do to create a custom driver is to implement
-a class that extends <code>JenaDriver</code>.  This requires you to implement a constructor which simply
-needs to call the parent constructor with the relevant inputs, one of these is your driver specific
-connection URL prefix i.e. the <code>foo</code> in <code>jdbc:jena:foo:</code>.  Implementation specific prefixes
-must conform to the regular expression <code>[A-Za-z\d\-_]+:</code> i.e. some combination of alphanumerics,
-hyphens and underscores terminated by a colon.</p>
-<p>Additionally you must override and implement two abstract methods <code>connect()</code> and <code>getPropertyInfo()</code>.
-The former is used to produce an instance of a <code>JenaConnection</code> while the latter provides information
-that may be used by tools to present users with some form of user interface for configuring a
-connection to your driver.</p>
-<p>An important thing to note is that this may be all you need to do to create a custom driver, it is
-perfectly acceptable for your <code>connect()</code> implementation to just return one of the implementations
-from the built-in drivers.  This may be useful if you are writing a driver for a specific store and
-wish to provide simplified connection URL parameters and create the appropriate connection instance
-programmatically.</p>
-<h2 id="custom-connection-class">Custom Connection class</h2>
-<p>The next stage in creating a custom driver (where necessary) is to create a class derived from
-<code>JenaConnection</code>.  This has a somewhat broader set of abstract methods which you will need to implement
-such as <code>createStatementInternal()</code> and various methods which you may optionally override if you
-need to deviate from the default behaviors.</p>
-<p>If you wish to go down this route then we recommend looking at the source for the built in implementations
-to guide you in this.  It may be easier to extend one of the built-in implementations rather than writing
-an entire custom implementation yourself.</p>
-<p>Note that custom implementations may also require you to implement custom <code>JenaStatement</code> and <code>JenaPreparedStatement</code>
-implementations.</p>
-<h2 id="testing-your-driver">Testing your Driver</h2>
-<p>To aid testing your custom driver the <code>jena-jdbc-core</code> module provides a number of abstract test classes which
-can be derived from in order to provide a wide variety of tests for your driver implementation.  This is how
-all the built in drivers are tested so you can check out their test sources for examples of this.</p>
+    <blockquote>
+<p>Jena JDBC will be removed in Jena5.</p>
+</blockquote>
+<p>Jena JDBC is a set of libraries which provide SPARQL over JDBC driver implementations.</p>
+<p>This is a pure SPARQL over JDBC implementation, there is no attempt to present the underlying
+RDF data model as a relational model through the driver and only SPARQL queries and updates
+are supported.</p>
+<p>It provides type 4 drivers in that they are pure Java based but the drivers are not JDBC compliant since
+by definition they <strong>do not</strong> support SQL.</p>
+<p>This means that the drivers can be used with JDBC tools provided that those tools don&rsquo;t restrict you to SQL
+or auto-generate SQL.  So it can be used with a tool like <a href="http://squirrel-sql.sourceforge.net">SquirrelSQL</a>
+since you can freely enter SPARQL queries and updates.  Conversely it cannot be used with a tool like a SQL based
+ORM which generates SQL.</p>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#alternatives">Alternatives</a></li>
+<li><a href="drivers.html">Jena JDBC Drivers</a></li>
+<li><a href="artifacts.html">Maven Artifacts for Jena JDBC</a></li>
+<li><a href="custom_driver.html">Implementing a custom Jena JDBC Driver</a></li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>Jena JDBC aims to be a pure SPARQL over JDBC driver, it assumes that all commands that come in are
+either SPARQL queries or updates and processes them as such.</p>
+<p>As detailed on the <a href="drivers.html">drivers</a> page there are actually three drivers provided currently:</p>
+<ul>
+<li><a href="drivers.html#in-memory">In-Memory</a> - uses an in-memory dataset to provide non-persistent storage</li>
+<li><a href="drivers.html#tdb">TDB</a> - uses a <a href="/documentation/tdb/">TDB</a> dataset to provide persistent and transactional storage</li>
+<li><a href="drivers.html#remote-endpoint">Remote Endpoint</a> - uses HTTP based remote endpoints to access any SPARQL protocol compliant storage</li>
+</ul>
+<p>These are all built on a core library which can be used to build <a href="custom_driver.html">custom drivers</a>
+if desired.  This means that all drivers share common infrastructure and thus exhibit broadly speaking
+the same behavior around handling queries, updates and results.</p>
+<p>Jena JDBC is published as a Maven module via its <a href="artifacts.html">maven artifacts</a>.  The source for Jena JDBC may be <a href="/download/index.cgi">downloaded</a> as part of the source distribution.</p>
+<h3 id="treatment-of-results">Treatment of Results</h3>
+<p>One important behavioral aspect to understand is how results are treated compared to a traditional
+JDBC driver.  SPARQL provides four query forms and thus four forms of results while JDBC assumes all
+results have a simple tabular format.  Therefore one of the main jobs of the core library is to marshal
+the results of each kind of query into a tabular format.  For <code>SELECT</code> queries this is a trivial mapping,
+for <code>CONSTRUCT</code> and <code>DESCRIBE</code> the triples are mapped to columns named <code>Subject</code>, <code>Predicate</code> and <code>Object</code>
+respectively, finally for <code>ASK</code> the boolean is mapped to a single column named <code>ASK</code>.</p>
+<p>The second issue is that JDBC expects uniform column typing throughout a result set which is not
+something that holds true for SPARQL results.  Therefore the core library takes a pragmatic approach to column
+typing and makes the exact behavior configurable by the user.  The default behavior of the core library is
+to type all columns as <code>Types.NVARCHAR</code> with a Java type of <code>String</code>, this provides the widest compatibility
+possible with both the SPARQL results and consuming tools since we can treat everything as a string.  We
+refer to this default behavior as medium compatibility, it is sufficient to allow JDBC tools to interpret
+results for basic display but may be unsuitable for further processing.</p>
+<p>We then provide two alternatives, the first of which we refer to as high compatibility aims to present the
+data in a way that is more amenable to subsequent processing by JDBC tools.  In this mode the column types
+in a result set are detected by sniffing the data in the first row of the result set and assigning appropriate
+types.  For example if the first row for a given column has the value <code>&quot;1234&quot;^^xsd:integer</code> then it would
+be assigned the type <code>Types.BIGINT</code> and have the Java type of <code>Long</code>.  Doing this allows JDBC tools to carry
+out subsequent calculations on the data in a type appropriate way.  It is important to be aware that this
+sniffing may not be accurate for the entire result set so can still result in errors processing some rows.</p>
+<p>The second alternative we refer to as low compatibility and is designed for users who are using the driver
+directly and are fully aware that they are writing SPARQL queries and getting SPARQL results.  In this mode
+we make no effort to type columns in a friendly way instead typing them as <code>Types.JAVA_OBJECT</code> with the Java
+type <code>Node</code> (i.e. the Jena <a href="/documentation/javadoc/jena/org.apache.jena.core/org/apache/jena/graph/Node.html">Node</a> class).</p>
+<p>Regardless of how you configure to do column typing the core library does it best to allow you to marshal values
+into strong types.  For example even if using default compatibility and your columns are typed as strings
+from a JDBC perspective you can still call <code>getLong(&quot;column&quot;)</code> and if there is a valid conversion the
+library will make it for you.</p>
+<p>Another point of interest is around our support of different result set types.  The drivers support both
+<code>ResultSet.TYPE_FORWARD_ONLY</code> and <code>ResultSet.TYPE_SCROLL_INSENSITIVE</code>, note that regardless of the type
+chosen and the underlying query type all result sets are <code>ResultSet.CONCUR_READ_ONLY</code> i.e. the <code>setLong()</code>
+style methods cannot be used to update the underlying RDF data.  Users should be aware that the default
+behavior is to use forward only result sets since this allows the drivers to stream the results and
+minimizes memory usage.  When scrollable result sets are used the drivers will cache all the results into
+memory which can use lots of memory when querying large datasets.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<p>The following takes you through the basic usage of the in-memory JDBC driver.  The code should be familiar
+to anyone who has used JDBC before and is easily used with our other <a href="drivers.html">drivers</a> simply by
+changing the connection URL appropriately.</p>
+<h3 id="establishing-a-connection">Establishing a Connection</h3>
+<p>Firstly we should ensure that the driver we wish to use is registered with the JDBC driver manager, a static
+method is provided for this:</p>
+<pre><code>MemDriver.register();
+</code></pre>
+<p>Once this is done we can then make a JDBC connection just be providing an appropriate connection URL:</p>
+<pre><code>// Make a connection using the In-Memory driver starting from an empty dataset
+Connection conn = DriverManager.getConnection(&quot;jdbc:jena:mem:empty=true&quot;);
+</code></pre>
+<p>Now we can go ahead and use the connection as you would normally.</p>
+<h3 id="performing-queries">Performing Queries</h3>
+<p>You make queries as you would with any JDBC driver, the only difference being that the queries must be SPARQL:</p>
+<pre><code>// Need a statement
+Statement stmt = conn.createStatement();
+
+try {
+  // Make a query
+  ResultSet rset = stmt.executeQuery(&quot;SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 100&quot;);
+
+  // Iterate over results
+  while (rset.next()) {
+    // Print out type as a string
+    System.out.println(rset.getString(&quot;type&quot;));
+  }
+
+  // Clean up
+  rset.close();
+} catch (SQLException e) {
+  System.err.println(&quot;SQL Error - &quot; + e.getMessage());
+} finally {
+  stmt.close();
+}
+</code></pre>
+<h3 id="performing-updates">Performing Updates</h3>
+<p>You make updates as you would with any JDBC driver.  Again the main difference is that updates must be SPARQL,
+one downside of this is that SPARQL provides no way to indicate the number of triples/quads affected by an update
+so the JDBC driver will either return <code>0</code> for successful updates or throw a <code>SQLException</code> for failed updates:</p>
+<pre><code>// Need a statement
+Statement stmt = conn.createStatement();
+
+// Make an update
+try {
+  stmt.executeUpdate(&quot;INSERT DATA { &lt;http://x&gt; &lt;http://y&gt; &lt;http://z&gt; }&quot;);
+  System.out.println(&quot;Update succeeded&quot;);
+} catch (SQLException e) {
+  System.out.println(&quot;Update Failed &quot; - + e.getMessage());
+} finally {    
+  // Clean up
+  stmt.close();
+}
+</code></pre>
+<h2 id="alternatives">Alternatives</h2>
+<p>If Jena JDBC does not fulfill your use case you may also be interested in some 3rd party
+projects which do SPARQL over JDBC in other ways:</p>
+<ul>
+<li><a href="https://github.com/Claudenw/jdbc4sparql">Claude Warren&rsquo;s jdbc4sparql</a> - An alternative approach that does expose
+the underlying RDF data model as a relational model and supports translating SQL into SPARQL</li>
+<li><a href="http://code.google.com/p/jdbc4sparql/">William Greenly&rsquo;s jdbc4sparql</a> - A similar approach to Jena JDBC restricted
+to accessing HTTP based SPARQL endpoints</li>
+<li><a href="https://code.google.com/p/scon/wiki/Introduction">Paul Gearon&rsquo;s scon</a> - A similar approach to Jena JDBC restricted
+to accessing HTTP based SPARQL endpoints</li>
+</ul>
 
   </article>
   
@@ -238,9 +339,20 @@ all the built in drivers are tested so you can check out their test sources for 
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#custom-driver-class">Custom Driver class</a></li>
-    <li><a href="#custom-connection-class">Custom Connection class</a></li>
-    <li><a href="#testing-your-driver">Testing your Driver</a></li>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#overview">Overview</a>
+      <ul>
+        <li><a href="#treatment-of-results">Treatment of Results</a></li>
+      </ul>
+    </li>
+    <li><a href="#basic-usage">Basic Usage</a>
+      <ul>
+        <li><a href="#establishing-a-connection">Establishing a Connection</a></li>
+        <li><a href="#performing-queries">Performing Queries</a></li>
+        <li><a href="#performing-updates">Performing Updates</a></li>
+      </ul>
+    </li>
+    <li><a href="#alternatives">Alternatives</a></li>
   </ul>
 </nav>
   </aside>
