@@ -552,7 +552,6 @@ There are the following configuration settings
 
 Setting | Description
 ------------ |------------------
-ALLOW_ANONYMOUS_INDIVIDUALS | Controls anonymous individuals. Some specifications (e.g. OWL2 EL) do not allow anonymous individuals.
 ALLOW_GENERIC_CLASS_EXPRESSIONS | If this key is set to true, there is a special type of class expressions, which includes any structure declared as `owl:Class` or `owl:Restriction` that cannot be classified as a specific type. This option is for compatibility with legacy `OntModel`.
 ALLOW_NAMED_CLASS_EXPRESSIONS | If this key is set to true, all class expressions are allowed to be named (can have URI). This option is for compatibility with legacy `OntModel`.
 USE_BUILTIN_HIERARCHY_SUPPORT | If this key is set to true, then the class/property hierarchies (e.g., see `OntClass.subClasses()`) are to be inferred by the naked model itself using builtin algorithms.
@@ -564,13 +563,12 @@ USE_OWL_CLASS_EQUIVALENT_FEATURE | Controls `owl:equivalentClass` functionality.
 USE_OWL_DATA_PROPERTY_FUNCTIONAL_FEATURE | Controls data `owl:FunctionalProperty` functionality.
 USE_OWL_INDIVIDUAL_DIFFERENT_FROM_FEATURE | Controls `owl:differentFrom` functionality.
 USE_OWL_INDIVIDUAL_SAME_AS_FEATURE | Controls `owl:sameAs` functionality.
-USE_OWL_INVERSE_OBJECT_PROPERTY_FEATURE | If this key is set to true, an anonymous inverse object property type is enabled (OWL2 feature).
+USE_OWL_INVERSE_OBJECT_PROPERTIES_FEATURE | Controls `owl:inverseOf` functionality (InverseObjectProperty axiom).
 USE_OWL_OBJECT_PROPERTY_FUNCTIONAL_FEATURE | Controls object `owl:FunctionalProperty` functionality.
 USE_OWL_PROPERTY_ASYMMETRIC_FEATURE | Controls `owl:AsymmetricProperty` functionality.
 USE_OWL_PROPERTY_CHAIN_AXIOM_FEATURE | Controls `owl:propertyChainAxiom` functionality.
 USE_OWL_PROPERTY_EQUIVALENT_FEATURE | Controls `owl:equivalentProperty` functionality.
 USE_OWL_PROPERTY_INVERSE_FUNCTIONAL_FEATURE | Controls `owl:InverseFunctionalProperty` functionality.
-USE_OWL_PROPERTY_INVERSE_OF_FEATURE | Controls `owl:inverseOf` functionality.
 USE_OWL_PROPERTY_IRREFLEXIVE_FEATURE | Controls `owl:IrreflexiveProperty` functionality.
 USE_OWL_PROPERTY_REFLEXIVE_FEATURE | Controls `owl:ReflexiveProperty` functionality.
 USE_OWL_PROPERTY_SYMMETRIC_FEATURE | Controls `owl:SymmetricProperty` functionality.
