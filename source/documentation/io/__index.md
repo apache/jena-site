@@ -32,6 +32,10 @@ See the [description of RDF/JSON](rdf-json.html).
 RDF Binary is a binary encoding of RDF (graphs and datasets) that can be useful
 for fast parsing.  See [RDF Binary](rdf-binary.html).
 
+[Jelly](https://w3id.org/jelly) is a third-party, high-performance binary RDF format
+not included with Jena by default. You can use the [Jelly-JVM](https://w3id.org/jelly/jelly-jvm)
+library to enable support for this format in Jena.
+
 ## Command line tools
 
 There are scripts in Jena download to run these commands.
