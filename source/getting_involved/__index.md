@@ -91,10 +91,6 @@ You can also use git:
 
     git format-patch origin/trunk
 
-### IRC channel
-
-Some Jena developers hang out on #jena on irc.freenode.net.
-
 ### How Apache Software Foundation works
 
 To better understand how to get involved and how the Apache Software Foundation works we recommend you read:
