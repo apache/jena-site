@@ -56,7 +56,7 @@ Some useful prefix declarations:
     PREFIX fuseki:  <http://jena.apache.org/fuseki#>
     PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX tdb1:    <http://jena.hpl.hp.com/2008/tdb#>
+    PREFIX tdb:     <http://jena.hpl.hp.com/2008/tdb#>
     PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
     PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
     PREFIX :        <#>
@@ -220,12 +220,12 @@ An in-memory dataset, with data in the default graph taken from a local file.
 
 ### TDB2
 
-    <#dataset> rdf:type      tdb:DatasetTDB2 ;
-        tdb:location "DB2" ;
+    <#dataset> rdf:type      tdb2:DatasetTDB2 ;
+        tdb2:location "DB2" ;
         # Query timeout on this dataset (1s, 1000 milliseconds)
         ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "1000" ] ;
         # Make the default graph be the union of all named graphs.
-        ## tdb:unionDefaultGraph true ;
+        ## tdb2:unionDefaultGraph true ;
          .
 
 ### Inference
@@ -242,7 +242,7 @@ You have to build up layers of dataset, inference model, and graph.
          ja:reasoner [ ja:reasonerURL <http://example/someReasonerURLHere> ];
          ja:baseModel <#baseModel>;
          .
-    <#baseModel> rdf:type tdb:GraphTDB2;  # for example.
+    <#baseModel> rdf:type tdb2:GraphTDB2;  # for example.
          tdb2:location "/some/path/to/store/data/to";
          # etc
          .
