@@ -288,6 +288,7 @@ In this example (prefix `tdb2:` is for URI `<http://jena.apache.org/2016/tdb#>`)
     
     <#tdbDataset> rdf:type tdb2:DatasetTDB ;
         ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000,30000" ] ;
+        ja:context [ ja:cxtName "arq:updateTimeout" ; ja:cxtValue "20000,60000" ] ;
         tdb2:location "DATA" .
  
 "/ds-tdb" is a [TDB2 database](/documentation/tdb2/) with endpoints for SPARQL
@@ -297,6 +298,11 @@ the default graph.
 
 Query timeout is set for any use of the dataset with first result in 10
 seconds, and complete results in 30 seconds.
+
+Update timeout is set accordingly with an overall timeout of 60 seconds and
+any involved WHERE clause must produce its first result within 20 seconds.
+All of an update request's operations must complete within the given overall
+time limit or the request will fail.
 
 ## Security
 
