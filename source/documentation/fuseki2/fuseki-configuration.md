@@ -187,7 +187,10 @@ by searching the configuration file for the type `fuseki:Service`.
        # Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
        # See java doc for ARQ.queryTimeout
        # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
-
+       #
+       # ARQ.updateTimeout (since jena-5.3.0) follows the same pattern as for the query timeout.
+       # ja:context [ ja:cxtName "arq:updateTimeout" ;  ja:cxtValue "60000" ] ;
+       #
        # Explicitly choose which services to add to the server.
        # If absent, include all descriptions of type `fuseki:Service`.
        # fuseki:services (<#service1> <#service2>)
