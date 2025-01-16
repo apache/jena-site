@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../script-dir/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="../../../../../script-dir/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -145,7 +145,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDatatype(org.apache.jena.datatypes.RDFDatatype)" class="member-name-link">registerDatatype</a><wbr>(<a href="RDFDatatype.html" title="interface in org.apache.jena.datatypes">RDFDatatype</a>&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a new datatype</div>
+<div class="block">Register a new datatype
+ This will overwrite any existing registration for this datatype IRI.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
@@ -285,14 +286,21 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="registerDatatype(org.apache.jena.datatypes.RDFDatatype)">
 <h3>registerDatatype</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDatatype</span><wbr><span class="parameters">(<a href="RDFDatatype.html" title="interface in org.apache.jena.datatypes">RDFDatatype</a>&nbsp;type)</span></div>
-<div class="block">Register a new datatype</div>
+<div class="block">Register a new datatype
+ This will overwrite any existing registration for this datatype IRI.
+ Comparisons of literals with different datatype instances will fail, so be careful
+ if you are using this outside of initialization code.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="unregisterDatatype(org.apache.jena.datatypes.RDFDatatype)">
 <h3>unregisterDatatype</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterDatatype</span><wbr><span class="parameters">(<a href="RDFDatatype.html" title="interface in org.apache.jena.datatypes">RDFDatatype</a>&nbsp;type)</span></div>
-<div class="block">Remove a datatype registration.</div>
+<div class="block">Remove a datatype registration.
+ <p>
+ WARNING: This method may cause unexpected behavior if the datatype is still in use.
+ If you unregister a datatype that is still used somewhere on the heap, literal comparisons with
+ that datatype will fail.</div>
 </section>
 </li>
 </ul>
