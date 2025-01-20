@@ -1,15 +1,17 @@
 ---
-title: Running Fuseki with UI
+title: Running Fuseki
 ---
 
-Fuseki/UI can be run in a number of ways:
+Fuseki can be run as:
 
-* [As a standalone server](#fuseki-standalone-server)
-* [As a service](#fuseki-service) run by the operation system, for example, started when the machine boots
+* [As a standalone server with UI](#fuseki-standalone-server)
+* [As a service](#fuseki-service) run by the operation system, 
+   for example, started when the machine boots
+* Embbeded in an application, with or without a UI
 * [As a Web Application](#fuseki-web-application) inside a container such as Apache Tomcat or Jetty.
 
-Fuseki is also packaged as a plain server ["Fuseki Main"](fuseki-main.html)
-with no UI for use as a configurable SPARQL server, for [building as a Docker
+Fuseki is also packaged as a plain server ["Fuseki Plain"](fuseki-plain.html)
+with no UI for use as a configurable SPARQL server for [building as a Docker
 container](fuseki-docker.html), and as a deployment and development standalone
 server. It supports the arguments used by the standalone server. 
 
@@ -22,7 +24,7 @@ how to provide datasets and configure services using the configuration file.
 
 This is running Fuseki from the command line.
 
-To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:
+To publish at `http://host:3030/NAME`:
 
 where `/NAME` is the dataset publishing name at this server in URI space.
 
@@ -48,6 +50,12 @@ where `MyData.ttl` can be any RDF format, both triples or quads.
 Administrative functions are only available from "localhost".
 
 See `fuseki-server --help` for details of more arguments.
+
+## Configuring logging
+
+Fuseki uses Apache Log4j2 for logging. This can be configured via 
+a `log4j2.properties` file. The `fuseki-server` script looks for
+such a file in the current direcory.
 
 ## Layout
 
@@ -96,8 +104,6 @@ local machine.
 When deploying as a web application a more fully featured Admin API is
 made available and described on the 
 [Fuseki Server Protocol (REST API)](fuseki-server-protocol.html) page.
-
-## Configuring logging
 
 When running from a WAR file in a webapp container such as Apache Tomcat, the
 logging configuration comes from the file `log4j2.properties` in the root of the

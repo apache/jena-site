@@ -1,13 +1,14 @@
 ---
-title: "Fuseki : Main Server"
+title: "Fuseki : Plain Server"
 ---
 
-Fuseki main is a packaging of Fuseki as a triple store without a UI for administration.
+Fuseki Server can be run "plain" as a triple store without a UI.
+It can be run in the background by an application as an embedded server.  
+The entry point is `org.apache.jena.fuseki.main.cmds.FusekiMainCmd`.
 
-Fuseki can be run in the background by an application as an embedded server.  The
-application can safely work with the dataset directly from java while having Fuseki
-provide SPARQL access over HTTP.  An embedded server is useful for
-adding functionality around a triple store and also for development and testing.
+The application can safely work with the dataset directly from java while having Fuseki provide
+SPARQL access over HTTP.  An embedded server is useful for adding functionality around a triple
+store and also for development and testing.
 
 * [Running as a deployment or development server](#fuseki-server)
 * [Running from Docker](#fuseki-docker)
@@ -26,11 +27,10 @@ See also [Data Access Control for Fuseki](./fuseki-data-access-control.html).
 ## Running as a configured deployment or development server {#fuseki-server}
 
 The artifact `org.apache.jena:jena-fuseki-server` is a packaging of
-the "main" server that runs from the command line.  Unlike the UI 
-Fuseki server, it is only configured from the command line and has no
-persistent work area on-disk.
+the Fuseki server that runs from the command line.  Unlike the UI 
+Fuseki server, running this way has no persistent work area on-disk.
 
-    java -jar jena-fuseki-server-$VER.jar --help
+    java -cp jena-fuseki-server-$VER.jar org.apache.jena.fuseki.main.cmds.FusekiMainCmd --help
 
 The arguments are the same as the 
 [full UI server command line program](/documentation/fuseki2/fuseki-webapp.html#fuseki-standalone-server).
