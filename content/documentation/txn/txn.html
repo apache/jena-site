@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -162,7 +159,7 @@
         
         
             
-                <li class="breadcrumb-item active">TXN.HTML</li>
+                <li class="breadcrumb-item active">TXN</li>
             
             
         
@@ -205,104 +202,104 @@ to use transactions.</p>
 <p>The <a href="basic_txn_api.html">basic transactions API</a> provides operations
 <code>begin</code>, <code>commit</code>, <code>abort</code> and <code>end</code>.</p>
 <p>A write transaction looks like:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span> write operations <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>  <span style="color:#080;font-style:italic">// Or abort
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><p>This can be simplified by wrapping application code, contained in a Java lambda
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">write</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb"> </span>write<span style="color:#bbb"> </span>operations<span style="color:#bbb"> </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// Or abort</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>This can be simplified by wrapping application code, contained in a Java lambda
 expression or a Java Runnable object, and calling a method of the dataset or
 other transactional object.  This wil apply the correct entry and exit code for
 a transaction, eliminating coding errors.</p>
 <p>This is also available via transactional objects such as <code>Dataset</code>.</p>
 <p>The pattern is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">.</span> <span style="color:#666">.</span> <span style="color:#666">.</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>and</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeWrite</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">.</span> <span style="color:#666">.</span> <span style="color:#666">.</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>The form is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Txn<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(</span>ds<span style="color:#666">,</span> <span style="color:#666">()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">.</span> <span style="color:#666">.</span> <span style="color:#666">.</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>and</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Txn<span style="color:#666">.</span><span style="color:#b44">executeWrite</span><span style="color:#666">(</span>ds<span style="color:#666">,</span> <span style="color:#666">()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">.</span> <span style="color:#666">.</span> <span style="color:#666">.</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>is also available (<code>Txn</code> is the implementation of this machinery). Using Txn is
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">executeRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>and</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">executeWrite</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The form is:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Txn.<span style="color:#b44">executeRead</span>(ds,<span style="color:#bbb"> </span>()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>and</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Txn.<span style="color:#b44">executeWrite</span>(ds,<span style="color:#bbb"> </span>()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>is also available (<code>Txn</code> is the implementation of this machinery). Using Txn is
 this way is necessary for Jena3.</p>
 <h2 id="usage">Usage</h2>
 <p>This first example shows how to write a SPARQL query .</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>Query query <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">())</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>Here, a <code>try-with-resources</code> ensures correct handling of the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">executeRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(query,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSetFormatter.<span style="color:#b44">out</span>(qExec.<span style="color:#b44">execSelect</span>())<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Here, a <code>try-with-resources</code> ensures correct handling of the
 <code>QueryExecution</code> inside a read transaction.</p>
 <p>Writing to a file is a read-action (it does not update the RDF data, the
 writer needs to read the dataset or model):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">write</span><span style="color:#666">(</span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">,</span> dataset<span style="color:#666">,</span> Lang<span style="color:#666">.</span><span style="color:#b44">TRIG</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>whereas reading data into an RDF dataset needs to be a write transaction
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">executeRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>RDFDataMgr.<span style="color:#b44">write</span>(System.<span style="color:#b44">out</span>,<span style="color:#bbb"> </span>dataset,<span style="color:#bbb"> </span>Lang.<span style="color:#b44">TRIG</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>whereas reading data into an RDF dataset needs to be a write transaction
 (the dataset or model is changed).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeWrite</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">read</span><span style="color:#666">(</span><span style="color:#b44">&#34;data.ttl&#34;</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>Applications are not limited to a single operation inside a transaction. It
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">executeWrite</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>RDFDataMgr.<span style="color:#b44">read</span>(<span style="color:#b44">&#34;data.ttl&#34;</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Applications are not limited to a single operation inside a transaction. It
 can involve multiple applications read operations, such as making several
 queries:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>Query query1 <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>Query query2 <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec1 <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query1<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec2 <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query2<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>A <code>calculateRead</code> block can return a result but only with the condition
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query1<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query2<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">executeRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec1<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(query1,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec2<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(query2,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>A <code>calculateRead</code> block can return a result but only with the condition
 that what is returned does not touch the data again unless it uses a new
 transaction.</p>
 <p>This includes returning a result set or returning a model from a dataset.</p>
 <p><code>ResultSets</code> by default stream - each time <code>hasNext</code> or <code>next</code> is
 called, new data might be read from the RDF dataset.  A copy of the
 results needs to be taken:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>Query query <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span> results <span style="color:#666">=</span> dataset<span style="color:#666">.</span><span style="color:#b44">calculateRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>     List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span> accumulator <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> ArrayList<span style="color:#666">&lt;&gt;()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>         qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">().</span><span style="color:#b44">forEachRemaining</span><span style="color:#666">((</span>row<span style="color:#666">)-&gt;{</span>
-</span></span><span style="display:flex;"><span>             String strThisRow <span style="color:#666">=</span> row<span style="color:#666">.</span><span style="color:#b44">getLiteral</span><span style="color:#666">(</span><span style="color:#b44">&#34;variable&#34;</span><span style="color:#666">).</span><span style="color:#b44">getLexicalForm</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>             accumulator<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span>strThisRow<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">return</span> accumulator <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// use &#34;results&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>Query query <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>ResultSet List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span> resultSet <span style="color:#666">=</span> dataset<span style="color:#666">.</span><span style="color:#b44">calculateRead</span><span style="color:#666">(()-&gt;</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>     List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span> accumulator <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> ArrayList<span style="color:#666">&lt;&gt;()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>query<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#a2f;font-weight:bold">return</span> ResultSetFactory<span style="color:#666">.</span><span style="color:#b44">copyResults</span><span style="color:#666">(</span>qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">())</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>     <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">})</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// use &#34;resultSet&#34;
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>results<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>dataset.<span style="color:#b44">calculateRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>accumulator<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">new</span><span style="color:#bbb"> </span>ArrayList<span style="color:#666">&lt;&gt;</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(query,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span>qExec.<span style="color:#b44">execSelect</span>().<span style="color:#b44">forEachRemaining</span>((row)<span style="color:#666">-&gt;</span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">             </span>String<span style="color:#bbb"> </span>strThisRow<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>row.<span style="color:#b44">getLiteral</span>(<span style="color:#b44">&#34;variable&#34;</span>).<span style="color:#b44">getLexicalForm</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">             </span>accumulator.<span style="color:#b44">add</span>(strThisRow)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#a2f;font-weight:bold">return</span><span style="color:#bbb"> </span>accumulator<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// use &#34;results&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>ResultSet<span style="color:#bbb"> </span>List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>resultSet<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>dataset.<span style="color:#b44">calculateRead</span>(()<span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>List<span style="color:#666">&lt;</span>String<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>accumulator<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">new</span><span style="color:#bbb"> </span>ArrayList<span style="color:#666">&lt;&gt;</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(query,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span><span style="color:#a2f;font-weight:bold">return</span><span style="color:#bbb"> </span>ResultSetFactory.<span style="color:#b44">copyResults</span>(qExec.<span style="color:#b44">execSelect</span>())<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>})<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// use &#34;resultSet&#34;</span><span style="color:#bbb">
 </span></span></span></code></pre></div><p>The functions <code>execute</code> and <code>calculate</code> start <code>READ_PROMOTE</code>
 transactions which start in &ldquo;read&rdquo; mode but convert to &ldquo;write&rdquo; mode if
 needed.  For details of transaction promotion see the
@@ -316,40 +313,40 @@ dataset.</p>
 <code>execute...</code> or <code>calculate...</code> will be performed as part of
 the transaction and that transaction is not terminated.  If there is not transaction already started,
 a transaction is wrapped around the <code>execute...</code> or <code>calculate...</code> action.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Main transaction.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">// Part of the transaction above.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  dataset<span style="color:#666">.</span><span style="color:#b44">executeRead</span><span style="color:#666">(()</span> <span style="color:#666">-&gt;</span> <span style="color:#666">...)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">// Part of the transaction above - no commit/abort
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  dataset<span style="color:#666">.</span><span style="color:#b44">executeWrite</span><span style="color:#666">(()</span> <span style="color:#666">-&gt;</span> <span style="color:#666">...)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">// Outer transaction
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><h2 id="design">Design</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// Main transaction.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">WRITE</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// Part of the transaction above.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>dataset.<span style="color:#b44">executeRead</span>(()<span style="color:#bbb"> </span><span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>...)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// Part of the transaction above - no commit/abort</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>dataset.<span style="color:#b44">executeWrite</span>(()<span style="color:#bbb"> </span><span style="color:#666">-&gt;</span><span style="color:#bbb"> </span>...)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// Outer transaction</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="design">Design</h2>
 <p><code>Txn</code> uses Java <code>Runnable</code> for the application code, passed into control code
 that wraps the transaction operations around the application code. This results
 in application code automatically applied transaction begin/commit/end as needed.</p>
 <p>A bare read transaction requires the following code structure (no exception handling):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>txn<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#666">...</span> application code <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> txn<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>while a write transaction requires either a <code>commit</code> or an <code>abort</code>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>txn.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb"> </span>application<span style="color:#bbb"> </span>code<span style="color:#bbb"> </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>txn.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>while a write transaction requires either a <code>commit</code> or an <code>abort</code>
 at the end of the application code as well.</p>
 <p>Without the transaction continuation code (simplified, the <code>Txn</code> code
 for a read transaction takes the form:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">static</span> <span style="color:#666">&lt;</span>T <span style="color:#a2f;font-weight:bold">extends</span> Transactional<span style="color:#666">&gt;</span> <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">executeRead</span><span style="color:#666">(</span>T txn<span style="color:#666">,</span> Runnable r<span style="color:#666">)</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    txn<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span> r<span style="color:#666">.</span><span style="color:#b44">run</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">catch</span> <span style="color:#666">(</span>Throwable th<span style="color:#666">)</span> <span style="color:#666">{</span> txn<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#a2f;font-weight:bold">throw</span> th <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>    txn<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><p>See <a href="https://github.com/apache/jena/blob/main/jena-arq/src/main/java/org/apache/jena/query/Txn.java"><code>Txn.java</code></a> for full details.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">public</span><span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">static</span><span style="color:#bbb"> </span><span style="color:#666">&lt;</span>T<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">extends</span><span style="color:#bbb"> </span>Transactional<span style="color:#666">&gt;</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">void</span><span style="color:#bbb"> </span><span style="color:#00a000">executeRead</span>(T<span style="color:#bbb"> </span>txn,<span style="color:#bbb"> </span>Runnable<span style="color:#bbb"> </span>r)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>txn.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>r.<span style="color:#b44">run</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">catch</span><span style="color:#bbb"> </span>(Throwable<span style="color:#bbb"> </span>th)<span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>txn.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">throw</span><span style="color:#bbb"> </span>th<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>txn.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>See <a href="https://github.com/apache/jena/blob/main/jena-arq/src/main/java/org/apache/jena/query/Txn.java"><code>Txn.java</code></a> for full details.</p>
 
   </article>
   
@@ -374,7 +371,7 @@ for a read transaction takes the form:</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

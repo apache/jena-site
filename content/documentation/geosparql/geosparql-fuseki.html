@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -323,18 +320,18 @@ RDFS inferencing is applied using the GeoSPARQL schema to infer additional relat
 <p><strong>N.B.</strong> Windows Powershell will strip quotation pairs from arguments and so triple quotation pairs may be required, e.g. <code>&quot;&quot;&quot;test.rdf&quot;&quot;&quot;</code>. Otherwise, logging output will be sent to a file called &ldquo;xml&rdquo;. Also, &ldquo;The input line is too long&rdquo; error can mean the path to the  exceeds the character limit and needs shortening.</p>
 <h3 id="embedded-server">Embedded Server</h3>
 <p>Run within a Java application to provide GeoSPARQL support over HTTP to other applications:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>FusekiLogging<span style="color:#666">.</span><span style="color:#b44">setLogging</span><span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>GeosparqlServer server <span style="color:#666">=</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">new</span> GeosparqlServer<span style="color:#666">(</span>portNumber<span style="color:#666">,</span> datasetName<span style="color:#666">,</span> isLoopbackOnly<span style="color:#666">,</span> dataset<span style="color:#666">,</span> isUpdate<span style="color:#666">);</span>
-</span></span></code></pre></div><h2 id="sparql-query-example">SPARQL Query Example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>FusekiLogging.<span style="color:#b44">setLogging</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>GeosparqlServer<span style="color:#bbb"> </span>server<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">new</span><span style="color:#bbb"> </span>GeosparqlServer(portNumber,<span style="color:#bbb"> </span>datasetName,<span style="color:#bbb"> </span>isLoopbackOnly,<span style="color:#bbb"> </span>dataset,<span style="color:#bbb"> </span>isUpdate);<span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="sparql-query-example">SPARQL Query Example</h2>
 <p>Once the default server is running it can be queried using Jena as follows:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String service <span style="color:#666">=</span> <span style="color:#b44">&#34;http://localhost:3030/ds&#34;</span><span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>String query <span style="color:#666">=</span> <span style="color:#666">....;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">service</span><span style="color:#666">(</span>service<span style="color:#666">).</span><span style="color:#b44">query</span><span style="color:#666">(</span>query<span style="color:#666">).</span><span style="color:#b44">build</span><span style="color:#666">())</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    ResultSet rs <span style="color:#666">=</span> qe<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>    ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">outputAsTSV</span><span style="color:#666">(</span>rs<span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><p>The server will respond to any valid SPARQL HTTP so an alternative SPARQL framework can be used.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#bbb"> </span>service<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;http://localhost:3030/ds&#34;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>String<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>....;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>(QueryExecution<span style="color:#bbb"> </span>qe<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">service</span>(service).<span style="color:#b44">query</span>(query).<span style="color:#b44">build</span>())<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>ResultSet<span style="color:#bbb"> </span>rs<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qe.<span style="color:#b44">execSelect</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>ResultSetFormatter.<span style="color:#b44">outputAsTSV</span>(rs);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The server will respond to any valid SPARQL HTTP so an alternative SPARQL framework can be used.
 More information on SPARQL querying using Jena can be found on their website (<a href="https://jena.apache.org/tutorials/sparql.html)">https://jena.apache.org/tutorials/sparql.html)</a>.</p>
 <h2 id="sis_data-environment-variable">SIS_DATA Environment Variable</h2>
 <p>The Apache SIS library is used to support the recognition and transformation of Coordinate/Spatial Reference Systems.
@@ -507,7 +504,7 @@ See <a href="index">GeoSPARQL Jena project</a> for more details.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

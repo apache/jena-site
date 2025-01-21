@@ -3,7 +3,7 @@
 <head>
     
 
-    <title>Apache Jena - Running Fuseki with UI</title>
+    <title>Apache Jena - Running Fuseki</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -120,7 +120,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-webapp.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/fuseki2/fuseki-server.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -162,7 +159,7 @@
         
         
             
-                <li class="breadcrumb-item active">FUSEKI WEBAPP</li>
+                <li class="breadcrumb-item active">FUSEKI SERVER</li>
             
             
         
@@ -173,7 +170,7 @@
 
 
             </div>
-            <h1 class="title">Running Fuseki with UI</h1>
+            <h1 class="title">Running Fuseki</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
@@ -183,23 +180,25 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#fuseki-standalone-server">Fuseki as a Standalone Server</a></li>
+    <li><a href="#configuring-logging">Configuring logging</a></li>
     <li><a href="#layout">Layout</a></li>
     <li><a href="#fuseki-service">Fuseki as a Service</a></li>
     <li><a href="#fuseki-web-application">Fuseki as a Web Application</a></li>
-    <li><a href="#configuring-logging">Configuring logging</a></li>
     <li><a href="#fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</a></li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>Fuseki/UI can be run in a number of ways:</p>
+    <p>Fuseki can be run as:</p>
 <ul>
-<li><a href="#fuseki-standalone-server">As a standalone server</a></li>
-<li><a href="#fuseki-service">As a service</a> run by the operation system, for example, started when the machine boots</li>
+<li><a href="#fuseki-standalone-server">As a standalone server with UI</a></li>
+<li><a href="#fuseki-service">As a service</a> run by the operation system,
+for example, started when the machine boots</li>
+<li>Embbeded in an application, with or without a UI</li>
 <li><a href="#fuseki-web-application">As a Web Application</a> inside a container such as Apache Tomcat or Jetty.</li>
 </ul>
-<p>Fuseki is also packaged as a plain server <a href="fuseki-main.html">&ldquo;Fuseki Main&rdquo;</a>
-with no UI for use as a configurable SPARQL server, for <a href="fuseki-docker.html">building as a Docker
+<p>Fuseki is also packaged as a plain server <a href="fuseki-plain.html">&ldquo;Fuseki Plain&rdquo;</a>
+with no UI for use as a configurable SPARQL server for <a href="fuseki-docker.html">building as a Docker
 container</a>, and as a deployment and development standalone
 server. It supports the arguments used by the standalone server.</p>
 <p>The configuration file is the same format for all forms of the Fuseki server.</p>
@@ -207,7 +206,7 @@ server. It supports the arguments used by the standalone server.</p>
 how to provide datasets and configure services using the configuration file.</p>
 <h2 id="fuseki-standalone-server">Fuseki as a Standalone Server</h2>
 <p>This is running Fuseki from the command line.</p>
-<p>To publish at <tt>http://<i>host</i>:3030/NAME</i></tt>:</p>
+<p>To publish at <code>http://host:3030/NAME</code>:</p>
 <p>where <code>/NAME</code> is the dataset publishing name at this server in URI space.</p>
 <p>TDB2 database:</p>
 <pre><code>fuseki-server [--loc=DIR] [[--update] /NAME]
@@ -225,6 +224,10 @@ default this is a TDB2 database unless the argument &ndash;tdb1 is given.</p>
 <p>where <code>MyData.ttl</code> can be any RDF format, both triples or quads.</p>
 <p>Administrative functions are only available from &ldquo;localhost&rdquo;.</p>
 <p>See <code>fuseki-server --help</code> for details of more arguments.</p>
+<h2 id="configuring-logging">Configuring logging</h2>
+<p>Fuseki uses Apache Log4j2 for logging. This can be configured via
+a <code>log4j2.properties</code> file. The <code>fuseki-server</code> script looks for
+such a file in the current direcory.</p>
 <h2 id="layout">Layout</h2>
 <p>When run from the command line, the server creates its work area in the
 directory named by environment variable <code>FUSEKI_BASE</code>. When run from the
@@ -259,7 +262,6 @@ local machine.</p>
 <p>When deploying as a web application a more fully featured Admin API is
 made available and described on the
 <a href="fuseki-server-protocol.html">Fuseki Server Protocol (REST API)</a> page.</p>
-<h2 id="configuring-logging">Configuring logging</h2>
 <p>When running from a WAR file in a webapp container such as Apache Tomcat, the
 logging configuration comes from the file <code>log4j2.properties</code> in the root of the
 unpacked war file, e.g. <code>/var/lib/tomcat9/webapps/fuseki/log4j2.properties</code>.</p>
@@ -295,10 +297,10 @@ creating the file if necessary.</p>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#fuseki-standalone-server">Fuseki as a Standalone Server</a></li>
+    <li><a href="#configuring-logging">Configuring logging</a></li>
     <li><a href="#layout">Layout</a></li>
     <li><a href="#fuseki-service">Fuseki as a Service</a></li>
     <li><a href="#fuseki-web-application">Fuseki as a Web Application</a></li>
-    <li><a href="#configuring-logging">Configuring logging</a></li>
     <li><a href="#fuseki-with-tomcat9-and-systemd">Fuseki with Tomcat9 and systemd</a></li>
   </ul>
 </nav>
@@ -312,7 +314,7 @@ creating the file if necessary.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

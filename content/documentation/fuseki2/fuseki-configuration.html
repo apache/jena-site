@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -201,8 +198,8 @@
     <li><a href="#datasets">Datasets</a>
       <ul>
         <li><a href="#in-memory">In-memory</a></li>
-        <li><a href="#tdb">TDB</a></li>
         <li><a href="#tdb2">TDB2</a></li>
+        <li><a href="#tdb1">TDB1</a></li>
         <li><a href="#inference">Inference</a>
           <ul>
             <li><a href="#possible-reasoners">Possible reasoners:</a></li>
@@ -253,8 +250,8 @@ split to allow for commentary.</p>
 <pre><code>PREFIX fuseki:  &lt;http://jena.apache.org/fuseki#&gt;
 PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-PREFIX tdb1:    &lt;http://jena.hpl.hp.com/2008/tdb#&gt;
 PREFIX tdb2:    &lt;http://jena.apache.org/2016/tdb#&gt;
+PREFIX tdb1:    &lt;http://jena.hpl.hp.com/2008/tdb#&gt;
 PREFIX ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;
 PREFIX :        &lt;#&gt;
 </code></pre>
@@ -364,7 +361,10 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
    # Format 2: &quot;10000,60000&quot; -- 10s timeout to first result, then 60s timeout to for rest of query.
    # See java doc for ARQ.queryTimeout
    # ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;10000&quot; ] ;
-
+   #
+   # ARQ.updateTimeout (since jena-5.3.0) follows the same pattern as for the query timeout.
+   # ja:context [ ja:cxtName &quot;arq:updateTimeout&quot; ;  ja:cxtValue &quot;60000&quot; ] ;
+   #
    # Explicitly choose which services to add to the server.
    # If absent, include all descriptions of type `fuseki:Service`.
    # fuseki:services (&lt;#service1&gt; &lt;#service2&gt;)
@@ -373,32 +373,28 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
 <h2 id="datasets">Datasets</h2>
 <h3 id="in-memory">In-memory</h3>
 <p>An in-memory dataset, with data in the default graph taken from a local file.</p>
-<pre><code>&lt;#books&gt;    rdf:type ja:RDFDataset ;
-    rdfs:label &quot;Books&quot; ;
-    ja:defaultGraph
-      [ rdfs:label &quot;books.ttl&quot; ;
-        a ja:MemoryModel ;
-        ja:content [ja:externalContent &lt;file:Data/books.ttl&gt; ] ;
-      ] ;
+<pre><code>&lt;#dataset&gt; rdf:type ja:MemoryDataset ;
+    ## Optional: load with data on start-up
+    ## ja:data &lt;file:Data/books.ttl&gt; 
     .
 </code></pre>
-<h3 id="tdb">TDB</h3>
-<pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB ;
-    tdb:location &quot;DB&quot; ;
-    # Query timeout on this dataset (1s, 1000 milliseconds)
-    ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;1000&quot; ] ;
-    # Make the default graph be the union of all named graphs.
-    ## tdb:unionDefaultGraph true ;
-     .
-</code></pre>
 <h3 id="tdb2">TDB2</h3>
-<pre><code>&lt;#dataset&gt; rdf:type      tdb:DatasetTDB2 ;
-    tdb:location &quot;DB2&quot; ;
+<pre><code>&lt;#dataset&gt; rdf:type      tdb2:DatasetTDB2 ;
+    tdb2:location &quot;DB2&quot; ;
     # Query timeout on this dataset (1s, 1000 milliseconds)
     ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;1000&quot; ] ;
     # Make the default graph be the union of all named graphs.
-    ## tdb:unionDefaultGraph true ;
-     .
+    ## tdb2:unionDefaultGraph true ;
+    .
+</code></pre>
+<h3 id="tdb1">TDB1</h3>
+<pre><code>&lt;#dataset&gt; rdf:type      tdb1:DatasetTDB ;
+    tdb1:location &quot;DB&quot; ;
+    # Query timeout on this dataset (1s, 1000 milliseconds)
+    ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;1000&quot; ] ;
+    # Make the default graph be the union of all named graphs.
+    ## tdb1:unionDefaultGraph true ;
+    .
 </code></pre>
 <h3 id="inference">Inference</h3>
 <p>An inference reasoner can be layered on top of a dataset as defined above. The type of reasoner must be selected carefully and should not include more reasoning than is required by the application, as extensive reasoning can be detrimental to performance.</p>
@@ -411,7 +407,8 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
      ja:reasoner [ ja:reasonerURL &lt;http://example/someReasonerURLHere&gt; ];
      ja:baseModel &lt;#baseModel&gt;;
      .
-&lt;#baseModel&gt; rdf:type tdb:GraphTDB2;  # for example.
+
+&lt;#baseModel&gt; rdf:type tdb2:GraphTDB2;  # for example.
      tdb2:location &quot;/some/path/to/store/data/to&quot;;
      # etc
      .
@@ -483,8 +480,8 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
     <li><a href="#datasets">Datasets</a>
       <ul>
         <li><a href="#in-memory">In-memory</a></li>
-        <li><a href="#tdb">TDB</a></li>
         <li><a href="#tdb2">TDB2</a></li>
+        <li><a href="#tdb1">TDB1</a></li>
         <li><a href="#inference">Inference</a>
           <ul>
             <li><a href="#possible-reasoners">Possible reasoners:</a></li>
@@ -504,7 +501,7 @@ by searching the configuration file for the type <code>fuseki:Service</code>.</p
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>
