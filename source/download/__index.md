@@ -19,7 +19,7 @@ Source release: this forms the official release of Apache Jena. All binaries art
 
 | Apache Jena Release | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-|<a href="[preferred]jena/source/jena-5.2.0-source-release.zip">jena-5.2.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-5.2.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-5.2.0-source-release.zip.asc) |
+|<a href="[preferred]jena/source/jena-5.3.0-source-release.zip">jena-5.3.0-source-release.zip</a> | [SHA512](https://downloads.apache.org/jena/source/jena-5.3.0-source-release.zip.sha512) | [PGP](https://downloads.apache.org/jena/source/jena-5.3.0-source-release.zip.asc) |
 
 ### Apache Jena Binary Distributions
 
@@ -27,23 +27,23 @@ The binary distribution of the Fuseki server:
 
 | Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.2.0.tar.gz">apache-jena-fuseki-5.2.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.2.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.2.0.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.2.0.zip">apache-jena-fuseki-5.2.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.2.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.2.0.zip.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.3.0.tar.gz">apache-jena-fuseki-5.3.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.3.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.3.0.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-fuseki-5.3.0.zip">apache-jena-fuseki-5.3.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.3.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-fuseki-5.3.0.zip.asc) |
 
 <p>&nbsp;</p>
 The binary distribution of libraries contains the APIs, SPARQL engine, the TDB native RDF database and a variety of command line scripts and tools for working with these systems.
 
 | Apache Jena Commands | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/apache-jena-5.2.0.tar.gz">apache-jena-5.2.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.2.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.2.0.tar.gz.asc) |
-| <a href="[preferred]jena/binaries/apache-jena-5.2.0.zip">apache-jena-5.2.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.2.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.2.0.zip.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-5.3.0.tar.gz">apache-jena-5.3.0.tar.gz</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.3.0.tar.gz.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.3.0.tar.gz.asc) |
+| <a href="[preferred]jena/binaries/apache-jena-5.3.0.zip">apache-jena-5.3.0.zip</a> | [SHA512](https://downloads.apache.org/jena/binaries/apache-jena-5.3.0.zip.sha512) | [PGP](https://downloads.apache.org/jena/binaries/apache-jena-5.3.0.zip.asc) |
 
 <p>&nbsp;</p>
 The binary distribution of Fuseki as a WAR file:
 
 | Apache Jena Fuseki  | SHA512 | Signature |
 | ------------ | :----: | :-------: |
-| <a href="[preferred]jena/binaries/jena-fuseki-war-5.2.0.war">jena-fuseki-war-5.2.0.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.2.0.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.2.0.war.asc) |
+| <a href="[preferred]jena/binaries/jena-fuseki-war-5.3.0.war">jena-fuseki-war-5.3.0.war</a> | [SHA512](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.3.0.war.sha512) | [PGP](https://downloads.apache.org/jena/binaries/jena-fuseki-war-5.3.0.war.asc) |
 
 
 This can be run in any servlet application container supporting Jakarta Servlet 6.0
