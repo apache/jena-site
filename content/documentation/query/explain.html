@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -162,7 +159,7 @@
         
         
             
-                <li class="breadcrumb-item active">EXPLAIN.HTML</li>
+                <li class="breadcrumb-item active">EXPLAIN</li>
             
             
         
@@ -207,34 +204,34 @@ which applies all optimizations.</p>
 <p>Other useful arguments are:</p>
 <p><strong>qparse arguments</strong></p>
 <table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--print=query</code></td>
-<td>Print the parsed query</td>
-</tr>
-<tr>
-<td><code>--print=op</code></td>
-<td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
-</tr>
-<tr>
-<td><code>--print=opt</code></td>
-<td>Print the optimized algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=quad</code></td>
-<td>Print the quad form algebra for the query.</td>
-</tr>
-<tr>
-<td><code>--print=optquad</code></td>
-<td>Print the quad-form optimized algebra for the query.</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Argument</th>
+          <th>Effect</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>--print=query</code></td>
+          <td>Print the parsed query</td>
+      </tr>
+      <tr>
+          <td><code>--print=op</code></td>
+          <td>Print the SPARQL algebra for the query. This is exactly the algebra specified by the SPARQL standard.</td>
+      </tr>
+      <tr>
+          <td><code>--print=opt</code></td>
+          <td>Print the optimized algebra for the query.</td>
+      </tr>
+      <tr>
+          <td><code>--print=quad</code></td>
+          <td>Print the quad form algebra for the query.</td>
+      </tr>
+      <tr>
+          <td><code>--print=optquad</code></td>
+          <td>Print the quad-form optimized algebra for the query.</td>
+      </tr>
+  </tbody>
 </table>
 <p>The argument <code>--explain</code> is equivalent to <code>--print=query --print=opt</code></p>
 <p>Examples:</p>
@@ -259,14 +256,14 @@ at level &ldquo;info&rdquo;. So for log4j2, the following can be set in the
 </span></span><span style="display:flex;"><span><span style="color:#b44">logger.arq-exec.level</span> <span style="color:#666">=</span> <span style="color:#b44">INFO</span>
 </span></span></code></pre></div><p>The context setting is for key (Java constant) <code>ARQ.symLogExec</code>. To set
 globally:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ARQ<span style="color:#666">.</span><span style="color:#b44">setExecutionLogging</span><span style="color:#666">(</span>Explain<span style="color:#666">.</span><span style="color:#b44">InfoLevel</span><span style="color:#666">.</span><span style="color:#b44">ALL</span><span style="color:#666">);</span>
-</span></span></code></pre></div><p>and it may also be set on an individual query execution using its local
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ARQ.<span style="color:#b44">setExecutionLogging</span>(Explain.<span style="color:#b44">InfoLevel</span>.<span style="color:#b44">ALL</span>);<span style="color:#bbb">
+</span></span></span></code></pre></div><p>and it may also be set on an individual query execution using its local
 context.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">()</span> <span style="color:#666">...</span> <span style="color:#666">.</span><span style="color:#b44">set</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">symLogExec</span><span style="color:#666">,</span> Explain<span style="color:#666">.</span><span style="color:#b44">InfoLevel</span><span style="color:#666">.</span><span style="color:#b44">ALL</span><span style="color:#666">).</span><span style="color:#b44">build</span><span style="color:#666">()</span> <span style="color:#666">)</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>   ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><p>On the command line:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">create</span>()<span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>.<span style="color:#b44">set</span>(ARQ.<span style="color:#b44">symLogExec</span>,<span style="color:#bbb"> </span>Explain.<span style="color:#b44">InfoLevel</span>.<span style="color:#b44">ALL</span>).<span style="color:#b44">build</span>()<span style="color:#bbb"> </span>)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>ResultSet<span style="color:#bbb"> </span>rs<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qExec.<span style="color:#b44">execSelect</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">   </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>On the command line:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> arq.query --explain --data data file --query<span style="color:#666">=</span>queryfile
 </span></span></code></pre></div><p>The command <code>tdbquery</code> takes the same &ndash;explain argument.</p>
 <p>Logging information levels: see the <a href="logging.html">logging page</a></p>
@@ -292,7 +289,7 @@ context.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

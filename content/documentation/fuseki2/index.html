@@ -145,9 +145,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -178,13 +175,12 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#contents">Contents</a></li>
-    <li><a href="#download-fuseki-with-ui">Download Fuseki with UI</a>
+    <li><a href="#download-fuseki">Download Fuseki</a>
       <ul>
         <li><a href="#previous-releases">Previous releases</a></li>
         <li><a href="#development-builds">Development Builds</a></li>
       </ul>
     </li>
-    <li><a href="#getting-started-with-fuseki">Getting Started With Fuseki</a></li>
     <li><a href="#how-to-contribute">How to Contribute</a>
       <ul>
         <li><a href="#source-code">Source code</a></li>
@@ -194,36 +190,31 @@
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>Apache Jena Fuseki is a SPARQL server.  It can run as an operating system
-service, as a Java web application (WAR file), and as a standalone server.</p>
-<p>Fuseki comes in two forms, a single system &ldquo;webapp&rdquo;, combined with a UI
-for admin and query, and as &ldquo;main&rdquo;, a server suitable to run as part of a larger
-deployment, including <a href="fuseki-main.html#docker">with Docker</a> or running embedded.
-Both forms use the same core protocol engine and <a href="fuseki-configuration.html">same configuration file
-format</a>.</p>
+    <p>Apache Jena Fuseki is a SPARQL server.  It can run as a standalone server, or embedded in an
+application.</p>
 <p>Fuseki provides the
 SPARQL 1.1 <a href="http://www.w3.org/TR/sparql11-protocol/">protocols for query and update</a>
 as well as the
 <a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store protocol</a>.</p>
-<p>Fuseki is tightly integrated with <a href="../tdb/index.html">TDB</a> to provide a robust,
-transactional persistent storage layer, and incorporates
+<p>Fuseki is integrated with <a href="../tdb/index.html">TDB</a> to provide a robust,
+transactional, persistent storage layer. Fuseki also incorporates
 <a href="../query/text-query.html">Jena text query</a>.</p>
 <h2 id="contents">Contents</h2>
 <ul>
-<li><a href="#download-fuseki-with-ui">Download with UI</a></li>
-<li><a href="#getting-started-with-fuseki">Getting Started</a></li>
-<li><a href="fuseki-webapp.html">Running Fuseki with UI</a>
+<li><a href="#download-fuseki">Download</a></li>
+<li><a href="fuseki-quick-start.html">Getting Started</a></li>
+<li><a href="fuseki-server.html">Running Fuseki Server</a>
 <ul>
-<li><a href="fuseki-webapp.html#fuseki-standalone-server">As a standalone server with UI</a></li>
-<li><a href="fuseki-webapp.html#fuseki-service">As a service</a></li>
-<li><a href="fuseki-webapp.html#fuseki-web-application">As a web application</a></li>
+<li><a href="fuseki-server.html#fuseki-standalone-server">As a standalone server</a></li>
+<li><a href="fuseki-server.html#fuseki-service">As a service</a></li>
+<li><a href="fuseki-server.html#fuseki-web-application">As a web application</a></li>
 <li><a href="fuseki-security.html">Security</a> with <a href="https://shiro.apache.org/">Apache Shiro</a></li>
 </ul>
 </li>
-<li><a href="fuseki-main.html">Running Fuseki Server</a>
+<li><a href="fuseki-plain.html">Running Fuseki Plain</a>
 <ul>
-<li><a href="fuseki-main.html#setup">Setup</a></li>
-<li><a href="fuseki-main#fuseki-docker">As a Docker container</a></li>
+<li><a href="fuseki-plain.html#setup">Setup</a></li>
+<li><a href="fuseki-plain#fuseki-docker">As a Docker container</a></li>
 <li><a href="fuseki-embedded.html">As an embedded SPARQL server</a></li>
 <li><a href="fuseki-data-access-control.html">Security and data access control</a></li>
 <li><a href="fuseki-logging.html">Logging</a></li>
@@ -235,7 +226,6 @@ transactional persistent storage layer, and incorporates
 <li>Client access
 <ul>
 <li><a href="../rdfconnection">Use from Java</a></li>
-<li><a href="soh.html">SPARQL Over HTTP</a> - scripts to help with data management.</li>
 </ul>
 </li>
 <li>Extending Fuseki with <a href="fuseki-modules.html">Fuseki Modules</a></li>
@@ -243,39 +233,39 @@ transactional persistent storage layer, and incorporates
 </ul>
 <p>The Jena users mailing is the place to get help with Fuseki.</p>
 <p><a href="/help_and_support/#email-support-lists">Email support lists</a></p>
-<h2 id="download-fuseki-with-ui">Download Fuseki with UI</h2>
-<p>Releases of Apache Jena Fuseki can be downloaded from one of the mirror sites:</p>
+<h2 id="download-fuseki">Download Fuseki</h2>
+<p>Releases of Apache Jena Fuseki can be downloaded from:</p>
 <p><a href="/download">Jena Downloads</a></p>
-<p>and previous releases are available from <a href="https://archive.apache.org/dist/jena/">the archive</a>.
-We strongly recommend that users use the latest official Apache releases of Jena Fuseki in
-preference to any older versions.</p>
 <p><strong>Fuseki download files</strong></p>
 <table>
-<thead>
-<tr>
-<th>Filename</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>apache-jena-fuseki-*VER*.zip</code></td>
-<td>Fuseki with UI download</td>
-</tr>
-<tr>
-<td><a href="https://repo1.maven.org/maven2/org/apache/jena/jena-fuseki-server"><code>jena-fuseki-server</code></a></td>
-<td>The Fuseki Main packaging</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Filename</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>apache-jena-fuseki-*VER*.zip</code></td>
+          <td>The Fuseki server and UI</td>
+      </tr>
+  </tbody>
 </table>
-<p><code>apache-jena-fuseki-*VER*.zip</code> contains both a war file and an executable jar.</p>
-<p>Fuskei Main is also available as a Maven artifact:</p>
+<p>The Fuseki engine is also available as a Maven artifact:</p>
 <pre><code>&lt;dependency&gt;
    &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
    &lt;artifactId&gt;jena-fuseki-main&lt;/artifactId&gt;
    &lt;version&gt;X.Y.Z&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
+<p>and the UI is available as:</p>
+<pre><code>&lt;dependency&gt;
+   &lt;groupId&gt;org.apache.jena&lt;/groupId&gt;
+   &lt;artifactId&gt;jena-fuseki-ui&lt;/artifactId&gt;
+   &lt;version&gt;X.Y.Z&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>A WAR file is also available from the Jena <a href="/download">download</a> page.</p>
 <h3 id="previous-releases">Previous releases</h3>
 <p>While previous releases are available, we strongly recommend that wherever
 possible users use the latest official Apache releases of Jena in
@@ -283,15 +273,10 @@ preference to using any older versions of Jena.</p>
 <p>Previous Apache Jena releases can be found in the Apache archive area
 at <a href="http://archive.apache.org/dist/jena/">https://archive.apache.org/dist/jena</a></p>
 <h3 id="development-builds">Development Builds</h3>
-<p>Regular development builds of all of Jena are available (these are not
-formal releases) from the
+<p>Regular development builds of all of Jena are available
+(these are not formal releases) from the
 <a href="https://repository.apache.org/snapshots/org/apache/jena">Apache snapshots maven repository</a>.
-This includes packaged builds of Fuseki.</p>
-<h2 id="getting-started-with-fuseki">Getting Started With Fuseki</h2>
-<p>The <a href="fuseki-quick-start.html">quick start</a> section serves as a basic
-guide to getting a Fuseki server running on your local machine.</p>
-<p>See <a href="fuseki-webapp.html">all the ways to run Fuseki</a> for complete coverage of all the
-deployment methods for Fuseki.</p>
+This includes the packaged build of Fuseki.</p>
 <h2 id="how-to-contribute">How to Contribute</h2>
 <p>We welcome contributions towards making Jena a better platform for semantic
 web and linked data applications.  We appreciate feature suggestions, bug
@@ -307,66 +292,62 @@ pull-requests.</p>
 <a href="https://github.com/apache/jena/tree/main/jena-fuseki2">https://github.com/apache/jena/tree/main/jena-fuseki2</a></p>
 <p>The Fuseki code is under &ldquo;jena-fuseki2/&rdquo;:</p>
 <table>
-<thead>
-<tr>
-<th>Code</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jena-fuseki-core</td>
-<td>The Fuseki engine. All SPARQL operations.</td>
-</tr>
-<tr>
-<td><b>Fuseki/Main</b></td>
-<td></td>
-</tr>
-<tr>
-<td>jena-fuseki-main</td>
-<td>Embedded server and command line</td>
-</tr>
-<tr>
-<td>jena-fuseki-server</td>
-<td>Build the combined jar for Fusek/main server</td>
-</tr>
-<tr>
-<td>jena-fuseki-docker</td>
-<td>Build a docker conntained based on Fusek/main</td>
-</tr>
-<tr>
-<td><b>Webapp </b></td>
-<td></td>
-</tr>
-<tr>
-<td>jena-fuseki-webapp</td>
-<td>Web application and command line startup</td>
-</tr>
-<tr>
-<td>jena-fuseki-fulljar</td>
-<td>Build the combined jar for Fuseki/UI server</td>
-</tr>
-<tr>
-<td>jena-fuseki-war</td>
-<td>Build the war file for  Fusek/UI server</td>
-</tr>
-<tr>
-<td>apache-jena-fuseki</td>
-<td>The download for Fuskei</td>
-</tr>
-<tr>
-<td><b>Other</b></td>
-<td></td>
-</tr>
-<tr>
-<td>jena-fuseki-access</td>
-<td><a href="fuseki-data-access-control.html">Data access control</a></td>
-</tr>
-<tr>
-<td>jena-fuseki-geosparql</td>
-<td>Integration for GeoSPARQL</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Code</th>
+          <th>Purpose</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>jena-fuseki-main</td>
+          <td>The Fuseki server</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-core</td>
+          <td>The Fuseki engine</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-server</td>
+          <td>Build the combined jar for Fuseki server</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-access</td>
+          <td><a href="fuseki-data-access-control.html">Data access control</a></td>
+      </tr>
+      <tr>
+          <td>apache-jena-fuseki</td>
+          <td>The download for Fuseki</td>
+      </tr>
+      <tr>
+          <td><b>Other</b></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-docker</td>
+          <td>Build a docker container for Fuseki</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-geosparql</td>
+          <td>Integration for GeoSPARQL</td>
+      </tr>
+      <tr>
+          <td><b>Webapp</b></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-webapp</td>
+          <td>Web application and command line startup</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-fulljar</td>
+          <td>Build the combined jar for Fuseki/UI server</td>
+      </tr>
+      <tr>
+          <td>jena-fuseki-war</td>
+          <td>Build the war file for Fuseki/UI server</td>
+      </tr>
+  </tbody>
 </table>
 
   </article>
@@ -376,13 +357,12 @@ pull-requests.</p>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#contents">Contents</a></li>
-    <li><a href="#download-fuseki-with-ui">Download Fuseki with UI</a>
+    <li><a href="#download-fuseki">Download Fuseki</a>
       <ul>
         <li><a href="#previous-releases">Previous releases</a></li>
         <li><a href="#development-builds">Development Builds</a></li>
       </ul>
     </li>
-    <li><a href="#getting-started-with-fuseki">Getting Started With Fuseki</a></li>
     <li><a href="#how-to-contribute">How to Contribute</a>
       <ul>
         <li><a href="#source-code">Source code</a></li>
@@ -400,7 +380,7 @@ pull-requests.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

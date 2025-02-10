@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -379,13 +376,13 @@ using Jena&rsquo;s plugin system.</p>
 Correlated joins however require explicit activation because they require specific algebra transformations to run as part of the query optimization process.
 For more details about the transformation see <a href="#programmatic-algebra-transformation">Programmatic Algebra Transformation</a>.</p>
 <p>The following snippet globally enables correlated joins by overriding the context&rsquo;s optimizer:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit</span><span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
-</span></span></code></pre></div><p>As usual, in order to avoid a global setup, the context of a dataset or statement execution (i.e. query / update) can be used instead:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatasetFactory dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>ServiceEnhancerInit<span style="color:#666">.</span><span style="color:#b44">wrapOptimizer</span><span style="color:#666">(</span>dataset<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">());</span>
-</span></span></code></pre></div><p>The lookup procedure for which optimizer to wrap first consults the given context and then the global one.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerInit</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>ServiceEnhancerInit.<span style="color:#b44">wrapOptimizer</span>(ARQ.<span style="color:#b44">getContext</span>());<span style="color:#bbb">
+</span></span></span></code></pre></div><p>As usual, in order to avoid a global setup, the context of a dataset or statement execution (i.e. query / update) can be used instead:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatasetFactory<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>DatasetFactory.<span style="color:#b44">create</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>ServiceEnhancerInit.<span style="color:#b44">wrapOptimizer</span>(dataset.<span style="color:#b44">getContext</span>());<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The lookup procedure for which optimizer to wrap first consults the given context and then the global one.
 If neither has an optimizer configured then Jena&rsquo;s default one will be used.</p>
 <p>Service requests that do not make use of this plugin&rsquo;s options will not be affected even if the plugin is loaded.
 The plugin registration makes use of the <a href="/documentation/query/custom_service_executors.html">custom service executor extension system</a>.</p>
@@ -420,9 +417,9 @@ They allow for caching up to 45mio bindings (300 x 15 x 10000).
 There is one caveat though: Specifying the cache options puts a new a cache instance in the dataset&rsquo;s context. Without these options the global cache instance that is registered in the ARQ context by the SE plugin during service loading is used.
 Presently, the global instance cannot be configured via the assembler.</p>
 <p>Creating a dataset from the specification above is programmatically accomplished as follows:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model spec <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">load</span><span style="color:#666">(</span><span style="color:#b44">&#34;assembler.ttl&#34;</span><span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">assemble</span><span style="color:#666">(</span>spec<span style="color:#666">.</span><span style="color:#b44">getResource</span><span style="color:#666">(</span><span style="color:#b44">&#34;urn:example:root&#34;</span><span style="color:#666">));</span>
-</span></span></code></pre></div><p>The value of <code>se:datasetId</code> is used to look up caches when referring to the active dataset using <code>SERVICE &lt;urn:x-arq:self&gt; {}</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Model<span style="color:#bbb"> </span>spec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>RDFDataMgr.<span style="color:#b44">load</span>(<span style="color:#b44">&#34;assembler.ttl&#34;</span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>DatasetFactory.<span style="color:#b44">assemble</span>(spec.<span style="color:#b44">getResource</span>(<span style="color:#b44">&#34;urn:example:root&#34;</span>));<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The value of <code>se:datasetId</code> is used to look up caches when referring to the active dataset using <code>SERVICE &lt;urn:x-arq:self&gt; {}</code>.</p>
 <h3 id="configuration-with-fuseki">Configuration with Fuseki</h3>
 <h4 id="supplying-service-enhancer-dependencies">Supplying Service Enhancer Dependencies</h4>
 <h5 id="before-jena-410">Before Jena 4.10</h5>
@@ -467,75 +464,75 @@ known from SQL DBMSs. However, with Fuseki it is possible to create both a publi
 <p>The service enhancer plugin defines several symbols for configuration via context.
 The context symbols are in the namespace <code>http://jena.apache.org/service-enhancer#</code>.</p>
 <table>
-<thead>
-<tr>
-<th>Symbol</th>
-<th>Value type</th>
-<th>Default*</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>enableMgmt</code></td>
-<td>boolean</td>
-<td>false</td>
-<td>This symbol must be set to true in the context in order to allow calling certain &ldquo;privileged&rdquo; SPARQL functions.</td>
-</tr>
-<tr>
-<td><code>serviceBulkBindingCount</code></td>
-<td>int</td>
-<td>10</td>
-<td>Number of bindings to group into a single bulk request</td>
-</tr>
-<tr>
-<td><code>serviceBulkMaxBindingCount</code></td>
-<td>int</td>
-<td>100</td>
-<td>Maximum number of input bindings to group into a single bulk request; restricts <code>serviceBulkRequestItemCount</code>. When using <code>bulk+n</code> then <code>n</code> will be capped to the configured value.</td>
-</tr>
-<tr>
-<td><code>serviceBulkMaxOutOfBandBindingCount</code></td>
-<td>int</td>
-<td>30</td>
-<td>Dispatch non-full batches as soon as this number of non-fitting bindings have been read from the input iterator</td>
-</tr>
-<tr>
-<td><code>datasetId</code></td>
-<td>String</td>
-<td>null</td>
-<td>An IRI to resolve <code>urn:x-arq:self</code> to. Used to discriminate cache entries for self-referenced datasets.</td>
-</tr>
-<tr>
-<td><code>serviceCache</code></td>
-<td>ServiceResponseCache</td>
-<td>null</td>
-<td>Symbol for the cache of services&rsquo; result sets</td>
-</tr>
-<tr>
-<td><code>serviceResultSizeCache</code></td>
-<td>ServiceResultSizeCache</td>
-<td>null</td>
-<td>Symbol for the cache of services&rsquo; result set sizes</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Symbol</th>
+          <th>Value type</th>
+          <th>Default*</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>enableMgmt</code></td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>This symbol must be set to true in the context in order to allow calling certain &ldquo;privileged&rdquo; SPARQL functions.</td>
+      </tr>
+      <tr>
+          <td><code>serviceBulkBindingCount</code></td>
+          <td>int</td>
+          <td>10</td>
+          <td>Number of bindings to group into a single bulk request</td>
+      </tr>
+      <tr>
+          <td><code>serviceBulkMaxBindingCount</code></td>
+          <td>int</td>
+          <td>100</td>
+          <td>Maximum number of input bindings to group into a single bulk request; restricts <code>serviceBulkRequestItemCount</code>. When using <code>bulk+n</code> then <code>n</code> will be capped to the configured value.</td>
+      </tr>
+      <tr>
+          <td><code>serviceBulkMaxOutOfBandBindingCount</code></td>
+          <td>int</td>
+          <td>30</td>
+          <td>Dispatch non-full batches as soon as this number of non-fitting bindings have been read from the input iterator</td>
+      </tr>
+      <tr>
+          <td><code>datasetId</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>An IRI to resolve <code>urn:x-arq:self</code> to. Used to discriminate cache entries for self-referenced datasets.</td>
+      </tr>
+      <tr>
+          <td><code>serviceCache</code></td>
+          <td>ServiceResponseCache</td>
+          <td>null</td>
+          <td>Symbol for the cache of services&rsquo; result sets</td>
+      </tr>
+      <tr>
+          <td><code>serviceResultSizeCache</code></td>
+          <td>ServiceResultSizeCache</td>
+          <td>null</td>
+          <td>Symbol for the cache of services&rsquo; result set sizes</td>
+      </tr>
+  </tbody>
 </table>
 <p>* The value that is assumed if the symbol is absent.</p>
 <p>The class <code>org.apache.jena.sparql.service.enhancer.init.ServiceEnhancerConstants</code> defines the constants for programmatic usage.
 As usual, context attributes can be set on global, dataset and query execution level:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Global level
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">serviceBulkBindingCount</span><span style="color:#666">,</span> <span style="color:#666">5</span><span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Dataset level
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">datasetId</span><span style="color:#666">,</span> <span style="color:#b44">&#34;http://example.org/myDatasetId&#34;</span><span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Query Execution level
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qe <span style="color:#666">=</span> QueryExecutionFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>dataset<span style="color:#666">,</span> <span style="color:#b44">&#34;SELECT * { ?s ?p ?o }&#34;</span><span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>  qe<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">().</span><span style="color:#b44">set</span><span style="color:#666">(</span>ServiceEnhancerConstants<span style="color:#666">.</span><span style="color:#b44">enableMgmt</span><span style="color:#666">,</span> <span style="color:#a2f;font-weight:bold">true</span><span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">// ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#666">}</span>
-</span></span></code></pre></div><h2 id="service-options">Service Options</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Global level</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>ARQ.<span style="color:#b44">getContext</span>().<span style="color:#b44">set</span>(ServiceEnhancerConstants.<span style="color:#b44">serviceBulkBindingCount</span>,<span style="color:#bbb"> </span>5);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// Dataset level</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>DatasetFactory.<span style="color:#b44">create</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">getContext</span>().<span style="color:#b44">set</span>(ServiceEnhancerConstants.<span style="color:#b44">datasetId</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;http://example.org/myDatasetId&#34;</span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// Query Execution level</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>(QueryExecution<span style="color:#bbb"> </span>qe<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecutionFactory.<span style="color:#b44">create</span>(dataset,<span style="color:#bbb"> </span><span style="color:#b44">&#34;SELECT * { ?s ?p ?o }&#34;</span>))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>qe.<span style="color:#b44">getContext</span>().<span style="color:#b44">set</span>(ServiceEnhancerConstants.<span style="color:#b44">enableMgmt</span>,<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// ...</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="service-options">Service Options</h2>
 <p>The service option syntax is used to express a list of key-value pairs followed by an optional IRI.
 The first pair must always be terminated by a <code>:</code> in order to avoid misinterpreting it as a relative IRI which would be resolved against the configured base IRI.
 Multiple pairs are separated using <code>:</code>. Pairs may be followed by an IRI for the service. If it is absent, then the IRI <code>urn:x-arq:self</code> is implicitly assumed.</p>
@@ -603,14 +600,14 @@ The reason is that is does two things:</p>
 <li>It converts every OpJoin instance with a <code>loop:</code> on the right hand side into a <code>OpSequence</code>.</li>
 <li>Any <strong>mentioned</strong> variable on the rhs whose base name matches the base name of a <strong>visible</strong> variable on the lhs gets substituted by the lhs variable.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String queryStr <span style="color:#666">=</span> <span style="color:#b44">&#34;SELECT ...&#34;</span><span style="color:#666">;</span> <span style="color:#080;font-style:italic">// Put any example query string here
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Transform loopTransform <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> TransformSE_JoinStrategy<span style="color:#666">();</span>
-</span></span><span style="display:flex;"><span>Op op0 <span style="color:#666">=</span> Algebra<span style="color:#666">.</span><span style="color:#b44">compile</span><span style="color:#666">(</span>QueryFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>queryStr<span style="color:#666">));</span>
-</span></span><span style="display:flex;"><span>Op op1 <span style="color:#666">=</span> Transformer<span style="color:#666">.</span><span style="color:#b44">transform</span><span style="color:#666">(</span>loopTransform<span style="color:#666">,</span> op0<span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>Op op2 <span style="color:#666">=</span> Optimize<span style="color:#666">.</span><span style="color:#b44">stdOptimizationFactory</span><span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>ARQ<span style="color:#666">.</span><span style="color:#b44">getContext</span><span style="color:#666">()).</span><span style="color:#b44">rewrite</span><span style="color:#666">(</span>op1<span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>Op op3 <span style="color:#666">=</span> Transformer<span style="color:#666">.</span><span style="color:#b44">transform</span><span style="color:#666">(</span>loopTransform<span style="color:#666">,</span> op2<span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span>System<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">.</span><span style="color:#b44">println</span><span style="color:#666">(</span>op3<span style="color:#666">);</span>
-</span></span></code></pre></div><h3 id="caching">Caching</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#bbb"> </span>queryStr<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;SELECT ...&#34;</span>;<span style="color:#bbb"> </span><span style="color:#080;font-style:italic">// Put any example query string here</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Transform<span style="color:#bbb"> </span>loopTransform<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">new</span><span style="color:#bbb"> </span>TransformSE_JoinStrategy();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Op<span style="color:#bbb"> </span>op0<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>Algebra.<span style="color:#b44">compile</span>(QueryFactory.<span style="color:#b44">create</span>(queryStr));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Op<span style="color:#bbb"> </span>op1<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>Transformer.<span style="color:#b44">transform</span>(loopTransform,<span style="color:#bbb"> </span>op0);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Op<span style="color:#bbb"> </span>op2<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>Optimize.<span style="color:#b44">stdOptimizationFactory</span>.<span style="color:#b44">create</span>(ARQ.<span style="color:#b44">getContext</span>()).<span style="color:#b44">rewrite</span>(op1);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Op<span style="color:#bbb"> </span>op3<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>Transformer.<span style="color:#b44">transform</span>(loopTransform,<span style="color:#bbb"> </span>op2);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>System.<span style="color:#b44">out</span>.<span style="color:#b44">println</span>(op3);<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="caching">Caching</h3>
 <p>Any graph pattern contained in a <code>SERVICE &lt;cache:&gt; { }</code> block is subject to caching.
 The key of a cache entry is composed of three components:</p>
 <ul>
@@ -646,26 +643,26 @@ Furthermore, let&rsquo;s assume that another request produced 2000 results. Then
 The namespace is</p>
 <pre tabindex="0"><code>PREFIX se: &lt;http://jena.apache.org/service-enhancer#&gt;
 </code></pre><table>
-<thead>
-<tr>
-<th>Signature</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>long se:cacheRm()</code></td>
-<td>Invalidates all entries from the cache that are not currently in use. Returns the number of invalidated entries.</td>
-</tr>
-<tr>
-<td><code>long se:cacheRm(long)</code></td>
-<td>Attempts to remove the given entry. Returns 1 on success or 0 otherwise (e.g. entry did not exist or was still in use).</td>
-</tr>
-<tr>
-<td><code>?id se:cacheLs ([?serviceIri [?queryStr [?inputBindingStr]]])</code></td>
-<td>Property function to list cache content.</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Signature</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>long se:cacheRm()</code></td>
+          <td>Invalidates all entries from the cache that are not currently in use. Returns the number of invalidated entries.</td>
+      </tr>
+      <tr>
+          <td><code>long se:cacheRm(long)</code></td>
+          <td>Attempts to remove the given entry. Returns 1 on success or 0 otherwise (e.g. entry did not exist or was still in use).</td>
+      </tr>
+      <tr>
+          <td><code>?id se:cacheLs ([?serviceIri [?queryStr [?inputBindingStr]]])</code></td>
+          <td>Property function to list cache content.</td>
+      </tr>
+  </tbody>
 </table>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">PREFIX</span> <span style="color:#00f;font-weight:bold">sepf</span>: <span style="color:#a0a000">&lt;java:org.apache.jena.sparql.service.enhancer.pfunction.&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> <span style="color:#a2f;font-weight:bold">WHERE</span> {
@@ -793,7 +790,7 @@ The solution is to is to include sort sufficient conditions in the <code>SERVICE
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

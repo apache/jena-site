@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -212,80 +209,80 @@ but sometimes it is necessary to use the basic transaction API described here.</
 <h3 id="read-transactions">Read transactions</h3>
 <p>These are used for SPARQL queries and code using the Jena API
 actions that do not change the data.  The general pattern is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>The <code>dataset.end()</code> declares the end of the read transaction.  Applications may also call
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The <code>dataset.end()</code> declares the end of the read transaction.  Applications may also call
 <code>dataset.commit()</code> or <code>dataset.abort()</code> which all have the same effect for a read transaction.</p>
 <p>This example has two queries - no updates between or during the queries will be seen by
 this code even if another thread commits changes in the lifetime of this transaction.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    String qs1 <span style="color:#666">=</span> <span style="color:#b44">&#34;SELECT * {?s ?p ?o} LIMIT 10&#34;</span> <span style="color:#666">;</span>        
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>qs1<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>        ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>rs<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    String qs2 <span style="color:#666">=</span> <span style="color:#b44">&#34;SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10&#34;</span> <span style="color:#666">;</span>  
-</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span><span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>qs2<span style="color:#666">,</span> dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>        rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>rs<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><h3 id="write-transactions">Write transactions</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>String<span style="color:#bbb"> </span>qs1<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;SELECT * {?s ?p ?o} LIMIT 10&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">        
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">create</span>(qs1,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSet<span style="color:#bbb"> </span>rs<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qExec.<span style="color:#b44">execSelect</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSetFormatter.<span style="color:#b44">out</span>(rs)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>String<span style="color:#bbb"> </span>qs2<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;SELECT * {?s ?p ?o} OFFSET 10 LIMIT 10&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">  
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">try</span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">create</span>(qs2,<span style="color:#bbb"> </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>rs<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qExec.<span style="color:#b44">execSelect</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSetFormatter.<span style="color:#b44">out</span>(rs)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="write-transactions">Write transactions</h3>
 <p>These are used for SPARQL queries, SPARQL updates and any Jena API
 actions that modify the data.  Beware that large <code>model.read</code>
 operations to change a dataset may consume large amounts of temporary space.</p>
 <p>The general pattern is:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>ReadWrite<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><p>The  <code>dataset.end()</code> will abort the transaction is there was no call to
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">begin</span>(ReadWrite.<span style="color:#b44">WRITE</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The  <code>dataset.end()</code> will abort the transaction is there was no call to
 <code>dataset.commit()</code> or <code>dataset.abort()</code> inside the write transaction.</p>
 <p>Once <code>dataset.commit()</code> or <code>dataset.abort()</code> is called, the application
 needs to start a new transaction to perform further operations on the
 dataset.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> <span style="color:#666">...</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>TxnType<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    Model model <span style="color:#666">=</span> dataset<span style="color:#666">.</span><span style="color:#b44">getDefaultModel</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// API calls to a model in the dataset
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// Make some changes via the model ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    model<span style="color:#666">.</span><span style="color:#b44">add</span><span style="color:#666">(</span> <span style="color:#666">...</span> <span style="color:#666">)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// A SPARQL query will see the new statement added.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">(</span>QueryExecution qExec <span style="color:#666">=</span> QueryExecution<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#b44">&#34;SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10&#34;</span><span style="color:#666">,</span>
-</span></span><span style="display:flex;"><span>         dataset<span style="color:#666">))</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>        ResultSet rs <span style="color:#666">=</span> qExec<span style="color:#666">.</span><span style="color:#b44">execSelect</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>        ResultSetFormatter<span style="color:#666">.</span><span style="color:#b44">out</span><span style="color:#666">(</span>rs<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// ... perform a SPARQL Update
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    String sparqlUpdateString <span style="color:#666">=</span> StrUtils<span style="color:#666">.</span><span style="color:#b44">strjoinNL</span><span style="color:#666">(</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#b44">&#34;PREFIX . &lt;http://example/&gt;&#34;</span><span style="color:#666">,</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#b44">&#34;INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    UpdateRequest request <span style="color:#666">=</span> UpdateFactory<span style="color:#666">.</span><span style="color:#b44">create</span><span style="color:#666">(</span>sparqlUpdateString<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    UpdateExecution<span style="color:#666">.</span><span style="color:#b44">dataset</span><span style="color:#666">(</span>dataset<span style="color:#666">).</span><span style="color:#b44">update</span><span style="color:#666">(</span>request<span style="color:#666">).</span><span style="color:#b44">execute</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// Finally, commit the transaction.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">// Or call .abort()
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span>
-</span></span></code></pre></div><h2 id="types-modes-promotion">Transaction Types, Modes and Promotion.</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">begin</span>(TxnType.<span style="color:#b44">WRITE</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>Model<span style="color:#bbb"> </span>model<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>dataset.<span style="color:#b44">getDefaultModel</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// API calls to a model in the dataset</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// Make some changes via the model ...</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>model.<span style="color:#b44">add</span>(<span style="color:#bbb"> </span>...<span style="color:#bbb"> </span>)<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// A SPARQL query will see the new statement added.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">create</span>(<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span><span style="color:#b44">&#34;SELECT (count(?s) AS ?count) { ?s ?p ?o} LIMIT 10&#34;</span>,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">         </span>dataset))<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSet<span style="color:#bbb"> </span>rs<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qExec.<span style="color:#b44">execSelect</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>ResultSetFormatter.<span style="color:#b44">out</span>(rs)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// ... perform a SPARQL Update</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>String<span style="color:#bbb"> </span>sparqlUpdateString<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>StrUtils.<span style="color:#b44">strjoinNL</span>(<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#b44">&#34;PREFIX . &lt;http://example/&gt;&#34;</span>,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#b44">&#34;INSERT { :s :p ?now } WHERE { BIND(now() AS ?now) }&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>UpdateRequest<span style="color:#bbb"> </span>request<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>UpdateFactory.<span style="color:#b44">create</span>(sparqlUpdateString)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>UpdateExecution.<span style="color:#b44">dataset</span>(dataset).<span style="color:#b44">update</span>(request).<span style="color:#b44">execute</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// Finally, commit the transaction.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic">// Or call .abort()</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><h2 id="types-modes-promotion">Transaction Types, Modes and Promotion.</h2>
 <p>Transaction have a type (enum <code>TxnType</code>) and a mode (enum <code>ReadWrite</code>).
 <code>TxnType.READ</code> and <code>TxnType.Write</code> start the transaction in
 that mode and the mode is fixed for the transaction&rsquo;s lifetime. A <code>READ</code>
@@ -310,34 +307,34 @@ A dataset object can be used by different threads, with independent transactions
 <p>The usual idiom within multi-threaded applications is to have
 one dataset, and so there is one transaction per thread.</p>
 <p>Either:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Create a dataset and keep it globally.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">static</span> Dataset dataset <span style="color:#666">=</span> TDBFactory<span style="color:#666">.</span><span style="color:#b44">createDataset</span><span style="color:#666">(</span>location<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span></code></pre></div><p>Thread 1:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>TxnType<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>Thread 2:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>TxnType<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>It is possible (in TDB) to create different dataset objects to the same location.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Create a dataset and keep it globally.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">static</span><span style="color:#bbb"> </span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>TDBFactory.<span style="color:#b44">createDataset</span>(location)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Thread 1:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">begin</span>(TxnType.<span style="color:#b44">WRITE</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Thread 2:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>dataset.<span style="color:#b44">begin</span>(TxnType.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>It is possible (in TDB) to create different dataset objects to the same location.</p>
 <p>Thread 1:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> TDBFactory<span style="color:#666">.</span><span style="color:#b44">createDataset</span><span style="color:#666">(</span>location<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>TxnType<span style="color:#666">.</span><span style="color:#b44">WRITE</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span>    dataset<span style="color:#666">.</span><span style="color:#b44">commit</span><span style="color:#666">()</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>Thread 2:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset dataset <span style="color:#666">=</span> TDBFactory<span style="color:#666">.</span><span style="color:#b44">createDataset</span><span style="color:#666">(</span>location<span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span>dataset<span style="color:#666">.</span><span style="color:#b44">begin</span><span style="color:#666">(</span>TxnType<span style="color:#666">.</span><span style="color:#b44">READ</span><span style="color:#666">)</span> <span style="color:#666">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">try</span> <span style="color:#666">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#666">}</span> <span style="color:#a2f;font-weight:bold">finally</span> <span style="color:#666">{</span> dataset<span style="color:#666">.</span><span style="color:#b44">end</span><span style="color:#666">()</span> <span style="color:#666">;</span> <span style="color:#666">}</span>
-</span></span></code></pre></div><p>Each thread has a separate <code>dataset</code> object; these safely share the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>TDBFactory.<span style="color:#b44">createDataset</span>(location)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">begin</span>(TxnType.<span style="color:#b44">WRITE</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>dataset.<span style="color:#b44">commit</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Thread 2:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>TDBFactory.<span style="color:#b44">createDataset</span>(location)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>dataset.<span style="color:#b44">begin</span>(TxnType.<span style="color:#b44">READ</span>)<span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">finally</span><span style="color:#bbb"> </span>{<span style="color:#bbb"> </span>dataset.<span style="color:#b44">end</span>()<span style="color:#bbb"> </span>;<span style="color:#bbb"> </span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Each thread has a separate <code>dataset</code> object; these safely share the
 same storage and have independent transactions.</p>
 <h2 id="multi-jvm">Multi JVM</h2>
 <p>Multiple applications, running in multiple JVMs, using the same file
@@ -380,7 +377,7 @@ database server for multiple applications. Fuseki supports
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

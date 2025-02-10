@@ -142,9 +142,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -281,38 +278,38 @@ operation type</li>
 <h2 id="operations">Operations</h2>
 <p>The following operations are provided:</p>
 <table>
-<thead>
-<tr>
-<th>URI</th>
-<th>Operation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>fuseki:query</code></td>
-<td>SPARQL 1.1 Query with ARQ extensions</td>
-</tr>
-<tr>
-<td><code>fuseki:update</code></td>
-<td>SPARQL 1.1 Update with ARQ extensions</td>
-</tr>
-<tr>
-<td><code>fuseki:gsp-r</code></td>
-<td>SPARQL Graph Store Protocol and Quad extensions (read only)</td>
-</tr>
-<tr>
-<td><code>fuseki:gsp-rw</code></td>
-<td>SPARQL Graph Store Protocol and Quad extensions</td>
-</tr>
-<tr>
-<td><code>fuseki:upload</code></td>
-<td>HTML form file upload</td>
-</tr>
-<tr>
-<td><code>fuseki:no-op</code></td>
-<td>An operation that causes a 400 or 404 error</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>URI</th>
+          <th>Operation</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>fuseki:query</code></td>
+          <td>SPARQL 1.1 Query with ARQ extensions</td>
+      </tr>
+      <tr>
+          <td><code>fuseki:update</code></td>
+          <td>SPARQL 1.1 Update with ARQ extensions</td>
+      </tr>
+      <tr>
+          <td><code>fuseki:gsp-r</code></td>
+          <td>SPARQL Graph Store Protocol and Quad extensions (read only)</td>
+      </tr>
+      <tr>
+          <td><code>fuseki:gsp-rw</code></td>
+          <td>SPARQL Graph Store Protocol and Quad extensions</td>
+      </tr>
+      <tr>
+          <td><code>fuseki:upload</code></td>
+          <td>HTML form file upload</td>
+      </tr>
+      <tr>
+          <td><code>fuseki:no-op</code></td>
+          <td>An operation that causes a 400 or 404 error</td>
+      </tr>
+  </tbody>
 </table>
 <p>Custom extensions can be added (see <a href="fuseki-main.html#build">Programmatic configuration</a> of the Fuseki server). To be able to uniquely identify the operation, these are usually</p>
 <pre><code>    fuseki:endpoint     [ 
@@ -469,6 +466,7 @@ matching apply to the union of named graphs, not the default graph.</p>
 
 &lt;#tdbDataset&gt; rdf:type tdb2:DatasetTDB ;
     ja:context [ ja:cxtName &quot;arq:queryTimeout&quot; ;  ja:cxtValue &quot;10000,30000&quot; ] ;
+    ja:context [ ja:cxtName &quot;arq:updateTimeout&quot; ; ja:cxtValue &quot;20000,60000&quot; ] ;
     tdb2:location &quot;DATA&quot; .
 </code></pre>
 <p>&ldquo;/ds-tdb&rdquo; is a <a href="/documentation/tdb2/">TDB2 database</a> with endpoints for SPARQL
@@ -477,6 +475,10 @@ query and update on the dataset URL. In addition, it has a named service
 the default graph.</p>
 <p>Query timeout is set for any use of the dataset with first result in 10
 seconds, and complete results in 30 seconds.</p>
+<p>Update timeout is set accordingly with an overall timeout of 60 seconds and
+any involved WHERE clause must produce its first result within 20 seconds.
+All of an update request&rsquo;s operations must complete within the given overall
+time limit or the request will fail.</p>
 <h2 id="security">Security</h2>
 <p>The page <a href="./fuseki-data-access-control.html">Data Access Control for Fuseki</a>
 covers the</p>
@@ -532,7 +534,7 @@ covers the</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

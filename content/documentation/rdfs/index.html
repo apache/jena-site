@@ -145,9 +145,6 @@
     
         
         
-    
-        
-        
             
                 <li class="breadcrumb-item"><a href='/documentation'>DOCUMENTATION</a></li>
             
@@ -206,18 +203,18 @@ The vocabulary can not be changed during the lifetime of the RDFS dataset.</p>
 <h3 id="api-rdfsfactory">API: <code>RDFSFactory</code></h3>
 <p>The API provides operation to build RDF-enabled datasets from data storage and vocabularies:</p>
 <p>Example:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatasetGraph data <span style="color:#666">=</span> <span style="color:#666">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Load the vocabulary
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Graph vocab <span style="color:#666">=</span> RDFDataMgr<span style="color:#666">.</span><span style="color:#b44">loadGraph</span><span style="color:#666">(</span><span style="color:#b44">&#34;vocabulary.ttl&#34;</span><span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// Create a DatasetGraph with RDFS
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>DatasetGraph dsg <span style="color:#666">=</span> datasetRDFS<span style="color:#666">(</span>DatasetGraph data<span style="color:#666">,</span> Graph vocab <span style="color:#666">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">// (Optional) Present as a Dataset.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>Dataset dataset <span style="color:#666">=</span> DatasetFactory<span style="color:#666">.</span><span style="color:#b44">wrap</span><span style="color:#666">(</span>dsg<span style="color:#666">);</span>
-</span></span></code></pre></div><p>The vocabulary is processed to produce datastructure needed for processing the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>DatasetGraph<span style="color:#bbb"> </span>data<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// Load the vocabulary</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Graph<span style="color:#bbb"> </span>vocab<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>RDFDataMgr.<span style="color:#b44">loadGraph</span>(<span style="color:#b44">&#34;vocabulary.ttl&#34;</span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// Create a DatasetGraph with RDFS</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>DatasetGraph<span style="color:#bbb"> </span>dsg<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>datasetRDFS(DatasetGraph<span style="color:#bbb"> </span>data,<span style="color:#bbb"> </span>Graph<span style="color:#bbb"> </span>vocab<span style="color:#bbb"> </span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// (Optional) Present as a Dataset.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Dataset<span style="color:#bbb"> </span>dataset<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>DatasetFactory.<span style="color:#b44">wrap</span>(dsg);<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The vocabulary is processed to produce datastructure needed for processing the
 data efficiently at run time. This is the <code>SetupRDFS</code> class that can be created
 and shared; it is thread-safe.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>SetupRDFS setup <span style="color:#666">=</span> setupRDFS<span style="color:#666">(</span>vocab<span style="color:#666">);</span>
-</span></span></code></pre></div><h3 id="assembler-rdfs-dataset">Assembler: RDFS Dataset</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>SetupRDFS<span style="color:#bbb"> </span>setup<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>setupRDFS(vocab);<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="assembler-rdfs-dataset">Assembler: RDFS Dataset</h3>
 <p>Datasets with RDFS can be built with an assembler:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#b8860b">&lt;#rdfsDS&gt;</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">type</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">DatasetRDFS</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
 </span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">rdfsSchema</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;vocabulary.ttl&gt;</span>;<span style="color:#bbb">
@@ -353,7 +350,7 @@ text output):</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2024 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>
