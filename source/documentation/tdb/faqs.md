@@ -147,17 +147,37 @@ journal can be flushed by closing any datasets and releasing the TDB resources.
 
 ### Why is the database much larger on disk than my input data? {#input-vs-database-size}
 
-TDB2 uses copy-on-write data structures.  This means that each new write transaction takes copies of any data blocks it
-modifies during the transaction and writes new copies of those blocks with the required modifications.  The old blocks
-are not automatically removed as they might still be referenced by ongoing read transactions.  Depending on how you've
-loaded your data into TDB2 - how many transactions were used, how large each transaction was, input data characteristics
-etc. - this can lead to much larger database disk size than your original input data size.
+Firstly, TDB2 uses copy-on-write data structures.  This means that each new write transaction takes copies of any data
+blocks it modifies during the transaction and writes new copies of those blocks with the required modifications.  The
+old blocks are not automatically removed as they might still be referenced by ongoing read transactions.  Depending on
+how you've loaded your data into TDB2 - how many transactions were used, how large each transaction was, whether named
+graphs are used, input data characteristics etc. - this can lead to much larger database disk size than your original
+input data size.
+
+Secondly it is also worth noting that both TDB and TDB2 use [sparse files](https://en.wikipedia.org/wiki/Sparse_file)
+for their on disk storage.  Depending on the file system and operating system you are using, and the tools you use to
+inspect it, you may see larger sizes reported than are actually being consumed e.g.
+
+```
+$ ls -lh SPOG.idn
+-rw-r--r--  1 user  group   8.0M 23 Sep 15:23 SPOG.idn
+$ du -h SPOG.idn
+6.1M	SPOG.idn
+```
+
+In the above example, on a small toy dataset, we can see that `ls` reports a file size as `8.0M` while `du` reports a
+file size of `6.1M`.  Since a database is comprised of many files the total logical size vs total physical size may be
+quite different.
 
 You can run a [Compaction](../tdb2/tdb2_admin.md#compaction) operation on your database to have TDB2 prune the data
-structures to only preserve the current data blocks.  Compactions require exclusive write access to the database i.e. no
-other read/write transactions may occur while a compaction is running.  Thus, compactions should generally be run
+structures to only preserve the current data blocks.  Compactions require exclusive write access to the database, i.e.
+no other read/write transactions may occur while a compaction is running.  Thus, compactions should generally be run
 offline, or at quiet times if exposing your database to multiple applications per [Can I share a TDB dataset between
 multiple applications?](#multi-jvm).
+
+**NB** If you loaded your data using one of the TDB bulk loaders, e.g. [`tdbloader2`](#tdbloader-vs-tdbloader2) and
+[`xloader`](#tdb-xloader), then those already generate a (near) maximally compacted database and compaction will offer
+little/no benefit!
 
 Please note that compaction creates a new `Data-NNNN` directory per [TDB2 Directory
 Layout](../tdb2/tdb2_admin.md#tdb2-directory-layout) into which it writes the compacted copy of the database.  The old
@@ -166,13 +186,11 @@ the immediate effect of a compaction may actually be more disk space usage until
 If the database was already maximally compacted then there will be no difference in size between the old and new data
 directories.
 
-We would recommend that you consider running a compaction after an initial bulk data load, although some bulk loading
-methods may already generate a maximally compacted database e.g. [`tdbloader2`](#tdbloader-vs-tdbloader2).  Also, if
-your database has ongoing updates over time we would also recommend that you consider running a compaction periodically
-e.g. once a day/week etc. We cannot provide exact recommendations here as to the frequency of compactions you should run
-as how much disk size inflation you experience will vary depending on many factors - size and frequency of write
-transactions, data characteristics, etc. - and you will need to determine a suitable schedule based on your use case for
-database.
+If your database has ongoing updates over time, particularly spread across many separate transactions, we would
+recommend that you consider running a compaction periodically e.g. once a day/week etc. We cannot provide exact
+recommendations here as to the frequency of compactions you should run as how much disk size inflation you experience
+will vary depending on many factors - size and frequency of write transactions, data characteristics, etc. - and you
+will need to determine a suitable schedule based on your use case for database.
 
 Note also that if running on Windows then it won't be possible to delete the old data directory due a OS limitation, see
 [Why can't I delete a dataset (MS Windows/64 bit)?](#windows-dataset-delete).
