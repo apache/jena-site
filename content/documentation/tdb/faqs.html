@@ -180,131 +180,147 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#faqs">FAQs</a></li>
-    <li><a href="#tdb1-and-tdb2">TDB1 and TDB2</a></li>
-    <li><a href="#does-tdb-support-transactions">Does TDB support transactions?</a></li>
-    <li><a href="#can-i-share-a-tdb-dataset-between-multiple-applications">Can I share a TDB dataset between multiple applications?</a></li>
-    <li><a href="#what-is-the-impossibly-large-object-exception">What is the <em>Impossibly Large Object</em> exception?</a></li>
-    <li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
-    <li><a href="#what-is-tdbxloader">What is <code>tdb.xloader</code>?</a></li>
-    <li><a href="#what-is-the-different-between-tdbloader-and-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
-    <li><a href="#how-large-a-java-heap-should-i-use-for-tdb">How large a Java heap should I use for TDB?</a></li>
-    <li><a href="#does-fusekitdb-have-a-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
-    <li><a href="#should-i-use-a-ssd">Should I use a SSD?</a></li>
-    <li><a href="#why-do-i-get-the-exception-cant-open-database-at-location-pathtodb-as-it-is-already-locked-by-the-process-with-pid-1234-when-trying-to-open-a-tdb-database">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
-    <li><a href="#i-see-a-warning-that-location-pathtodb-was-not-locked-if-another-jvm-accessed-this-location-simultaneously-data-corruption-may-have-occurred-in-my-logs">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
+    <li><a href="#general-questions">General Questions</a>
+      <ul>
+        <li><a href="#tdb1-tdb2">TDB1 and TDB2</a></li>
+        <li><a href="#transactions">Does TDB support transactions?</a></li>
+      </ul>
+    </li>
+    <li><a href="#tdb-xloader">What is <code>tdb.xloader</code>?</a>
+      <ul>
+        <li><a href="#tdbloader-vs-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
+      </ul>
+    </li>
+    <li><a href="#operations-questions">Operations Questions</a>
+      <ul>
+        <li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
+        <li><a href="#java-heap">How large a Java heap should I use for TDB?</a></li>
+        <li><a href="#fuseki-tdb-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
+        <li><a href="#input-vs-database-size">Why is the database much larger on disk than my input data?</a></li>
+        <li><a href="#ssd">Should I use a SSD?</a></li>
+      </ul>
+    </li>
     <li><a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a></li>
-    <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
-    <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
+    <li><a href="#error-messages-and-warnings">Error Messages and Warnings</a>
+      <ul>
+        <li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
+        <li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
+        <li><a href="#lock-exception">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
+        <li><a href="#no-lock-warning">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
+        <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
+        <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </aside>
   <article class="flex-column me-lg-4">
     <h2 id="faqs">FAQs</h2>
 <ul>
+<li>General Questions:
+<ul>
 <li><a href="#tdb1-tdb2">What are TDB1 and TDB2?</a></li>
 <li><a href="#transactions">Does TDB support Transactions?</a></li>
-<li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
-<li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
-<li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
+<li><a href="#tdb-xloader">What is <code>tdb.xloader</code>?</a></li>
 <li><a href="#tdbloader-vs-tdbloader2">What is the difference between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
+</ul>
+</li>
+<li>Operations Questions:
+<ul>
+<li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
 <li><a href="#java-heap">How large a Java heap size should I use for TDB?</a></li>
 <li><a href="#fuseki-tdb-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
+<li><a href="#input-vs-database-size">Why is the database much larger on disk than my input data?</a></li>
 <li><a href="#ssd">Should I use a SSD?</a></li>
+<li><a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a></li>
+</ul>
+</li>
+<li>Error Messages and Warnings:
+<ul>
+<li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
+<li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
 <li><a href="#lock-exception">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
 <li><a href="#no-lock-warning">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
-<li><a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a></li>
 <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
+</ul>
+</li>
 <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
 </ul>
-<p>&lt;a name=&ldquo;tdb1-tdb2&gt;</a></p>
-<h2 id="tdb1-and-tdb2">TDB1 and TDB2</h2>
-<p>TDB2 is a later generation of database for Jena. It is more robust and can
-handle large update transactions.</p>
-<p>These are different databases systems - they have different on-disk file formats
-and databases for one are not compatible with other database engine.</p>
-<p><a name="transactions"></a></p>
-<h2 id="does-tdb-support-transactions">Does TDB support transactions?</h2>
-<p>Yes, TDB provides
-<a href="http://en.wikipedia.org/wiki/Isolation_(database_systems)#SERIALIZABLE">Serializable</a>
-transactions, the highest
+<hr>
+<h2 id="general-questions">General Questions</h2>
+<h3 id="tdb1-tdb2">TDB1 and TDB2</h3>
+<p>TDB2 is a later generation of database for Jena. It is more robust and can handle large update transactions.</p>
+<p>These are different databases systems - they have different on-disk file formats and databases for one are not
+compatible with other database engine.</p>
+<h3 id="transactions">Does TDB support transactions?</h3>
+<p>Yes, both TDB1 and TDB2 provides
+<a href="http://en.wikipedia.org/wiki/Isolation_(database_systems)#SERIALIZABLE">Serializable</a> transactions, the highest
 <a href="http://en.wikipedia.org/wiki/Isolation_(database_systems)">isolation level</a>.</p>
-<p>Using transactions is <strong>strongly</strong> recommended as they help prevent data corruption
-from unexpected process termination and system crashes as well as data corruption that
-can otherwise occur from non-transactional use of TDB.</p>
-<p>Please see the <a href="tdb_transactions.html">transactions</a> documentation for how to use TDB
-transactionally.</p>
-<p><a name="multi-jvm"></a></p>
-<h2 id="can-i-share-a-tdb-dataset-between-multiple-applications">Can I share a TDB dataset between multiple applications?</h2>
-<p>Multiple applications, running in multiple JVMs, using the same
-file databases is <strong>not</strong> supported and has a high risk of data corruption.  Once corrupted, a database cannot be repaired
-and must be rebuilt from the original source data. Therefore there <strong>must</strong> be a single JVM
-controlling the database directory and files.</p>
+<p>Using transactions is <strong>strongly</strong> recommended as they help prevent data corruption from unexpected process termination
+and system crashes as well as data corruption that can otherwise occur from non-transactional use of TDB.</p>
+<p>Please see the <a href="tdb_transactions.html">transactions</a> documentation for how to use TDB transactionally.</p>
+<p>Note that TDB2 <strong>ONLY</strong> permits transactional usage which is part of the reason it is more robust vs <a href="#tdb1-tdb2">TDB
+1</a>.</p>
+<h2 id="tdb-xloader">What is <code>tdb.xloader</code>?</h2>
+<p><code>tdb1.xloader</code> and <code>tdb2.xloader</code> are bulk loaders for very large datasets that
+take several hours to load.</p>
+<p>See <a href="tdb-xloader.html">TDB xloader</a> for more information.</p>
+<h3 id="tdbloader-vs-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</h3>
+<p><code>tdbloader2</code> has been replaced by <code>tdb1.xloader</code> and <code>tdb2.xloader</code> for TDB1 and TDB2 respectively, see <a href="#tdb-xloader">What is
+<code>tdb.xloader</code>?</a></p>
+<p><code>tdbloader</code> and <code>tdbloader2</code> differ in how they build databases.</p>
+<p><code>tdbloader</code> is Java based and uses the same TDB APIs that you would use in your own Java code to perform the data load.
+The advantage of this is that it supports incremental loading of data into a TDB database.  The downside is that the
+loader will be slower for initial database builds.</p>
+<p><code>tdbloader2</code> is POSIX compliant script based which limits it to running on POSIX systems only.  The advantage this gives
+it is that it is capable of building the database files and indices directly without going through the Java API which
+makes it much faster.  <strong>However</strong> this does mean that it can only be used for an initial database load since it does
+not know how to apply incremental updates.  Using <code>tdbloader2</code> on a pre-existing database will cause the existing
+database to be overwritten.</p>
+<p>Often a good strategy is to use <code>tdbloader2</code> for your initial database creation and then use <code>tdbloader</code> for smaller
+incremental updates in the future.</p>
+<hr>
+<h2 id="operations-questions">Operations Questions</h2>
+<h3 id="multi-jvm">Can I share a TDB dataset between multiple applications?</h3>
+<p>Multiple applications, running in multiple JVMs, using the same file databases is <strong>not</strong> supported and has a high risk
+of data corruption.  Once corrupted, a database cannot be repaired and must be rebuilt from the original source data.
+Therefore there <strong>must</strong> be a single JVM controlling the database directory and files.</p>
 <p>TDB includes automatic prevention of multi-JVM usage which prevents this under most circumstances and helps
 protect your data from corruption.</p>
 <p>If you wish to share a TDB dataset between applications use our <a href="../fuseki2/">Fuseki</a> component which provides a
-database server. Fuseki supports <a href="http://www.w3.org/TR/sparql11-query/">SPARQL Query</a>,
-<a href="http://www.w3.org/TR/sparql11-update/">SPARQL Update</a> and the <a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store protocol</a>.
-Applications should be written in terms of these protocols using the relevant Jena APIs, this has the added benefit of making your
-applications portable to another SPARQL backend should you ever need to.</p>
-<p><a name="impossibly-large-object"></a></p>
-<h2 id="what-is-the-impossibly-large-object-exception">What is the <em>Impossibly Large Object</em> exception?</h2>
-<p>The <em>Impossibly Large Object</em> exception is an exception that occurs when part of your TDB dataset has become corrupted.  It may
-only affect a small section of your dataset so may only occur intermittently depending on your queries.  For example some queries
-may continue to function normally while other queries or queries with/without particular features may fail.  A particular query that
-fails with this error should continue to always fail unless the database is modified.</p>
-<p>A query that touches the entirety of the dataset will always encounter this exception and can be used to verify whether your
-database has this problem e.g.</p>
-<pre><code>SELECT * WHERE { { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } } }
-</code></pre>
-<p>The corruption may have happened at any time in the past and once it has happened there is no way to repair it.  Corrupted datasets
-will need to be rebuilt from the original source data, this is why we <strong>strongly</strong> recommend you use
-<a href="tdb_transactions.html">transactions</a> since this protects your dataset against corruption.</p>
-<p>To resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database <strong>cannot</strong> be repaired.</p>
-<h2 id="object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</h2>
-<p>These errors are closely related to the above <em>Impossibly Large Object</em> exception, they also indicate corruption to your TDB database.</p>
-<p>As noted above to resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database <strong>cannot</strong>
-be repaired. This is why we <strong>strongly</strong> recommend you use <a href="tdb_transactions.html">transactions</a> since this protects your dataset against
-corruption.</p>
-<h2 id="what-is-tdbxloader">What is <code>tdb.xloader</code>?</h2>
-<p><code>tdb1.xloader</code> and <code>tdb2.xloader</code> are bulk loaders for very large datasets that
-take several hours to load.</p>
-<p>See <a href="./tdb-xloader.html">TDB xloader</a> for more information.</p>
-<p><a name="tdbloader-vs-tdbloader2"></a></p>
-<h2 id="what-is-the-different-between-tdbloader-and-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</h2>
-<p><code>tdbloader2</code> has been replaced by <code>tdb1.xloader</code> and <code>tdb2.xloader</code> for TDB1 and TDB2 respectively.</p>
-<p><code>tdbloader</code> and <code>tdbloader2</code> differ in how they build databases.</p>
-<p><code>tdbloader</code> is Java based and uses the same TDB APIs that you would use in your own Java code to perform the data load.  The advantage of this is that
-it supports incremental loading of data into a TDB database.  The downside is that the loader will be slower for initial database builds.</p>
-<p><code>tdbloader2</code> is POSIX compliant script based which limits it to running on POSIX systems only.  The advantage this gives it is that it is capable of building
-the database files and indices directly without going through the Java API which makes it much faster.  <strong>However</strong> this does mean that it can only be used
-for an initial database load since it does not know how to apply incremental updates.  Using <code>tdbloader2</code> on a pre-existing database will cause the existing
-database to be overwritten.</p>
-<p>Often a good strategy is to use <code>tdbloader2</code> for your initial database creation and then use <code>tdbloader</code> for smaller incremental updates in the future.</p>
-<p><a name="java-heap"></a></p>
-<h2 id="how-large-a-java-heap-should-i-use-for-tdb">How large a Java heap should I use for TDB?</h2>
-<p>TDB uses memory mapped files heavily for providing fast access to data and indices.  Memory mapped files live outside of the JVM heap and are managed by
-the OS therefore it is important to not allocate all available memory to the JVM heap.</p>
-<p>However JVM heap is needed for TDB related things like query &amp; update processing, storing the in-memory journal etc and also for any other activities that your code carries
-out.  What you should set the JVM heap to will depend on the kinds of queries that you are running, very specific queries will not need a large heap whereas queries that touch
-large amounts of data or use operators that may require lots of data to be buffered in-memory e.g. <code>DISTINCT</code>, <code>GROUP BY</code>, <code>ORDER BY</code> may need a much larger heap depending
-on the overall size of your database.</p>
-<p>There is no hard and fast guidance we can give you on the exact numbers since it depends heavily on your data and your workload.  Please ask on our mailing lists
-(see our <a href="../help_and_support/">Ask</a> page) and provide as much detail as possible about your data and workload if you would like us to attempt to provide more specific guidance.</p>
-<p><a name="fuseki-tdb-memory-leak"></a></p>
-<h2 id="does-fusekitdb-have-a-memory-leak">Does Fuseki/TDB have a memory leak?</h2>
-<p>A number of users have reported a suspected memory leak when using Fuseki/TDB when it used to serve a database that has continuous high
-load with a mixture of queries and updates.  Having investigate the problem this is not a memory leak per-se rather a limitation of how
-<a href="tdb_transactions.html">transactions</a> are implemented for TDB.</p>
-<p>TDB uses write-ahead logging so new data is written both to an on-disk journal and kept in-memory.  This is necessary because TDB permits
-a single writer and multiple readers at any one time and readers are guaranteed to always see the state of the database at the time they
-started reading.  Therefore, until there are no active readers it is not possible to update the database directly since readers are actively
-accessing it hence why a journal is used.  The in-memory journal holds some memory that cannot be freed up until such time as the database
-has no active readers/writers and the changes it holds can be safely flushed to disk.</p>
-<p>This means that in scenarios where there is continuous high load on the system TDB never reaches a state where it is able to flush the journal
-eventually causing out of memory errors in Fuseki.  You can see if you are experiencing this issue by examining your database directory, if it
-contains a <code>.jrnl</code> file that is non-empty then Fuseki/TDB is having to hold the journal in-memory.</p>
-<p><strong>However</strong>, because this relates to transactional use and the journal is also stored on disk no data will be lost, by stopping and restarting
-Fuseki the journal will be flushed to disk. When using the <a href="java_api.html">TDB Java API</a>, the journal can be flushed by closing any datasets and releasing the TDB resources.</p>
+database server. Fuseki supports <a href="http://www.w3.org/TR/sparql11-query/">SPARQL Query</a>, <a href="http://www.w3.org/TR/sparql11-update/">SPARQL
+Update</a> and the <a href="http://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store
+protocol</a>. Applications should be written in terms of these protocols
+using the relevant Jena APIs, this has the added benefit of making your applications portable to another SPARQL backend
+should you ever need to.</p>
+<h3 id="java-heap">How large a Java heap should I use for TDB?</h3>
+<p>TDB uses memory mapped files heavily for providing fast access to data and indices.  Memory mapped files live outside of
+the JVM heap and are managed by the OS therefore it is important to not allocate all available memory to the JVM heap.</p>
+<p>However JVM heap is needed for TDB related things like query &amp; update processing, storing the in-memory journal etc and
+also for any other activities that your code carries out.  What you should set the JVM heap to will depend on the kinds
+of queries that you are running, very specific queries will not need a large heap whereas queries that touch large
+amounts of data or use operators that may require lots of data to be buffered in-memory e.g. <code>DISTINCT</code>, <code>GROUP BY</code>,
+<code>ORDER BY</code> may need a much larger heap depending on the overall size of your database.</p>
+<p>There is no hard and fast guidance we can give you on the exact numbers since it depends heavily on your data and your
+workload.  Please ask on our mailing lists (see our <a href="../../help_and_support/">Ask</a> page) and provide as much detail as
+possible about your data and workload if you would like us to attempt to provide more specific guidance.</p>
+<h3 id="fuseki-tdb-memory-leak">Does Fuseki/TDB have a memory leak?</h3>
+<p>A number of users have reported a suspected memory leak when using Fuseki/TDB when it used to serve a database that has
+continuous high load with a mixture of queries and updates.  Having investigate the problem this is not a memory leak
+per-se rather a limitation of how <a href="tdb_transactions.html">transactions</a> are implemented for TDB.</p>
+<p>TDB uses write-ahead logging so new data is written both to an on-disk journal and kept in-memory.  This is necessary
+because TDB permits a single writer and multiple readers at any one time and readers are guaranteed to always see the
+state of the database at the time they started reading.  Therefore, until there are no active readers it is not possible
+to update the database directly since readers are actively accessing it hence why a journal is used.  The in-memory
+journal holds some memory that cannot be freed up until such time as the database has no active readers/writers and the
+changes it holds can be safely flushed to disk.</p>
+<p>This means that in scenarios where there is continuous high load on the system TDB never reaches a state where it is
+able to flush the journal eventually causing out of memory errors in Fuseki.  You can see if you are experiencing this
+issue by examining your database directory, if it contains a <code>.jrnl</code> file that is non-empty then Fuseki/TDB is having to
+hold the journal in-memory.</p>
+<p><strong>However</strong>, because this relates to transactional use and the journal is also stored on disk no data will be lost, by
+stopping and restarting Fuseki the journal will be flushed to disk. When using the <a href="java_api.html">TDB Java API</a>, the
+journal can be flushed by closing any datasets and releasing the TDB resources.</p>
 <pre><code>  Dataset dataset = TDBFactory.createDataset(directory) ;
   try{
      ...
@@ -317,61 +333,117 @@ Fuseki the journal will be flushed to disk. When using the <a href="java_api.htm
      TDBFactory.release(dataset);
   }
 </code></pre>
-<p><a name="ssd"></a></p>
-<h2 id="should-i-use-a-ssd">Should I use a SSD?</h2>
+<h3 id="input-vs-database-size">Why is the database much larger on disk than my input data?</h3>
+<p>Firstly, TDB2 uses copy-on-write data structures.  This means that each new write transaction takes copies of any data
+blocks it modifies during the transaction and writes new copies of those blocks with the required modifications.  The
+old blocks are not automatically removed as they might still be referenced by ongoing read transactions.  Depending on
+how you&rsquo;ve loaded your data into TDB2 - how many transactions were used, how large each transaction was, whether named
+graphs are used, input data characteristics etc. - this can lead to much larger database disk size than your original
+input data size.</p>
+<p>Secondly it is also worth noting that both TDB and TDB2 use <a href="https://en.wikipedia.org/wiki/Sparse_file">sparse files</a>
+for their on disk storage.  Depending on the file system and operating system you are using, and the tools you use to
+inspect it, you may see larger sizes reported than are actually being consumed e.g.</p>
+<pre tabindex="0"><code>$ ls -lh SPOG.idn
+-rw-r--r--  1 user  group   8.0M 23 Sep 15:23 SPOG.idn
+$ du -h SPOG.idn
+6.1M	SPOG.idn
+</code></pre><p>In the above example, on a small toy dataset, we can see that <code>ls</code> reports a file size as <code>8.0M</code> while <code>du</code> reports a
+file size of <code>6.1M</code>.  Since a database is comprised of many files the total logical size vs total physical size may be
+quite different.</p>
+<p>You can run a <a href="../tdb2/tdb2_admin.md#compaction">Compaction</a> operation on your database to have TDB2 prune the data
+structures to only preserve the current data blocks.  Compactions require exclusive write access to the database, i.e.
+no other read/write transactions may occur while a compaction is running.  Thus, compactions should generally be run
+offline, or at quiet times if exposing your database to multiple applications per <a href="#multi-jvm">Can I share a TDB dataset between
+multiple applications?</a>.</p>
+<p><strong>NB</strong> If you loaded your data using one of the TDB bulk loaders, e.g. <a href="#tdbloader-vs-tdbloader2"><code>tdbloader2</code></a> and
+<a href="#tdb-xloader"><code>xloader</code></a>, then those already generate a (near) maximally compacted database and compaction will offer
+little/no benefit!</p>
+<p>Please note that compaction creates a new <code>Data-NNNN</code> directory per <a href="../tdb2/tdb2_admin.md#tdb2-directory-layout">TDB2 Directory
+Layout</a> into which it writes the compacted copy of the database.  The old
+directory won&rsquo;t be automatically removed unless the compaction operation was explicitly configured to do so. Therefore,
+the immediate effect of a compaction may actually be more disk space usage until the old data directory can be removed.
+If the database was already maximally compacted then there will be no difference in size between the old and new data
+directories.</p>
+<p>If your database has ongoing updates over time, particularly spread across many separate transactions, we would
+recommend that you consider running a compaction periodically e.g. once a day/week etc. We cannot provide exact
+recommendations here as to the frequency of compactions you should run as how much disk size inflation you experience
+will vary depending on many factors - size and frequency of write transactions, data characteristics, etc. - and you
+will need to determine a suitable schedule based on your use case for database.</p>
+<p>Note also that if running on Windows then it won&rsquo;t be possible to delete the old data directory due a OS limitation, see
+<a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a>.</p>
+<h3 id="ssd">Should I use a SSD?</h3>
 <p>Yes if you are able to</p>
-<p>Using a SSD boost performance in a number of ways.  Firstly bulk loads, inserts and deletions will be faster i.e. operations that modify the
-database and have to be flushed to disk at some point due to faster IO.  Secondly TDB will start faster because the files can be mapped into
-memory faster.</p>
-<p>SSDs will make the most difference when performing bulk loads since the on-disk database format for TDB is entirely portable and may be
-safely copied between systems (provided there is no process accessing the database at the time).  Therefore even if you can&rsquo;t run your production
-system with a SSD you can always perform your bulk load on a SSD equipped system first and then move the database to your production system.</p>
-<p><a name="lock-exception"></a></p>
-<h2 id="why-do-i-get-the-exception-cant-open-database-at-location-pathtodb-as-it-is-already-locked-by-the-process-with-pid-1234-when-trying-to-open-a-tdb-database">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</h2>
-<p>This exception is a result of TDBs automatic multi-JVM usage prevention, as noted in the earlier
-<a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a> question a TDB database can only be safely used by a single JVM otherwise
-data corruption may occur.  From 1.1.0 onwards TDB automatically enforces this restriction wherever possible and you will get this exception if you
-attempt to access a database which is being accessed from another JVM.</p>
-<p>To investigate this error use the process management tools for your OS to see what the process ID referenced in the error is.  If it is another JVM
-then the error is entirely valid and you should follow the advice about sharing a TDB dataset between applications.  You may need to coordinate with
-the owner of the other process (if it is not yourself) in order to do this.</p>
-<p>In rare circumstances you may find that the process is entirely unrelated (this can happen due to stale lock files since they are not always automatically
-cleared up) in which case you can try and manually remove the <code>tdb.lock</code> file from the database directory.  Please only do this if you are <strong>certain</strong> that
-the other process is not accessing the TDB database otherwise data corruption may occur.</p>
-<p><a name="no-lock-warning"></a></p>
-<h2 id="i-see-a-warning-that-location-pathtodb-was-not-locked-if-another-jvm-accessed-this-location-simultaneously-data-corruption-may-have-occurred-in-my-logs">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</h2>
-<p>This warning can occur in rare circumstances when TDB detects that you are releasing a database location via <code>StoreConnection.release()</code> and that the
-database was eligible to be locked but wasn&rsquo;t.  This can usually only occur if you circumvented the normal TDB database opening procedures somehow.</p>
-<p>As the warning states data corruption may occur if another JVM accesses the location while your process is accessing it.  Ideally you should follow the
-advice on <a href="#multi-jvm">multi-JVM usage</a> if this might happen, otherwise the warning can likely be safely ignored.</p>
+<p>Using a SSD boost performance in a number of ways.  Firstly bulk loads, inserts and deletions will be faster i.e.
+operations that modify the database and have to be flushed to disk at some point due to faster IO.  Secondly TDB will
+start faster because the files can be mapped into memory faster.</p>
+<p>SSDs will make the most difference when performing bulk loads since the on-disk database format for TDB is entirely
+portable and may be safely copied between systems (provided there is no process accessing the database at the time).
+Therefore even if you can&rsquo;t run your production system with a SSD you can always perform your bulk load on a SSD
+equipped system first and then move the database to your production system.</p>
 <h2 id="windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</h2>
-<p>Java on MS Windows does not provide the ability to delete a memory mapped
-file while the JVM is still running.  The file is properly deleted when the
-JVM exits.  This is a known issue with Java.<br>
-See the Java bug database e.g.
-<a href="http://bugs.java.com/view_bug.do?bug_id=4724038">Bug id: 4724038</a> and several
-others. While there are some workarounds mentioned on the web,
-none is known to always work on all JVMs.</p>
-<p>On 64 bit systems, TDB uses memory mapped to manage datasets on disk.  This
-means that the operating system dynamically controls how much of a file is held in
-RAM, trading off against requests by other applications.  But it also means
-the database files are not properly deleted until the JVM exits.  A new
-dataset can not be created in the same location (directory on disk).</p>
+<p>Java on MS Windows does not provide the ability to delete a memory mapped file while the JVM is still running.  The file
+is properly deleted when the JVM exits.  This is a known issue with Java.  See the Java bug database e.g. <a href="http://bugs.java.com/view_bug.do?bug_id=4724038">Bug id:
+4724038</a> and several others. While there are some workarounds mentioned
+on the web, none is known to always work on all JVMs.</p>
+<p>On 64 bit systems, TDB uses memory mapped to manage datasets on disk.  This means that the operating system dynamically
+controls how much of a file is held in RAM, trading off against requests by other applications.  But it also means the
+database files are not properly deleted until the JVM exits.  A new dataset can not be created in the same location
+(directory on disk).</p>
 <p>The workaround is to use a different location.</p>
-<h2 id="tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</h2>
-<p>As described elsewhere in this FAQ (see <a href="#lock-exception">Lock Exceptions</a>
-and <a href="#no-lock-warning">No Lock Warning</a>) TDB uses a lock file to ensure that multiple
-JVMs don&rsquo;t try to use the same TDB database simultaneously as this can lead to
-data corruption.  However with the introduction of <a href="../tdb2/">TDB2</a> there are now two
-versions of TDB, TDB2 also uses a lock file however it uses a slightly different
-format for that file.</p>
-<p>This error means that you have tried to open a <a href="../tdb2/">TDB2</a> database as a TDB1
-database which is not permitted.  Please adjust your usage of Jena libraries or command
-line tools to use TDB2 code/arguments as appropriate.</p>
-<p>For example if <a href="../tdb2/tdb2_fuseki.html">Using TDB2 with Fuseki</a> you would need to use
-the <code>--tdb2</code> option.</p>
-<h2 id="not-answered">My question isn&rsquo;t answered here?</h2>
-<p>If your question isn&rsquo;t answered here please get in touch with the project, please check out the <a href="../../help_and_support/index.html">Ask</a> page for ways to ask for further help.</p>
+<hr>
+<h2 id="error-messages-and-warnings">Error Messages and Warnings</h2>
+<h3 id="impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</h3>
+<p>The <em>Impossibly Large Object</em> exception is an exception that occurs when part of your TDB dataset has become corrupted.
+It may only affect a small section of your dataset so may only occur intermittently depending on your queries.  For
+example some queries may continue to function normally while other queries or queries with/without particular features
+may fail.  A particular query that fails with this error should continue to always fail unless the database is modified.</p>
+<p>A query that touches the entirety of the dataset will always encounter this exception and can be used to verify whether
+your database has this problem e.g.</p>
+<pre><code>SELECT * WHERE { { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } } }
+</code></pre>
+<p>The corruption may have happened at any time in the past and once it has happened there is no way to repair it.
+Corrupted datasets will need to be rebuilt from the original source data, this is why we <strong>strongly</strong> recommend you use
+<a href="tdb_transactions.html">transactions</a> since this protects your dataset against corruption.</p>
+<p>To resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted database
+<strong>cannot</strong> be repaired.</p>
+<h3 id="object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</h3>
+<p>These errors are closely related to the above <em>Impossibly Large Object</em> exception, they also indicate corruption to your
+TDB database.</p>
+<p>As noted above to resolve this problem you <strong>must</strong> rebuild your database from the original source data, a corrupted
+database <strong>cannot</strong> be repaired. This is why we <strong>strongly</strong> recommend you use <a href="tdb_transactions.html">transactions</a>
+since this protects your dataset against corruption.</p>
+<h3 id="lock-exception">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</h3>
+<p>This exception is a result of TDBs automatic multi-JVM usage prevention, as noted in the earlier <a href="#multi-jvm">Can I share a TDB
+dataset between multiple applications?</a> question a TDB database can only be safely used by a single JVM
+otherwise data corruption may occur.  From 1.1.0 onwards TDB automatically enforces this restriction wherever possible
+and you will get this exception if you attempt to access a database which is being accessed from another JVM.</p>
+<p>To investigate this error use the process management tools for your OS to see what the process ID referenced in the
+error is.  If it is another JVM then the error is entirely valid and you should follow the advice about sharing a TDB
+dataset between applications.  You may need to coordinate with the owner of the other process (if it is not yourself) in
+order to do this.</p>
+<p>In rare circumstances you may find that the process is entirely unrelated (this can happen due to stale lock files since
+they are not always automatically cleared up) in which case you can try and manually remove the <code>tdb.lock</code> file from the
+database directory.  Please only do this if you are <strong>certain</strong> that the other process is not accessing the TDB database
+otherwise data corruption may occur.</p>
+<h3 id="no-lock-warning">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</h3>
+<p>This warning can occur in rare circumstances when TDB detects that you are releasing a database location via
+<code>StoreConnection.release()</code> and that the database was eligible to be locked but wasn&rsquo;t.  This can usually only occur if
+you circumvented the normal TDB database opening procedures somehow.</p>
+<p>As the warning states data corruption may occur if another JVM accesses the location while your process is accessing it.
+Ideally you should follow the advice on <a href="#multi-jvm">multi-JVM usage</a> if this might happen, otherwise the warning can
+likely be safely ignored.</p>
+<h3 id="tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</h3>
+<p>As described elsewhere in this FAQ (see <a href="#lock-exception">Lock Exceptions</a> and <a href="#no-lock-warning">No Lock Warning</a>) TDB
+uses a lock file to ensure that multiple JVMs don&rsquo;t try to use the same TDB database simultaneously as this can lead to
+data corruption.  However with the introduction of <a href="../tdb2/">TDB2</a> there are now two versions of TDB, TDB2 also uses a
+lock file however it uses a slightly different format for that file.</p>
+<p>This error means that you have tried to open a <a href="../tdb2/">TDB2</a> database as a TDB1 database which is not permitted.
+Please adjust your usage of Jena libraries or command line tools to use TDB2 code/arguments as appropriate.</p>
+<p>For example if <a href="../tdb2/tdb2_fuseki.html">Using TDB2 with Fuseki</a> you would need to use the <code>--tdb2</code> option.</p>
+<hr>
+<h3 id="not-answered">My question isn&rsquo;t answered here?</h3>
+<p>If your question isn&rsquo;t answered here please get in touch with the project, please check out the
+<a href="../../help_and_support/index.html">Ask</a> page for ways to ask for further help.</p>
 
   </article>
   
@@ -380,21 +452,37 @@ the <code>--tdb2</code> option.</p>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#faqs">FAQs</a></li>
-    <li><a href="#tdb1-and-tdb2">TDB1 and TDB2</a></li>
-    <li><a href="#does-tdb-support-transactions">Does TDB support transactions?</a></li>
-    <li><a href="#can-i-share-a-tdb-dataset-between-multiple-applications">Can I share a TDB dataset between multiple applications?</a></li>
-    <li><a href="#what-is-the-impossibly-large-object-exception">What is the <em>Impossibly Large Object</em> exception?</a></li>
-    <li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
-    <li><a href="#what-is-tdbxloader">What is <code>tdb.xloader</code>?</a></li>
-    <li><a href="#what-is-the-different-between-tdbloader-and-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
-    <li><a href="#how-large-a-java-heap-should-i-use-for-tdb">How large a Java heap should I use for TDB?</a></li>
-    <li><a href="#does-fusekitdb-have-a-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
-    <li><a href="#should-i-use-a-ssd">Should I use a SSD?</a></li>
-    <li><a href="#why-do-i-get-the-exception-cant-open-database-at-location-pathtodb-as-it-is-already-locked-by-the-process-with-pid-1234-when-trying-to-open-a-tdb-database">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
-    <li><a href="#i-see-a-warning-that-location-pathtodb-was-not-locked-if-another-jvm-accessed-this-location-simultaneously-data-corruption-may-have-occurred-in-my-logs">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
+    <li><a href="#general-questions">General Questions</a>
+      <ul>
+        <li><a href="#tdb1-tdb2">TDB1 and TDB2</a></li>
+        <li><a href="#transactions">Does TDB support transactions?</a></li>
+      </ul>
+    </li>
+    <li><a href="#tdb-xloader">What is <code>tdb.xloader</code>?</a>
+      <ul>
+        <li><a href="#tdbloader-vs-tdbloader2">What is the different between <code>tdbloader</code> and <code>tdbloader2</code>?</a></li>
+      </ul>
+    </li>
+    <li><a href="#operations-questions">Operations Questions</a>
+      <ul>
+        <li><a href="#multi-jvm">Can I share a TDB dataset between multiple applications?</a></li>
+        <li><a href="#java-heap">How large a Java heap should I use for TDB?</a></li>
+        <li><a href="#fuseki-tdb-memory-leak">Does Fuseki/TDB have a memory leak?</a></li>
+        <li><a href="#input-vs-database-size">Why is the database much larger on disk than my input data?</a></li>
+        <li><a href="#ssd">Should I use a SSD?</a></li>
+      </ul>
+    </li>
     <li><a href="#windows-dataset-delete">Why can&rsquo;t I delete a dataset (MS Windows/64 bit)?</a></li>
-    <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
-    <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
+    <li><a href="#error-messages-and-warnings">Error Messages and Warnings</a>
+      <ul>
+        <li><a href="#impossibly-large-object">What is the <em>Impossibly Large Object</em> exception?</a></li>
+        <li><a href="#object-file-errors">What are the <em>ObjectFile.read()</em> and <em>ObjectFileStorage.read()</em> errors?</a></li>
+        <li><a href="#lock-exception">Why do I get the exception <em>Can&rsquo;t open database at location /path/to/db as it is already locked by the process with PID 1234</em> when trying to open a TDB database?</a></li>
+        <li><a href="#no-lock-warning">I see a warning that <em>Location /path/to/db was not locked, if another JVM accessed this location simultaneously data corruption may have occurred</em> in my logs?</a></li>
+        <li><a href="#tdb2-lock">What is the <em>Unable to check TDB lock owner, the lock file contents appear to be for a TDB2 database. Please try loading this location as a TDB2 database</em> error?</a></li>
+        <li><a href="#not-answered">My question isn&rsquo;t answered here?</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </aside>
