@@ -2,10 +2,14 @@
 title: TriX support in Apache Jena
 ---
 
-Jena supports [TriX](http://www.hpl.hp.com/techreports/2004/HPL-2004-56.html), a
+Jena supports [TriX](https://en.wikipedia.org/wiki/TriX_\(serialization_format\)), a
 simple XML format for RDF, for both reading and writing RDF data.
 
 The support is of the TriX core, without processing instructions.
+
+Local copies:
+* [HPL-2004-56.pdf](./HPL-2004-56.pdf)
+* [HPL-2003-268.pdf](./HPL-2003-268.pdf)
 
 Both the original HPlabs and W3C DTDs are supported for reading. Writing is
 according to the W3C DTD, that is using root element `<trix>`,
