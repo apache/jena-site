@@ -180,10 +180,15 @@ extends <a href="QueryExecMod.html" title="interface in org.apache.jena.sparql.e
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Provide a set of (Var, Node) for substitution in the query when QueryExec is built.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="QueryExecBuilder.html" title="interface in org.apache.jena.sparql.exec">QueryExecBuilder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#timeout(long,java.util.concurrent.TimeUnit)" class="member-name-link">timeout</a><wbr>(long&nbsp;value,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="../algebra/Table.html" title="interface in org.apache.jena.sparql.algebra">Table</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#table()" class="member-name-link">table</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Build and execute as a SELECT query.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="QueryExecBuilder.html" title="interface in org.apache.jena.sparql.exec">QueryExecBuilder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#timeout(long,java.util.concurrent.TimeUnit)" class="member-name-link">timeout</a><wbr>(long&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/TimeUnit.html" title="class or interface in java.util.concurrent" class="external-link">TimeUnit</a>&nbsp;timeUnit)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set the overall query execution timeout.</div>
 </div>
 </div>
@@ -307,7 +312,10 @@ extends <a href="QueryExecMod.html" title="interface in org.apache.jena.sparql.e
 <section class="detail" id="select()">
 <h3>select</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="RowSet.html" title="interface in org.apache.jena.sparql.exec">RowSet</a></span>&nbsp;<span class="element-name">select</span>()</div>
-<div class="block">Build and execute as a SELECT query.</div>
+<div class="block">Build and execute as a SELECT query.
+ The caller must eventually close the returned RowSet
+ in order to free any associated resources.
+ Use <a href="#table()"><code>table()</code></a> to obtain an independent in-memory copy of the row set.</div>
 </section>
 </li>
 <li>
@@ -329,6 +337,15 @@ extends <a href="QueryExecMod.html" title="interface in org.apache.jena.sparql.e
 <h3>ask</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ask</span>()</div>
 <div class="block">Build and execute as an ASK query.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="table()">
+<h3>table</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="../algebra/Table.html" title="interface in org.apache.jena.sparql.algebra">Table</a></span>&nbsp;<span class="element-name">table</span>()</div>
+<div class="block">Build and execute as a SELECT query.
+ Creates and returns an independent in-memory table by materializing the underlying row set.
+ Subsequently, <a href="../algebra/Table.html#toRowSet()"><code>Table.toRowSet()</code></a> can be used to obtain a fresh row set view over the table.</div>
 </section>
 </li>
 </ul>

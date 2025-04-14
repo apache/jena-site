@@ -126,7 +126,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#syntaxSubstitute(org.apache.jena.query.Query,java.util.Map)" class="member-name-link">syntaxSubstitute</a><wbr>(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;input,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>org.apache.jena.graph.Node&gt;&nbsp;substitutions)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>? extends org.apache.jena.graph.Node&gt;&nbsp;substitutions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Replace variables in a query by RDF terms.</div>
 </div>
@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>? extends org.apache.jena.graph.Node&gt;&nbsp;substitutions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4 method-summary-table-tab6">
 <div class="block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Use <a href="#queryReplaceVars(org.apache.jena.query.Query,java.util.Map)"><code>queryReplaceVars(org.apache.jena.query.Query, java.util.Map&lt;java.lang.String, ? extends org.apache.jena.rdf.model.RDFNode&gt;)</code></a></div>
+<div class="deprecation-comment">Use <a href="#replaceVars(org.apache.jena.query.Query,java.util.Map)"><code>replaceVars(org.apache.jena.query.Query, java.util.Map&lt;org.apache.jena.sparql.core.Var, ? extends org.apache.jena.graph.Node&gt;)</code></a></div>
 </div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></code></div>
@@ -192,15 +192,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="syntaxSubstitute(org.apache.jena.query.Query,java.util.Map)">
 <h3>syntaxSubstitute</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">syntaxSubstitute</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;input,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>org.apache.jena.graph.Node&gt;&nbsp;substitutions)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>? extends org.apache.jena.graph.Node&gt;&nbsp;substitutions)</span></div>
 <div class="block">Replace variables in a query by RDF terms.
- The replacements are added to the return queries SELECT clause (if a SELECT query).
- <p></div>
+ The replacements are added to the return queries SELECT clause (if a SELECT query).</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="QueryScopeException.html" title="class in org.apache.jena.sparql.syntax.syntaxtransform">QueryScopeException</a></code> - if the query contains variables used in a
    way that does not allow substitution (.e.g <code>AS ?var</code> or used in
    <code>VALUES</code>).</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list-long">
+<li><a href="#replaceVars(org.apache.jena.query.Query,java.util.Map)"><code>to replace variables without adding the replacements to the SELECT clause.</code></a></li>
+</ul>
+</dd>
 </dl>
 </section>
 </li>
@@ -211,7 +216,7 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">transform</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>? extends org.apache.jena.graph.Node&gt;&nbsp;substitutions)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
-<div class="deprecation-comment">Use <a href="#queryReplaceVars(org.apache.jena.query.Query,java.util.Map)"><code>queryReplaceVars(org.apache.jena.query.Query, java.util.Map&lt;java.lang.String, ? extends org.apache.jena.rdf.model.RDFNode&gt;)</code></a></div>
+<div class="deprecation-comment">Use <a href="#replaceVars(org.apache.jena.query.Query,java.util.Map)"><code>replaceVars(org.apache.jena.query.Query, java.util.Map&lt;org.apache.jena.sparql.core.Var, ? extends org.apache.jena.graph.Node&gt;)</code></a></div>
 </div>
 </section>
 </li>
@@ -220,7 +225,16 @@ loadScripts(document, 'script');</script>
 <h3>replaceVars</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">replaceVars</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../core/Var.html" title="class in org.apache.jena.sparql.core">Var</a>,<wbr>? extends org.apache.jena.graph.Node&gt;&nbsp;substitutions)</span></div>
-<div class="block">Transform a query based on a mapping from <a href="../../core/Var.html" title="class in org.apache.jena.sparql.core"><code>Var</code></a> variable to replacement <code>Node</code>.</div>
+<div class="block">Transform a query based on a mapping from <a href="../../core/Var.html" title="class in org.apache.jena.sparql.core"><code>Var</code></a> variable to replacement <code>Node</code>.
+ The replacement can be a constant or another variable.
+ This operation does not record the substitution made.
+
+ See <a href="#syntaxSubstitute(org.apache.jena.query.Query,java.util.Map)"><code>syntaxSubstitute(Query,Map)</code></a></div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="QueryScopeException.html" title="class in org.apache.jena.sparql.syntax.syntaxtransform">QueryScopeException</a></code> - if the query contains variables used in a
+   way that does not allow constant substitution.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -244,6 +258,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="transform(org.apache.jena.query.Query,org.apache.jena.sparql.syntax.syntaxtransform.ElementTransform)">
+<h3>transform</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">transform</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
+ <a href="ElementTransform.html" title="interface in org.apache.jena.sparql.syntax.syntaxtransform">ElementTransform</a>&nbsp;transform)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="transform(org.apache.jena.query.Query,org.apache.jena.sparql.syntax.syntaxtransform.ElementTransform,org.apache.jena.sparql.expr.ExprTransform)">
 <h3>transform</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">transform</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
@@ -251,13 +272,6 @@ loadScripts(document, 'script');</script>
  <a href="../../expr/ExprTransform.html" title="interface in org.apache.jena.sparql.expr">ExprTransform</a>&nbsp;exprTransform)</span></div>
 <div class="block">Transform a query using <a href="ElementTransform.html" title="interface in org.apache.jena.sparql.syntax.syntaxtransform"><code>ElementTransform</code></a> and <a href="../../expr/ExprTransform.html" title="interface in org.apache.jena.sparql.expr"><code>ExprTransform</code></a>.
  It is the responsibility of these transforms to transform to a legal SPARQL query.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="transform(org.apache.jena.query.Query,org.apache.jena.sparql.syntax.syntaxtransform.ElementTransform)">
-<h3>transform</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a></span>&nbsp;<span class="element-name">transform</span><wbr><span class="parameters">(<a href="../../../query/Query.html" title="class in org.apache.jena.query">Query</a>&nbsp;query,
- <a href="ElementTransform.html" title="interface in org.apache.jena.sparql.syntax.syntaxtransform">ElementTransform</a>&nbsp;transform)</span></div>
 </section>
 </li>
 <li>
