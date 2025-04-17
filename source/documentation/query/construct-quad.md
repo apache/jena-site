@@ -34,9 +34,7 @@ there are 2 forms for ARQ Construct Quad query:
         { ?s :p ?o }
         # Default graph
         :s ?p :o
-    } 
-    FROM NAMED :g  # or FROM :g, optional
-    WHERE { 
+    } WHERE { 
         # SPARQL 1.1 WHERE Clause
         ... 
     }
