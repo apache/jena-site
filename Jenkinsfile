@@ -23,7 +23,7 @@ pipeline {
     }
    
     environment {
-        HUGO_VERSION = '0.141.0'
+        HUGO_VERSION = '0.147.0'
         DEPLOY_BRANCH = 'asf-site'
         STAGING_BRANCH = 'asf-staging'
     }
