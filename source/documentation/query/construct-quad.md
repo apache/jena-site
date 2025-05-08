@@ -60,13 +60,17 @@ and no complex graph patterns are allowed in the short form). The keyword
 
 The normative definition of the syntax grammar of the query string is defined in this table:
 
+<div style="font-family: monospace">
+
 Rule                      |     | Expression
 --------------------------|-----|------------------------
-ConstructQuery            | ::= | 'CONSTRUCT' ( ConstructTemplate DatasetClause\* WhereClause SolutionModifier &#x7C; DatasetClause\* 'WHERE'  '\{' ConstructQuads '\}' SolutionModifier )
-ConstructTemplate         | ::= | '\{' ConstructQuads '\}'
+ConstructQuery            | ::= | 'CONSTRUCT' ( ConstructTemplateQ DatasetClause\* WhereClause SolutionModifier<br/> &#x7C; DatasetClause\* 'WHERE'  ConstructTemplateQ SolutionModifier )
+ConstructTemplateQ        | ::= | '\{' ConstructQuads '\}'
 ConstructQuads            | ::= | TriplesTemplate? ( ConstructQuadsNotTriples '.'? TriplesTemplate? )\*
 ConstructQuadsNotTriples  | ::= | ( 'GRAPH'  VarOrBlankNodeIri )? '\{' TriplesTemplate? '\}'
 TriplesTemplate           | ::= | TriplesSameSubject ( '.' TriplesTemplate? )?
+
+</div>
 
 `DatasetClause`, `WhereClause`, `SolutionModifier`, `TriplesTemplate`, `VarOrIri`,
 `TriplesSameSubject` are as for the [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
