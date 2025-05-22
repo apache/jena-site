@@ -43,7 +43,7 @@ PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
     fuseki:dataset           <#tdb_dataset_readwrite> ;
     .
 
-<#tdb_dataset_readwrite> rdf:type      <b>tdb2:DatasetTDB2</b> ;
+<#tdb_dataset_readwrite> rdf:type      tdb2:DatasetTDB2 ;
     <b>tdb2:location</b> "TDB2" ;
     ## This is supported: tdb2:unionDefaultGraph true ;
     .
@@ -79,7 +79,7 @@ PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
     fuseki:dataset           <#tdb_dataset_readwrite> ;
     .
 
-<#tdb_dataset_readwrite> rdf:type      <b>tdb2:DatasetTDB2</b> ;
+<#tdb_dataset_readwrite> rdf:type      tdb2:DatasetTDB2 ;
     <b>tdb2:location</b> "TDB2" ;
     ## tdb2:unionDefaultGraph true ;
      .
