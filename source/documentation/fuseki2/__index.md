@@ -118,13 +118,14 @@ The Fuseki code is under "jena-fuseki2/":
 |---------------|--|
 | jena-fuseki-main    | The Fuseki server |
 | jena-fuseki-core    | The Fuseki engine |
+| jena-fuseki-ui      | The Fuseki UI |
 | jena-fuseki-server  | Build the combined jar for Fuseki server |
 | jena-fuseki-access  | [Data access control](fuseki-data-access-control.html) |
 | apache-jena-fuseki  | The download for Fuseki |
 | <b>Other</b>        | |
 | jena-fuseki-docker  | Build a docker container for Fuseki |
 | jena-fuseki-geosparql | Integration for GeoSPARQL |
+| jena-fuseki-mod-geosparql | Integration for GeoSPARQL |
 | <b>Webapp</b>       | |
 | jena-fuseki-webapp  | Web application and command line startup |
-| jena-fuseki-fulljar | Build the combined jar for Fuseki/UI server |
 | jena-fuseki-war     | Build the war file for Fuseki/UI server |
