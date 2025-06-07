@@ -3,12 +3,14 @@ title: Apache Jena GeoSPARQL
 slug: index
 ---
 
-An implementation of GeoSPARQL 1.0 standard for SPARQL query or API.
+An implementation of the GeoSPARQL 1.0 standard for SPARQL queries and APIs.
 
-Integration with Fuseki is provided either by using the 
-[GeoSPARQL assembler](geosparql-assembler.html) or using the self-contained original
-[jena-fuseki-geosparql](geosparql-fuseki.html).  In either case, this page
-describes the GeoSPARQL supported features.
+The recommended way to integrate GeoSPARQL with Fuseki is using
+the [GeoSPARQL assembler](geosparql-assembler.html) to specify a spatial dataset
+and then use [Fuseki Mod GeoSPARQL](fuseki-mod-geosparql.html) to configure an endpoint to manage that dataset's spatial index.
+An alternative self-contained Fuseki package
+[jena-fuseki-geosparql](geosparql-fuseki.html) is provided (does not contain the spatial index management).
+In either case, this page describes the GeoSPARQL supported features.
 
 ## Getting Started
 GeoSPARQL Jena can be accessed as a library using Maven etc. from Maven Central.
