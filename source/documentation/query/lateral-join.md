@@ -131,11 +131,15 @@ available to "pattern". This is similar to an SQL
 
 `LATERAL` is added to the SPARQL grammar at rule `[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)`. As a syntax form, it is similar to `OPTIONAL`.
 
-```ebnf
-[56]    GraphPatternNotTriples    ::=    GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
-[57]    OptionalGraphPattern      ::=    'OPTIONAL' GroupGraphPattern
-[  ]    LateralGraphPattern       ::=    'LATERAL' GroupGraphPattern
-```
+<div class="font-monospace">
+
+ID     | Rule                     |     | Expression
+-------|--------------------------|-----|------------------------
+[56]   | GraphPatternNotTriples   | ::= | GroupOrUnionGraphPattern | OptionalGraphPattern | LateralGraphPattern | ...
+[57]   | OptionalGraphPattern     | ::= | 'OPTIONAL' GroupGraphPattern
+[  ]   | LateralGraphPattern      | ::= | 'LATERAL' GroupGraphPattern
+
+</div>
 
 ### Algebra
 
