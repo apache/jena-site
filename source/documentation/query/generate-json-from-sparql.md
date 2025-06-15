@@ -89,11 +89,15 @@ key/value pair pattern, which could produce the following output for the query a
 
 The normative definition of the syntax grammar of the query string is defined in this table:
 
+<div class="font-monospace">
+
 Rule                      |     | Expression
 --------------------------|-----|------------------------
 JsonQuery                 | ::= | JsonClause ( DatasetClause )\* WhereClause SolutionModifier
 JsonClause                | ::= | 'JSON' '\{' JsonObjectMember ( ',' JsonObjectMember )\* '\}'
 JsonObjectMember          | ::= | String ':' ( Var &#x7C; RDFLiteral &#x7C; NumericLiteral &#x7C; BooleanLiteral )
+
+</div>
 
 `DatasetClause`, `WhereClause`, `SolutionModifier`, `String`, `Var`, 'RDFLiteral',
 `NumericLiteral`, and 'BooleanLiteral' are as for the [SPARQL 1.1 Grammar](http://www.w3.org/TR/sparql11-query/#grammar)
