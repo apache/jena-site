@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.1b17c39a117e22b46db4c66f6395dc27c134a60377d87d2d5745b8600eb69722.css" integrity="sha256-GxfDmhF&#43;IrRttMZvY5XcJ8E0pgN32H0tV0W4YA62lyI=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.d6ada6933ea246671d51bf39ceb2afb2f710a45f3793ab87e06f74f3b5d17c3d.css" integrity="sha256-1q2mkz6iRmcdUb85zrKvsvcQpF83k6uH4G9087XRfD0=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -288,10 +288,39 @@ available to &ldquo;pattern&rdquo;. This is similar to an SQL
 <h2 id="sparql-specification-additional-material">SPARQL Specification Additional Material</h2>
 <h3 id="syntax-1">Syntax</h3>
 <p><code>LATERAL</code> is added to the SPARQL grammar at rule <code>[[56] GraphPatternNotTriples](https://www.w3.org/TR/sparql11-query/#rGraphPatternNotTriples)</code>. As a syntax form, it is similar to <code>OPTIONAL</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ebnf" data-lang="ebnf"><span style="display:flex;"><span><span style="">[56]</span>    <span style="color:#a2f;font-weight:bold">GraphPatternNotTriples    </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#a2f;font-weight:bold">GroupOrUnionGraphPattern </span>| <span style="color:#a2f;font-weight:bold">OptionalGraphPattern </span>| <span style="color:#a2f;font-weight:bold">LateralGraphPattern </span>| .<span style="">..</span>
-</span></span><span style="display:flex;"><span><span style="">[57]</span>    <span style="color:#a2f;font-weight:bold">OptionalGraphPattern      </span><span style="">::</span><span style="color:#666">=</span>    <span style="color:#b44">&#39;OPTIONAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
-</span></span><span style="display:flex;"><span>[  ]    <span style="color:#a2f;font-weight:bold">LateralGraphPattern       </span><span style="">::=</span>    <span style="color:#b44">&#39;LATERAL&#39;</span> <span style="color:#a2f;font-weight:bold">GroupGraphPattern</span>
-</span></span></code></pre></div><h3 id="algebra">Algebra</h3>
+<div class="font-monospace">
+<table>
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Rule</th>
+          <th></th>
+          <th>Expression</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>[56]</td>
+          <td>GraphPatternNotTriples</td>
+          <td>::=</td>
+          <td>GroupOrUnionGraphPattern</td>
+      </tr>
+      <tr>
+          <td>[57]</td>
+          <td>OptionalGraphPattern</td>
+          <td>::=</td>
+          <td>&lsquo;OPTIONAL&rsquo; GroupGraphPattern</td>
+      </tr>
+      <tr>
+          <td>[  ]</td>
+          <td>LateralGraphPattern</td>
+          <td>::=</td>
+          <td>&lsquo;LATERAL&rsquo; GroupGraphPattern</td>
+      </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="algebra">Algebra</h3>
 <p>The new algebra operator is <code>lateral</code> which takes two expressions</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">SELECT</span> <span style="color:#666">*</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#b8860b">?s</span>  <span style="color:#b8860b">?p</span>  <span style="color:#b8860b">?o</span>
