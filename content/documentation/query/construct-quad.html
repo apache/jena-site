@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.1b17c39a117e22b46db4c66f6395dc27c134a60377d87d2d5745b8600eb69722.css" integrity="sha256-GxfDmhF&#43;IrRttMZvY5XcJ8E0pgN32H0tV0W4YA62lyI=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.d6ada6933ea246671d51bf39ceb2afb2f710a45f3793ab87e06f74f3b5d17c3d.css" integrity="sha256-1q2mkz6iRmcdUb85zrKvsvcQpF83k6uH4G9087XRfD0=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -212,34 +212,33 @@ syntax for this extension follows that style in ARQ, using
 <a href="http://www.w3.org/TR/trig/">TriG</a> plus variables.  Just like SPARQL 1.1,
 there are 2 forms for ARQ Construct Quad query:</p>
 <h3 id="complete-form">Complete Form</h3>
-<pre><code>CONSTRUCT {
-    # Named graph
-    GRAPH :g { ?s :p ?o }
-    # Default graph
-    { ?s :p ?o }
-    # Default graph
-    :s ?p :o
-} WHERE { 
-    # SPARQL 1.1 WHERE Clause
-    ... 
-}
-</code></pre>
-<p>The default graphs and the named graphs can be constructed within the
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">CONSTRUCT</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># Named graph</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">GRAPH</span> :<span style="color:#008000;font-weight:bold">g</span> { <span style="color:#b8860b">?s</span> :<span style="color:#008000;font-weight:bold">p</span> <span style="color:#b8860b">?o</span> }
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># Default graph</span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#b8860b">?s</span> :<span style="color:#008000;font-weight:bold">p</span> <span style="color:#b8860b">?o</span> }
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># Default graph</span>
+</span></span><span style="display:flex;"><span>    :<span style="color:#008000;font-weight:bold">s</span> <span style="color:#b8860b">?p</span> :<span style="color:#008000;font-weight:bold">o</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#a2f;font-weight:bold">WHERE</span> { 
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># SPARQL 1.1 WHERE Clause</span>
+</span></span><span style="display:flex;"><span>    ... 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The default graphs and the named graphs can be constructed within the
 <code>CONSTRUCT</code> clause in the above way.  Note that, for constructing the named
 graph, the token of <code>GRAPH</code> can be optional.  The brackets of the triples to
 be constructed in the default graph can also be optional.</p>
 <h3 id="short-form">Short Form</h3>
-<pre><code>CONSTRUCT WHERE { 
-    # Basic dataset pattern (only the default graph and the named graphs)
-    ... 
-}
-</code></pre>
-<p>A short form is provided for the case where the template and the pattern
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sparql" data-lang="sparql"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">CONSTRUCT</span> <span style="color:#a2f;font-weight:bold">WHERE</span> { 
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># Basic dataset pattern (only the default graph and the named graphs)</span>
+</span></span><span style="display:flex;"><span>    ... 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>A short form is provided for the case where the template and the pattern
 are the same and the pattern is just a basic dataset pattern (no <code>FILTER</code>s
 and no complex graph patterns are allowed in the short form). The keyword
 <code>WHERE</code> is required in the short form.</p>
 <h3 id="grammar">Grammar</h3>
 <p>The normative definition of the syntax grammar of the query string is defined in this table:</p>
+<div class="font-monospace">
 <table>
   <thead>
       <tr>
@@ -252,10 +251,10 @@ and no complex graph patterns are allowed in the short form). The keyword
       <tr>
           <td>ConstructQuery</td>
           <td>::=</td>
-          <td>&lsquo;CONSTRUCT&rsquo; ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* &lsquo;WHERE&rsquo;  &lsquo;{&rsquo; ConstructQuads &lsquo;}&rsquo; SolutionModifier )</td>
+          <td>&lsquo;CONSTRUCT&rsquo; ( ConstructTemplateQ DatasetClause* WhereClause SolutionModifier<br/> | DatasetClause* &lsquo;WHERE&rsquo;  ConstructTemplateQ SolutionModifier )</td>
       </tr>
       <tr>
-          <td>ConstructTemplate</td>
+          <td>ConstructTemplateQ</td>
           <td>::=</td>
           <td>&lsquo;{&rsquo; ConstructQuads &lsquo;}&rsquo;</td>
       </tr>
@@ -276,37 +275,34 @@ and no complex graph patterns are allowed in the short form). The keyword
       </tr>
   </tbody>
 </table>
+</div>
 <p><code>DatasetClause</code>, <code>WhereClause</code>, <code>SolutionModifier</code>, <code>TriplesTemplate</code>, <code>VarOrIri</code>,
 <code>TriplesSameSubject</code> are as for the <a href="http://www.w3.org/TR/sparql11-query/#grammar">SPARQL 1.1 Grammar</a></p>
 <h2 id="programming-api">Programming API</h2>
 <p>ARQ provides 2 additional methods in <a href="/documentation/javadoc/arq/org.apache.jena.arq/org/apache/jena/query/QueryExecution.html">QueryExecution</a> for Construct Quad.</p>
-<pre><code>Iterator&lt;Quad&gt; QueryExecution.execConstructQuads() // allow duplication
-Dataset QueryExecution.execConstructDataset() // no duplication
-</code></pre>
-<p>One difference of the 2 methods is:
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Iterator<span style="color:#666">&lt;</span>Quad<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">execConstructQuads</span>()<span style="color:#bbb"> </span><span style="color:#080;font-style:italic">// allow duplication</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Dataset<span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">execConstructDataset</span>()<span style="color:#bbb"> </span><span style="color:#080;font-style:italic">// no duplication</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>One difference of the 2 methods is:
 The method of <code>execConstructQuads()</code> returns an <code>Iterator</code> of <code>Quad</code>, allowing duplication.
 But <code>execConstructDataset()</code> constructs the desired Dataset object with only unique <code>Quad</code>s.</p>
 <p>In order to use these methods, it&rsquo;s required to switch on the query syntax
 of ARQ beforehand, when creating the <code>Query</code> object:</p>
-<pre><code>Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-</code></pre>
-<p>If the query is supposed to construct only triples, not quads, the triples
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Query<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryFactory.<span style="color:#b44">create</span>(queryString,<span style="color:#bbb"> </span>Syntax.<span style="color:#b44">syntaxARQ</span>);<span style="color:#bbb">
+</span></span></span></code></pre></div><p>If the query is supposed to construct only triples, not quads, the triples
 will be constructed in the default graph. For example:</p>
-<pre><code>String queryString = &quot;CONSTRUCT { ?s ?p ?o } WHERE ... &quot;
-...
-// The graph node of the quads are the default graph (ARQ uses &lt;urn:x-arq:DefaultGraphNode&gt;).
-Iterator&lt;Quad&gt; quads = qexec.execConstructQuads(); 
-</code></pre>
-<p>If the query string stands for constructing quads while the method of
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#bbb"> </span>queryString<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;CONSTRUCT { ?s ?p ?o } WHERE ... &#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// The graph node of the quads are the default graph (ARQ uses &lt;urn:x-arq:DefaultGraphNode&gt;).</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Iterator<span style="color:#666">&lt;</span>Quad<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>quads<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qexec.<span style="color:#b44">execConstructQuads</span>();<span style="color:#bbb"> 
+</span></span></span></code></pre></div><p>If the query string stands for constructing quads while the method of
 <code>exeConstructTriples()</code> are called, it returns only the triples in the
 default graph of the <code>CONSTRUCT</code> query template. It&rsquo;s called a &ldquo;projection&rdquo;
 on the default graph. For instance:</p>
-<pre><code>String queryString = &quot;CONSTRUCT { ?s ?p ?o . GRAPH ?g1 { ?s1 ?p1 ?o1 } } WHERE ...&quot;
-...
-// The part of &quot;GRAPH ?g1 { ?s1 ?p1 ?o1 }&quot; will be ignored. Only &quot;?s ?p ?o&quot; in the default graph will be returned.
-Iterator&lt;Triple&gt; triples = qexec.execConstructTriples();
-</code></pre>
-<p>More examples can be found at <code>ExampleConstructQuads.java</code> at
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#bbb"> </span>queryString<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;CONSTRUCT { ?s ?p ?o . GRAPH ?g1 { ?s1 ?p1 ?o1 } } WHERE ...&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-style:italic">// The part of &#34;GRAPH ?g1 { ?s1 ?p1 ?o1 }&#34; will be ignored. Only &#34;?s ?p ?o&#34; in the default graph will be returned.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Iterator<span style="color:#666">&lt;</span>Triple<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>triples<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qexec.<span style="color:#b44">execConstructTriples</span>();<span style="color:#bbb">
+</span></span></span></code></pre></div><p>More examples can be found at <code>ExampleConstructQuads.java</code> at
 <a href="https://github.com/apache/jena/tree/main/jena-examples/src/main/java/arq/examples/constructquads/">jena-examples:arq/examples/constructquads/</a>.</p>
 <h2 id="fuseki-support">Fuseki Support</h2>
 <p>Jena <a href="/documentation/fuseki2/index.html">Fuseki</a> is also empowered with Construct Quad query as a built-in
@@ -316,15 +312,14 @@ Because
 is just an implementation of QueryExecution, there&rsquo;s not much difference
 for the client users to manipulate the programming API described in the
 previous sections, e.g.</p>
-<pre><code>String queryString = &quot; CONSTRUCT { GRAPH &lt;http://example/ns#g1&gt; {?s ?p ?o} } WHERE {?s ?p ?o}&quot; ;
-Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-try ( QueryExecution qExec = QueryExecution.service(serviceQuery).query(query).build() ) { // serviceQuery is the URL of the remote service
-    Iterator&lt;Quad&gt; result = qExec.execConstructQuads();
-    ...
-}
-...
-</code></pre>
-<p><a href="index.html">ARQ documentation index</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String<span style="color:#bbb"> </span>queryString<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;CONSTRUCT { GRAPH &lt;http://example/ns#g1&gt; {?s ?p ?o} } WHERE {?s ?p ?o}&#34;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>Query<span style="color:#bbb"> </span>query<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryFactory.<span style="color:#b44">create</span>(queryString,<span style="color:#bbb"> </span>Syntax.<span style="color:#b44">syntaxARQ</span>);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#a2f;font-weight:bold">try</span><span style="color:#bbb"> </span>(QueryExecution<span style="color:#bbb"> </span>qExec<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>QueryExecution.<span style="color:#b44">service</span>(serviceQuery).<span style="color:#b44">query</span>(query).<span style="color:#b44">build</span>())<span style="color:#bbb"> </span>{<span style="color:#bbb"> </span><span style="color:#080;font-style:italic">// serviceQuery is the URL of the remote service</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>Iterator<span style="color:#666">&lt;</span>Quad<span style="color:#666">&gt;</span><span style="color:#bbb"> </span>result<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>qExec.<span style="color:#b44">execConstructQuads</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>...<span style="color:#bbb">
+</span></span></span></code></pre></div><p><a href="index.html">ARQ documentation index</a></p>
 
   </article>
   
