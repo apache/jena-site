@@ -115,11 +115,6 @@ structuring Jena development.
     <td>A utility package to simplify the building of ARQ queries in code.
     </td>
   </tr>
-  <tr>
-    <td><code>jena-permissions</code></td>
-    <td><code>jar</code></td>
-    <td>Security wrapper around Jena RDF implementation.</td>
-  </tr>
 </table>
 
 There are also a number of artifacts used in development.

@@ -2,6 +2,8 @@
 title: Adding Jena Permissions to Fuseki
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 ## Overview
 
 The goal of this document is to add Jena Permissions to a fuseki deployment to restrict access to graph data. This example will take the example application, deploy the data to a fuseki instance and add the Jena Permissions to achieve the same access restrictions that the example application has.

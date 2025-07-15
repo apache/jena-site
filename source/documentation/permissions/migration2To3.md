@@ -2,6 +2,8 @@
 title: "Jena Permissions - Migration notes: Version 2.x to Version 3.x"
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 When Jena moved from version 2 to version 3 there was a major renaming of packages. One of the packages renamed was the Jena Permissions package. It was formerly named Jena Security. There are several changes that need to occur to migrate from jena-security version 2.x to jena-permissions version 3.x.
 
 Changes

@@ -14,12 +14,6 @@ administrative functions are limited to `localhost`. One can access it via
 `127.0.0.1` (IPv4), or `[::1]` (IPv6). Access from an external machine is not
 considered as localhost and thus restricted.
 
-Once Shiro has been configured to perform user authentication it provides  a
-good foundation on which the [Jena Permissions](../permissions/) layer can be
-configured. There is an [example implementation](../permissions/example.html)
-documented in the Jena Permissions section. The Jena Permissions layer can be
-used to restrict access to specific graphs or triples within graphs.
-
 A simple example to enable basic user/password authentication is shown in the
 default `shiro.ini` configuration. The default admin user is `admin` and the
 password is `pw`. This can be changed directly in the INI file. Note that this

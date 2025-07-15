@@ -17,4 +17,3 @@ title: Jena JavaDoc
 - [GeoSPARQL](javadoc/geosparql/index.html)
 - [Query Builder](javadoc/extras/querybuilder/index.html)
 - [Service Enhancer](javadoc/extras/serviceenhancer/index.html)
-- [Security Permissions JavaDoc](javadoc/permissions/index.html)

@@ -3,6 +3,8 @@ title: Jena Permissions - A Permissions wrapper around the Jena RDF implementati
 slug: index
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 Jena Permissions is a SecurityEvaluator interface and a set of dynamic proxies that apply that interface to Jena Graphs, Models, and associated methods and classes. It does not implement any specific security policy but provides a framework for developers or integrators to implement any desired policy.
 
 ## Documentation

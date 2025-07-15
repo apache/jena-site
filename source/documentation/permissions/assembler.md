@@ -2,6 +2,8 @@
 title: Jena Permissions - Assembler for a Secured Model
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 Jena Permissions provides a standard Jena assembler making it easy to use the `SecuredModel` in an Assembler based environment. To use the permissions assembler the assembler file must contain the lines:
 
     [] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .

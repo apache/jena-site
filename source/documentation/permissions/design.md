@@ -2,6 +2,8 @@
 title: Jena Permissions - Design
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 Jena Permissions is designed to allow integrators to implement almost any security policy. Fundamentally it works by implementing dynamic proxies on top of the Jena Graph and Model interfaces as well as objects returned by those interfaces. The proxy verifies that the actions on those objects are permitted by the policy before allowing the actions to proceed.
 
 The graph or model is created by the `org.apache.jena.permissions.Factory` object by wrapping a Graph or Model implementation and associating it with a URI (`graphIRI`) and a SecurityEvaluator implementation. The `graphIRI` is the URI that will be used to identify the graph/model to the security evaluator.

@@ -2,6 +2,8 @@
 title: Jena Permissions - SecurityEvaluator implementation
 ---
 
+> The jena-permissions subsystem is planned for removal at Jena 6.0.0.
+
 ## Overview
 
 The SecurityEvaluator interface defines the access control operations. It provides the interface between the authentication (answers the question: "who are you?") and the authorization (answers the question: "what can you do?"), as such it provides access to the current principal (user). The javadocs contain detailed requirements for implementations of the SecurityEvaluator interface, short notes are provided below.

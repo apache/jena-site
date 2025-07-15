@@ -25,7 +25,6 @@ sections.
 * [ShEx](./shex) - ShEx processor for Jena
 * [Text Search](./query/text-query.html) - enhanced indexes using Lucene for more efficient searching of text literals in Jena models and datasets.
 * [GeoSPARQL](./geosparql/) - support for GeoSPARQL
-* [Permissions](./permissions/) - a permissions wrapper around Jena RDF implementation
 * [Tools](./tools/) - various command-line tools and utilities to help developers manage RDF data and other aspects of Jena
 * [How-To's](./notes/) - various topic-specific how-to documents
 * [QueryBuilder](./extras/querybuilder/) - Classes to simplify the programmatic building of various query and update statements.
