@@ -112,6 +112,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#autoTxn(org.apache.jena.sparql.core.Transactional,org.apache.jena.query.ReadWrite)" class="member-name-link">autoTxn</a><wbr>(<a href="../sparql/core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a>&nbsp;txn,
+ <a href="../query/ReadWrite.html" title="enum class in org.apache.jena.query">ReadWrite</a>&nbsp;readWrite)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Begins a transaction and returns a transaction control instance suitable
+ for use with try-with-resources blocks.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#autoTxn(org.apache.jena.sparql.core.Transactional,org.apache.jena.query.TxnType)" class="member-name-link">autoTxn</a><wbr>(<a href="../sparql/core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a>&nbsp;txn,
+ <a href="../query/TxnType.html" title="enum class in org.apache.jena.query">TxnType</a>&nbsp;txnType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Begins a transaction and returns a <a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a> instance suitable
+ for use with try-with-resources blocks.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T extends <a href="../sparql/core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a>,<wbr>
 X&gt;<br>X</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#calc(T,org.apache.jena.query.TxnType,java.util.function.Supplier)" class="member-name-link">calc</a><wbr>(T&nbsp;txn,
@@ -287,6 +301,43 @@ X&gt;</span>&nbsp;<span class="return-type">X</span>&nbsp;<span class="element-n
 X&gt;</span>&nbsp;<span class="return-type">X</span>&nbsp;<span class="element-name">calculateWrite</span><wbr><span class="parameters">(T&nbsp;txn,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;X&gt;&nbsp;r)</span></div>
 <div class="block">Execute and return a value in a write transaction.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="autoTxn(org.apache.jena.sparql.core.Transactional,org.apache.jena.query.ReadWrite)">
+<h3>autoTxn</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a></span>&nbsp;<span class="element-name">autoTxn</span><wbr><span class="parameters">(<a href="../sparql/core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a>&nbsp;txn,
+ <a href="../query/ReadWrite.html" title="enum class in org.apache.jena.query">ReadWrite</a>&nbsp;readWrite)</span></div>
+<div class="block">Begins a transaction and returns a transaction control instance suitable
+ for use with try-with-resources blocks.
+ See <a href="#autoTxn(org.apache.jena.sparql.core.Transactional,org.apache.jena.query.TxnType)"><code>autoTxn(Transactional, TxnType)</code></a>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="autoTxn(org.apache.jena.sparql.core.Transactional,org.apache.jena.query.TxnType)">
+<h3>autoTxn</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a></span>&nbsp;<span class="element-name">autoTxn</span><wbr><span class="parameters">(<a href="../sparql/core/Transactional.html" title="interface in org.apache.jena.sparql.core">Transactional</a>&nbsp;txn,
+ <a href="../query/TxnType.html" title="enum class in org.apache.jena.query">TxnType</a>&nbsp;txnType)</span></div>
+<div class="block">Begins a transaction and returns a <a href="AutoTxn.html" title="class in org.apache.jena.system">AutoTxn</a> instance suitable
+ for use with try-with-resources blocks.
+ This allows for raising checked exceptions in an idiomatic way.
+ Closing the AutoTxn instance will abort the transaction unless there has
+ been an explicit call to <a href="AutoTxn.html#commit()">AutoTxn.commit()</a>.
+ <p>
+
+ Usage example:
+ <pre>
+ public void myMethod() throws IOException {
+   try (AutoTxn txn = Txn.autoTxn(dataset, TxnType.WRITE)) {
+     // Do work.
+     if (someError) {
+         throw new IOException();
+     }
+     // Explicitly call commit on success.
+     txn.commit();
+   }
+ }
+ </pre></div>
 </section>
 </li>
 </ul>

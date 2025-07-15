@@ -160,7 +160,7 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
  While this class was in part designed to prevent SPARQL injection it is by no
  means foolproof because it works purely at the textual level. The current
  version of the code addresses some possible attack vectors that the
- developers have identified but we do not claim to be sufficiently devious to
+ developers have identified, but we do not claim to be sufficiently devious to
  have thought of and prevented every possible attack vector.
  </p>
  <p>
@@ -822,7 +822,7 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValues(java.util.Map)" class="member-name-link">setValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;? extends org.apache.jena.rdf.model.RDFNode&gt;&gt;&nbsp;itemsMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">** Sets a map of VALUES valueNames and their items.<br>
+<div class="block">Sets a map of VALUES valueNames and their items.<br>
  Can be used to assign multiple values to a single variable or single
  value to multiple variables (if using a List) in the SPARQL query.<br>
  See setRowValues to assign multiple values to multiple variables.</div>
@@ -835,14 +835,20 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">
  This method is where the actual work happens, the original command text
- is always preserved and we just generated a temporary command string by
+ is always preserved, and we just generate a temporary command string by
  prepending the defined Base URI and namespace prefixes at the start of
  the command and injecting the set parameters into a copy of that base
  command string and return the resulting command.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.jena.shared.PrefixMapping</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withDefaultMappings(org.apache.jena.shared.PrefixMapping)" class="member-name-link">withDefaultMappings</a><wbr>(org.apache.jena.shared.PrefixMapping&nbsp;map)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.jena.rdf.model.RDFNode</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#undef()" class="member-name-link">undef</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Gets a special <code>RDFNode</code> value that can be used with the various <a href="#setValues(java.util.Map)"><code>setValues(Map)</code></a>-like methods to
+ inject the <code>UNDEF</code> keyword into a parameterised <code>VALUES</code> clause.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.apache.jena.shared.PrefixMapping</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withDefaultMappings(org.apache.jena.shared.PrefixMapping)" class="member-name-link">withDefaultMappings</a><wbr>(org.apache.jena.shared.PrefixMapping&nbsp;map)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -1376,6 +1382,18 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>Base URI</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="undef()">
+<h3>undef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.apache.jena.rdf.model.RDFNode</span>&nbsp;<span class="element-name">undef</span>()</div>
+<div class="block">Gets a special <code>RDFNode</code> value that can be used with the various <a href="#setValues(java.util.Map)"><code>setValues(Map)</code></a>-like methods to
+ inject the <code>UNDEF</code> keyword into a parameterised <code>VALUES</code> clause.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Special undefined node value</dd>
 </dl>
 </section>
 </li>
@@ -2012,7 +2030,7 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block"><p>
  This method is where the actual work happens, the original command text
- is always preserved and we just generated a temporary command string by
+ is always preserved, and we just generate a temporary command string by
  prepending the defined Base URI and namespace prefixes at the start of
  the command and injecting the set parameters into a copy of that base
  command string and return the resulting command.
@@ -2304,7 +2322,11 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
  value to multiple variables (if using a List) in the SPARQL query.<br>
  See setRowValues to assign multiple values to multiple variables.<br>
  Using "valueName" with list(prop_A, obj_A) on query "VALUES (?p ?o)
- {?valueName}" * would produce "VALUES (?p ?o) {(prop_A obj_A)}".</div>
+ {?valueName}" * would produce "VALUES (?p ?o) {(prop_A obj_A)}".
+ <p>
+ Note that if you want to inject the SPARQL keyword <code>UNDEF</code> for any of the values then you
+ <strong>MUST</strong> use the special <a href="#undef()"><code>undef()</code></a> value in the items parameter as appropriate.
+ </p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>valueName</code> - </dd>
@@ -2319,7 +2341,11 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
  org.apache.jena.rdf.model.RDFNode&nbsp;item)</span></div>
 <div class="block">Assign a VALUES valueName with a single item.<br>
  Using "valueName" with Literal obj_A on query "VALUES ?o {?valueName}"
- would produce * "VALUES ?o {obj_A}".</div>
+ would produce * "VALUES ?o {obj_A}".
+ <p>
+ Note that if you want to inject the SPARQL keyword <code>UNDEF</code> for the value then you <strong>MUST</strong> use
+ the special <a href="#undef()"><code>undef()</code></a> value as the item parameter.
+ </p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>valueName</code> - </dd>
@@ -2331,10 +2357,14 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <section class="detail" id="setValues(java.util.Map)">
 <h3>setValues</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValues</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;? extends org.apache.jena.rdf.model.RDFNode&gt;&gt;&nbsp;itemsMap)</span></div>
-<div class="block">** Sets a map of VALUES valueNames and their items.<br>
+<div class="block">Sets a map of VALUES valueNames and their items.<br>
  Can be used to assign multiple values to a single variable or single
  value to multiple variables (if using a List) in the SPARQL query.<br>
- See setRowValues to assign multiple values to multiple variables.</div>
+ See setRowValues to assign multiple values to multiple variables.
+ <p>
+ Note that if you want to inject the SPARQL keyword <code>UNDEF</code> for any of the values then you
+ <strong>MUST</strong> use the special <a href="#undef()"><code>undef()</code></a> value in the itemsMap parameter as appropriate.
+ </p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>itemsMap</code> - </dd>
@@ -2349,7 +2379,11 @@ implements org.apache.jena.shared.PrefixMapping</span></div>
 <div class="block">Allocate multiple lists of variables to a single VALUES valueName.<br>
  Using "valuesName" with list(list(prop_A, obj_A), list(prop_B, obj_B)) on
  query "VALUES (?p ?o) {?valuesName}" would produce "VALUES (?p ?o)
- {(prop_A obj_A) * (prop_B obj_B)}".</div>
+ {(prop_A obj_A) * (prop_B obj_B)}".
+ <p>
+ Note that if you want to inject the SPARQL keyword <code>UNDEF</code> for any of the values then you
+ <strong>MUST</strong> use the special <a href="#undef()"><code>undef()</code></a> value in the rowItems parameter as appropriate.
+ </p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>valueName</code> - </dd>

@@ -91,24 +91,38 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GraphMem2Roaring</span>
 <span class="extends-implements">extends <a href="GraphMem2.html" title="class in org.apache.jena.mem2">GraphMem2</a></span></div>
 <div class="block">A graph that stores triples in memory. This class is not thread-safe.
+ This in-memory graph supports different indexing strategies to balance
+ RAM usage and performance for various operations.
+ See <a href="IndexingStrategy.html" title="enum class in org.apache.jena.mem2"><code>IndexingStrategy</code></a> for details on the available strategies.
+ <p>
+ As long as the index has not been initialized, the memory consumption
+ is very low and the following operations are extremely fast:
+ <ul>
+     <li><a href="../graph/impl/GraphBase.html#add(org.apache.jena.graph.Triple)"><code>GraphBase.add(org.apache.jena.graph.Triple)</code></a> - adds a triple to the graph</li>
+     <li><a href="../graph/impl/GraphBase.html#delete(org.apache.jena.graph.Triple)"><code>GraphBase.delete(org.apache.jena.graph.Triple)</code></a> - removes a triple from the graph</li>
+</ul>
+ One could start without the index, add all triples, and then initialize the index using
+ <a href="#initializeIndexParallel()"><code>initializeIndexParallel()</code></a> for maximum performance.
  <p>
  Purpose: GraphMem2Roaring is ideal for handling extremely large graphs. If you frequently work with such massive
  data structures, this implementation could be your top choice.
+ In this case, you should not use the <a href="IndexingStrategy.html#MINIMAL"><code>IndexingStrategy.MINIMAL</code></a> strategy, as it is not suitable for
+ large graphs.
+ With the new strategies, this graph also works well for very small graphs, where pattern matching is not needed.
  <p>
  Graph#contains is faster than <a href="GraphMem2Fast.html" title="class in org.apache.jena.mem2"><code>GraphMem2Fast</code></a>.
- Removing triples is a bit slower than <a href="GraphMem2Legacy.html" title="class in org.apache.jena.mem2"><code>GraphMem2Legacy</code></a>.
+ Removing triples is a bit slower than <a href="GraphMem2Legacy.html" title="class in org.apache.jena.mem2"><code>GraphMem2Legacy</code></a> when the index is initialized.
  Better performance than GraphMem2Fast for operations with triple matches for the pattern S_O, SP_, and _PO on
- large graphs,due to bit-operations to find intersecting triples.
- Memory consumption is about 7-99% higher than <a href="GraphMem2Legacy.html" title="class in org.apache.jena.mem2"><code>GraphMem2Legacy</code></a>
+ large graphs, due to bit-operations to find intersecting triples.
+ Memory consumption is about 7-99% higher than <a href="GraphMem2Legacy.html" title="class in org.apache.jena.mem2"><code>GraphMem2Legacy</code></a> when the index is initialized.
  Suitable for really large graphs like bsbm-5m.nt.gz, bsbm-25m.nt.gz, and possibly even larger.
- Simple and straightforward implementation.
- No heritage of GraphMem.
  <p>
  Internal structure:
  <ul>
- <li>One indexed hash set (same as GraphMem2Fast uses) that holds all triples.
- <li>Three hash maps indexed by subjects, predicates, and objects with RoaringBitmaps as values.
- <li>The bitmaps contain the indices of the triples in the central hash set.
+     <li>One indexed hash set (same as GraphMem2Fast uses) that holds all triples.
+     <li>The index for pattern matching consists of three hash maps indexed by
+         subjects, predicates, and objects with RoaringBitmaps as values.
+     <li>The bitmaps contain the indices of the triples in the central hash set.
  </ul></div>
 </section>
 <section class="summary">
@@ -134,7 +148,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">GraphMem2Roaring</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructs a new GraphMem2Roaring with a default RoaringTripleStore.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.apache.jena.mem2.IndexingStrategy)" class="member-name-link">GraphMem2Roaring</a><wbr>(<a href="IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a>&nbsp;indexingStrategy)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Constructs a new GraphMem2Roaring with the specified indexing strategy.</div>
+</div>
 </div>
 </section>
 </li>
@@ -149,17 +169,42 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GraphMem2Roaring.html" title="class in org.apache.jena.mem2">GraphMem2Roaring</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#copy()" class="member-name-link">copy</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIndex()" class="member-name-link">clearIndex</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clear the index of this graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GraphMem2Roaring.html" title="class in org.apache.jena.mem2">GraphMem2Roaring</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#copy()" class="member-name-link">copy</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a copy of this graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIndexingStrategy()" class="member-name-link">getIndexingStrategy</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the indexing strategy used by this graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeIndex()" class="member-name-link">initializeIndex</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initialize the index of this graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeIndexParallel()" class="member-name-link">initializeIndexParallel</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initialize the index of this graph in parallel.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isIndexInitialized()" class="member-name-link">isIndexInitialized</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Check if the index of this graph is initialized.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem2.GraphMem2">Methods inherited from class&nbsp;org.apache.jena.mem2.<a href="GraphMem2.html" title="class in org.apache.jena.mem2">GraphMem2</a></h3>
-<code><a href="GraphMem2.html#clear()">clear</a>, <a href="GraphMem2.html#destroy()">destroy</a>, <a href="GraphMem2.html#getCapabilities()">getCapabilities</a>, <a href="GraphMem2.html#graphBaseContains(org.apache.jena.graph.Triple)">graphBaseContains</a>, <a href="GraphMem2.html#graphBaseFind(org.apache.jena.graph.Triple)">graphBaseFind</a>, <a href="GraphMem2.html#graphBaseSize()">graphBaseSize</a>, <a href="GraphMem2.html#performAdd(org.apache.jena.graph.Triple)">performAdd</a>, <a href="GraphMem2.html#performDelete(org.apache.jena.graph.Triple)">performDelete</a>, <a href="GraphMem2.html#stream()">stream</a>, <a href="GraphMem2.html#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">stream</a></code></div>
+<code><a href="GraphMem2.html#clear()">clear</a>, <a href="GraphMem2.html#destroy()">destroy</a>, <a href="GraphMem2.html#graphBaseContains(org.apache.jena.graph.Triple)">graphBaseContains</a>, <a href="GraphMem2.html#graphBaseFind(org.apache.jena.graph.Triple)">graphBaseFind</a>, <a href="GraphMem2.html#graphBaseSize()">graphBaseSize</a>, <a href="GraphMem2.html#performAdd(org.apache.jena.graph.Triple)">performAdd</a>, <a href="GraphMem2.html#performDelete(org.apache.jena.graph.Triple)">performDelete</a>, <a href="GraphMem2.html#stream()">stream</a>, <a href="GraphMem2.html#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">stream</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.GraphMemBase">Methods inherited from class&nbsp;org.apache.jena.mem.<a href="../mem/GraphMemBase.html" title="class in org.apache.jena.mem">GraphMemBase</a></h3>
 <code><a href="../mem/GraphMemBase.html#close()">close</a>, <a href="../mem/GraphMemBase.html#openAgain()">openAgain</a></code></div>
@@ -171,7 +216,7 @@ loadScripts(document, 'script');</script>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.graph.Graph">Methods inherited from interface&nbsp;org.apache.jena.graph.<a href="../graph/Graph.html" title="interface in org.apache.jena.graph">Graph</a></h3>
-<code><a href="../graph/Graph.html#add(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">add</a>, <a href="../graph/Graph.html#add(org.apache.jena.graph.Triple)">add</a>, <a href="../graph/Graph.html#close()">close</a>, <a href="../graph/Graph.html#contains(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">contains</a>, <a href="../graph/Graph.html#contains(org.apache.jena.graph.Triple)">contains</a>, <a href="../graph/Graph.html#delete(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">delete</a>, <a href="../graph/Graph.html#delete(org.apache.jena.graph.Triple)">delete</a>, <a href="../graph/Graph.html#dependsOn(org.apache.jena.graph.Graph)">dependsOn</a>, <a href="../graph/Graph.html#find()">find</a>, <a href="../graph/Graph.html#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">find</a>, <a href="../graph/Graph.html#find(org.apache.jena.graph.Triple)">find</a>, <a href="../graph/Graph.html#getEventManager()">getEventManager</a>, <a href="../graph/Graph.html#getPrefixMapping()">getPrefixMapping</a>, <a href="../graph/Graph.html#getTransactionHandler()">getTransactionHandler</a>, <a href="../graph/Graph.html#isClosed()">isClosed</a>, <a href="../graph/Graph.html#isEmpty()">isEmpty</a>, <a href="../graph/Graph.html#isIsomorphicWith(org.apache.jena.graph.Graph)">isIsomorphicWith</a>, <a href="../graph/Graph.html#remove(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">remove</a>, <a href="../graph/Graph.html#size()">size</a>, <a href="../graph/Graph.html#sizeLong()">sizeLong</a></code></div>
+<code><a href="../graph/Graph.html#add(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">add</a>, <a href="../graph/Graph.html#add(org.apache.jena.graph.Triple)">add</a>, <a href="../graph/Graph.html#close()">close</a>, <a href="../graph/Graph.html#contains(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">contains</a>, <a href="../graph/Graph.html#contains(org.apache.jena.graph.Triple)">contains</a>, <a href="../graph/Graph.html#delete(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">delete</a>, <a href="../graph/Graph.html#delete(org.apache.jena.graph.Triple)">delete</a>, <a href="../graph/Graph.html#dependsOn(org.apache.jena.graph.Graph)">dependsOn</a>, <a href="../graph/Graph.html#find()">find</a>, <a href="../graph/Graph.html#find(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">find</a>, <a href="../graph/Graph.html#find(org.apache.jena.graph.Triple)">find</a>, <a href="../graph/Graph.html#getCapabilities()">getCapabilities</a>, <a href="../graph/Graph.html#getEventManager()">getEventManager</a>, <a href="../graph/Graph.html#getPrefixMapping()">getPrefixMapping</a>, <a href="../graph/Graph.html#getTransactionHandler()">getTransactionHandler</a>, <a href="../graph/Graph.html#isClosed()">isClosed</a>, <a href="../graph/Graph.html#isEmpty()">isEmpty</a>, <a href="../graph/Graph.html#isIsomorphicWith(org.apache.jena.graph.Graph)">isIsomorphicWith</a>, <a href="../graph/Graph.html#remove(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">remove</a>, <a href="../graph/Graph.html#size()">size</a>, <a href="../graph/Graph.html#sizeLong()">sizeLong</a></code></div>
 </section>
 </li>
 </ul>
@@ -187,6 +232,23 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>GraphMem2Roaring</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GraphMem2Roaring</span>()</div>
+<div class="block">Constructs a new GraphMem2Roaring with a default RoaringTripleStore.
+ This constructor initializes the graph with an empty triple store.
+ <p>
+ The default strategy is EAGER, because of backwards compatibility.
+ This is not necessarily the best strategy for all use cases,
+ but it reflects the behavior before introducing the indexing strategies.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.apache.jena.mem2.IndexingStrategy)">
+<h3>GraphMem2Roaring</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GraphMem2Roaring</span><wbr><span class="parameters">(<a href="IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a>&nbsp;indexingStrategy)</span></div>
+<div class="block">Constructs a new GraphMem2Roaring with the specified indexing strategy.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>indexingStrategy</code> - the indexing strategy to use for this graph</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -212,6 +274,55 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="GraphMem2.html#copy()">copy</a></code>&nbsp;in class&nbsp;<code><a href="GraphMem2.html" title="class in org.apache.jena.mem2">GraphMem2</a></code></dd>
 <dt>Returns:</dt>
 <dd>independent copy of the current graph</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIndexingStrategy()">
+<h3>getIndexingStrategy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a></span>&nbsp;<span class="element-name">getIndexingStrategy</span>()</div>
+<div class="block">Returns the indexing strategy used by this graph.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the indexing strategy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearIndex()">
+<h3>clearIndex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearIndex</span>()</div>
+<div class="block">Clear the index of this graph.
+ This will remove all triples from the index and reset the current strategy to the initial one.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="initializeIndex()">
+<h3>initializeIndex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeIndex</span>()</div>
+<div class="block">Initialize the index of this graph.
+ This will build the index based on the current set of triples.
+ After this call, the graph will behave like an EAGER indexed graph.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="initializeIndexParallel()">
+<h3>initializeIndexParallel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeIndexParallel</span>()</div>
+<div class="block">Initialize the index of this graph in parallel.
+ This will build the index based on the current set of triples using parallel processing.
+ After this call, the graph will behave like an EAGER indexed graph.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isIndexInitialized()">
+<h3>isIndexInitialized</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isIndexInitialized</span>()</div>
+<div class="block">Check if the index of this graph is initialized.
+ This method returns true if the index has been initialized and is ready for use.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the index is initialized, false otherwise</dd>
 </dl>
 </section>
 </li>

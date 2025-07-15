@@ -86,21 +86,24 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="../TripleStore.html" title="interface in org.apache.jena.mem2.store">TripleStore</a></span></div>
 <div class="block">A triple store that is ideal for handling extremely large graphs.
+ With the new indexing strategies, it also works well for very small graphs,
+ where pattern matching is not needed.
+ <p>
+ This store supports different indexing strategies to balance RAM usage and performance for various operations.
+ See <a href="../../IndexingStrategy.html" title="enum class in org.apache.jena.mem2"><code>IndexingStrategy</code></a> for details on the available strategies.
  <p>
  Internal structure:
- - One indexed hash set (same as GraphMem2Fast uses) that holds all triples
- - Three hash maps indexed by subjects, predicates, and objects with RoaringBitmaps as values
- - The bitmaps contain the indices of the triples in the central hash set
+ <ul>
+     <li> One indexed hash set (same as GraphMem2Fast uses) that holds all triples
+     <li> The index consists of three hash maps indexed by subjects, predicates, and objects
+          with RoaringBitmaps as values
+     <li> The bitmaps contain the indices of the triples in the central hash set
+ </ul>
  <p>
  The bitmaps are used to quickly find triples that match a given pattern.
- The bitmaps operations like <code>FastAggregation.naive_and(RoaringBitmap...)</code> and
+ The bitmap operations like <code>FastAggregation.naive_and(RoaringBitmap...)</code> and
  <code>RoaringBitmap.intersects(RoaringBitmap, RoaringBitmap)</code> are used to find matches for the pattern
- S_O, SP_, and _PO pretty fast, even in large graphs.
- <p>
- Additional optimizations:
- - because we know that if a triple exists in one of the maps, it also exists in the other two, we can use the
- <a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)"><code>JenaMapSetCommon.removeUnchecked(java.lang.Object)</code></a> method to avoid
- unnecessary checks.</div>
+ S_O, SP_, and _PO pretty fast, even in large graphs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,7 +116,13 @@ implements <a href="../TripleStore.html" title="interface in org.apache.jena.mem
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">RoaringTripleStore</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Create a new RoaringTripleStore with the default indexing strategy (EAGER).</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.apache.jena.mem2.IndexingStrategy)" class="member-name-link">RoaringTripleStore</a><wbr>(<a href="../../IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a>&nbsp;indexingStrategy)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a new RoaringTripleStore with the given indexing strategy.</div>
+</div>
 </div>
 </section>
 </li>
@@ -138,44 +147,69 @@ implements <a href="../TripleStore.html" title="interface in org.apache.jena.mem
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove all triples from the map.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#contains(org.apache.jena.graph.Triple)" class="member-name-link">contains</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIndex()" class="member-name-link">clearIndex</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clear the index of this store.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#contains(org.apache.jena.graph.Triple)" class="member-name-link">contains</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Answer true if the graph contains any triple matching <code>t</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RoaringTripleStore.html" title="class in org.apache.jena.mem2.store.roaring">RoaringTripleStore</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#copy()" class="member-name-link">copy</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RoaringTripleStore.html" title="class in org.apache.jena.mem2.store.roaring">RoaringTripleStore</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#copy()" class="member-name-link">copy</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a new triple store that is a copy of this one.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countTriples()" class="member-name-link">countTriples</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countTriples()" class="member-name-link">countTriples</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the number of triples in the map.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#find(org.apache.jena.graph.Triple)" class="member-name-link">find</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#find(org.apache.jena.graph.Triple)" class="member-name-link">find</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns an <a href="../../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator"><code>ExtendedIterator</code></a> of all triples in the graph matching the given triple match.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIndexingStrategy()" class="member-name-link">getIndexingStrategy</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get the indexing strategy of this store.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeIndex()" class="member-name-link">initializeIndex</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initialize the index for this store.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeIndexParallel()" class="member-name-link">initializeIndexParallel</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initialize the index for this store in parallel.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return true if the map is empty.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#remove(org.apache.jena.graph.Triple)" class="member-name-link">remove</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;triple)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isIndexInitialized()" class="member-name-link">isIndexInitialized</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Check if the index of this store is initialized.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#remove(org.apache.jena.graph.Triple)" class="member-name-link">remove</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;triple)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove a triple from the map.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of all triples in the graph.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream(org.apache.jena.graph.Triple)" class="member-name-link">stream</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream(org.apache.jena.graph.Triple)" class="member-name-link">stream</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link"><code>Stream</code></a> of Triples matching the given pattern.</div>
 </div>
 </div>
@@ -199,6 +233,22 @@ implements <a href="../TripleStore.html" title="interface in org.apache.jena.mem
 <section class="detail" id="&lt;init&gt;()">
 <h3>RoaringTripleStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RoaringTripleStore</span>()</div>
+<div class="block">Create a new RoaringTripleStore with the default indexing strategy (EAGER).
+ <p>
+ The default strategy is EAGER, because of backwards compatibility.
+ This is not necessarily the best strategy for all use cases,
+ but it reflects the behavior before introducing the indexing strategies.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.apache.jena.mem2.IndexingStrategy)">
+<h3>RoaringTripleStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RoaringTripleStore</span><wbr><span class="parameters">(<a href="../../IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a>&nbsp;indexingStrategy)</span></div>
+<div class="block">Create a new RoaringTripleStore with the given indexing strategy.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>indexingStrategy</code> - the indexing strategy to use</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -209,6 +259,53 @@ implements <a href="../TripleStore.html" title="interface in org.apache.jena.mem
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="isIndexInitialized()">
+<h3>isIndexInitialized</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isIndexInitialized</span>()</div>
+<div class="block">Check if the index of this store is initialized.
+ This will return true if the current strategy is EagerStoreStrategy,
+ which means that the index has been initialized and all triples are indexed.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the index is initialized, false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIndexingStrategy()">
+<h3>getIndexingStrategy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../IndexingStrategy.html" title="enum class in org.apache.jena.mem2">IndexingStrategy</a></span>&nbsp;<span class="element-name">getIndexingStrategy</span>()</div>
+<div class="block">Get the indexing strategy of this store.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the indexing strategy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearIndex()">
+<h3>clearIndex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearIndex</span>()</div>
+<div class="block">Clear the index of this store.
+ This will remove all triples from the index and reset the current strategy to the initial one.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="initializeIndex()">
+<h3>initializeIndex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeIndex</span>()</div>
+<div class="block">Initialize the index for this store.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="initializeIndexParallel()">
+<h3>initializeIndexParallel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeIndexParallel</span>()</div>
+<div class="block">Initialize the index for this store in parallel.
+ This will index all triples in parallel, which can be faster for large datasets.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="add(org.apache.jena.graph.Triple)">
 <h3>add</h3>
