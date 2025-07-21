@@ -22,7 +22,7 @@ Fuseki in versions up to 5.4.0.
 
 Configuration files could be uploaded by users with administrator access via the
 network. The file paths in configuration files were not validated and could
-refer to directories and files outside of the Fuseki.
+refer to directories and files outside of the Fuseki server instance.
 
 This configuration file upload feature has been removed in Jena Fuseki 5.5.0.
 
