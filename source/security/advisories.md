@@ -14,6 +14,29 @@ the latest Jena release available.
 
 Please refer to the individual CVE links for further details and mitigations.
 
+
+**CVE-2025-50151 - Configuration files uploaded by administrative users are not check properly**
+
+[CVE-2025-50151](https://www.cve.org/CVERecord?id=CVE-2025-50151) affects Jena
+Fuseki in versions up to 5.4.0.
+
+Configuration files could be uploaded by users with administrator access via the
+network. The file paths in configuration files were not validated and could
+refer to directories and files outside of the Fuseki server instance.
+
+This configuration file upload feature has been removed in Jena Fuseki 5.5.0.
+
+**CVE-2025-49656 - Administrative users can create files outside the server directory space via the admin UI**
+
+[CVE-2025-49656](https://www.cve.org/CVERecord?id=CVE-2025-49656)  affects Jena
+Fuseki in versions up to 5.4.0.
+
+Users with administrator access can create databases that refer to files outside
+the files area of the Fuseki server.
+
+Users are recommended to upgrade to version 5.5.0 where path names are validated
+and restricted to the files area of the Fuseki server instance.
+
 **CVE-2023-32200 - Exposure of execution in script engine expressions**
 
 [CVE-2023-32200](https://www.cve.org/CVERecord?id=CVE-2023-32200) affects Jena
