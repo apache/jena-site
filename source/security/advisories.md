@@ -35,7 +35,7 @@ Users with administrator access can create databases that refer to files outside
 the files area of the Fuseki server.
 
 Users are recommended to upgrade to version 5.5.0 where path names are validated
-and restricted to the files area of the Fuseki.
+and restricted to the files area of the Fuseki server instance.
 
 **CVE-2023-32200 - Exposure of execution in script engine expressions**
 
