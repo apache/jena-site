@@ -13,11 +13,11 @@ specifications, see the [assembler quickstart](index.html).
 
 This document describes how to use the Assembler classes to
 construct models -- and other things -- from RDF descriptions that
-use the Jena Assembler vocabulary. That vocabulary is available in
+use the Jena Assembler vocabularies. There are two vocabularies: JA, which is available in
 [assembler.ttl](assembler.ttl) as an RDFS
 schema with conventional prefix `ja` for the URI
 `http://jena.hpl.hp.com/2005/11/Assembler#`; the class `JA` is its
-Java rendition.
+Java rendition, and OA (`https://jena.apache.org/ontapi/Assembler#`) for OntModels.
 
 The examples used in this document are extracted from the examples
 file [examples.ttl](examples.ttl). The pieces of RDF/OWL schema are
@@ -380,110 +380,85 @@ model. All those rules from that `RuleSet` are added to this
 ### Ontology models
 
 Ontology models can be specified in several ways. The simplest is
-to use the name of an OntModelSpec from the Java OntModelSpec
+to use the name of an OntSpecification from the Java OntSpecifications
 class:
 
 ```turtle
-eg:simple-ont-example
-    ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF
+eg:simple-ont-example a oa:OntModel ;
+    oa:ontModelSpec [
+        a oa:OntSpecification ;
+        oa:specificationName "OWL2_DL_MEM_RULES_INF"
+    ] 
     .
 ```
 
 This constructs an `OntModel` with an empty base model and using
 the OWL_DL language and the full rule reasoner. All of the
-OntModelSpec constants in the Jena implementation are available in
+`OntSpecification` constants in the Jena implementation are available in
 this way. A base model can be specified:
 
 ```turtle
-eg:base-ont-example
-    ja:baseModel [a ja:MemoryModel ;
+eg:base-ont-example a oa:OntModel ;
+    oa:baseModel [a ja:MemoryModel ;
                  ja:content [ja:externalContent <http://jena.hpl.hp.com/some-jena-data.rdf>]]
     .
 ```
 
 The OntModel has a base which is a memory model loaded with the
 contents of `http://jena.hpl.hp.com/some-jena-data.rdf`. Since the
-ontModelSpec was omitted, it defaults to `OWL_MEM_RDFS_INF` - the
-same default as `ModelFactory.createOntologyModel()`.
+ontModelSpec was omitted, it defaults to `OWL2_DL_MEM_BUILTIN_RDFS_INF` - the
+same default as `OntModelFactory.createModel()`.
 
+`oa:baseModel` and the `ja:baseModel` property means the same thing.
+
+OntModel can import other OntModels:
 ```turtle
-ja:OntModel a rdfs:Class ;
-  rdfs:subClassOf ja:UnionModel ;
-  rdfs:subClassOf ja:InfModel
-.
-ja:ontModelSpec a rdf:Property ;
-  rdfs:domain ja:OntModel ;
-  rdfs:range ja:OntModelSpec
-.
-
-ja:OntModelSpec a rdfs:Class ;
-  rdfs:subClassOf [owl:onProperty ja:like; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:reasonerFactory; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:importSource; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:documentManager; owl:maxCardinality 1] ;
-  rdfs:subClassOf [owl:onProperty ja:ontLanguage; owl:maxCardinality 1] ;
-  rdfs:subClassOf ja:Object
-.
-ja:importSource a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:reasonerFactory a rdf:Property ;
-  rdfs:domain ja:OntModelSpec ;
-  rdfs:range ja:ReasonerFactory
-.
-ja:documentManager a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:ontLanguage a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
-ja:likeBuiltinSpec a rdf:Property ;
-  rdfs:domain ja:OntModelSpec
-.
+:model1 a oa:OntModel ;
+    oa:baseModel :base1 ;
+    oa:importModels :model2 .
+:model2 a oa:OntModel ;
+    oa:baseModel :base2 .
 ```
+Note that only the top-level model can be anonymous, all submodels must be named (have a URI or owl:versionIRI).
 
-`OntModel` is a subclass of `InfModel`, and the `ja:baseModel`
-property means the same thing.
+### Ontology specification
 
-The `OntModelSpec` property value is a resource, interpreted as an
-OntModelSpec description based on its name and the value of the
+The `oa:OntSpecification` resource, interpreted as an
+OntSpecification description based on value of the
 appropriate properties:
 
-* `ja:likeBuiltinSpec`: The value of this optional unique
-    property must be a JA resource whose local name is the same as the
-    name of an OntModelSpec constant (as in the simple case above).
-    This is the basis for the OntModelSpec constructed from this
-    specification. If absent, then `OWL_MEM_RDFS_INF` is used. To build
-    an OntModelSpec with no inference, use eg
-    `ja:likeBuiltinSpec ja:OWL_MEM`.
-* `ja:importSource`: The value of this optional unique property
-    is a `ModelSource` description which describes where imports are
-    obtained from. A `ModelSource` is usually of class `ja:ModelSource`.
-* `ja:documentManager`: This value of this optional unique
-    property is a DocumentManager specification. If absent, the default
-    document manager is used.
-* `ja:reasonerFactory`: The value of this optional unique
-    property is the ReasonerFactory resource which will be used to
-    construct this OntModelSpec's reasoner. A `reasonerFactory`
+* `oa:specificationName`: literal, name from the vocabulary `OntSpecifications` (java class) 
+* `oa:reasonerFactory`: The value of this optional unique
+    property is the `oa:ReasonerFactory` resource which will be used to
+    construct this OntSpecification's reasoner. A `reasonerFactory`
     specification is the same as an InfModel's `reasoner` specification
     (the different properties are required for technical reasons).
-* `ja:reasonerURL`: as a special case of `reasonerFactory`, a
+* `oa:reasonerURL`: as a special case of `reasonerFactory`, a
     reasoner may be specified by giving its URL as the object of the
     optional unique `reasonerURL` property. It is not permitted to
     supply both a `reasonerURL` and `reasonerFactory` properties.
-* `ja:ontLanguage`: The value of this optional unique property is
-    one of the values in the `ProfileRegistry` class which identifies
-    the ontology language of this `OntModelSpec`:
-    * OWL: http://www.w3.org/2002/07/owl\#
-    * OWL DL: http://www.w3.org/TR/owl-features/\#term_OWLDL
-    * OWL Lite: http://www.w3.org/TR/owl-features/\#term_OWLLite
-    *  RDFS: http://www.w3.org/2000/01/rdf-schema\#
+* `oa:schema` same as `ja:schema`
+* `oa:personalityName`: name of `OntPersonality` (see `OntPersonalities` java class). 
+    It is not permitted to supply both `oa:specificationName` and `oa:personalityName`  
 
-Any unspecified properties have default values, normally taken from
-those of `OntModelSpec.OWL_MEM_RDFS_INF`. However, if the
-OntModelSpec resource is in the JA namespace, and its local name is
-the same as that of an OntModelSpec constant, then that constant is
-used as the default value.
+### DocumentGraphFactory
+
+This is a replacement for `OntDocumentManager`.
+Example:
+```turtle
+:repo a oa:DocumentGraphRepository ;
+    oa:graph :g .
+:g a oa:Graph ;
+    oa:graphIRI "file:etc/foo.n3" ;
+    oa:graphLocation "file:etc/foo.n3" .
+:base a ja:MemoryModel ;
+    ja:externalContent <file:etc/bar.n3> .
+:model a oa:OntModel ;
+    oa:baseModel :base ;
+    oa:documentGraphRepository :repo .
+```
+this constructs the `OntModel` attached to the `DocumentGraphRepository`, 
+which manages all dependencies (imports closure).
 
 ### Document managers
 

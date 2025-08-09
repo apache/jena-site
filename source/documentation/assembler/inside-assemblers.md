@@ -159,18 +159,18 @@ Assembler that can construct their sub-objects. There are defined
 constants in `Assembler` for (an instance of) each of these basic
 assembler classes.
 
-produces | Class | Type | constant
--------- | ----- | ---- | --------
-default models | DefaultModelAssembler | ja:DefaultModel | defaultModel
-memory models | MemoryModelAssembler | ja:MemoryModel | memoryModel
-inference models| InfModelAssembler | ja:InfModel | infModel
-reasoners | ReasonerAssembler | ja:Reasoner | reasoner
-content | ContentAssembler | ja:Content | content
-ontology models | OntModelAssembler | ja:OntModel | ontModel
-rules | RuleSetAssembler | ja:RuleSet | rules
-union models | UnionModelAssembler | ja:UnionModel | unionModel
+produces | Class | Type             | constant
+-------- | ----- |------------------| --------
+default models | DefaultModelAssembler | ja:DefaultModel  | defaultModel
+memory models | MemoryModelAssembler | ja:MemoryModel   | memoryModel
+inference models| InfModelAssembler | ja:InfModel      | infModel
+reasoners | ReasonerAssembler | ja:Reasoner      | reasoner
+content | ContentAssembler | ja:Content       | content
+ontology models | OntModelAssembler | oa:OntModel      | ontModel
+rules | RuleSetAssembler | ja:RuleSet       | rules
+union models | UnionModelAssembler | ja:UnionModel    | unionModel
 prefix mappings | PrefixMappingAssembler | ja:PrefixMapping | prefixMapping
-file models | FileModelAssembler | ja:FileModel | fileModel
+file models | FileModelAssembler | ja:FileModel     | fileModel
 
 `Assembler.general` is an *assembler group*, which ties together
 those basic assemblers. `general` can be extended by Jena coders if

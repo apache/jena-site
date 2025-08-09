@@ -15,7 +15,7 @@ An Assembler *specification* is an RDF description of how to
 construct a model and its associated resources, such as reasoners,
 prefix mappings, and initial content. The Assembler vocabulary is
 given in the [Assembler schema](assembler.ttl),
-and we'll use the prefix `ja` for its identifiers.
+and we'll use the prefix `ja` for its identifiers and prefix `oa` for ontology models.
 
 ## What is an Assembler?
 
@@ -79,13 +79,17 @@ The model will be pre-loaded with the contents of *someContentURL*.
 
 ```turtle
 my:root
-    ja:ontModelSpec ja:OntModelSpecName ;
-    ja:baseModel somebaseModel
+    a oa:OntModel ;
+    oa:ontModelSpec my:specification ;
+    oa:baseModel my:somebaseModel
+    .
+my:specification a oa:OntSpecification ;
+    oa:specificationName "OntModelSpecName"    
     .
 ```
 
 The *OntModelSpecName* can be any of the predefined Jena
-OntModelSpec names, eg `OWL_DL_MEM_RULE_INF`. The baseModel is
+OntModelSpec names, eg `OWL2_DL_MEM_RDFS_INF`. The baseModel is
 another model description - it can be left out, in which case you
 get an empty memory model. See
 [Assembler howto](assembler-howto.html) for construction of
