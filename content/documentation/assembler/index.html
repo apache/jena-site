@@ -30,7 +30,7 @@
                 <li id="homepage" class="nav-item"><a class="nav-link" href="/index.html"><span class="bi-house"></span> Home</a></li>
                 <li id="download" class="nav-item"><a class="nav-link" href="/download/index.cgi"><span class="bi-download"></span> Download</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal"></span> Learn <b class="caret"></b></a>
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal"></span> Docs <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">Tutorials</li>
                         <li><a class="dropdown-item" href="/tutorials/index.html">Overview</a></li>
@@ -79,6 +79,17 @@
                         <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                     </ul>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal-code"></span> Project <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="https://github.com/apache/jena">Code</a></li>
+                      <li><a class="dropdown-item" href="https://github.com/apache/jena/blob/main/CONTRIBUTING.md">Contributing</a></li>
+                      <li><a class="dropdown-item" href="/security">Security Policies</a></li>
+                      <li><a class="dropdown-item" href="/security/advisories.html">Security Advisories</a></li>
+                    </ul>
+                </li>
+
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
                 <div class="input-group">
@@ -99,19 +110,17 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-header">Project</li>
                         <li><a class="dropdown-item" href="/about_jena/about.html">About Jena</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/architecture.html">Architecture</a></li>
                         <li><a class="dropdown-item" href="/about_jena/citing.html">Citing</a></li>
                         <li><a class="dropdown-item" href="/about_jena/team.html">Project team</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/contributions.html">Related projects</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/roadmap.html">Roadmap</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/security-advisories.html">Security Advisories</a></li>
+                        <li><a class="dropdown-item" href="/security">Security</a></li>
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-header">ASF</li>
                         <li><a class="dropdown-item" href="https://www.apache.org/">Apache Software Foundation</a></li>
                         <li><a class="dropdown-item" href="https://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
-                        <li><a class="dropdown-item" href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
-                        <li><a class="dropdown-item" href="https://www.apache.org/security/">Security</a></li>
+                        <li><a class="dropdown-item" href="https://www.apache.org/licenses/">License</a></li>
                         <li><a class="dropdown-item" href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a class="dropdown-item" href="https://www.apache.org/foundation/sponsorship.html">Donate</a></li>
+                        <li><a class="dropdown-item" href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a></li>
                     </ul>
                 </li>
                 
@@ -197,7 +206,7 @@ or <a href="inside-assemblers.html">Inside assemblers</a>.</p>
 construct a model and its associated resources, such as reasoners,
 prefix mappings, and initial content. The Assembler vocabulary is
 given in the <a href="assembler.ttl">Assembler schema</a>,
-and we&rsquo;ll use the prefix <code>ja</code> for its identifiers.</p>
+and we&rsquo;ll use the prefix <code>ja</code> for its identifiers and prefix <code>oa</code> for ontology models.</p>
 <h2 id="what-is-an-assembler">What is an Assembler?</h2>
 <p>An <em>Assembler</em> is an object that implements the <code>Assembler</code>
 interface and can construct objects (typically models) from
@@ -234,11 +243,15 @@ resource in the same document describing the base model.</p>
 </span></span></span></code></pre></div><p>The model will be pre-loaded with the contents of <em>someContentURL</em>.</p>
 <h3 id="-an-ontology-model">&hellip; an ontology model?</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">my:</span><span style="color:#008000;font-weight:bold">root</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpecName</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="">somebaseModel</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">my:</span><span style="color:#008000;font-weight:bold">specification</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">my:</span><span style="color:#008000;font-weight:bold">somebaseModel</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">my:</span><span style="color:#008000;font-weight:bold">specification</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntSpecification</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">specificationName</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;OntModelSpecName&#34;</span><span style="color:#bbb">    
 </span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
 </span></span></span></code></pre></div><p>The <em>OntModelSpecName</em> can be any of the predefined Jena
-OntModelSpec names, eg <code>OWL_DL_MEM_RULE_INF</code>. The baseModel is
+OntModelSpec names, eg <code>OWL2_DL_MEM_RDFS_INF</code>. The baseModel is
 another model description - it can be left out, in which case you
 get an empty memory model. See
 <a href="assembler-howto.html">Assembler howto</a> for construction of

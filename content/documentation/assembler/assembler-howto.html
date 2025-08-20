@@ -30,7 +30,7 @@
                 <li id="homepage" class="nav-item"><a class="nav-link" href="/index.html"><span class="bi-house"></span> Home</a></li>
                 <li id="download" class="nav-item"><a class="nav-link" href="/download/index.cgi"><span class="bi-download"></span> Download</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal"></span> Learn <b class="caret"></b></a>
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal"></span> Docs <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">Tutorials</li>
                         <li><a class="dropdown-item" href="/tutorials/index.html">Overview</a></li>
@@ -79,6 +79,17 @@
                         <li><a class="dropdown-item" href="/documentation/javadoc/geosparql/">GeoSPARQL</a></li>
                     </ul>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi-journal-code"></span> Project <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="https://github.com/apache/jena">Code</a></li>
+                      <li><a class="dropdown-item" href="https://github.com/apache/jena/blob/main/CONTRIBUTING.md">Contributing</a></li>
+                      <li><a class="dropdown-item" href="/security">Security Policies</a></li>
+                      <li><a class="dropdown-item" href="/security/advisories.html">Security Advisories</a></li>
+                    </ul>
+                </li>
+
             </ul>
             <form class="d-flex" role="search" action="/search" method="GET">
                 <div class="input-group">
@@ -99,19 +110,17 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-header">Project</li>
                         <li><a class="dropdown-item" href="/about_jena/about.html">About Jena</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/architecture.html">Architecture</a></li>
                         <li><a class="dropdown-item" href="/about_jena/citing.html">Citing</a></li>
                         <li><a class="dropdown-item" href="/about_jena/team.html">Project team</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/contributions.html">Related projects</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/roadmap.html">Roadmap</a></li>
-                        <li><a class="dropdown-item" href="/about_jena/security-advisories.html">Security Advisories</a></li>
+                        <li><a class="dropdown-item" href="/security">Security</a></li>
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-header">ASF</li>
                         <li><a class="dropdown-item" href="https://www.apache.org/">Apache Software Foundation</a></li>
                         <li><a class="dropdown-item" href="https://www.apache.org/foundation/sponsorship.html">Become a Sponsor</a></li>
-                        <li><a class="dropdown-item" href="https://www.apache.org/licenses/LICENSE-2.0">License</a></li>
-                        <li><a class="dropdown-item" href="https://www.apache.org/security/">Security</a></li>
+                        <li><a class="dropdown-item" href="https://www.apache.org/licenses/">License</a></li>
                         <li><a class="dropdown-item" href="https://www.apache.org/foundation/thanks.html">Thanks</a></li>
+                        <li><a class="dropdown-item" href="https://www.apache.org/foundation/sponsorship.html">Donate</a></li>
+                        <li><a class="dropdown-item" href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a></li>
                     </ul>
                 </li>
                 
@@ -192,6 +201,8 @@
           </ul>
         </li>
         <li><a href="#ontology-models">Ontology models</a></li>
+        <li><a href="#ontology-specification">Ontology specification</a></li>
+        <li><a href="#documentgraphfactory">DocumentGraphFactory</a></li>
         <li><a href="#document-managers">Document managers</a></li>
         <li><a href="#union-models">Union models</a></li>
         <li><a href="#prefix-mappings">Prefix mappings</a></li>
@@ -217,11 +228,11 @@ own assemblers. If you just need a quick guide to the common model
 specifications, see the <a href="index.html">assembler quickstart</a>.</p>
 <p>This document describes how to use the Assembler classes to
 construct models &ndash; and other things &ndash; from RDF descriptions that
-use the Jena Assembler vocabulary. That vocabulary is available in
+use the Jena Assembler vocabularies. There are two vocabularies: JA, which is available in
 <a href="assembler.ttl">assembler.ttl</a> as an RDFS
 schema with conventional prefix <code>ja</code> for the URI
 <code>http://jena.hpl.hp.com/2005/11/Assembler#</code>; the class <code>JA</code> is its
-Java rendition.</p>
+Java rendition, and OA (<code>https://jena.apache.org/ontapi/Assembler#</code>) for OntModels.</p>
 <p>The examples used in this document are extracted from the examples
 file <a href="examples.ttl">examples.ttl</a>. The pieces of RDF/OWL schema are
 extracted from the <code>ja-vocabulary</code> file.</p>
@@ -499,100 +510,68 @@ model. All those rules from that <code>RuleSet</code> are added to this
 <code>RuleSet</code>.</p>
 <h3 id="ontology-models">Ontology models</h3>
 <p>Ontology models can be specified in several ways. The simplest is
-to use the name of an OntModelSpec from the Java OntModelSpec
+to use the name of an OntSpecification from the Java OntSpecifications
 class:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">simple-ont-example</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OWL_DL_MEM_RULE_INF</span><span style="color:#bbb">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">simple-ont-example</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span>[<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntSpecification</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">specificationName</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;OWL2_DL_MEM_RULES_INF&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>]<span style="color:#bbb"> 
 </span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
 </span></span></span></code></pre></div><p>This constructs an <code>OntModel</code> with an empty base model and using
 the OWL_DL language and the full rule reasoner. All of the
-OntModelSpec constants in the Jena implementation are available in
+<code>OntSpecification</code> constants in the Jena implementation are available in
 this way. A base model can be specified:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">base-ont-example</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span>[<span style="">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">eg:</span><span style="color:#008000;font-weight:bold">base-ont-example</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span>[<span style="">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
 </span></span></span><span style="display:flex;"><span><span style="color:#bbb">                 </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">content</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;http://jena.hpl.hp.com/some-jena-data.rdf&gt;</span>]]<span style="color:#bbb">
 </span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>.<span style="color:#bbb">
 </span></span></span></code></pre></div><p>The OntModel has a base which is a memory model loaded with the
 contents of <code>http://jena.hpl.hp.com/some-jena-data.rdf</code>. Since the
-ontModelSpec was omitted, it defaults to <code>OWL_MEM_RDFS_INF</code> - the
-same default as <code>ModelFactory.createOntologyModel()</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">UnionModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">InfModel</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontModelSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">Class</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">like</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerFactory</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">importSource</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">documentManager</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span>[<span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">onProperty</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontLanguage</span>;<span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">owl:</span><span style="color:#008000;font-weight:bold">maxCardinality</span><span style="color:#bbb"> </span><span style="color:#666">1</span>]<span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">subClassOf</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">Object</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">importSource</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">reasonerFactory</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">range</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ReasonerFactory</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">documentManager</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">ontLanguage</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">likeBuiltinSpec</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">rdf:</span><span style="color:#008000;font-weight:bold">Property</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#00f;font-weight:bold">rdfs:</span><span style="color:#008000;font-weight:bold">domain</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">OntModelSpec</span><span style="color:#bbb">
-</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>.<span style="color:#bbb">
-</span></span></span></code></pre></div><p><code>OntModel</code> is a subclass of <code>InfModel</code>, and the <code>ja:baseModel</code>
-property means the same thing.</p>
-<p>The <code>OntModelSpec</code> property value is a resource, interpreted as an
-OntModelSpec description based on its name and the value of the
+ontModelSpec was omitted, it defaults to <code>OWL2_DL_MEM_BUILTIN_RDFS_INF</code> - the
+same default as <code>OntModelFactory.createModel()</code>.</p>
+<p><code>oa:baseModel</code> and the <code>ja:baseModel</code> property means the same thing.</p>
+<p>OntModel can import other OntModels:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">model1</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">base1</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">importModels</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">model2</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">model2</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">base2</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Note that only the top-level model can be anonymous, all submodels must be named (have a URI or owl:versionIRI).</p>
+<h3 id="ontology-specification">Ontology specification</h3>
+<p>The <code>oa:OntSpecification</code> resource, interpreted as an
+OntSpecification description based on value of the
 appropriate properties:</p>
 <ul>
-<li><code>ja:likeBuiltinSpec</code>: The value of this optional unique
-property must be a JA resource whose local name is the same as the
-name of an OntModelSpec constant (as in the simple case above).
-This is the basis for the OntModelSpec constructed from this
-specification. If absent, then <code>OWL_MEM_RDFS_INF</code> is used. To build
-an OntModelSpec with no inference, use eg
-<code>ja:likeBuiltinSpec ja:OWL_MEM</code>.</li>
-<li><code>ja:importSource</code>: The value of this optional unique property
-is a <code>ModelSource</code> description which describes where imports are
-obtained from. A <code>ModelSource</code> is usually of class <code>ja:ModelSource</code>.</li>
-<li><code>ja:documentManager</code>: This value of this optional unique
-property is a DocumentManager specification. If absent, the default
-document manager is used.</li>
-<li><code>ja:reasonerFactory</code>: The value of this optional unique
-property is the ReasonerFactory resource which will be used to
-construct this OntModelSpec&rsquo;s reasoner. A <code>reasonerFactory</code>
+<li><code>oa:specificationName</code>: literal, name from the vocabulary <code>OntSpecifications</code> (java class)</li>
+<li><code>oa:reasonerFactory</code>: The value of this optional unique
+property is the <code>oa:ReasonerFactory</code> resource which will be used to
+construct this OntSpecification&rsquo;s reasoner. A <code>reasonerFactory</code>
 specification is the same as an InfModel&rsquo;s <code>reasoner</code> specification
 (the different properties are required for technical reasons).</li>
-<li><code>ja:reasonerURL</code>: as a special case of <code>reasonerFactory</code>, a
+<li><code>oa:reasonerURL</code>: as a special case of <code>reasonerFactory</code>, a
 reasoner may be specified by giving its URL as the object of the
 optional unique <code>reasonerURL</code> property. It is not permitted to
 supply both a <code>reasonerURL</code> and <code>reasonerFactory</code> properties.</li>
-<li><code>ja:ontLanguage</code>: The value of this optional unique property is
-one of the values in the <code>ProfileRegistry</code> class which identifies
-the ontology language of this <code>OntModelSpec</code>:
-<ul>
-<li>OWL: <a href="http://www.w3.org/2002/07/owl">http://www.w3.org/2002/07/owl</a>#</li>
-<li>OWL DL: <a href="http://www.w3.org/TR/owl-features/">http://www.w3.org/TR/owl-features/</a>#term_OWLDL</li>
-<li>OWL Lite: <a href="http://www.w3.org/TR/owl-features/">http://www.w3.org/TR/owl-features/</a>#term_OWLLite</li>
-<li>RDFS: <a href="http://www.w3.org/2000/01/rdf-schema">http://www.w3.org/2000/01/rdf-schema</a>#</li>
+<li><code>oa:schema</code> same as <code>ja:schema</code></li>
+<li><code>oa:personalityName</code>: name of <code>OntPersonality</code> (see <code>OntPersonalities</code> java class).
+It is not permitted to supply both <code>oa:specificationName</code> and <code>oa:personalityName</code></li>
 </ul>
-</li>
-</ul>
-<p>Any unspecified properties have default values, normally taken from
-those of <code>OntModelSpec.OWL_MEM_RDFS_INF</code>. However, if the
-OntModelSpec resource is in the JA namespace, and its local name is
-the same as that of an OntModelSpec constant, then that constant is
-used as the default value.</p>
+<h3 id="documentgraphfactory">DocumentGraphFactory</h3>
+<p>This is a replacement for <code>OntDocumentManager</code>.
+Example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-turtle" data-lang="turtle"><span style="display:flex;"><span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">repo</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">DocumentGraphRepository</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">graph</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">g</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">g</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">Graph</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">graphIRI</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;file:etc/foo.n3&#34;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">graphLocation</span><span style="color:#bbb"> </span><span style="color:#b44">&#34;file:etc/foo.n3&#34;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">base</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">MemoryModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">ja:</span><span style="color:#008000;font-weight:bold">externalContent</span><span style="color:#bbb"> </span><span style="color:#b8860b">&lt;file:etc/bar.n3&gt;</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">model</span><span style="color:#bbb"> </span><span style="color:#0b0;font-weight:bold">a</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">OntModel</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">baseModel</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">base</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#00f;font-weight:bold">oa:</span><span style="color:#008000;font-weight:bold">documentGraphRepository</span><span style="color:#bbb"> </span><span style="color:#00f;font-weight:bold">:</span><span style="color:#008000;font-weight:bold">repo</span><span style="color:#bbb"> </span>.<span style="color:#bbb">
+</span></span></span></code></pre></div><p>this constructs the <code>OntModel</code> attached to the <code>DocumentGraphRepository</code>,
+which manages all dependencies (imports closure).</p>
 <h3 id="document-managers">Document managers</h3>
 <p>An <code>OntDocumentManager</code> can be specified by a <code>ja:DocumentManager</code>
 specification which describes the <code>OntDocumentManager</code>&rsquo;s file
@@ -774,6 +753,8 @@ individual assemblers.</p>
           </ul>
         </li>
         <li><a href="#ontology-models">Ontology models</a></li>
+        <li><a href="#ontology-specification">Ontology specification</a></li>
+        <li><a href="#documentgraphfactory">DocumentGraphFactory</a></li>
         <li><a href="#document-managers">Document managers</a></li>
         <li><a href="#union-models">Union models</a></li>
         <li><a href="#prefix-mappings">Prefix mappings</a></li>
