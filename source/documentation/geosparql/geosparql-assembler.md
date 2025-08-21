@@ -39,12 +39,16 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 <#geo_ds> rdf:type geosparql:geosparqlDataset ;
     geosparql:spatialIndexFile     "DB/spatial.index";
     geosparql:dataset <#baseDataset> ;
+    geosparql:srsUri <http://www.opengis.net/def/crs/OGC/1.3/CRS84> ; # See note below.
     .
 
 <#baseDataset> rdf:type tdb2:DatasetTDB2 ;
     tdb2:location "DB/" ;
     .
 ```
+
+It is strongly advised to explicitly define a value for `geosparql:srsUri`. The spatial reference system (SRS) URI is needed during the initial construction of a spatial index. Once the index is constructed, the SRS associated with the index takes precedence over the assembler option. In order for a modified SRS assembler configuration to take effect, a prior corresponding persistent index file needs to be manually deleted.
+In the event that this parameter is omitted, a value will be automatically computed by scanning all available geometric data and randomly selecting from the most prevalent SRS URIs. Scanning may take a while for large data sets.
 
 It is possible to run with a data file loaded into memory and 
 a spatial in-memory index:
@@ -77,7 +81,9 @@ The full assembler properties with the default settings is:
 ```turtle
 <#geo_ds> rdf:type geosparql:GeosparqlDataset ;
     # Build in-memory is absent.
-    geosparql:spatialIndexFile     "spatial.index";
+    geosparql:spatialIndexFile     "spatial.index" ;
+
+    geosparql:srsUri <http://www.opengis.net/def/crs/OGC/1.3/CRS84> ;
 
     ## Default settings. See documentation for meanings.
     geosparql:inference            true ;
