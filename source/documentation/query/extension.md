@@ -77,9 +77,9 @@ properties that cause triple matching to happen by executing some
 piece of code, determined by the property URI, and not by the usual
 graph matching. They can be used to give certain kinds of inference
 and rule processing. Some calculated properties have additional,
-non-declarative requirements such as needing one of other of the
+non-declarative requirements such as needing one or the other of the
 subject or object to be a query constant or a bound value, and not
-able to generate all possibilities for that slot.
+able to generate all the bindings for a variable in that slot.
 
 Property functions must have fixed URI for the predicate (it can't
 be query variable). They may take a list for subject or object.

@@ -14,8 +14,7 @@ the latest Jena release available.
 
 Please refer to the individual CVE links for further details and mitigations.
 
-
-**CVE-2025-50151 - Configuration files uploaded by administrative users are not check properly**
+**CVE-2025-50151 - Configuration files uploaded by administrative users are not checked properly**
 
 [CVE-2025-50151](https://www.cve.org/CVERecord?id=CVE-2025-50151) affects Jena
 Fuseki in versions up to 5.4.0.
