@@ -1,1 +1,1 @@
-tagSearchIndex = [{"l":"Constant Field Values","h":"","u":"constant-values.html"},{"l":"Serialized Form","h":"","u":"serialized-form.html"}];updateSearchResults();
+tagSearchIndex = [{"l":"Constant Field Values","h":"","u":"constant-values.html"},{"l":"SecurityHandler","h":"class org.apache.jena.fuseki.main.sys.JettyLib","d":"Section","u":"org.apache.jena.fuseki.main/org/apache/jena/fuseki/main/sys/JettyLib.html#securityhandler-heading"},{"l":"Serialized Form","h":"","u":"serialized-form.html"}];updateSearchResults();
