@@ -192,7 +192,6 @@
       <ul>
         <li><a href="#adding-a-dataset-and-its-services">Adding a Dataset and its Services.</a>
           <ul>
-            <li><a href="#templates">Templates</a></li>
             <li><a href="#assembler-example">Assembler example</a></li>
           </ul>
         </li>
@@ -277,7 +276,7 @@ Further operations may be added within this naming scheme.</p>
       </tr>
       <tr>
           <td><tt>POST</tt></td>
-          <td><code>/$/datasets</code></td>
+          <td><code>/$/datasets?...</code></td>
           <td>Create a new dataset</td>
       </tr>
       <tr>
@@ -392,22 +391,14 @@ request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) w
 <code>/$/datasets/{name}</code> names a specific dataset.  As a container, operations on items
 in the container, via <code>GET</code>, <code>POST</code> and <code>DELETE</code>, operate on specific dataset.</p>
 <h3 id="adding-a-dataset-and-its-services">Adding a Dataset and its Services.</h3>
-<p>A dataset set can be added to a running server. There are several methods
-for doing this:</p>
-<ul>
-<li>Post the assembler file</li>
-<li>HTML Form upload the assembler file</li>
-<li>Use a built-in template (in-memory or persistent)</li>
-</ul>
-<p>All require HTTP <code>POST</code>.</p>
+<p>A dataset set can be added to a running server.
+This is done by HTTP <code>POST</code> with parameters <code>dbType</code> and <code>dbName</code>.</p>
 <p>Changes to the server state are carried across restarts.</p>
 <p>For persistent datasets, for example <a href="/documentation/tdb">TDB</a>,
 the dataset is persists across restart.</p>
 <p>For in-memory datasets, the dataset is rebuilt from it&rsquo;s description
 (this may include loading data from a file) but any changes are lost.</p>
-<h4 id="templates">Templates</h4>
-<p>A short-cut form for some common set-ups is provided by <tt>POST</tt>ing with
-the following parameters (query string or HTML form):</p>
+<p>The parameters are given in the querry string or in an HTML form.</p>
 <table>
   <thead>
       <tr>
@@ -523,7 +514,6 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
       <ul>
         <li><a href="#adding-a-dataset-and-its-services">Adding a Dataset and its Services.</a>
           <ul>
-            <li><a href="#templates">Templates</a></li>
             <li><a href="#assembler-example">Assembler example</a></li>
           </ul>
         </li>
