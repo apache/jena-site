@@ -30,7 +30,7 @@ Replace `{name}` with a dataset name: e.g. `/$/backup/myDataset`.
 | <tt>POST</tt>   | `/$/server`            |               | 
 | <tt>GET</tt>    | `/$/status`            | Alias of `/$/server` | 
 ||
-| <tt>POST</tt>   | `/$/datasets`          | Create a new dataset | 
+| <tt>POST</tt>   | `/$/datasets?...`      | Create a new dataset | 
 | <tt>GET</tt>    | `/$/datasets`          | Get a list of datasets |
 | <tt>GET</tt>    | `/$/datasets/{name}`   | Get information about a dataset |
 | <tt>DELETE</tt> | `/$/datasets/{name}`   | Remove a dataset |
@@ -75,14 +75,8 @@ in the container, via `GET`, `POST` and `DELETE`, operate on specific dataset.
 
 ### Adding a Dataset and its Services.
 
-A dataset set can be added to a running server. There are several methods
-for doing this: 
-
-* Post the assembler file
-* HTML Form upload the assembler file 
-* Use a built-in template (in-memory or persistent)
-
-All require HTTP `POST`.
+A dataset set can be added to a running server. 
+This is done by HTTP `POST` with parameters `dbType` and `dbName`.
 
 Changes to the server state are carried across restarts.  
 
@@ -92,10 +86,7 @@ the dataset is persists across restart.
 For in-memory datasets, the dataset is rebuilt from it's description
 (this may include loading data from a file) but any changes are lost.
 
-#### Templates
-
-A short-cut form for some common set-ups is provided by <tt>POST</tt>ing with
-the following parameters (query string or HTML form):
+The parameters are given in the querry string or in an HTML form.
 
 | Parameter |                 |
 |-----------|-----------------|
