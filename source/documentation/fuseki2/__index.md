@@ -39,6 +39,8 @@ transactional, persistent storage layer. Fuseki also incorporates
 - Client access
     - [Use from Java](../rdfconnection)
 - Extending Fuseki with [Fuseki Modules](fuseki-modules.html)
+- Included Fuseki Modules
+    - [GeoSPARQL Fuseki Module](../geosparql/fuseki-mod-geosparql.html)
 - [Links to Standards](rdf-sparql-standards.html)
 
 The Jena users mailing is the place to get help with Fuseki.
