@@ -431,28 +431,38 @@ Presently, the global instance cannot be configured via the assembler.</p>
 <h5 id="before-jena-410">Before Jena 4.10</h5>
 <p>No additional dependencies are needed.</p>
 <h5 id="jena-410-and-jena-5">Jena 4.10 and Jena 5</h5>
-<p>Guava needs to be supplied externally, as it is no longer part of Jena&rsquo;s core.</p>
+<p>Guava needs to be supplied externally, as it is no longer part of Jena&rsquo;s core. The simplest way is by using Maven, to also fetch its
+dependencies or build a JAR bundle.</p>
 <ul>
-<li>
-<p>A Guava JAR can be downloaded manually, such as from the Maven Central repository, by picking a <code>guava-VERSION.jar</code> file from the <a href="https://repo1.maven.org/maven2/com/google/guava/guava/">published Guava versions</a>. Typically, all newer versions should work. When in doubt, cross-check with the declaration(s) in the service enhancer&rsquo;s POM file.</p>
-</li>
-<li>
-<p>The POM file of the SE module includes a <code>bundle</code> profile which can be used to build a JAR bundle using <a href="https://maven.apache.org/">Apache Maven</a> using the commands below. Be sure to replace <code>VERSION</code> with a version that matches that of your Fuseki setup. See also the <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/">published Service Enhancer versions</a>.</p>
-</li>
+<li>You can fetch and copy both the module and its dependencies.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Fetch the serviceenhancer pom</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># and save it as ./jena-serviceenhancer.pom</span>
 </span></span><span style="display:flex;"><span>mvn dependency:copy -D<span style="color:#b44">&#39;artifact=org.apache.jena:jena-serviceenhancer:VERSION:pom&#39;</span> <span style="color:#b62;font-weight:bold">\
 </span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>  -Dmdep.stripVersion<span style="color:#666">=</span><span style="color:#a2f">true</span> -D<span style="color:#b44">&#39;outputDirectory=.&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Build using the &#39;bundle&#39; profile which creates the (shaded) JAR bundle</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ./target/jena-serviceenhancer-VERSION.jar</span>
-</span></span><span style="display:flex;"><span>mvn -f jena-serviceenhancer.pom -Pbundle package
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Download the dependency itself</span>
+</span></span><span style="display:flex;"><span>mvn dependency:copy -D<span style="color:#b44">&#39;artifact=org.apache.jena:jena-serviceenhancer:VERSION:jar&#39;</span> <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>  -D<span style="color:#b44">&#39;outputDirectory=jars&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Download required dependencies</span>
+</span></span><span style="display:flex;"><span> mvn -f jena-serviceenhancer.pom -Pbundle dependency:copy-dependencies <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>  -DincludeScope<span style="color:#666">=</span>runtime -DoutputDirectory<span style="color:#666">=</span>jars
+</span></span></code></pre></div><ul>
+<li>Alternatively, the POM file of the SE module includes a <code>bundle</code> profile which can be used to build a JAR bundle using <a href="https://maven.apache.org/">Apache Maven</a> using the commands below. Be sure to replace <code>VERSION</code> with a version that matches that of your Fuseki setup. See also the <a href="https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/">published Service Enhancer versions</a>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Clone the repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/apache/jena.git
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> jena
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Checkout the tagged version matching your Apache Jena Fuseki</span>
+</span></span><span style="display:flex;"><span>git checkout jena-VERSION
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># build jena-serviceenhancer and dependencies from the jena dir</span>
+</span></span><span style="display:flex;"><span>mvn package -B -pl jena-serviceenhancer -am -Pbundle -DskipTests
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># the resulting bundled jar file is in</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ./jena-serviceenhancer/target/jena-serviceenhancer-VERSION.jar</span>
 </span></span></code></pre></div><h4 id="adding-the-service-enhancer-jar">Adding the Service Enhancer JAR</h4>
 <p>This section assumes that one of the distributions of <code>apache-jena-fuseki</code> has been downloaded from [https://jena.apache.org/download/].
-The extracted folder should contain the <code>./fuseki-server</code> executable start script which automatically loads all jars (relative to <code>$PWD</code>) under <code>run/extra</code>.
-These folders need to be created e.g. using <code>mkdir -p run/extra</code>. The SE plugin can be manually built or downloaded from maven central, as described in the prior section.
-Placing it into the <code>run/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki version should match.</p>
+The extracted folder should contain the <code>./fuseki-server</code> executable start script which automatically loads all jars from <code>$FUSEKI_BASE/extra</code> where <code>$FUSEKI_BASE</code> defaults to <code>./run</code>.
+These folders need to be created e.g. using <code>mkdir -p ${FUSEKI_BASE:-./run}/extra</code>. The SE plugin can be manually built or downloaded from maven central, as described in the prior section.
+Placing it into the <code>$FUSEKI_BASE/extra</code> folder makes it available for use with Fuseki. The plugin and Fuseki version should match.</p>
 <h4 id="fuseki-assembler-configuration">Fuseki Assembler Configuration</h4>
 <p>The snippet below shows a simple setup of enabling the SE plugin for a given base dataset.
 Cache management can be performed via SPARQL extension functions. However, usually not every user should be allowed to invalidate caches as this
