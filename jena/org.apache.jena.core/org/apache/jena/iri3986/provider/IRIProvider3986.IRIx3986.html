@@ -150,7 +150,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isReference()" class="member-name-link">isReference</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">An <em>RDF Reference</em> is an URI which has scheme.</div>
+<div class="block">An <em>RDF Reference IRI</em>, defined in RDF 1.2 Concepts section
+ <a href="https://www.w3.org/TR/rdf12-concepts/#reference-iris">3.3.1 RDF Reference IRIs</a>,
+ is an URI (IRI) that is suitable for use as a resource identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRelative()" class="member-name-link">isRelative</a>()</code></div>
@@ -253,19 +255,15 @@ loadScripts(document, 'script');</script>
 <h3>isReference</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isReference</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="../../irix/IRIx.html#isReference()">IRIx</a></code></span></div>
-<div class="block">An <em>RDF Reference</em> is an URI which has scheme.
- If it is hierarchical, it should have a non-empty host authority.
- It may have a query component and may have a fragment component.
- This not a term in
+<div class="block">An <em>RDF Reference IRI</em>, defined in RDF 1.2 Concepts section
+ <a href="https://www.w3.org/TR/rdf12-concepts/#reference-iris">3.3.1 RDF Reference IRIs</a>,
+ is an URI (IRI) that is suitable for use as a resource identifier.
+ <p>
+ The terminology is not defined in
  <a href="https://tools.ietf.org/html/rfc3986">RFC 3986</a>
  and it is not the same as "absolute URI".
- This is a change from
- <a href="https://tools.ietf.org/html/rfc2396">RFC 2396</a>
- where an absolute URI means "has scheme".
  <p>
- In RDF data, it is a
- <a href="https://www.w3.org/TR/rdf11-concepts/#section-IRIs">useful concept</a>.
- It is either an absolute URI, but if it is hierarchical, it must have a host.
+ In RDF data, it must be legal syntax and should follow the rules of the IRI scheme.
  <p>
  Examples:
  <ul>
@@ -296,7 +294,11 @@ loadScripts(document, 'script');</script>
       a <a href="https://tools.ietf.org/html/rfc8141#section-2.3.2">q-component</a>,
      and a <a href="https://tools.ietf.org/html/rfc8141#section-2.3.3">f-component</a> (which is a URI fragment).
      </ul>
- </ul></div>
+ </ul>
+ <p>
+ The operation <code>isReference</code> reflects common usage in data published on the web.
+ It only checks for basic schema errors. It is not a complete analysis of <em>RDF Reference IRI</em>.
+ See <a href="../../irix/IRIx.html#handleViolations(java.util.function.BiConsumer)"><code>IRIx.handleViolations(java.util.function.BiConsumer&lt;java.lang.Boolean, java.lang.String&gt;)</code></a> for more detailed information of scheme errors and warnings.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../irix/IRIx.html#isReference()">isReference</a></code>&nbsp;in class&nbsp;<code><a href="../../irix/IRIx.html" title="class in org.apache.jena.irix">IRIx</a></code></dd>
