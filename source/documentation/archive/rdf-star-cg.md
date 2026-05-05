@@ -1,12 +1,14 @@
 ---
-title: Support of RDF-star
-slug: index
-aliases:
-    - /documentation/rdfstar/
-    - /documentation/rdfstar/index.html
+title: Support of RDF-star (Community Group)
 ---
 
-[RDF-star](https://w3c.github.io/rdf-star/) is an extension to RDF that provides
+----
+> This is not RDF 1.2. 
+> In RDF 1.2, `<<:s :p :o>>` is syntactic form for a
+> ["reifying triple"](https://www.w3.org/TR/rdf12-turtle/#reifying-triples).
+----
+
+[RDF-star](https://w3c.github.io/rdf-star/) (Community Group) is an extension to RDF that provides
 a way for one triple to refer to another triple. RDF\* is the name of the
 original work which is described in
 [Olaf Hartig's blog entry](https://blog.liu.se/olafhartig/2019/01/10/position-statement-rdf-star-and-sparql-star/).

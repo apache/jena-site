@@ -78,7 +78,7 @@ Source: [BinaryRDF.thrift](https://github.com/apache/jena/blob/main/jena-arq/Gra
     6: RDF_ANY          any
     7: RDF_UNDEF        undefined
     8: RDF_REPEAT       repeat
-    9: RDF_Triple       tripleTerm  # RDF-star
+    9: RDF_Triple       tripleTerm  # RDF 1.2 triple term
     
     # Value forms of literals.
     10: i64             valInteger

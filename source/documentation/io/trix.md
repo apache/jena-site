@@ -50,11 +50,9 @@ HPL-2004-56 by having root element `<trix>` not `<TriX>`.
 
 ### TriX-star
 
-The format is extended for [RDF-star](https://w3c.github.io/rdf-star/) with
-embedded triples by allowing nested `<triple>`.
-
-Trix-star (2021) adds 'triple' to subject and object positions
-of `ELEMENT triple`.
+The format is extended for 
+[RDF triple terms](https://www.w3.org/TR/rdf12-concepts/#section-terms)
+with by allowing nested `<triple>`.
 
 ```
 <!ELEMENT triple       ((id|uri|plainLiteral|typedLiteral|triple), uri, (id|uri|plainLiteral|typedLiteral|triple))>
@@ -66,26 +64,21 @@ The Turtle:
 ```
 PREFIX :      <http://example/>
 
-:s      :p      "ABC" .
-<< :s :p :o >>  :q  :r .
+:x :q <<( :s :p :o )>>  .
 ```
 is written in Trix as:
 ```
 <trix xmlns="http://www.w3.org/2004/03/trix/trix-1/">
   <graph>
-    <triple>
-      <uri>http://example/s</uri>
-      <uri>http://example/p</uri>
-      <plainLiteral>ABC</plainLiteral>
     </triple>
     <triple>
+      <uri>http://example/x</uri>
+      <uri>http://example/q</uri>
       <triple>
         <uri>http://example/s</uri>
         <uri>http://example/p</uri>
         <uri>http://example/o</uri>
       </triple>
-      <uri>http://example/q</uri>
-      <uri>http://example/r</uri>
     </triple>
   </graph>
 </trix>
