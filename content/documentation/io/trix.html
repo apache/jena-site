@@ -235,33 +235,27 @@ HPL-2004-56 by having root element <code>&lt;trix&gt;</code> not <code>&lt;TriX&
 &lt;!ELEMENT typedLiteral (#PCDATA)&gt;
 &lt;!ATTLIST typedLiteral datatype CDATA #REQUIRED&gt;
 </code></pre><h3 id="trix-star">TriX-star</h3>
-<p>The format is extended for <a href="https://w3c.github.io/rdf-star/">RDF-star</a> with
-embedded triples by allowing nested <code>&lt;triple&gt;</code>.</p>
-<p>Trix-star (2021) adds &rsquo;triple&rsquo; to subject and object positions
-of <code>ELEMENT triple</code>.</p>
+<p>The format is extended for
+<a href="https://www.w3.org/TR/rdf12-concepts/#section-terms">RDF triple terms</a>
+with by allowing nested <code>&lt;triple&gt;</code>.</p>
 <pre tabindex="0"><code>&lt;!ELEMENT triple       ((id|uri|plainLiteral|typedLiteral|triple), uri, (id|uri|plainLiteral|typedLiteral|triple))&gt;
 </code></pre><h4 id="example">Example</h4>
 <p>The Turtle:</p>
 <pre tabindex="0"><code>PREFIX :      &lt;http://example/&gt;
 
-:s      :p      &#34;ABC&#34; .
-&lt;&lt; :s :p :o &gt;&gt;  :q  :r .
+:x :q &lt;&lt;( :s :p :o )&gt;&gt;  .
 </code></pre><p>is written in Trix as:</p>
 <pre tabindex="0"><code>&lt;trix xmlns=&#34;http://www.w3.org/2004/03/trix/trix-1/&#34;&gt;
   &lt;graph&gt;
-    &lt;triple&gt;
-      &lt;uri&gt;http://example/s&lt;/uri&gt;
-      &lt;uri&gt;http://example/p&lt;/uri&gt;
-      &lt;plainLiteral&gt;ABC&lt;/plainLiteral&gt;
     &lt;/triple&gt;
     &lt;triple&gt;
+      &lt;uri&gt;http://example/x&lt;/uri&gt;
+      &lt;uri&gt;http://example/q&lt;/uri&gt;
       &lt;triple&gt;
         &lt;uri&gt;http://example/s&lt;/uri&gt;
         &lt;uri&gt;http://example/p&lt;/uri&gt;
         &lt;uri&gt;http://example/o&lt;/uri&gt;
       &lt;/triple&gt;
-      &lt;uri&gt;http://example/q&lt;/uri&gt;
-      &lt;uri&gt;http://example/r&lt;/uri&gt;
     &lt;/triple&gt;
   &lt;/graph&gt;
 &lt;/trix&gt;
