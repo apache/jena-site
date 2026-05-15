@@ -1,9 +1,9 @@
 ## Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
 
 notifications:
-    commits:       commits@jena.apache.org
-    issues:        issues@jena.apache.org
-    pullrequests:  pr@jena.apache.org
+  commits: commits@jena.apache.org
+  issues: issues@jena.apache.org
+  pullrequests: pr@jena.apache.org
 
 github:
   description: "Website sources for the Apache Jena website"
@@ -13,8 +13,7 @@ github:
     - jena
     - hugo
     - website
-  protected_branches:
-    main
+  protected_branches: main
   features:
     issues: true
     discussions: false
@@ -22,3 +21,16 @@ github:
     squash: false
     rebase: true
     merge: false
+  rulesets:
+    - name: "Default Branch Protection"
+      type: branch
+      branches:
+        includes:
+          - "~DEFAULT_BRANCH"
+          - "release/*"
+          - "rel/*"
+        excludes: []
+      bypass_teams:
+        - root
+      restrict_deletion: true
+      restrict_force_push: true
