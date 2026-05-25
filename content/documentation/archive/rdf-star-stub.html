@@ -3,12 +3,12 @@
 <head>
     
 
-    <title>Apache Jena - Migrating from Jena2 to Jena3</title>
+    <title>Apache Jena - Support of RDF-star (Community Group)</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.d6ada6933ea246671d51bf39ceb2afb2f710a45f3793ab87e06f74f3b5d17c3d.css" integrity="sha256-1q2mkz6iRmcdUb85zrKvsvcQpF83k6uH4G9087XRfD0=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.706069210dcfe12aa0b14ab37ffa1aeb1df2a8825a259a05879553ec1a2dbb05.css" integrity="sha256-cGBpIQ3P4SqgsUqzf/oa6x3yqIJaJZoFh5VT7BotuwU=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -54,10 +54,9 @@
                         <li><a class="dropdown-item"  href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
                         <li><a class="dropdown-item"  href="/documentation/rdf/index.html">RDF API</a></li>
                         <li><a class="dropdown-item"  href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
-                        <li><a class="dropdown-item"  href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a class="dropdown-item"  href="/documentation/rdf-patch/index.html">RDF Patch</a></li>
                         <li><a class="dropdown-item"  href="/documentation/shacl/index.html">SHACL</a></li>
                         <li><a class="dropdown-item"  href="/documentation/shex/index.html">ShEx</a></li>
-                        <li><a class="dropdown-item"  href="/documentation/tdb/index.html">TDB</a></li>
                         <li><a class="dropdown-item"  href="/documentation/tdb2/index.html">TDB2</a></li>
                         <li><a class="dropdown-item"  href="/documentation/query/text-query.html">Text Search</a></li>
                     </ul>
@@ -127,7 +126,7 @@
                 
                 
                 
-                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/migrate_jena2_jena3.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
+                <li class="nav-item" id="edit"><a class="nav-link" href="https://github.com/apache/jena-site/edit/main/source/documentation/archive/rdf-star-stub.md" title="Edit this page on GitHub"><span class="bi-pencil-square"></span><span class="text-body d-none d-xxl-inline"> Edit this page</span></a></li>
             </ul>
         </div>
     </div>
@@ -158,7 +157,15 @@
         
         
             
-                <li class="breadcrumb-item active">MIGRATE JENA2 JENA3</li>
+                <li class="breadcrumb-item"><a href='/documentation/archive'>ARCHIVE</a></li>
+            
+            
+        
+    
+        
+        
+            
+                <li class="breadcrumb-item active">RDF STAR STUB</li>
             
             
         
@@ -169,141 +176,29 @@
 
 
             </div>
-            <h1 class="title">Migrating from Jena2 to Jena3</h1>
+            <h1 class="title">Support of RDF-star (Community Group)</h1>
             
             
 <main class="d-flex flex-xl-row flex-column">
   
   <aside class="text-muted align-self-start mb-3 p-0 d-xl-none d-block">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#key-changes">Key Changes</a></li>
-    <li><a href="#packaging">Package Name Changes</a>
-      <ul>
-        <li><a href="#vocabularies-unchanged">Vocabularies unchanged</a></li>
-        <li><a href="#assemblers">Assemblers</a></li>
-        <li><a href="#logging">Logging</a></li>
-      </ul>
-    </li>
-    <li><a href="#rdf-11">RDF 1.1</a>
-      <ul>
-        <li><a href="#rdf11-plain-literals">RDF 1.1 changes for plain literals</a></li>
-      </ul>
-    </li>
-    <li><a href="#persistent-data">Persistent Data</a></li>
-    <li><a href="#permissions-changes">Security package renamed to Permissions</a></li>
-    <li><a href="#other">Other</a></li>
-  </ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </aside>
   <article class="flex-column me-lg-4">
-    <p>Apache Jena3 is a major version release for Jena - it is not binary compatible with
-Jena2. The migration consists of package renaming and database reloading.</p>
-<h2 id="key-changes">Key Changes</h2>
-<ul>
-<li><a href="#packaging">Package renaming</a></li>
-<li><a href="#rdf11-plain-literals">RDF 1.1 Semantics for plain literals</a></li>
-<li><a href="#persistent-data">Persistent data (TDB, SDB) should be reloaded.</a></li>
-<li>Java8 is required.</li>
-<li><a href="#permissions-changes">Security renamed to Permissions. Security Evaluator changes required</a></li>
-</ul>
-<h2 id="packaging">Package Name Changes</h2>
-<p>Packages with a base name of <code>com.hp.hpl.jena</code> become <code>org.apache.jena</code>.</p>
-<p>Global replacement of <code>import com.hp.hpl.jena.</code> with <code>import org.apache.jena.</code> will cover the majority of cases.</p>
-<p>The Jena APIs remain unchanged expect for this renaming.</p>
-<h3 id="vocabularies-unchanged">Vocabularies unchanged</h3>
-<p>Only java package names are being changed.  Vocabularies are not affected.</p>
-<h3 id="assemblers">Assemblers</h3>
-<p>Migration support is provided by mapping <code>ja:loadClass</code> names beginning
-<code>com.hp.hpl.jena</code> internally to <code>org.apache.jena</code>. A warning is logged.</p>
-<h3 id="logging">Logging</h3>
-<p>This will also affect logging: logger names reflect the java class naming
-so loggers for <code>com.hp.hpl.jena</code> become <code>org.apache.jena</code></p>
-<h2 id="rdf-11">RDF 1.1</h2>
-<p>Many of the changes and refinements for RDF 1.1 are already in Jena2. The
-parsers for Turtle-family languages already follow the RDF 1.1 grammars
-and output is compatible with RDF 1.1 as well as earlier output details.</p>
-<h3 id="rdf11-plain-literals">RDF 1.1 changes for plain literals</h3>
-<p>In RDF 1.1, all literals have a datatype.  The datatype of a plain
-literal with no language tag (also called a &ldquo;simple literal&rdquo;) has datatype
-<code>xsd:string</code>.  A plain literal with a language tag has datatype
-<code>rdf:langString</code>.</p>
-<p>Consequences:</p>
-<p><code>&quot;abc&quot;</code> and <code>&quot;abc&quot;^^xsd:string</code> are the same RDF term in RDF 1.1.  Jena2
-memory models have always treated these as the same value, but different
-terms. Jena2 persistent models treated them as two separate term and two
-separate values.</p>
-<p>Data is not invalidated by this change.</p>
-<ul>
-<li>
-<p>The parsers will give datatypes to all data read, there is no need to
-change the data.</p>
-</li>
-<li>
-<p>Output is in the datatype-less form (an abbreviated syntax) even in
-N-triples.</p>
-</li>
-<li>
-<p>Applications which explicitly use <code>^^xsd:string</code> (or in RDF/XML,
-<code>rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#string&quot;</code>) will see a change
-in appearance.</p>
-</li>
-<li>
-<p>Applications with a mix of plain literals and explicit <code>^^xsd:string</code>
-(the RDF 1.1 Work Group believed these to be uncommon) may see changes.</p>
-</li>
-<li>
-<p>Applications that do their own RDF output need to be careful to not assume
-that having datatype excludes the possibility of also having a language tag.</p>
-</li>
-</ul>
-<h2 id="persistent-data">Persistent Data</h2>
-<p>For data stored in <a href="tdb/">TDB</a> and <a href="sdb/">SDB</a>, it is advisable to reload data.</p>
-<p>Data that does not use explicit <code>xsd:string</code> should be safe but it is still
-recommended that data is reloaded at a convenient time.</p>
-<p>Data that does use explicit <code>xsd:string</code> must be reloaded.</p>
-<h2 id="permissions-changes">Security package renamed to Permissions</h2>
-<p>Jena Security has been renamed Jena Permissions and the Maven
-<em>artifact id</em> has been changed to <em>jena-permissions</em> to reflect this change.</p>
-<p>Shim code that was introduced to map Jena classes to security classes
-has been removed.  This change requires changes to <code>SecurityEvaluator</code>
-implementations.  More details are available at the
-<a href="permissions/migration2To3.html">Permissions
-migration documentation</a>.</p>
-<h2 id="other">Other</h2>
-<ul>
-<li><code>GraphStore</code> interface has been removed</li>
-<li><code>ModelFactory.createFileModelMaker</code> has been removed</li>
-<li><code>LateBindingIterator</code> has been removed: use <code>LazyIterator</code> instead</li>
-<li><code>EarlyBindingIterator</code> has been removed: no replacement</li>
-<li><code>UniqueExtendedIterator</code> has been removed: use <code>ExtendedIterator</code> with unique filter</li>
-</ul>
+    <hr>
+<blockquote>
+<p>This is not RDF 1.2.
+In RDF 1.2, <code>&lt;&lt;:s :p :o&gt;&gt;</code> is syntactic form for a
+<a href="https://www.w3.org/TR/rdf12-turtle/#reifying-triples">&ldquo;reifying triple&rdquo;</a>.</p></blockquote>
+<hr>
+<p><a href="/documentation/archive/rdf-star-cg.html">Archived material on &ldquo;RDF-star&rdquo;</a></p>
 
   </article>
   
   <aside class="text-muted align-self-start mb-3 mb-xl-5 p-0 d-none d-xl-flex flex-column sticky-top">
     <h2 class="h6 sticky-top m-0 p-2 bg-body-tertiary">On this page</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#key-changes">Key Changes</a></li>
-    <li><a href="#packaging">Package Name Changes</a>
-      <ul>
-        <li><a href="#vocabularies-unchanged">Vocabularies unchanged</a></li>
-        <li><a href="#assemblers">Assemblers</a></li>
-        <li><a href="#logging">Logging</a></li>
-      </ul>
-    </li>
-    <li><a href="#rdf-11">RDF 1.1</a>
-      <ul>
-        <li><a href="#rdf11-plain-literals">RDF 1.1 changes for plain literals</a></li>
-      </ul>
-    </li>
-    <li><a href="#persistent-data">Persistent Data</a></li>
-    <li><a href="#permissions-changes">Security package renamed to Permissions</a></li>
-    <li><a href="#other">Other</a></li>
-  </ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </aside>
 </main>
 
@@ -314,7 +209,7 @@ migration documentation</a>.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2026 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>

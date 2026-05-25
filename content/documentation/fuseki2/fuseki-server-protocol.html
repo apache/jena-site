@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.d6ada6933ea246671d51bf39ceb2afb2f710a45f3793ab87e06f74f3b5d17c3d.css" integrity="sha256-1q2mkz6iRmcdUb85zrKvsvcQpF83k6uH4G9087XRfD0=">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet" media="screen"><link rel="stylesheet" type="text/css" href="https://jena.apache.org/sass/jena.706069210dcfe12aa0b14ab37ffa1aeb1df2a8825a259a05879553ec1a2dbb05.css" integrity="sha256-cGBpIQ3P4SqgsUqzf/oa6x3yqIJaJZoFh5VT7BotuwU=">
     <link rel="shortcut icon" href="/images/favicon.ico" />
     
 </head>
@@ -54,10 +54,9 @@
                         <li><a class="dropdown-item"  href="/documentation/extras/querybuilder/index.html">Query Builder</a></li>
                         <li><a class="dropdown-item"  href="/documentation/rdf/index.html">RDF API</a></li>
                         <li><a class="dropdown-item"  href="/documentation/rdfconnection/">RDF Connection - SPARQL API</a></li>
-                        <li><a class="dropdown-item"  href="/documentation/rdfstar/index.html">RDF-star</a></li>
+                        <li><a class="dropdown-item"  href="/documentation/rdf-patch/index.html">RDF Patch</a></li>
                         <li><a class="dropdown-item"  href="/documentation/shacl/index.html">SHACL</a></li>
                         <li><a class="dropdown-item"  href="/documentation/shex/index.html">ShEx</a></li>
-                        <li><a class="dropdown-item"  href="/documentation/tdb/index.html">TDB</a></li>
                         <li><a class="dropdown-item"  href="/documentation/tdb2/index.html">TDB2</a></li>
                         <li><a class="dropdown-item"  href="/documentation/query/text-query.html">Text Search</a></li>
                     </ul>
@@ -193,7 +192,6 @@
       <ul>
         <li><a href="#adding-a-dataset-and-its-services">Adding a Dataset and its Services.</a>
           <ul>
-            <li><a href="#templates">Templates</a></li>
             <li><a href="#assembler-example">Assembler example</a></li>
           </ul>
         </li>
@@ -278,7 +276,7 @@ Further operations may be added within this naming scheme.</p>
       </tr>
       <tr>
           <td><tt>POST</tt></td>
-          <td><code>/$/datasets</code></td>
+          <td><code>/$/datasets?...</code></td>
           <td>Create a new dataset</td>
       </tr>
       <tr>
@@ -393,22 +391,14 @@ request over <code>GET</code> or <code>POST</code> (to avoid any HTTP caching) w
 <code>/$/datasets/{name}</code> names a specific dataset.  As a container, operations on items
 in the container, via <code>GET</code>, <code>POST</code> and <code>DELETE</code>, operate on specific dataset.</p>
 <h3 id="adding-a-dataset-and-its-services">Adding a Dataset and its Services.</h3>
-<p>A dataset set can be added to a running server. There are several methods
-for doing this:</p>
-<ul>
-<li>Post the assembler file</li>
-<li>HTML Form upload the assembler file</li>
-<li>Use a built-in template (in-memory or persistent)</li>
-</ul>
-<p>All require HTTP <code>POST</code>.</p>
+<p>A dataset set can be added to a running server.
+This is done by HTTP <code>POST</code> with parameters <code>dbType</code> and <code>dbName</code>.</p>
 <p>Changes to the server state are carried across restarts.</p>
 <p>For persistent datasets, for example <a href="/documentation/tdb">TDB</a>,
 the dataset is persists across restart.</p>
 <p>For in-memory datasets, the dataset is rebuilt from it&rsquo;s description
 (this may include loading data from a file) but any changes are lost.</p>
-<h4 id="templates">Templates</h4>
-<p>A short-cut form for some common set-ups is provided by <tt>POST</tt>ing with
-the following parameters (query string or HTML form):</p>
+<p>The parameters are given in the querry string or in an HTML form.</p>
 <table>
   <thead>
       <tr>
@@ -524,7 +514,6 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
       <ul>
         <li><a href="#adding-a-dataset-and-its-services">Adding a Dataset and its Services.</a>
           <ul>
-            <li><a href="#templates">Templates</a></li>
             <li><a href="#assembler-example">Assembler example</a></li>
           </ul>
         </li>
@@ -552,7 +541,7 @@ Pattern: <code>/$/tasks/{taskId}</code> – A particular task.</p>
 <footer class="bd-footer py-4 py-md-5 mt-4 mt-lg-5 bg-body-tertiary">
     <div class="container" style="font-size:80%" >
         <p>
-            Copyright &copy; 2011&ndash;2025 The Apache Software Foundation, Licensed under the
+            Copyright &copy; 2011&ndash;2026 The Apache Software Foundation, Licensed under the
             <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
         </p>
         <p>
