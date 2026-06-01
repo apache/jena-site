@@ -17,7 +17,7 @@ considered as localhost and thus restricted.
 A simple example to enable basic user/password authentication is shown in the
 default `shiro.ini` configuration. The default admin user is `admin` and the
 password is `pw`. This can be changed directly in the INI file. Note that this
-setup is not recommended for production for various reasons  (no TLS, passwords
+setup is not recommended for production for various reasons (no TLS, passwords
 in plain text etc.), consult the [Shiro
 INI](https://shiro.apache.org/configuration.html#Configuration-INIConfiguration-Sections)
 documentation for best practices.
@@ -37,6 +37,10 @@ could be done with this wildcard pattern:
 
 Anonymous SPARQL queries would no longer be possible in this example.
 
+Note that this `authcBasic,user[admin]` configuration construct allows any authenticated user to access the
+endpoint, regardless of the value of user. See the simple user/password/group example below for
+more fine-grained control, using roles.
+
 Again, please consult the [Apache Shiro](https://shiro.apache.org/) website for
 details and more sophisticated setups. The default configuration of Fuseki is
 kept simple but is *not* recommended for setups where sensitive data is
@@ -50,7 +54,7 @@ Contributions of more examples are very welcome.
 
 The shipped `shiro.ini` has additional comments.
 
-### The default configuration.
+### The default configuration
 
 This is a minimal configuration for the default configuration.
 
@@ -66,19 +70,47 @@ This is a minimal configuration for the default configuration.
     /$/** = localhost
     /**=anon
 
-### Simple user/password
+### Simple user/password/group setup
 
-This extract shows the simple user/password setup.
+This extract shows the simple user/password/group setup.
 
-It adds a `[users]` section and changes the `/$/**` line in `[urls]`
+It adds a `[users]` section with admin in group admins, and user in group users, limits one path to accept both groups, and one for admin only in `[urls]`
 
     [users]
-    admin=pw
+    admin=password,admins
+    user=password,users
 
     [urls]
-    ## Control functions open to anyone
-    /$/status = anon
+    # Control function open to users and admins groups
+    /$/status = authcBasic,roles[users,admins]
+    # Control functions open to anyone
     /$/ping   = anon
-    /$/** = authcBasic,user[admin]
+    # Other administration API paths only available for users in admins group
+    /$/** = authcBasic,roles[admins]
     # Everything else
     /**=anon
+
+### Example of using a more secure password setup
+
+Apache Shiro provides a [command line hasher tool](https://shiro.apache.org/command-line-hasher.html) to generate password hashes
+
+    # Set to the newest Shiro version
+    export SHIRO_VERSION=N.N.N
+    # download shiro-tools-hasher to local repository
+    mvn dependency:get -DgroupId=org.apache.shiro.tools -DartifactId=shiro-tools-hasher -Dclassifier=cli -Dversion=$SHIRO_VERSION
+    # run shiro tool from local repository (prompts for password)
+    java -jar ~/.m2/repository/org/apache/shiro/tools/shiro-tools-hasher/${SHIRO_VERSION}/shiro-tools-hasher-${SHIRO_VERSION}-cli.jar -p
+
+This outputs something like: `*$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y*`
+
+A simple configuration using this password looks like:
+
+    [main]
+    passwordMatcher = org.apache.shiro.authc.credential.PasswordMatcher
+    iniRealm.credentialsMatcher = $passwordMatcher
+
+    [users]
+    # user "user" with hashed password
+    # quote required for password
+    # in group users
+    user="$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y",users
