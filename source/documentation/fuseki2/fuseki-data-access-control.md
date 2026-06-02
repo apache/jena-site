@@ -27,7 +27,7 @@ HTTPS support is configured from the fuseki server command line.
 
 | Server Argument |    |  |
 | ----------------|----|--|
-| <tt>--https=<i>SETUP</i></tt>       | Name of file for certificate details.   | |
+| <tt>--https=<i>SETUP</i></tt>       | Path to the file for certificate details.   | |
 | <tt>--httpsPort=<i>PORT</i></tt>    | The port for https   | Default: 3043 |
 
 The `--https` argument names a file in JSON which includes the name of
@@ -35,10 +35,10 @@ the certificate file and password for the certificate.
 
 ### HTTPS certificate details file {#https-details}
 
-The file is a simple JSON file:
+The file is a stupid JSON file:
 
 ```json
-{ "cert": KEYSTORE, "passwd": SECRET }
+{ "keystore": "path/to/keystore/file", "passwd": "passwordCreatedKeystore" }
 ```
 
 This file must be protected by file access settings so that it can only
