@@ -101,7 +101,7 @@ parsing up to and including the Jena `4.1.0` release.
 
 Users should upgrade to latest Jena 4.x [release](../download/) available.
 
-**CVE-2021-33192 - Display information UI XSS in Apache Jena Fusek**
+**CVE-2021-33192 - Display information UI XSS in Apache Jena Fuseki**
 
 [CVE-2021-33192](https://www.cve.org/CVERecord?id=CVE-2021-33192) affected
 [Fuseki](../documentation/fuseki2/) versions `2.0.0` through `4.0.0`.
