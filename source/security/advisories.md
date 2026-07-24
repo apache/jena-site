@@ -94,7 +94,7 @@ Users should upgrade to latest Jena 4.x [release](../download/) available.
 Apache Jena would like to thank Feras Daragma, Avishag Shapira & Amit Laish (GE
 Digital, Cyber Security Lab) for their report.
 
-**CVE-2021-39239 - XML External Entity (XXE) Vulnerabilit**
+**CVE-2021-39239 - XML External Entity (XXE) Vulnerability**
 
 [CVE-2021-39239](https://www.cve.org/CVERecord?id=CVE-2021-39239) affects XML
 parsing up to and including the Jena `4.1.0` release.
