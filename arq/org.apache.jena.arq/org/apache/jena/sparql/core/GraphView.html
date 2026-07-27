@@ -177,9 +177,17 @@ implements <a href="NamedGraph.html" title="interface in org.apache.jena.sparql.
  org.apache.jena.graph.Node&nbsp;p,
  org.apache.jena.graph.Node&nbsp;o)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sync()" class="member-name-link">sync</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;org.apache.jena.graph.Triple&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">stream</a><wbr>(org.apache.jena.graph.Node&nbsp;s,
+ org.apache.jena.graph.Node&nbsp;p,
+ org.apache.jena.graph.Node&nbsp;o)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Stream equivalent of <a href="#graphBaseFind(org.apache.jena.graph.Triple)"><code>graphBaseFind(org.apache.jena.graph.Triple)</code></a> / <a href="#graphUnionFind(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)"><code>graphUnionFind(org.apache.jena.graph.Node, org.apache.jena.graph.Node, org.apache.jena.graph.Node)</code></a>: route through DatasetGraph#stream
+ so stream-native dataset (e.g. an in-memory one) stays on streams rather than iterator-wrapping.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sync()" class="member-name-link">sync</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -191,7 +199,7 @@ implements <a href="NamedGraph.html" title="interface in org.apache.jena.sparql.
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.graph.Graph">Methods inherited from interface&nbsp;org.apache.jena.graph.Graph</h3>
-<code>add, add, close, contains, contains, delete, delete, find, find, find, getEventManager, getPrefixMapping, isClosed, isEmpty, isIsomorphicWith, size, sizeLong, stream, stream</code></div>
+<code>add, add, close, contains, contains, delete, delete, find, find, find, getEventManager, getPrefixMapping, isClosed, isEmpty, isIsomorphicWith, size, sizeLong, stream</code></div>
 </section>
 </li>
 </ul>
@@ -239,6 +247,26 @@ implements <a href="NamedGraph.html" title="interface in org.apache.jena.sparql.
 <h3>getDataset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DatasetGraph.html" title="interface in org.apache.jena.sparql.core">DatasetGraph</a></span>&nbsp;<span class="element-name">getDataset</span>()</div>
 <div class="block">Return the <a href="DatasetGraph.html" title="interface in org.apache.jena.sparql.core"><code>DatasetGraph</code></a> we are viewing.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="stream(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)">
+<h3>stream</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;org.apache.jena.graph.Triple&gt;</span>&nbsp;<span class="element-name">stream</span><wbr><span class="parameters">(org.apache.jena.graph.Node&nbsp;s,
+ org.apache.jena.graph.Node&nbsp;p,
+ org.apache.jena.graph.Node&nbsp;o)</span></div>
+<div class="block">Stream equivalent of <a href="#graphBaseFind(org.apache.jena.graph.Triple)"><code>graphBaseFind(org.apache.jena.graph.Triple)</code></a> / <a href="#graphUnionFind(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)"><code>graphUnionFind(org.apache.jena.graph.Node, org.apache.jena.graph.Node, org.apache.jena.graph.Node)</code></a>: route through DatasetGraph#stream
+ so stream-native dataset (e.g. an in-memory one) stays on streams rather than iterator-wrapping.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>stream</code>&nbsp;in interface&nbsp;<code>org.apache.jena.graph.Graph</code></dd>
+<dt>Parameters:</dt>
+<dd><code>s</code> - subject match</dd>
+<dd><code>p</code> - predicate match</dd>
+<dd><code>o</code> - object match</dd>
+<dt>Returns:</dt>
+<dd>stream of matching triples</dd>
+</dl>
 </section>
 </li>
 <li>

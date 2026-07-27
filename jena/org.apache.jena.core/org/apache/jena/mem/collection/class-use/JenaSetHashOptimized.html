@@ -59,14 +59,27 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="#org.apache.jena.mem.store.fast">org.apache.jena.mem.store.fast</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="#org.apache.jena.mem.store.roaring">org.apache.jena.mem.store.roaring</a></div>
+<div class="col-first even-row-color"><a href="#org.apache.jena.mem.store.indexed">org.apache.jena.mem.store.indexed</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#org.apache.jena.mem.store.roaring">org.apache.jena.mem.store.roaring</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
 <li>
 <section class="detail" id="org.apache.jena.mem.collection">
 <h2>Uses of <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a> in <a href="../package-summary.html">org.apache.jena.mem.collection</a></h2>
+<div class="caption"><span>Subinterfaces of <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a> in <a href="../package-summary.html">org.apache.jena.mem.collection</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Interface</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>interface&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../JenaSetIndexed.html" class="type-name-link" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;E&gt;</code></div>
+<div class="col-last even-row-color">
+<div class="block">Extension of <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection"><code>JenaSetHashOptimized</code></a> that exposes index-based access to elements.</div>
+</div>
+</div>
 <div class="caption"><span>Classes in <a href="../package-summary.html">org.apache.jena.mem.collection</a> that implement <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -75,7 +88,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="../FastHashSet.html" class="type-name-link" title="class in org.apache.jena.mem.collection">FastHashSet</a>&lt;K&gt;</code></div>
 <div class="col-last even-row-color">
-<div class="block">Set which grows, if needed but never shrinks.</div>
+<div class="block">Hash set specialization built on top of <a href="../FastHashBase.html" title="class in org.apache.jena.mem.collection"><code>FastHashBase</code></a>.</div>
 </div>
 </div>
 </section>
@@ -91,7 +104,10 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>interface&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="../../store/fast/FastTripleBunch.html" class="type-name-link" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A bunch of triples - a stripped-down set with specialized methods.</div>
+<div class="block">Set-like container for a "bunch" of triples that share some useful
+ property - typically they all have the same subject, predicate or object,
+ because the bunch is the value of a node-keyed map in a
+ <a href="../../store/fast/FastTripleStore.html" title="class in org.apache.jena.mem.store.fast"><code>FastTripleStore</code></a>.</div>
 </div>
 </div>
 <div class="caption"><span>Classes in <a href="../../store/fast/package-summary.html">org.apache.jena.mem.store.fast</a> that implement <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></span></div>
@@ -102,13 +118,31 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="../../store/fast/FastArrayBunch.html" class="type-name-link" title="class in org.apache.jena.mem.store.fast">FastArrayBunch</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">An ArrayBunch implements TripleBunch with a linear search of a short-ish
- array of Triples.</div>
+<div class="block">Linear-scan implementation of <a href="../../store/fast/FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast"><code>FastTripleBunch</code></a> backed by a packed
+ <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph"><code>Triple</code></a> array.</div>
 </div>
 <div class="col-first odd-row-color"><code>class&nbsp;</code></div>
 <div class="col-second odd-row-color"><code><a href="../../store/fast/FastHashedTripleBunch.html" class="type-name-link" title="class in org.apache.jena.mem.store.fast">FastHashedTripleBunch</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A set of triples - backed by <a href="../FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a>.</div>
+<div class="block">Hashed implementation of <a href="../../store/fast/FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast"><code>FastTripleBunch</code></a> built on top of
+ <a href="../FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a>.</div>
+</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="org.apache.jena.mem.store.indexed">
+<h2>Uses of <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a> in <a href="../../store/indexed/package-summary.html">org.apache.jena.mem.store.indexed</a></h2>
+<div class="caption"><span>Classes in <a href="../../store/indexed/package-summary.html">org.apache.jena.mem.store.indexed</a> that implement <a href="../JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="../../store/indexed/TripleSet.html" class="type-name-link" title="class in org.apache.jena.mem.store.indexed">TripleSet</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a href="../FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a> of <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph"><code>Triple</code></a>s used as the canonical triple
+ collection inside <a href="../../store/indexed/IndexedSetTripleStore.html" title="class in org.apache.jena.mem.store.indexed"><code>IndexedSetTripleStore</code></a>.</div>
 </div>
 </div>
 </section>

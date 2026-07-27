@@ -103,13 +103,17 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SparseArraySpliterator&lt;E&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Spliterator.html" title="class or interface in java.util" class="external-link">Spliterator</a>&lt;E&gt;</span></div>
-<div class="block">A spliterator for sparse arrays. This spliterator will iterate over the array
- skipping null entries.
+<div class="block">Top-level spliterator over a sparse array slice <code>[0, toIndex)</code>,
+ iterating from high index to low and skipping <code>null</code> entries.
+ Produced for backing arrays such as those of
+ <a href="../collection/FastHashBase.html" title="class in org.apache.jena.mem.collection"><code>FastHashBase</code></a>, where removed slots
+ are represented by <code>null</code>.
  <p>
- This spliterator supports splitting into sub-spliterators.
- <p>
- The spliterator will check for concurrent modifications by invoking a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link"><code>Runnable</code></a>
- before each action.</div>
+ Supports splitting into <a href="SparseArraySubSpliterator.html" title="class in org.apache.jena.mem.spliterator"><code>SparseArraySubSpliterator</code></a> children for
+ parallel traversal. Detects concurrent modifications by snapshotting
+ <code>set.size()</code> at construction time and rechecking it at each
+ advance/forEach boundary; throws <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>
+ if the size has changed.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -139,16 +143,16 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(E%5B%5D,int,java.lang.Runnable)" class="member-name-link">SparseArraySpliterator</a><wbr>(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(E%5B%5D,int,org.apache.jena.mem.collection.Sized)" class="member-name-link">SparseArraySpliterator</a><wbr>(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
  int&nbsp;toIndex,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;checkForConcurrentModification)</code></div>
+ <a href="../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a>&nbsp;set)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a spliterator for the given array, with the given size.</div>
+<div class="block">Create a spliterator over <code>entries[0 .. toIndex)</code>, skipping nulls.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(E%5B%5D,java.lang.Runnable)" class="member-name-link">SparseArraySpliterator</a><wbr>(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;checkForConcurrentModification)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(E%5B%5D,org.apache.jena.mem.collection.Sized)" class="member-name-link">SparseArraySpliterator</a><wbr>(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
+ <a href="../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a>&nbsp;set)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Create a spliterator for the given array, with the given size.</div>
+<div class="block">Create a spliterator over the entire array, skipping nulls.</div>
 </div>
 </div>
 </section>
@@ -200,30 +204,30 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(E[],int,java.lang.Runnable)">
-<h3 id="&lt;init&gt;(java.lang.Object[],int,java.lang.Runnable)">SparseArraySpliterator</h3>
+<section class="detail" id="&lt;init&gt;(E[],int,org.apache.jena.mem.collection.Sized)">
+<h3 id="&lt;init&gt;(java.lang.Object[],int,org.apache.jena.mem.collection.Sized)">SparseArraySpliterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SparseArraySpliterator</span><wbr><span class="parameters">(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
  int&nbsp;toIndex,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;checkForConcurrentModification)</span></div>
-<div class="block">Create a spliterator for the given array, with the given size.</div>
+ <a href="../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a>&nbsp;set)</span></div>
+<div class="block">Create a spliterator over <code>entries[0 .. toIndex)</code>, skipping nulls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entries</code> - the array</dd>
-<dd><code>toIndex</code> - the index of the last element, exclusive</dd>
-<dd><code>checkForConcurrentModification</code> - runnable to check for concurrent modifications</dd>
+<dd><code>entries</code> - the backing array (not copied)</dd>
+<dd><code>toIndex</code> - exclusive upper bound on the iterated slice</dd>
+<dd><code>set</code> - the owning collection used to detect concurrent modifications</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(E[],java.lang.Runnable)">
-<h3 id="&lt;init&gt;(java.lang.Object[],java.lang.Runnable)">SparseArraySpliterator</h3>
+<section class="detail" id="&lt;init&gt;(E[],org.apache.jena.mem.collection.Sized)">
+<h3 id="&lt;init&gt;(java.lang.Object[],org.apache.jena.mem.collection.Sized)">SparseArraySpliterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SparseArraySpliterator</span><wbr><span class="parameters">(<a href="SparseArraySpliterator.html" title="type parameter in SparseArraySpliterator">E</a>[]&nbsp;entries,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;checkForConcurrentModification)</span></div>
-<div class="block">Create a spliterator for the given array, with the given size.</div>
+ <a href="../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a>&nbsp;set)</span></div>
+<div class="block">Create a spliterator over the entire array, skipping nulls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entries</code> - the array</dd>
-<dd><code>checkForConcurrentModification</code> - runnable to check for concurrent modifications</dd>
+<dd><code>entries</code> - the backing array (not copied)</dd>
+<dd><code>set</code> - the owning collection used to detect concurrent modifications</dd>
 </dl>
 </section>
 </li>

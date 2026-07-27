@@ -90,7 +90,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dd><code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
@@ -99,9 +99,16 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">FastTripleBunch</span><span class="extends-implements">
 extends <a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;, org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</span></div>
-<div class="block">A bunch of triples - a stripped-down set with specialized methods. A
- bunch is expected to store triples that share some useful property
- (such as having the same subject or predicate).</div>
+<div class="block">Set-like container for a "bunch" of triples that share some useful
+ property - typically they all have the same subject, predicate or object,
+ because the bunch is the value of a node-keyed map in a
+ <a href="FastTripleStore.html" title="class in org.apache.jena.mem.store.fast"><code>FastTripleStore</code></a>.
+ <p>
+ The interface is a stripped-down set with a few extras tuned for the
+ triple-store hot path; concrete implementations are
+ <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a> (linear scan, used while the bunch is small) and
+ <a href="FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastHashedTripleBunch</code></a> (hashed, used once the bunch grows past a
+ threshold).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,12 +126,14 @@ extends <a href="../../collection/JenaSetHashOptimized.html" title="interface in
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#anyMatchRandomOrder(java.util.function.Predicate)" class="member-name-link">anyMatchRandomOrder</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;predicate)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">This method is used to optimize _PO match operations.</div>
+<div class="block">Predicate test that scans elements in hash-table order rather than
+ dense insertion order.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isArray()" class="member-name-link">isArray</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Answer true iff this bunch is implemented as an array.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>).</div>
 </div>
 </div>
 </div>
@@ -134,13 +143,16 @@ extends <a href="../../collection/JenaSetHashOptimized.html" title="interface in
 <code>copy</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaMapSetCommon">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a></h3>
-<code><a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/JenaMapSetCommon.html#clear()">clear</a>, <a href="../../collection/JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="../../collection/JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="../../collection/JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="../../collection/JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="../../collection/JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="../../collection/JenaMapSetCommon.html#size()">size</a>, <a href="../../collection/JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
+<code><a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/JenaMapSetCommon.html#clear()">clear</a>, <a href="../../collection/JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="../../collection/JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="../../collection/JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="../../collection/JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="../../collection/JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="../../collection/JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSet">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a></h3>
-<code><a href="../../collection/JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="../../collection/JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
+<code><a href="../../collection/JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="../../collection/JenaSet.html#forEach(java.util.function.Consumer)">forEach</a>, <a href="../../collection/JenaSet.html#iterator()">iterator</a>, <a href="../../collection/JenaSet.html#spliterator()">spliterator</a>, <a href="../../collection/JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSetHashOptimized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></h3>
 <code><a href="../../collection/JenaSetHashOptimized.html#addUnchecked(E,int)">addUnchecked</a>, <a href="../../collection/JenaSetHashOptimized.html#removeUnchecked(E,int)">removeUnchecked</a>, <a href="../../collection/JenaSetHashOptimized.html#tryAdd(E,int)">tryAdd</a>, <a href="../../collection/JenaSetHashOptimized.html#tryRemove(E,int)">tryRemove</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.Sized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></h3>
+<code><a href="../../collection/Sized.html#size()">size</a></code></div>
 </section>
 </li>
 </ul>
@@ -156,11 +168,12 @@ extends <a href="../../collection/JenaSetHashOptimized.html" title="interface in
 <section class="detail" id="isArray()">
 <h3>isArray</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">isArray</span>()</div>
-<div class="block">Answer true iff this bunch is implemented as an array.
- This field is used to optimize some operations by avoiding the need for instanceOf tests.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>). Exposed as an explicit method so callers can
+ avoid <code>instanceof</code> checks on this hot path.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>true iff this bunch is implemented as an arrays</dd>
+<dd><code>true</code> if this bunch is array-backed</dd>
 </dl>
 </section>
 </li>
@@ -168,15 +181,19 @@ extends <a href="../../collection/JenaSetHashOptimized.html" title="interface in
 <section class="detail" id="anyMatchRandomOrder(java.util.function.Predicate)">
 <h3>anyMatchRandomOrder</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">anyMatchRandomOrder</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;predicate)</span></div>
-<div class="block">This method is used to optimize _PO match operations.
- The <a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)"><code>JenaMapSetCommon.anyMatch(Predicate)</code></a> method is faster if there are only a few matches.
- This method is faster if there are many matches and the set is ordered in an unfavorable way.
- _PO matches usually fall into this category.</div>
+<div class="block">Predicate test that scans elements in hash-table order rather than
+ dense insertion order. Tuned for <code>_PO</code> (any-predicate-object)
+ matches.
+ <p>
+ <a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)"><code>JenaMapSetCommon.anyMatch(Predicate)</code></a> is faster when matches
+ are rare or absent; this method is faster when many matches exist and
+ the dense ordering would force scanning past clustered non-matches
+ before finding a hit. Both variants short-circuit on the first match.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>predicate</code> - the predicate to match</dd>
+<dd><code>predicate</code> - the predicate to test against each triple</dd>
 <dt>Returns:</dt>
-<dd>true if any triple in the bunch matches the predicate</dd>
+<dd><code>true</code> if any triple in the bunch satisfies the predicate</dd>
 </dl>
 </section>
 </li>

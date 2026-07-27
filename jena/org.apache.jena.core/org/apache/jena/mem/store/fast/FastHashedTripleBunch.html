@@ -97,13 +97,16 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code>, <code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FastHashedTripleBunch</span>
 <span class="extends-implements">extends <a href="../../collection/FastHashSet.html" title="class in org.apache.jena.mem.collection">FastHashSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;
 implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></span></div>
-<div class="block">A set of triples - backed by <a href="../../collection/FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a>.</div>
+<div class="block">Hashed implementation of <a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast"><code>FastTripleBunch</code></a> built on top of
+ <a href="../../collection/FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a>. Used by <a href="FastTripleStore.html" title="class in org.apache.jena.mem.store.fast"><code>FastTripleStore</code></a> once a bunch grows
+ past the size threshold at which a linear-scan <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>
+ stops being faster.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -112,8 +115,8 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
-<h2 id="nested-classes-inherited-from-class-org.apache.jena.mem.collection.FastHashSet">Nested classes/interfaces inherited from class&nbsp;org.apache.jena.mem.collection.<a href="../../collection/FastHashSet.html" title="class in org.apache.jena.mem.collection">FastHashSet</a></h2>
-<code><a href="../../collection/FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="../../collection/FastHashSet.IndexedKey.html" title="type parameter in FastHashSet.IndexedKey">K</a>&gt;</code></div>
+<h2 id="nested-classes-inherited-from-class-org.apache.jena.mem.collection.FastHashBase">Nested classes/interfaces inherited from class&nbsp;org.apache.jena.mem.collection.<a href="../../collection/FastHashBase.html" title="class in org.apache.jena.mem.collection">FastHashBase</a></h2>
+<code><a href="../../collection/FastHashBase.KeyAndIndexConsumer.html" title="interface in org.apache.jena.mem.collection">FastHashBase.KeyAndIndexConsumer</a>&lt;<a href="../../collection/FastHashBase.KeyAndIndexConsumer.html" title="type parameter in FastHashBase.KeyAndIndexConsumer">K</a>&gt;</code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -125,10 +128,12 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">FastHashedTripleBunch</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Creates an empty hashed bunch with the default initial capacity.</div>
+</div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.apache.jena.mem.collection.JenaSet)" class="member-name-link">FastHashedTripleBunch</a><wbr>(<a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;set)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Create a new triple bunch from the given set of triples.</div>
+<div class="block">Create a new hashed bunch pre-populated from the given set of triples.</div>
 </div>
 </div>
 </section>
@@ -150,17 +155,18 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isArray()" class="member-name-link">isArray</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Answer true iff this bunch is implemented as an array.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>).</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.FastHashSet">Methods inherited from class&nbsp;org.apache.jena.mem.collection.<a href="../../collection/FastHashSet.html" title="class in org.apache.jena.mem.collection">FastHashSet</a></h3>
-<code><a href="../../collection/FastHashSet.html#addAndGetIndex(K)">addAndGetIndex</a>, <a href="../../collection/FastHashSet.html#addAndGetIndex(K,int)">addAndGetIndex</a>, <a href="../../collection/FastHashSet.html#addUnchecked(K)">addUnchecked</a>, <a href="../../collection/FastHashSet.html#addUnchecked(K,int)">addUnchecked</a>, <a href="../../collection/FastHashSet.html#getKeyAt(int)">getKeyAt</a>, <a href="../../collection/FastHashSet.html#indexedKeyIterator()">indexedKeyIterator</a>, <a href="../../collection/FastHashSet.html#indexedKeySpliterator()">indexedKeySpliterator</a>, <a href="../../collection/FastHashSet.html#indexedKeyStream()">indexedKeyStream</a>, <a href="../../collection/FastHashSet.html#indexedKeyStreamParallel()">indexedKeyStreamParallel</a>, <a href="../../collection/FastHashSet.html#tryAdd(K)">tryAdd</a>, <a href="../../collection/FastHashSet.html#tryAdd(K,int)">tryAdd</a></code></div>
+<code><a href="../../collection/FastHashSet.html#addAndGetIndex(K)">addAndGetIndex</a>, <a href="../../collection/FastHashSet.html#addUnchecked(K)">addUnchecked</a>, <a href="../../collection/FastHashSet.html#addUnchecked(K,int)">addUnchecked</a>, <a href="../../collection/FastHashSet.html#forEach(java.util.function.Consumer)">forEach</a>, <a href="../../collection/FastHashSet.html#tryAdd(K)">tryAdd</a>, <a href="../../collection/FastHashSet.html#tryAdd(K,int)">tryAdd</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.FastHashBase">Methods inherited from class&nbsp;org.apache.jena.mem.collection.<a href="../../collection/FastHashBase.html" title="class in org.apache.jena.mem.collection">FastHashBase</a></h3>
-<code><a href="../../collection/FastHashBase.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/FastHashBase.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a>, <a href="../../collection/FastHashBase.html#clear()">clear</a>, <a href="../../collection/FastHashBase.html#containsKey(K)">containsKey</a>, <a href="../../collection/FastHashBase.html#isEmpty()">isEmpty</a>, <a href="../../collection/FastHashBase.html#keyIterator()">keyIterator</a>, <a href="../../collection/FastHashBase.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/FastHashBase.html#removeAndGetIndex(K)">removeAndGetIndex</a>, <a href="../../collection/FastHashBase.html#removeAndGetIndex(K,int)">removeAndGetIndex</a>, <a href="../../collection/FastHashBase.html#removeUnchecked(K)">removeUnchecked</a>, <a href="../../collection/FastHashBase.html#removeUnchecked(K,int)">removeUnchecked</a>, <a href="../../collection/FastHashBase.html#size()">size</a>, <a href="../../collection/FastHashBase.html#tryRemove(K)">tryRemove</a>, <a href="../../collection/FastHashBase.html#tryRemove(K,int)">tryRemove</a></code></div>
+<code><a href="../../collection/FastHashBase.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/FastHashBase.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a>, <a href="../../collection/FastHashBase.html#clear()">clear</a>, <a href="../../collection/FastHashBase.html#containsKey(K)">containsKey</a>, <a href="../../collection/FastHashBase.html#forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer)">forEachKey</a>, <a href="../../collection/FastHashBase.html#getKeyAt(int)">getKeyAt</a>, <a href="../../collection/FastHashBase.html#indexOf(K)">indexOf</a>, <a href="../../collection/FastHashBase.html#isEmpty()">isEmpty</a>, <a href="../../collection/FastHashBase.html#keyIterator()">keyIterator</a>, <a href="../../collection/FastHashBase.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/FastHashBase.html#removeAndGetIndex(K)">removeAndGetIndex</a>, <a href="../../collection/FastHashBase.html#removeUnchecked(K)">removeUnchecked</a>, <a href="../../collection/FastHashBase.html#removeUnchecked(K,int)">removeUnchecked</a>, <a href="../../collection/FastHashBase.html#size()">size</a>, <a href="../../collection/FastHashBase.html#tryRemove(K)">tryRemove</a>, <a href="../../collection/FastHashBase.html#tryRemove(K,int)">tryRemove</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -169,13 +175,19 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <code><a href="FastTripleBunch.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaMapSetCommon">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a></h3>
-<code><a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/JenaMapSetCommon.html#clear()">clear</a>, <a href="../../collection/JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="../../collection/JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="../../collection/JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="../../collection/JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="../../collection/JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="../../collection/JenaMapSetCommon.html#size()">size</a>, <a href="../../collection/JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
+<code><a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="../../collection/JenaMapSetCommon.html#clear()">clear</a>, <a href="../../collection/JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="../../collection/JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="../../collection/JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="../../collection/JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="../../collection/JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="../../collection/JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="../../collection/JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSet">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a></h3>
-<code><a href="../../collection/JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="../../collection/JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
+<code><a href="../../collection/JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="../../collection/JenaSet.html#forEach(java.util.function.Consumer)">forEach</a>, <a href="../../collection/JenaSet.html#iterator()">iterator</a>, <a href="../../collection/JenaSet.html#spliterator()">spliterator</a>, <a href="../../collection/JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSetHashOptimized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></h3>
 <code><a href="../../collection/JenaSetHashOptimized.html#addUnchecked(E,int)">addUnchecked</a>, <a href="../../collection/JenaSetHashOptimized.html#removeUnchecked(E,int)">removeUnchecked</a>, <a href="../../collection/JenaSetHashOptimized.html#tryAdd(E,int)">tryAdd</a>, <a href="../../collection/JenaSetHashOptimized.html#tryRemove(E,int)">tryRemove</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSetIndexed">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a></h3>
+<code><a href="../../collection/JenaSetIndexed.html#getKeyAt(int)">getKeyAt</a>, <a href="../../collection/JenaSetIndexed.html#indexOf(E)">indexOf</a>, <a href="../../collection/JenaSetIndexed.html#removeAndGetIndex(E)">removeAndGetIndex</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.Sized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></h3>
+<code><a href="../../collection/Sized.html#size()">size</a></code></div>
 </section>
 </li>
 </ul>
@@ -191,10 +203,14 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <section class="detail" id="&lt;init&gt;(org.apache.jena.mem.collection.JenaSet)">
 <h3>FastHashedTripleBunch</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FastHashedTripleBunch</span><wbr><span class="parameters">(<a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;set)</span></div>
-<div class="block">Create a new triple bunch from the given set of triples.</div>
+<div class="block">Create a new hashed bunch pre-populated from the given set of triples.
+ The initial capacity is chosen at 1.5x the source size, so the new bunch
+ fits the existing triples and has some headroom for growth before it
+ needs to rehash.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>set</code> - the set of triples</dd>
+<dd><code>set</code> - the source set of triples (typically the array bunch being
+            promoted)</dd>
 </dl>
 </section>
 </li>
@@ -202,6 +218,7 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <section class="detail" id="&lt;init&gt;()">
 <h3>FastHashedTripleBunch</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FastHashedTripleBunch</span>()</div>
+<div class="block">Creates an empty hashed bunch with the default initial capacity.</div>
 </section>
 </li>
 </ul>
@@ -217,13 +234,14 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>isArray</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isArray</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="FastTripleBunch.html#isArray()">FastTripleBunch</a></code></span></div>
-<div class="block">Answer true iff this bunch is implemented as an array.
- This field is used to optimize some operations by avoiding the need for instanceOf tests.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>). Exposed as an explicit method so callers can
+ avoid <code>instanceof</code> checks on this hot path.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="FastTripleBunch.html#isArray()">isArray</a></code>&nbsp;in interface&nbsp;<code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
 <dt>Returns:</dt>
-<dd>true iff this bunch is implemented as an arrays</dd>
+<dd><code>true</code> if this bunch is array-backed</dd>
 </dl>
 </section>
 </li>

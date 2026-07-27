@@ -41,7 +41,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li><a href="#nested-class-summary">Nested</a></li>
 <li>Field</li>
-<li>Constr</li>
+<li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 </li>
@@ -49,7 +49,7 @@ loadScripts(document, 'script');</script>
 <p>Detail:</p>
 <ul>
 <li>Field</li>
-<li>Constr</li>
+<li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
 </li>
@@ -61,13 +61,13 @@ loadScripts(document, 'script');</script>
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
@@ -94,24 +94,30 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>K</code> - the element type</dd>
+</dl>
+<dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;K&gt;</code>, <code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;K&gt;</code>, <code><a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;K&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;K&gt;</code>, <code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;K&gt;</code>, <code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;K&gt;</code>, <code><a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;K&gt;</code>, <code><a href="JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;K&gt;</code>, <code><a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../store/fast/FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast">FastHashedTripleBunch</a></code>, <code><a href="../store/roaring/TripleSet.html" title="class in org.apache.jena.mem.store.roaring">TripleSet</a></code></dd>
+<dd><code><a href="../store/fast/FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast">FastHashedTripleBunch</a></code>, <code><a href="../store/indexed/TripleSet.html" title="class in org.apache.jena.mem.store.indexed">TripleSet</a></code>, <code><a href="../store/roaring/TripleSet.html" title="class in org.apache.jena.mem.store.roaring">TripleSet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">FastHashSet&lt;K&gt;</span>
 <span class="extends-implements">extends <a href="FastHashBase.html" title="class in org.apache.jena.mem.collection">FastHashBase</a>&lt;K&gt;
-implements <a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;K&gt;</span></div>
-<div class="block">Set which grows, if needed but never shrinks.
- This set does not guarantee any order. Although due to the way it is implemented the elements have a certain order.
- This set does not allow null values.
- This set is not thread safe.
- It´s purpose is to support fast add, remove, contains and stream / iterate operations.
- Only remove operations are not as fast as in <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashSet.html" title="class or interface in java.util" class="external-link"><code>HashSet</code></a>
- Iterating over this set not get much faster again after removing elements because the set is not compacted.</div>
+implements <a href="JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;K&gt;</span></div>
+<div class="block">Hash set specialization built on top of <a href="FastHashBase.html" title="class in org.apache.jena.mem.collection"><code>FastHashBase</code></a>.
+ Grows on demand but never shrinks, does not guarantee iteration order,
+ does not allow <code>null</code> elements, and is not thread-safe.
+ <p>
+ Optimized for fast <code>add</code> / <code>containsKey</code> / <code>stream</code> /
+ iterate operations. Removal is somewhat slower than in
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashSet.html" title="class or interface in java.util" class="external-link"><code>HashSet</code></a> because of the back-shifting performed on the
+ probe table. Iteration speed does not recover after many removals because
+ the dense <code>keys</code> array is not compacted.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,15 +125,26 @@ implements <a href="JenaSetHashOptimized.html" title="interface in org.apache.je
 <li>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
-<div class="caption"><span>Nested Classes</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Class</div>
+<div class="inherited-list">
+<h2 id="nested-classes-inherited-from-class-org.apache.jena.mem.collection.FastHashBase">Nested classes/interfaces inherited from class&nbsp;org.apache.jena.mem.collection.<a href="FastHashBase.html" title="class in org.apache.jena.mem.collection">FastHashBase</a></h2>
+<code><a href="FastHashBase.KeyAndIndexConsumer.html" title="interface in org.apache.jena.mem.collection">FastHashBase.KeyAndIndexConsumer</a>&lt;<a href="FastHashBase.KeyAndIndexConsumer.html" title="type parameter in FastHashBase.KeyAndIndexConsumer">K</a>&gt;</code></div>
+</section>
+</li>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<li>
+<section class="constructor-summary" id="constructor-summary">
+<h2>Constructor Summary</h2>
+<div class="caption"><span>Constructors</span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="FastHashSet.IndexedKey.html" class="type-name-link" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.IndexedKey.html" title="type parameter in FastHashSet.IndexedKey">K</a>&gt;</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">FastHashSet</a>()</code></div>
 <div class="col-last even-row-color">
-<div class="block">Entry pairing a key with its index in the set.</div>
+<div class="block">Creates a set with the default initial capacity.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">FastHashSet</a><wbr>(int&nbsp;initialSize)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Creates a set with the given initial key-array capacity.</div>
 </div>
 </div>
 </section>
@@ -144,80 +161,93 @@ implements <a href="JenaSetHashOptimized.html" title="interface in org.apache.je
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAndGetIndex(K)" class="member-name-link">addAndGetIndex</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAndGetIndex(K)" class="member-name-link">addAndGetIndex</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add and get the index of the added element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAndGetIndex(K,int)" class="member-name-link">addAndGetIndex</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
- int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add and get the index of the added element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(K)" class="member-name-link">addUnchecked</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the key to the set without checking if it is already present.</div>
+<div class="block">Add an element and return the index it was stored at.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(K,int)" class="member-name-link">addUnchecked</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(K)" class="member-name-link">addUnchecked</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the key to the set without checking whether it is already present.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(K,int)" class="member-name-link">addUnchecked</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forEach(java.util.function.Consumer)" class="member-name-link">forEach</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&nbsp;action)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FastHashSet.html" title="type parameter in FastHashSet">K</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getKeyAt(int)" class="member-name-link">getKeyAt</a><wbr>(int&nbsp;i)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryAdd(K)" class="member-name-link">tryAdd</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets the key at the given index.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a><wbr>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexedKeyIterator()" class="member-name-link">indexedKeyIterator</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get an iterator over pairs of keys and their indices in the set.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Spliterator.html" title="class or interface in java.util" class="external-link">Spliterator</a><wbr>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexedKeySpliterator()" class="member-name-link">indexedKeySpliterator</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get a spliterator over pairs of keys and their indices in the set.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexedKeyStream()" class="member-name-link">indexedKeyStream</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get a stream over pairs of keys and their indices in the set.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexedKeyStreamParallel()" class="member-name-link">indexedKeyStreamParallel</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get a parallel stream over pairs of keys and their indices in the set.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryAdd(K)" class="member-name-link">tryAdd</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the key to the set if it is not already present.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryAdd(K,int)" class="member-name-link">tryAdd</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryAdd(K,int)" class="member-name-link">tryAdd</a><wbr>(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
+</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.FastHashBase">Methods inherited from class&nbsp;org.apache.jena.mem.collection.<a href="FastHashBase.html" title="class in org.apache.jena.mem.collection">FastHashBase</a></h3>
-<code><a href="FastHashBase.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="FastHashBase.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a>, <a href="FastHashBase.html#clear()">clear</a>, <a href="FastHashBase.html#containsKey(K)">containsKey</a>, <a href="FastHashBase.html#isEmpty()">isEmpty</a>, <a href="FastHashBase.html#keyIterator()">keyIterator</a>, <a href="FastHashBase.html#keySpliterator()">keySpliterator</a>, <a href="FastHashBase.html#removeAndGetIndex(K)">removeAndGetIndex</a>, <a href="FastHashBase.html#removeAndGetIndex(K,int)">removeAndGetIndex</a>, <a href="FastHashBase.html#removeUnchecked(K)">removeUnchecked</a>, <a href="FastHashBase.html#removeUnchecked(K,int)">removeUnchecked</a>, <a href="FastHashBase.html#size()">size</a>, <a href="FastHashBase.html#tryRemove(K)">tryRemove</a>, <a href="FastHashBase.html#tryRemove(K,int)">tryRemove</a></code></div>
+<code><a href="FastHashBase.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="FastHashBase.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a>, <a href="FastHashBase.html#clear()">clear</a>, <a href="FastHashBase.html#containsKey(K)">containsKey</a>, <a href="FastHashBase.html#forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer)">forEachKey</a>, <a href="FastHashBase.html#getKeyAt(int)">getKeyAt</a>, <a href="FastHashBase.html#indexOf(K)">indexOf</a>, <a href="FastHashBase.html#isEmpty()">isEmpty</a>, <a href="FastHashBase.html#keyIterator()">keyIterator</a>, <a href="FastHashBase.html#keySpliterator()">keySpliterator</a>, <a href="FastHashBase.html#removeAndGetIndex(K)">removeAndGetIndex</a>, <a href="FastHashBase.html#removeUnchecked(K)">removeUnchecked</a>, <a href="FastHashBase.html#removeUnchecked(K,int)">removeUnchecked</a>, <a href="FastHashBase.html#size()">size</a>, <a href="FastHashBase.html#tryRemove(K)">tryRemove</a>, <a href="FastHashBase.html#tryRemove(K,int)">tryRemove</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaMapSetCommon">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a></h3>
-<code><a href="JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="JenaMapSetCommon.html#clear()">clear</a>, <a href="JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="JenaMapSetCommon.html#size()">size</a>, <a href="JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
+<code><a href="JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="JenaMapSetCommon.html#clear()">clear</a>, <a href="JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSet">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a></h3>
+<code><a href="JenaSet.html#iterator()">iterator</a>, <a href="JenaSet.html#spliterator()">spliterator</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSetHashOptimized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a></h3>
 <code><a href="JenaSetHashOptimized.html#removeUnchecked(E,int)">removeUnchecked</a>, <a href="JenaSetHashOptimized.html#tryRemove(E,int)">tryRemove</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSetIndexed">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a></h3>
+<code><a href="JenaSetIndexed.html#getKeyAt(int)">getKeyAt</a>, <a href="JenaSetIndexed.html#indexOf(E)">indexOf</a>, <a href="JenaSetIndexed.html#removeAndGetIndex(E)">removeAndGetIndex</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.Sized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></h3>
+<code><a href="Sized.html#size()">size</a></code></div>
 </section>
 </li>
 </ul>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<li>
+<section class="constructor-details" id="constructor-detail">
+<h2>Constructor Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="&lt;init&gt;(int)">
+<h3>FastHashSet</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FastHashSet</span><wbr><span class="parameters">(int&nbsp;initialSize)</span></div>
+<div class="block">Creates a set with the given initial key-array capacity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>initialSize</code> - the initial capacity of the keys array</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;()">
+<h3>FastHashSet</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FastHashSet</span>()</div>
+<div class="block">Creates a set with the default initial capacity.</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ============ METHOD DETAIL ========== -->
 <li>
 <section class="method-details" id="method-detail">
@@ -233,48 +263,47 @@ implements <a href="JenaSetHashOptimized.html" title="interface in org.apache.je
 <dt>Specified by:</dt>
 <dd><code><a href="JenaSet.html#tryAdd(E)">tryAdd</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>key</code> - the key to add</dd>
+<dd><code>key</code> - the key to add. (<code>null</code> is not allowed)</dd>
 <dt>Returns:</dt>
-<dd>true if the key was added, false if it was already present</dd>
+<dd><code>true</code> if the key was added, <code>false</code> if it was already present</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="tryAdd(K,int)">
 <h3 id="tryAdd(java.lang.Object,int)">tryAdd</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryAdd</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryAdd</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="JenaSetHashOptimized.html#tryAdd(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="JenaSetHashOptimized.html#tryAdd(E,int)">tryAdd</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>.</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if added, <code>false</code> if already present</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="addAndGetIndex(K)">
 <h3 id="addAndGetIndex(java.lang.Object)">addAndGetIndex</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addAndGetIndex</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value)</span></div>
-<div class="block">Add and get the index of the added element.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addAndGetIndex</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</span></div>
+<div class="block">Add an element and return the index it was stored at.
+ If the element is already present, returns the bitwise complement
+ (<code>~existingIndex</code>) of the existing index, so callers can
+ distinguish "newly inserted" from "already present" while still
+ recovering the index in both cases.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="JenaSetIndexed.html#addAndGetIndex(E)">addAndGetIndex</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>value</code> - the value to add</dd>
+<dd><code>key</code> - the element to add</dd>
 <dt>Returns:</dt>
-<dd>the index of the added element or the inverse (~) index of the existing element</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="addAndGetIndex(K,int)">
-<h3 id="addAndGetIndex(java.lang.Object,int)">addAndGetIndex</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addAndGetIndex</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
- int&nbsp;hashCode)</span></div>
-<div class="block">Add and get the index of the added element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>value</code> - the value to add</dd>
-<dd><code>hashCode</code> - the hash code of the value. This is a performance optimization.</dd>
-<dt>Returns:</dt>
-<dd>the index of the added element or the inverse (~) index of the existing element</dd>
+<dd>the new index, or <code>~existingIndex</code> if already present</dd>
 </dl>
 </section>
 </li>
@@ -283,85 +312,45 @@ implements <a href="JenaSetHashOptimized.html" title="interface in org.apache.je
 <h3 id="addUnchecked(java.lang.Object)">addUnchecked</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="JenaSet.html#addUnchecked(E)">JenaSet</a></code></span></div>
-<div class="block">Add the key to the set without checking if it is already present.
- Attention: This method must only be used if it is guaranteed that the key is not already present.</div>
+<div class="block">Add the key to the set without checking whether it is already present.
+ <p>
+ Attention: this method must only be used if the caller has ensured that
+ the key is not already in the set; otherwise the set's invariants will
+ break (duplicates may be inserted).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="JenaSet.html#addUnchecked(E)">addUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>key</code> - the key to add</dd>
+<dd><code>key</code> - the key to add. (<code>null</code> is not allowed)</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="addUnchecked(K,int)">
 <h3 id="addUnchecked(java.lang.Object,int)">addUnchecked</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;value,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="JenaSetHashOptimized.html#addUnchecked(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present. The caller MUST ensure the key is absent.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="JenaSetHashOptimized.html#addUnchecked(E,int)">addUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getKeyAt(int)">
-<h3>getKeyAt</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FastHashSet.html" title="type parameter in FastHashSet">K</a></span>&nbsp;<span class="element-name">getKeyAt</span><wbr><span class="parameters">(int&nbsp;i)</span></div>
-<div class="block">Gets the key at the given index.</div>
-<dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>i</code> - the index</dd>
-<dt>Returns:</dt>
-<dd>the key at the given index</dd>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>. (<code>null</code> is not allowed)</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="indexedKeyIterator()">
-<h3>indexedKeyIterator</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</span>&nbsp;<span class="element-name">indexedKeyIterator</span>()</div>
-<div class="block">Get an iterator over pairs of keys and their indices in the set.
- The iterator is not thread safe.</div>
+<section class="detail" id="forEach(java.util.function.Consumer)">
+<h3>forEach</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">forEach</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&nbsp;action)</span></div>
 <dl class="notes">
-<dt>Returns:</dt>
-<dd>an iterator over pairs of keys and their indices in the set</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="indexedKeySpliterator()">
-<h3>indexedKeySpliterator</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Spliterator.html" title="class or interface in java.util" class="external-link">Spliterator</a>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</span>&nbsp;<span class="element-name">indexedKeySpliterator</span>()</div>
-<div class="block">Get a spliterator over pairs of keys and their indices in the set.
- The spliterator is not thread safe.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>a spliterator over pairs of keys and their indices in the set</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="indexedKeyStream()">
-<h3>indexedKeyStream</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</span>&nbsp;<span class="element-name">indexedKeyStream</span>()</div>
-<div class="block">Get a stream over pairs of keys and their indices in the set.
- The stream is not thread safe.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>a stream over pairs of keys and their indices in the set</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="indexedKeyStreamParallel()">
-<h3>indexedKeyStreamParallel</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="FastHashSet.IndexedKey.html" title="class in org.apache.jena.mem.collection">FastHashSet.IndexedKey</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;&gt;</span>&nbsp;<span class="element-name">indexedKeyStreamParallel</span>()</div>
-<div class="block">Get a parallel stream over pairs of keys and their indices in the set.
- The stream is not thread safe.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>a parallel stream over pairs of keys and their indices in the set</dd>
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html#forEach(java.util.function.Consumer)" title="class or interface in java.lang" class="external-link">forEach</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="JenaSet.html#forEach(java.util.function.Consumer)">forEach</a></code>&nbsp;in interface&nbsp;<code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="FastHashSet.html" title="type parameter in FastHashSet">K</a>&gt;</code></dd>
 </dl>
 </section>
 </li>

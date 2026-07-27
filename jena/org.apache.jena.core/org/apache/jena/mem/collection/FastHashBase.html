@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Summary:</p>
 <ul>
-<li>Nested</li>
+<li><a href="#nested-class-summary">Nested</a></li>
 <li>Field</li>
 <li>Constr</li>
 <li><a href="#method-summary">Method</a></li>
@@ -59,7 +59,7 @@ loadScripts(document, 'script');</script>
 <div id="navbar-sub-list">
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -97,7 +97,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;K&gt;</code></dd>
+<dd><code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;K&gt;</code>, <code><a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -107,36 +107,58 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">FastHashBase&lt;K&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;K&gt;</span></div>
-<div class="block">This is the base class for <a href="FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a> and <a href="FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a>.
- It only grows but never shrinks.
- This map does not guarantee any order. Although due to the way it is implemented the elements have a certain order.
- This map does not allow null keys.
- This map is not thread safe.
+<div class="block">Base class for <a href="FastHashSet.html" title="class in org.apache.jena.mem.collection"><code>FastHashSet</code></a> and <a href="FastHashMap.html" title="class in org.apache.jena.mem.collection"><code>FastHashMap</code></a>.
+ The collection grows on demand but never shrinks. It does not guarantee any
+ iteration order (although the implementation does produce a stable order
+ for a given insertion/deletion history). It does not allow <code>null</code>
+ keys and is not thread-safe.
+ <h2 id="internal-layout-heading">Internal layout</h2>
+ <ul>
+   <li><b>positions</b>: power-of-two sized array used as the open-addressing
+   probe table (like in <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link"><code>HashMap</code></a>). It is indexed by
+   <code>hashCode &amp;amp; (positions.length - 1)</code>. A value of <code>0</code> marks
+   an empty slot - faster to test than a <code>null</code> reference. Non-empty
+   slots store the bitwise complement (<code>~</code>) of the index of the entry
+   in the <code>keys</code>/<code>hashCodesOrDeletedIndices</code> arrays, so a real
+   stored index of <code>0</code> encodes as <code>-1</code> and is therefore distinct
+   from "empty".</li>
+   <li><b>keys</b>: dense array of keys, generally filled from index 0 up to
+   <code>keysPos</code>. Slots emptied by deletion become <code>null</code> and are
+   reused before the array is grown. The dense layout enables fast iteration.</li>
+   <li><b>hashCodesOrDeletedIndices</b>: parallel array to <code>keys</code>. For
+   live entries it stores the cached hash code of the key. For deleted slots
+   it stores the index of the previously deleted slot, forming a freelist
+   whose head is <code>lastDeletedIndex</code> (<code>-1</code> if empty).</li>
+   <li><b>keysPos</b> / <b>removedKeysCount</b>: high-water mark and freelist
+   length, respectively; the live size is <code>keysPos - removedKeysCount</code>.</li>
+ </ul>
+ The <code>keys</code> and <code>hashCodesOrDeletedIndices</code> arrays grow together
+ by approximately a factor of 1.5 (similar to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a>).
  <p>
- The positions array stores negative indices to the entries and hashCode arrays.
- The positions array is implemented as a power of two sized array. (like in <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html" title="class or interface in java.util" class="external-link"><code>HashMap</code></a>) This allows
- to use a fast modulo operation to calculate the index. The indices of the positions array are derived from the
- hashCodes.
- Any position 0 indicates an empty element. The comparison with 0 is faster than comparing elements with null.
- <p>
- The keys are stored in a keys array and the hashCodesOrDeletedIndices array
- stores the hashCodes of the keys.
- hashCodesOrDeletedIndices is also used to store the indices of the deleted keys to save memory. It works like a
- linked list of deleted keys. The index of the previously deleted key is stored in the hashCodesOrDeletedIndices
- array. lastDeletedIndex is the index of the last deleted key in the hashCodesOrDeletedIndices array and serves as
- the head of the linked list of deleted keys.
- These two arrays grow together. They grow like <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> with a factor of 1.5.
- <p>
- keysPos is the index of the next free position in the keys array.
- The keys array is usually completely filled from index 0 to keysPos. Exceptions are the deleted keys.
- Indices that have been deleted are reused for new keys before the keys array is extended.
- The dense nature of the keys array enables fast iteration.
- <p>
- The index of a key in the keys array never changes. So the index of a key can be used as a handle to the key and
- for random access.</div>
+ Once a key is inserted, its index in the <code>keys</code> array never changes
+ until it is removed. The index can therefore be used as a stable handle for
+ O(1) random access, e.g. to coordinate parallel arrays of associated data.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static interface&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="FastHashBase.KeyAndIndexConsumer.html" class="type-name-link" title="interface in org.apache.jena.mem.collection">FastHashBase.KeyAndIndexConsumer</a>&lt;<a href="FastHashBase.KeyAndIndexConsumer.html" title="type parameter in FastHashBase.KeyAndIndexConsumer">K</a>&gt;</code></div>
+<div class="col-last even-row-color">
+<div class="block">Functional interface used by <a href="#forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer)"><code>forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer&lt;K&gt;)</code></a> to receive each live
+ key along with the stable index it occupies.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -151,14 +173,13 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#anyMatch(java.util.function.Predicate)" class="member-name-link">anyMatch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;predicate)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Attentions: Due to the ordering of the keys, this method may be slow
- if matching elements are at the start of the list.</div>
+<div class="block">Check whether the collection contains any element matching the predicate.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#anyMatchRandomOrder(java.util.function.Predicate)" class="member-name-link">anyMatchRandomOrder</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;predicate)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">This method can be faster than <a href="#anyMatch(java.util.function.Predicate)"><code>anyMatch(Predicate)</code></a> if one expects
- to find many matches.</div>
+<div class="block">Like <a href="#anyMatch(java.util.function.Predicate)"><code>anyMatch(Predicate)</code></a> but scans the probe table rather than
+ the dense <code>keys</code> array, yielding a roughly hash-based order.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clear()" class="member-name-link">clear</a>()</code></div>
@@ -170,31 +191,40 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check whether the collection contains a given key.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer)" class="member-name-link">forEachKey</a><wbr>(<a href="FastHashBase.KeyAndIndexConsumer.html" title="interface in org.apache.jena.mem.collection">FastHashBase.KeyAndIndexConsumer</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;consumer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sequentially invokes <code>consumer</code> for every live key with its index.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FastHashBase.html" title="type parameter in FastHashBase">K</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getKeyAt(int)" class="member-name-link">getKeyAt</a><wbr>(int&nbsp;i)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Gets the key at the given index.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#indexOf(K)" class="member-name-link">indexOf</a><wbr>(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;key)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the index of the entry holding <code>key</code>, or <code>-1</code> if not present.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns <code>true</code> if this collection contains no elements.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a><wbr>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyIterator()" class="member-name-link">keyIterator</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../../util/iterator/ExtendedIterator.html" title="interface in org.apache.jena.util.iterator">ExtendedIterator</a><wbr>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keyIterator()" class="member-name-link">keyIterator</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get an iterator over the keys in the collection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Spliterator.html" title="class or interface in java.util" class="external-link">Spliterator</a><wbr>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keySpliterator()" class="member-name-link">keySpliterator</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Spliterator.html" title="class or interface in java.util" class="external-link">Spliterator</a><wbr>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#keySpliterator()" class="member-name-link">keySpliterator</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get a spliterator over the keys in the collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeAndGetIndex(K)" class="member-name-link">removeAndGetIndex</a><wbr>(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Removes the element at the given position.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeAndGetIndex(K,int)" class="member-name-link">removeAndGetIndex</a><wbr>(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e,
- int&nbsp;hashCode)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeAndGetIndex(K)" class="member-name-link">removeAndGetIndex</a><wbr>(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Removes the element at the given position.</div>
+<div class="block">Remove the given element and return the index it occupied before removal.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeUnchecked(K)" class="member-name-link">removeUnchecked</a><wbr>(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e)</code></div>
@@ -248,7 +278,7 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
  <code>Integer.MAX_VALUE</code>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="JenaMapSetCommon.html#size()">size</a></code>&nbsp;in interface&nbsp;<code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></dd>
+<dd><code><a href="Sized.html#size()">size</a></code>&nbsp;in interface&nbsp;<code><a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 <dt>Returns:</dt>
 <dd>the number of elements in this collection</dd>
 </dl>
@@ -281,27 +311,12 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <section class="detail" id="removeAndGetIndex(K)">
 <h3 id="removeAndGetIndex(java.lang.Object)">removeAndGetIndex</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">removeAndGetIndex</span><wbr><span class="parameters">(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e)</span></div>
-<div class="block">Removes the element at the given position.</div>
+<div class="block">Remove the given element and return the index it occupied before removal.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>e</code> - the element</dd>
+<dd><code>e</code> - the element to remove</dd>
 <dt>Returns:</dt>
-<dd>the index of the removed element or -1 if the element was not found</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="removeAndGetIndex(K,int)">
-<h3 id="removeAndGetIndex(java.lang.Object,int)">removeAndGetIndex</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">removeAndGetIndex</span><wbr><span class="parameters">(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e,
- int&nbsp;hashCode)</span></div>
-<div class="block">Removes the element at the given position.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>e</code> - the element</dd>
-<dd><code>hashCode</code> - the hash code of the element. This is a performance optimization.</dd>
-<dt>Returns:</dt>
-<dd>the index of the removed element or -1 if the element was not found</dd>
+<dd>the former index of the element, or <code>-1</code> if it was not present</dd>
 </dl>
 </section>
 </li>
@@ -311,7 +326,10 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeUnchecked</span><wbr><span class="parameters">(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;e)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="JenaMapSetCommon.html#removeUnchecked(E)">JenaMapSetCommon</a></code></span></div>
 <div class="block">Removes a key from the collection.
- Attention: Implementations may assume that the key is present.</div>
+ <p>
+ Attention: implementations may assume the key is present and may produce
+ undefined behavior (including silently corrupting internal state) if it
+ is not. Use <a href="JenaMapSetCommon.html#tryRemove(E)"><code>JenaMapSetCommon.tryRemove(Object)</code></a> when in doubt.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></dd>
@@ -360,9 +378,14 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <section class="detail" id="anyMatch(java.util.function.Predicate)">
 <h3>anyMatch</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">anyMatch</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;predicate)</span></div>
-<div class="block">Attentions: Due to the ordering of the keys, this method may be slow
- if matching elements are at the start of the list.
- Try to use <a href="#anyMatchRandomOrder(java.util.function.Predicate)"><code>anyMatchRandomOrder(Predicate)</code></a> instead.</div>
+<div class="block">Check whether the collection contains any element matching the predicate.
+ <p>
+ Iterates the keys in dense (insertion-order-ish) order. This is fast when
+ matches are rare or expected near the end of the array, but can be slow
+ when matches are clustered at the start of the array. For workloads
+ where many matches are expected, prefer <a href="#anyMatchRandomOrder(java.util.function.Predicate)"><code>anyMatchRandomOrder(Predicate)</code></a>,
+ which scans in probe-table order and tends to find matches sooner when
+ they are abundant.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a></code>&nbsp;in interface&nbsp;<code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></dd>
@@ -377,13 +400,18 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <section class="detail" id="anyMatchRandomOrder(java.util.function.Predicate)">
 <h3>anyMatchRandomOrder</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">anyMatchRandomOrder</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;predicate)</span></div>
-<div class="block">This method can be faster than <a href="#anyMatch(java.util.function.Predicate)"><code>anyMatch(Predicate)</code></a> if one expects
- to find many matches. But it is slower if one expects to find no matches or just a single one.</div>
+<div class="block">Like <a href="#anyMatch(java.util.function.Predicate)"><code>anyMatch(Predicate)</code></a> but scans the probe table rather than
+ the dense <code>keys</code> array, yielding a roughly hash-based order.
+ <p>
+ This is faster than <a href="#anyMatch(java.util.function.Predicate)"><code>anyMatch(Predicate)</code></a> when many matches are
+ expected (the predicate is more likely to short-circuit early), but
+ slower when no or only a single match exists (each iteration must
+ test against an empty slot first).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>predicate</code> - the predicate to apply to elements of this collection</dd>
+<dd><code>predicate</code> - the predicate to apply</dd>
 <dt>Returns:</dt>
-<dd><code>true</code> if any element of the collection matches the predicate</dd>
+<dd><code>true</code> if any element matches the predicate</dd>
 </dl>
 </section>
 </li>
@@ -427,6 +455,45 @@ implements <a href="JenaMapSetCommon.html" title="interface in org.apache.jena.m
 <dd><code><a href="JenaMapSetCommon.html#keySpliterator()">keySpliterator</a></code>&nbsp;in interface&nbsp;<code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;</code></dd>
 <dt>Returns:</dt>
 <dd>a spliterator over the keys in the collection</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getKeyAt(int)">
+<h3>getKeyAt</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FastHashBase.html" title="type parameter in FastHashBase">K</a></span>&nbsp;<span class="element-name">getKeyAt</span><wbr><span class="parameters">(int&nbsp;i)</span></div>
+<div class="block">Gets the key at the given index.
+ Array bounds are not checked. The caller must ensure the index is valid and corresponds to a non-null key.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>i</code> - the index</dd>
+<dt>Returns:</dt>
+<dd>the key at the given index</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="indexOf(K)">
+<h3 id="indexOf(java.lang.Object)">indexOf</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">indexOf</span><wbr><span class="parameters">(<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&nbsp;key)</span></div>
+<div class="block">Returns the index of the entry holding <code>key</code>, or <code>-1</code> if not present.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>key</code> - the key to look up</dd>
+<dt>Returns:</dt>
+<dd>the entry index, or <code>-1</code> if the key is absent</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="forEachKey(org.apache.jena.mem.collection.FastHashBase.KeyAndIndexConsumer)">
+<h3>forEachKey</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">forEachKey</span><wbr><span class="parameters">(<a href="FastHashBase.KeyAndIndexConsumer.html" title="interface in org.apache.jena.mem.collection">FastHashBase.KeyAndIndexConsumer</a>&lt;<a href="FastHashBase.html" title="type parameter in FastHashBase">K</a>&gt;&nbsp;consumer)</span></div>
+<div class="block">Sequentially invokes <code>consumer</code> for every live key with its index.
+ Skips freed slots.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>consumer</code> - receives each key/index pair</dd>
 </dl>
 </section>
 </li>

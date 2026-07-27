@@ -89,24 +89,29 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>E</code> - the element type of the set</dd>
+</dl>
+<dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;E&gt;</code>, <code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;E&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;E&gt;</code>, <code><a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;E&gt;</code>, <code><a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;E&gt;</code>, <code><a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Subinterfaces:</dt>
-<dd><code><a href="../store/fast/FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
+<dd><code><a href="../store/fast/FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code>, <code><a href="JenaSetIndexed.html" title="interface in org.apache.jena.mem.collection">JenaSetIndexed</a>&lt;E&gt;</code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../store/fast/FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast">FastArrayBunch</a></code>, <code><a href="../store/fast/FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast">FastHashedTripleBunch</a></code>, <code><a href="FastHashSet.html" title="class in org.apache.jena.mem.collection">FastHashSet</a></code>, <code><a href="../store/roaring/TripleSet.html" title="class in org.apache.jena.mem.store.roaring">TripleSet</a></code></dd>
+<dd><code><a href="../store/fast/FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast">FastArrayBunch</a></code>, <code><a href="../store/fast/FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast">FastHashedTripleBunch</a></code>, <code><a href="FastHashSet.html" title="class in org.apache.jena.mem.collection">FastHashSet</a></code>, <code><a href="../store/indexed/TripleSet.html" title="class in org.apache.jena.mem.store.indexed">TripleSet</a></code>, <code><a href="../store/roaring/TripleSet.html" title="class in org.apache.jena.mem.store.roaring">TripleSet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">JenaSetHashOptimized&lt;E&gt;</span><span class="extends-implements">
 extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;E&gt;</span></div>
-<div class="block">Extension of <a href="JenaSet.html" title="interface in org.apache.jena.mem.collection"><code>JenaSet</code></a> that allows to add and remove elements
- with a given hash code.
- This is useful if the hash code is already known.
- Attention: The hash code must be consistent with E::hashCode().</div>
+<div class="block">Extension of <a href="JenaSet.html" title="interface in org.apache.jena.mem.collection"><code>JenaSet</code></a> that lets callers supply a precomputed hash
+ code.
+ <p>
+ Attention: any caller-supplied hash code MUST equal <code>E.hashCode()</code>;
+ if it does not, the set will misbehave.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -124,28 +129,42 @@ extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collectio
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addUnchecked(E,int)" class="member-name-link">addUnchecked</a><wbr>(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeUnchecked(E,int)" class="member-name-link">removeUnchecked</a><wbr>(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Remove an element assumed to be present, with the given precomputed
+ hash code.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#tryAdd(E,int)" class="member-name-link">tryAdd</a><wbr>(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#tryRemove(E,int)" class="member-name-link">tryRemove</a><wbr>(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Try to remove an element with the given precomputed hash code.</div>
+</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaMapSetCommon">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a></h3>
-<code><a href="JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="JenaMapSetCommon.html#clear()">clear</a>, <a href="JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="JenaMapSetCommon.html#size()">size</a>, <a href="JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
+<code><a href="JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)">anyMatch</a>, <a href="JenaMapSetCommon.html#clear()">clear</a>, <a href="JenaMapSetCommon.html#containsKey(E)">containsKey</a>, <a href="JenaMapSetCommon.html#isEmpty()">isEmpty</a>, <a href="JenaMapSetCommon.html#keyIterator()">keyIterator</a>, <a href="JenaMapSetCommon.html#keySpliterator()">keySpliterator</a>, <a href="JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a>, <a href="JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a>, <a href="JenaMapSetCommon.html#tryRemove(E)">tryRemove</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSet">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a></h3>
-<code><a href="JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
+<code><a href="JenaSet.html#addUnchecked(E)">addUnchecked</a>, <a href="JenaSet.html#forEach(java.util.function.Consumer)">forEach</a>, <a href="JenaSet.html#iterator()">iterator</a>, <a href="JenaSet.html#spliterator()">spliterator</a>, <a href="JenaSet.html#tryAdd(E)">tryAdd</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.Sized">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></h3>
+<code><a href="Sized.html#size()">size</a></code></div>
 </section>
 </li>
 </ul>
@@ -162,6 +181,15 @@ extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collectio
 <h3 id="tryAdd(java.lang.Object,int)">tryAdd</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">tryAdd</span><wbr><span class="parameters">(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>.</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if added, <code>false</code> if already present</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -169,6 +197,13 @@ extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collectio
 <h3 id="addUnchecked(java.lang.Object,int)">addUnchecked</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present. The caller MUST ensure the key is absent.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>. (<code>null</code> is not allowed)</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -176,6 +211,14 @@ extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collectio
 <h3 id="tryRemove(java.lang.Object,int)">tryRemove</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">tryRemove</span><wbr><span class="parameters">(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block">Try to remove an element with the given precomputed hash code.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to remove</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code></dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if removed, <code>false</code> if it was not present</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -183,6 +226,13 @@ extends <a href="JenaSet.html" title="interface in org.apache.jena.mem.collectio
 <h3 id="removeUnchecked(java.lang.Object,int)">removeUnchecked</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeUnchecked</span><wbr><span class="parameters">(<a href="JenaSetHashOptimized.html" title="type parameter in JenaSetHashOptimized">E</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block">Remove an element assumed to be present, with the given precomputed
+ hash code. Behavior is undefined if the element is not in the set.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to remove</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code></dd>
+</dl>
 </section>
 </li>
 </ul>

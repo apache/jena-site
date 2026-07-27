@@ -93,14 +93,24 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code>org.apache.jena.atlas.lib.Copyable&lt;<a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a>&gt;</code>, <code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code>, <code><a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code>, <code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">FastArrayBunch</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></span></div>
-<div class="block">An ArrayBunch implements TripleBunch with a linear search of a short-ish
- array of Triples. The array grows by factor 2.</div>
+<div class="block">Linear-scan implementation of <a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast"><code>FastTripleBunch</code></a> backed by a packed
+ <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph"><code>Triple</code></a> array. Used as long as a bunch stays small; once it grows
+ past the configured threshold (see <a href="FastTripleStore.html" title="class in org.apache.jena.mem.store.fast"><code>FastTripleStore</code></a>) it is replaced
+ with a <a href="FastHashedTripleBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastHashedTripleBunch</code></a>.
+ <p>
+ The array grows by a factor of two when full. Equality of triples within a
+ bunch is delegated to <a href="#areEqual(org.apache.jena.graph.Triple,org.apache.jena.graph.Triple)"><code>areEqual(Triple, Triple)</code></a>, which subclasses
+ specialize to compare only the two nodes that are <em>not</em> already
+ implied by the enclosing map's key. This avoids redundant equality checks
+ on the shared subject/predicate/object.
+ <p>
+ Not thread-safe.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,7 +119,7 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -118,12 +128,15 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(org.apache.jena.graph.Triple)" class="member-name-link">addUnchecked</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the key to the set without checking if it is already present.</div>
+<div class="block">Add the key to the set without checking whether it is already present.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUnchecked(org.apache.jena.graph.Triple,int)" class="member-name-link">addUnchecked</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#anyMatch(java.util.function.Predicate)" class="member-name-link">anyMatch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;predicate)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -132,26 +145,27 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#anyMatchRandomOrder(java.util.function.Predicate)" class="member-name-link">anyMatchRandomOrder</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;predicate)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">This method is used to optimize _PO match operations.</div>
+<div class="block">Predicate test that scans elements in hash-table order rather than
+ dense insertion order.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#areEqual(org.apache.jena.graph.Triple,org.apache.jena.graph.Triple)" class="member-name-link">areEqual</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;a,
- <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;b)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clear()" class="member-name-link">clear</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clear()" class="member-name-link">clear</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the collection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsKey(org.apache.jena.graph.Triple)" class="member-name-link">containsKey</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsKey(org.apache.jena.graph.Triple)" class="member-name-link">containsKey</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check whether the collection contains a given key.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forEach(java.util.function.Consumer)" class="member-name-link">forEach</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;action)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isArray()" class="member-name-link">isArray</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Answer true iff this bunch is implemented as an array.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
@@ -174,7 +188,10 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeUnchecked(org.apache.jena.graph.Triple,int)" class="member-name-link">removeUnchecked</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove an element assumed to be present, with the given precomputed
+ hash code.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -186,7 +203,10 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryAdd(org.apache.jena.graph.Triple,int)" class="member-name-link">tryAdd</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryRemove(org.apache.jena.graph.Triple)" class="member-name-link">tryRemove</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -195,7 +215,9 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tryRemove(org.apache.jena.graph.Triple,int)" class="member-name-link">tryRemove</a><wbr>(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Try to remove an element with the given precomputed hash code.</div>
+</div>
 </div>
 </div>
 </div>
@@ -208,6 +230,9 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaMapSetCommon">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a></h3>
 <code><a href="../../collection/JenaMapSetCommon.html#keyStream()">keyStream</a>, <a href="../../collection/JenaMapSetCommon.html#keyStreamParallel()">keyStreamParallel</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.apache.jena.mem.collection.JenaSet">Methods inherited from interface&nbsp;org.apache.jena.mem.collection.<a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a></h3>
+<code><a href="../../collection/JenaSet.html#iterator()">iterator</a>, <a href="../../collection/JenaSet.html#spliterator()">spliterator</a></code></div>
 </section>
 </li>
 </ul>
@@ -219,13 +244,6 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="areEqual(org.apache.jena.graph.Triple,org.apache.jena.graph.Triple)">
-<h3>areEqual</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">areEqual</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;a,
- <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;b)</span></div>
-</section>
-</li>
 <li>
 <section class="detail" id="containsKey(org.apache.jena.graph.Triple)">
 <h3>containsKey</h3>
@@ -263,17 +281,21 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>anyMatchRandomOrder</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">anyMatchRandomOrder</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;predicate)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="FastTripleBunch.html#anyMatchRandomOrder(java.util.function.Predicate)">FastTripleBunch</a></code></span></div>
-<div class="block">This method is used to optimize _PO match operations.
- The <a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)"><code>JenaMapSetCommon.anyMatch(Predicate)</code></a> method is faster if there are only a few matches.
- This method is faster if there are many matches and the set is ordered in an unfavorable way.
- _PO matches usually fall into this category.</div>
+<div class="block">Predicate test that scans elements in hash-table order rather than
+ dense insertion order. Tuned for <code>_PO</code> (any-predicate-object)
+ matches.
+ <p>
+ <a href="../../collection/JenaMapSetCommon.html#anyMatch(java.util.function.Predicate)"><code>JenaMapSetCommon.anyMatch(Predicate)</code></a> is faster when matches
+ are rare or absent; this method is faster when many matches exist and
+ the dense ordering would force scanning past clustered non-matches
+ before finding a hit. Both variants short-circuit on the first match.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="FastTripleBunch.html#anyMatchRandomOrder(java.util.function.Predicate)">anyMatchRandomOrder</a></code>&nbsp;in interface&nbsp;<code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>predicate</code> - the predicate to match</dd>
+<dd><code>predicate</code> - the predicate to test against each triple</dd>
 <dt>Returns:</dt>
-<dd>true if any triple in the bunch matches the predicate</dd>
+<dd><code>true</code> if any triple in the bunch satisfies the predicate</dd>
 </dl>
 </section>
 </li>
@@ -295,7 +317,7 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../collection/JenaMapSetCommon.html#size()">size</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dd><code><a href="../../collection/Sized.html#size()">size</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/Sized.html" title="interface in org.apache.jena.mem.collection">Sized</a></code></dd>
 <dt>Returns:</dt>
 <dd>the number of elements in the collection</dd>
 </dl>
@@ -323,9 +345,9 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSet.html#tryAdd(E)">tryAdd</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>t</code> - the key to add</dd>
+<dd><code>t</code> - the key to add. (<code>null</code> is not allowed)</dd>
 <dt>Returns:</dt>
-<dd>true if the key was added, false if it was already present</dd>
+<dd><code>true</code> if the key was added, <code>false</code> if it was already present</dd>
 </dl>
 </section>
 </li>
@@ -334,13 +356,16 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>addUnchecked</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaSet.html#addUnchecked(E)">JenaSet</a></code></span></div>
-<div class="block">Add the key to the set without checking if it is already present.
- Attention: This method must only be used if it is guaranteed that the key is not already present.</div>
+<div class="block">Add the key to the set without checking whether it is already present.
+ <p>
+ Attention: this method must only be used if the caller has ensured that
+ the key is not already in the set; otherwise the set's invariants will
+ break (duplicates may be inserted).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSet.html#addUnchecked(E)">addUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>t</code> - the key to add</dd>
+<dd><code>t</code> - the key to add. (<code>null</code> is not allowed)</dd>
 </dl>
 </section>
 </li>
@@ -366,7 +391,10 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeUnchecked</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;t)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">JenaMapSetCommon</a></code></span></div>
 <div class="block">Removes a key from the collection.
- Attention: Implementations may assume that the key is present.</div>
+ <p>
+ Attention: implementations may assume the key is present and may produce
+ undefined behavior (including silently corrupting internal state) if it
+ is not. Use <a href="../../collection/JenaMapSetCommon.html#tryRemove(E)"><code>JenaMapSetCommon.tryRemove(Object)</code></a> when in doubt.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaMapSetCommon.html#removeUnchecked(E)">removeUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaMapSetCommon.html" title="interface in org.apache.jena.mem.collection">JenaMapSetCommon</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
@@ -408,13 +436,14 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>isArray</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isArray</span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="FastTripleBunch.html#isArray()">FastTripleBunch</a></code></span></div>
-<div class="block">Answer true iff this bunch is implemented as an array.
- This field is used to optimize some operations by avoiding the need for instanceOf tests.</div>
+<div class="block">Answer <code>true</code> iff this bunch is backed by a flat array (i.e. is
+ a <a href="FastArrayBunch.html" title="class in org.apache.jena.mem.store.fast"><code>FastArrayBunch</code></a>). Exposed as an explicit method so callers can
+ avoid <code>instanceof</code> checks on this hot path.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="FastTripleBunch.html#isArray()">isArray</a></code>&nbsp;in interface&nbsp;<code><a href="FastTripleBunch.html" title="interface in org.apache.jena.mem.store.fast">FastTripleBunch</a></code></dd>
 <dt>Returns:</dt>
-<dd>true iff this bunch is implemented as an arrays</dd>
+<dd><code>true</code> if this bunch is array-backed</dd>
 </dl>
 </section>
 </li>
@@ -423,9 +452,17 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>tryAdd</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryAdd</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html#tryAdd(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Add an element with the given precomputed hash code if it is not
+ already present.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSetHashOptimized.html#tryAdd(E,int)">tryAdd</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>.</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if added, <code>false</code> if already present</dd>
 </dl>
 </section>
 </li>
@@ -434,9 +471,15 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>addUnchecked</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addUnchecked</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html#addUnchecked(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Add an element with the given precomputed hash code without checking
+ whether it is already present. The caller MUST ensure the key is absent.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSetHashOptimized.html#addUnchecked(E,int)">addUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to add. (<code>null</code> is not allowed)</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code>. (<code>null</code> is not allowed)</dd>
 </dl>
 </section>
 </li>
@@ -445,9 +488,16 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>tryRemove</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryRemove</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html#tryRemove(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Try to remove an element with the given precomputed hash code.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSetHashOptimized.html#tryRemove(E,int)">tryRemove</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to remove</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code></dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if removed, <code>false</code> if it was not present</dd>
 </dl>
 </section>
 </li>
@@ -456,9 +506,27 @@ implements <a href="FastTripleBunch.html" title="interface in org.apache.jena.me
 <h3>removeUnchecked</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeUnchecked</span><wbr><span class="parameters">(<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;key,
  int&nbsp;hashCode)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html#removeUnchecked(E,int)">JenaSetHashOptimized</a></code></span></div>
+<div class="block">Remove an element assumed to be present, with the given precomputed
+ hash code. Behavior is undefined if the element is not in the set.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../collection/JenaSetHashOptimized.html#removeUnchecked(E,int)">removeUnchecked</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSetHashOptimized.html" title="interface in org.apache.jena.mem.collection">JenaSetHashOptimized</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>key</code> - the element to remove</dd>
+<dd><code>hashCode</code> - <code>key.hashCode()</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="forEach(java.util.function.Consumer)">
+<h3>forEach</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">forEach</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;&nbsp;action)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html#forEach(java.util.function.Consumer)" title="class or interface in java.lang" class="external-link">forEach</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="../../collection/JenaSet.html#forEach(java.util.function.Consumer)">forEach</a></code>&nbsp;in interface&nbsp;<code><a href="../../collection/JenaSet.html" title="interface in org.apache.jena.mem.collection">JenaSet</a>&lt;<a href="../../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&gt;</code></dd>
 </dl>
 </section>
 </li>

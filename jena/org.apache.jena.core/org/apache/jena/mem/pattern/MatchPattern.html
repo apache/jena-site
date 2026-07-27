@@ -100,8 +100,23 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">MatchPattern</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern">MatchPattern</a>&gt;</span></div>
-<div class="block">A pattern for matching triples.
- The pattern is defined by the wildcard positions for the subject, predicate and object.</div>
+<div class="block">Categorizes a triple-match pattern by which of the subject, predicate and
+ object slots are concrete and which are wildcards (i.e. <code>Node.ANY</code>
+ or <code>null</code>).
+ <p>
+ The eight enum values cover every possible combination. Triple-store
+ implementations dispatch on this enum to pick the most efficient lookup
+ path for each kind of pattern (e.g. a fully concrete <a href="#SUB_PRE_OBJ"><code>SUB_PRE_OBJ</code></a>
+ is answered directly from the triple set, while a partially open pattern
+ such as <a href="#ANY_PRE_OBJ"><code>ANY_PRE_OBJ</code></a> is answered through an index intersection).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="PatternClassifier.html" title="class in org.apache.jena.mem.pattern"><code>PatternClassifier</code></a></li>
+</ul>
+</dd>
+</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">

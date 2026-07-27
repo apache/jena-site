@@ -94,14 +94,15 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PatternClassifier</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Classify a triple match into one of the 8 match patterns.
+<div class="block">Utility class that classifies a triple match into one of the eight
+ <a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern"><code>MatchPattern</code></a> values.
  <p>
- The classification is based on the concrete-ness of the subject, predicate and object.
- A concrete node is one that is not a variable.
+ The classification is based on which of the subject, predicate and object
+ are <em>concrete</em> (anything that is not a variable / wildcard /
+ <code>null</code>) and which are wildcards. The result is used by triple-store
+ implementations to dispatch to the most efficient lookup path.
  <p>
- The classification is used to select the most efficient implementation of a triple store.
- <p>
- This is a utility class; there is no need to instantiate it.</div>
+ All operations are stateless; this class is not meant to be instantiated.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -128,10 +129,14 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#classify(org.apache.jena.graph.Node,org.apache.jena.graph.Node,org.apache.jena.graph.Node)" class="member-name-link">classify</a><wbr>(<a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;sm,
  <a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;pm,
  <a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;om)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Classify a triple match given as three nodes.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern">MatchPattern</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#classify(org.apache.jena.graph.Triple)" class="member-name-link">classify</a><wbr>(<a href="../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Classify a triple match.</div>
+</div>
 </div>
 </div>
 </div>
@@ -153,6 +158,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="classify(org.apache.jena.graph.Triple)">
 <h3>classify</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern">MatchPattern</a></span>&nbsp;<span class="element-name">classify</span><wbr><span class="parameters">(<a href="../../graph/Triple.html" title="class in org.apache.jena.graph">Triple</a>&nbsp;tripleMatch)</span></div>
+<div class="block">Classify a triple match.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tripleMatch</code> - the match triple, possibly containing wildcard nodes</dd>
+<dt>Returns:</dt>
+<dd>the corresponding <a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern"><code>MatchPattern</code></a></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -161,6 +173,16 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern">MatchPattern</a></span>&nbsp;<span class="element-name">classify</span><wbr><span class="parameters">(<a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;sm,
  <a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;pm,
  <a href="../../graph/Node.html" title="class in org.apache.jena.graph">Node</a>&nbsp;om)</span></div>
+<div class="block">Classify a triple match given as three nodes.
+ Any <code>null</code> or non-concrete node is treated as a wildcard.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>sm</code> - subject node, or <code>null</code>/wildcard</dd>
+<dd><code>pm</code> - predicate node, or <code>null</code>/wildcard</dd>
+<dd><code>om</code> - object node, or <code>null</code>/wildcard</dd>
+<dt>Returns:</dt>
+<dd>the corresponding <a href="MatchPattern.html" title="enum class in org.apache.jena.mem.pattern"><code>MatchPattern</code></a></dd>
+</dl>
 </section>
 </li>
 </ul>
