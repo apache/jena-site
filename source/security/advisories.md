@@ -14,6 +14,17 @@ the latest Jena release available.
 
 Please refer to the individual CVE links for further details and mitigations.
 
+**CVE-2026-61372 Web requests using SPARQL Update can escape file restrictions**
+
+[CVE-2026-61372](https://www.cve.org/CVERecord?id=CVE-20-613372) affects Jena
+up to version 6.1.0.
+
+URL references to local resources in SPARQL Update requests were not being
+correctly restricted, and could include access to data on the local machine.
+
+Users are recommended to upgrade to version 6.2.0 where such URLs are restricted
+to be HTTP or FTP URLs.
+
 **CVE-2025-50151 - Configuration files uploaded by administrative users are not checked properly**
 
 [CVE-2025-50151](https://www.cve.org/CVERecord?id=CVE-2025-50151) affects Jena
