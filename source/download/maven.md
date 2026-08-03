@@ -30,10 +30,10 @@ on a version of Jena:
 <dependency>
   <groupId>org.apache.jena</groupId>
   <artifactId>apache-jena-libs</artifactId>
-  <type>pom</type>
   <version>X.Y.Z</version>
+  <type>pom</type>
 </dependency>
-  ```
+```
 
 This will transitively resolve all the dependencies for you: `jena-core`,
 `jena-arq`, `jena-tdb` and `jena-iri` and their dependencies.  
@@ -46,7 +46,32 @@ Other modules need to be added separately, for example:
 <dependency>
   <groupId>org.apache.jena</groupId>
   <artifactId>jena-text</artifactId>
-  <version>x.y.z</version>
+  <version>X.Y.Z</version>
+</dependency>
+```
+
+There is also a BOM (Bill of Materials):
+
+```xml
+<dependencyManagement>
+  <dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-bom</artifactId>
+    <version>X.Y.Z</version>
+    <type>pom</type>
+    <scope>import</scope>
+  </dependency>
+</dependencyManagement>
+```
+which uses `<type>pom</type>` and `<scope>import</scope>`.
+
+This gives version number for all artifacts so that an artifact can
+be included with needing to give version number for each artifact.
+
+```xml
+<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-shacl</artifactId>
 </dependency>
 ```
 
@@ -68,6 +93,12 @@ structuring Jena development.
     <td><code>apache-jena-libs</code></td>
     <td><code>pom</code></td>
     <td>A POM artifact that may be referenced to pull in all the standard Jena Libraries (Core, ARQ, IRI, and TDB) with a single dependency.</td>
+  <tr>
+    <td><code>jena-bom</code></td>
+    <td><code>pom</code></td>
+    <td>The Apache Jena BOM - uses for dependencyManagement and 
+
+A POM artifact that may be referenced to pull in all the standard Jena Libraries (Core, ARQ, IRI, and TDB) with a single dependency.</td>
   </tr>
   <tr>
     <td><code>apache-jena</code></td>
@@ -86,8 +117,8 @@ structuring Jena development.
   </tr>
   <tr>
     <td><code>jena-fuseki-main</code></td>
-    <td><code>war</code></td>
-    <td>Fuseki packaged for standalone and embedded use.<td>
+    <td><code>jar</code></td>
+    <td>The java code for Fuseki server for embedded use.<td>
   </tr>
   <tr>
     <td><code>jena-text</code></td>
@@ -116,9 +147,6 @@ structuring Jena development.
     </td>
   </tr>
 </table>
-
-There are also a number of artifacts used in development.
-The full list can be seen by browsing Maven 
 
 [Released Jena artifacts](https://repo1.maven.org/maven2/org/apache/jena/)
 
