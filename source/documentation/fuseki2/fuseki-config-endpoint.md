@@ -150,7 +150,7 @@ or with TDB storage, with `--update`):
 which adds requests that can change the data.
 
 
-New operations can be added by programmatic setup in [Fuseki Main](/documentation/fuseki2/fuseki-main).
+New operations can be added by programmatic setup in [Fuseki Main](/documentation/fuseki2/fuseki-plain).
 
 ## Dispatch
 

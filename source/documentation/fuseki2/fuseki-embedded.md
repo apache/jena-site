@@ -50,7 +50,7 @@ To include an embedded Fuseki server in the application:
     <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-fuseki-main</artifactId>
-      <version>3.x.y</version> <!-- Set the version -->
+      <version>6.x.y</version> <!-- Set the version -->
     </dependency>
 
 This brings in enough dependencies to run Fuseki. Application writers are strongly

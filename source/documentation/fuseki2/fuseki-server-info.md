@@ -13,7 +13,7 @@ format. The Prometheus data includes both database and JVM metrics.
 ## Endpoints
 
 The following servers endpoints are available. They are present in Fuseki/UI;
-they need to be enabled with [Fuseki/main](fuseki-main.html), either on the
+they need to be enabled with [Fuseki/main](fuseki-plain.html), either on the
 command line or in the server configuration file with a boolean setting.
 
 | Endpoint | Config Property | Usage |

@@ -7,7 +7,7 @@ contains a Dockerfile, docker-compose file, and helper scripts to
 create a docker container for Apache Jena Fuseki.
 
 The docker container is based on 
-[Fuseki main](https://jena.apache.org/documentation/fuseki2/fuseki-main)
+[Fuseki main](https://jena.apache.org/documentation/fuseki2/fuseki-plain)
 for running a SPARQL server.
 
 There is no UI - all configuration is by command line and all usage by via the

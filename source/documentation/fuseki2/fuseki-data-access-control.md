@@ -6,7 +6,7 @@ Fuseki can provide access control at the level on the server, on datasets,
 on endpoints and also on specific graphs within a dataset. It also
 provides native https to protect data in-flight.
 
-[Fuseki Main](/documentation/fuseki2/fuseki-main.html)
+[Fuseki Main](/documentation/fuseki2/fuseki-plain.html)
 provides some common patterns of authentication and also 
 [Graph level Data Access Control](#graph-acl) to provide control over the visibility of
 graphs within a dataset, including the union graph of a dataset and

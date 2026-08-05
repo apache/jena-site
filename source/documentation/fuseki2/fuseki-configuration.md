@@ -15,11 +15,11 @@ For Fuseki Full (webapp with UI):
 
 `FUSEKI_BASE` is the location of the [Fuseki run area](./fuseki-layout.html).
 
-For [Fuseki Main](fuseki-main.html):
+For [Fuseki Main](fuseki-plain.html):
 
 1. The command line, using `--conf` to provide a configuration file.
 2. The command line, using arguments (e.g. `--mem /ds` or `--tdb2 --loc DB2 /ds`).
-3. [Programmatic configuration](fuseki-main.html#build) of the server.
+3. [Programmatic configuration](fuseki-embedded.html#build) of the server.
 
 See [Fuseki Security](fuseki-security.html) for more information on security configuration.
 
