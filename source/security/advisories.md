@@ -16,7 +16,7 @@ Please refer to the individual CVE links for further details and mitigations.
 
 **CVE-2026-61372 Web requests using SPARQL Update can escape file restrictions**
 
-[CVE-2026-61372](https://www.cve.org/CVERecord?id=CVE-2026-613372) affects Jena
+[CVE-2026-61372](https://www.cve.org/CVERecord?id=CVE-2026-61372) affects Jena
 up to version 6.1.0.
 
 URL references to local resources in SPARQL Update requests were not being
