@@ -187,8 +187,9 @@
   <ul>
     <li><a href="#examples">Examples</a>
       <ul>
-        <li><a href="#the-default-configuration">The default configuration.</a></li>
-        <li><a href="#simple-userpassword">Simple user/password</a></li>
+        <li><a href="#the-default-configuration">The default configuration</a></li>
+        <li><a href="#simple-userpasswordgroup-setup">Simple user/password/group setup</a></li>
+        <li><a href="#example-of-using-a-more-secure-password-setup">Example of using a more secure password setup</a></li>
       </ul>
     </li>
   </ul>
@@ -208,7 +209,7 @@ considered as localhost and thus restricted.</p>
 <p>A simple example to enable basic user/password authentication is shown in the
 default <code>shiro.ini</code> configuration. The default admin user is <code>admin</code> and the
 password is <code>pw</code>. This can be changed directly in the INI file. Note that this
-setup is not recommended for production for various reasons  (no TLS, passwords
+setup is not recommended for production for various reasons (no TLS, passwords
 in plain text etc.), consult the <a href="https://shiro.apache.org/configuration.html#Configuration-INIConfiguration-Sections">Shiro
 INI</a>
 documentation for best practices.</p>
@@ -223,6 +224,9 @@ restricting access to the <code>../query</code> SPARQL endpoint for all datasets
 could be done with this wildcard pattern:</p>
 <p><code>/**/query = authcBasic,user[admin]</code></p>
 <p>Anonymous SPARQL queries would no longer be possible in this example.</p>
+<p>Note that this <code>authcBasic,user[admin]</code> configuration construct allows any authenticated user to access the
+endpoint, regardless of the value of user. See the simple user/password/group example below for
+more fine-grained control, using roles.</p>
 <p>Again, please consult the <a href="https://shiro.apache.org/">Apache Shiro</a> website for
 details and more sophisticated setups. The default configuration of Fuseki is
 kept simple but is <em>not</em> recommended for setups where sensitive data is
@@ -231,7 +235,7 @@ provided.</p>
 <p>Contributions of more examples are very welcome.</p>
 <h2 id="examples">Examples</h2>
 <p>The shipped <code>shiro.ini</code> has additional comments.</p>
-<h3 id="the-default-configuration">The default configuration.</h3>
+<h3 id="the-default-configuration">The default configuration</h3>
 <p>This is a minimal configuration for the default configuration.</p>
 <pre><code>[main]
 localhost=org.apache.jena.fuseki.authz.LocalhostFilter
@@ -245,19 +249,43 @@ localhost=org.apache.jena.fuseki.authz.LocalhostFilter
 /$/** = localhost
 /**=anon
 </code></pre>
-<h3 id="simple-userpassword">Simple user/password</h3>
-<p>This extract shows the simple user/password setup.</p>
-<p>It adds a <code>[users]</code> section and changes the <code>/$/**</code> line in <code>[urls]</code></p>
+<h3 id="simple-userpasswordgroup-setup">Simple user/password/group setup</h3>
+<p>This extract shows the simple user/password/group setup.</p>
+<p>It adds a <code>[users]</code> section with admin in group admins, and user in group users, limits one path to accept both groups, and one for admin only in <code>[urls]</code></p>
 <pre><code>[users]
-admin=pw
+admin=password,admins
+user=password,users
 
 [urls]
-## Control functions open to anyone
-/$/status = anon
+# Control function open to users and admins groups
+/$/status = authcBasic,roles[users,admins]
+# Control functions open to anyone
 /$/ping   = anon
-/$/** = authcBasic,user[admin]
+# Other administration API paths only available for users in admins group
+/$/** = authcBasic,roles[admins]
 # Everything else
 /**=anon
+</code></pre>
+<h3 id="example-of-using-a-more-secure-password-setup">Example of using a more secure password setup</h3>
+<p>Apache Shiro provides a <a href="https://shiro.apache.org/command-line-hasher.html">command line hasher tool</a> to generate password hashes</p>
+<pre><code># Set to the newest Shiro version
+export SHIRO_VERSION=N.N.N
+# download shiro-tools-hasher to local repository
+mvn dependency:get -DgroupId=org.apache.shiro.tools -DartifactId=shiro-tools-hasher -Dclassifier=cli -Dversion=$SHIRO_VERSION
+# run shiro tool from local repository (prompts for password)
+java -jar ~/.m2/repository/org/apache/shiro/tools/shiro-tools-hasher/${SHIRO_VERSION}/shiro-tools-hasher-${SHIRO_VERSION}-cli.jar -p
+</code></pre>
+<p>This outputs something like: <code>*$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y*</code></p>
+<p>A simple configuration using this password looks like:</p>
+<pre><code>[main]
+passwordMatcher = org.apache.shiro.authc.credential.PasswordMatcher
+iniRealm.credentialsMatcher = $passwordMatcher
+
+[users]
+# user &quot;user&quot; with hashed password
+# quote required for password
+# in group users
+user=&quot;$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y&quot;,users
 </code></pre>
 
   </article>
@@ -268,8 +296,9 @@ admin=pw
   <ul>
     <li><a href="#examples">Examples</a>
       <ul>
-        <li><a href="#the-default-configuration">The default configuration.</a></li>
-        <li><a href="#simple-userpassword">Simple user/password</a></li>
+        <li><a href="#the-default-configuration">The default configuration</a></li>
+        <li><a href="#simple-userpasswordgroup-setup">Simple user/password/group setup</a></li>
+        <li><a href="#example-of-using-a-more-secure-password-setup">Example of using a more secure password setup</a></li>
       </ul>
     </li>
   </ul>
