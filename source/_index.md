@@ -6,7 +6,7 @@ title: Home
 <div class="px-5 my-4 bg-light rounded-3" id="jumbotron">
   <div class="container-fluid py-5">
   <h1 class="display-5 fw-bold"><img alt="Apache Jena" src="/images/jena-logo/jena-logo-jumbotron.png"/> Apache Jena</h1>
-  <p class="lead">A free and open source Java framework for building <a href="https://www.w3.org/standards/semanticweb/">Semantic Web</a> and <a href="https://www.w3.org/standards/semanticweb/data">Linked Data</a> applications.</p>
+  <p class="lead">A free and open source Java framework for building Semantic Web and Linked Data applications.</p>
   <p>
     <a href="/getting_started/index.html" class="btn-jumbotron btn btn-primary btn-lg"><span class="bi-chevron-right"></span>Get started now!</a>
     <a href="/download/index.cgi" class="btn-jumbotron btn btn-primary btn-lg pl-4"><span class="bi-download"></span>Download</a>
