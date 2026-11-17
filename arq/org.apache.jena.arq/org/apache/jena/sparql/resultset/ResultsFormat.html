@@ -100,10 +100,15 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ResultsFormat</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a>&gt;</span></div>
-<div class="block">The output formats for all query types.
- Result sets, boolean graphs.
+<div class="block">The output formats for all query types. This allows the APi to given a results
+ choice before the kind of query is known.
  <p>
- This does not include results sets as RDF. They are  provided for tests with <a href="RDFInput.html" title="class in org.apache.jena.sparql.resultset"><code>RDFInput</code></a> and <a href="RDFOutput.html" title="class in org.apache.jena.sparql.resultset"><code>RDFOutput</code></a>.</div>
+ This does not include results sets as RDF. They are provided for tests with
+ <a href="RDFInput.html" title="class in org.apache.jena.sparql.resultset"><code>RDFInput</code></a> and <a href="RDFOutput.html" title="class in org.apache.jena.sparql.resultset"><code>RDFOutput</code></a>.
+ <p>
+ A <code>ResultsFormat</code> item has three parts, result format, triples format (e.g.
+ CONSTRUCT), and quads (for extended CONSTRUCT). These are stored in a lookup table
+ for string to <code>ResultsFormat</code>, which is used by commands.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,30 +135,32 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#JSON" class="member-name-link">JSON</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#JSONLD" class="member-name-link">JSONLD</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#NQ" class="member-name-link">NQ</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#NT" class="member-name-link">NT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#PROTOBUF" class="member-name-link">PROTOBUF</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#RDF_JSONLD" class="member-name-link">RDF_JSONLD</a></code></div>
+<div class="col-first even-row-color"><code><a href="#RDFXML" class="member-name-link">RDFXML</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#RDFXML" class="member-name-link">RDFXML</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SSE" class="member-name-link">SSE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SSE" class="member-name-link">SSE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TEXT" class="member-name-link">TEXT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TEXT" class="member-name-link">TEXT</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#THRIFT" class="member-name-link">THRIFT</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#THRIFT" class="member-name-link">THRIFT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TRIG" class="member-name-link">TRIG</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#TSV" class="member-name-link">TSV</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#TTL" class="member-name-link">TTL</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TUPLES" class="member-name-link">TUPLES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#XML" class="member-name-link">XML</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#XML" class="member-name-link">XML</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -173,16 +180,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Guess the syntax of a result set URL</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#lookup(java.lang.String)" class="member-name-link">lookup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shortname)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Look up a short name for a result set FMT_</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isResultSet()" class="member-name-link">isResultSet</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#lookup(java.lang.String)" class="member-name-link">lookup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shortname)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Look up a short name for an output format.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rdfFormat()" class="member-name-link">rdfFormat</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#quadsFormat()" class="member-name-link">quadsFormat</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../riot/Lang.html" title="class in org.apache.jena.riot">Lang</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resultSetLang()" class="member-name-link">resultSetLang</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../riot/Lang.html" title="class in org.apache.jena.riot">Lang</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resultSetLang()" class="member-name-link">resultSetLang</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#triplesFormat()" class="member-name-link">triplesFormat</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -270,15 +283,27 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="TRIG">
+<h3>TRIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">TRIG</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="NQ">
+<h3>NQ</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">NQ</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="RDFXML">
 <h3>RDFXML</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">RDFXML</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="RDF_JSONLD">
-<h3>RDF_JSONLD</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">RDF_JSONLD</span></div>
+<section class="detail" id="JSONLD">
+<h3>JSONLD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">JSONLD</span></div>
 </section>
 </li>
 <li>
@@ -297,12 +322,6 @@ the order they are declared.</div>
 <section class="detail" id="SSE">
 <h3>SSE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">SSE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="TUPLES">
-<h3>TUPLES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">TUPLES</span></div>
 </section>
 </li>
 </ul>
@@ -351,9 +370,21 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="rdfFormat()">
-<h3>rdfFormat</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></span>&nbsp;<span class="element-name">rdfFormat</span>()</div>
+<section class="detail" id="triplesFormat()">
+<h3>triplesFormat</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></span>&nbsp;<span class="element-name">triplesFormat</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="quadsFormat()">
+<h3>quadsFormat</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../riot/RDFFormat.html" title="class in org.apache.jena.riot">RDFFormat</a></span>&nbsp;<span class="element-name">quadsFormat</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isResultSet()">
+<h3>isResultSet</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isResultSet</span>()</div>
 </section>
 </li>
 <li>
@@ -367,7 +398,7 @@ not permitted.)</div>
 <section class="detail" id="lookup(java.lang.String)">
 <h3>lookup</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ResultsFormat.html" title="enum class in org.apache.jena.sparql.resultset">ResultsFormat</a></span>&nbsp;<span class="element-name">lookup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shortname)</span></div>
-<div class="block">Look up a short name for a result set FMT_</div>
+<div class="block">Look up a short name for an output format.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>shortname</code> - Short name</dd>

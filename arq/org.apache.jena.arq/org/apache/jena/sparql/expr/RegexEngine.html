@@ -100,13 +100,12 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Encapsulate a specific regular expression systems.
  <p>
- The two provided are the regular expression implement in Apache Xerces (2.11.0)
- and the JDK <code>java.util.regex</code>.
+ The two provided are the regular expression implement in Apache Xerces (2.11.0) and the JDK <code>java.util.regex</code>.
  <p>
  By default <code>java.util.regex</code> is used. It does not support the "x" flag.
  <p>
- The default is set by symbol <code>ARQ.regexImpl</code> (comand line <code>arq:regexImpl</code>)
- to either "javaRegex" or "xercesRegex".</div>
+ The default is set by symbol <code>ARQ.regexImpl</code> (comand line <code>arq:regexImpl</code>) to either "javaRegex" or
+ "xercesRegex".</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -175,6 +174,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">For testing</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#timeBounded(java.lang.CharSequence)" class="member-name-link">timeBounded</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a>&nbsp;charSequence)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Returns a potentially time-bounded character sequence</div>
+</div>
 </div>
 </div>
 </div>
@@ -238,6 +242,24 @@ loadScripts(document, 'script');</script>
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="RegexEngine.html" title="class in org.apache.jena.sparql.expr">RegexEngine</a></span>&nbsp;<span class="element-name">create</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pattern,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;flags)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="timeBounded(java.lang.CharSequence)">
+<h3>timeBounded</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a></span>&nbsp;<span class="element-name">timeBounded</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a>&nbsp;charSequence)</span></div>
+<div class="block">Returns a potentially time-bounded character sequence
+ <p>
+ If <a href="../SparqlLimits.html#MAX_REGEX_EVALUATION_TIME"><code>SparqlLimits.MAX_REGEX_EVALUATION_TIME</code></a> is set to a positive non-zero value then a time-bounded
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link"><code>CharSequence</code></a> is returned to prevent regular expression evaluation taking too long.  If it's set to
+ anything else then the original character sequence is returned.
+ </p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>charSequence</code> - Original character sequence to time bound</dd>
+<dt>Returns:</dt>
+<dd>Possible time-bounded Character Sequence, or <code>null</code> if the input was <code>null</code></dd>
+</dl>
 </section>
 </li>
 </ul>
