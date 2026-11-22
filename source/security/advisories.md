@@ -12,9 +12,80 @@ The following CVEs specifically relate to the Jena codebase itself and have been
 addressed by the project. Per our policy above we advise users to always utilise
 the latest Jena release available.
 
-Please refer to the individual CVE links for further details and mitigations.
+Please refer to the individual CVE links for further details and
+mitigations.
 
-**CVE-2026-61372 Web requests using SPARQL Update can escape file restrictions**
+
+**CVE-2026-124324 - SERVICE bypasses localhost-only administration controls**
+
+[CVE-2026-124324](https://www.cve.org/CVERecord?id=CVE-2026-124324)
+affects Jena up to version 6.2.0.
+
+`SERVICE` can bypass administration controls on the local host.
+
+Users are recommended to upgrade to version 6.3.0 where `SERVICE`
+request reject likely-looking URLs.
+
+**CVE-2026-120502 - Excess memory allocation from malicious Thrift data**
+
+[CVE-2026-120502](https://www.cve.org/CVERecord?id=CVE-2026-120502) 
+affects Jena up to version 6.2.0.
+
+Badly or maliciously crafted Thrift input data can cause a large memory
+allocation.
+
+Users are recommended to upgrade to version 6.3.0 where input data is
+restricted in size.
+
+**CVE-2026-103333 - SPARQL expressions can lead to excessive CPU or memory usage**
+
+[CVE-2026-103333](https://www.cve.org/CVERecord?id=CVE-2026-103333)
+affects Jena up to version 6.2.0.
+
+Improper input validation in SPARQL expressions can lead to excessive CPU/memory.
+
+Users are recommended to upgrade to version 6.3.0 where resource
+controls are allowed to expression evaluation.
+
+**CVE-2026-97893 - SPARQL Property Path optimisation can excessive CPU usage**
+
+[CVE-2026-97893](https://www.cve.org/CVERecord?id=CVE-2026-97893)
+affects Jena up to version 6.2.0.
+
+Users are recommended to upgrade to version 6.3.0 where optimisation is
+not performed on patterns with likely excessive costs.
+
+**CVE-2026-86155 - SHACL validation can cause SSRF SPARQL targets**
+
+[CVE-2026-86155](https://www.cve.org/CVERecord?id=CVE-2026-86155)
+affects Jena up to version 6.2.0.
+
+The SHACL validation service can allow the use of `SERVICE` in SHACL SPARQL targets, leading to the
+server making HTTP requests.
+
+Users are recommended to upgrade to version 6.3.0 where `SERVICE` is not
+permitted in SHACL validation.
+
+**CVE-2026-86156 - SPARQL Update can escape file restrictions for graph operations**
+
+[CVE-2026-86156](https://www.cve.org/CVERecord?id=CVE-2026-86156)
+affects Jena up to version 6.2.0.
+
+Web requests using SPARQL Update can escape file restrictions for graph operations.
+
+Users are recommended to upgrade to version 6.3.0.
+
+**CVE-2026-86154 - Possible  stack overflow in Turtle language syntax parsers**
+
+[CVE-2026-86154](https://www.cve.org/CVERecord?id=CVE-2026-86154)
+affects Jena up to version 6.2.0.
+
+Nested structures can lead to stack overflow in Turtle language syntax parsers.
+
+Users are recommended to upgrade to version 6.3.0 where stack usage is
+tracked and limited.
+
+**CVE-2026-61372 - Web requests using SPARQL Update can escape file restrictions**
 
 [CVE-2026-61372](https://www.cve.org/CVERecord?id=CVE-2026-61372) affects Jena
 up to version 6.1.0.
@@ -38,7 +109,7 @@ This configuration file upload feature has been removed in Jena Fuseki 5.5.0.
 
 **CVE-2025-49656 - Administrative users can create files outside the server directory space via the admin UI**
 
-[CVE-2025-49656](https://www.cve.org/CVERecord?id=CVE-2025-49656)  affects Jena
+[CVE-2025-49656](https://www.cve.org/CVERecord?id=CVE-2025-49656) affects Jena
 Fuseki in versions up to 5.4.0.
 
 Users with administrator access can create databases that refer to files outside
@@ -77,7 +148,7 @@ be explicitly added to the environment.
 
 However, when enabled this feature does expose the majority of the underlying
 scripting engine directly to SPARQL queries so may provide a vector for
-arbitrary code execution.  Therefore, it is recommended that this feature remain
+arbitrary code execution. Therefore, it is recommended that this feature remain
 disabled for any publicly accessible deployment that utilises the ARQ query
 engine.
 
