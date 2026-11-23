@@ -190,8 +190,51 @@ and relevant <a href="#cves-in-jena-dependencies">Dependency CVEs</a>.</p>
 <p>The following CVEs specifically relate to the Jena codebase itself and have been
 addressed by the project. Per our policy above we advise users to always utilise
 the latest Jena release available.</p>
-<p>Please refer to the individual CVE links for further details and mitigations.</p>
-<p><strong>CVE-2026-61372 Web requests using SPARQL Update can escape file restrictions</strong></p>
+<p>Please refer to the individual CVE links for further details and
+mitigations.</p>
+<p><strong>CVE-2026-124324 - SERVICE bypasses localhost-only administration controls</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-124324">CVE-2026-124324</a>
+affects Jena up to version 6.2.0.</p>
+<p><code>SERVICE</code> can bypass administration controls on the local host.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where <code>SERVICE</code>
+request reject likely-looking URLs.</p>
+<p><strong>CVE-2026-120502 - Excess memory allocation from malicious Thrift data</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-120502">CVE-2026-120502</a>
+affects Jena up to version 6.2.0.</p>
+<p>Badly or maliciously crafted Thrift input data can cause a large memory
+allocation.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where input data is
+restricted in size.</p>
+<p><strong>CVE-2026-103333 - SPARQL expressions can lead to excessive CPU or memory usage</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-103333">CVE-2026-103333</a>
+affects Jena up to version 6.2.0.</p>
+<p>Improper input validation in SPARQL expressions can lead to excessive CPU/memory.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where resource
+controls are allowed to expression evaluation.</p>
+<p><strong>CVE-2026-97893 - SPARQL Property Path optimisation can excessive CPU usage</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-97893">CVE-2026-97893</a>
+affects Jena up to version 6.2.0.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where optimisation is
+not performed on patterns with likely excessive costs.</p>
+<p><strong>CVE-2026-86155 - SHACL validation can cause SSRF SPARQL targets</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-86155">CVE-2026-86155</a>
+affects Jena up to version 6.2.0.</p>
+<p>The SHACL validation service can allow the use of <code>SERVICE</code> in SHACL SPARQL targets, leading to the
+server making HTTP requests.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where <code>SERVICE</code> is not
+permitted in SHACL validation.</p>
+<p><strong>CVE-2026-86156 - SPARQL Update can escape file restrictions for graph operations</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-86156">CVE-2026-86156</a>
+affects Jena up to version 6.2.0.</p>
+<p>Web requests using SPARQL Update can escape file restrictions for graph operations.</p>
+<p>Users are recommended to upgrade to version 6.3.0.</p>
+<p><strong>CVE-2026-86154 - Possible  stack overflow in Turtle language syntax parsers</strong></p>
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2026-86154">CVE-2026-86154</a>
+affects Jena up to version 6.2.0.</p>
+<p>Nested structures can lead to stack overflow in Turtle language syntax parsers.</p>
+<p>Users are recommended to upgrade to version 6.3.0 where stack usage is
+tracked and limited.</p>
+<p><strong>CVE-2026-61372 - Web requests using SPARQL Update can escape file restrictions</strong></p>
 <p><a href="https://www.cve.org/CVERecord?id=CVE-2026-61372">CVE-2026-61372</a> affects Jena
 up to version 6.1.0.</p>
 <p>URL references to local resources in SPARQL Update requests were not being
@@ -206,7 +249,7 @@ network. The file paths in configuration files were not validated and could
 refer to directories and files outside of the Fuseki server instance.</p>
 <p>This configuration file upload feature has been removed in Jena Fuseki 5.5.0.</p>
 <p><strong>CVE-2025-49656 - Administrative users can create files outside the server directory space via the admin UI</strong></p>
-<p><a href="https://www.cve.org/CVERecord?id=CVE-2025-49656">CVE-2025-49656</a>  affects Jena
+<p><a href="https://www.cve.org/CVERecord?id=CVE-2025-49656">CVE-2025-49656</a> affects Jena
 Fuseki in versions up to 5.4.0.</p>
 <p>Users with administrator access can create databases that refer to files outside
 the files area of the Fuseki server.</p>
@@ -234,7 +277,7 @@ users, and on newer JVMs (Java 17 onwards) a JavaScript script engine <strong>MU
 be explicitly added to the environment.</p>
 <p>However, when enabled this feature does expose the majority of the underlying
 scripting engine directly to SPARQL queries so may provide a vector for
-arbitrary code execution.  Therefore, it is recommended that this feature remain
+arbitrary code execution. Therefore, it is recommended that this feature remain
 disabled for any publicly accessible deployment that utilises the ARQ query
 engine.</p>
 <p>Users should upgrade to latest Jena 4.x <a href="../download/">release</a> available.</p>
